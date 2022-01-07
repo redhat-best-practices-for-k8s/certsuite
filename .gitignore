@@ -1,0 +1,31 @@
+bin/
+catalog.json
+claim.json
+.idea
+vendor
+*.test
+test-network-function_junit.xml
+cover.out
+cnf-certification-test/cnf-certification-tests_junit.xml
+cnf-certification-tests_junit.xml
+cnftests-junit.xml
+setup_junit.xml
+validation_junit.xml
+.vscode
+jsontest-cli
+gradetool
+test-out.json
+cnf-certification-test/results.html
+test-network-function
+cnf-certification-test/claimjson.js
+
+# Explicitly don't track mocks.  mocks should be built on request.
+pkg/tnf/mocks/mock_tester.go
+pkg/tnf/reel/mocks/mock_reel.go
+# NOTE: mock_expect.go is tracked, as it is generated from source externally.
+pkg/tnf/interactive/mocks/mock_spawner.go
+temp/
+/tnf
+/all-releases.txt
+/latest-release-tag.txt
+/release-tag.txt

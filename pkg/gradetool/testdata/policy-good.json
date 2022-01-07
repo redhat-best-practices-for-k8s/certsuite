@@ -1,0 +1,92 @@
+{
+  "grades": {
+    "gradeName": "good",
+    "requiredPassingTests": [],
+    "nextGrade": {
+      "gradeName": "better",
+      "requiredPassingTests": [
+        {
+          "url": "http://test-network-function.com/testcases/container/container-is-certified",
+          "version": "v1.0.0"
+        },
+        {
+          "url": "http://test-network-function.com/testcases/operator/operator-is-certified",
+          "version": "v1.0.0"
+        }
+      ],
+      "nextGrade": {
+        "gradeName": "best",
+        "requiredPassingTests": [
+          {
+            "url": "http://test-network-function.com/testcases/generic/pod-node-selector-node-affinity-best-practices",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/generic/pod-service-account-best-practices",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/generic/non-default-grace-period",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/generic/pod-deployment-best-practices",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/generic/services-do-not-use-nodeports",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/generic/unaltered-base-image",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/diagnostic/extract-node-information",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/generic/icmpv4-connectivity",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/generic/non-tainted-node-kernel",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/generic/pod-role-bindings-best-practices",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/generic/unaltered-startup-boot-params",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/container/container-best-practices",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/generic/hugepages-not-manually-manipulated",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/generic/namespace-best-practices",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/generic/pod-recreation",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/operator/operator-best-practices",
+            "version": "v1.0.0"
+          },
+          {
+            "url": "http://test-network-function.com/testcases/generic/pod-cluster-role-bindings-best-practices",
+            "version": "v1.0.0"
+          }
+        ]
+      }
+    }
+  }
+}

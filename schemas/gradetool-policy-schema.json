@@ -1,0 +1,59 @@
+{
+  "$id": "http://test-network-function.com/policy3",
+  "title": "Claim Policy Schema",
+  "additionalProperties": false,
+  "definitions": {
+    "identifier": {
+      "$id": "#identifier",
+      "type": "object",
+      "description": "identifier is a per testcase unique identifier.",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "url stores the unique url for a test."
+        },
+        "version": {
+          "type": "string",
+          "description": "version stores the semantic version of the test."
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "url",
+        "version"
+      ]
+    },
+    "grade": {
+      "$id": "#grade",
+      "type": "object",
+      "description": "the certification grade",
+      "properties": {
+        "gradeName": {
+          "type": "string",
+          "description": "the name of the grade (i.e., good, better, or best)"
+        },
+        "requiredPassingTests": {
+          "type": "array",
+          "description": "the test identifiers that must pass to achieve the given grade.",
+          "items": {
+            "$ref": "#identifier"
+          }
+        },
+        "nextGrade": {
+          "$ref": "#grade",
+          "description": "CNF Certification grading is progressive.  nextGrade allows one to define the next better level"
+        }
+      },
+      "required": [
+        "gradeName",
+        "requiredPassingTests"
+      ]
+    }
+  },
+  "properties": {
+    "grades": {
+      "type": "object",
+      "$ref": "#grade"
+    }
+  }
+}

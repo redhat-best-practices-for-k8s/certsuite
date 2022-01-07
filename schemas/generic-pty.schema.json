@@ -1,0 +1,27 @@
+{
+  "$id": "http://test-network-function.com/schemas/generic-pty.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "0.0.1",
+  "properties": {
+    "command": {
+      "type": "string",
+      "description": "The command is the PTY executable.  For example, ssh."
+    },
+    "args": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The optional command arguments."
+    },
+    "timeout": {
+      "type": "integer",
+      "description": "The timeout (in nanoseconds) for the PTY executable."
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "command",
+    "timeout"
+  ]
+}

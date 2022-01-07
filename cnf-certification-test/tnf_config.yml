@@ -1,0 +1,15 @@
+targetNameSpaces:
+  - name: tnf
+targetPodLabels:
+  - prefix: test-network-function.com
+    name: generic
+    value: target
+targetCrdFilters:
+  - nameSuffix: "group1.test.com"
+  - nameSuffix: "test-network-function.com"
+certifiedcontainerinfo:
+  - name: nginx-116  # working example
+    repository: rhel8
+certifiedoperatorinfo:
+  - name: etcd
+    organization: community-operators # working example
