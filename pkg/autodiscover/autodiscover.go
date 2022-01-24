@@ -47,7 +47,7 @@ func buildLabelQuery(label configuration.Label) string {
 	return fullLabelName
 }
 
-func DoAutoDiscover() []v1.Pod {
+func DoAutoDiscover() ([]v1.Pod, []v1.Pod) {
 	loadEnvironment := configuration.LoadEnvironmentVariables()
 	env, err := loadEnvironment()
 	if err != nil {
@@ -68,5 +68,11 @@ func DoAutoDiscover() []v1.Pod {
 	}
 	oc := ocpclient.NewOcpClient(filenames...)
 	pods := findPodsByLabel(oc.Coreclient, testData.TargetPodLabels, testData.TargetNameSpaces)
-	return pods
+
+	debugLabel := configuration.Label{Prefix: debugLabelPrefix, Name: debugLabelName, Value: debugLabelValue}
+	debugLabels := []configuration.Label{debugLabel}
+	ns := configuration.Namespace{Name: defaultNamespace}
+	debug_ns := []configuration.Namespace{ns}
+	debugPods := findPodsByLabel(oc.Coreclient, debugLabels, debug_ns)
+	return pods, debugPods
 }

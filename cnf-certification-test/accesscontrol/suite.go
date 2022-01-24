@@ -20,7 +20,6 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf/testcases"
 )
 
 const (
@@ -41,8 +40,5 @@ var (
 )
 
 var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
-	conf, _ := ginkgo.GinkgoConfiguration()
-	if testcases.IsInFocus(conf.FocusStrings, common.AccessControlTestKey) {
-		logrus.Debug(common.AccessControlTestKey, " not moved yet to new framework")
-	}
+	logrus.Debug(common.AccessControlTestKey, " not moved yet to new framework")
 })

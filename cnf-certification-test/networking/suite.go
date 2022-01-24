@@ -18,7 +18,6 @@ package networking
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf/testcases"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 
@@ -29,8 +28,5 @@ import (
 // All actual test code belongs below here.  Utilities belong above.
 //
 var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
-	conf, _ := ginkgo.GinkgoConfiguration()
-	if testcases.IsInFocus(conf.FocusStrings, common.NetworkingTestKey) {
-		logrus.Debug(common.PlatformAlterationTestKey, " not moved yet to new framework")
-	}
+	logrus.Debug(common.PlatformAlterationTestKey, " not moved yet to new framework")
 })

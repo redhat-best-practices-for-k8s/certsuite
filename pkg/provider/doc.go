@@ -14,5 +14,8 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-// Package operator defines various test case templates definitions.
-package operator
+// provider package is responsible for providing data needed by tests
+// it's considered as a shim layer between tests and autodiscovery/configuration
+// package
+// test code is not supposed to import autodiscover/configuration packages
+package provider

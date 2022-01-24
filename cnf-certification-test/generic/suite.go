@@ -19,7 +19,6 @@ package generic
 import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf/testcases"
 )
 
 const (
@@ -28,8 +27,5 @@ const (
 
 // Runs the "generic" CNF test cases.
 var _ = ginkgo.Describe(testsKey, func() {
-	conf, _ := ginkgo.GinkgoConfiguration()
-	if testcases.IsInFocus(conf.FocusStrings, testsKey) {
-		logrus.Debug(testsKey, " not moved yet to new framework")
-	}
+	logrus.Debug(testsKey, " not moved yet to new framework")
 })

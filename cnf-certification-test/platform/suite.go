@@ -17,20 +17,52 @@
 package platform
 
 import (
+	"fmt"
+
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf/testcases"
+	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 
 	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 )
 
 //
 // All actual test code belongs below here.  Utilities belong above.
 //
 var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
-	conf, _ := ginkgo.GinkgoConfiguration()
-	if testcases.IsInFocus(conf.FocusStrings, common.PlatformAlterationTestKey) {
-		logrus.Debug(common.PlatformAlterationTestKey, " not moved yet to new framework")
-	}
+	logrus.Debug(common.PlatformAlterationTestKey, " not moved yet to new framework")
 })
+
+// testContainersFsDiff test that all CUT didn't install new packages are starting
+func testContainersFsDiff(env provider.TestEnvironment) {
+	ginkgo.Context("Container does not have additional packages installed", func() {
+		testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestUnalteredBaseImageIdentifier)
+		ginkgo.It(testID, ginkgo.Label(testID), func() {
+			var badContainers []string
+			var errContainers []string
+			for _, cut := range env.Containers {
+				ginkgo.By(fmt.Sprintf("%s(%s) should not install new packages after starting", cut.Podname, &cut.Data.Name))
+				fsdiff := NewFsDiff(cut)
+				nodeName := cut.NodeName
+				debugPod := env.DebugPods[nodeName]
+				fsdiff.RunTest(ocpclient.NewOcpClient(), &provider.Context{Namespace: debugPod.Namespace,
+					Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name})
+				switch fsdiff.getResults() {
+				case tnf.SUCCESS:
+					continue
+				case tnf.FAILURE:
+					badContainers = append(badContainers, cut.Data.Name)
+				case tnf.ERROR:
+					errContainers = append(errContainers, cut.Data.Name)
+				}
+			}
+			gomega.Expect(badContainers).To(gomega.BeNil())
+			gomega.Expect(errContainers).To(gomega.BeNil())
+		})
+	})
+}

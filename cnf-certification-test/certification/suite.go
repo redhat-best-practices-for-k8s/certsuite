@@ -20,12 +20,8 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf/testcases"
 )
 
 var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
-	conf, _ := ginkgo.GinkgoConfiguration()
-	if testcases.IsInFocus(conf.FocusStrings, common.AffiliatedCertTestKey) {
-		logrus.Debug(common.AffiliatedCertTestKey, " not moved yet to new framework")
-	}
+	logrus.Debug(common.AffiliatedCertTestKey, " not moved yet to new framework")
 })

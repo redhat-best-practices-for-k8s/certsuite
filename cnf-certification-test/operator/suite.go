@@ -19,7 +19,6 @@ package operator
 import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf/testcases"
 )
 
 const (
@@ -30,8 +29,5 @@ const (
 // All actual test code belongs below here.  Utilities belong above.
 //
 var _ = ginkgo.Describe(testSpecName, func() {
-	conf, _ := ginkgo.GinkgoConfiguration()
-	if testcases.IsInFocus(conf.FocusStrings, testSpecName) {
-		logrus.Debug(testSpecName, " not moved yet to new framework")
-	}
+	logrus.Debug(testSpecName, " not moved yet to new framework")
 })

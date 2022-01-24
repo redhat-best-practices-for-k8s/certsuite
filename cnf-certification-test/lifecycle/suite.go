@@ -23,7 +23,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf/testcases"
 )
 
 //
@@ -35,20 +34,19 @@ var _ = Describe(common.LifecycleTestKey, func() {
 		provider.BuildTestEnvironment()
 		env = provider.GetTestEnvironment()
 	})
-	conf, _ := GinkgoConfiguration()
-	if testcases.IsInFocus(conf.FocusStrings, common.LifecycleTestKey) {
-		testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestShudtownIdentifier)
-		It(testID, Label(testID), func() {
-			Expect(true).To(Equal(true))
-			badcontainers := []string{}
-			for _, cut := range env.Containers {
-				logrus.Debugln("check container ", cut.Name)
-				if cut.Lifecycle.PreStop == nil {
-					badcontainers = append(badcontainers, cut.Name)
-					logrus.Errorln("container ", cut.Name, " does not have preStop defined")
-				}
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestShudtownIdentifier)
+	It(testID, Label(testID), func() {
+		Expect(true).To(Equal(true))
+		badcontainers := []string{}
+		for _, cut := range env.Containers {
+			logrus.Debugln("check container ", cut.Data.Name) //maybe use different platform ?
+			if cut.Data.Lifecycle.PreStop == nil {
+				badcontainers = append(badcontainers, cut.Data.Name)
+				logrus.Errorln("container ", cut.Data.Name, " does not have preStop defined")
 			}
-			Expect(0).To(Equal(len(badcontainers)))
-		})
-	}
+
+		}
+		Expect(0).To(Equal(len(badcontainers)))
+	})
+
 })
