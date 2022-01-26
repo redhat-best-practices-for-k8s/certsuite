@@ -67,6 +67,7 @@ func BuildTestEnvironment() {
 			env.Containers = append(env.Containers, &container)
 		}
 	}
+	env.DebugPods = make(map[string]*v1.Pod)
 	for i := 0; i < len(debugPods); i++ {
 		nodeName := debugPods[i].Spec.NodeName
 		env.DebugPods[nodeName] = &debugPods[i]

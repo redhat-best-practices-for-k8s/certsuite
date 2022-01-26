@@ -3,6 +3,8 @@ package ocpclient
 import (
 	"time"
 
+	//	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
+	// "client-go/config/clientset/versioned/typed/config/v1"
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
 	"github.com/sirupsen/logrus"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
@@ -14,7 +16,8 @@ import (
 type OcpClient struct {
 	Coreclient   *corev1client.CoreV1Client
 	ClientConfig clientconfigv1.ConfigV1Interface
-	RestConfig   *rest.Config
+
+	RestConfig *rest.Config
 
 	ready bool
 }

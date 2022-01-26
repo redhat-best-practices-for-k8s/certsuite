@@ -28,26 +28,70 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 
 	"github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 )
 
 //
 // All actual test code belongs below here.  Utilities belong above.
 //
-var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
+var _ = Describe(common.PlatformAlterationTestKey, func() {
 	logrus.Debug(common.PlatformAlterationTestKey, " not moved yet to new framework")
+	var env provider.TestEnvironment
+	BeforeEach(func() {
+		provider.BuildTestEnvironment()
+		env = provider.GetTestEnvironment()
+	})
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestUnalteredBaseImageIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		var badContainers []string
+		var errContainers []string
+		for _, cut := range env.Containers {
+			logrus.Debug(fmt.Sprintf("%s(%s) should not install new packages after starting", cut.Podname, &cut.Data.Name))
+
+			ginkgo.By(fmt.Sprintf("%s(%s) should not install new packages after starting", cut.Podname, &cut.Data.Name))
+			fsdiff, err := NewFsDiff(cut)
+			if err != nil {
+				logrus.Error("can't create FsDiff instance")
+				errContainers = append(errContainers, cut.Data.Name)
+				continue
+			}
+			nodeName := cut.NodeName
+			debugPod := env.DebugPods[nodeName]
+			fsdiff.RunTest(ocpclient.NewOcpClient(), &provider.Context{Namespace: debugPod.Namespace,
+				Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name})
+			switch fsdiff.getResults() {
+			case tnf.SUCCESS:
+				continue
+			case tnf.FAILURE:
+				badContainers = append(badContainers, cut.Data.Name)
+			case tnf.ERROR:
+				errContainers = append(errContainers, cut.Data.Name)
+			}
+		}
+		logrus.Println("bad containers ", badContainers)
+		logrus.Println("err containers ", errContainers)
+		gomega.Expect(badContainers).To(gomega.BeNil())
+		gomega.Expect(errContainers).To(gomega.BeNil())
+	})
 })
 
 // testContainersFsDiff test that all CUT didn't install new packages are starting
 func testContainersFsDiff(env provider.TestEnvironment) {
-	ginkgo.Context("Container does not have additional packages installed", func() {
+	Context("Container does not have additional packages installed", func() {
 		testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestUnalteredBaseImageIdentifier)
 		ginkgo.It(testID, ginkgo.Label(testID), func() {
 			var badContainers []string
 			var errContainers []string
 			for _, cut := range env.Containers {
-				ginkgo.By(fmt.Sprintf("%s(%s) should not install new packages after starting", cut.Podname, &cut.Data.Name))
-				fsdiff := NewFsDiff(cut)
+				logrus.Debug(fmt.Sprintf("%s(%s) should not install new packages after starting", cut.Podname, cut.Data.Name))
+				//ginkgo.By(fmt.Sprintf("%s(%s) should not install new packages after starting", cut.Podname, cut.Data.Name))
+				fsdiff, err := NewFsDiff(cut)
+				if err != nil {
+					logrus.Error("can't create FsDiff instance")
+					errContainers = append(errContainers, cut.Data.Name)
+					continue
+				}
 				nodeName := cut.NodeName
 				debugPod := env.DebugPods[nodeName]
 				fsdiff.RunTest(ocpclient.NewOcpClient(), &provider.Context{Namespace: debugPod.Namespace,
@@ -61,6 +105,8 @@ func testContainersFsDiff(env provider.TestEnvironment) {
 					errContainers = append(errContainers, cut.Data.Name)
 				}
 			}
+			logrus.Println("bad containers ", badContainers)
+			logrus.Println("err containers ", errContainers)
 			gomega.Expect(badContainers).To(gomega.BeNil())
 			gomega.Expect(errContainers).To(gomega.BeNil())
 		})

@@ -18,85 +18,60 @@ package ocpclient
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 
-	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
+	"github.com/sirupsen/logrus"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/kubernetes/scheme"
-	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/remotecommand"
 )
-
-// ExecCommand runs command in the pod and returns buffer output.
-func ExecCommand(client clientconfigv1.ConfigV1Interface,
-	restConfig *rest.Config, pod v1.Pod, command []string) (string, string, error) {
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
-	req := client.RESTClient().
-		Post().
-		Namespace(pod.Namespace).
-		Resource("pods").
-		Name(pod.Name).
-		SubResource("exec").
-		VersionedParams(&v1.PodExecOptions{
-			Container: pod.Spec.Containers[0].Name,
-			Command:   command,
-			Stdin:     true,
-			Stdout:    true,
-			Stderr:    true,
-			TTY:       true,
-		}, scheme.ParameterCodec)
-
-	exec, err := remotecommand.NewSPDYExecutor(restConfig, "POST", req.URL())
-	if err != nil {
-		return stdout.String(), stderr.String(), err
-	}
-
-	err = exec.Stream(remotecommand.StreamOptions{
-		Stdin:  os.Stdin,
-		Stdout: &stdout,
-		Stderr: &stderr,
-		Tty:    false,
-	})
-	if err != nil {
-		return stdout.String(), stderr.String(), err
-	}
-	return stdout.String(), stderr.String(), err
-}
 
 // ExecCommand runs command in the pod and returns buffer output.
 func (ocpclient OcpClient) ExecCommandContainer(
 	namespace, podname, container string, command []string) (string, string, error) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-
+	logrus.Debug(fmt.Sprintf("execute commands on ns=%s, pod=%s container=%s", namespace, podname, container))
 	req := ocpclient.ClientConfig.RESTClient().
 		Post().
 		Namespace(namespace).
 		Resource("pods").
 		Name(podname).
-		SubResource("exec").
-		VersionedParams(&v1.PodExecOptions{
-			Container: container,
-			Command:   command,
-			Stdin:     true,
-			Stdout:    true,
-			Stderr:    true,
-			TTY:       true,
-		}, scheme.ParameterCodec)
+		SubResource("exec")
+	url := req.URL()
+	logrus.Debugln("url first ", url)
+	op := &v1.PodExecOptions{
+		Container: container,
+		Command:   []string{"date"},
+		Stdin:     true,
+		Stdout:    true,
+		Stderr:    true,
+		TTY:       true,
+	}
+	req = req.VersionedParams(op, scheme.ParameterCodec)
+	url = req.URL()
+	logrus.Debugln("url second ", url)
+	_, err := url.Parse("https://api.clus0.t5g.lab.eng.rdu2.redhat.com:6443/api/v1/namespaces/default/pods/debug-mbkt4/exec?command=chroot&command=%2Fhost&command=podman&command=diff&command=--format&command=json&command=d393ca003de01497722036281beb2385cfaf82f1854bd0ceec01217ef14c5a59&container=container-00&stderr=true&stdin=true&stdout=true")
+	if err != nil {
+		logrus.Error("can't parse url")
+	}
 
 	exec, err := remotecommand.NewSPDYExecutor(ocpclient.RestConfig, "POST", req.URL())
 	if err != nil {
+		logrus.Error(err)
 		return stdout.String(), stderr.String(), err
 	}
-
 	err = exec.Stream(remotecommand.StreamOptions{
 		Stdin:  os.Stdin,
 		Stdout: &stdout,
 		Stderr: &stderr,
-		Tty:    false,
+		Tty:    true,
 	})
 	if err != nil {
+		logrus.Error(err)
+		logrus.Error(req.URL())
+		logrus.Error("command ", command)
 		return stdout.String(), stderr.String(), err
 	}
 	return stdout.String(), stderr.String(), err

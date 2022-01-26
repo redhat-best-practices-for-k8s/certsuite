@@ -17,6 +17,7 @@
 package platform
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -46,7 +47,7 @@ type FsDiff struct {
 	result      int
 }
 
-func NewFsDiff(c *Container) *FsDiff {
+func NewFsDiff(c *Container) (*FsDiff, error) {
 	id := c.Status.ContainerID
 	split := strings.Split(id, "://")
 	uid := ""
@@ -55,25 +56,30 @@ func NewFsDiff(c *Container) *FsDiff {
 	}
 	if uid == "" {
 		logrus.Debugln(fmt.Sprintf("could not find uid of %s/%s/%s\n", c.Namespace, c.Podname, &c.Data.Name))
-		return nil
+		return nil, errors.New("Can't instantiante FsDiff instante")
 	}
-	command := []string{"chroot", "/host", "podman", "diff", "--format", "json", uid}
+	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, &c.Data.Name, uid))
+	commands := []string{"chroot", "/host", "podman", "diff", "--format", "json", uid}
 	return &FsDiff{
 		containerId: uid,
-		command:     command,
+		command:     commands,
 		result:      tnf.ERROR,
-	}
+	}, nil
 }
 
 func (f *FsDiff) RunTest(o ocpclient.OcpClient, ctx *Context) {
 	output, outerr, err := o.ExecCommandContainer(ctx.Namespace, ctx.Podname, ctx.Containername, f.command)
 	if err != nil {
+		logrus.Errorln("can't execute command on container ", err)
 		f.result = tnf.ERROR
+		return
 	}
 	if outerr != "" {
 		f.result = tnf.ERROR
 		logrus.Errorln("error when running fsdiff test ", outerr)
+		return
 	}
+	fmt.Println("the output is", output)
 	// see if there's a match in the output
 	logrus.Debugln("the output is ", output)
 	f.result = tnf.SUCCESS

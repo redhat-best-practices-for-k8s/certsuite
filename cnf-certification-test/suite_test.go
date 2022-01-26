@@ -19,8 +19,12 @@ package suite
 import (
 	j "encoding/json"
 	"flag"
+	"fmt"
 	"os"
+	"path"
 	"path/filepath"
+	"runtime"
+	"strconv"
 	"testing"
 	"time"
 
@@ -110,6 +114,24 @@ func loadJUnitXMLIntoMap(result map[string]interface{}, junitFilename, key strin
 	}
 }
 
+// SetLogFormat sets the log format for logrus
+func SetLogFormat() {
+	log.Info("debug format initialization: start")
+	customFormatter := new(log.TextFormatter)
+	customFormatter.TimestampFormat = time.StampMilli
+	customFormatter.PadLevelText = true
+	customFormatter.FullTimestamp = true
+	customFormatter.ForceColors = true
+	log.SetReportCaller(true)
+	customFormatter.CallerPrettyfier = func(f *runtime.Frame) (string, string) {
+		_, filename := path.Split(f.File)
+		return strconv.Itoa(f.Line) + "]", fmt.Sprintf("[%s:", filename)
+	}
+	log.SetFormatter(customFormatter)
+	log.Info("debug format initialization: done")
+	log.SetLevel(log.TraceLevel)
+}
+
 //nolint:funlen // TestTest invokes the CNF Certification Test Suite.
 func TestTest(t *testing.T) {
 	// set up input flags and register failure handlers.
@@ -126,7 +148,7 @@ func TestTest(t *testing.T) {
 		gitDisplayRelease = GitRelease
 	}
 	log.Info("Version: ", gitDisplayRelease, " ( ", GitCommit, " )")
-
+	SetLogFormat()
 	// Initialize the claim with the start time, tnf version, etc.
 	claimRoot := createClaimRoot()
 	claimData := claimRoot.Claim
