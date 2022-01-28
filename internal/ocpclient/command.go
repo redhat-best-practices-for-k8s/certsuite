@@ -33,7 +33,7 @@ func (ocpclient OcpClient) ExecCommandContainer(
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 	logrus.Debug(fmt.Sprintf("execute commands on ns=%s, pod=%s container=%s", namespace, podname, container))
-	req := ocpclient.ClientConfig.RESTClient().
+	req := ocpclient.Coreclient.RESTClient().
 		Post().
 		Namespace(namespace).
 		Resource("pods").
