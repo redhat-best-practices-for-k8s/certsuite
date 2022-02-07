@@ -1,0 +1,589 @@
+{
+  "claim": {
+    "configurations": {
+      "certifiedcontainerinfo": [
+        {
+          "name": "nginx-116",
+          "repository": "rhel8"
+        }
+      ],
+      "certifiedoperatorinfo": [
+        {
+          "name": "etcd-operator",
+          "organization": "redhat-marketplace"
+        }
+      ],
+      "cnfs": [
+        {
+          "name": "ubuntu",
+          "namespace": "default",
+          "tests": [
+            "PRIVILEGED_POD",
+            "PRIVILEGED_ROLE"
+          ]
+        }
+      ],
+      "generic": {
+        "containersUnderTest": [
+          {
+            "containerName": "test",
+            "defaultNetworkDevice": "eth0",
+            "multusIpAddresses": [
+              "10.217.0.8"
+            ],
+            "namespace": "tnf",
+            "podName": "test"
+          },
+          {
+            "containerName": "busybox",
+            "defaultNetworkDevice": "eth0",
+            "multusIpAddresses": [
+              "10.217.0.80"
+            ],
+            "namespace": "tnf",
+            "podName": "busybox"
+          }
+        ],
+        "excludeContainersFromConnectivityTests": null,
+        "fsDiffMasterContainer": {
+          "containerName": "",
+          "namespace": "",
+          "podName": ""
+        },
+        "partnerContainers": [
+          {
+            "containerName": "partner",
+            "defaultNetworkDevice": "eth0",
+            "multusIpAddresses": [
+              "10.217.0.29"
+            ],
+            "namespace": "tnf",
+            "podName": "partner"
+          }
+        ],
+        "testOrchestrator": {
+          "containerName": "partner",
+          "namespace": "tnf",
+          "podName": "partner"
+        }
+      },
+      "operators": [
+        {
+          "name": "etcdoperator.v0.9.4",
+          "namespace": "default",
+          "subscriptionName": "etcd",
+          "tests": [
+            "OPERATOR_STATUS"
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "endTime": "2021-05-27T10:10:50+00:00",
+      "startTime": "2021-05-27T10:09:32+00:00"
+    },
+    "nodes": {},
+    "rawResults": {
+      "cnf-certification-test": {
+        "testsuite": {
+          "-errors": "0",
+          "-failures": "6",
+          "-name": "CNF Certification Test Suite",
+          "-tests": "32",
+          "-time": "75.232",
+          "testcase": [
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "diagnostic when a cluster is set up and installed with OpenShift should report all available nodeSummary",
+              "-time": "0",
+              "skipped": ""
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic Testing pod nodeSelector tnf/test",
+              "-time": "0.157523523"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic Testing pod nodeSelector tnf/busybox",
+              "-time": "10.192453089"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic Both Pods are on the Default network when a Ping is issued from busybox(busybox) to partner(partner) 10.131.0.207 partner(partner) should reply",
+              "-time": "10.033932622",
+              "failure": {
+                "#content": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:314\nExpected\n    \u003cint\u003e: 0\nto equal\n    \u003cint\u003e: 1\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:328",
+                "-type": "Failure"
+              }
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic Both Pods are on the Default network when a Ping is issued from partner(partner) to busybox(busybox) 10.131.0.246 busybox(busybox) should reply",
+              "-time": "4.105833033"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic Both Pods are on the Default network when a Ping is issued from test(test) to partner(partner) 10.131.0.207 partner(partner) should reply",
+              "-time": "4.109518196"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic Both Pods are on the Default network when a Ping is issued from partner(partner) to test(test) 10.131.0.208 test(test) should reply",
+              "-time": "4.201485971"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when test(test) is checked for Red Hat version Should report a proper Red Hat version",
+              "-time": "0.02254023"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when busybox(busybox) is checked for Red Hat version Should report a proper Red Hat version",
+              "-time": "0.022166814",
+              "failure": {
+                "#content": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:254\nExpected\n    \u003cint\u003e: 2\nto equal\n    \u003cint\u003e: 1\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:259",
+                "-type": "Failure"
+              }
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when partner(partner) is checked for Red Hat version Should report a proper Red Hat version",
+              "-time": "0.023520017"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Reading namespace of test/test Should not be 'default' and should not begin with 'openshift-'",
+              "-time": "2.705e-05"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Reading namespace of busybox/busybox Should not be 'default' and should not begin with 'openshift-'",
+              "-time": "6.1895e-05"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing roles and privileges of tnf/test Should have a valid ServiceAccount name",
+              "-time": "0.446044011"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing roles and privileges of tnf/test Should not have RoleBinding in other namespaces",
+              "-time": "0.467724899"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing roles and privileges of tnf/test Should not have ClusterRoleBindings",
+              "-time": "0.386435532"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing roles and privileges of tnf/busybox Should have a valid ServiceAccount name",
+              "-time": "0.158019904"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing roles and privileges of tnf/busybox Should not have RoleBinding in other namespaces",
+              "-time": "0.461496302"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing roles and privileges of tnf/busybox Should not have ClusterRoleBindings",
+              "-time": "0.257965797"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing services in namespace tnf Should not have services of type NodePort",
+              "-time": "0.244345094"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing services in namespace tnf Should not have services of type NodePort",
+              "-time": "0.282254551"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic Testing pod terminationGracePeriod tnf/test",
+              "-time": "0.178301631"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic Testing pod terminationGracePeriod tnf/busybox",
+              "-time": "0.219727048"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing tainted nodes in cluster Should return list of node names",
+              "-time": "0.588126818"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing tainted nodes in cluster Should not have tainted nodes",
+              "-time": "13.40490063"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing worker nodes' hugepages configuration Should return list of worker node names",
+              "-time": "0.365825975"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing worker nodes' hugepages configuration Should return cluster's hugepages configuration",
+              "-time": "0.372719708"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing worker nodes' hugepages configuration Should have same configuration as cluster",
+              "-time": "1.949004299"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing deployments in namespace Should return list of deployments",
+              "-time": "0.14838833"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing deployments in namespace Should return map of nodes to deployments",
+              "-time": "0.000364427",
+              "skipped": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:700\nCan not test when deployments are not ready\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:702"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing deployments in namespace should create new replicas when node is drained",
+              "-time": "0.000368736",
+              "skipped": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:706\nCan not test when deployments are not ready\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:709"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing deployments in namespace Should return list of deployments",
+              "-time": "0.151471213"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing deployments in namespace Should return map of nodes to deployments",
+              "-time": "0.000488487",
+              "skipped": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:700\nCan not test when deployments are not ready\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:702"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing deployments in namespace should create new replicas when node is drained",
+              "-time": "0.000556724",
+              "skipped": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:706\nCan not test when deployments are not ready\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:709"
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing owners of CNF pod Should contain at least one of kind DaemonSet/ReplicaSet",
+              "-time": "0.429760828",
+              "failure": {
+                "#content": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:807\nExpected\n    \u003cint\u003e: 2\nto equal\n    \u003cint\u003e: 1\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:814",
+                "-type": "Failure"
+              }
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic when Testing owners of CNF pod Should contain at least one of kind DaemonSet/ReplicaSet",
+              "-time": "0.358923035",
+              "failure": {
+                "#content": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:807\nExpected\n    \u003cint\u003e: 2\nto equal\n    \u003cint\u003e: 1\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:814",
+                "-type": "Failure"
+              }
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic Testing boot params for the pod's node tnf/busybox",
+              "-time": "10.608687523",
+              "failure": {
+                "#content": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:506\nExpected\n    \u003cint\u003e: 0\nto equal\n    \u003cint\u003e: 1\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:429",
+                "-type": "Failure"
+              }
+            },
+            {
+              "-classname": "CNF Certification Test Suite",
+              "-name": "generic Testing boot params for the pod's node tnf/test",
+              "-time": "10.875416584",
+              "failure": {
+                "#content": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:506\nExpected\n    \u003cint\u003e: 0\nto equal\n    \u003cint\u003e: 1\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:429",
+                "-type": "Failure"
+              }
+            }
+          ]
+        }
+      },
+      "testsExtraInfo": [
+        {
+          "generic Testing pod nodeSelector tnf/test": null
+        },
+        {
+          "generic Testing pod nodeSelector tnf/busybox": [
+            "The pod specifies nodeSelector/nodeAffinity field, you might want to change it, busybox tnf"
+          ]
+        }
+      ]
+    },
+    "results": {
+      "{\"url\":\"http://test-network-function.com/testcases/generic/hugepages-not-manually-manipulated\",\"version\":\"v1.0.0\"}": [
+        {
+          "duration": 1948991234,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 663,
+          "passed": true,
+          "testText": "generic when Testing worker nodes' hugepages configuration Should have same configuration as cluster"
+        }
+      ],
+      "{\"url\":\"http://test-network-function.com/testcases/generic/icmpv4-connectivity\",\"version\":\"v1.0.0\"}": [
+        {
+          "duration": 10033279392,
+          "failureReason": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:314\nExpected\n    \u003cint\u003e: 0\nto equal\n    \u003cint\u003e: 1\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:328",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 314,
+          "passed": false,
+          "testText": "generic Both Pods are on the Default network when a Ping is issued from busybox(busybox) to partner(partner) 10.131.0.207 partner(partner) should reply"
+        },
+        {
+          "duration": 4105755468,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 314,
+          "passed": true,
+          "testText": "generic Both Pods are on the Default network when a Ping is issued from partner(partner) to busybox(busybox) 10.131.0.246 busybox(busybox) should reply"
+        },
+        {
+          "duration": 4109500939,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 314,
+          "passed": true,
+          "testText": "generic Both Pods are on the Default network when a Ping is issued from test(test) to partner(partner) 10.131.0.207 partner(partner) should reply"
+        },
+        {
+          "duration": 4201446247,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 314,
+          "passed": true,
+          "testText": "generic Both Pods are on the Default network when a Ping is issued from partner(partner) to test(test) 10.131.0.208 test(test) should reply"
+        }
+      ],
+      "{\"url\":\"http://test-network-function.com/testcases/generic/namespace-best-practices\",\"version\":\"v1.0.0\"}": [
+        {
+          "duration": 14138,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 358,
+          "passed": true,
+          "testText": "generic when Reading namespace of test/test Should not be 'default' and should not begin with 'openshift-'"
+        },
+        {
+          "duration": 8181,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 358,
+          "passed": true,
+          "testText": "generic when Reading namespace of busybox/busybox Should not be 'default' and should not begin with 'openshift-'"
+        }
+      ],
+      "{\"url\":\"http://test-network-function.com/testcases/generic/non-default-grace-period\",\"version\":\"v1.0.0\"}": [
+        {
+          "duration": 178266990,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 376,
+          "passed": true,
+          "testText": "generic Testing pod terminationGracePeriod tnf/test"
+        },
+        {
+          "duration": 219712674,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 376,
+          "passed": true,
+          "testText": "generic Testing pod terminationGracePeriod tnf/busybox"
+        }
+      ],
+      "{\"url\":\"http://test-network-function.com/testcases/generic/non-tainted-node-kernel\",\"version\":\"v1.0.0\"}": [
+        {
+          "duration": 13404861013,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 611,
+          "passed": true,
+          "testText": "generic when Testing tainted nodes in cluster Should not have tainted nodes"
+        }
+      ],
+      "{\"url\":\"http://test-network-function.com/testcases/generic/pod-cluster-role-bindings-best-practices\",\"version\":\"v1.0.0\"}": [
+        {
+          "duration": 386412676,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 560,
+          "passed": true,
+          "testText": "generic when Testing roles and privileges of tnf/test Should not have ClusterRoleBindings"
+        },
+        {
+          "duration": 257958867,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 560,
+          "passed": true,
+          "testText": "generic when Testing roles and privileges of tnf/busybox Should not have ClusterRoleBindings"
+        }
+      ],
+      "{\"url\":\"http://test-network-function.com/testcases/generic/pod-deployment-best-practices\",\"version\":\"v1.0.0\"}": [
+        {
+          "duration": 429155687,
+          "failureReason": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:807\nExpected\n    \u003cint\u003e: 2\nto equal\n    \u003cint\u003e: 1\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:814",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 807,
+          "passed": false,
+          "testText": "generic when Testing owners of CNF pod Should contain at least one of kind DaemonSet/ReplicaSet"
+        },
+        {
+          "duration": 358291404,
+          "failureReason": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:807\nExpected\n    \u003cint\u003e: 2\nto equal\n    \u003cint\u003e: 1\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:814",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 807,
+          "passed": false,
+          "testText": "generic when Testing owners of CNF pod Should contain at least one of kind DaemonSet/ReplicaSet"
+        }
+      ],
+      "{\"url\":\"http://test-network-function.com/testcases/generic/pod-node-selector-node-affinity-best-practices\",\"version\":\"v1.0.0\"}": [
+        {
+          "duration": 157505128,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 392,
+          "passed": true,
+          "testText": "generic Testing pod nodeSelector tnf/test"
+        },
+        {
+          "duration": 10192426075,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 392,
+          "passed": true,
+          "testText": "generic Testing pod nodeSelector tnf/busybox"
+        }
+      ],
+      "{\"url\":\"http://test-network-function.com/testcases/generic/pod-recreation\",\"version\":\"v1.0.0\"}": [
+        {
+          "duration": 162848,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 706,
+          "passed": true,
+          "testText": "generic when Testing deployments in namespace should create new replicas when node is drained"
+        },
+        {
+          "duration": 245543,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 706,
+          "passed": true,
+          "testText": "generic when Testing deployments in namespace should create new replicas when node is drained"
+        }
+      ],
+      "{\"url\":\"http://test-network-function.com/testcases/generic/pod-role-bindings-best-practices\",\"version\":\"v1.0.0\"}": [
+        {
+          "duration": 467718514,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 541,
+          "passed": true,
+          "testText": "generic when Testing roles and privileges of tnf/test Should not have RoleBinding in other namespaces"
+        },
+        {
+          "duration": 461489044,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 541,
+          "passed": true,
+          "testText": "generic when Testing roles and privileges of tnf/busybox Should not have RoleBinding in other namespaces"
+        }
+      ],
+      "{\"url\":\"http://test-network-function.com/testcases/generic/pod-service-account-best-practices\",\"version\":\"v1.0.0\"}": [
+        {
+          "duration": 446030152,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 526,
+          "passed": true,
+          "testText": "generic when Testing roles and privileges of tnf/test Should have a valid ServiceAccount name"
+        },
+        {
+          "duration": 158003741,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 526,
+          "passed": true,
+          "testText": "generic when Testing roles and privileges of tnf/busybox Should have a valid ServiceAccount name"
+        }
+      ],
+      "{\"url\":\"http://test-network-function.com/testcases/generic/services-do-not-use-nodeports\",\"version\":\"v1.0.0\"}": [
+        {
+          "duration": 244332658,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 580,
+          "missing-field-passed": true,
+          "testText": "generic when Testing services in namespace tnf Should not have services of type NodePort"
+        },
+        {
+          "duration": 282238904,
+          "failureReason": "",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 580,
+          "passed": true,
+          "testText": "generic when Testing services in namespace tnf Should not have services of type NodePort"
+        }
+      ],
+      "{\"url\":\"http://test-network-function.com/testcases/generic/unaltered-startup-boot-params\",\"version\":\"v1.0.0\"}": [
+        {
+          "duration": 10608023295,
+          "failureReason": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:506\nExpected\n    \u003cint\u003e: 0\nto equal\n    \u003cint\u003e: 1\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:429",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 506,
+          "passed": false,
+          "testText": "generic Testing boot params for the pod's node tnf/busybox"
+        },
+        {
+          "duration": 10874525443,
+          "failureReason": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:506\nExpected\n    \u003cint\u003e: 0\nto equal\n    \u003cint\u003e: 1\n/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go:429",
+          "filename": "/home/ydayagi/work/go/src/github.com/ydayagi/test-network-function/test-network-function/generic/suite.go",
+          "isMeasurement": false,
+          "lineNumber": 506,
+          "passed": false,
+          "testText": "generic Testing boot params for the pod's node tnf/test"
+        }
+      ]
+    },
+    "versions": {
+      "tnf": "v2.0.x"
+    }
+  }
+}
