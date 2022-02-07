@@ -9,7 +9,7 @@ on:
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
-  IMAGE_NAME: testnetworkfunction/test-network-function
+  IMAGE_NAME: testnetworkfunction/cnf-certification-test
   IMAGE_TAG: unstable
   TNF_CONTAINER_CLIENT: docker
   TNF_NON_INTRUSIVE_ONLY: false
@@ -30,7 +30,7 @@ jobs:
       - name: Set up Go 1.17
         uses: actions/setup-go@v2
         with:
-          go-version: 1.17.5
+          go-version: 1.17.6
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -78,7 +78,7 @@ jobs:
       - name: Set up Go 1.17
         uses: actions/setup-go@v2
         with:
-          go-version: 1.17.5
+          go-version: 1.17.6
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -93,6 +93,22 @@ jobs:
         env:
           SHELL: /bin/bash
 
+      - name: Quality Gate - Test coverage shall be above threshold
+        env:
+          TESTCOVERAGE_THRESHOLD: 60
+        run: |
+          echo "Quality Gate: checking test coverage is above threshold ..."
+          echo "Threshold             : $TESTCOVERAGE_THRESHOLD %"
+          totalCoverage=`go tool cover -func=cover.out | grep total | grep -Eo '[0-9]+\.[0-9]+'`
+          echo "Current test coverage : $totalCoverage %"
+          if (( $(echo "$totalCoverage $TESTCOVERAGE_THRESHOLD" | awk '{print ($1 > $2)}') )); then
+              echo "OK"
+          else
+              echo "Current test coverage is below threshold. Please add more unit tests or adjust threshold to a lower value."
+              echo "Failed"
+              exit 1
+          fi
+
   smoke-tests:
     name: Run Smoke Tests
     runs-on: ubuntu-20.04
@@ -104,7 +120,7 @@ jobs:
       - name: Set up Go 1.17
         uses: actions/setup-go@v2
         with:
-          go-version: 1.17.5
+          go-version: 1.17.6
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -129,7 +145,7 @@ jobs:
           path: cnf-certification-test-partner
 
       - name: Start the minikube cluster for `local-test-infra`
-        uses: ./cnf-certification-test-partner/.github/actions/start-minikube
+        uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
         with:
           working_directory: cnf-certification-test-partner
 
@@ -141,7 +157,7 @@ jobs:
       # Perform smoke tests.
 
       - name: 'Test: Run test suites'
-        run: ./run-cnf-suites.sh --focus access-control diagnostic lifecycle platform observablility networking affiliated-certification operator
+        run: ./run-cnf-suites.sh --focus access-control lifecycle platform observability networking affiliated-certification operator
 
       - name: Upload smoke test results as an artifact
         uses: actions/upload-artifact@v2
@@ -149,14 +165,14 @@ jobs:
         with:
           name: smoke-tests
           path: |
-            /*.xml
+            cnf-certification-test/*.xml
             cnf-certification-test/claim.json
             cnf-certification-test/claimjson.js
             cnf-certification-test/results.html
 
       # Perform smoke tests using a TNF container.
 
-      - name: Build the `test-network-function` image
+      - name: Build the `cnf-certification-test` image
         run: |
           docker build --no-cache \
             -t ${REGISTRY_LOCAL}/${IMAGE_NAME}:${IMAGE_TAG} \
@@ -172,8 +188,8 @@ jobs:
           cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
         shell: bash
 
-      - name: 'Test: Run diagnostic test suite in a TNF container'
-        run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -f diagnostic
+      #- name: 'Test: Run without any TS, just get diagnostic information'
+      #  run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
 
       - name: Delete the deployment and deploy Statefulset pods
         uses: ./cnf-certification-test-partner/.github/actions/deploy-statefulset-pods
@@ -181,7 +197,7 @@ jobs:
           working_directory: cnf-certification-test-partner
           
       - name: 'Test: Run generic test suite in a TNF container'
-        run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -f access-control lifecycle platform observablility networking affiliated-certification operator
+        run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -f access-control lifecycle platform observability networking affiliated-certification operator
 
       - name: Upload container test results as an artifact
         uses: actions/upload-artifact@v2
