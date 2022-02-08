@@ -38,7 +38,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        branch: [3.1.x, 3.2.x, 3.3.x]
+        branch: [main]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
