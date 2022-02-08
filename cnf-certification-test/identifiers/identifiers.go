@@ -66,11 +66,6 @@ var (
 		Version: versionOne,
 	}
 
-
-
-
-
-
 	// TestContainerIsCertifiedIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified"),
@@ -273,10 +268,10 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation: `Remove the following capabilities from the container/pod definitions: NET_ADMIN SCC, SYS_ADMIN SCC, NET_RAW SCC, IPC_LOCK SCC `,
 		Description: formDescription(TestSecConCapabilitiesIdentifier,
 			`Tests that the following capabilities are not granted:
-			- The Pod is not granted NET_ADMIN SCC.
-			- The Pod is not granted SYS_ADMIN SCC.
-			- The Pod is not granted NET_RAW SCC.
-			- The Pod is not granted IPC_LOCK SCC.
+			- NET_ADMIN
+			- SYS_ADMIN 
+			- NET_RAW
+			- IPC_LOCK
 `),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
