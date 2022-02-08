@@ -17,12 +17,294 @@
 package accesscontrol
 
 import (
+	"strings"
+
 	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+)
+
+var (
+	nonCompliantCapabilites = []string{"NET_ADMIN", "SYS_ADMIN", "NET_RAW", "IPC_LOCK"}
 )
 
 var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 
-	logrus.Debugf("%s not moved yet to new framework", common.AccessControlTestKey)
+	logrus.Debugf("Entering %s suite", common.AccessControlTestKey)
+	var env provider.TestEnvironment
+	ginkgo.BeforeEach(func() {
+		provider.BuildTestEnvironment()
+		env = provider.GetTestEnvironment()
+	})
+	// Security Context: non-compliant capabilities
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConCapabilitiesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestSecConCapabilities(&env)
+	})
+	// container security context: non-root user
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConNonRootUserIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestSecConRootUser(&env)
+	})
+	// container security context: privileged escalation
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConPrivilegeEscalation)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestSecConPrivilegeEscalation(&env)
+	})
+	// container security context: host port
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestContainerHostPort)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestContainerHostPort(&env)
+	})
+	// container security context: host network
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostNetwork)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestPodHostNetwork(&env)
+	})
+	// pod host path
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostPath)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestPodHostPath(&env)
+	})
+	// pod host ipc
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostIPC)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestPodHostIPC(&env)
+	})
+	// pod host pid
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostPID)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestPodHostPID(&env)
+	})
 })
+
+// TestSecConCapabilities verrifies that non compliant capabilities are not present
+func TestSecConCapabilities(env *provider.TestEnvironment) {
+	var badContainers []string
+	var errContainers []string
+	if len(env.Containers) == 0 {
+		ginkgo.Skip("No containers to perform test, skipping")
+	}
+	for _, cut := range env.Containers {
+		if cut == nil {
+			errContainers = append(errContainers, cut.Podname+"."+cut.Data.Name)
+			continue
+		}
+		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.Capabilities != nil {
+			for _, ncc := range nonCompliantCapabilites {
+				if strings.Contains(cut.Data.SecurityContext.Capabilities.String(), ncc) {
+					tnf.ClaimFilePrintf("Non compliant %s capability detected in container %s. All container caps: %s", ncc, cut.Data.Name, cut.Data.SecurityContext.Capabilities.String())
+					badContainers = append(badContainers, cut.Podname+"."+cut.Data.Name)
+				}
+			}
+			logrus.Infof("test %s", cut.Data.SecurityContext.Capabilities.String())
+		}
+	}
+	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
+	tnf.ClaimFilePrintf("err containers: %v", errContainers)
+	gomega.Expect(badContainers).To(gomega.BeNil())
+	gomega.Expect(errContainers).To(gomega.BeNil())
+}
+
+// TestSecConRootUser verifies that the container is not running as root
+func TestSecConRootUser(env *provider.TestEnvironment) {
+	var badContainers, badPods, errPods []string
+	if len(env.Containers) == 0 {
+		ginkgo.Skip("No containers to perform test, skipping")
+	}
+	for _, put := range env.Pods {
+		if put == nil {
+			errPods = append(errPods, put.Name)
+			continue
+		}
+		if put.Spec.SecurityContext != nil && put.Spec.SecurityContext.RunAsUser != nil {
+			// Check the pod level RunAsUser parameter
+			if *(put.Spec.SecurityContext.RunAsUser) == 0 {
+				tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in pod %s", put.Name)
+				badPods = append(badPods, put.Name)
+			}
+		}
+		for idx := range put.Spec.Containers {
+			cut := &(put.Spec.Containers[idx])
+			// Check the container level RunAsUser parameter
+			if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
+				if *(cut.SecurityContext.RunAsUser) == 0 {
+					tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in container %s.%s", put.Name, cut.Name)
+					badContainers = append(badContainers, put.Name+"."+cut.Name)
+				}
+			}
+		}
+	}
+	tnf.ClaimFilePrintf("bad pods: %v", badPods)
+	tnf.ClaimFilePrintf("err pods: %v", errPods)
+	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
+
+	gomega.Expect(badContainers).To(gomega.BeNil())
+	gomega.Expect(badPods).To(gomega.BeNil())
+	gomega.Expect(errPods).To(gomega.BeNil())
+}
+
+// TestSecConPrivilegeEscalation verifies that the container is not allowed privilege escalation
+func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
+	var badContainers []string
+	var errContainers []string
+	if len(env.Containers) == 0 {
+		ginkgo.Skip("No containers to perform test, skipping")
+	}
+	for _, cut := range env.Containers {
+		if cut == nil {
+			errContainers = append(errContainers, cut.Podname+"."+cut.Data.Name)
+			continue
+		}
+		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.AllowPrivilegeEscalation != nil {
+			if *(cut.Data.SecurityContext.AllowPrivilegeEscalation) {
+				tnf.ClaimFilePrintf("AllowPrivilegeEscalation is set to true in container %s.", cut.Data.Name)
+				badContainers = append(badContainers, cut.Podname+"."+cut.Data.Name)
+			}
+		}
+	}
+	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
+	tnf.ClaimFilePrintf("err containers: %v", errContainers)
+	gomega.Expect(badContainers).To(gomega.BeNil())
+	gomega.Expect(errContainers).To(gomega.BeNil())
+}
+
+// TestContainerHostPort tests that containers are not configured with host port privileges
+func TestContainerHostPort(env *provider.TestEnvironment) {
+	var badContainers []string
+	var errContainers []string
+	if len(env.Containers) == 0 {
+		ginkgo.Skip("No containers to perform test, skipping")
+	}
+	for _, cut := range env.Containers {
+		if cut == nil {
+			errContainers = append(errContainers, cut.Podname+"."+cut.Data.Name)
+			continue
+		}
+		if cut.Data.Ports != nil {
+			for _, aPort := range cut.Data.Ports {
+				if aPort.HostPort != 0 {
+					tnf.ClaimFilePrintf("Host port %d is configured in container %s.", aPort.HostPort, cut.Data.Name)
+					badContainers = append(badContainers, cut.Podname+"."+cut.Data.Name)
+				}
+			}
+		}
+	}
+	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
+	tnf.ClaimFilePrintf("err containers: %v", errContainers)
+	gomega.Expect(badContainers).To(gomega.BeNil())
+	gomega.Expect(errContainers).To(gomega.BeNil())
+}
+
+// TestPodHostNetwork
+func TestPodHostNetwork(env *provider.TestEnvironment) {
+	var badPods []string
+	var errPods []string
+	if len(env.Pods) == 0 {
+		ginkgo.Skip("No Pods to run test, skipping")
+	}
+	for _, put := range env.Pods {
+		if put == nil {
+			errPods = append(errPods, put.Name)
+			continue
+		}
+		if put.Spec.HostNetwork {
+			tnf.ClaimFilePrintf("Host network is set to true in pod %s.", put.Name)
+			badPods = append(badPods, put.Name)
+		}
+	}
+	tnf.ClaimFilePrintf("bad pods: %v", badPods)
+	tnf.ClaimFilePrintf("err pods: %v", errPods)
+	gomega.Expect(badPods).To(gomega.BeNil())
+	gomega.Expect(errPods).To(gomega.BeNil())
+}
+
+// TestPodHostPath
+func TestPodHostPath(env *provider.TestEnvironment) {
+	var badPods []string
+	var errPods []string
+	if len(env.Pods) == 0 {
+		ginkgo.Skip("No Pods to run test, skipping")
+	}
+	for _, put := range env.Pods {
+		if put == nil {
+			errPods = append(errPods, put.Name)
+			continue
+		}
+		if put.Spec.Volumes != nil {
+			for idx := range put.Spec.Volumes {
+				vol := &put.Spec.Volumes[idx]
+				if vol.HostPath != nil && vol.HostPath.Path != "" {
+					tnf.ClaimFilePrintf("An Hostpath path: %s is set in pod %s.", vol.HostPath.Path, put.Name)
+					badPods = append(badPods, put.Name)
+				}
+			}
+		}
+	}
+	if len(badPods) > 0 {
+		tnf.ClaimFilePrintf("bad pods: %v", badPods)
+	}
+	if len(errPods) > 0 {
+		tnf.ClaimFilePrintf("err pods: %v", errPods)
+	}
+	gomega.Expect(badPods).To(gomega.BeNil())
+	gomega.Expect(errPods).To(gomega.BeNil())
+}
+
+// TestPodHostIPC
+func TestPodHostIPC(env *provider.TestEnvironment) { //nolint:dupl // not duplicate
+	var badPods []string
+	var errPods []string
+	if len(env.Pods) == 0 {
+		ginkgo.Skip("No Pods to run test, skipping")
+	}
+	for _, put := range env.Pods {
+		if put == nil {
+			errPods = append(errPods, put.Name)
+			continue
+		}
+		if put.Spec.HostIPC {
+			tnf.ClaimFilePrintf("HostIpc is set in pod %s.", put.Name)
+			badPods = append(badPods, put.Name)
+		}
+	}
+	if len(badPods) > 0 {
+		tnf.ClaimFilePrintf("bad pods: %v", badPods)
+	}
+	if len(errPods) > 0 {
+		tnf.ClaimFilePrintf("err pods: %v", errPods)
+	}
+	gomega.Expect(badPods).To(gomega.BeNil())
+	gomega.Expect(errPods).To(gomega.BeNil())
+}
+
+// TestPodHostPID
+func TestPodHostPID(env *provider.TestEnvironment) { //nolint:dupl // not duplicate
+	var badPods []string
+	var errPods []string
+	if len(env.Pods) == 0 {
+		ginkgo.Skip("No Pods to run test, skipping")
+	}
+	for _, put := range env.Pods {
+		if put == nil {
+			errPods = append(errPods, put.Name)
+			continue
+		}
+		if put.Spec.HostPID {
+			tnf.ClaimFilePrintf("HostPid is set in pod %s.", put.Name)
+			badPods = append(badPods, put.Name)
+		}
+	}
+	if len(badPods) > 0 {
+		tnf.ClaimFilePrintf("bad pods: %v", badPods)
+	}
+	if len(errPods) > 0 {
+		tnf.ClaimFilePrintf("err pods: %v", errPods)
+	}
+	gomega.Expect(badPods).To(gomega.BeNil())
+	gomega.Expect(errPods).To(gomega.BeNil())
+}
