@@ -60,11 +60,17 @@ var (
 	// TestIdToClaimId converts the testcase short ID to the claim identifier
 	TestIDToClaimID = map[string]claim.Identifier{}
 
-	// TestHostResourceIdentifier tests container best practices.
-	TestHostResourceIdentifier = claim.Identifier{
-		Url:     formTestURL(common.AccessControlTestKey, "host-resource"),
+	// TestSecConCapabilitiesIdentifier tests container best practices.
+	TestSecConCapabilitiesIdentifier = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "security-context-capabilities-check"),
 		Version: versionOne,
 	}
+
+
+
+
+
+
 	// TestContainerIsCertifiedIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified"),
@@ -261,25 +267,16 @@ func XformToGinkgoItIdentifierExtended(identifier claim.Identifier, extra string
 // Catalog is the JUnit testcase catalog of tests.
 var Catalog = map[claim.Identifier]TestCaseDescription{
 
-	TestHostResourceIdentifier: {
-		Identifier: TestHostResourceIdentifier,
+	TestSecConCapabilitiesIdentifier: {
+		Identifier: TestSecConCapabilitiesIdentifier,
 		Type:       normativeResult,
-		Remediation: `Ensure that each Pod in the CNF abides by the suggested best practices listed in the test description.  In some rare
-cases, not all best practices can be followed.  For example, some CNFs may be required to run as root.  Such exceptions
-should be handled on a case-by-case basis, and should provide a proper justification as to why the best practice(s)
-cannot be followed.`,
-		Description: formDescription(TestHostResourceIdentifier,
-			`tests several aspects of CNF best practices, including:
-1. The Pod does not have access to Host Node Networking.
-2. The Pod does not have access to Host Node Ports.
-3. The Pod cannot access Host Node IPC space.
-4. The Pod cannot access Host Node PID space.
-5. The Pod is not granted NET_ADMIN SCC.
-6. The Pod is not granted SYS_ADMIN SCC.
-7. The Pod does not run as root.
-8. The Pod does not allow privileged escalation.
-9. The Pod is not granted NET_RAW SCC.
-10. The Pod is not granted IPC_LOCK SCC.
+		Remediation: `Remove the following capabilities from the container/pod definitions: NET_ADMIN SCC, SYS_ADMIN SCC, NET_RAW SCC, IPC_LOCK SCC `,
+		Description: formDescription(TestSecConCapabilitiesIdentifier,
+			`Tests that the following capabilities are not granted:
+			- The Pod is not granted NET_ADMIN SCC.
+			- The Pod is not granted SYS_ADMIN SCC.
+			- The Pod is not granted NET_RAW SCC.
+			- The Pod is not granted IPC_LOCK SCC.
 `),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
