@@ -14,7 +14,7 @@ require (
 	github.com/stretchr/testify v1.7.0
 	github.com/test-network-function/test-network-function-claim v1.0.5
 	github.com/xeipuuv/gojsonschema v1.2.0
-	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
+	golang.org/x/sys v0.0.0-20220207234003-57398862261d // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -35,7 +35,7 @@ require (
 
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/onsi/ginkgo/v2 v2.0.0
+	github.com/onsi/ginkgo/v2 v2.1.1
 	github.com/openshift/client-go v0.0.0-20211209144617-7385dd6338e3
 	k8s.io/api v0.23.3
 	k8s.io/apimachinery v0.23.3
