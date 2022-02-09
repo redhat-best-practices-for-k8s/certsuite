@@ -17,7 +17,7 @@
 package operator
 
 import (
-	. "github.com/onsi/ginkgo/v2"
+	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 )
@@ -25,6 +25,6 @@ import (
 //
 // All actual test code belongs below here.  Utilities belong above.
 //
-var _ = Describe(common.OperatorTestKey, func() {
+var _ = ginkgo.Describe(common.OperatorTestKey, func() {
 	logrus.Debugf("%s not moved yet to new framework", common.OperatorTestKey)
 })

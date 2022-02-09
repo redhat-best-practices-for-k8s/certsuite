@@ -33,6 +33,7 @@ const (
 	claimFilePermissions = 0644
 )
 
+//nolint:funlen
 func claimUpdate(cmd *cobra.Command, args []string) error {
 	claimFileTextPtr := &Claim
 	reportFilesTextPtr := &Reportdir
@@ -41,17 +42,16 @@ func claimUpdate(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		log.Fatalf("Error reading claim file :%v", err)
 	}
-
 	claimRoot := readClaim(&dat)
 	junitMap := claimRoot.Claim.RawResults
-
-	items, _ := os.ReadDir(*reportFilesTextPtr)
-
+	items, err := os.ReadDir(*reportFilesTextPtr)
+	if err != nil {
+		log.Fatalf("Error reading directory: %v", err)
+	}
 	for _, item := range items {
 		fileName := item.Name()
 		extension := filepath.Ext(fileName)
 		reportKeyName := fileName[0 : len(fileName)-len(extension)]
-
 		if _, ok := junitMap[reportKeyName]; ok {
 			log.Printf("Skipping: %s already exists in supplied `%s` claim file", reportKeyName, *claimFileTextPtr)
 		} else {
@@ -76,7 +76,6 @@ func claimUpdate(cmd *cobra.Command, args []string) error {
 	} else {
 		log.Printf("No changes were applied to `%s`\n", *claimFileTextPtr)
 	}
-
 	return nil
 }
 

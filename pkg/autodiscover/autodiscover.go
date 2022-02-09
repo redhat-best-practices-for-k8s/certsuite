@@ -47,12 +47,12 @@ func buildLabelQuery(label configuration.Label) string {
 	return fullLabelName
 }
 
-func DoAutoDiscover() (configuration.TestParameters, configuration.TestConfiguration, []v1.Pod, []v1.Pod) {
+func DoAutoDiscover() (env configuration.TestParameters, testData configuration.TestConfiguration, pods, debugPods []v1.Pod) {
 	env, err := configuration.LoadEnvironmentVariables()
 	if err != nil {
 		logrus.Fatalln("can't load environment variable")
 	}
-	testData, err := configuration.LoadConfiguration(env.ConfigurationPath)
+	testData, err = configuration.LoadConfiguration(env.ConfigurationPath)
 	if err != nil {
 		logrus.Fatalln("can't load configuration")
 	}
@@ -65,12 +65,12 @@ func DoAutoDiscover() (configuration.TestParameters, configuration.TestConfigura
 		filenames = append(filenames, path)
 	}
 	oc := ocpclient.NewOcpClient(filenames...)
-	pods := findPodsByLabel(oc.Coreclient, testData.TargetPodLabels, testData.TargetNameSpaces)
+	pods = findPodsByLabel(oc.Coreclient, testData.TargetPodLabels, testData.TargetNameSpaces)
 
 	debugLabel := configuration.Label{Prefix: debugLabelPrefix, Name: debugLabelName, Value: debugLabelValue}
 	debugLabels := []configuration.Label{debugLabel}
 	ns := configuration.Namespace{Name: defaultNamespace}
-	debug_ns := []configuration.Namespace{ns}
-	debugPods := findPodsByLabel(oc.Coreclient, debugLabels, debug_ns)
+	debugNS := []configuration.Namespace{ns}
+	debugPods = findPodsByLabel(oc.Coreclient, debugLabels, debugNS)
 	return env, testData, pods, debugPods
 }
