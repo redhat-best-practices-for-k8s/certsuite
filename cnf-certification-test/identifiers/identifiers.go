@@ -75,6 +75,11 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "security-context-privilege-escalation"),
 		Version: versionOne,
 	}
+	// TestSecPrivilegedEscalation tests that containers are not allowed privilege escalation
+	TestContainerHostPort = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "container-host-port"),
+		Version: versionOne,
+	}
 	// TestContainerIsCertifiedIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified"),
@@ -308,7 +313,14 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			`tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.7",
 	},
-
+	TestContainerHostPort: {
+		Identifier: TestContainerHostPort,
+		Type:       informativeResult,
+		Remediation: `Remove hostPort configuration from the container`,
+		Description: formDescription(TestContainerHostPort,
+			`Verifies if containers define a hostPort.`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
+	},
 	TestExtractNodeInformationIdentifier: {
 		Identifier: TestExtractNodeInformationIdentifier,
 		Type:       informativeResult,
@@ -316,7 +328,6 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			`extracts informational information about the cluster.`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
 	},
-
 	TestHugepagesNotManuallyManipulated: {
 		Identifier: TestHugepagesNotManuallyManipulated,
 		Type:       normativeResult,

@@ -56,6 +56,11 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		TestSecConPrivilegeEscalation(&env)
 	})
+	// Security context: privileged escalation
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestContainerHostPort)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestContainerHostPort(&env)
+	})
 })
 
 // TestSecConCapabilities
@@ -128,6 +133,34 @@ func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 			if *(cut.Data.SecurityContext.AllowPrivilegeEscalation) {
 				tnf.ClaimFilePrintf("AllowPrivilegeEscalation is set to true in container %s.", *(cut.Data.SecurityContext.AllowPrivilegeEscalation), cut.Data.Name)
 				badContainers = append(badContainers, cut.Data.Name)
+			}
+		}
+	}
+	if len(badContainers) > 0 {
+		tnf.ClaimFilePrintf("bad containers: %v", badContainers)
+	}
+	if len(errContainers) > 0 {
+		tnf.ClaimFilePrintf("err containers: %v", errContainers)
+	}
+	gomega.Expect(badContainers).To(gomega.BeNil())
+	gomega.Expect(errContainers).To(gomega.BeNil())
+}
+
+// TestContainerHostPort
+func TestContainerHostPort(env *provider.TestEnvironment) {
+	var badContainers []string
+	var errContainers []string
+	for _, cut := range env.Containers {
+		if cut == nil {
+			errContainers = append(errContainers, cut.Data.Name)
+			continue
+		}
+		if cut.Data.Ports != nil  {
+			for _, aPort:= range cut.Data.Ports {
+				if aPort.HostPort !=0{
+					tnf.ClaimFilePrintf("Host port %s is configured in container %s.", aPort, cut.Data.Name)
+					badContainers = append(badContainers, cut.Data.Name)
+				}
 			}
 		}
 	}
