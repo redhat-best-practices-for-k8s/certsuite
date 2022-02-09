@@ -32,6 +32,7 @@ jobs:
           VALIDATE_JSON: false
           VALIDATE_MARKDOWN: false
           VALIDATE_YAML: false
-          VALIDATE_XML: false          
+          VALIDATE_XML: false
+          VALIDATE_DOCKERFILE_HADOLINT: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
