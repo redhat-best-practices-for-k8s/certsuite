@@ -30,6 +30,7 @@ import (
 
 var (
 	nonCompliantCapabilites = []string{"NET_ADMIN", "SYS_ADMIN", "NET_RAW", "IPC_LOCK"}
+	nonCompliantUsers       = []uint64{0}
 )
 
 var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
@@ -40,10 +41,15 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		provider.BuildTestEnvironment()
 		env = provider.GetTestEnvironment()
 	})
-	//
+	// Security Context: non-compliant capabilities
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConCapabilitiesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		TestSecConCapabilities(&env)
+	})
+	// Security context: non-root user
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConNonRootUserIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestSecConRootUser(&env)
 	})
 })
 
@@ -64,6 +70,34 @@ func TestSecConCapabilities(env *provider.TestEnvironment) {
 				}
 			}
 			logrus.Infof("test %s", cut.Data.SecurityContext.Capabilities.String())
+		}
+	}
+	if len(badContainers) > 0 {
+		tnf.ClaimFilePrintf("bad containers: %v", badContainers)
+	}
+	if len(errContainers) > 0 {
+		tnf.ClaimFilePrintf("err containers: %v", errContainers)
+	}
+	gomega.Expect(badContainers).To(gomega.BeNil())
+	gomega.Expect(errContainers).To(gomega.BeNil())
+}
+
+// TestSecConRootUser
+func TestSecConRootUser(env *provider.TestEnvironment) {
+	var badContainers []string
+	var errContainers []string
+	for _, cut := range env.Containers {
+		if cut == nil {
+			errContainers = append(errContainers, cut.Data.Name)
+			continue
+		}
+		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.RunAsUser != nil {
+			for _, ncu := range nonCompliantUsers {
+				if *(cut.Data.SecurityContext.RunAsUser) == 0 {
+					tnf.ClaimFilePrintf("Non compliant %s Root User detected in container %s. RunAsUser: %s", ncu, cut.Data.Name, *(cut.Data.SecurityContext.RunAsUser))
+					badContainers = append(badContainers, cut.Data.Name)
+				}
+			}
 		}
 	}
 	if len(badContainers) > 0 {

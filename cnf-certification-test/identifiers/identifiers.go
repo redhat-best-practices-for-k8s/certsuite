@@ -65,7 +65,11 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "security-context-capabilities-check"),
 		Version: versionOne,
 	}
-
+	// TestSecConNonRootUserIdentifier tests container best practices.
+	TestSecConNonRootUserIdentifier = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "security-context-non-root-user-check"),
+		Version: versionOne,
+	}
 	// TestContainerIsCertifiedIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified"),
@@ -263,8 +267,8 @@ func XformToGinkgoItIdentifierExtended(identifier claim.Identifier, extra string
 var Catalog = map[claim.Identifier]TestCaseDescription{
 
 	TestSecConCapabilitiesIdentifier: {
-		Identifier: TestSecConCapabilitiesIdentifier,
-		Type:       normativeResult,
+		Identifier:  TestSecConCapabilitiesIdentifier,
+		Type:        normativeResult,
 		Remediation: `Remove the following capabilities from the container/pod definitions: NET_ADMIN SCC, SYS_ADMIN SCC, NET_RAW SCC, IPC_LOCK SCC `,
 		Description: formDescription(TestSecConCapabilitiesIdentifier,
 			`Tests that the following capabilities are not granted:
@@ -275,7 +279,14 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 `),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
-
+	TestSecConNonRootUserIdentifier: {
+		Identifier:  TestSecConNonRootUserIdentifier,
+		Type:        normativeResult,
+		Remediation: `Change the deployment to use unprivileged containers, running with a uid other than root(0)`,
+		Description: formDescription(TestSecConNonRootUserIdentifier,
+			`Checks the security context runAsUser to make sure it is not set to uid root(0)`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+	},
 	TestContainerIsCertifiedIdentifier: {
 		Identifier:  TestContainerIsCertifiedIdentifier,
 		Type:        normativeResult,
