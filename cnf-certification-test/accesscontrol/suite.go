@@ -56,7 +56,7 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		TestSecConPrivilegeEscalation(&env)
 	})
-	// Security context: privileged escalation
+	// Security context: host port
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestContainerHostPort)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		TestContainerHostPort(&env)
@@ -155,10 +155,13 @@ func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 	gomega.Expect(errContainers).To(gomega.BeNil())
 }
 
-// TestContainerHostPort
+// TestContainerHostPort tests that containers are not configured with host port privileges
 func TestContainerHostPort(env *provider.TestEnvironment) {
 	var badContainers []string
 	var errContainers []string
+	if len(env.Containers)==0{
+		ginkgo.Skip("No containers to perform test, skipping")
+	}
 	for _, cut := range env.Containers {
 		if cut == nil {
 			errContainers = append(errContainers, cut.Data.Name)

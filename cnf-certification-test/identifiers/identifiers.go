@@ -75,7 +75,7 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "security-context-privilege-escalation"),
 		Version: versionOne,
 	}
-	// TestSecPrivilegedEscalation tests that containers are not allowed privilege escalation
+	// TestSecPrivilegedEscalation tests that containers are not configured with host port privileges
 	TestContainerHostPort = claim.Identifier{
 		Url:     formTestURL(common.AccessControlTestKey, "container-host-port"),
 		Version: versionOne,
