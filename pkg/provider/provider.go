@@ -17,9 +17,15 @@
 package provider
 
 import (
+	"errors"
+	"fmt"
+	"strings"
+
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
+
+	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	v1 "k8s.io/api/core/v1"
@@ -49,12 +55,8 @@ var (
 	loaded = false
 )
 
-func GetContainer(namespace, podName, containerName string) (v1.Container, error) {
-	return v1.Container{}, nil
-}
-
-func GetPod(namespace, podName string) (v1.Pod, error) {
-	return v1.Pod{}, nil
+func GetContainer() *Container {
+	return &Container{}
 }
 
 func BuildTestEnvironment() {
@@ -97,4 +99,18 @@ func GetTestEnvironment() TestEnvironment {
 
 func IsOCPCluster() bool {
 	return !env.variables.NonOcpCluster
+}
+
+func (c *Container) GetUID() (string, error) {
+	split := strings.Split(c.Status.ContainerID, "://")
+	uid := ""
+	if len(split) > 0 {
+		uid = split[len(split)-1]
+	}
+	if uid == "" {
+		logrus.Debugln(fmt.Sprintf("could not find uid of %s/%s/%s\n", c.Namespace, c.Podname, c.Data.Name))
+		return "", errors.New("cannot determine container UID")
+	}
+	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Data.Name, uid))
+	return uid, nil
 }

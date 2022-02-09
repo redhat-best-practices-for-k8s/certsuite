@@ -32,7 +32,7 @@ type ocpClientMock struct {
 	err    error
 }
 
-func (o *ocpClientMock) ExecCommandContainer(ctx ocpclient.Context, command []string) (stdout, stderr string, err error) {
+func (o *ocpClientMock) ExecCommandContainer(ctx ocpclient.Context, command string) (stdout, stderr string, err error) {
 	stdout, stderr, err = o.stdout, o.stderr, o.err
 	return stdout, stderr, err
 }

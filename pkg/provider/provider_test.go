@@ -14,19 +14,38 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package common
+package provider
 
-// Constants shared by multiple test suite packages
-const (
-	ConfiguredTestFile        = "testconfigure.yml"
-	defaultTimeoutSeconds     = 10
-	AccessControlTestKey      = "access-control"
-	DiagnosticTestKey         = "diagnostic"
-	LifecycleTestKey          = "lifecycle"
-	AffiliatedCertTestKey     = "affiliated-certification"
-	NetworkingTestKey         = "networking"
-	ObservabilityTestKey      = "observability"
-	OperatorTestKey           = "operator"
-	PlatformAlterationTestKey = "platform-alteration"
-	CommonTestKey             = "common"
+import (
+	"errors"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
+
+func TestGetUID(t *testing.T) {
+	testCases := []struct {
+		testCID     string
+		expectedErr error
+		expectedUID string
+	}{
+		{
+			testCID:     "cid://testing",
+			expectedErr: nil,
+			expectedUID: "testing",
+		},
+		{
+			testCID:     "cid://",
+			expectedErr: errors.New("cannot determine container UID"),
+			expectedUID: "",
+		},
+	}
+
+	for _, tc := range testCases {
+		c := GetContainer()
+		c.Status.ContainerID = tc.testCID
+		uid, err := c.GetUID()
+		assert.Equal(t, tc.expectedErr, err)
+		assert.Equal(t, tc.expectedUID, uid)
+	}
+}
