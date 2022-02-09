@@ -51,6 +51,11 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		TestSecConRootUser(&env)
 	})
+	// Security context: privileged escalation
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConPrivilegeEscalation)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestSecConPrivilegeEscalation(&env)
+	})
 })
 
 // TestSecConCapabilities
@@ -94,9 +99,35 @@ func TestSecConRootUser(env *provider.TestEnvironment) {
 		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.RunAsUser != nil {
 			for _, ncu := range nonCompliantUsers {
 				if *(cut.Data.SecurityContext.RunAsUser) == 0 {
-					tnf.ClaimFilePrintf("Non compliant %s Root User detected in container %s. RunAsUser: %s", ncu, cut.Data.Name, *(cut.Data.SecurityContext.RunAsUser))
+					tnf.ClaimFilePrintf("Non compliant User detected (RunAsUser uid=%d) in container %s", ncu, cut.Data.Name)
 					badContainers = append(badContainers, cut.Data.Name)
 				}
+			}
+		}
+	}
+	if len(badContainers) > 0 {
+		tnf.ClaimFilePrintf("bad containers: %v", badContainers)
+	}
+	if len(errContainers) > 0 {
+		tnf.ClaimFilePrintf("err containers: %v", errContainers)
+	}
+	gomega.Expect(badContainers).To(gomega.BeNil())
+	gomega.Expect(errContainers).To(gomega.BeNil())
+}
+
+// TestSecConPrivilegeEscalation
+func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
+	var badContainers []string
+	var errContainers []string
+	for _, cut := range env.Containers {
+		if cut == nil {
+			errContainers = append(errContainers, cut.Data.Name)
+			continue
+		}
+		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.AllowPrivilegeEscalation != nil {
+			if *(cut.Data.SecurityContext.AllowPrivilegeEscalation) {
+				tnf.ClaimFilePrintf("AllowPrivilegeEscalation is set to true in container %s.", *(cut.Data.SecurityContext.AllowPrivilegeEscalation), cut.Data.Name)
+				badContainers = append(badContainers, cut.Data.Name)
 			}
 		}
 	}

@@ -60,6 +60,24 @@ Description|http://test-network-function.com/testcases/access-control/security-c
 Result Type|normative
 Suggested Remediation|Remove the following capabilities from the container/pod definitions: NET_ADMIN SCC, SYS_ADMIN SCC, NET_RAW SCC, IPC_LOCK SCC 
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
+### http://test-network-function.com/testcases/access-control/security-context-non-root-user-check
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/security-context-non-root-user-check Checks the security context runAsUser to make sure it is not set to uid root(0)
+Result Type|normative
+Suggested Remediation|Change the deployment to use unprivileged containers, running with a uid other than root(0)
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
+### http://test-network-function.com/testcases/access-control/security-context-privilege-escalation
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/security-context-privilege-escalation Checks if privileged escalation is enabled (AllowPrivilegeEscalation=true)
+Result Type|normative
+Suggested Remediation|Configure privilege escalation to false
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
 ### http://test-network-function.com/testcases/affiliated-certification/container-is-certified
 
 Property|Description

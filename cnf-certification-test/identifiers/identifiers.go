@@ -60,14 +60,19 @@ var (
 	// TestIdToClaimId converts the testcase short ID to the claim identifier
 	TestIDToClaimID = map[string]claim.Identifier{}
 
-	// TestSecConCapabilitiesIdentifier tests container best practices.
+	// TestSecConCapabilitiesIdentifier tests for non compliant security context capabilities
 	TestSecConCapabilitiesIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AccessControlTestKey, "security-context-capabilities-check"),
 		Version: versionOne,
 	}
-	// TestSecConNonRootUserIdentifier tests container best practices.
+	// TestSecConNonRootUserIdentifier tests that containers are not running with root permissions
 	TestSecConNonRootUserIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AccessControlTestKey, "security-context-non-root-user-check"),
+		Version: versionOne,
+	}
+	// TestSecPrivilegedEscalation tests that containers are not allowed privilege escalation
+	TestSecConPrivilegeEscalation = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "security-context-privilege-escalation"),
 		Version: versionOne,
 	}
 	// TestContainerIsCertifiedIdentifier tests whether the container has passed Container Certification.
@@ -282,9 +287,17 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	TestSecConNonRootUserIdentifier: {
 		Identifier:  TestSecConNonRootUserIdentifier,
 		Type:        normativeResult,
-		Remediation: `Change the deployment to use unprivileged containers, running with a uid other than root(0)`,
+		Remediation: `Change the containers "runAsUser" uid to something other than root(0)`,
 		Description: formDescription(TestSecConNonRootUserIdentifier,
 			`Checks the security context runAsUser to make sure it is not set to uid root(0)`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+	},
+	TestSecConPrivilegeEscalation: {
+		Identifier:  TestSecConPrivilegeEscalation,
+		Type:        normativeResult,
+		Remediation: `Configure privilege escalation to false`,
+		Description: formDescription(TestSecConPrivilegeEscalation,
+			`Checks if privileged escalation is enabled (AllowPrivilegeEscalation=true)`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
 	TestContainerIsCertifiedIdentifier: {
