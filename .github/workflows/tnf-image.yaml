@@ -1,4 +1,4 @@
-name: 'Publish the `test-network-function` image (latest release only)'
+name: 'Publish the `cnf-certification-test` image (latest release only)'
 on:
   # Run the workflow when a new release gets published
   release:
@@ -18,7 +18,7 @@ defaults:
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
-  IMAGE_NAME: testnetworkfunction/test-network-function
+  IMAGE_NAME: testnetworkfunction/cnf-certification-test
   IMAGE_TAG: latest
   TNF_CONTAINER_CLIENT: docker
   TNF_NON_INTRUSIVE_ONLY: false
@@ -33,11 +33,12 @@ env:
 
 jobs:
   test-and-push-tnf-image:
-    name: 'Test and push the `test-network-function` image'
+    name: 'Test and push the `cnf-certification-test` image'
     runs-on: ubuntu-20.04
     strategy:
+      max-parallel: 1
       matrix:
-        branch: [3.1.x, 3.2.x]
+        branch: [main]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -52,15 +53,16 @@ jobs:
           ref: ${{ env.CURRENT_VERSION_GENERIC_BRANCH }}
           fetch-depth: '0'
 
-      - name: checkout the latest for the script directory in the main branch
-        run: |
-          git checkout origin/main -- script/create-version-files.sh
-          git checkout origin/main -- script/get-git-latest-release.sh
-
       - name: Get the latest TNF version from GIT
         run: |
-          script/create-version-files.sh  > /dev/null 2>&1
-          echo "::set-output name=version_number::$(script/get-git-latest-release.sh)"
+          GIT_RELEASE=$(git tag --points-at HEAD | head -n 1)
+          GIT_PREVIOUS_RELEASE=$(git tag --no-contains HEAD --sort=v:refname | tail -n 1)
+          GIT_LATEST_RELEASE=$GIT_RELEASE
+          if [ -z "$GIT_RELEASE" ]; then
+            GIT_LATEST_RELEASE=$GIT_PREVIOUS_RELEASE
+          fi
+
+          echo "::set-output name=version_number::$GIT_LATEST_RELEASE"
         id: set_tnf_version
 
       - name: Print the latest TNF version from GIT
@@ -106,7 +108,7 @@ jobs:
         with:
           ref: ${{ env.TNF_VERSION }}
 
-      - name: Build the `test-network-function` image
+      - name: Build the `cnf-certification-test` image
         run: |
           docker build --no-cache \
             -t ${REGISTRY_LOCAL}/${IMAGE_NAME}:${IMAGE_TAG} \
@@ -125,7 +127,7 @@ jobs:
           ref: ${{ env.PARTNER_VERSION }}
           
       - name: Start the minikube cluster for `local-test-infra`
-        uses: ./cnf-certification-test-partner/.github/actions/start-minikube
+        uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
           
       - name: Create `local-test-infra` OpenShift resources
         uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
@@ -140,8 +142,8 @@ jobs:
           cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
         shell: bash
 
-      - name: 'Test: Run diagnostic test suite in a TNF container'
-        run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -f diagnostic      
+      #- name: 'Test: Run without any TS, just get diagnostic information'
+      #  run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -f diagnostic
 
       # Push the new TNF image to Quay.io.
 
