@@ -43,17 +43,17 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	//
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConCapabilitiesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		TestSecConCapabilities(env)
+		TestSecConCapabilities(&env)
 	})
 })
 
 // TestSecConCapabilities
-func TestSecConCapabilities(env provider.TestEnvironment) {
+func TestSecConCapabilities(env *provider.TestEnvironment) {
 	var badContainers []string
 	var errContainers []string
 	for _, cut := range env.Containers {
 		if cut == nil {
-			errContainers = append(badContainers, cut.Data.Name)
+			errContainers = append(errContainers, cut.Data.Name)
 			continue
 		}
 		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.Capabilities != nil {
