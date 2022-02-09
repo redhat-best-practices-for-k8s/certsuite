@@ -23,7 +23,15 @@ jobs:
 
       - name: Lint Code Base
         uses: github/super-linter@v4
+        # should work toward having everything validated
         env:
           VALIDATE_ALL_CODEBASE: true
+          VALIDATE_BASH: false
+          VALIDATE_CSS: false
+          VALIDATE_HTML: false
+          VALIDATE_JSON: false
+          VALIDATE_MARKDOWN: false
+          VALIDATE_YAML: false
+          VALIDATE_XML: false          
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
