@@ -58,10 +58,13 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	})
 })
 
-// TestSecConCapabilities
+// TestSecConCapabilities verrifies that non compliant capabilities are not present
 func TestSecConCapabilities(env *provider.TestEnvironment) {
 	var badContainers []string
 	var errContainers []string
+	if len(env.Containers)==0{
+		ginkgo.Skip("No containers to perform test, skipping")
+	}
 	for _, cut := range env.Containers {
 		if cut == nil {
 			errContainers = append(errContainers, cut.Data.Name)
@@ -87,10 +90,13 @@ func TestSecConCapabilities(env *provider.TestEnvironment) {
 	gomega.Expect(errContainers).To(gomega.BeNil())
 }
 
-// TestSecConRootUser
+// TestSecConRootUser verifies that the container is not running as root
 func TestSecConRootUser(env *provider.TestEnvironment) {
 	var badContainers []string
 	var errContainers []string
+	if len(env.Containers)==0{
+		ginkgo.Skip("No containers to perform test, skipping")
+	}
 	for _, cut := range env.Containers {
 		if cut == nil {
 			errContainers = append(errContainers, cut.Data.Name)
@@ -115,10 +121,13 @@ func TestSecConRootUser(env *provider.TestEnvironment) {
 	gomega.Expect(errContainers).To(gomega.BeNil())
 }
 
-// TestSecConPrivilegeEscalation
+// TestSecConPrivilegeEscalation verifies that the container is not allowed privilege escalation
 func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 	var badContainers []string
 	var errContainers []string
+	if len(env.Containers)==0{
+		ginkgo.Skip("No containers to perform test, skipping")
+	}
 	for _, cut := range env.Containers {
 		if cut == nil {
 			errContainers = append(errContainers, cut.Data.Name)
