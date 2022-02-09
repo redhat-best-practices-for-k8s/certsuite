@@ -80,6 +80,11 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "container-host-port"),
 		Version: versionOne,
 	}
+	// TestPodHostNetwork tests that pods do not configure hostnetwork to true
+	TestPodHostNetwork = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "pod-host-network"),
+		Version: versionOne,
+	}
 	// TestContainerIsCertifiedIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified"),
@@ -314,11 +319,19 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.7",
 	},
 	TestContainerHostPort: {
-		Identifier: TestContainerHostPort,
-		Type:       informativeResult,
+		Identifier:  TestContainerHostPort,
+		Type:        informativeResult,
 		Remediation: `Remove hostPort configuration from the container`,
 		Description: formDescription(TestContainerHostPort,
 			`Verifies if containers define a hostPort.`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
+	},
+	TestPodHostNetwork: {
+		Identifier:  TestPodHostNetwork,
+		Type:        informativeResult,
+		Remediation: `Set the spec.HostNetwork parameter to false in the pod configuration`,
+		Description: formDescription(TestPodHostNetwork,
+			`Verifies that the spec.HostNetwork parameter is set to false`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
 	},
 	TestExtractNodeInformationIdentifier: {

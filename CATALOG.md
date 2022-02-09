@@ -15,6 +15,15 @@ Description|http://test-network-function.com/testcases/access-control/cluster-ro
 Result Type|normative
 Suggested Remediation|In most cases, Pod's should not have ClusterRoleBindings.  The suggested remediation is to remove the need for ClusterRoleBindings, if possible.
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2.10 and 6.3.6
+### http://test-network-function.com/testcases/access-control/container-host-network
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/container-host-network Verifies that the spec.HostNetwork parameter is set to false
+Result Type|informative
+Suggested Remediation|Set the spec.HostNetwork parameter to false in the pod configuration
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.3.6
 ### http://test-network-function.com/testcases/access-control/container-host-port
 
 Property|Description

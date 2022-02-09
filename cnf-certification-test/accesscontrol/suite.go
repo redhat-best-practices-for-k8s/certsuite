@@ -56,10 +56,15 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		TestSecConPrivilegeEscalation(&env)
 	})
-	// Security context: privileged escalation
+	// Security context: host port
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestContainerHostPort)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		TestContainerHostPort(&env)
+	})
+	// Security context: host network
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostNetwork)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestPodHostNetwork(&env)
 	})
 })
 
@@ -155,9 +160,9 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 			errContainers = append(errContainers, cut.Data.Name)
 			continue
 		}
-		if cut.Data.Ports != nil  {
-			for _, aPort:= range cut.Data.Ports {
-				if aPort.HostPort !=0{
+		if cut.Data.Ports != nil {
+			for _, aPort := range cut.Data.Ports {
+				if aPort.HostPort != 0 {
 					tnf.ClaimFilePrintf("Host port %s is configured in container %s.", aPort, cut.Data.Name)
 					badContainers = append(badContainers, cut.Data.Name)
 				}
@@ -172,4 +177,31 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 	}
 	gomega.Expect(badContainers).To(gomega.BeNil())
 	gomega.Expect(errContainers).To(gomega.BeNil())
+}
+
+// TestPodHostNetwork
+func TestPodHostNetwork(env *provider.TestEnvironment) {
+	var badPods []string
+	var errPods []string
+	if len (env.Pods) == 0 {
+		ginkgo.Skip("No Pods to run test, skipping")
+	}
+	for _, put := range env.Pods {
+		if put == nil {
+			errPods = append(errPods, put.Name)
+			continue
+		}
+		if put.Spec.HostNetwork {
+			tnf.ClaimFilePrintf("Host network is set to true in container %s.", put.Name)
+			badPods = append(badPods, put.Name)
+		}
+	}
+	if len(badPods) > 0 {
+		tnf.ClaimFilePrintf("bad containers: %v", badPods)
+	}
+	if len(errPods) > 0 {
+		tnf.ClaimFilePrintf("err containers: %v", errPods)
+	}
+	gomega.Expect(badPods).To(gomega.BeNil())
+	gomega.Expect(errPods).To(gomega.BeNil())
 }
