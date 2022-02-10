@@ -26,7 +26,6 @@ var ocpClient = OcpClient{}
 
 // NewOcpClient instantiate an ocp client
 func NewOcpClient(filenames ...string) OcpClient {
-
 	if ocpClient.ready {
 		return ocpClient
 	}

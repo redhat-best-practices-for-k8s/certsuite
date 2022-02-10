@@ -166,7 +166,7 @@ func TestTest(t *testing.T) {
 	cnfCertificationJUnitFilename := filepath.Join(*junitPath, TNFJunitXMLFileName)
 	loadJUnitXMLIntoMap(junitMap, cnfCertificationJUnitFilename, TNFReportKey)
 	appendCNFFeatureValidationReportResults(junitPath, junitMap)
-	junitMap[extraInfoKey] = "" //tnf.TestsExtraInfo
+	junitMap[extraInfoKey] = "" // tnf.TestsExtraInfo
 
 	// fill out the remaining claim information.
 	claimData.RawResults = junitMap
@@ -187,9 +187,9 @@ func incorporateVersions(claimData *claim.Claim) {
 	claimData.Versions = &claim.Versions{
 		Tnf:          gitDisplayRelease,
 		TnfGitCommit: GitCommit,
-		OcClient:     "", //diagnostic.GetVersionsOcp().Oc,
-		Ocp:          "", //diagnostic.GetVersionsOcp().Ocp,
-		K8s:          "", //diagnostic.GetVersionsOcp().K8s,
+		OcClient:     "", // diagnostic.GetVersionsOcp().Oc,
+		Ocp:          "", // diagnostic.GetVersionsOcp().Ocp,
+		K8s:          "", // diagnostic.GetVersionsOcp().K8s,
 	}
 }
 
@@ -204,17 +204,7 @@ func appendCNFFeatureValidationReportResults(junitPath *string, junitMap map[str
 
 // marshalConfigurations creates a byte stream representation of the test configurations.  In the event of an error,
 // this method fatally fails.
-func marshalConfigurations() []byte { /*
-		loadEnvironment := configuration.LoadEnvironmentVariables()
-		env, err := loadEnvironment()
-		if err != nil {
-			logrus.Fatalln("can't load environment variable")
-		}
-		loadConfig := configuration.LoadConfiguration()
-		testData, err := loadConfig(env.ConfigurationPath)
-		if err != nil {
-			logrus.Fatalln("can't load configuration")
-		}*/
+func marshalConfigurations() []byte {
 	config := provider.GetTestEnvironment()
 	configurations, err := j.Marshal(config.Config)
 	if err != nil {
@@ -250,6 +240,7 @@ func writeClaimOutput(claimOutputFile string, payload []byte) {
 	}
 }
 
+//no-lint:commentedOutCode
 func generateNodes() map[string]interface{} {
 	const (
 		nodeSummaryField = "nodeSummary"
@@ -258,9 +249,9 @@ func generateNodes() map[string]interface{} {
 		csiDriverInfo    = "csiDriver"
 	)
 	nodes := map[string]interface{}{}
-	nodes[nodeSummaryField] = "" //diagnostic.GetNodeSummary()
-	nodes[cniPluginsField] = ""  //diagnostic.GetCniPlugins()
-	nodes[nodesHwInfo] = ""      //diagnostic.GetNodesHwInfo()
-	nodes[csiDriverInfo] = ""    //diagnostic.GetCsiDriverInfo()
+	nodes[nodeSummaryField] = "" // add node summary
+	nodes[cniPluginsField] = ""  // add cni plugins
+	nodes[nodesHwInfo] = ""      // add nodes hardware information
+	nodes[csiDriverInfo] = ""    // add csi drivers info
 	return nodes
 }

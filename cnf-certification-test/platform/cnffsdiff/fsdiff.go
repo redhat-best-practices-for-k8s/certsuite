@@ -24,7 +24,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
-	. "github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
@@ -40,12 +40,12 @@ const (
 )
 
 type FsDiff struct {
-	containerId string
+	containerID string
 	command     []string
 	result      int
 }
 
-func NewFsDiff(c *Container) (*FsDiff, error) {
+func NewFsDiff(c *provider.Container) (*FsDiff, error) {
 	id := c.Status.ContainerID
 	split := strings.Split(id, "://")
 	uid := ""
@@ -54,21 +54,19 @@ func NewFsDiff(c *Container) (*FsDiff, error) {
 	}
 	if uid == "" {
 		logrus.Debugln(fmt.Sprintf("could not find uid of %s/%s/%s\n", c.Namespace, c.Podname, c.Data.Name))
-		return nil, errors.New("Can't instantiante FsDiff instante")
+		return nil, errors.New("CAN'T INITIALIZE FSDIFF INSTANCE")
 	}
 	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Data.Name, uid))
 	commands := []string{"chroot", "/host", "podman", "diff", "--format", "json", uid}
 	return &FsDiff{
-		containerId: uid,
+		containerID: uid,
 		command:     commands,
 		result:      tnf.ERROR,
 	}, nil
 }
 
 func (f *FsDiff) RunTest(o ocpclient.Command, ctx ocpclient.Context) {
-
 	expected := []string{varlibrpm, varlibdpkg, bin, sbin, lib, usrbin, usrsbin, usrlib}
-
 	output, outerr, err := o.ExecCommandContainer(ctx, f.command)
 	if err != nil {
 		logrus.Errorln("can't execute command on container ", err)
@@ -84,7 +82,7 @@ func (f *FsDiff) RunTest(o ocpclient.Command, ctx ocpclient.Context) {
 	for _, exp := range expected {
 		// panic if the expression is wrong
 		r := regexp.MustCompile(exp)
-		if r.Match([]byte(output)) {
+		if r.MatchString(output) {
 			logrus.Error("an installed package found on ", exp)
 			f.result = tnf.FAILURE
 			return

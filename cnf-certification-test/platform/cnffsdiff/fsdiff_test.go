@@ -32,8 +32,9 @@ type ocpClientMock struct {
 	err    error
 }
 
-func (o *ocpClientMock) ExecCommandContainer(ctx ocpclient.Context, command []string) (string, string, error) {
-	return o.stdout, o.stderr, o.err
+func (o *ocpClientMock) ExecCommandContainer(ctx ocpclient.Context, command []string) (stdout, stderr string, err error) {
+	stdout, stderr, err = o.stdout, o.stderr, o.err
+	return stdout, stderr, err
 }
 func TestRunTest(t *testing.T) {
 	fsdiff := &FsDiff{}
@@ -70,7 +71,7 @@ func TestRunTest(t *testing.T) {
 			/usr/local/bin/docker-entrypoint.sh
 		]
 	}`
-	//"/usr/local/bin/docker-entrypoint.sh"
+	// "/usr/local/bin/docker-entrypoint.sh"
 	fsdiff.RunTest(&o, ocpclient.Context{})
 	assert.Equal(t, tnf.FAILURE, fsdiff.GetResults())
 }

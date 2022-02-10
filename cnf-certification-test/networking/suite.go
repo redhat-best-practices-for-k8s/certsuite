@@ -20,12 +20,12 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 
-	. "github.com/onsi/ginkgo/v2"
+	"github.com/onsi/ginkgo/v2"
 )
 
 //
 // All actual test code belongs below here.  Utilities belong above.
 //
-var _ = Describe(common.NetworkingTestKey, func() {
+var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	logrus.Debugf("%s not moved yet to new framework", common.NetworkingTestKey)
 })

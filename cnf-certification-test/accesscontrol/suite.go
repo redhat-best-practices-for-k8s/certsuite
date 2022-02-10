@@ -67,7 +67,7 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 func TestSecConCapabilities(env *provider.TestEnvironment) {
 	var badContainers []string
 	var errContainers []string
-	if len(env.Containers)==0{
+	if len(env.Containers) == 0 {
 		ginkgo.Skip("No containers to perform test, skipping")
 	}
 	for _, cut := range env.Containers {
@@ -99,7 +99,7 @@ func TestSecConCapabilities(env *provider.TestEnvironment) {
 func TestSecConRootUser(env *provider.TestEnvironment) {
 	var badContainers []string
 	var errContainers []string
-	if len(env.Containers)==0{
+	if len(env.Containers) == 0 {
 		ginkgo.Skip("No containers to perform test, skipping")
 	}
 	for _, cut := range env.Containers {
@@ -130,7 +130,7 @@ func TestSecConRootUser(env *provider.TestEnvironment) {
 func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 	var badContainers []string
 	var errContainers []string
-	if len(env.Containers)==0{
+	if len(env.Containers) == 0 {
 		ginkgo.Skip("No containers to perform test, skipping")
 	}
 	for _, cut := range env.Containers {

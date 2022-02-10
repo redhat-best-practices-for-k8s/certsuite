@@ -19,7 +19,7 @@ package common
 // Constants shared by multiple test suite packages
 const (
 	ConfiguredTestFile = "testconfigure.yml"
-	//defaultTimeoutSeconds     = 10
+	// defaultTimeoutSeconds     = 10
 	AccessControlTestKey      = "access-control"
 	DiagnosticTestKey         = "diagnostic"
 	LifecycleTestKey          = "lifecycle"
