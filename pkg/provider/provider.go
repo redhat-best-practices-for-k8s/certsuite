@@ -53,6 +53,8 @@ func GetPod(namespace, podName string) (v1.Pod, error) {
 }
 
 func BuildTestEnvironment() {
+	// delete env
+	env = TestEnvironment{}
 	// build Pods and Containers under test
 	environmentVariables, conf, pods, debugPods := autodiscover.DoAutoDiscover()
 	env.Config = conf
