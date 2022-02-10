@@ -164,7 +164,7 @@ func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 func TestContainerHostPort(env *provider.TestEnvironment) {
 	var badContainers []string
 	var errContainers []string
-	if len(env.Containers)==0{
+	if len(env.Containers) == 0 {
 		ginkgo.Skip("No containers to perform test, skipping")
 	}
 	for _, cut := range env.Containers {
@@ -195,7 +195,7 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 func TestPodHostNetwork(env *provider.TestEnvironment) {
 	var badPods []string
 	var errPods []string
-	if len (env.Pods) == 0 {
+	if len(env.Pods) == 0 {
 		ginkgo.Skip("No Pods to run test, skipping")
 	}
 	for _, put := range env.Pods {
