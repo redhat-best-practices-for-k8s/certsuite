@@ -26,41 +26,39 @@ import (
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
 
 	"github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
-	. "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
 )
 
 //
 // All actual test code belongs below here.  Utilities belong above.
 //
-var _ = Describe(common.PlatformAlterationTestKey, func() {
+var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	logrus.Debug(common.PlatformAlterationTestKey, " not moved yet to new framework")
 	var env provider.TestEnvironment
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		provider.BuildTestEnvironment()
 		env = provider.GetTestEnvironment()
 	})
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestUnalteredBaseImageIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		if provider.IsOCPCluster() {
-			testContainersFsDiff(env)
+			testContainersFsDiff(&env)
 		} else {
-			Skip(" non ocp cluster ")
+			ginkgo.Skip(" non ocp cluster ")
 		}
 	})
 })
 
 // testContainersFsDiff test that all CUT didn't install new packages are starting
-func testContainersFsDiff(env provider.TestEnvironment) {
+func testContainersFsDiff(env *provider.TestEnvironment) {
 	var badContainers []string
 	var errContainers []string
 	for _, cut := range env.Containers {
 		logrus.Debug(fmt.Sprintf("%s(%s) should not install new packages after starting", cut.Podname, cut.Data.Name))
-		//ginkgo.By(fmt.Sprintf("%s(%s) should not install new packages after starting", cut.Podname, cut.Data.Name))
-		fsdiff, err := NewFsDiff(cut)
+		fsdiff, err := cnffsdiff.NewFsDiff(cut)
 		if err != nil {
 			logrus.Error("can't create FsDiff instance")
 			errContainers = append(errContainers, cut.Data.Name)

@@ -17,13 +17,12 @@
 package accesscontrol
 
 import (
-	. "github.com/onsi/ginkgo/v2"
+	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 )
 
-var _ = Describe(common.AccessControlTestKey, func() {
+var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 
 	logrus.Debugf("%s not moved yet to new framework", common.AccessControlTestKey)
-	//logrus.Debugf(
 })
