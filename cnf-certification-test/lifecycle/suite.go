@@ -17,14 +17,15 @@
 package lifecycle
 
 import (
-	"fmt"
-
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/ownerreference"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	v1 "k8s.io/api/core/v1"
 )
 
 //
@@ -36,13 +37,19 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		provider.BuildTestEnvironment()
 		env = provider.GetTestEnvironment()
 	})
+	testContainersPreStop(&env)
+	testContainersImagePolicy(&env)
+	testContainersReadinessProbe(&env)
+	testContainersLivenessProbe(&env)
+	testPodsOwnerReference(&env)
+})
+
+func testContainersPreStop(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestShudtownIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		gomega.Expect(true).To(gomega.Equal(true))
 		badcontainers := []string{}
 		for _, cut := range env.Containers {
-			fmt.Println("container ", cut.Data.Name)
-			logrus.Debugln("check container ", cut.Data.Name) // maybe use different platform ?
+			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " pre stop lifecycle ")
 			if cut.Data.Lifecycle.PreStop == nil {
 				badcontainers = append(badcontainers, cut.Data.Name)
 				logrus.Errorln("container ", cut.Data.Name, " does not have preStop defined")
@@ -50,5 +57,68 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		}
 		gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
 	})
+}
 
-})
+func testContainersImagePolicy(env *provider.TestEnvironment) {
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestImagePullPolicyIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		badcontainers := []string{}
+		for _, cut := range env.Containers {
+			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " pull policy, should be ", v1.PullIfNotPresent)
+			if cut.Data.ImagePullPolicy != v1.PullIfNotPresent {
+				badcontainers = append(badcontainers, cut.Data.Name)
+				logrus.Errorln("container ", cut.Data.Name, " is using ", cut.Data.ImagePullPolicy, " as image policy")
+			}
+		}
+		gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
+	})
+}
+
+//nolint:dupl
+func testContainersReadinessProbe(env *provider.TestEnvironment) {
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestReadinessProbeIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		badcontainers := []string{}
+		for _, cut := range env.Containers {
+			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " readiness probe ")
+			if cut.Data.ReadinessProbe == nil {
+				badcontainers = append(badcontainers, cut.Data.Name)
+				logrus.Errorln("container ", cut.Data.Name, " does not have ReadinessProbe defined")
+			}
+		}
+		gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
+	})
+}
+
+//nolint:dupl
+func testContainersLivenessProbe(env *provider.TestEnvironment) {
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestLivenessProbeIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		badcontainers := []string{}
+		for _, cut := range env.Containers {
+			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " liveness probe ")
+			if cut.Data.LivenessProbe == nil {
+				badcontainers = append(badcontainers, cut.Data.Name)
+				logrus.Errorln("container ", cut.Data.Name, " does not have livenessProbe defined")
+			}
+		}
+		gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
+	})
+}
+
+func testPodsOwnerReference(env *provider.TestEnvironment) {
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodDeploymentBestPracticesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		ginkgo.By("Testing owners of CNF pod, should be replicas Set")
+		badPods := []string{}
+		for _, put := range env.Pods {
+			logrus.Debugln("check pod ", put.Namespace, " ", put.Name, " owner reference")
+			o := ownerreference.NewOwnerReference(put)
+			o.RunTest()
+			if o.GetResults() != tnf.SUCCESS {
+				badPods = append(badPods, put.Name)
+			}
+		}
+		gomega.Expect(0).To(gomega.Equal(len(badPods)))
+	})
+}

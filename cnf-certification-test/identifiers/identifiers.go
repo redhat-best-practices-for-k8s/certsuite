@@ -267,6 +267,10 @@ var (
 		Url:     formTestURL(common.LifecycleTestKey, "liveness"),
 		Version: versionOne,
 	}
+	TestReadinessProbeIdentifier = claim.Identifier{
+		Url:     formTestURL(common.LifecycleTestKey, "readiness"),
+		Version: versionOne,
+	}
 )
 
 func formDescription(identifier claim.Identifier, description string) string {
@@ -716,5 +720,12 @@ the changes for you.`,
 		Description: formDescription(TestLivenessProbeIdentifier, `check that all containers under test
 		have liveness probe defined`),
 		Remediation: `add liveness probe to deployed containers`,
+	},
+	TestReadinessProbeIdentifier: {
+		Identifier: TestReadinessProbeIdentifier,
+		Type:       normativeResult,
+		Description: formDescription(TestReadinessProbeIdentifier, `check that all containers under test
+		have readiness probe defined`),
+		Remediation: `add readiness probe to deployed containers`,
 	},
 }
