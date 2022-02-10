@@ -314,8 +314,8 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.7",
 	},
 	TestContainerHostPort: {
-		Identifier: TestContainerHostPort,
-		Type:       informativeResult,
+		Identifier:  TestContainerHostPort,
+		Type:        informativeResult,
 		Remediation: `Remove hostPort configuration from the container`,
 		Description: formDescription(TestContainerHostPort,
 			`Verifies if containers define a hostPort.`),

@@ -159,7 +159,7 @@ func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 func TestContainerHostPort(env *provider.TestEnvironment) {
 	var badContainers []string
 	var errContainers []string
-	if len(env.Containers)==0{
+	if len(env.Containers) == 0 {
 		ginkgo.Skip("No containers to perform test, skipping")
 	}
 	for _, cut := range env.Containers {
@@ -167,9 +167,9 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 			errContainers = append(errContainers, cut.Data.Name)
 			continue
 		}
-		if cut.Data.Ports != nil  {
-			for _, aPort:= range cut.Data.Ports {
-				if aPort.HostPort !=0{
+		if cut.Data.Ports != nil {
+			for _, aPort := range cut.Data.Ports {
+				if aPort.HostPort != 0 {
 					tnf.ClaimFilePrintf("Host port %s is configured in container %s.", aPort, cut.Data.Name)
 					badContainers = append(badContainers, cut.Data.Name)
 				}
