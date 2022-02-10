@@ -174,12 +174,8 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 			}
 		}
 	}
-	if len(badContainers) > 0 {
-		tnf.ClaimFilePrintf("bad containers: %v", badContainers)
-	}
-	if len(errContainers) > 0 {
-		tnf.ClaimFilePrintf("err containers: %v", errContainers)
-	}
+	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
+	tnf.ClaimFilePrintf("err containers: %v", errContainers)
 	gomega.Expect(badContainers).To(gomega.BeNil())
 	gomega.Expect(errContainers).To(gomega.BeNil())
 }
