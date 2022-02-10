@@ -170,7 +170,7 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 		if cut.Data.Ports != nil {
 			for _, aPort := range cut.Data.Ports {
 				if aPort.HostPort != 0 {
-					tnf.ClaimFilePrintf("Host port %s is configured in container %s.", aPort, cut.Data.Name)
+					tnf.ClaimFilePrintf("Host port %d is configured in container %s.", aPort.HostPort, cut.Data.Name)
 					badContainers = append(badContainers, cut.Data.Name)
 				}
 			}
