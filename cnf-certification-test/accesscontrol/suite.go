@@ -198,16 +198,12 @@ func TestPodHostNetwork(env *provider.TestEnvironment) {
 			continue
 		}
 		if put.Spec.HostNetwork {
-			tnf.ClaimFilePrintf("Host network is set to true in container %s.", put.Name)
+			tnf.ClaimFilePrintf("Host network is set to true in pod %s.", put.Name)
 			badPods = append(badPods, put.Name)
 		}
 	}
-	if len(badPods) > 0 {
-		tnf.ClaimFilePrintf("bad containers: %v", badPods)
-	}
-	if len(errPods) > 0 {
-		tnf.ClaimFilePrintf("err containers: %v", errPods)
-	}
+	tnf.ClaimFilePrintf("bad pods: %v", badPods)
+	tnf.ClaimFilePrintf("err pods: %v", errPods)
 	gomega.Expect(badPods).To(gomega.BeNil())
 	gomega.Expect(errPods).To(gomega.BeNil())
 }
