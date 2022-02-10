@@ -30,7 +30,6 @@ import (
 
 var (
 	nonCompliantCapabilites = []string{"NET_ADMIN", "SYS_ADMIN", "NET_RAW", "IPC_LOCK"}
-	nonCompliantUsers       = []uint64{0}
 )
 
 var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
@@ -77,58 +76,61 @@ func TestSecConCapabilities(env *provider.TestEnvironment) {
 	}
 	for _, cut := range env.Containers {
 		if cut == nil {
-			errContainers = append(errContainers, cut.Data.Name)
+			errContainers = append(errContainers, cut.Podname+"."+cut.Data.Name)
 			continue
 		}
 		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.Capabilities != nil {
 			for _, ncc := range nonCompliantCapabilites {
 				if strings.Contains(cut.Data.SecurityContext.Capabilities.String(), ncc) {
 					tnf.ClaimFilePrintf("Non compliant %s capability detected in container %s. All container caps: %s", ncc, cut.Data.Name, cut.Data.SecurityContext.Capabilities.String())
-					badContainers = append(badContainers, cut.Data.Name)
+					badContainers = append(badContainers, cut.Podname+"."+cut.Data.Name)
 				}
 			}
 			logrus.Infof("test %s", cut.Data.SecurityContext.Capabilities.String())
 		}
 	}
-	if len(badContainers) > 0 {
-		tnf.ClaimFilePrintf("bad containers: %v", badContainers)
-	}
-	if len(errContainers) > 0 {
-		tnf.ClaimFilePrintf("err containers: %v", errContainers)
-	}
+	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
+	tnf.ClaimFilePrintf("err containers: %v", errContainers)
 	gomega.Expect(badContainers).To(gomega.BeNil())
 	gomega.Expect(errContainers).To(gomega.BeNil())
 }
 
 // TestSecConRootUser verifies that the container is not running as root
 func TestSecConRootUser(env *provider.TestEnvironment) {
-	var badContainers []string
-	var errContainers []string
+	var badContainers, badPods, errPods []string
 	if len(env.Containers) == 0 {
 		ginkgo.Skip("No containers to perform test, skipping")
 	}
-	for _, cut := range env.Containers {
-		if cut == nil {
-			errContainers = append(errContainers, cut.Data.Name)
+	for _, put := range env.Pods {
+		if put == nil {
+			errPods = append(errPods, put.Name)
 			continue
 		}
-		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.RunAsUser != nil {
-			for _, ncu := range nonCompliantUsers {
-				if *(cut.Data.SecurityContext.RunAsUser) == 0 {
-					tnf.ClaimFilePrintf("Non compliant User detected (RunAsUser uid=%d) in container %s", ncu, cut.Data.Name)
-					badContainers = append(badContainers, cut.Data.Name)
+		if put.Spec.SecurityContext != nil && put.Spec.SecurityContext.RunAsUser != nil {
+			// Check the pod level RunAsUser parameter
+			if *(put.Spec.SecurityContext.RunAsUser) == 0 {
+				tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in pod %s", put.Name)
+				badPods = append(badPods, put.Name)
+			}
+		}
+		for idx := range put.Spec.Containers {
+			cut := &(put.Spec.Containers[idx])
+			// Check the container level RunAsUser parameter
+			if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
+				if *(cut.SecurityContext.RunAsUser) == 0 {
+					tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in container %s.%s", put.Name, cut.Name)
+					badContainers = append(badContainers, put.Name+"."+cut.Name)
 				}
 			}
 		}
 	}
-	if len(badContainers) > 0 {
-		tnf.ClaimFilePrintf("bad containers: %v", badContainers)
-	}
-	if len(errContainers) > 0 {
-		tnf.ClaimFilePrintf("err containers: %v", errContainers)
-	}
+	tnf.ClaimFilePrintf("bad pods: %v", badPods)
+	tnf.ClaimFilePrintf("err pods: %v", errPods)
+	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
+
 	gomega.Expect(badContainers).To(gomega.BeNil())
-	gomega.Expect(errContainers).To(gomega.BeNil())
+	gomega.Expect(badPods).To(gomega.BeNil())
+	gomega.Expect(errPods).To(gomega.BeNil())
 }
 
 // TestSecConPrivilegeEscalation verifies that the container is not allowed privilege escalation
@@ -140,22 +142,18 @@ func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 	}
 	for _, cut := range env.Containers {
 		if cut == nil {
-			errContainers = append(errContainers, cut.Data.Name)
+			errContainers = append(errContainers, cut.Podname+"."+cut.Data.Name)
 			continue
 		}
 		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.AllowPrivilegeEscalation != nil {
 			if *(cut.Data.SecurityContext.AllowPrivilegeEscalation) {
-				tnf.ClaimFilePrintf("AllowPrivilegeEscalation is set to true in container %s.", *(cut.Data.SecurityContext.AllowPrivilegeEscalation), cut.Data.Name)
-				badContainers = append(badContainers, cut.Data.Name)
+				tnf.ClaimFilePrintf("AllowPrivilegeEscalation is set to true in container %s.", cut.Data.Name)
+				badContainers = append(badContainers, cut.Podname+"."+cut.Data.Name)
 			}
 		}
 	}
-	if len(badContainers) > 0 {
-		tnf.ClaimFilePrintf("bad containers: %v", badContainers)
-	}
-	if len(errContainers) > 0 {
-		tnf.ClaimFilePrintf("err containers: %v", errContainers)
-	}
+	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
+	tnf.ClaimFilePrintf("err containers: %v", errContainers)
 	gomega.Expect(badContainers).To(gomega.BeNil())
 	gomega.Expect(errContainers).To(gomega.BeNil())
 }
@@ -175,7 +173,7 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 		if cut.Data.Ports != nil {
 			for _, aPort := range cut.Data.Ports {
 				if aPort.HostPort != 0 {
-					tnf.ClaimFilePrintf("Host port %s is configured in container %s.", aPort, cut.Data.Name)
+					tnf.ClaimFilePrintf("Host port %d is configured in container %s.", aPort.HostPort, cut.Data.Name)
 					badContainers = append(badContainers, cut.Data.Name)
 				}
 			}
