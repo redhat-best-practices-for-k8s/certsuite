@@ -19,8 +19,8 @@ package lifecycle
 import (
 	"fmt"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
@@ -30,26 +30,25 @@ import (
 //
 // All actual test code belongs below here.  Utilities belong above.
 //
-var _ = Describe(common.LifecycleTestKey, func() {
+var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	var env provider.TestEnvironment
-	BeforeEach(func() {
+	ginkgo.BeforeEach(func() {
 		provider.BuildTestEnvironment()
 		env = provider.GetTestEnvironment()
 	})
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestShudtownIdentifier)
-	It(testID, Label(testID), func() {
-		Expect(true).To(Equal(true))
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		gomega.Expect(true).To(gomega.Equal(true))
 		badcontainers := []string{}
 		for _, cut := range env.Containers {
 			fmt.Println("container ", cut.Data.Name)
-			logrus.Debugln("check container ", cut.Data.Name) //maybe use different platform ?
+			logrus.Debugln("check container ", cut.Data.Name) // maybe use different platform ?
 			if cut.Data.Lifecycle.PreStop == nil {
 				badcontainers = append(badcontainers, cut.Data.Name)
 				logrus.Errorln("container ", cut.Data.Name, " does not have preStop defined")
 			}
-
 		}
-		Expect(0).To(Equal(len(badcontainers)))
+		gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
 	})
 
 })
