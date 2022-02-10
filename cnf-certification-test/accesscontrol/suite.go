@@ -162,14 +162,14 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 	}
 	for _, cut := range env.Containers {
 		if cut == nil {
-			errContainers = append(errContainers, cut.Data.Name)
+			errContainers = append(errContainers, cut.Podname+"."+cut.Data.Name)
 			continue
 		}
 		if cut.Data.Ports != nil {
 			for _, aPort := range cut.Data.Ports {
 				if aPort.HostPort != 0 {
 					tnf.ClaimFilePrintf("Host port %d is configured in container %s.", aPort.HostPort, cut.Data.Name)
-					badContainers = append(badContainers, cut.Data.Name)
+					badContainers = append(badContainers, cut.Podname+"."+cut.Data.Name)
 				}
 			}
 		}
