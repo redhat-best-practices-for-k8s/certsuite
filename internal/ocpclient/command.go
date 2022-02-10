@@ -39,14 +39,13 @@ type Command interface {
 
 // ExecCommand runs command in the pod and returns buffer output.
 func (ocpclient OcpClient) ExecCommandContainer(
-	ctx Context, command []string) (string, string, error) {
-
+	ctx Context, command []string) (stdout, stderr string, err error) {
 	namespace := ctx.Namespace
 	podname := ctx.Podname
 	container := ctx.Containername
-
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
+	//
+	var buffOut bytes.Buffer
+	var buffErr bytes.Buffer
 	logrus.Trace(fmt.Sprintf("execute commands on ns=%s, pod=%s container=%s", namespace, podname, container))
 	req := ocpclient.Coreclient.RESTClient().
 		Post().
@@ -66,19 +65,20 @@ func (ocpclient OcpClient) ExecCommandContainer(
 	exec, err := remotecommand.NewSPDYExecutor(ocpclient.RestConfig, "POST", req.URL())
 	if err != nil {
 		logrus.Error(err)
-		return stdout.String(), stderr.String(), err
+		return stdout, stderr, err
 	}
 	err = exec.Stream(remotecommand.StreamOptions{
 		Stdin:  os.Stdin,
-		Stdout: &stdout,
-		Stderr: &stderr,
+		Stdout: &buffOut,
+		Stderr: &buffErr,
 		Tty:    true,
 	})
+	stdout, stderr = buffOut.String(), buffErr.String()
 	if err != nil {
 		logrus.Error(err)
 		logrus.Error(req.URL())
 		logrus.Error("command ", command)
-		return stdout.String(), stderr.String(), err
+		return stdout, stderr, err
 	}
-	return stdout.String(), stderr.String(), err
+	return stdout, stderr, err
 }

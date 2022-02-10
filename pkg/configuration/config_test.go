@@ -30,6 +30,7 @@ const (
 	operatorOrg       = "community-operators"
 )
 
+//nolint:funlen
 func TestLoadConfiguration(t *testing.T) {
 	env, err := configuration.LoadConfiguration(filePath)
 	assert.Nil(t, err)
@@ -59,7 +60,6 @@ func TestLoadConfiguration(t *testing.T) {
 	assert.Equal(t, operators, len(env.CertifiedOperatorInfo))
 	operator := configuration.CertifiedOperatorRequestInfo{Name: operatorName, Organization: operatorOrg}
 	assert.Contains(t, env.CertifiedOperatorInfo, operator)
-	//	b := config.LoadConfigFromFile()
 	e, er := configuration.LoadConfiguration(filePath)
 	assert.Equal(t, &env, &e)
 	assert.Nil(t, er)
