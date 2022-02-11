@@ -15,15 +15,15 @@ Description|http://test-network-function.com/testcases/access-control/cluster-ro
 Result Type|normative
 Suggested Remediation|In most cases, Pod's should not have ClusterRoleBindings.  The suggested remediation is to remove the need for ClusterRoleBindings, if possible.
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2.10 and 6.3.6
-### http://test-network-function.com/testcases/access-control/host-resource
+### http://test-network-function.com/testcases/access-control/container-host-port
 
 Property|Description
 ---|---
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/access-control/host-resource tests several aspects of CNF best practices, including: 1. The Pod does not have access to Host Node Networking. 2. The Pod does not have access to Host Node Ports. 3. The Pod cannot access Host Node IPC space. 4. The Pod cannot access Host Node PID space. 5. The Pod is not granted NET_ADMIN SCC. 6. The Pod is not granted SYS_ADMIN SCC. 7. The Pod does not run as root. 8. The Pod does not allow privileged escalation. 9. The Pod is not granted NET_RAW SCC. 10. The Pod is not granted IPC_LOCK SCC. 
-Result Type|normative
-Suggested Remediation|Ensure that each Pod in the CNF abides by the suggested best practices listed in the test description.  In some rare cases, not all best practices can be followed.  For example, some CNFs may be required to run as root.  Such exceptions should be handled on a case-by-case basis, and should provide a proper justification as to why the best practice(s) cannot be followed.
-Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
+Description|http://test-network-function.com/testcases/access-control/container-host-port Verifies if containers define a hostPort.
+Result Type|informative
+Suggested Remediation|Remove hostPort configuration from the container
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.3.6
 ### http://test-network-function.com/testcases/access-control/namespace
 
 Property|Description
@@ -42,6 +42,42 @@ Description|http://test-network-function.com/testcases/access-control/pod-automo
 Result Type|normative
 Suggested Remediation|check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false
 Best Practice Reference|
+### http://test-network-function.com/testcases/access-control/pod-host-ipc
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/pod-host-ipc Verifies that the spec.HostIpc parameter is set to false
+Result Type|informative
+Suggested Remediation|Set the spec.HostIpc parameter to false in the pod configuration
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.3.6
+### http://test-network-function.com/testcases/access-control/pod-host-network
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/pod-host-network Verifies that the spec.HostNetwork parameter is set to false
+Result Type|informative
+Suggested Remediation|Set the spec.HostNetwork parameter to false in the pod configuration
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.3.6
+### http://test-network-function.com/testcases/access-control/pod-host-path
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/pod-host-path Verifies that the spec.HostPath parameter is not set (not present)
+Result Type|informative
+Suggested Remediation|Set the spec.HostPath parameter to false in the pod configuration
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.3.6
+### http://test-network-function.com/testcases/access-control/pod-host-pid
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/pod-host-pid Verifies that the spec.HostPid parameter is set to false
+Result Type|informative
+Suggested Remediation|Set the spec.HostPid parameter to false in the pod configuration
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.3.6
 ### http://test-network-function.com/testcases/access-control/pod-role-bindings
 
 Property|Description
@@ -60,6 +96,33 @@ Description|http://test-network-function.com/testcases/access-control/pod-servic
 Result Type|normative
 Suggested Remediation|Ensure that the each CNF Pod is configured to use a valid Service Account
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2.3 and 6.2.7
+### http://test-network-function.com/testcases/access-control/security-context-capabilities-check
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/security-context-capabilities-check Tests that the following capabilities are not granted: 			- NET_ADMIN 			- SYS_ADMIN  			- NET_RAW 			- IPC_LOCK 
+Result Type|normative
+Suggested Remediation|Remove the following capabilities from the container/pod definitions: NET_ADMIN SCC, SYS_ADMIN SCC, NET_RAW SCC, IPC_LOCK SCC 
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
+### http://test-network-function.com/testcases/access-control/security-context-non-root-user-check
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/security-context-non-root-user-check Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0)
+Result Type|normative
+Suggested Remediation|Change the pod and containers "runAsUser" uid to something other than root(0)
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
+### http://test-network-function.com/testcases/access-control/security-context-privilege-escalation
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/security-context-privilege-escalation Checks if privileged escalation is enabled (AllowPrivilegeEscalation=true)
+Result Type|normative
+Suggested Remediation|Configure privilege escalation to false
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
 ### http://test-network-function.com/testcases/affiliated-certification/container-is-certified
 
 Property|Description

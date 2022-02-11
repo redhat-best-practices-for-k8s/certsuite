@@ -60,9 +60,44 @@ var (
 	// TestIdToClaimId converts the testcase short ID to the claim identifier
 	TestIDToClaimID = map[string]claim.Identifier{}
 
-	// TestHostResourceIdentifier tests container best practices.
-	TestHostResourceIdentifier = claim.Identifier{
-		Url:     formTestURL(common.AccessControlTestKey, "host-resource"),
+	// TestSecConCapabilitiesIdentifier tests for non compliant security context capabilities
+	TestSecConCapabilitiesIdentifier = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "security-context-capabilities-check"),
+		Version: versionOne,
+	}
+	// TestSecConNonRootUserIdentifier tests that pods or containers are not running with root permissions
+	TestSecConNonRootUserIdentifier = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "security-context-non-root-user-check"),
+		Version: versionOne,
+	}
+	// TestSecPrivilegedEscalation tests that containers are not allowed privilege escalation
+	TestSecConPrivilegeEscalation = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "security-context-privilege-escalation"),
+		Version: versionOne,
+	}
+	// TestSecPrivilegedEscalation tests that containers are not configured with host port privileges
+	TestContainerHostPort = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "container-host-port"),
+		Version: versionOne,
+	}
+	// TestPodHostNetwork tests that pods do not configure hostnetwork to true
+	TestPodHostNetwork = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "pod-host-network"),
+		Version: versionOne,
+	}
+	// TestPodHostPath tests that pods do not configure an hostpath volume
+	TestPodHostPath = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "pod-host-path"),
+		Version: versionOne,
+	}
+	// TestPodHostPath tests that pods do not configure an hostpath volume
+	TestPodHostIPC = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "pod-host-ipc"),
+		Version: versionOne,
+	}
+	// TestPodHostPath tests that pods do not configure an hostpath volume
+	TestPodHostPID = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "pod-host-pid"),
 		Version: versionOne,
 	}
 	// TestContainerIsCertifiedIdentifier tests whether the container has passed Container Certification.
@@ -261,29 +296,35 @@ func XformToGinkgoItIdentifierExtended(identifier claim.Identifier, extra string
 // Catalog is the JUnit testcase catalog of tests.
 var Catalog = map[claim.Identifier]TestCaseDescription{
 
-	TestHostResourceIdentifier: {
-		Identifier: TestHostResourceIdentifier,
-		Type:       normativeResult,
-		Remediation: `Ensure that each Pod in the CNF abides by the suggested best practices listed in the test description.  In some rare
-cases, not all best practices can be followed.  For example, some CNFs may be required to run as root.  Such exceptions
-should be handled on a case-by-case basis, and should provide a proper justification as to why the best practice(s)
-cannot be followed.`,
-		Description: formDescription(TestHostResourceIdentifier,
-			`tests several aspects of CNF best practices, including:
-1. The Pod does not have access to Host Node Networking.
-2. The Pod does not have access to Host Node Ports.
-3. The Pod cannot access Host Node IPC space.
-4. The Pod cannot access Host Node PID space.
-5. The Pod is not granted NET_ADMIN SCC.
-6. The Pod is not granted SYS_ADMIN SCC.
-7. The Pod does not run as root.
-8. The Pod does not allow privileged escalation.
-9. The Pod is not granted NET_RAW SCC.
-10. The Pod is not granted IPC_LOCK SCC.
+	TestSecConCapabilitiesIdentifier: {
+		Identifier:  TestSecConCapabilitiesIdentifier,
+		Type:        normativeResult,
+		Remediation: `Remove the following capabilities from the container/pod definitions: NET_ADMIN SCC, SYS_ADMIN SCC, NET_RAW SCC, IPC_LOCK SCC `,
+		Description: formDescription(TestSecConCapabilitiesIdentifier,
+			`Tests that the following capabilities are not granted:
+			- NET_ADMIN
+			- SYS_ADMIN 
+			- NET_RAW
+			- IPC_LOCK
 `),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
-
+	TestSecConNonRootUserIdentifier: {
+		Identifier:  TestSecConNonRootUserIdentifier,
+		Type:        normativeResult,
+		Remediation: `Change the pod and containers "runAsUser" uid to something other than root(0)`,
+		Description: formDescription(TestSecConNonRootUserIdentifier,
+			`Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0)`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+	},
+	TestSecConPrivilegeEscalation: {
+		Identifier:  TestSecConPrivilegeEscalation,
+		Type:        normativeResult,
+		Remediation: `Configure privilege escalation to false`,
+		Description: formDescription(TestSecConPrivilegeEscalation,
+			`Checks if privileged escalation is enabled (AllowPrivilegeEscalation=true)`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+	},
 	TestContainerIsCertifiedIdentifier: {
 		Identifier:  TestContainerIsCertifiedIdentifier,
 		Type:        normativeResult,
@@ -292,7 +333,46 @@ cannot be followed.`,
 			`tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.7",
 	},
-
+	TestContainerHostPort: {
+		Identifier:  TestContainerHostPort,
+		Type:        informativeResult,
+		Remediation: `Remove hostPort configuration from the container`,
+		Description: formDescription(TestContainerHostPort,
+			`Verifies if containers define a hostPort.`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
+	},
+	TestPodHostNetwork: {
+		Identifier:  TestPodHostNetwork,
+		Type:        informativeResult,
+		Remediation: `Set the spec.HostNetwork parameter to false in the pod configuration`,
+		Description: formDescription(TestPodHostNetwork,
+			`Verifies that the spec.HostNetwork parameter is set to false`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
+	},
+	TestPodHostPath: {
+		Identifier:  TestPodHostPath,
+		Type:        informativeResult,
+		Remediation: `Set the spec.HostPath parameter to false in the pod configuration`,
+		Description: formDescription(TestPodHostPath,
+			`Verifies that the spec.HostPath parameter is not set (not present)`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
+	},
+	TestPodHostIPC: {
+		Identifier:  TestPodHostIPC,
+		Type:        informativeResult,
+		Remediation: `Set the spec.HostIpc parameter to false in the pod configuration`,
+		Description: formDescription(TestPodHostIPC,
+			`Verifies that the spec.HostIpc parameter is set to false`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
+	},
+	TestPodHostPID: {
+		Identifier:  TestPodHostPID,
+		Type:        informativeResult,
+		Remediation: `Set the spec.HostPid parameter to false in the pod configuration`,
+		Description: formDescription(TestPodHostPID,
+			`Verifies that the spec.HostPid parameter is set to false`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
+	},
 	TestExtractNodeInformationIdentifier: {
 		Identifier: TestExtractNodeInformationIdentifier,
 		Type:       informativeResult,
@@ -300,7 +380,6 @@ cannot be followed.`,
 			`extracts informational information about the cluster.`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
 	},
-
 	TestHugepagesNotManuallyManipulated: {
 		Identifier: TestHugepagesNotManuallyManipulated,
 		Type:       normativeResult,
