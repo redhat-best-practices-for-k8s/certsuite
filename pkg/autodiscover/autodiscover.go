@@ -24,6 +24,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	v1 "k8s.io/api/core/v1"
+	apiextv1beta "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 )
 
 const (
@@ -47,7 +48,11 @@ func buildLabelQuery(label configuration.Label) string {
 	return fullLabelName
 }
 
-func DoAutoDiscover() (env configuration.TestParameters, testData configuration.TestConfiguration, pods, debugPods []v1.Pod) {
+//nolint:gocritic // the arguments are needed
+func DoAutoDiscover() (env configuration.TestParameters,
+	testData configuration.TestConfiguration,
+	pods,
+	debugPods []v1.Pod, crds []*apiextv1beta.CustomResourceDefinition, namespaces []string) {
 	env, err := configuration.LoadEnvironmentVariables()
 	if err != nil {
 		logrus.Fatalln("can't load environment variable")
@@ -65,12 +70,20 @@ func DoAutoDiscover() (env configuration.TestParameters, testData configuration.
 		filenames = append(filenames, path)
 	}
 	oc := ocpclient.NewOcpClient(filenames...)
-	pods = findPodsByLabel(oc.Coreclient, testData.TargetPodLabels, testData.TargetNameSpaces)
+	namespaces = namespacesListToStringList(testData.TargetNameSpaces)
+	pods = findPodsByLabel(oc.Coreclient, testData.TargetPodLabels, namespaces)
 
 	debugLabel := configuration.Label{Prefix: debugLabelPrefix, Name: debugLabelName, Value: debugLabelValue}
 	debugLabels := []configuration.Label{debugLabel}
-	ns := configuration.Namespace{Name: defaultNamespace}
-	debugNS := []configuration.Namespace{ns}
+	debugNS := []string{defaultNamespace}
 	debugPods = findPodsByLabel(oc.Coreclient, debugLabels, debugNS)
-	return env, testData, pods, debugPods
+	crds = FindTestCrdNames(testData.CrdFilters)
+	return env, testData, pods, debugPods, crds, namespaces
+}
+
+func namespacesListToStringList(namespaceList []configuration.Namespace) (stringList []string) {
+	for _, ns := range namespaceList {
+		stringList = append(stringList, ns.Name)
+	}
+	return stringList
 }

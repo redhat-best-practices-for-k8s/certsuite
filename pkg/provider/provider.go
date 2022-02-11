@@ -20,6 +20,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	v1 "k8s.io/api/core/v1"
+	apiextv1beta "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 )
 
 type TestEnvironment struct { // rename this with testTarget
@@ -29,6 +30,7 @@ type TestEnvironment struct { // rename this with testTarget
 	DebugPods  map[string]*v1.Pod // map from nodename to debugPod
 	Config     configuration.TestConfiguration
 	variables  configuration.TestParameters
+	Crds       []*apiextv1beta.CustomResourceDefinition
 }
 
 type Container struct {
@@ -56,8 +58,10 @@ func BuildTestEnvironment() {
 	// delete env
 	env = TestEnvironment{}
 	// build Pods and Containers under test
-	environmentVariables, conf, pods, debugPods := autodiscover.DoAutoDiscover()
+	environmentVariables, conf, pods, debugPods, crds, ns := autodiscover.DoAutoDiscover()
 	env.Config = conf
+	env.Crds = crds
+	env.Namespaces = ns
 	env.variables = environmentVariables
 	for i := 0; i < len(pods); i++ {
 		env.Pods = append(env.Pods, &pods[i])

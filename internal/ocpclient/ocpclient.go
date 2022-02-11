@@ -7,17 +7,19 @@ import (
 	// "client-go/config/clientset/versioned/typed/config/v1"
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
 	"github.com/sirupsen/logrus"
+	apiextensionsv1beta1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/typed/apiextensions/v1beta1"
+	"k8s.io/client-go/dynamic"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/rest"
-
 	"k8s.io/client-go/tools/clientcmd"
 )
 
 type OcpClient struct {
-	Coreclient   *corev1client.CoreV1Client
-	ClientConfig clientconfigv1.ConfigV1Interface
-
-	RestConfig *rest.Config
+	Coreclient    *corev1client.CoreV1Client
+	ClientConfig  clientconfigv1.ConfigV1Interface
+	DynamicClient dynamic.Interface
+	APIExtClient  apiextensionsv1beta1.ApiextensionsV1beta1Interface
+	RestConfig    *rest.Config
 
 	ready bool
 }
@@ -25,11 +27,10 @@ type OcpClient struct {
 var ocpClient = OcpClient{}
 
 // NewOcpClient instantiate an ocp client
-func NewOcpClient(filenames ...string) OcpClient {
+func NewOcpClient(filenames ...string) OcpClient { //nolint:funlen // this is a spectial function with lots of assignements
 	if ocpClient.ready {
 		return ocpClient
 	}
-	ocpClient.ready = true
 
 	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
 
@@ -61,5 +62,15 @@ func NewOcpClient(filenames ...string) OcpClient {
 	if err != nil {
 		logrus.Panic("can't instantiate corev1client", err)
 	}
+	ocpClient.DynamicClient, err = dynamic.NewForConfig(ocpClient.RestConfig)
+	if err != nil {
+		logrus.Panic("can't instantiate dynamic client (unstructured/dynamic)", err)
+	}
+	ocpClient.APIExtClient, err = apiextensionsv1beta1.NewForConfig(ocpClient.RestConfig)
+	if err != nil {
+		logrus.Panic("can't instantiate dynamic client (unstructured/dynamic)", err)
+	}
+
+	ocpClient.ready = true
 	return ocpClient
 }
