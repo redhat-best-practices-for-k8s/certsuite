@@ -158,12 +158,10 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 		ginkgo.Skip("No containers to perform test, skipping")
 	}
 	for _, cut := range env.Containers {
-		if cut.Data.Ports != nil {
-			for _, aPort := range cut.Data.Ports {
-				if aPort.HostPort != 0 {
-					tnf.ClaimFilePrintf("Host port %d is configured in container %s.", aPort.HostPort, cut.Namespace+"."+cut.Podname+"."+cut.Data.Name)
-					badContainers = append(badContainers, cut.Namespace+"."+cut.Podname+"."+cut.Data.Name)
-				}
+		for _, aPort := range cut.Data.Ports {
+			if aPort.HostPort != 0 {
+				tnf.ClaimFilePrintf("Host port %d is configured in container %s.", aPort.HostPort, cut.Namespace+"."+cut.Podname+"."+cut.Data.Name)
+				badContainers = append(badContainers, cut.Namespace+"."+cut.Podname+"."+cut.Data.Name)
 			}
 		}
 	}
@@ -194,13 +192,11 @@ func TestPodHostPath(env *provider.TestEnvironment) {
 		ginkgo.Skip("No Pods to run test, skipping")
 	}
 	for _, put := range env.Pods {
-		if put.Spec.Volumes != nil {
-			for idx := range put.Spec.Volumes {
-				vol := &put.Spec.Volumes[idx]
-				if vol.HostPath != nil && vol.HostPath.Path != "" {
-					tnf.ClaimFilePrintf("An Hostpath path: %s is set in pod %s.", vol.HostPath.Path, put.Namespace+"."+put.Name)
-					badPods = append(badPods, put.Namespace+"."+put.Name)
-				}
+		for idx := range put.Spec.Volumes {
+			vol := &put.Spec.Volumes[idx]
+			if vol.HostPath != nil && vol.HostPath.Path != "" {
+				tnf.ClaimFilePrintf("An Hostpath path: %s is set in pod %s.", vol.HostPath.Path, put.Namespace+"."+put.Name)
+				badPods = append(badPods, put.Namespace+"."+put.Name)
 			}
 		}
 	}
