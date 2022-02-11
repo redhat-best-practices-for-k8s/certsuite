@@ -55,6 +55,9 @@ func testContainersPreStop(env *provider.TestEnvironment) {
 				logrus.Errorln("container ", cut.Data.Name, " does not have preStop defined")
 			}
 		}
+		if len(badcontainers) > 0 {
+			tnf.ClaimFilePrintf("bad containers %v", badcontainers)
+		}
 		gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
 	})
 }
@@ -69,6 +72,9 @@ func testContainersImagePolicy(env *provider.TestEnvironment) {
 				badcontainers = append(badcontainers, cut.Data.Name)
 				logrus.Errorln("container ", cut.Data.Name, " is using ", cut.Data.ImagePullPolicy, " as image policy")
 			}
+		}
+		if len(badcontainers) > 0 {
+			tnf.ClaimFilePrintf("bad containers %v", badcontainers)
 		}
 		gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
 	})
@@ -86,6 +92,9 @@ func testContainersReadinessProbe(env *provider.TestEnvironment) {
 				logrus.Errorln("container ", cut.Data.Name, " does not have ReadinessProbe defined")
 			}
 		}
+		if len(badcontainers) > 0 {
+			tnf.ClaimFilePrintf("bad containers %v", badcontainers)
+		}
 		gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
 	})
 }
@@ -101,6 +110,9 @@ func testContainersLivenessProbe(env *provider.TestEnvironment) {
 				badcontainers = append(badcontainers, cut.Data.Name)
 				logrus.Errorln("container ", cut.Data.Name, " does not have livenessProbe defined")
 			}
+		}
+		if len(badcontainers) > 0 {
+			tnf.ClaimFilePrintf("bad containers %v", badcontainers)
 		}
 		gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
 	})
@@ -118,6 +130,9 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 			if o.GetResults() != tnf.SUCCESS {
 				badPods = append(badPods, put.Name)
 			}
+		}
+		if len(badPods) > 0 {
+			tnf.ClaimFilePrintf("bad containers %v", badPods)
 		}
 		gomega.Expect(0).To(gomega.Equal(len(badPods)))
 	})

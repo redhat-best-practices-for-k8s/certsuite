@@ -42,7 +42,8 @@ func NewOwnerReference(put *v1.Pod) *OwnerReference {
 	return &o
 }
 
-// func (f *FsDiff) RunTest(
+// func (o *OwnerReference)  run the tests and store results in
+// o.result
 func (o *OwnerReference) RunTest() {
 	for _, k := range o.put.OwnerReferences {
 		logrus.Traceln("kind is ", k.Kind)
