@@ -200,7 +200,7 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 	gomega.Expect(errContainers).To(gomega.BeNil())
 }
 
-// TestPodHostNetwork
+// TestPodHostNetwork verifies that the pod hostNetwork parameter is not set to true
 func TestPodHostNetwork(env *provider.TestEnvironment) {
 	var badPods []string
 	var errPods []string
@@ -223,7 +223,7 @@ func TestPodHostNetwork(env *provider.TestEnvironment) {
 	gomega.Expect(errPods).To(gomega.BeNil())
 }
 
-// TestPodHostPath
+// TestPodHostPath verifies that the pod hostpath parameter is not set to true
 func TestPodHostPath(env *provider.TestEnvironment) {
 	var badPods []string
 	var errPods []string
@@ -255,7 +255,7 @@ func TestPodHostPath(env *provider.TestEnvironment) {
 	gomega.Expect(errPods).To(gomega.BeNil())
 }
 
-// TestPodHostIPC
+// TestPodHostIPC verifies that the pod hostIpc parameter is not set to true
 func TestPodHostIPC(env *provider.TestEnvironment) { //nolint:dupl // not duplicate
 	var badPods []string
 	var errPods []string
@@ -282,7 +282,7 @@ func TestPodHostIPC(env *provider.TestEnvironment) { //nolint:dupl // not duplic
 	gomega.Expect(errPods).To(gomega.BeNil())
 }
 
-// TestPodHostPID
+// TestPodHostPID verifies that the pod hostPid parameter is not set to true
 func TestPodHostPID(env *provider.TestEnvironment) { //nolint:dupl // not duplicate
 	var badPods []string
 	var errPods []string
