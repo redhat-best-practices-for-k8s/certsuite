@@ -14,7 +14,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package utils
+package cmdrunner
 
 import (
 	"bytes"
@@ -33,6 +33,6 @@ func RunLocalCommand(command string) (outStr, errStr string, err error) {
 		return "", "", err
 	}
 	outStr, errStr = stdout.String(), stderr.String()
-	logrus.Tracef("Command %s STDERR: %s STDOUT: %s", cmd.String(), errStr, outStr)
+	logrus.Tracef("Command %s, STDERR: %s, STDOUT: %s", cmd.String(), errStr, outStr)
 	return outStr, errStr, err
 }
