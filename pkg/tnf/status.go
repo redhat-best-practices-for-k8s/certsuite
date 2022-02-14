@@ -19,5 +19,7 @@ func ClaimFilePrintf(format string, args ...interface{}) {
 	_, err := ginkgo.GinkgoWriter.Write([]byte(message))
 	if err != nil {
 		logrus.Errorf("Ginkgo writer could not write msg '%s' because: %s", message, err)
+	} else {
+		logrus.Error(message)
 	}
 }

@@ -249,6 +249,15 @@ Description|http://test-network-function.com/testcases/lifecycle/pod-termination
 Result Type|informative
 Suggested Remediation|Choose a terminationGracePeriod that is appropriate for your given CNF.  If the default (30s) is appropriate, then feel free to ignore this informative message.  This test is meant to raise awareness around how Pods are terminated, and to suggest that a CNF is configured based on its requirements.  In addition to a terminationGracePeriod, consider utilizing a termination hook in the case that your application requires special shutdown instructions.
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
+### http://test-network-function.com/testcases/lifecycle/readiness
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/readiness check that all containers under test 		have readiness probe defined
+Result Type|normative
+Suggested Remediation|add readiness probe to deployed containers
+Best Practice Reference|
 ### http://test-network-function.com/testcases/lifecycle/scaling
 
 Property|Description
