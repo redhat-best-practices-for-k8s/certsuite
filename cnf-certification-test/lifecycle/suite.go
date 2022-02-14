@@ -130,7 +130,7 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 			logrus.Debugln("check pod ", put.Namespace, " ", put.Name, " owner reference")
 			o := ownerreference.NewOwnerReference(put)
 			o.RunTest()
-			if o.GetResults() == tnf.SUCCESS {
+			if o.GetResults() != tnf.SUCCESS {
 				s := put.Namespace + ":" + put.Name
 				badPods = append(badPods, s)
 			}
