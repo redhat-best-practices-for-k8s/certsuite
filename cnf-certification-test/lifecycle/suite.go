@@ -69,7 +69,8 @@ func testContainersImagePolicy(env *provider.TestEnvironment) {
 		for _, cut := range env.Containers {
 			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " pull policy, should be ", v1.PullIfNotPresent)
 			if cut.Data.ImagePullPolicy != v1.PullIfNotPresent {
-				badcontainers = append(badcontainers, cut.Data.Name)
+				s := cut.Namespace + ":" + cut.Podname + ":" + cut.Data.Name
+				badcontainers = append(badcontainers, s)
 				logrus.Errorln("container ", cut.Data.Name, " is using ", cut.Data.ImagePullPolicy, " as image policy")
 			}
 		}
@@ -88,7 +89,8 @@ func testContainersReadinessProbe(env *provider.TestEnvironment) {
 		for _, cut := range env.Containers {
 			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " readiness probe ")
 			if cut.Data.ReadinessProbe == nil {
-				badcontainers = append(badcontainers, cut.Data.Name)
+				s := cut.Namespace + ":" + cut.Podname + ":" + cut.Data.Name
+				badcontainers = append(badcontainers, s)
 				logrus.Errorln("container ", cut.Data.Name, " does not have ReadinessProbe defined")
 			}
 		}
@@ -107,7 +109,8 @@ func testContainersLivenessProbe(env *provider.TestEnvironment) {
 		for _, cut := range env.Containers {
 			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " liveness probe ")
 			if cut.Data.LivenessProbe == nil {
-				badcontainers = append(badcontainers, cut.Data.Name)
+				s := cut.Namespace + ":" + cut.Podname + ":" + cut.Data.Name
+				badcontainers = append(badcontainers, s)
 				logrus.Errorln("container ", cut.Data.Name, " does not have livenessProbe defined")
 			}
 		}
@@ -127,8 +130,9 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 			logrus.Debugln("check pod ", put.Namespace, " ", put.Name, " owner reference")
 			o := ownerreference.NewOwnerReference(put)
 			o.RunTest()
-			if o.GetResults() != tnf.SUCCESS {
-				badPods = append(badPods, put.Name)
+			if o.GetResults() == tnf.SUCCESS {
+				s := put.Namespace + ":" + put.Name
+				badPods = append(badPods, s)
 			}
 		}
 		if len(badPods) > 0 {
