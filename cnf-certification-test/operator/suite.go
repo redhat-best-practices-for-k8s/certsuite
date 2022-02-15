@@ -21,6 +21,7 @@ import (
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
@@ -41,6 +42,11 @@ var _ = ginkgo.Describe(common.OperatorTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testOperatorInstallationPhaseSucceeded(&env)
 	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorNoPrivileges)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testOperatorInstallationWithoutPrivileges(&env)
+	})
 })
 
 func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
@@ -59,5 +65,34 @@ func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 
 	if n := len(badCsvs); n > 0 {
 		ginkgo.Fail(fmt.Sprintf("Found %d CSVs whose phase is not %s.", n, v1alpha1.CSVPhaseSucceeded))
+	}
+}
+
+func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
+	badCsvs := []string{}
+	if len(env.Csvs) == 0 {
+		ginkgo.Skip("No CSVs to perform test, skipping.")
+	}
+
+	for _, csv := range env.Csvs {
+		clusterPermissions := csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
+		if len(clusterPermissions) == 0 {
+			logrus.Debugf("No clusterPermissions found in csv %s (ns %s)", csv.Name, csv.Namespace)
+			continue
+		}
+
+		for i := range clusterPermissions {
+			permission := clusterPermissions[i]
+			for ruleIndex := range permission.Rules {
+				if n := len(permission.Rules[ruleIndex].ResourceNames); n > 0 {
+					tnf.ClaimFilePrintf("CSV %s (ns %s) has cluster permissions on %d resource names.", csv.Name, csv.Namespace, n)
+					badCsvs = append(badCsvs, fmt.Sprintf("%s.%s", csv.Namespace, csv.Name))
+				}
+			}
+		}
+	}
+
+	if n := len(badCsvs); n > 0 {
+		ginkgo.Fail(fmt.Sprintf("Found %d CSVs with priviledges on some resource names.", n))
 	}
 }
