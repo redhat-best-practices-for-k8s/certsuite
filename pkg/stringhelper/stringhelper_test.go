@@ -22,13 +22,11 @@ import (
 	"gotest.tools/assert"
 )
 
-//nolint:funlen
 func TestStringInSlice(t *testing.T) {
 	testCases := []struct {
-		testSlice       []string
-		testString      string
-		containsFeature bool
-		expected        bool
+		testSlice  []string
+		testString string
+		expected   bool
 	}{
 		{
 			testSlice: []string{
@@ -36,9 +34,8 @@ func TestStringInSlice(t *testing.T) {
 				"bananas",
 				"oranges",
 			},
-			testString:      "apples",
-			containsFeature: false,
-			expected:        true,
+			testString: "apples",
+			expected:   true,
 		},
 		{
 			testSlice: []string{
@@ -46,9 +43,8 @@ func TestStringInSlice(t *testing.T) {
 				"bananas",
 				"oranges",
 			},
-			testString:      "tacos",
-			containsFeature: false,
-			expected:        false,
+			testString: "tacos",
+			expected:   false,
 		},
 		{
 			testSlice: []string{
@@ -56,23 +52,90 @@ func TestStringInSlice(t *testing.T) {
 				"intree: N",
 				"outoftree: Y",
 			},
-			testString:      "intree:",
-			containsFeature: true, // Note: Turn 'on' the contains check
-			expected:        true,
-		},
-		{
-			testSlice: []string{
-				"intree: Y",
-				"intree: N",
-				"outoftree: Y",
-			},
-			testString:      "intree:",
-			containsFeature: false, // Note: Turn 'off' the contains check
-			expected:        false,
+			testString: "intree:",
+			expected:   false,
 		},
 	}
 
 	for _, tc := range testCases {
-		assert.Equal(t, tc.expected, StringInSlice(tc.testSlice, tc.testString, tc.containsFeature))
+		assert.Equal(t, tc.expected, StringInSlice(tc.testSlice, tc.testString))
+	}
+}
+
+func TestSubStringInSlice(t *testing.T) {
+	testCases := []struct {
+		testSlice  []string
+		testString string
+		expected   bool
+	}{
+		{
+			testSlice: []string{
+				"intree: Y",
+				"intree: N",
+				"outoftree: Y",
+			},
+			testString: "intree:",
+			expected:   true,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expected, SubStringInSlice(tc.testSlice, tc.testString))
+	}
+}
+
+//nolint:funlen
+func Test_hasIntersection(t *testing.T) {
+	type args struct {
+		s   []string
+		str []string
+	}
+	tests := []struct {
+		name             string
+		args             args
+		wantFullMatch    bool
+		wantPartialMatch bool
+	}{
+		{
+			args: args{[]string{
+				"apples",
+				"bananas",
+				"oranges",
+			},
+				[]string{"apples"}},
+			wantFullMatch:    true,
+			wantPartialMatch: false,
+		},
+		{
+			args: args{[]string{
+				"apples",
+				"bananas",
+				"oranges",
+			},
+				[]string{"tacos"}},
+			wantFullMatch:    false,
+			wantPartialMatch: false,
+		},
+		{
+			args: args{[]string{
+				"intree: Y",
+				"intree: N",
+				"outoftree: Y",
+			},
+				[]string{"intree:"}},
+			wantFullMatch:    false,
+			wantPartialMatch: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotFullMatch, gotPartialMatch := hasIntersection(tt.args.s, tt.args.str)
+			if gotFullMatch != tt.wantFullMatch {
+				t.Errorf("hasIntersection() gotFullMatch = %v, want %v", gotFullMatch, tt.wantFullMatch)
+			}
+			if gotPartialMatch != tt.wantPartialMatch {
+				t.Errorf("hasIntersection() gotPartialMatch = %v, want %v", gotPartialMatch, tt.wantPartialMatch)
+			}
+		})
 	}
 }
