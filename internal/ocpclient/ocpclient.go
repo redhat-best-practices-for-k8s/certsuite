@@ -27,7 +27,7 @@ type OcpClient struct {
 var ocpClient = OcpClient{}
 
 // NewOcpClient instantiate an ocp client
-func NewOcpClient(filenames ...string) OcpClient { //nolint:funlen // this is a spectial function with lots of assignements
+func NewOcpClient(filenames ...string) OcpClient { //nolint:funlen // this is a special function with lots of assignments
 	if ocpClient.ready {
 		return ocpClient
 	}
