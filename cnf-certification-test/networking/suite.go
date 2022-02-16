@@ -43,7 +43,6 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
-		provider.BuildTestEnvironment()
 		env = provider.GetTestEnvironment()
 		provider.WaitDebugPodReady()
 	})

@@ -31,10 +31,13 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
-	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	v1apps "k8s.io/api/apps/v1"
+	v1scaling "k8s.io/api/autoscaling/v1"
+	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 )
 
 const (
@@ -59,6 +62,9 @@ type TestEnvironment struct { // rename this with testTarget
 	MultusIPs          map[*v1.Pod]map[string][]string
 	SkipNetTests       map[*v1.Pod]bool
 	SkipMultusNetTests map[*v1.Pod]bool
+	Deployments        []*v1apps.Deployment
+	SatetfulSets       []*v1apps.StatefulSet
+	HorizentalScaller  map[string]*v1scaling.HorizontalPodAutoscaler
 }
 
 type Container struct {
@@ -87,7 +93,10 @@ func GetContainer() *Container {
 	return &Container{}
 }
 
-func BuildTestEnvironment() { //nolint:funlen
+func GetUpdatedDeployment(ac *appv1client.AppsV1Client, namespace, podName string) (*v1apps.Deployment, error) {
+	return autodiscover.FindDeploymentByNameByNamespace(ac, namespace, podName)
+}
+func buildTestEnvironment() { //nolint:funlen
 	// delete env
 	env = TestEnvironment{}
 	// build Pods and Containers under test
@@ -124,21 +133,26 @@ func BuildTestEnvironment() { //nolint:funlen
 			env.ContainersMap[cut] = &container
 		}
 	}
-	debugPods := data.DebugPods
 	env.DebugPods = make(map[string]*v1.Pod)
-	for i := 0; i < len(debugPods); i++ {
-		nodeName := debugPods[i].Spec.NodeName
-		env.DebugPods[nodeName] = &debugPods[i]
+	for i := 0; i < len(data.DebugPods); i++ {
+		nodeName := data.DebugPods[i].Spec.NodeName
+		env.DebugPods[nodeName] = &data.DebugPods[i]
 	}
-	csvs := data.Csvs
-	for i := range csvs {
-		env.Csvs = append(env.Csvs, &csvs[i])
+	for i := range data.Csvs {
+		env.Csvs = append(env.Csvs, &data.Csvs[i])
 	}
+	for i := range data.Deployments {
+		env.Deployments = append(env.Deployments, &data.Deployments[i])
+	}
+	for i := range data.StatefulSet {
+		env.SatetfulSets = append(env.SatetfulSets, &data.StatefulSet[i])
+	}
+	env.HorizentalScaller = data.Hpas
 }
 
 func GetTestEnvironment() TestEnvironment {
 	if !loaded {
-		BuildTestEnvironment()
+		buildTestEnvironment()
 		loaded = true
 	}
 	return env
@@ -182,7 +196,7 @@ func WaitDebugPodReady() {
 	}
 }
 
-func isDaemonSetReady(status *appsv1.DaemonSetStatus) (isReady bool) {
+func isDaemonSetReady(status *v1apps.DaemonSetStatus) (isReady bool) {
 	isReady = false
 	if status.DesiredNumberScheduled == status.CurrentNumberScheduled && //nolint:gocritic
 		status.DesiredNumberScheduled == status.NumberAvailable &&
@@ -254,4 +268,8 @@ func getPodIPsPerNet(annotation string) (ips map[string][]string, err error) {
 		}
 	}
 	return ips, nil
+}
+
+func (env *TestEnvironment) SetNeedsRefresh() {
+	loaded = false
 }

@@ -17,16 +17,24 @@
 package lifecycle
 
 import (
+	"time"
+
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/ownerreference"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/scaling"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+
 	v1 "k8s.io/api/core/v1"
+)
+
+const (
+	timeout = 60 * time.Second
 )
 
 //
@@ -35,7 +43,6 @@ import (
 var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
-		provider.BuildTestEnvironment()
 		env = provider.GetTestEnvironment()
 	})
 	testContainersPreStop(&env)
@@ -43,6 +50,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	testContainersReadinessProbe(&env)
 	testContainersLivenessProbe(&env)
 	testPodsOwnerReference(&env)
+	testScaling(&env, timeout)
 })
 
 func testContainersPreStop(env *provider.TestEnvironment) {
@@ -140,5 +148,33 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 			tnf.ClaimFilePrintf("bad containers %v", badPods)
 		}
 		gomega.Expect(0).To(gomega.Equal(len(badPods)))
+	})
+}
+
+func testScaling(env *provider.TestEnvironment, timeout time.Duration) {
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestDeploymentScalingIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		ginkgo.By("Testing deployment scaling")
+		defer env.SetNeedsRefresh()
+
+		if len(env.Deployments) == 0 {
+			ginkgo.Skip("No test deployments found.")
+		}
+		failedDeployments := []string{}
+		skippedDeployments := []string{}
+		for i := range env.Deployments {
+			if !scaling.TestDeploymentScaling(env.Deployments[i], env.HorizentalScaller, timeout) {
+				failedDeployments = append(failedDeployments, env.Deployments[i].Name)
+			}
+		}
+
+		if len(skippedDeployments) > 0 {
+			tnf.ClaimFilePrintf("not ready deployments : %v", skippedDeployments)
+		}
+		if len(failedDeployments) > 0 {
+			tnf.ClaimFilePrintf(" failed deployments: %v", failedDeployments)
+		}
+		gomega.Expect(0).To(gomega.Equal(len(failedDeployments)))
+		gomega.Expect(0).To(gomega.Equal(len(skippedDeployments)))
 	})
 }
