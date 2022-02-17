@@ -29,7 +29,7 @@ import (
 
 func findPodsByLabel(oc *corev1client.CoreV1Client,
 	labels []configuration.Label,
-	namespaces []configuration.Namespace) []v1.Pod {
+	namespaces []string) []v1.Pod {
 	Pods := []v1.Pod{}
 	for _, ns := range namespaces {
 		for _, l := range labels {
@@ -37,7 +37,7 @@ func findPodsByLabel(oc *corev1client.CoreV1Client,
 			label := buildLabelQuery(l)
 			options.LabelSelector = label
 			// (*v1.PodList, error)
-			pods, err := oc.Pods(ns.Name).List(context.TODO(), options)
+			pods, err := oc.Pods(ns).List(context.TODO(), options)
 			if err != nil {
 				logrus.Errorln("error when listing pods in ns=", ns, " label=", label, " try to proceed")
 				continue

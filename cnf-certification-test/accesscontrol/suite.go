@@ -23,6 +23,7 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/namespace"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
@@ -31,6 +32,12 @@ import (
 
 var (
 	nonCompliantCapabilities = []string{"NET_ADMIN", "SYS_ADMIN", "NET_RAW", "IPC_LOCK"}
+	invalidNamespacePrefixes = []string{
+		"default",
+		"openshift-",
+		"istio-",
+		"aspenmesh-",
+	}
 )
 
 var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
@@ -80,6 +87,11 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostPID)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		TestPodHostPID(&env)
+	})
+	// Namespace
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNamespaceBestPracticesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testNamespace(&env)
 	})
 	// pod service account
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodServiceAccountBestPracticesIdentifier)
@@ -240,6 +252,40 @@ func TestPodHostPID(env *provider.TestEnvironment) {
 	}
 	tnf.ClaimFilePrintf("bad pods: %v", badPods)
 	gomega.Expect(badPods).To(gomega.BeNil())
+}
+
+// Tests namespaces for invalid prefixed and CRs are not defined in namespaces not under test with CRDs under test
+func testNamespace(env *provider.TestEnvironment) {
+	ginkgo.By(fmt.Sprintf("CNF resources' Namespaces should not have any of the following prefixes: %v", invalidNamespacePrefixes))
+	var failedNamespaces []string
+	for _, namespace := range env.Namespaces {
+		ginkgo.By(fmt.Sprintf("Checking namespace %s", namespace))
+		for _, invalidPrefix := range invalidNamespacePrefixes {
+			if strings.HasPrefix(namespace, invalidPrefix) {
+				tnf.ClaimFilePrintf("Namespace %s has invalid prefix %s", namespace, invalidPrefix)
+				failedNamespaces = append(failedNamespaces, namespace)
+			}
+		}
+	}
+	if failedNamespacesNum := len(failedNamespaces); failedNamespacesNum > 0 {
+		ginkgo.Fail(fmt.Sprintf("Found %d Namespaces with an invalid prefix.", failedNamespacesNum))
+	}
+	ginkgo.By(fmt.Sprintf("CNF pods' should belong to any of the configured Namespaces: %v", env.Namespaces))
+	ginkgo.By(fmt.Sprintf("CRs from autodiscovered CRDs should belong only to the configured Namespaces: %v", env.Namespaces))
+	invalidCrs, _ := namespace.TestCrsNamespaces(env.Crds, env.Namespaces)
+
+	invalidCrsNum := 0
+	if invalidCrdsNum := len(invalidCrs); invalidCrdsNum > 0 {
+		for crdName, namespaces := range invalidCrs {
+			for namespace, crNames := range namespaces {
+				for _, crName := range crNames {
+					tnf.ClaimFilePrintf("crName=%s namespace=%s is invalid (crd=%s)", crName, namespace, crdName)
+					invalidCrsNum++
+				}
+			}
+		}
+		ginkgo.Fail(fmt.Sprintf("Found %d CRs belonging to invalid Namespaces.", invalidCrsNum))
+	}
 }
 
 func TestPodServiceAccount(env *provider.TestEnvironment) {
