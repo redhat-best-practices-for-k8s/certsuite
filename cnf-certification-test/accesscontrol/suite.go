@@ -93,6 +93,11 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testNamespace(&env)
 	})
+	// pod service account
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodServiceAccountBestPracticesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestPodServiceAccount(&env)
+	})
 })
 
 // TestSecConCapabilities verifies that non compliant capabilities are not present
@@ -277,5 +282,20 @@ func testNamespace(env *provider.TestEnvironment) {
 			}
 		}
 		ginkgo.Fail(fmt.Sprintf("Found %d CRs belonging to invalid Namespaces.", invalidCrsNum))
+	}
+}
+func TestPodServiceAccount(env *provider.TestEnvironment) {
+	ginkgo.By("Tests that each pod utilizes a valid service account")
+	failedPods := []string{}
+	for _, put := range env.Pods {
+		ginkgo.By(fmt.Sprintf("Testing service account for pod %s (ns: %s)", put.Name, put.Namespace))
+		if put.Spec.ServiceAccountName == "" {
+			tnf.ClaimFilePrintf("Pod %s (ns: %s) doesn't have a service account name.", put.Name, put.Namespace)
+			failedPods = append(failedPods, put.Name)
+		}
+	}
+	if n := len(failedPods); n > 0 {
+		logrus.Debugf("Pods without service account: %+v", failedPods)
+		ginkgo.Fail(fmt.Sprintf("%d pods don't have a service account name.", n))
 	}
 }
