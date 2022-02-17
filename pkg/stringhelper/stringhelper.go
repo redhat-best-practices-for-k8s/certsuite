@@ -21,31 +21,17 @@ import (
 )
 
 // StringInSlice checks a slice for a given string.
-func StringInSlice(s []string, str string) bool {
-	fullMatch, _ := hasIntersection(s, []string{str})
-	return fullMatch
-}
-
-// StringInSlicePartialMatch checks a slice for a given substring.
-func SubStringInSlice(s []string, str string) bool {
-	fullMatch, partialMatch := hasIntersection(s, []string{str})
-	return fullMatch || partialMatch
-}
-
-func hasIntersection(s, str []string) (fullMatch, partialMatch bool) {
-	for _, aString := range str {
-		for _, aStringInSlice := range s {
-			if strings.TrimSpace(aStringInSlice) == aString {
-				fullMatch = true
-				partialMatch = false
-				return fullMatch, partialMatch
+func StringInSlice(s []string, str string, contains bool) bool {
+	for _, v := range s {
+		if !contains {
+			if strings.TrimSpace(v) == str {
+				return true
 			}
-			if strings.Contains(strings.TrimSpace(aStringInSlice), aString) {
-				fullMatch = false
-				partialMatch = true
-				return fullMatch, partialMatch
+		} else {
+			if strings.Contains(strings.TrimSpace(v), str) {
+				return true
 			}
 		}
 	}
-	return false, false
+	return false
 }

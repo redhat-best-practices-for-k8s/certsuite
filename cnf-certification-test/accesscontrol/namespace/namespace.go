@@ -32,14 +32,16 @@ import (
 // The list of CRs not belonging to the namespaces passed as input is returned as invalid
 func TestCrsNamespaces(crds []*apiextv1beta1.CustomResourceDefinition, configNamespaces []string) (invalidCrs map[string]map[string][]string, err error) {
 	// Initialize the top level map
-	invalidCrs = make(map[string]map[string][]string)
+	if invalidCrs == nil {
+		invalidCrs = make(map[string]map[string][]string)
+	}
 	for _, crd := range crds {
 		crNamespaces, err := getCrsPerNamespaces(crd)
 		if err != nil {
 			return invalidCrs, fmt.Errorf("failed to get CRs for CRD %s - Error: %v", crd.Name, err)
 		}
 		for namespace, crNames := range crNamespaces {
-			if !stringhelper.StringInSlice(configNamespaces, namespace) {
+			if !stringhelper.StringInSlice(configNamespaces, namespace, false) {
 				logrus.Tracef("CRD: %s (kind:%s/ plural:%s) has CRs %v deployed in namespace (%s) not in configured namespaces %v",
 					crd.Name, crd.Spec.Names.Kind, crd.Spec.Names.Plural, crNames, namespace, configNamespaces)
 				// Initialize this map dimenension before use
