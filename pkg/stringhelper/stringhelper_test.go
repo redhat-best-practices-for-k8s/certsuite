@@ -19,7 +19,7 @@ package stringhelper
 import (
 	"testing"
 
-	"gotest.tools/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 //nolint:funlen
