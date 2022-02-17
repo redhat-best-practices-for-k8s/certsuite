@@ -32,9 +32,7 @@ import (
 // The list of CRs not belonging to the namespaces passed as input is returned as invalid
 func TestCrsNamespaces(crds []*apiextv1beta1.CustomResourceDefinition, configNamespaces []string) (invalidCrs map[string]map[string][]string, err error) {
 	// Initialize the top level map
-	if invalidCrs == nil {
-		invalidCrs = make(map[string]map[string][]string)
-	}
+	invalidCrs = make(map[string]map[string][]string)
 	for _, crd := range crds {
 		crNamespaces, err := getCrsPerNamespaces(crd)
 		if err != nil {
