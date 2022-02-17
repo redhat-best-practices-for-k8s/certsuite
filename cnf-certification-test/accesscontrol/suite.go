@@ -273,17 +273,21 @@ func testNamespace(env *provider.TestEnvironment) {
 	ginkgo.By(fmt.Sprintf("CNF pods' should belong to any of the configured Namespaces: %v", env.Namespaces))
 	ginkgo.By(fmt.Sprintf("CRs from autodiscovered CRDs should belong only to the configured Namespaces: %v", env.Namespaces))
 	invalidCrs, _ := namespace.TestCrsNamespaces(env.Crds, env.Namespaces)
-	if invalidCrsNum := len(invalidCrs); invalidCrsNum > 0 {
+
+	invalidCrsNum := 0
+	if invalidCrdsNum := len(invalidCrs); invalidCrdsNum > 0 {
 		for crdName, namespaces := range invalidCrs {
 			for namespace, crNames := range namespaces {
 				for _, crName := range crNames {
 					tnf.ClaimFilePrintf("crName=%s namespace=%s is invalid (crd=%s)", crName, namespace, crdName)
+					invalidCrsNum++
 				}
 			}
 		}
 		ginkgo.Fail(fmt.Sprintf("Found %d CRs belonging to invalid Namespaces.", invalidCrsNum))
 	}
 }
+
 func TestPodServiceAccount(env *provider.TestEnvironment) {
 	ginkgo.By("Tests that each pod utilizes a valid service account")
 	failedPods := []string{}
