@@ -35,7 +35,7 @@ require (
 
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/onsi/ginkgo/v2 v2.0.0
+	github.com/onsi/ginkgo/v2 v2.1.3
 	github.com/openshift/client-go v0.0.0-20211209144617-7385dd6338e3
 	k8s.io/api v0.23.3
 	k8s.io/apimachinery v0.23.3
