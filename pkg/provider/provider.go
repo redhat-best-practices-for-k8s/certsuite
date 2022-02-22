@@ -17,11 +17,12 @@
 package provider
 
 import (
+	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	v1 "k8s.io/api/core/v1"
-	apiextv1beta "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 )
 
 type TestEnvironment struct { // rename this with testTarget
@@ -32,7 +33,7 @@ type TestEnvironment struct { // rename this with testTarget
 	DebugPods  map[string]*v1.Pod // map from nodename to debugPod
 	Config     configuration.TestConfiguration
 	variables  configuration.TestParameters
-	Crds       []*apiextv1beta.CustomResourceDefinition
+	Crds       []*apiextv1.CustomResourceDefinition
 }
 
 type Container struct {

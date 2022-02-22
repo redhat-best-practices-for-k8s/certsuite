@@ -20,12 +20,13 @@ import (
 	"fmt"
 	"path/filepath"
 
+	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	v1 "k8s.io/api/core/v1"
-	apiextv1beta "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 )
 
 const (
@@ -56,7 +57,7 @@ func buildLabelQuery(label configuration.Label) string {
 func DoAutoDiscover() (env configuration.TestParameters,
 	testData configuration.TestConfiguration,
 	pods,
-	debugPods []v1.Pod, crds []*apiextv1beta.CustomResourceDefinition, namespaces []string,
+	debugPods []v1.Pod, crds []*apiextv1.CustomResourceDefinition, namespaces []string,
 	csvs []olmv1Alpha.ClusterServiceVersion) {
 	env, err := configuration.LoadEnvironmentVariables()
 	if err != nil {
