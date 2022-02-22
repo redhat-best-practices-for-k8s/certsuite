@@ -24,6 +24,7 @@ require (
 	github.com/openshift/client-go v0.0.0-20211209144617-7385dd6338e3
 	github.com/operator-framework/api v0.13.0
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
+	github.com/pkg/errors v0.9.1
 	k8s.io/api v0.23.4
 	k8s.io/apimachinery v0.23.4
 )

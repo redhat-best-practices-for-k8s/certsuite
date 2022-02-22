@@ -22,6 +22,7 @@ import (
 	"errors"
 
 	appsv1 "k8s.io/api/apps/v1"
+	v1 "k8s.io/api/core/v1"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -97,6 +98,7 @@ func TestGetUID(t *testing.T) {
 
 	for _, tc := range testCases {
 		c := GetContainer()
+		c.Data = &v1.Container{}
 		c.Status.ContainerID = tc.testCID
 		uid, err := c.GetUID()
 		assert.Equal(t, tc.expectedErr, err)
