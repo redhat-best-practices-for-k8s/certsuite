@@ -42,6 +42,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	testContainersReadinessProbe(&env)
 	testContainersLivenessProbe(&env)
 	testPodsOwnerReference(&env)
+
 })
 
 func testContainersPreStop(env *provider.TestEnvironment) {
