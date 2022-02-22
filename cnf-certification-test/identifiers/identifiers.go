@@ -145,9 +145,9 @@ var (
 		Url:     formTestURL(common.PlatformAlterationTestKey, "tainted-node-kernel"),
 		Version: versionOne,
 	}
-	// TestOperatorInstallStatusIdentifier tests Operator best practices.
-	TestOperatorInstallStatusIdentifier = claim.Identifier{
-		Url:     formTestURL(common.OperatorTestKey, "install-status"),
+	// TestOperatorInstallStatusSucceededIdentifier tests Operator best practices.
+	TestOperatorInstallStatusSucceededIdentifier = claim.Identifier{
+		Url:     formTestURL(common.OperatorTestKey, "install-status-succeeded"),
 		Version: versionOne,
 	}
 	// TestOperatorIsCertifiedIdentifier tests that an Operator has passed Operator certification.
@@ -453,15 +453,12 @@ the same hacks.'`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.14",
 	},
 
-	TestOperatorInstallStatusIdentifier: {
-		Identifier:  TestOperatorInstallStatusIdentifier,
+	TestOperatorInstallStatusSucceededIdentifier: {
+		Identifier:  TestOperatorInstallStatusSucceededIdentifier,
 		Type:        normativeResult,
-		Remediation: `Ensure that your Operator abides by the Operator Best Practices mentioned in the description.`,
-		Description: formDescription(TestOperatorInstallStatusIdentifier,
-			`Ensures that CNF Operators abide by best practices.  The following is tested:
-1. The Operator CSV reports "Installed" status.
-2. The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present 
-with no resourceNames under its rules.`),
+		Remediation: `Make sure all the CNF operators have been successfully installed by OLM.`,
+		Description: formDescription(TestOperatorInstallStatusSucceededIdentifier,
+			`Ensures that the target CNF operators report "Succeeded" as their installation status.`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.12 and Section 6.3.3",
 	},
 

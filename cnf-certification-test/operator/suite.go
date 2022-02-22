@@ -17,14 +17,47 @@
 package operator
 
 import (
+	"fmt"
+
 	"github.com/onsi/ginkgo/v2"
-	"github.com/sirupsen/logrus"
+	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
 //
 // All actual test code belongs below here.  Utilities belong above.
 //
 var _ = ginkgo.Describe(common.OperatorTestKey, func() {
-	logrus.Debugf("%s not moved yet to new framework", common.OperatorTestKey)
+	var env provider.TestEnvironment
+	ginkgo.BeforeEach(func() {
+		provider.BuildTestEnvironment()
+		env = provider.GetTestEnvironment()
+	})
+
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorInstallStatusSucceededIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testOperatorInstallationPhaseSucceeded(&env)
+	})
 })
+
+func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
+	badCsvs := []string{}
+	if len(env.Csvs) == 0 {
+		ginkgo.Skip("No CSVs to perform test, skipping.")
+	}
+
+	for _, csv := range env.Csvs {
+		if csv.Status.Phase != v1alpha1.CSVPhaseSucceeded {
+			badCsvs = append(badCsvs, fmt.Sprintf("%s.%s", csv.Namespace, csv.Name))
+			tnf.ClaimFilePrintf("CSV %s (ns %s) is in phase %s. Expected phase is %s",
+				csv.Name, csv.Namespace, csv.Status.Phase, v1alpha1.CSVPhaseSucceeded)
+		}
+	}
+
+	if n := len(badCsvs); n > 0 {
+		ginkgo.Fail(fmt.Sprintf("Found %d CSVs whose phase is not %s.", n, v1alpha1.CSVPhaseSucceeded))
+	}
+}

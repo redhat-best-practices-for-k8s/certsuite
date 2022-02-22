@@ -17,6 +17,7 @@
 package provider
 
 import (
+	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	v1 "k8s.io/api/core/v1"
@@ -27,6 +28,7 @@ type TestEnvironment struct { // rename this with testTarget
 	Namespaces []string //
 	Pods       []*v1.Pod
 	Containers []*Container
+	Csvs       []*v1alpha1.ClusterServiceVersion
 	DebugPods  map[string]*v1.Pod // map from nodename to debugPod
 	Config     configuration.TestConfiguration
 	variables  configuration.TestParameters
@@ -58,7 +60,7 @@ func BuildTestEnvironment() {
 	// delete env
 	env = TestEnvironment{}
 	// build Pods and Containers under test
-	environmentVariables, conf, pods, debugPods, crds, ns := autodiscover.DoAutoDiscover()
+	environmentVariables, conf, pods, debugPods, crds, ns, csvs := autodiscover.DoAutoDiscover()
 	env.Config = conf
 	env.Crds = crds
 	env.Namespaces = ns
@@ -77,6 +79,10 @@ func BuildTestEnvironment() {
 	for i := 0; i < len(debugPods); i++ {
 		nodeName := debugPods[i].Spec.NodeName
 		env.DebugPods[nodeName] = &debugPods[i]
+	}
+
+	for i := range csvs {
+		env.Csvs = append(env.Csvs, &csvs[i])
 	}
 }
 

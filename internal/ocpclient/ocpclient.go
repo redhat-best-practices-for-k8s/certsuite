@@ -3,9 +3,8 @@ package ocpclient
 import (
 	"time"
 
-	//	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
-	// "client-go/config/clientset/versioned/typed/config/v1"
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
+	clientOlm "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	"github.com/sirupsen/logrus"
 	apiextensionsv1beta1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/typed/apiextensions/v1beta1"
 	"k8s.io/client-go/dynamic"
@@ -19,6 +18,7 @@ type OcpClient struct {
 	ClientConfig  clientconfigv1.ConfigV1Interface
 	DynamicClient dynamic.Interface
 	APIExtClient  apiextensionsv1beta1.ApiextensionsV1beta1Interface
+	OlmClient     *clientOlm.Clientset
 	RestConfig    *rest.Config
 
 	ready bool
@@ -54,21 +54,26 @@ func NewOcpClient(filenames ...string) OcpClient { //nolint:funlen // this is a 
 	}
 	DefaultTimeout := 10 * time.Second
 	ocpClient.RestConfig.Timeout = DefaultTimeout
+
 	ocpClient.Coreclient, err = corev1client.NewForConfig(ocpClient.RestConfig)
 	if err != nil {
-		logrus.Panic("can't instantiate corev1client", err)
+		logrus.Panic("can't instantiate corev1client: ", err)
 	}
 	ocpClient.ClientConfig, err = clientconfigv1.NewForConfig(ocpClient.RestConfig)
 	if err != nil {
-		logrus.Panic("can't instantiate corev1client", err)
+		logrus.Panic("can't instantiate corev1client: ", err)
 	}
 	ocpClient.DynamicClient, err = dynamic.NewForConfig(ocpClient.RestConfig)
 	if err != nil {
-		logrus.Panic("can't instantiate dynamic client (unstructured/dynamic)", err)
+		logrus.Panic("can't instantiate dynamic client (unstructured/dynamic): ", err)
 	}
 	ocpClient.APIExtClient, err = apiextensionsv1beta1.NewForConfig(ocpClient.RestConfig)
 	if err != nil {
-		logrus.Panic("can't instantiate dynamic client (unstructured/dynamic)", err)
+		logrus.Panic("can't instantiate dynamic client (unstructured/dynamic): ", err)
+	}
+	ocpClient.OlmClient, err = clientOlm.NewForConfig(ocpClient.RestConfig)
+	if err != nil {
+		logrus.Panic("can't instantiate olm clientset: ", err)
 	}
 
 	ocpClient.ready = true

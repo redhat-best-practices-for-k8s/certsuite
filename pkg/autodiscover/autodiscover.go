@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"path/filepath"
 
+	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
@@ -28,7 +29,10 @@ import (
 )
 
 const (
-	labelTemplate = "%s/%s"
+	tnfCsvTargetLabelName  = "operator"
+	tnfCsvTargetLabelValue = ""
+	tnfLabelPrefix         = "test-network-function.com"
+	labelTemplate          = "%s/%s"
 	// anyLabelValue is the value that will allow any value for a label when building the label query.
 	anyLabelValue = ""
 )
@@ -52,7 +56,8 @@ func buildLabelQuery(label configuration.Label) string {
 func DoAutoDiscover() (env configuration.TestParameters,
 	testData configuration.TestConfiguration,
 	pods,
-	debugPods []v1.Pod, crds []*apiextv1beta.CustomResourceDefinition, namespaces []string) {
+	debugPods []v1.Pod, crds []*apiextv1beta.CustomResourceDefinition, namespaces []string,
+	csvs []olmv1Alpha.ClusterServiceVersion) {
 	env, err := configuration.LoadEnvironmentVariables()
 	if err != nil {
 		logrus.Fatalln("can't load environment variable")
@@ -78,7 +83,8 @@ func DoAutoDiscover() (env configuration.TestParameters,
 	debugNS := []string{defaultNamespace}
 	debugPods = findPodsByLabel(oc.Coreclient, debugLabels, debugNS)
 	crds = FindTestCrdNames(testData.CrdFilters)
-	return env, testData, pods, debugPods, crds, namespaces
+	csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, testData.TargetNameSpaces)
+	return env, testData, pods, debugPods, crds, namespaces, csvs
 }
 
 func namespacesListToStringList(namespaceList []configuration.Namespace) (stringList []string) {

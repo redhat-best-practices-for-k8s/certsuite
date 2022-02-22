@@ -312,14 +312,14 @@ Description|http://test-network-function.com/testcases/operator/install-source t
 Result Type|normative
 Suggested Remediation|Ensure that your Operator is installed via OLM.
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2.12 and Section 6.3.3
-### http://test-network-function.com/testcases/operator/install-status
+### http://test-network-function.com/testcases/operator/install-status-succeeded
 
 Property|Description
 ---|---
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/operator/install-status Ensures that CNF Operators abide by best practices.  The following is tested: 1. The Operator CSV reports "Installed" status. 2. The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present  with no resourceNames under its rules.
+Description|http://test-network-function.com/testcases/operator/install-status-succeeded Ensures that the target CNF operators report "Succeeded" as their installation status.
 Result Type|normative
-Suggested Remediation|Ensure that your Operator abides by the Operator Best Practices mentioned in the description.
+Suggested Remediation|Make sure all the CNF operators have been successfully installed by OLM.
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2.12 and Section 6.3.3
 ### http://test-network-function.com/testcases/platform-alteration/base-image
 
