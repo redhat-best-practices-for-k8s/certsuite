@@ -516,3 +516,4 @@ For example:
 ```shell script
 TNF_DEFAULT_BUFFER_SIZE=32768 ./run-cnf-suites.sh -f diagnostic
 ```
+GPG Test
