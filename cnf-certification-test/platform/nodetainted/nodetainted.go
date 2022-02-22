@@ -25,7 +25,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	utils "github.com/test-network-function/cnf-certification-test/pkg/tnf/utils"
 )
 
 // NodeTainted holds information about tainted nodes.
@@ -79,16 +78,9 @@ func (nt *NodeTainted) GetModulesFromNode(nodeName string) []string {
 }
 
 func (nt *NodeTainted) ModuleInTree(nodeName, moduleName string) bool {
-	command := `chroot /host modinfo ` + moduleName + ` | awk '{ print $1 }'`
+	command := `chroot /host cat /sys/module/` + moduleName + `/taint`
 	cmdOutput, _ := nt.runCommand(command)
-	outputSlice := strings.Split(strings.ReplaceAll(cmdOutput, "\r\n", "\n"), "\n")
-	// The output, if found, should look something like 'intree:   Y'.
-	// As long as we look for 'intree:' being contained in the string we should be good to go.
-	found := false
-	if utils.StringInSlice(outputSlice, `intree:`, false) {
-		found = true
-	}
-	return found
+	return !strings.Contains(cmdOutput, "O")
 }
 
 func GetTaintedBitValues() []string {
