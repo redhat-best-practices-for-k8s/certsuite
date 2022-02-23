@@ -24,13 +24,14 @@ import (
 
 	"context"
 
+	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+
 	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
-	apiextv1beta "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // getClusterCrdNames returns a list of crd names found in the cluster.
-func getClusterCrdNames() (crdList []*apiextv1beta.CustomResourceDefinition, err error) {
+func getClusterCrdNames() (crdList []*apiextv1.CustomResourceDefinition, err error) {
 	oc := ocpclient.NewOcpClient()
 	options := metav1.ListOptions{}
 	crds, err := oc.APIExtClient.CustomResourceDefinitions().List(context.TODO(), options)
@@ -45,11 +46,11 @@ func getClusterCrdNames() (crdList []*apiextv1beta.CustomResourceDefinition, err
 }
 
 // FindTestCrdNames gets a list of CRD names based on configured groups.
-func FindTestCrdNames(crdFilters []configuration.CrdFilter) (targetCrds []*apiextv1beta.CustomResourceDefinition) {
+func FindTestCrdNames(crdFilters []configuration.CrdFilter) (targetCrds []*apiextv1.CustomResourceDefinition) {
 	clusterCrds, err := getClusterCrdNames()
 	if err != nil {
 		logrus.Errorf("Unable to get cluster CRD.")
-		return []*apiextv1beta.CustomResourceDefinition{}
+		return []*apiextv1.CustomResourceDefinition{}
 	}
 	for _, crd := range clusterCrds {
 		for _, crdFilter := range crdFilters {
