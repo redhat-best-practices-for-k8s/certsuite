@@ -24,8 +24,10 @@ import (
 	"github.com/onsi/gomega"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/namespace"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/rolebinding"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
@@ -98,6 +100,12 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		TestPodServiceAccount(&env)
 	})
+	// pod role bindings
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodRoleBindingsBestPracticesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestPodRoleBindings(&env)
+	})
+
 })
 
 // TestSecConCapabilities verifies that non compliant capabilities are not present
@@ -288,6 +296,7 @@ func testNamespace(env *provider.TestEnvironment) {
 	}
 }
 
+// TestPodServiceAccount verifies that the pod utilizes a valid service account
 func TestPodServiceAccount(env *provider.TestEnvironment) {
 	ginkgo.By("Tests that each pod utilizes a valid service account")
 	failedPods := []string{}
@@ -301,5 +310,36 @@ func TestPodServiceAccount(env *provider.TestEnvironment) {
 	if n := len(failedPods); n > 0 {
 		logrus.Debugf("Pods without service account: %+v", failedPods)
 		ginkgo.Fail(fmt.Sprintf("%d pods don't have a service account name.", n))
+	}
+}
+
+// TestPodRoleBindings verifies that the pod utilizes a
+func TestPodRoleBindings(env *provider.TestEnvironment) {
+	ginkgo.By("Should not have RoleBinding in other namespaces")
+	failedPods := []string{}
+
+	for _, put := range env.Pods {
+		ginkgo.By(fmt.Sprintf("Testing role binding for pod: %s namespace: %s", put.Name, put.Namespace))
+		if put.Spec.ServiceAccountName == "" {
+			ginkgo.Skip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
+		}
+
+		// Create a new object with the ability to gather rolebinding specs.
+		rbTester := rolebinding.NewRoleBinding(put.Spec.ServiceAccountName, put.Namespace, clientsholder.NewClientsHolder())
+
+		// Get any rolebindings that do not belong to the pod namespace.
+		roleBindings, err := rbTester.GetRoleBindings()
+		if err != nil {
+			failedPods = append(failedPods, put.Name)
+		}
+
+		if len(roleBindings) > 0 {
+			logrus.Warnf("Pod: %s has the following role bindings: %s", put.Name, roleBindings)
+			failedPods = append(failedPods, put.Name)
+		}
+	}
+	if n := len(failedPods); n > 0 {
+		logrus.Debugf("Pods with role bindings: %+v", failedPods)
+		ginkgo.Fail(fmt.Sprintf("%d pods have role bindings in other namespaces.", n))
 	}
 }
