@@ -81,12 +81,14 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 			continue
 		}
 
+		LOOP:
 		for i := range clusterPermissions {
 			permission := clusterPermissions[i]
 			for ruleIndex := range permission.Rules {
 				if n := len(permission.Rules[ruleIndex].ResourceNames); n > 0 {
 					tnf.ClaimFilePrintf("CSV %s (ns %s) has cluster permissions on %d resource names.", csv.Name, csv.Namespace, n)
 					badCsvs = append(badCsvs, fmt.Sprintf("%s.%s", csv.Namespace, csv.Name))
+					break LOOP
 				}
 			}
 		}
