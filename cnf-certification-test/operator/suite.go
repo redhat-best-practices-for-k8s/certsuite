@@ -81,7 +81,7 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 			continue
 		}
 
-		LOOP:
+	LOOP:
 		for i := range clusterPermissions {
 			permission := clusterPermissions[i]
 			for ruleIndex := range permission.Rules {
