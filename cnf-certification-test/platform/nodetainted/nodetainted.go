@@ -67,6 +67,16 @@ func (nt *NodeTainted) GetKernelTaintInfo() (string, error) {
 	return output, nil
 }
 
+func removeEmptyStrings(s []string) []string {
+	var r []string
+	for _, str := range s {
+		if str != "" {
+			r = append(r, str)
+		}
+	}
+	return r
+}
+
 func (nt *NodeTainted) GetModulesFromNode(nodeName string) []string {
 	// Get the 1st column list of the modules running on the node.
 	// Split on the return/newline and get the list of the modules back.
@@ -74,7 +84,8 @@ func (nt *NodeTainted) GetModulesFromNode(nodeName string) []string {
 	command := `chroot /host lsmod | awk '{ print $1 }' | grep -v Module`
 	output, _ := nt.runCommand(command)
 	output = strings.ReplaceAll(output, "\t", "")
-	return strings.Split(strings.ReplaceAll(output, "\r\n", "\n"), "\n")
+	moduleList := strings.Split(strings.ReplaceAll(output, "\r\n", "\n"), "\n")
+	return removeEmptyStrings(moduleList)
 }
 
 func (nt *NodeTainted) ModuleInTree(nodeName, moduleName string) bool {
@@ -125,7 +136,7 @@ func GetOutOfTreeModules(modules []string, nodeName string, nt *NodeTainted) []s
 	taintedModules := []string{}
 	for _, module := range modules {
 		logrus.Debug(fmt.Sprintf("Looking for module in tree: %s", module))
-		if module != "" && !nt.ModuleInTree(nodeName, module) {
+		if !nt.ModuleInTree(nodeName, module) {
 			taintedModules = append(taintedModules, module)
 		}
 	}

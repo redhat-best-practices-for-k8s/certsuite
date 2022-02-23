@@ -83,3 +83,23 @@ func TestDecodeKernelTaints(t *testing.T) {
 	assert.Equal(t, taint2, "proprietary module was loaded, kernel has been live patched, ")
 	assert.Len(t, taint2Slice, 2)
 }
+
+func TestRemoveEmptyStrings(t *testing.T) {
+	testCases := []struct {
+		testSlice     []string
+		expectedSlice []string
+	}{
+		{
+			testSlice:     []string{"one", "two", "three", "", ""},
+			expectedSlice: []string{"one", "two", "three"},
+		},
+		{ // returns a nil slice if the contents of the incoming slice are empty
+			testSlice:     []string{"", ""},
+			expectedSlice: nil,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedSlice, removeEmptyStrings(tc.testSlice))
+	}
+}

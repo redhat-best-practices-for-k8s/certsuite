@@ -114,15 +114,13 @@ func testTainted(env *provider.TestEnvironment) {
 		}
 		tnf.ClaimFilePrintf(fmt.Sprintf("Namespace: %s Pod: %s taintInfo retrieved: %s", dp.Namespace, dp.Name, taintInfo))
 
-		var message string
 		var taintedBitmap uint64
 		nodeTaintsAccepted := true
 		taintedBitmap, err = strconv.ParseUint(taintInfo, 10, 64) //nolint:gomnd // base 10 and uint64
 
 		if err != nil {
 			logrus.Errorf("failed to parse uint with: %s", err)
-			message = fmt.Sprintf("Could not decode tainted kernel causes (code=%d) for node %s\n", taintedBitmap, dp.Name)
-			tnf.ClaimFilePrintf(message)
+			tnf.ClaimFilePrintf("Could not decode tainted kernel causes (code=%d) for node %s\n", taintedBitmap, dp.Name)
 			errNodes = append(errNodes, dp.Name)
 			break
 		}
@@ -143,11 +141,9 @@ func testTainted(env *provider.TestEnvironment) {
 		if moduleCheck {
 			// Retrieve the modules from the node (via the debug pod)
 			modules := tester.GetModulesFromNode(dp.Name)
-			logrus.Debug("Got the modules from node")
-			logrus.Debug("modules", modules)
+			logrus.Debugf("Got the modules from node %s: %v", dp.Name, modules)
 
-			// Loop through the modules looking for `InTree: Y`.
-			// If the module info does not contain this string, the module is "tainted".
+			// Retrieve all of the out of tree modules.
 			taintedModules := nodetainted.GetOutOfTreeModules(modules, dp.Name, tester)
 			logrus.Debug("Collected all of the tainted modules: ", taintedModules)
 			logrus.Debug("Modules allowed via configuration: ", env.Config.AcceptedKernelTaints)
@@ -157,7 +153,6 @@ func testTainted(env *provider.TestEnvironment) {
 			nodeTaintsAccepted = nodetainted.TaintsAccepted(env.Config.AcceptedKernelTaints, taintedModules)
 		}
 
-		message = fmt.Sprintf("Decoded tainted kernel causes (code=%d) for node %s : %s\n", taintedBitmap, dp.Name, taintMsg)
 		// Only add the tainted node to the slice if the taint is acceptable.
 		if !nodeTaintsAccepted {
 			taintedNodes = append(taintedNodes, dp.Name)
@@ -165,7 +160,7 @@ func testTainted(env *provider.TestEnvironment) {
 
 		// Only print the message if there is something to report failure or tainted node wise.
 		if len(taintedNodes) != 0 || len(errNodes) != 0 {
-			tnf.ClaimFilePrintf(message)
+			tnf.ClaimFilePrintf("Decoded tainted kernel causes (code=%d) for node %s : %s\n", taintedBitmap, dp.Name, taintMsg)
 		}
 	}
 
