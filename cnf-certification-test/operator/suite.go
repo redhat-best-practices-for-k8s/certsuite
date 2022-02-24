@@ -81,16 +81,22 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 			continue
 		}
 
-	LOOP:
+		// Fails in case any cluster permission has a rule with any resource name.
+		badRuleFound := false
 		for i := range clusterPermissions {
-			permission := clusterPermissions[i]
+			permission := &clusterPermissions[i]
 			for ruleIndex := range permission.Rules {
 				if n := len(permission.Rules[ruleIndex].ResourceNames); n > 0 {
-					tnf.ClaimFilePrintf("CSV %s (ns %s) has cluster permissions on %d resource names.", csv.Name, csv.Namespace, n)
-					badCsvs = append(badCsvs, fmt.Sprintf("%s.%s", csv.Namespace, csv.Name))
-					break LOOP
+					tnf.ClaimFilePrintf("CSV %s (ns %s) cluster permission (service account %s) has %d resource names (rule index %d).",
+						csv.Name, csv.Namespace, permission.ServiceAccountName, n, ruleIndex)
+					// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
+					badRuleFound = true
 				}
 			}
+		}
+
+		if badRuleFound {
+			badCsvs = append(badCsvs, fmt.Sprintf("%s.%s", csv.Namespace, csv.Name))
 		}
 	}
 
