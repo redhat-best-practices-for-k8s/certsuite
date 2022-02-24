@@ -38,7 +38,7 @@ type Command interface {
 }
 
 // ExecCommand runs command in the pod and returns buffer output.
-func (ocpclient OcpClient) ExecCommandContainer(
+func (ocpclient *OcpClient) ExecCommandContainer(
 	ctx Context, command []string) (stdout, stderr string, err error) {
 	namespace := ctx.Namespace
 	podname := ctx.Podname

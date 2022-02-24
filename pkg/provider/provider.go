@@ -17,12 +17,23 @@
 package provider
 
 import (
-	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"context"
+	"time"
 
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	v1 "k8s.io/api/core/v1"
+	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+const (
+	daemonSetNamespace = "default"
+	daemonSetName      = "debug"
+	timeout            = 24 * time.Second
 )
 
 type TestEnvironment struct { // rename this with testTarget
@@ -97,4 +108,31 @@ func GetTestEnvironment() TestEnvironment {
 
 func IsOCPCluster() bool {
 	return !env.variables.NonOcpCluster
+}
+
+func WaitDebugPodReady() {
+	options := metav1.GetOptions{}
+	oc := ocpclient.NewOcpClient()
+	isReady := false
+	start := time.Now()
+	for !isReady && time.Since(start) < timeout {
+		daemonSet, err := oc.AppsClient.DaemonSets(daemonSetNamespace).Get(context.TODO(), daemonSetName, options)
+		if err != nil && daemonSet != nil {
+			logrus.Fatal("Error getting Daemonset, please create debug daemonset")
+			break
+		}
+		if daemonSet.Status.DesiredNumberScheduled == daemonSet.Status.CurrentNumberScheduled && //nolint:gocritic
+			daemonSet.Status.DesiredNumberScheduled == daemonSet.Status.NumberAvailable &&
+			daemonSet.Status.DesiredNumberScheduled == daemonSet.Status.NumberReady &&
+			daemonSet.Status.NumberMisscheduled == 0 {
+			isReady = true
+		}
+	}
+
+	if time.Since(start) > timeout {
+		logrus.Fatal("Timeout waiting for Daemonset to be ready")
+	}
+	if isReady {
+		logrus.Info("Daemonset is ready")
+	}
 }
