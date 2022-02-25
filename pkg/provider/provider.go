@@ -33,7 +33,7 @@ import (
 const (
 	daemonSetNamespace = "default"
 	daemonSetName      = "debug"
-	timeout            = 24 * time.Second
+	timeout            = 60 * time.Second
 )
 
 type TestEnvironment struct { // rename this with testTarget
@@ -127,6 +127,8 @@ func WaitDebugPodReady() {
 			daemonSet.Status.NumberMisscheduled == 0 {
 			isReady = true
 		}
+		logrus.Debugf("Waiting for debug pods to be ready: %v", &daemonSet.Status)
+		time.Sleep(time.Second)
 	}
 
 	if time.Since(start) > timeout {
