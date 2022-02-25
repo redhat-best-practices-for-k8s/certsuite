@@ -111,15 +111,26 @@ func IsOCPCluster() bool {
 }
 
 func WaitDebugPodReady() {
-	options := metav1.GetOptions{}
 	oc := ocpclient.NewOcpClient()
+	listOptions := metav1.ListOptions{}
+	nodes, err := oc.Coreclient.Nodes().List(context.TODO(), listOptions)
+
+	if err != nil {
+		logrus.Fatalf("Error getting node list, err:%s", err)
+	}
+
+	nodesCount := int32(len(nodes.Items))
+
+	getOptions := metav1.GetOptions{}
 	isReady := false
 	start := time.Now()
 	for !isReady && time.Since(start) < timeout {
-		daemonSet, err := oc.AppsClient.DaemonSets(daemonSetNamespace).Get(context.TODO(), daemonSetName, options)
+		daemonSet, err := oc.AppsClient.DaemonSets(daemonSetNamespace).Get(context.TODO(), daemonSetName, getOptions)
 		if err != nil && daemonSet != nil {
 			logrus.Fatal("Error getting Daemonset, please create debug daemonset")
-			break
+		}
+		if daemonSet.Status.DesiredNumberScheduled != nodesCount {
+			logrus.Fatalf("Daemonset DesiredNumberScheduled not equal to number of nodes:%d, please instantiate debug pods on all nodes", nodesCount)
 		}
 		if daemonSet.Status.DesiredNumberScheduled == daemonSet.Status.CurrentNumberScheduled && //nolint:gocritic
 			daemonSet.Status.DesiredNumberScheduled == daemonSet.Status.NumberAvailable &&
@@ -130,7 +141,6 @@ func WaitDebugPodReady() {
 		logrus.Debugf("Waiting for debug pods to be ready: %v", &daemonSet.Status)
 		time.Sleep(time.Second)
 	}
-
 	if time.Since(start) > timeout {
 		logrus.Fatal("Timeout waiting for Daemonset to be ready")
 	}
