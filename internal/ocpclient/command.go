@@ -19,7 +19,6 @@ package ocpclient
 import (
 	"bytes"
 	"fmt"
-	"os"
 
 	"github.com/sirupsen/logrus"
 	v1 "k8s.io/api/core/v1"
@@ -53,10 +52,10 @@ func (ocpclient *OcpClient) ExecCommandContainer(
 		VersionedParams(&v1.PodExecOptions{
 			Container: ctx.Containername,
 			Command:   commandStr,
-			Stdin:     true,
+			Stdin:     false,
 			Stdout:    true,
 			Stderr:    true,
-			TTY:       true,
+			TTY:       false,
 		}, scheme.ParameterCodec)
 
 	exec, err := remotecommand.NewSPDYExecutor(ocpclient.RestConfig, "POST", req.URL())
@@ -65,10 +64,8 @@ func (ocpclient *OcpClient) ExecCommandContainer(
 		return stdout, stderr, err
 	}
 	err = exec.Stream(remotecommand.StreamOptions{
-		Stdin:  os.Stdin,
 		Stdout: &buffOut,
 		Stderr: &buffErr,
-		Tty:    true,
 	})
 	stdout, stderr = buffOut.String(), buffErr.String()
 	if err != nil {
