@@ -17,18 +17,28 @@
 package provider
 
 import (
+	"context"
+	"time"
+
 	"errors"
 	"fmt"
 	"strings"
 
-	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
-
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
+	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+const (
+	daemonSetNamespace = "default"
+	daemonSetName      = "debug"
+	timeout            = 60 * time.Second
 )
 
 type TestEnvironment struct { // rename this with testTarget
@@ -101,6 +111,50 @@ func IsOCPCluster() bool {
 	return !env.variables.NonOcpCluster
 }
 
+func WaitDebugPodReady() {
+	oc := ocpclient.NewOcpClient()
+	listOptions := metav1.ListOptions{}
+	nodes, err := oc.Coreclient.Nodes().List(context.TODO(), listOptions)
+
+	if err != nil {
+		logrus.Fatalf("Error getting node list, err:%s", err)
+	}
+
+	nodesCount := int32(len(nodes.Items))
+
+	getOptions := metav1.GetOptions{}
+	isReady := false
+	start := time.Now()
+	for !isReady && time.Since(start) < timeout {
+		daemonSet, err := oc.AppsClient.DaemonSets(daemonSetNamespace).Get(context.TODO(), daemonSetName, getOptions)
+		if err != nil && daemonSet != nil {
+			logrus.Fatal("Error getting Daemonset, please create debug daemonset")
+		}
+		if daemonSet.Status.DesiredNumberScheduled != nodesCount {
+			logrus.Fatalf("Daemonset DesiredNumberScheduled not equal to number of nodes:%d, please instantiate debug pods on all nodes", nodesCount)
+		}
+		isReady = isDaemonSetReady(&daemonSet.Status)
+		logrus.Debugf("Waiting for debug pods to be ready: %v", daemonSet.Status)
+		time.Sleep(time.Second)
+	}
+	if time.Since(start) > timeout {
+		logrus.Fatal("Timeout waiting for Daemonset to be ready")
+	}
+	if isReady {
+		logrus.Info("Daemonset is ready")
+	}
+}
+
+func isDaemonSetReady(status *appsv1.DaemonSetStatus) (isReady bool) {
+	isReady = false
+	if status.DesiredNumberScheduled == status.CurrentNumberScheduled && //nolint:gocritic
+		status.DesiredNumberScheduled == status.NumberAvailable &&
+		status.DesiredNumberScheduled == status.NumberReady &&
+		status.NumberMisscheduled == 0 {
+		isReady = true
+	}
+	return isReady
+}
 func (c *Container) GetUID() (string, error) {
 	split := strings.Split(c.Status.ContainerID, "://")
 	uid := ""

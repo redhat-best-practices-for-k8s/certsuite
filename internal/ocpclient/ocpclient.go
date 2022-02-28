@@ -8,6 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/typed/apiextensions/v1"
 	"k8s.io/client-go/dynamic"
+	appsv1 "k8s.io/client-go/kubernetes/typed/apps/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -19,6 +20,7 @@ type OcpClient struct {
 	DynamicClient dynamic.Interface
 	APIExtClient  apiextv1.ApiextensionsV1Interface
 	OlmClient     *clientOlm.Clientset
+	AppsClient    *appsv1.AppsV1Client
 	RestConfig    *rest.Config
 
 	ready bool
@@ -27,9 +29,9 @@ type OcpClient struct {
 var ocpClient = OcpClient{}
 
 // NewOcpClient instantiate an ocp client
-func NewOcpClient(filenames ...string) OcpClient { //nolint:funlen // this is a special function with lots of assignments
+func NewOcpClient(filenames ...string) *OcpClient { //nolint:funlen // this is a special function with lots of assignments
 	if ocpClient.ready {
-		return ocpClient
+		return &ocpClient
 	}
 
 	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
@@ -75,7 +77,10 @@ func NewOcpClient(filenames ...string) OcpClient { //nolint:funlen // this is a 
 	if err != nil {
 		logrus.Panic("can't instantiate olm clientset: ", err)
 	}
-
+	ocpClient.AppsClient, err = appsv1.NewForConfig(ocpClient.RestConfig)
+	if err != nil {
+		logrus.Panic("can't instantiate apps clientset: ", err)
+	}
 	ocpClient.ready = true
-	return ocpClient
+	return &ocpClient
 }
