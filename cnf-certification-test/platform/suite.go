@@ -22,7 +22,7 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
+	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 
@@ -76,7 +76,7 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 		}
 		nodeName := cut.NodeName
 		debugPod := env.DebugPods[nodeName]
-		fsdiff.RunTest(ocpclient.NewOcpClient(), ocpclient.Context{Namespace: debugPod.Namespace,
+		fsdiff.RunTest(clientsholder.NewClientsHolder(), clientsholder.Context{Namespace: debugPod.Namespace,
 			Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name})
 		switch fsdiff.GetResults() {
 		case tnf.SUCCESS:
@@ -101,7 +101,7 @@ func testTainted(env *provider.TestEnvironment) {
 	// Loop through the debug pods that are tied to each node.
 	for _, dp := range env.DebugPods {
 		// Build a NodeTainted tester object.
-		tester := nodetainted.NewNodeTaintedTester(common.DefaultTimeout, ocpclient.NewOcpClient(), ocpclient.Context{
+		tester := nodetainted.NewNodeTaintedTester(common.DefaultTimeout, clientsholder.NewClientsHolder(), clientsholder.Context{
 			Namespace:     dp.Namespace,
 			Podname:       dp.Name,
 			Containername: dp.Spec.Containers[0].Name,

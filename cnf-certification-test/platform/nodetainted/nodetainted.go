@@ -23,19 +23,19 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
 
 // NodeTainted holds information about tainted nodes.
 type NodeTainted struct {
 	timeout    time.Duration
-	OCPClient  *ocpclient.OcpClient
-	OCPContext ocpclient.Context
+	OCPClient  clientsholder.ClientsHolder
+	OCPContext clientsholder.Context
 }
 
 // NewNodeTainted creates a new NodeTainted tnf.Test.
-func NewNodeTaintedTester(timeout time.Duration, client *ocpclient.OcpClient, ctx ocpclient.Context) *NodeTainted {
+func NewNodeTaintedTester(timeout time.Duration, client clientsholder.ClientsHolder, ctx clientsholder.Context) *NodeTainted {
 	return &NodeTainted{
 		timeout:    timeout,
 		OCPClient:  client,

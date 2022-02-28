@@ -73,11 +73,12 @@ func BuildTestEnvironment() {
 	// delete env
 	env = TestEnvironment{}
 	// build Pods and Containers under test
-	environmentVariables, conf, pods, debugPods, crds, ns, csvs := autodiscover.DoAutoDiscover()
-	env.Config = conf
-	env.Crds = crds
-	env.Namespaces = ns
-	env.variables = environmentVariables
+	data := autodiscover.DoAutoDiscover()
+	env.Config = data.TestData
+	env.Crds = data.Crds
+	env.Namespaces = data.Namespaces
+	env.variables = data.Env
+	pods := data.Pods
 	for i := 0; i < len(pods); i++ {
 		env.Pods = append(env.Pods, &pods[i])
 		for j := 0; j < len(pods[i].Spec.Containers); j++ {
@@ -88,12 +89,13 @@ func BuildTestEnvironment() {
 			env.Containers = append(env.Containers, &container)
 		}
 	}
+	debugPods := data.DebugPods
 	env.DebugPods = make(map[string]*v1.Pod)
 	for i := 0; i < len(debugPods); i++ {
 		nodeName := debugPods[i].Spec.NodeName
 		env.DebugPods[nodeName] = &debugPods[i]
 	}
-
+	csvs := data.Csvs
 	for i := range csvs {
 		env.Csvs = append(env.Csvs, &csvs[i])
 	}

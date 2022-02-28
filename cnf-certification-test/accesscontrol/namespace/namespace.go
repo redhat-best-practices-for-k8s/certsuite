@@ -21,7 +21,7 @@ import (
 	"fmt"
 
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -56,7 +56,7 @@ func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespac
 // getCrsPerNamespaces gets the list of CRs instantiated in the cluster per namespace.
 // Returns a map indexed by namespace and data is a list of CR names
 func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces map[string][]string, err error) {
-	oc := ocpclient.NewOcpClient()
+	oc := clientsholder.NewClientsHolder()
 	for _, version := range aCrd.Spec.Versions {
 		gvr := schema.GroupVersionResource{
 			Group:    aCrd.Spec.Group,

@@ -21,7 +21,7 @@ import (
 	"regexp"
 
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
@@ -57,7 +57,7 @@ func NewFsDiff(c *provider.Container) (*FsDiff, error) {
 	}, nil
 }
 
-func (f *FsDiff) RunTest(o ocpclient.Command, ctx ocpclient.Context) {
+func (f *FsDiff) RunTest(o clientsholder.Command, ctx clientsholder.Context) {
 	expected := []string{varlibrpm, varlibdpkg, bin, sbin, lib, usrbin, usrsbin, usrlib}
 	output, outerr, err := o.ExecCommandContainer(ctx, f.command)
 	if err != nil {
