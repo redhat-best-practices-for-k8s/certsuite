@@ -20,6 +20,10 @@ import (
 	"context"
 	"time"
 
+	"errors"
+	"fmt"
+	"strings"
+
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
@@ -61,12 +65,8 @@ var (
 	loaded = false
 )
 
-func GetContainer(namespace, podName, containerName string) (v1.Container, error) {
-	return v1.Container{}, nil
-}
-
-func GetPod(namespace, podName string) (v1.Pod, error) {
-	return v1.Pod{}, nil
+func GetContainer() *Container {
+	return &Container{}
 }
 
 func BuildTestEnvironment() {
@@ -154,4 +154,17 @@ func isDaemonSetReady(status *appsv1.DaemonSetStatus) (isReady bool) {
 		isReady = true
 	}
 	return isReady
+}
+func (c *Container) GetUID() (string, error) {
+	split := strings.Split(c.Status.ContainerID, "://")
+	uid := ""
+	if len(split) > 0 {
+		uid = split[len(split)-1]
+	}
+	if uid == "" {
+		logrus.Debugln(fmt.Sprintf("could not find uid of %s/%s/%s\n", c.Namespace, c.Podname, c.Data.Name))
+		return "", errors.New("cannot determine container UID")
+	}
+	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Data.Name, uid))
+	return uid, nil
 }

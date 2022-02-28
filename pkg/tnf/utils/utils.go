@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2021 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,19 +14,25 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package common
+/*
+Package tnf contains the core Test runner interfaces.
+*/
+package tnf
 
-// Constants shared by multiple test suite packages
-const (
-	ConfiguredTestFile        = "testconfigure.yml"
-	defaultTimeoutSeconds     = 10
-	AccessControlTestKey      = "access-control"
-	DiagnosticTestKey         = "diagnostic"
-	LifecycleTestKey          = "lifecycle"
-	AffiliatedCertTestKey     = "affiliated-certification"
-	NetworkingTestKey         = "networking"
-	ObservabilityTestKey      = "observability"
-	OperatorTestKey           = "operator"
-	PlatformAlterationTestKey = "platform-alteration"
-	CommonTestKey             = "common"
-)
+import "strings"
+
+// StringInSlice checks a slice for a given string.
+func StringInSlice(s []string, str string, contains bool) bool {
+	for _, v := range s {
+		if !contains {
+			if strings.TrimSpace(v) == str {
+				return true
+			}
+		} else {
+			if strings.Contains(strings.TrimSpace(v), str) {
+				return true
+			}
+		}
+	}
+	return false
+}

@@ -34,28 +34,25 @@ type Context struct {
 }
 
 type Command interface {
-	ExecCommandContainer(Context, []string) (string, string, error)
+	ExecCommandContainer(Context, string) (string, string, error)
 }
 
 // ExecCommand runs command in the pod and returns buffer output.
 func (ocpclient *OcpClient) ExecCommandContainer(
-	ctx Context, command []string) (stdout, stderr string, err error) {
-	namespace := ctx.Namespace
-	podname := ctx.Podname
-	container := ctx.Containername
-	//
+	ctx Context, command string) (stdout, stderr string, err error) {
+	commandStr := []string{"sh", "-c", command}
 	var buffOut bytes.Buffer
 	var buffErr bytes.Buffer
-	logrus.Trace(fmt.Sprintf("execute commands on ns=%s, pod=%s container=%s", namespace, podname, container))
+	logrus.Trace(fmt.Sprintf("execute commands on ns=%s, pod=%s container=%s", ctx.Namespace, ctx.Podname, ctx.Containername))
 	req := ocpclient.Coreclient.RESTClient().
 		Post().
-		Namespace(namespace).
+		Namespace(ctx.Namespace).
 		Resource("pods").
-		Name(podname).
+		Name(ctx.Podname).
 		SubResource("exec").
 		VersionedParams(&v1.PodExecOptions{
-			Container: container,
-			Command:   command,
+			Container: ctx.Containername,
+			Command:   commandStr,
 			Stdin:     true,
 			Stdout:    true,
 			Stderr:    true,
@@ -77,7 +74,9 @@ func (ocpclient *OcpClient) ExecCommandContainer(
 	if err != nil {
 		logrus.Error(err)
 		logrus.Error(req.URL())
-		logrus.Error("command ", command)
+		logrus.Error("command: ", command)
+		logrus.Error("stderr: ", stderr)
+		logrus.Error("stdout: ", stdout)
 		return stdout, stderr, err
 	}
 	return stdout, stderr, err

@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 Red Hat, Inc.
+// Copyright (C) 2020-2022 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,7 +19,11 @@ package provider
 import (
 	"testing"
 
+	"errors"
+
 	appsv1 "k8s.io/api/apps/v1"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_isDaemonSetReady(t *testing.T) {
@@ -70,5 +74,32 @@ func Test_isDaemonSetReady(t *testing.T) {
 				t.Errorf("isDaemonSetReady() = %v, want %v", gotIsReady, tt.wantIsReady)
 			}
 		})
+	}
+}
+
+func TestGetUID(t *testing.T) {
+	testCases := []struct {
+		testCID     string
+		expectedErr error
+		expectedUID string
+	}{
+		{
+			testCID:     "cid://testing",
+			expectedErr: nil,
+			expectedUID: "testing",
+		},
+		{
+			testCID:     "cid://",
+			expectedErr: errors.New("cannot determine container UID"),
+			expectedUID: "",
+		},
+	}
+
+	for _, tc := range testCases {
+		c := GetContainer()
+		c.Status.ContainerID = tc.testCID
+		uid, err := c.GetUID()
+		assert.Equal(t, tc.expectedErr, err)
+		assert.Equal(t, tc.expectedUID, uid)
 	}
 }
