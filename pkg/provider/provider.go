@@ -25,6 +25,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -132,13 +133,8 @@ func WaitDebugPodReady() {
 		if daemonSet.Status.DesiredNumberScheduled != nodesCount {
 			logrus.Fatalf("Daemonset DesiredNumberScheduled not equal to number of nodes:%d, please instantiate debug pods on all nodes", nodesCount)
 		}
-		if daemonSet.Status.DesiredNumberScheduled == daemonSet.Status.CurrentNumberScheduled && //nolint:gocritic
-			daemonSet.Status.DesiredNumberScheduled == daemonSet.Status.NumberAvailable &&
-			daemonSet.Status.DesiredNumberScheduled == daemonSet.Status.NumberReady &&
-			daemonSet.Status.NumberMisscheduled == 0 {
-			isReady = true
-		}
-		logrus.Debugf("Waiting for debug pods to be ready: %v", &daemonSet.Status)
+		isReady = isDaemonSetReady(&daemonSet.Status)
+		logrus.Debugf("Waiting for debug pods to be ready: %v", daemonSet.Status)
 		time.Sleep(time.Second)
 	}
 	if time.Since(start) > timeout {
@@ -147,4 +143,15 @@ func WaitDebugPodReady() {
 	if isReady {
 		logrus.Info("Daemonset is ready")
 	}
+}
+
+func isDaemonSetReady(status *appsv1.DaemonSetStatus) (isReady bool) {
+	isReady = false
+	if status.DesiredNumberScheduled == status.CurrentNumberScheduled && //nolint:gocritic
+		status.DesiredNumberScheduled == status.NumberAvailable &&
+		status.DesiredNumberScheduled == status.NumberReady &&
+		status.NumberMisscheduled == 0 {
+		isReady = true
+	}
+	return isReady
 }
