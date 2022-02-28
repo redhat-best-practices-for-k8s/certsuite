@@ -143,13 +143,18 @@ func RunNetworkingTests(env *provider.TestEnvironment,
 }
 
 // testPing Initiates a ping test between a source container and network (1 ip) and a destination container and network (1 ip)
-func testPing(env *provider.TestEnvironment, sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) { //nolint:funlen
+func testPing(env *provider.TestEnvironment, sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
 	command := fmt.Sprintf("ping -c %d %s", count, targetContainerIP.IP)
 	stdout, stderr, err := crclient.ExecCommandContainerNSEnter(command, sourceContainerID, env)
 	if err != nil || stderr != "" {
 		results.outcome = testhelper.ERROR
 		return results, errors.Errorf("Ping failed with stderr:%s err:%s", stderr, err)
 	}
+	results, err = parsePingResult(stdout, stderr)
+	return results, err
+}
+
+func parsePingResult(stdout, stderr string) (results PingResults, err error) {
 	re := regexp.MustCompile(ConnectInvalidArgumentRegex)
 	matched := re.FindStringSubmatch(stdout)
 	// If we find a error log we fail
