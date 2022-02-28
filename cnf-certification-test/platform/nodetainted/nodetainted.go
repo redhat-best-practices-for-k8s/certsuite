@@ -29,22 +29,22 @@ import (
 
 // NodeTainted holds information about tainted nodes.
 type NodeTainted struct {
-	timeout    time.Duration
-	OCPClient  *clientsholder.ClientsHolder
-	OCPContext clientsholder.Context
+	timeout      time.Duration
+	ClientHolder *clientsholder.ClientsHolder
+	OCPContext   clientsholder.Context
 }
 
 // NewNodeTainted creates a new NodeTainted tnf.Test.
 func NewNodeTaintedTester(timeout time.Duration, client *clientsholder.ClientsHolder, ctx clientsholder.Context) *NodeTainted {
 	return &NodeTainted{
-		timeout:    timeout,
-		OCPClient:  client,
-		OCPContext: ctx,
+		timeout:      timeout,
+		ClientHolder: client,
+		OCPContext:   ctx,
 	}
 }
 
 func (nt *NodeTainted) runCommand(cmd string) (string, error) {
-	output, outerr, err := nt.OCPClient.ExecCommandContainer(nt.OCPContext, cmd)
+	output, outerr, err := nt.ClientHolder.ExecCommandContainer(nt.OCPContext, cmd)
 	if err != nil {
 		logrus.Errorln("can't execute command on container ", err)
 		return "", err
