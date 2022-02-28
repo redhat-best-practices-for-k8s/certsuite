@@ -30,12 +30,12 @@ import (
 // NodeTainted holds information about tainted nodes.
 type NodeTainted struct {
 	timeout    time.Duration
-	OCPClient  clientsholder.ClientsHolder
+	OCPClient  *clientsholder.ClientsHolder
 	OCPContext clientsholder.Context
 }
 
 // NewNodeTainted creates a new NodeTainted tnf.Test.
-func NewNodeTaintedTester(timeout time.Duration, client clientsholder.ClientsHolder, ctx clientsholder.Context) *NodeTainted {
+func NewNodeTaintedTester(timeout time.Duration, client *clientsholder.ClientsHolder, ctx clientsholder.Context) *NodeTainted {
 	return &NodeTainted{
 		timeout:    timeout,
 		OCPClient:  client,

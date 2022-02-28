@@ -76,6 +76,7 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 		}
 		nodeName := cut.NodeName
 		debugPod := env.DebugPods[nodeName]
+
 		fsdiff.RunTest(clientsholder.NewClientsHolder(), clientsholder.Context{Namespace: debugPod.Namespace,
 			Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name})
 		switch fsdiff.GetResults() {
@@ -101,7 +102,8 @@ func testTainted(env *provider.TestEnvironment) {
 	// Loop through the debug pods that are tied to each node.
 	for _, dp := range env.DebugPods {
 		// Build a NodeTainted tester object.
-		tester := nodetainted.NewNodeTaintedTester(common.DefaultTimeout, clientsholder.NewClientsHolder(), clientsholder.Context{
+		c := clientsholder.NewClientsHolder()
+		tester := nodetainted.NewNodeTaintedTester(common.DefaultTimeout, c, clientsholder.Context{
 			Namespace:     dp.Namespace,
 			Podname:       dp.Name,
 			Containername: dp.Spec.Containers[0].Name,

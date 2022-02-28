@@ -47,9 +47,9 @@ type ClientsHolder struct {
 var clientsHolder = ClientsHolder{}
 
 // NewClientsHolder instantiate an ocp client
-func NewClientsHolder(filenames ...string) ClientsHolder { //nolint:funlen // this is a special function with lots of assignments
+func NewClientsHolder(filenames ...string) *ClientsHolder { //nolint:funlen // this is a special function with lots of assignments
 	if clientsHolder.ready {
-		return clientsHolder
+		return &clientsHolder
 	}
 
 	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
@@ -105,5 +105,5 @@ func NewClientsHolder(filenames ...string) ClientsHolder { //nolint:funlen // th
 		logrus.Panic("can't instantiate k8sclient", err)
 	}
 	clientsHolder.ready = true
-	return clientsHolder
+	return &clientsHolder
 }

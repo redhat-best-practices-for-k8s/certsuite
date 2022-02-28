@@ -32,7 +32,7 @@ type ClientHoldersMock struct {
 	err    error
 }
 
-func (o *ClientHoldersMock) ExecCommandContainer(ctx clientsholder.Context, command string) (stdout, stderr string, err error) {
+func (o ClientHoldersMock) ExecCommandContainer(ctx clientsholder.Context, command string) (stdout, stderr string, err error) {
 	stdout, stderr, err = o.stdout, o.stderr, o.err
 	return stdout, stderr, err
 }
@@ -44,7 +44,7 @@ func TestRunTest(t *testing.T) {
 		err:    nil,
 	}
 	// test when no package is installed
-	fsdiff.RunTest(&o, clientsholder.Context{})
+	fsdiff.RunTest(o, clientsholder.Context{})
 	assert.Equal(t, tnf.SUCCESS, fsdiff.GetResults())
 
 	// test when an error occurred when running the command

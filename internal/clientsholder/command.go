@@ -37,7 +37,7 @@ type Command interface {
 }
 
 // ExecCommand runs command in the pod and returns buffer output.
-func (clientsholder ClientsHolder) ExecCommandContainer(
+func (clientsholder *ClientsHolder) ExecCommandContainer(
 	ctx Context, command string) (stdout, stderr string, err error) {
 	commandStr := []string{"sh", "-c", command}
 	var buffOut bytes.Buffer

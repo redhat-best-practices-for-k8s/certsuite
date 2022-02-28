@@ -62,7 +62,6 @@ func buildLabelQuery(label configuration.Label) string {
 	return fullLabelName
 }
 
-//nolint:gocritic // the arguments are needed
 func DoAutoDiscover() DiscoveredTestData {
 	data := DiscoveredTestData{}
 	var err error
