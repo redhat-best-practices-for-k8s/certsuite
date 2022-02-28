@@ -14,7 +14,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package ocpclient
+package clientsholder
 
 import (
 	"bytes"
@@ -37,13 +37,13 @@ type Command interface {
 }
 
 // ExecCommand runs command in the pod and returns buffer output.
-func (ocpclient *OcpClient) ExecCommandContainer(
+func (clientsholder *ClientsHolder) ExecCommandContainer(
 	ctx Context, command string) (stdout, stderr string, err error) {
 	commandStr := []string{"sh", "-c", command}
 	var buffOut bytes.Buffer
 	var buffErr bytes.Buffer
 	logrus.Trace(fmt.Sprintf("execute commands on ns=%s, pod=%s container=%s", ctx.Namespace, ctx.Podname, ctx.Containername))
-	req := ocpclient.Coreclient.RESTClient().
+	req := clientsholder.Coreclient.RESTClient().
 		Post().
 		Namespace(ctx.Namespace).
 		Resource("pods").
@@ -58,7 +58,7 @@ func (ocpclient *OcpClient) ExecCommandContainer(
 			TTY:       false,
 		}, scheme.ParameterCodec)
 
-	exec, err := remotecommand.NewSPDYExecutor(ocpclient.RestConfig, "POST", req.URL())
+	exec, err := remotecommand.NewSPDYExecutor(clientsholder.RestConfig, "POST", req.URL())
 	if err != nil {
 		logrus.Error(err)
 		return stdout, stderr, err

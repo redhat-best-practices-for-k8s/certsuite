@@ -16,7 +16,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-require k8s.io/client-go v0.23.3
+require k8s.io/client-go v0.23.4
 
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
@@ -24,8 +24,8 @@ require (
 	github.com/openshift/client-go v0.0.0-20211209144617-7385dd6338e3
 	github.com/operator-framework/api v0.13.0
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
-	k8s.io/api v0.23.3
-	k8s.io/apimachinery v0.23.3
+	k8s.io/api v0.23.4
+	k8s.io/apimachinery v0.23.4
 )
 
 require (
@@ -71,5 +71,5 @@ require (
 
 require (
 	github.com/openshift/api v0.0.0-20220124143425-d74727069f6f // indirect
-	k8s.io/apiextensions-apiserver v0.23.3
+	k8s.io/apiextensions-apiserver v0.23.4
 )

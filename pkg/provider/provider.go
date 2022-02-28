@@ -26,7 +26,7 @@ import (
 
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	appsv1 "k8s.io/api/apps/v1"
@@ -73,11 +73,12 @@ func BuildTestEnvironment() {
 	// delete env
 	env = TestEnvironment{}
 	// build Pods and Containers under test
-	environmentVariables, conf, pods, debugPods, crds, ns, csvs := autodiscover.DoAutoDiscover()
-	env.Config = conf
-	env.Crds = crds
-	env.Namespaces = ns
-	env.variables = environmentVariables
+	data := autodiscover.DoAutoDiscover()
+	env.Config = data.TestData
+	env.Crds = data.Crds
+	env.Namespaces = data.Namespaces
+	env.variables = data.Env
+	pods := data.Pods
 	for i := 0; i < len(pods); i++ {
 		env.Pods = append(env.Pods, &pods[i])
 		for j := 0; j < len(pods[i].Spec.Containers); j++ {
@@ -88,12 +89,13 @@ func BuildTestEnvironment() {
 			env.Containers = append(env.Containers, &container)
 		}
 	}
+	debugPods := data.DebugPods
 	env.DebugPods = make(map[string]*v1.Pod)
 	for i := 0; i < len(debugPods); i++ {
 		nodeName := debugPods[i].Spec.NodeName
 		env.DebugPods[nodeName] = &debugPods[i]
 	}
-
+	csvs := data.Csvs
 	for i := range csvs {
 		env.Csvs = append(env.Csvs, &csvs[i])
 	}
@@ -112,7 +114,7 @@ func IsOCPCluster() bool {
 }
 
 func WaitDebugPodReady() {
-	oc := ocpclient.NewOcpClient()
+	oc := clientsholder.NewClientsHolder()
 	listOptions := metav1.ListOptions{}
 	nodes, err := oc.Coreclient.Nodes().List(context.TODO(), listOptions)
 
@@ -126,7 +128,7 @@ func WaitDebugPodReady() {
 	isReady := false
 	start := time.Now()
 	for !isReady && time.Since(start) < timeout {
-		daemonSet, err := oc.AppsClient.DaemonSets(daemonSetNamespace).Get(context.TODO(), daemonSetName, getOptions)
+		daemonSet, err := oc.AppsClients.DaemonSets(daemonSetNamespace).Get(context.TODO(), daemonSetName, getOptions)
 		if err != nil && daemonSet != nil {
 			logrus.Fatal("Error getting Daemonset, please create debug daemonset")
 		}
