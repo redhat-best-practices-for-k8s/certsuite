@@ -41,6 +41,7 @@ import (
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle"
 
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking"
+	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
 )
