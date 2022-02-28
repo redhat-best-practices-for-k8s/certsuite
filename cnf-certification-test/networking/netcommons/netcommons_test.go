@@ -16,7 +16,10 @@
 
 package netcommons
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func Test_getIPVersion(t *testing.T) {
 	type args struct {
@@ -59,6 +62,36 @@ func Test_getIPVersion(t *testing.T) {
 			}
 			if got != tt.want {
 				t.Errorf("getIPVersion() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestFilterIPListByIPVersion(t *testing.T) {
+	type args struct {
+		ipList     []string
+		aIPVersion IPVersion
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{
+			name: "okIpv4",
+			args: args{ipList: []string{"1.1.1.1", "2.2.2.2", "fd00:10:244:1::3"}, aIPVersion: IPv4},
+			want: []string{"1.1.1.1", "2.2.2.2"},
+		},
+		{
+			name: "okIpv6",
+			args: args{ipList: []string{"1.1.1.1", "2.2.2.2", "fd00:10:244:1::3"}, aIPVersion: IPv6},
+			want: []string{"fd00:10:244:1::3"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := FilterIPListByIPVersion(tt.args.ipList, tt.args.aIPVersion); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("FilterIPListByIPVersion() = %v, want %v", got, tt.want)
 			}
 		})
 	}
