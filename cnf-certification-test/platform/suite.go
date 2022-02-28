@@ -44,6 +44,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	ginkgo.BeforeEach(func() {
 		provider.BuildTestEnvironment()
 		env = provider.GetTestEnvironment()
+		provider.WaitDebugPodReady()
 	})
 
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestUnalteredBaseImageIdentifier)
