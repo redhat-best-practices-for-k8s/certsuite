@@ -26,7 +26,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
-	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	v1 "k8s.io/api/core/v1"
@@ -48,12 +48,13 @@ var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 	})
 })
 
+//nolint:funlen
 func testContainersLogging(env *provider.TestEnvironment) {
 	if len(env.Containers) == 0 {
 		ginkgo.Skip("No containers to run test, skipping")
 	}
 
-	ocpClient := ocpclient.NewOcpClient()
+	ocpClient := clientsholder.NewClientsHolder()
 
 	// Iterate through all the CUTs to get their log output. The TC checks that at least
 	// one log line is found.
