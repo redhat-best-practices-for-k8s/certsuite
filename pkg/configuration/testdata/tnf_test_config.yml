@@ -17,3 +17,6 @@ certifiedcontainerinfo:
 certifiedoperatorinfo:
   - name: etcd
     organization: community-operators # working example
+acceptedKernelTaints:
+  - module: "taint1"
+  - module: "taint2"

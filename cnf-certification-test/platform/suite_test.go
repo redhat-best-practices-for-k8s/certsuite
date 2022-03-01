@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2021 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,19 +14,4 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package common
-
-// Constants shared by multiple test suite packages
-const (
-	ConfiguredTestFile        = "testconfigure.yml"
-	defaultTimeoutSeconds     = 10
-	AccessControlTestKey      = "access-control"
-	DiagnosticTestKey         = "diagnostic"
-	LifecycleTestKey          = "lifecycle"
-	AffiliatedCertTestKey     = "affiliated-certification"
-	NetworkingTestKey         = "networking"
-	ObservabilityTestKey      = "observability"
-	OperatorTestKey           = "operator"
-	PlatformAlterationTestKey = "platform-alteration"
-	CommonTestKey             = "common"
-)
+package platform

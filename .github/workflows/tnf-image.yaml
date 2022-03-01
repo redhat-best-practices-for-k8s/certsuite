@@ -30,6 +30,7 @@ env:
   PARTNER_REPO: test-network-function/cnf-certification-test-partner
   PARTNER_SRC_URL: 'https://github.com/${PARTNER_REPO}'
   TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${IMAGE_NAME}:${IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
+  ON_DEMAND_DEBUG_PODS: false
 
 jobs:
   test-and-push-tnf-image:

@@ -18,12 +18,10 @@ package cnffsdiff
 
 import (
 	"errors"
-	"fmt"
 	"regexp"
-	"strings"
 
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
@@ -41,31 +39,25 @@ const (
 
 type FsDiff struct {
 	containerID string
-	command     []string
+	command     string
 	result      int
 }
 
 func NewFsDiff(c *provider.Container) (*FsDiff, error) {
-	id := c.Status.ContainerID
-	split := strings.Split(id, "://")
-	uid := ""
-	if len(split) > 0 {
-		uid = split[len(split)-1]
+	uid, err := c.GetUID()
+	if err != nil {
+		return nil, errors.New("can't instantiante FsDiff instance")
 	}
-	if uid == "" {
-		logrus.Debugln(fmt.Sprintf("could not find uid of %s/%s/%s\n", c.Namespace, c.Podname, c.Data.Name))
-		return nil, errors.New("CAN'T INITIALIZE FSDIFF INSTANCE")
-	}
-	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Data.Name, uid))
-	commands := []string{"chroot", "/host", "podman", "diff", "--format", "json", uid}
+	//nolint:goconst // used only once
+	command := `chroot /host podman diff --format json`
 	return &FsDiff{
 		containerID: uid,
-		command:     commands,
+		command:     command,
 		result:      tnf.ERROR,
 	}, nil
 }
 
-func (f *FsDiff) RunTest(o ocpclient.Command, ctx ocpclient.Context) {
+func (f *FsDiff) RunTest(o clientsholder.Command, ctx clientsholder.Context) {
 	expected := []string{varlibrpm, varlibdpkg, bin, sbin, lib, usrbin, usrsbin, usrlib}
 	output, outerr, err := o.ExecCommandContainer(ctx, f.command)
 	if err != nil {

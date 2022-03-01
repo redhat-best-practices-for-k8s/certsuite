@@ -150,6 +150,11 @@ var (
 		Url:     formTestURL(common.OperatorTestKey, "install-status-succeeded"),
 		Version: versionOne,
 	}
+	// TestOperatorNoPrivileges tests Operator has no privileges on resources.
+	TestOperatorNoPrivileges = claim.Identifier{
+		Url:     formTestURL(common.OperatorTestKey, "install-status-no-privileges"),
+		Version: versionOne,
+	}
 	// TestOperatorIsCertifiedIdentifier tests that an Operator has passed Operator certification.
 	TestOperatorIsCertifiedIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AffiliatedCertTestKey, "operator-is-certified"),
@@ -459,6 +464,16 @@ the same hacks.'`),
 		Remediation: `Make sure all the CNF operators have been successfully installed by OLM.`,
 		Description: formDescription(TestOperatorInstallStatusSucceededIdentifier,
 			`Ensures that the target CNF operators report "Succeeded" as their installation status.`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.12 and Section 6.3.3",
+	},
+
+	TestOperatorNoPrivileges: {
+		Identifier:  TestOperatorNoPrivileges,
+		Type:        normativeResult,
+		Remediation: `Make sure all the CNF operators have no privileges on cluster resources.`,
+		Description: formDescription(TestOperatorNoPrivileges,
+			`The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present 
+with no resourceNames under its rules.`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.12 and Section 6.3.3",
 	},
 

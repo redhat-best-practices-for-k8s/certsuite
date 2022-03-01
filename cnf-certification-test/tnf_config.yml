@@ -13,3 +13,6 @@ certifiedcontainerinfo:
 certifiedoperatorinfo:
   - name: etcd
     organization: community-operators # working example
+acceptedKernelTaints:
+  - module: vboxsf
+  - module: vboxguest

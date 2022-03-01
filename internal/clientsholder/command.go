@@ -14,12 +14,11 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package ocpclient
+package clientsholder
 
 import (
 	"bytes"
 	"fmt"
-	"os"
 
 	"github.com/sirupsen/logrus"
 	v1 "k8s.io/api/core/v1"
@@ -34,50 +33,47 @@ type Context struct {
 }
 
 type Command interface {
-	ExecCommandContainer(Context, []string) (string, string, error)
+	ExecCommandContainer(Context, string) (string, string, error)
 }
 
 // ExecCommand runs command in the pod and returns buffer output.
-func (ocpclient OcpClient) ExecCommandContainer(
-	ctx Context, command []string) (stdout, stderr string, err error) {
-	namespace := ctx.Namespace
-	podname := ctx.Podname
-	container := ctx.Containername
-	//
+func (clientsholder *ClientsHolder) ExecCommandContainer(
+	ctx Context, command string) (stdout, stderr string, err error) {
+	commandStr := []string{"sh", "-c", command}
 	var buffOut bytes.Buffer
 	var buffErr bytes.Buffer
-	logrus.Trace(fmt.Sprintf("execute commands on ns=%s, pod=%s container=%s", namespace, podname, container))
-	req := ocpclient.Coreclient.RESTClient().
+	logrus.Trace(fmt.Sprintf("execute commands on ns=%s, pod=%s container=%s", ctx.Namespace, ctx.Podname, ctx.Containername))
+	req := clientsholder.Coreclient.RESTClient().
 		Post().
-		Namespace(namespace).
+		Namespace(ctx.Namespace).
 		Resource("pods").
-		Name(podname).
+		Name(ctx.Podname).
 		SubResource("exec").
 		VersionedParams(&v1.PodExecOptions{
-			Container: container,
-			Command:   command,
-			Stdin:     true,
+			Container: ctx.Containername,
+			Command:   commandStr,
+			Stdin:     false,
 			Stdout:    true,
 			Stderr:    true,
-			TTY:       true,
+			TTY:       false,
 		}, scheme.ParameterCodec)
 
-	exec, err := remotecommand.NewSPDYExecutor(ocpclient.RestConfig, "POST", req.URL())
+	exec, err := remotecommand.NewSPDYExecutor(clientsholder.RestConfig, "POST", req.URL())
 	if err != nil {
 		logrus.Error(err)
 		return stdout, stderr, err
 	}
 	err = exec.Stream(remotecommand.StreamOptions{
-		Stdin:  os.Stdin,
 		Stdout: &buffOut,
 		Stderr: &buffErr,
-		Tty:    true,
 	})
 	stdout, stderr = buffOut.String(), buffErr.String()
 	if err != nil {
 		logrus.Error(err)
 		logrus.Error(req.URL())
-		logrus.Error("command ", command)
+		logrus.Error("command: ", command)
+		logrus.Error("stderr: ", stderr)
+		logrus.Error("stdout: ", stdout)
 		return stdout, stderr, err
 	}
 	return stdout, stderr, err

@@ -14,4 +14,25 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package ocpclient_test
+/*
+Package tnf contains the core Test runner interfaces.
+*/
+package tnf
+
+import "strings"
+
+// StringInSlice checks a slice for a given string.
+func StringInSlice(s []string, str string, contains bool) bool {
+	for _, v := range s {
+		if !contains {
+			if strings.TrimSpace(v) == str {
+				return true
+			}
+		} else {
+			if strings.Contains(strings.TrimSpace(v), str) {
+				return true
+			}
+		}
+	}
+	return false
+}

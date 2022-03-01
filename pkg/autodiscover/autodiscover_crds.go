@@ -26,13 +26,13 @@ import (
 
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
-	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
+	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // getClusterCrdNames returns a list of crd names found in the cluster.
 func getClusterCrdNames() (crdList []*apiextv1.CustomResourceDefinition, err error) {
-	oc := ocpclient.NewOcpClient()
+	oc := clientsholder.NewClientsHolder()
 	options := metav1.ListOptions{}
 	crds, err := oc.APIExtClient.CustomResourceDefinitions().List(context.TODO(), options)
 	if err != nil {
