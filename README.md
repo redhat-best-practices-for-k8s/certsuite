@@ -80,8 +80,6 @@ The section can be configured as well as auto discovered. For manual configurati
 
 * CSVs to be tested by the `operator` spec are identified with the `test-network-function.com/operator=target`
 label. Any value is permitted but `target` is used here for consistency with the other specs.
-* `test-network-function.com/subscription_name` is optional and should contain a JSON-encoded string that's the name of
-the subscription for this CSV. If unset, the CSV name will be used.
 
 ### certifiedcontainerinfo and certifiedoperatorinfo
 

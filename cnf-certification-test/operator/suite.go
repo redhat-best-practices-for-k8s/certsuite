@@ -17,6 +17,7 @@
 package operator
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/onsi/ginkgo/v2"
@@ -24,8 +25,10 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 //
@@ -46,6 +49,11 @@ var _ = ginkgo.Describe(common.OperatorTestKey, func() {
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorNoPrivileges)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testOperatorInstallationWithoutPrivileges(&env)
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorIsInstalledViaOLMIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testOperatorOlmSubscription(&env)
 	})
 })
 
@@ -102,5 +110,40 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 
 	if n := len(badCsvs); n > 0 {
 		ginkgo.Fail(fmt.Sprintf("Found %d CSVs with priviledges on some resource names.", n))
+	}
+}
+
+func testOperatorOlmSubscription(env *provider.TestEnvironment) {
+	badCsvs := []string{}
+	if len(env.Csvs) == 0 {
+		ginkgo.Skip("No CSVs to perform test, skipping.")
+	}
+
+	ocpClient := clientsholder.NewClientsHolder()
+	for _, csv := range env.Csvs {
+		ginkgo.By(fmt.Sprintf("Checking OLM subscription for CSV %s (ns %s)", csv.Name, csv.Namespace))
+		options := metav1.ListOptions{}
+		subscriptions, err := ocpClient.OlmClient.OperatorsV1alpha1().Subscriptions(csv.Namespace).List(context.TODO(), options)
+		if err != nil {
+			ginkgo.Fail(fmt.Sprintf("Failed to get subscription for CSV %s (ns %s)", csv.Name, csv.Namespace))
+		}
+
+		// Iterate through namespace's subscriptions to get the installed CSV one.
+		subscriptionFound := false
+		for i := range subscriptions.Items {
+			if subscriptions.Items[i].Status.InstalledCSV == csv.Name {
+				logrus.Infof("OLM subscription %s found for CSV %s (ns %s)", subscriptions.Items[i].Name, csv.Name, csv.Namespace)
+				subscriptionFound = true
+				break
+			}
+		}
+		if !subscriptionFound {
+			tnf.ClaimFilePrintf("OLM subscription not found for operator csv %s (ns %s)", csv.Name, csv.Namespace)
+			badCsvs = append(badCsvs, fmt.Sprintf("%s.%s", csv.Namespace, csv.Name))
+		}
+	}
+
+	if n := len(badCsvs); n > 0 {
+		ginkgo.Fail(fmt.Sprintf("Found %d CSVs not installed by OLM", n))
 	}
 }
