@@ -22,7 +22,6 @@ import (
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	clientOlm "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -53,7 +52,6 @@ func findOperatorsByLabel(olmClient *clientOlm.Clientset, labels []configuration
 	return csvs
 }
 func findSubscriptions(olmClient *clientOlm.Clientset, labels []configuration.Label, namespaces []configuration.Namespace) []olmv1Alpha.Subscription {
-	ocpClient := ocpclient.NewOcpClient()
 	subscriptions := []olmv1Alpha.Subscription{}
 	for _, ns := range namespaces {
 		logrus.Debugf("Searching subscriptions in namespace %s", ns)
@@ -62,7 +60,7 @@ func findSubscriptions(olmClient *clientOlm.Clientset, labels []configuration.La
 			options := metav1.ListOptions{}
 			label := buildLabelQuery(label)
 			options.LabelSelector = label
-			subscription, err := ocpClient.OlmClient.OperatorsV1alpha1().Subscriptions(ns.Name).List(context.TODO(), metav1.ListOptions{})
+			subscription, err := olmClient.OperatorsV1alpha1().Subscriptions(ns.Name).List(context.TODO(), metav1.ListOptions{})
 			if err != nil {
 				logrus.Errorln("error when listing subscriptions in ns=", ns, " label=", label)
 				continue

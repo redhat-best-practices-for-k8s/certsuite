@@ -97,6 +97,7 @@ func BuildTestEnvironment() {
 		env.DebugPods[nodeName] = &debugPods[i]
 	}
 	csvs := data.Csvs
+	subscriptions := data.Subscriptions
 	for i := range csvs {
 		env.Csvs = append(env.Csvs, &csvs[i])
 		if IsinstalledCsv(&csvs[i], subscriptions) {
@@ -125,6 +126,7 @@ func IsinstalledCsv(csv *v1alpha1.ClusterServiceVersion, Subscriptions []v1alpha
 
 	}
 	return false
+}
 func WaitDebugPodReady() {
 	oc := clientsholder.NewClientsHolder()
 	listOptions := metav1.ListOptions{}

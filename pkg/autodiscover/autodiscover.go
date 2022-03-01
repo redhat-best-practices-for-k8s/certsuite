@@ -38,13 +38,14 @@ const (
 )
 
 type DiscoveredTestData struct {
-	Env        configuration.TestParameters
-	TestData   configuration.TestConfiguration
-	Pods       []v1.Pod
-	DebugPods  []v1.Pod
-	Crds       []*apiextv1.CustomResourceDefinition
-	Namespaces []string
-	Csvs       []olmv1Alpha.ClusterServiceVersion
+	Env           configuration.TestParameters
+	TestData      configuration.TestConfiguration
+	Pods          []v1.Pod
+	DebugPods     []v1.Pod
+	Crds          []*apiextv1.CustomResourceDefinition
+	Namespaces    []string
+	Csvs          []olmv1Alpha.ClusterServiceVersion
+	Subscriptions []olmv1Alpha.Subscription
 }
 
 func buildLabelName(labelPrefix, labelName string) string {
@@ -61,7 +62,6 @@ func buildLabelQuery(label configuration.Label) string {
 	}
 	return fullLabelName
 }
-
 
 func DoAutoDiscover() DiscoveredTestData {
 	data := DiscoveredTestData{}
@@ -92,8 +92,8 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.DebugPods = findPodsByLabel(oc.Coreclient, debugLabels, debugNS)
 	data.Crds = FindTestCrdNames(data.TestData.CrdFilters)
 	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
-	subscriptions = findSubscriptions(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, testData.TargetNameSpaces)
-  return data
+	data.Subscriptions = findSubscriptions(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
+	return data
 
 }
 
