@@ -26,6 +26,11 @@ type CertifiedContainerRequestInfo struct {
 	Repository string `yaml:"repository" json:"repository"`
 }
 
+type SkipHelmChartList struct {
+	// Name is the name of the `operator bundle package name` or `image-version` that you want to check if exists in the RedHat catalog
+	Name string `yaml:"name" json:"name"`
+}
+
 // CertifiedOperatorRequestInfo contains all certified operator request info
 type CertifiedOperatorRequestInfo struct {
 
@@ -64,7 +69,8 @@ type TestConfiguration struct {
 	// CertifiedOperatorInfo is list of operator bundle names that are queried for certification status.
 	CertifiedOperatorInfo []CertifiedOperatorRequestInfo `yaml:"certifiedoperatorinfo,omitempty" json:"certifiedoperatorinfo,omitempty"`
 	// CRDs section.
-	CrdFilters []CrdFilter `yaml:"targetCrdFilters" json:"targetCrdFilters"`
+	CrdFilters        []CrdFilter         `yaml:"targetCrdFilters" json:"targetCrdFilters"`
+	SkipHelmChartList []SkipHelmChartList `yaml:"skipHelmChartList,omitempty" json:"skipHelmChartList,omitempty"`
 }
 
 type TestParameters struct {

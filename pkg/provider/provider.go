@@ -26,14 +26,15 @@ import (
 )
 
 type TestEnvironment struct { // rename this with testTarget
-	Namespaces []string //
-	Pods       []*v1.Pod
-	Containers []*Container
-	Csvs       []*v1alpha1.ClusterServiceVersion
-	DebugPods  map[string]*v1.Pod // map from nodename to debugPod
-	Config     configuration.TestConfiguration
-	variables  configuration.TestParameters
-	Crds       []*apiextv1.CustomResourceDefinition
+	Namespaces    []string //
+	Pods          []*v1.Pod
+	Containers    []*Container
+	Csvs          []*v1alpha1.ClusterServiceVersion
+	DebugPods     map[string]*v1.Pod // map from nodename to debugPod
+	Config        configuration.TestConfiguration
+	variables     configuration.TestParameters
+	Crds          []*apiextv1.CustomResourceDefinition
+	Subscriptions []*v1alpha1.Subscription
 }
 
 type Container struct {
@@ -61,7 +62,7 @@ func BuildTestEnvironment() {
 	// delete env
 	env = TestEnvironment{}
 	// build Pods and Containers under test
-	environmentVariables, conf, pods, debugPods, crds, ns, csvs := autodiscover.DoAutoDiscover()
+	environmentVariables, conf, pods, debugPods, crds, ns, csvs, subscriptions := autodiscover.DoAutoDiscover()
 	env.Config = conf
 	env.Crds = crds
 	env.Namespaces = ns
@@ -84,6 +85,9 @@ func BuildTestEnvironment() {
 
 	for i := range csvs {
 		env.Csvs = append(env.Csvs, &csvs[i])
+		if IsinstalledCsv(&csvs[i], subscriptions) {
+			env.Subscriptions = append(env.Subscriptions, &subscriptions[i])
+		}
 	}
 }
 
@@ -97,4 +101,14 @@ func GetTestEnvironment() TestEnvironment {
 
 func IsOCPCluster() bool {
 	return !env.variables.NonOcpCluster
+}
+
+func IsinstalledCsv(csv *v1alpha1.ClusterServiceVersion, Subscriptions []v1alpha1.Subscription) bool {
+	for i := range Subscriptions {
+		if Subscriptions[i].Status.InstalledCSV == csv.Name {
+			return true
+		}
+
+	}
+	return false
 }

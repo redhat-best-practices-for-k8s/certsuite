@@ -58,7 +58,7 @@ func DoAutoDiscover() (env configuration.TestParameters,
 	testData configuration.TestConfiguration,
 	pods,
 	debugPods []v1.Pod, crds []*apiextv1.CustomResourceDefinition, namespaces []string,
-	csvs []olmv1Alpha.ClusterServiceVersion) {
+	csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription) {
 	env, err := configuration.LoadEnvironmentVariables()
 	if err != nil {
 		logrus.Fatalln("can't load environment variable")
@@ -85,7 +85,8 @@ func DoAutoDiscover() (env configuration.TestParameters,
 	debugPods = findPodsByLabel(oc.Coreclient, debugLabels, debugNS)
 	crds = FindTestCrdNames(testData.CrdFilters)
 	csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, testData.TargetNameSpaces)
-	return env, testData, pods, debugPods, crds, namespaces, csvs
+	subscriptions = findSubscriptions(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, testData.TargetNameSpaces)
+	return env, testData, pods, debugPods, crds, namespaces, csvs, subscriptions
 }
 
 func namespacesListToStringList(namespaceList []configuration.Namespace) (stringList []string) {
