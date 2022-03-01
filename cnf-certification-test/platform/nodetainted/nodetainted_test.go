@@ -20,19 +20,19 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	// "github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
+	// "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
 
-func Test_NewNodeTaintedTester(t *testing.T) {
+/*func Test_NewNodeTaintedTester(t *testing.T) {
 	newNt := NewNodeTaintedTester(common.DefaultTimeout, clientsholder.NewClientsHolder(), clientsholder.Context{
 		Namespace:     "testns1",
 		Podname:       "pod1",
 		Containername: "container1",
 	})
 	assert.NotNil(t, newNt)
-}
+}*/
 
 func TestTaintsAccepted(t *testing.T) {
 	testCases := []struct {
