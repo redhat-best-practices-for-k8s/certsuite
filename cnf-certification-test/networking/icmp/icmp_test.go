@@ -20,7 +20,10 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
+	v1 "k8s.io/api/core/v1"
 )
 
 func Test_parsePingResult(t *testing.T) { //nolint:funlen
@@ -157,6 +160,89 @@ func Test_parsePingResult(t *testing.T) { //nolint:funlen
 			}
 			if !reflect.DeepEqual(gotResults, tt.wantResults) {
 				t.Errorf("parsePingResult() = %v, want %v", gotResults, tt.wantResults)
+			}
+		})
+	}
+}
+
+func TestProcessContainerIpsPerNet(t *testing.T) { //nolint:funlen
+	type args struct {
+		containerID       *provider.Container
+		netKey            string
+		ipAddresses       []string
+		netsUnderTest     map[string]netcommons.NetTestContext
+		aIPVersion        netcommons.IPVersion
+		wantNetsUnderTest map[string]netcommons.NetTestContext
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		{
+			name: "ok",
+			args: args{
+				containerID: &provider.Container{
+					Data:      &v1.Container{},
+					Status:    v1.ContainerStatus{},
+					Namespace: "namespace1",
+					Podname:   "pod1",
+					NodeName:  "node1",
+					Runtime:   "containerd",
+					UID:       "16165165165165",
+				},
+				netKey:        "net1",
+				ipAddresses:   []string{"1.1.1.1", "2.2.2.2", "3.3.3.3", "fd00:10:244:1::3"},
+				netsUnderTest: map[string]netcommons.NetTestContext{},
+				aIPVersion:    netcommons.IPv4,
+				wantNetsUnderTest: map[string]netcommons.NetTestContext{
+					"net1": {
+						TesterContainerNodeName: "",
+						TesterSource: netcommons.ContainerIP{
+							IP: "1.1.1.1",
+							ContainerIdentifier: &provider.Container{
+								Data:      &v1.Container{},
+								Status:    v1.ContainerStatus{},
+								Namespace: "namespace1",
+								Podname:   "pod1",
+								NodeName:  "node1",
+								Runtime:   "containerd",
+								UID:       "16165165165165",
+							},
+						},
+						DestTargets: []netcommons.ContainerIP{{
+							IP: "2.2.2.2",
+							ContainerIdentifier: &provider.Container{
+								Data:      &v1.Container{},
+								Status:    v1.ContainerStatus{},
+								Namespace: "namespace1",
+								Podname:   "pod1",
+								NodeName:  "node1",
+								Runtime:   "containerd",
+								UID:       "16165165165165",
+							},
+						}, {
+							IP: "3.3.3.3",
+							ContainerIdentifier: &provider.Container{
+								Data:      &v1.Container{},
+								Status:    v1.ContainerStatus{},
+								Namespace: "namespace1",
+								Podname:   "pod1",
+								NodeName:  "node1",
+								Runtime:   "containerd",
+								UID:       "16165165165165",
+							},
+						},
+						},
+					},
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ProcessContainerIpsPerNet(tt.args.containerID, tt.args.netKey, tt.args.ipAddresses, tt.args.netsUnderTest, tt.args.aIPVersion)
+			if !reflect.DeepEqual(tt.args.netsUnderTest, tt.args.wantNetsUnderTest) {
+				t.Errorf("ProcessContainerIpsPerNet() = %v, want %v", tt.args.netsUnderTest, tt.args.wantNetsUnderTest)
 			}
 		})
 	}
