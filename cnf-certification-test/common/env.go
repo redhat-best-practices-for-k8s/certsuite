@@ -16,17 +16,21 @@
 
 package common
 
-// Constants shared by multiple test suite packages
-const (
-	ConfiguredTestFile        = "testconfigure.yml"
-	defaultTimeoutSeconds     = 10
-	AccessControlTestKey      = "access-control"
-	DiagnosticTestKey         = "diagnostic"
-	LifecycleTestKey          = "lifecycle"
-	AffiliatedCertTestKey     = "affiliated-certification"
-	NetworkingTestKey         = "networking"
-	ObservabilityTestKey      = "observability"
-	OperatorTestKey           = "operator"
-	PlatformAlterationTestKey = "platform-alteration"
-	CommonTestKey             = "common"
+import (
+	"path"
+	"time"
 )
+
+var (
+	// PathRelativeToRoot is used to calculate relative filepaths for the `test-network-function` executable entrypoint.
+	PathRelativeToRoot = path.Join("..")
+
+	// RelativeSchemaPath is the relative path to the generic-test.schema.json JSON schema.
+	RelativeSchemaPath = path.Join(PathRelativeToRoot, schemaPath)
+
+	// schemaPath is the path to the generic-test.schema.json JSON schema relative to the project root.
+	schemaPath = path.Join("schemas", "generic-test.schema.json")
+)
+
+// DefaultTimeout for creating new interactive sessions (oc, ssh, tty)
+var DefaultTimeout = time.Duration(defaultTimeoutSeconds) * time.Second

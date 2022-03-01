@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 Red Hat, Inc.
+// Copyright (C) 2020-2022 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,9 +18,11 @@ package platform
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
+	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 
@@ -30,18 +32,21 @@ import (
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/nodetainted"
 )
 
 //
 // All actual test code belongs below here.  Utilities belong above.
 //
 var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
-	logrus.Debug(common.PlatformAlterationTestKey, " not moved yet to new framework")
+	logrus.Debugf("Entering %s suite", common.PlatformAlterationTestKey)
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
 		provider.BuildTestEnvironment()
 		env = provider.GetTestEnvironment()
+		provider.WaitDebugPodReady()
 	})
+
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestUnalteredBaseImageIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		if provider.IsOCPCluster() {
@@ -49,6 +54,11 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		} else {
 			ginkgo.Skip(" non ocp cluster ")
 		}
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNonTaintedNodeKernelsIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testTainted(&env) // minikube tainted kernels are allowed via config
 	})
 })
 
@@ -66,7 +76,8 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 		}
 		nodeName := cut.NodeName
 		debugPod := env.DebugPods[nodeName]
-		fsdiff.RunTest(ocpclient.NewOcpClient(), ocpclient.Context{Namespace: debugPod.Namespace,
+
+		fsdiff.RunTest(clientsholder.NewClientsHolder(), clientsholder.Context{Namespace: debugPod.Namespace,
 			Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name})
 		switch fsdiff.GetResults() {
 		case tnf.SUCCESS:
@@ -81,4 +92,84 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 	logrus.Println("err containers ", errContainers)
 	gomega.Expect(badContainers).To(gomega.BeNil())
 	gomega.Expect(errContainers).To(gomega.BeNil())
+}
+
+//nolint:funlen
+func testTainted(env *provider.TestEnvironment) {
+	var taintedNodes []string
+	var errNodes []string
+
+	// Loop through the debug pods that are tied to each node.
+	for _, dp := range env.DebugPods {
+		// Build a NodeTainted tester object.
+		c := clientsholder.NewClientsHolder()
+		tester := nodetainted.NewNodeTaintedTester(common.DefaultTimeout, c, clientsholder.Context{
+			Namespace:     dp.Namespace,
+			Podname:       dp.Name,
+			Containername: dp.Spec.Containers[0].Name,
+		})
+		taintInfo, err := tester.GetKernelTaintInfo()
+		if err != nil {
+			logrus.Error("failed to retrieve kernel taint information from debug pod/host")
+			tnf.ClaimFilePrintf("failed to retrieve kernel taint information from debug pod/host")
+			errNodes = append(errNodes, dp.Name)
+			break
+		}
+		tnf.ClaimFilePrintf(fmt.Sprintf("Namespace: %s Pod: %s taintInfo retrieved: %s", dp.Namespace, dp.Name, taintInfo))
+
+		var taintedBitmap uint64
+		nodeTaintsAccepted := true
+		taintedBitmap, err = strconv.ParseUint(taintInfo, 10, 64) //nolint:gomnd // base 10 and uint64
+
+		if err != nil {
+			logrus.Errorf("failed to parse uint with: %s", err)
+			tnf.ClaimFilePrintf("Could not decode tainted kernel causes (code=%d) for node %s\n", taintedBitmap, dp.Name)
+			errNodes = append(errNodes, dp.Name)
+			break
+		}
+		taintMsg, individualTaints := nodetainted.DecodeKernelTaints(taintedBitmap)
+
+		// We only will fail the tainted kernel check if the reason for the taint
+		// only pertains to `module was loaded`.
+		logrus.Debug("Checking for 'module was loaded' taints")
+		logrus.Debug("individualTaints", individualTaints)
+		moduleCheck := false
+		for _, it := range individualTaints {
+			if strings.Contains(it, `module was loaded`) {
+				moduleCheck = true
+				break
+			}
+		}
+
+		if moduleCheck {
+			// Retrieve the modules from the node (via the debug pod)
+			modules := tester.GetModulesFromNode(dp.Name)
+			logrus.Debugf("Got the modules from node %s: %v", dp.Name, modules)
+
+			// Retrieve all of the out of tree modules.
+			taintedModules := nodetainted.GetOutOfTreeModules(modules, dp.Name, tester)
+			logrus.Debug("Collected all of the tainted modules: ", taintedModules)
+			logrus.Debug("Modules allowed via configuration: ", env.Config.AcceptedKernelTaints)
+
+			// Looks through the accepted taints listed in the tnf-config file.
+			// If all of the tainted modules show up in the configuration file, don't fail the test.
+			nodeTaintsAccepted = nodetainted.TaintsAccepted(env.Config.AcceptedKernelTaints, taintedModules)
+		}
+
+		// Only add the tainted node to the slice if the taint is acceptable.
+		if !nodeTaintsAccepted {
+			taintedNodes = append(taintedNodes, dp.Name)
+		}
+
+		// Only print the message if there is something to report failure or tainted node wise.
+		if len(taintedNodes) != 0 || len(errNodes) != 0 {
+			tnf.ClaimFilePrintf("Decoded tainted kernel causes (code=%d) for node %s : %s\n", taintedBitmap, dp.Name, taintMsg)
+		}
+	}
+
+	// We are expecting tainted nodes to be Nil, but only if:
+	// 1) The reason for the tainted node is contains(`module was loaded`)
+	// 2) The modules loaded are all whitelisted.
+	gomega.Expect(taintedNodes).To(gomega.BeNil())
+	gomega.Expect(errNodes).To(gomega.BeNil())
 }

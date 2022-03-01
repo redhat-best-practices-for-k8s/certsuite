@@ -20,13 +20,12 @@ import (
 	"fmt"
 	"path/filepath"
 
-	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/ocpclient"
+	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	v1 "k8s.io/api/core/v1"
+	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 const (
@@ -37,6 +36,16 @@ const (
 	// anyLabelValue is the value that will allow any value for a label when building the label query.
 	anyLabelValue = ""
 )
+
+type DiscoveredTestData struct {
+	Env        configuration.TestParameters
+	TestData   configuration.TestConfiguration
+	Pods       []v1.Pod
+	DebugPods  []v1.Pod
+	Crds       []*apiextv1.CustomResourceDefinition
+	Namespaces []string
+	Csvs       []olmv1Alpha.ClusterServiceVersion
+}
 
 func buildLabelName(labelPrefix, labelName string) string {
 	if labelPrefix == "" {
@@ -53,40 +62,39 @@ func buildLabelQuery(label configuration.Label) string {
 	return fullLabelName
 }
 
-//nolint:gocritic // the arguments are needed
-func DoAutoDiscover() (env configuration.TestParameters,
-	testData configuration.TestConfiguration,
-	pods,
-	debugPods []v1.Pod, crds []*apiextv1.CustomResourceDefinition, namespaces []string,
-	csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription) {
-	env, err := configuration.LoadEnvironmentVariables()
+
+func DoAutoDiscover() DiscoveredTestData {
+	data := DiscoveredTestData{}
+	var err error
+	data.Env, err = configuration.LoadEnvironmentVariables()
 	if err != nil {
 		logrus.Fatalln("can't load environment variable")
 	}
-	testData, err = configuration.LoadConfiguration(env.ConfigurationPath)
+	data.TestData, err = configuration.LoadConfiguration(data.Env.ConfigurationPath)
 	if err != nil {
 		logrus.Fatalln("can't load configuration")
 	}
 	filenames := []string{}
-	if env.Kubeconfig != "" {
-		filenames = append(filenames, env.Kubeconfig)
+	if data.Env.Kubeconfig != "" {
+		filenames = append(filenames, data.Env.Kubeconfig)
 	}
-	if env.Home != "" {
-		path := filepath.Join(env.Home, ".kube", "config")
+	if data.Env.Home != "" {
+		path := filepath.Join(data.Env.Home, ".kube", "config")
 		filenames = append(filenames, path)
 	}
-	oc := ocpclient.NewOcpClient(filenames...)
-	namespaces = namespacesListToStringList(testData.TargetNameSpaces)
-	pods = findPodsByLabel(oc.Coreclient, testData.TargetPodLabels, namespaces)
+	oc := clientsholder.NewClientsHolder(filenames...)
+	data.Namespaces = namespacesListToStringList(data.TestData.TargetNameSpaces)
+	data.Pods = findPodsByLabel(oc.Coreclient, data.TestData.TargetPodLabels, data.Namespaces)
 
 	debugLabel := configuration.Label{Prefix: debugLabelPrefix, Name: debugLabelName, Value: debugLabelValue}
 	debugLabels := []configuration.Label{debugLabel}
 	debugNS := []string{defaultNamespace}
-	debugPods = findPodsByLabel(oc.Coreclient, debugLabels, debugNS)
-	crds = FindTestCrdNames(testData.CrdFilters)
-	csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, testData.TargetNameSpaces)
+	data.DebugPods = findPodsByLabel(oc.Coreclient, debugLabels, debugNS)
+	data.Crds = FindTestCrdNames(data.TestData.CrdFilters)
+	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
 	subscriptions = findSubscriptions(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, testData.TargetNameSpaces)
-	return env, testData, pods, debugPods, crds, namespaces, csvs, subscriptions
+  return data
+
 }
 
 func namespacesListToStringList(namespaceList []configuration.Namespace) (stringList []string) {

@@ -41,6 +41,13 @@ type CertifiedOperatorRequestInfo struct {
 	Organization string `yaml:"organization" json:"organization"`
 }
 
+// AcceptedKernelTaintsInfo contains all certified operator request info
+type AcceptedKernelTaintsInfo struct {
+
+	// Accepted modules that cause taints that we want to supply to the test suite
+	Module string `yaml:"module" json:"module"`
+}
+
 // Label ns/name/value for resource lookup
 type Label struct {
 	Prefix string `yaml:"prefix" json:"prefix"`
@@ -69,8 +76,9 @@ type TestConfiguration struct {
 	// CertifiedOperatorInfo is list of operator bundle names that are queried for certification status.
 	CertifiedOperatorInfo []CertifiedOperatorRequestInfo `yaml:"certifiedoperatorinfo,omitempty" json:"certifiedoperatorinfo,omitempty"`
 	// CRDs section.
-	CrdFilters        []CrdFilter         `yaml:"targetCrdFilters" json:"targetCrdFilters"`
-	SkipHelmChartList []SkipHelmChartList `yaml:"skipHelmChartList,omitempty" json:"skipHelmChartList,omitempty"`
+	CrdFilters []CrdFilter `yaml:"targetCrdFilters" json:"targetCrdFilters"`
+	// AcceptedKernelTaints
+	AcceptedKernelTaints []AcceptedKernelTaintsInfo `yaml:"acceptedKernelTaints,omitempty" json:"acceptedKernelTaints,omitempty"`
 }
 
 type TestParameters struct {
