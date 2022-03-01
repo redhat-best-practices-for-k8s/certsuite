@@ -24,6 +24,8 @@ import (
 	"fmt"
 	"strings"
 
+	"encoding/json"
+
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
@@ -36,28 +38,44 @@ import (
 )
 
 const (
-	daemonSetNamespace = "default"
-	daemonSetName      = "debug"
-	timeout            = 60 * time.Second
+	daemonSetNamespace               = "default"
+	daemonSetName                    = "debug"
+	timeout                          = 60 * time.Second
+	cniNetworksStatusKey             = "k8s.v1.cni.cncf.io/networks-status"
+	skipConnectivityTestsLabel       = "test-network-function.com/skip_connectivity_tests"
+	skipMultusConnectivityTestsLabel = "test-network-function.com/skip_multus_connectivity_tests"
 )
 
 type TestEnvironment struct { // rename this with testTarget
-	Namespaces []string //
-	Pods       []*v1.Pod
-	Containers []*Container
-	Csvs       []*v1alpha1.ClusterServiceVersion
-	DebugPods  map[string]*v1.Pod // map from nodename to debugPod
-	Config     configuration.TestConfiguration
-	variables  configuration.TestParameters
-	Crds       []*apiextv1.CustomResourceDefinition
+	Namespaces         []string
+	Pods               []*v1.Pod
+	Containers         []*Container
+	Csvs               []*v1alpha1.ClusterServiceVersion
+	DebugPods          map[string]*v1.Pod // map from nodename to debugPod
+	Config             configuration.TestConfiguration
+	variables          configuration.TestParameters
+	Crds               []*apiextv1.CustomResourceDefinition
+	ContainersMap      map[*v1.Container]*Container
+	MultusIPs          map[*v1.Pod]map[string][]string
+	SkipNetTests       map[*v1.Pod]bool
+	SkipMultusNetTests map[*v1.Pod]bool
 }
 
 type Container struct {
-	Data      v1.Container
+	Data      *v1.Container
 	Status    v1.ContainerStatus
 	Namespace string
 	Podname   string
 	NodeName  string
+	Runtime   string
+	UID       string
+}
+type cniNetworkInterface struct {
+	Name      string                 `json:"name"`
+	Interface string                 `json:"interface"`
+	IPs       []string               `json:"ips"`
+	Default   bool                   `json:"default"`
+	DNS       map[string]interface{} `json:"dns"`
 }
 
 var (
@@ -69,7 +87,7 @@ func GetContainer() *Container {
 	return &Container{}
 }
 
-func BuildTestEnvironment() {
+func BuildTestEnvironment() { //nolint:funlen
 	// delete env
 	env = TestEnvironment{}
 	// build Pods and Containers under test
@@ -78,15 +96,32 @@ func BuildTestEnvironment() {
 	env.Crds = data.Crds
 	env.Namespaces = data.Namespaces
 	env.variables = data.Env
+	env.ContainersMap = make(map[*v1.Container]*Container)
+	env.MultusIPs = make(map[*v1.Pod]map[string][]string)
+	env.SkipNetTests = make(map[*v1.Pod]bool)
+	env.SkipMultusNetTests = make(map[*v1.Pod]bool)
 	pods := data.Pods
 	for i := 0; i < len(pods); i++ {
 		env.Pods = append(env.Pods, &pods[i])
+		var err error
+		env.MultusIPs[&pods[i]], err = getPodIPsPerNet(pods[i].GetAnnotations()[cniNetworksStatusKey])
+		if err != nil {
+			logrus.Errorf("Could not decode networks-status annotation")
+		}
+		if pods[i].GetLabels()[skipConnectivityTestsLabel] != "" {
+			env.SkipNetTests[&pods[i]] = true
+		}
+		if pods[i].GetLabels()[skipMultusConnectivityTestsLabel] != "" {
+			env.SkipMultusNetTests[&pods[i]] = true
+		}
 		for j := 0; j < len(pods[i].Spec.Containers); j++ {
-			cut := pods[i].Spec.Containers[j]
+			cut := &(pods[i].Spec.Containers[j])
 			state := pods[i].Status.ContainerStatuses[j]
+			aRuntime, uid := GetRuntimeUID(&state)
 			container := Container{Podname: pods[i].Name, Namespace: pods[i].Namespace,
-				NodeName: pods[i].Spec.NodeName, Data: cut, Status: state}
+				NodeName: pods[i].Spec.NodeName, Data: cut, Status: state, Runtime: aRuntime, UID: uid}
 			env.Containers = append(env.Containers, &container)
+			env.ContainersMap[cut] = &container
 		}
 	}
 	debugPods := data.DebugPods
@@ -169,4 +204,54 @@ func (c *Container) GetUID() (string, error) {
 	}
 	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Data.Name, uid))
 	return uid, nil
+}
+func GetRuntimeUID(cs *v1.ContainerStatus) (runtime, uid string) {
+	split := strings.Split(cs.ContainerID, "://")
+	if len(split) > 0 {
+		uid = split[len(split)-1]
+		runtime = split[0]
+	}
+	return runtime, uid
+}
+
+func (c *Container) String() string {
+	return fmt.Sprintf("node:%s ns:%s podName:%s containerName:%s containerUID:%s containerRuntime:%s",
+		c.NodeName,
+		c.Namespace,
+		c.Podname,
+		c.Data.Name,
+		c.Status.ContainerID,
+		c.Runtime,
+	)
+}
+func (c *Container) StringShort() string {
+	return fmt.Sprintf("ns:%s podName:%s containerName:%s",
+		c.Namespace,
+		c.Podname,
+		c.Data.Name,
+	)
+}
+
+// getPodIPsPerNet gets the IPs of a pod.
+// CNI annotation "k8s.v1.cni.cncf.io/networks-status".
+// Returns (ips, error).
+func getPodIPsPerNet(annotation string) (ips map[string][]string, err error) {
+	// This is a map indexed with the network name (network attachment) and
+	// listing all the IPs created in this subnet and belonging to the pod namespace
+	// The list of ips pr net is parsed from the content of the "k8s.v1.cni.cncf.io/networks-status" annotation.
+	ips = make(map[string][]string)
+
+	var cniInfo []cniNetworkInterface
+	err = json.Unmarshal([]byte(annotation), &cniInfo)
+	if err != nil {
+		return nil, errors.New("could not unmarshal network-status annotation")
+	}
+	// If this is the default interface, skip it as it is tested separately
+	// Otherwise add all non default interfaces
+	for _, cniInterface := range cniInfo {
+		if !cniInterface.Default {
+			ips[cniInterface.Name] = cniInterface.IPs
+		}
+	}
+	return ips, nil
 }

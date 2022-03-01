@@ -24,6 +24,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/ownerreference"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	v1 "k8s.io/api/core/v1"
 )
@@ -130,7 +131,7 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 			logrus.Debugln("check pod ", put.Namespace, " ", put.Name, " owner reference")
 			o := ownerreference.NewOwnerReference(put)
 			o.RunTest()
-			if o.GetResults() != tnf.SUCCESS {
+			if o.GetResults() != testhelper.SUCCESS {
 				s := put.Namespace + ":" + put.Name
 				badPods = append(badPods, s)
 			}

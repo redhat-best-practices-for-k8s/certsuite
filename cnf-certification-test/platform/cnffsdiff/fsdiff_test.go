@@ -23,7 +23,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	. "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
 
 type ClientHoldersMock struct {
@@ -45,18 +45,18 @@ func TestRunTest(t *testing.T) {
 	}
 	// test when no package is installed
 	fsdiff.RunTest(o, clientsholder.Context{})
-	assert.Equal(t, tnf.SUCCESS, fsdiff.GetResults())
+	assert.Equal(t, testhelper.SUCCESS, fsdiff.GetResults())
 
 	// test when an error occurred when running the command
 	o.err = errors.New("error executing the command")
 	fsdiff.RunTest(&o, clientsholder.Context{})
-	assert.Equal(t, tnf.ERROR, fsdiff.GetResults())
+	assert.Equal(t, testhelper.ERROR, fsdiff.GetResults())
 
 	// test when an error message was returned
 	o.err = nil
 	o.stderr = "container id not found"
 	fsdiff.RunTest(&o, clientsholder.Context{})
-	assert.Equal(t, tnf.ERROR, fsdiff.GetResults())
+	assert.Equal(t, testhelper.ERROR, fsdiff.GetResults())
 
 	// test when a package was installed
 	o.err = nil
@@ -73,5 +73,5 @@ func TestRunTest(t *testing.T) {
 	}`
 	// "/usr/local/bin/docker-entrypoint.sh"
 	fsdiff.RunTest(&o, clientsholder.Context{})
-	assert.Equal(t, tnf.FAILURE, fsdiff.GetResults())
+	assert.Equal(t, testhelper.FAILURE, fsdiff.GetResults())
 }
