@@ -134,6 +134,10 @@ func SetLogFormat() {
 
 //nolint:funlen // TestTest invokes the CNF Certification Test Suite.
 func TestTest(t *testing.T) {
+	// When running unit tests, skip the suite
+	if os.Getenv("UNIT_TEST") != "" {
+		t.Skip("Skipping test suite when running unit tests")
+	}
 	// set up input flags and register failure handlers.
 	flag.Parse()
 
