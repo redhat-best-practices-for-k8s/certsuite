@@ -48,43 +48,52 @@ var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 	})
 })
 
-//nolint:funlen
+// containerHasLoggingOutput helper function to get the last line of logging output from
+// a container. Returns true in case some output was found, false otherwise.
+func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
+	ocpClient := clientsholder.NewClientsHolder()
+
+	numLogLines := int64(1)
+	podLogOptions := v1.PodLogOptions{TailLines: &numLogLines, Container: cut.Data.Name}
+	req := ocpClient.Coreclient.Pods(cut.Namespace).GetLogs(cut.Podname, &podLogOptions)
+
+	podLogsReaderCloser, err := req.Stream(context.TODO())
+	if err != nil {
+		return false, fmt.Errorf("unable to get log streamer, err: %s", err)
+	}
+
+	defer podLogsReaderCloser.Close()
+
+	buf := new(bytes.Buffer)
+	_, err = io.Copy(buf, podLogsReaderCloser)
+	if err != nil {
+		return false, fmt.Errorf("unable to get log data, err: %s", err)
+	}
+
+	return buf.String() != "", nil
+}
+
 func testContainersLogging(env *provider.TestEnvironment) {
 	if len(env.Containers) == 0 {
 		ginkgo.Skip("No containers to run test, skipping")
 	}
 
-	ocpClient := clientsholder.NewClientsHolder()
-
 	// Iterate through all the CUTs to get their log output. The TC checks that at least
 	// one log line is found.
-	numLogLines := int64(1)
 	badContainers := []string{}
 	for _, cut := range env.Containers {
-		podLogOptions := v1.PodLogOptions{TailLines: &numLogLines, Container: cut.Data.Name}
-		req := ocpClient.Coreclient.Pods(cut.Namespace).GetLogs(cut.Podname, &podLogOptions)
-		podLogsReaderCloser, err := req.Stream(context.TODO())
+		ginkgo.By(fmt.Sprintf("Checking container %s (pod %s, ns %s) has some logging output", cut.Data.Name, cut.Podname, cut.Namespace))
+		hasLoggingOutput, err := containerHasLoggingOutput(cut)
 		if err != nil {
-			tnf.ClaimFilePrintf("Unable to get log streamer for pod %s, container %s (ns %s), err: %s",
-				cut.Podname, cut.Data.Name, cut.Namespace, err)
+			tnf.ClaimFilePrintf("Failed to get container %s (pod %s, ns %s) log output: %s",
+				cut.Data.Name, cut.Podname, cut.Namespace, err)
 			badContainers = append(badContainers, fmt.Sprintf("%s.%s.%s", cut.Namespace, cut.Podname, cut.Data.Name))
-			continue
 		}
 
-		buf := new(bytes.Buffer)
-		_, err = io.Copy(buf, podLogsReaderCloser)
-		if err != nil {
-			tnf.ClaimFilePrintf("Unable to get log data from pod %s, container %s (ns %s), err :%s",
-				cut.Podname, cut.Data.Name, cut.Namespace, err)
-			badContainers = append(badContainers, fmt.Sprintf("%s.%s.%s", cut.Namespace, cut.Podname, cut.Data.Name))
-			continue
-		}
-
-		if buf.String() == "" {
+		if !hasLoggingOutput {
 			tnf.ClaimFilePrintf("Container: %s (Pod %s ns %s) does not have any line of log to stderr/stdout",
 				cut.Data.Name, cut.Podname, cut.Namespace)
 			badContainers = append(badContainers, fmt.Sprintf("%s.%s.%s", cut.Namespace, cut.Podname, cut.Data.Name))
-			podLogsReaderCloser.Close()
 		}
 	}
 
