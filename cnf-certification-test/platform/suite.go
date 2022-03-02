@@ -24,6 +24,7 @@ import (
 	"github.com/sirupsen/logrus"
 	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
@@ -80,11 +81,11 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 		fsdiff.RunTest(clientsholder.NewClientsHolder(), clientsholder.Context{Namespace: debugPod.Namespace,
 			Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name})
 		switch fsdiff.GetResults() {
-		case tnf.SUCCESS:
+		case testhelper.SUCCESS:
 			continue
-		case tnf.FAILURE:
+		case testhelper.FAILURE:
 			badContainers = append(badContainers, cut.Data.Name)
-		case tnf.ERROR:
+		case testhelper.ERROR:
 			errContainers = append(errContainers, cut.Data.Name)
 		}
 	}

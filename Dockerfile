@@ -41,7 +41,7 @@ ENV PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
 
 # Git identifier to checkout
 ARG TNF_VERSION
-ARG TNF_SRC_URL=https://github.com/test-network-function/cnf-certification-test
+ARG TNF_SRC_URL=$TNF_SRC_URL
 ARG GIT_CHECKOUT_TARGET=$TNF_VERSION
 
 # Git identifier to checkout for partner

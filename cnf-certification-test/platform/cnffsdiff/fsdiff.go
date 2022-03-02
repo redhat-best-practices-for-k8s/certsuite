@@ -23,7 +23,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
 
 const (
@@ -53,7 +53,7 @@ func NewFsDiff(c *provider.Container) (*FsDiff, error) {
 	return &FsDiff{
 		containerID: uid,
 		command:     command,
-		result:      tnf.ERROR,
+		result:      testhelper.ERROR,
 	}, nil
 }
 
@@ -62,11 +62,11 @@ func (f *FsDiff) RunTest(o clientsholder.Command, ctx clientsholder.Context) {
 	output, outerr, err := o.ExecCommandContainer(ctx, f.command)
 	if err != nil {
 		logrus.Errorln("can't execute command on container ", err)
-		f.result = tnf.ERROR
+		f.result = testhelper.ERROR
 		return
 	}
 	if outerr != "" {
-		f.result = tnf.ERROR
+		f.result = testhelper.ERROR
 		logrus.Errorln("error when running fsdiff test ", outerr)
 		return
 	}
@@ -76,13 +76,13 @@ func (f *FsDiff) RunTest(o clientsholder.Command, ctx clientsholder.Context) {
 		r := regexp.MustCompile(exp)
 		if r.MatchString(output) {
 			logrus.Error("an installed package found on ", exp)
-			f.result = tnf.FAILURE
+			f.result = testhelper.FAILURE
 			return
 		}
 	}
 	// see if there's a match in the output
 	logrus.Traceln("the output is ", output)
-	f.result = tnf.SUCCESS
+	f.result = testhelper.SUCCESS
 }
 
 func (f *FsDiff) GetResults() int {
