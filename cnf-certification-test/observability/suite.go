@@ -82,18 +82,16 @@ func testContainersLogging(env *provider.TestEnvironment) {
 	// one log line is found.
 	badContainers := []string{}
 	for _, cut := range env.Containers {
-		ginkgo.By(fmt.Sprintf("Checking container %s (pod %s, ns %s) has some logging output", cut.Data.Name, cut.Podname, cut.Namespace))
+		ginkgo.By(fmt.Sprintf("Checking container %s has some logging output", cut.StringShort()))
 		hasLoggingOutput, err := containerHasLoggingOutput(cut)
 		if err != nil {
-			tnf.ClaimFilePrintf("Failed to get container %s (pod %s, ns %s) log output: %s",
-				cut.Data.Name, cut.Podname, cut.Namespace, err)
-			badContainers = append(badContainers, fmt.Sprintf("%s.%s.%s", cut.Namespace, cut.Podname, cut.Data.Name))
+			tnf.ClaimFilePrintf("Failed to get container %s log output: %s", cut.StringShort(), err)
+			badContainers = append(badContainers, cut.StringShort())
 		}
 
 		if !hasLoggingOutput {
-			tnf.ClaimFilePrintf("Container: %s (Pod %s ns %s) does not have any line of log to stderr/stdout",
-				cut.Data.Name, cut.Podname, cut.Namespace)
-			badContainers = append(badContainers, fmt.Sprintf("%s.%s.%s", cut.Namespace, cut.Podname, cut.Data.Name))
+			tnf.ClaimFilePrintf("Container: %s does not have any line of log to stderr/stdout", cut.StringShort())
+			badContainers = append(badContainers, cut.StringShort())
 		}
 	}
 
