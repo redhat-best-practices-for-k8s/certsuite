@@ -14,7 +14,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package rolebinding
+package rbac
 
 import (
 	"context"
@@ -28,12 +28,11 @@ import (
 type RoleBinding struct {
 	podNamespace       string
 	serviceAccountName string
-	// roleBindings []string // Output variable that stores the 'bad' RoleBindings
-	ClientHolder *clientsholder.ClientsHolder
+	ClientHolder       *clientsholder.ClientsHolder
 }
 
-// NewRoleBinding creates a new RoleBinding object
-func NewRoleBinding(serviceAccountName, podNamespace string, ch *clientsholder.ClientsHolder) *RoleBinding {
+// NewRoleBindingTester creates a new RoleBinding object
+func NewRoleBindingTester(serviceAccountName, podNamespace string, ch *clientsholder.ClientsHolder) *RoleBinding {
 	// Just as a note, the old test suite ran the following command to help determine service accounts that fell outside of the pod's namespace:
 	// oc get rolebindings --all-namespaces -o custom-columns='NAMESPACE:metadata.namespace,NAME:metadata.name,SERVICE_ACCOUNTS:subjects[?(@.kind=="ServiceAccount")]' | grep -E '` + serviceAccountSubString + `|SERVICE_ACCOUNTS'
 
@@ -61,18 +60,4 @@ func (rb *RoleBinding) GetRoleBindings() ([]string, error) {
 		}
 	}
 	return rolebindings, nil
-}
-
-func roleOutOfNamespace(roleNamespace, podNamespace, roleName, serviceAccountName string) bool {
-	// Skip if the role namespace is part of the pod namespace.
-	if roleNamespace == podNamespace {
-		return false
-	}
-
-	// Role is in another namespace and the service account names match.
-	if roleName == serviceAccountName {
-		return true
-	}
-
-	return false
 }

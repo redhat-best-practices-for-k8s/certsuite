@@ -1,4 +1,4 @@
-// // Copyright (C) 2021 Red Hat, Inc.
+// // Copyright (C) 2022 Red Hat, Inc.
 // //
 // // This program is free software; you can redistribute it and/or modify
 // // it under the terms of the GNU General Public License as published by
@@ -14,4 +14,18 @@
 // // with this program; if not, write to the Free Software Foundation, Inc.,
 // // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package rolebinding
+package rbac
+
+func roleOutOfNamespace(roleNamespace, podNamespace, roleName, serviceAccountName string) bool {
+	// Skip if the role namespace is part of the pod namespace.
+	if roleNamespace == podNamespace {
+		return false
+	}
+
+	// Role is in another namespace and the service account names match.
+	if roleName == serviceAccountName {
+		return true
+	}
+
+	return false
+}
