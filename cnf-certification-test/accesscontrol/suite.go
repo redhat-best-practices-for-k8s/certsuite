@@ -346,6 +346,7 @@ func TestPodRoleBindings(env *provider.TestEnvironment) {
 
 		if len(roleBindings) > 0 {
 			logrus.Warnf("Pod: %s has the following role bindings: %s", put.Name, roleBindings)
+			tnf.ClaimFilePrintf("Pod: %s has the following cluster role bindings: %s", put.Name, roleBindings)
 			failedPods = append(failedPods, put.Name)
 		}
 	}
@@ -378,6 +379,7 @@ func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 
 		if len(clusterRoleBindings) > 0 {
 			logrus.Warnf("Pod: %s has the following cluster role bindings: %s", put.Name, clusterRoleBindings)
+			tnf.ClaimFilePrintf("Pod: %s has the following cluster role bindings: %s", put.Name, clusterRoleBindings)
 			failedPods = append(failedPods, put.Name)
 		}
 	}
@@ -404,8 +406,7 @@ func TestAutomountServiceToken(env *provider.TestEnvironment) {
 		// the token defined in the pod has takes precedence
 		// the test would pass iif token is explicitly set to false
 		// if the token is set to true in the pod, the test would fail right away
-		podServiceTokenStatus := rbac.DetermineStatus(put.Spec.AutomountServiceAccountToken)
-		if podServiceTokenStatus.TokenValue {
+		if put.Spec.AutomountServiceAccountToken != nil && *put.Spec.AutomountServiceAccountToken {
 			msg = append(msg, fmt.Sprintf("Pod %s:%s is configured with automountServiceAccountToken set to true ", put.Namespace, put.Name))
 			failedPods = append(failedPods, put.Name)
 			continue
@@ -422,21 +423,21 @@ func TestAutomountServiceToken(env *provider.TestEnvironment) {
 		// The pod token is false means the pod is configured properly
 		// The pod is not configured and the service account is configured with false means
 		// the pod will inherit the behavior `false` and the test would pass
-		if !podServiceTokenStatus.TokenValue && !saStatus.TokenValue {
+		if !*put.Spec.AutomountServiceAccountToken || (saStatus != nil && !*saStatus) {
 			continue
 		}
 
 		// the service account is configured with true means all the pods
 		// using this service account are not configured properly, register the error
 		// message and fail
-		if saStatus.TokenValue {
+		if saStatus != nil && *saStatus {
 			msg = append(msg, fmt.Sprintf("serviceaccount %s:%s is configured with automountServiceAccountToken set to true, impacting pod %s ", put.Namespace, put.Spec.ServiceAccountName, put.Name))
 			failedPods = append(failedPods, put.Name)
 		}
 
 		// the token should be set explicitly to false, otherwise, it's a failure
 		// register the error message and check the next pod
-		if !saStatus.TokenSet {
+		if saStatus == nil {
 			msg = append(msg, fmt.Sprintf("serviceaccount %s:%s is not configured with automountServiceAccountToken set to false, impacting pod %s ", put.Namespace, put.Spec.ServiceAccountName, put.Name))
 			failedPods = append(failedPods, put.Name)
 		}
@@ -448,6 +449,7 @@ func TestAutomountServiceToken(env *provider.TestEnvironment) {
 
 	if n := len(failedPods); n > 0 {
 		logrus.Debugf("Pods that failed automount test: %+v", failedPods)
+		tnf.ClaimFilePrintf("Pods that failed automount test: %+v", failedPods)
 		ginkgo.Fail(fmt.Sprintf("% d pods that failed automount test", n))
 	}
 }
