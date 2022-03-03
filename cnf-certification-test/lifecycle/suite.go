@@ -17,6 +17,8 @@
 package lifecycle
 
 import (
+	"fmt"
+
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"github.com/sirupsen/logrus"
@@ -43,6 +45,12 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	testContainersReadinessProbe(&env)
 	testContainersLivenessProbe(&env)
 	testPodsOwnerReference(&env)
+
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodNodeSelectorAndAffinityBestPractices)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testPodNodeSelectorAndAffinityBestPractices(&env)
+	})
+
 })
 
 func testContainersPreStop(env *provider.TestEnvironment) {
@@ -51,9 +59,10 @@ func testContainersPreStop(env *provider.TestEnvironment) {
 		badcontainers := []string{}
 		for _, cut := range env.Containers {
 			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " pre stop lifecycle ")
-			if cut.Data.Lifecycle.PreStop == nil {
+
+			if cut.Data.Lifecycle == nil || (cut.Data.Lifecycle != nil && cut.Data.Lifecycle.PreStop == nil) {
 				badcontainers = append(badcontainers, cut.Data.Name)
-				logrus.Errorln("container ", cut.Data.Name, " does not have preStop defined")
+				tnf.ClaimFilePrintf("container %s does not have preStop defined", cut.StringShort())
 			}
 		}
 		if len(badcontainers) > 0 {
@@ -141,4 +150,22 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 		}
 		gomega.Expect(0).To(gomega.Equal(len(badPods)))
 	})
+}
+
+func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) {
+	var badPods []*v1.Pod
+	for _, put := range env.Pods {
+		if len(put.Spec.NodeSelector) != 0 {
+			tnf.ClaimFilePrintf("ERROR: Pod: %s has a node selector clause. Node selector: %v", provider.PodToString(put), &put.Spec.NodeSelector)
+			badPods = append(badPods, put)
+		}
+		if put.Spec.Affinity != nil && put.Spec.Affinity.NodeAffinity != nil {
+			tnf.ClaimFilePrintf("ERROR: Pod: %s has a node affinity clause. Node affinity: %v", provider.PodToString(put), put.Spec.Affinity.NodeAffinity)
+			badPods = append(badPods, put)
+		}
+	}
+	if n := len(badPods); n > 0 {
+		logrus.Debugf("Pods with nodeSelector/nodeAffinity: %+v", badPods)
+		ginkgo.Fail(fmt.Sprintf("%d pods found with nodeSelector/nodeAffinity rules", n))
+	}
 }
