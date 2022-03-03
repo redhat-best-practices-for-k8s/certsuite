@@ -29,27 +29,12 @@ func NewAutomountTester(serviceAccountName, podNamespace string, ch *clientshold
 }
 
 func (at *AutomountToken) AutomountServiceAccountSetOnSA() (ServiceAccountTokenStatus, error) {
-	// Create a default SATS struct.
-	saStatus := ServiceAccountTokenStatus{
-		TokenSet:   false,
-		TokenValue: false,
+	sa, err := at.ClientHolder.K8sClient.CoreV1().ServiceAccounts(at.podNamespace).Get(context.TODO(), at.serviceAccountName, v1.GetOptions{})
+	if err != nil {
+		logrus.Errorf("executing serviceaccount command failed with error: %s", err)
+		return ServiceAccountTokenStatus{}, err
 	}
-
-	// Collect all of the service accounts that live in the target namespace.
-	saList, saErr := at.ClientHolder.K8sClient.CoreV1().ServiceAccounts(at.podNamespace).List(context.TODO(), v1.ListOptions{})
-	if saErr != nil {
-		logrus.Errorf("executing serviceaccount command failed with error: %s", saErr)
-		return saStatus, saErr
-	}
-
-	// Look through the list of service accounts for the desired SA and determine its status.
-	for index := range saList.Items {
-		if at.serviceAccountName == saList.Items[index].Name {
-			return DetermineStatus(saList.Items[index].AutomountServiceAccountToken), nil
-		}
-	}
-
-	return saStatus, nil
+	return DetermineStatus(sa.AutomountServiceAccountToken), nil
 }
 
 func DetermineStatus(automountField *bool) ServiceAccountTokenStatus {
