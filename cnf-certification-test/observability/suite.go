@@ -46,6 +46,11 @@ var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testContainersLogging(&env)
 	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestCrdsStatusSubresourceIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testCrds(&env)
+	})
 })
 
 // containerHasLoggingOutput helper function to get the last line of logging output from
@@ -98,5 +103,25 @@ func testContainersLogging(env *provider.TestEnvironment) {
 	if n := len(badContainers); n > 0 {
 		logrus.Debugf("Containers without logging: %+v", badContainers)
 		ginkgo.Fail(fmt.Sprintf("%d containers don't have any log to stdout/stderr.", n))
+	}
+}
+
+// testCrds testing if crds have a status sub resource set
+func testCrds(env *provider.TestEnvironment) {
+	failedCrds := []string{}
+	for _, crd := range env.Crds {
+		ginkgo.By("Testing CRD " + crd.Name)
+
+		for _, ver := range crd.Spec.Versions {
+			if _, ok := ver.Schema.OpenAPIV3Schema.Properties["status"]; !ok {
+				tnf.ClaimFilePrintf("FAILURE: CRD %s, version: %s does not have a status subresource.", crd.Name, ver.Name)
+				failedCrds = append(failedCrds, crd.Name+"."+ver.Name)
+			}
+		}
+	}
+
+	if n := len(failedCrds); n > 0 {
+		logrus.Debugf("CRD.version without status subresource: %+v", failedCrds)
+		ginkgo.Fail(fmt.Sprintf("%d CRDs don't have status subresource", n))
 	}
 }
