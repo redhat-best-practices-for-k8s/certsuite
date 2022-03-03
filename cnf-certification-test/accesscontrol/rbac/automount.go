@@ -15,7 +15,6 @@ type AutomountToken struct {
 }
 
 type ServiceAccountTokenStatus struct {
-	Name       string
 	TokenSet   bool
 	TokenValue bool
 }

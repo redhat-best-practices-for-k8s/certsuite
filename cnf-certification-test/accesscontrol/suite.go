@@ -407,6 +407,7 @@ func TestAutomountServiceToken(env *provider.TestEnvironment) {
 		podServiceTokenStatus := rbac.DetermineStatus(put.Spec.AutomountServiceAccountToken)
 		if podServiceTokenStatus.TokenValue {
 			msg = append(msg, fmt.Sprintf("Pod %s:%s is configured with automountServiceAccountToken set to true ", put.Namespace, put.Name))
+			failedPods = append(failedPods, put.Name)
 			continue
 		}
 
@@ -415,6 +416,7 @@ func TestAutomountServiceToken(env *provider.TestEnvironment) {
 		saStatus, err := crbTester.AutomountServiceAccountSetOnSA()
 		if err != nil {
 			failedPods = append(failedPods, put.Name)
+			continue
 		}
 
 		// The pod token is false means the pod is configured properly
@@ -429,22 +431,23 @@ func TestAutomountServiceToken(env *provider.TestEnvironment) {
 		// message and fail
 		if saStatus.TokenValue {
 			msg = append(msg, fmt.Sprintf("serviceaccount %s:%s is configured with automountServiceAccountToken set to true, impacting pod %s ", put.Namespace, put.Spec.ServiceAccountName, put.Name))
+			failedPods = append(failedPods, put.Name)
 		}
 
 		// the token should be set explicitly to false, otherwise, it's a failure
 		// register the error message and check the next pod
 		if !saStatus.TokenSet {
 			msg = append(msg, fmt.Sprintf("serviceaccount %s:%s is not configured with automountServiceAccountToken set to false, impacting pod %s ", put.Namespace, put.Spec.ServiceAccountName, put.Name))
+			failedPods = append(failedPods, put.Name)
 		}
 	}
+
 	if len(msg) > 0 {
 		tnf.ClaimFilePrintf(strings.Join(msg, ""))
 	}
 
 	if n := len(failedPods); n > 0 {
 		logrus.Debugf("Pods that failed automount test: %+v", failedPods)
-		ginkgo.Fail(fmt.Sprintf("%d pods that failed to gather SA information", n))
+		ginkgo.Fail(fmt.Sprintf("% d pods that failed automount test", n))
 	}
-
-	gomega.Expect(msg).To(gomega.BeEmpty())
 }
