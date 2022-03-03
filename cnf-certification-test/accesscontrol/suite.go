@@ -24,8 +24,10 @@ import (
 	"github.com/onsi/gomega"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/namespace"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/rbac"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
@@ -98,6 +100,22 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		TestPodServiceAccount(&env)
 	})
+	// pod role bindings
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodRoleBindingsBestPracticesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestPodRoleBindings(&env)
+	})
+	// pod cluster role bindings
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodClusterRoleBindingsBestPracticesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestPodClusterRoleBindings(&env)
+	})
+	// automount service token
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodAutomountServiceAccountIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestAutomountServiceToken(&env)
+	})
+
 })
 
 // TestSecConCapabilities verifies that non compliant capabilities are not present
@@ -288,6 +306,7 @@ func testNamespace(env *provider.TestEnvironment) {
 	}
 }
 
+// TestPodServiceAccount verifies that the pod utilizes a valid service account
 func TestPodServiceAccount(env *provider.TestEnvironment) {
 	ginkgo.By("Tests that each pod utilizes a valid service account")
 	failedPods := []string{}
@@ -301,5 +320,136 @@ func TestPodServiceAccount(env *provider.TestEnvironment) {
 	if n := len(failedPods); n > 0 {
 		logrus.Debugf("Pods without service account: %+v", failedPods)
 		ginkgo.Fail(fmt.Sprintf("%d pods don't have a service account name.", n))
+	}
+}
+
+// TestPodRoleBindings verifies that the pod utilizes a valid role binding that does not cross namespaces
+//nolint:dupl
+func TestPodRoleBindings(env *provider.TestEnvironment) {
+	ginkgo.By("Should not have RoleBinding in other namespaces")
+	failedPods := []string{}
+
+	for _, put := range env.Pods {
+		ginkgo.By(fmt.Sprintf("Testing role binding for pod: %s namespace: %s", put.Name, put.Namespace))
+		if put.Spec.ServiceAccountName == "" {
+			ginkgo.Skip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
+		}
+
+		// Create a new object with the ability to gather rolebinding specs.
+		rbTester := rbac.NewRoleBindingTester(put.Spec.ServiceAccountName, put.Namespace, clientsholder.NewClientsHolder())
+
+		// Get any rolebindings that do not belong to the pod namespace.
+		roleBindings, err := rbTester.GetRoleBindings()
+		if err != nil {
+			failedPods = append(failedPods, put.Name)
+		}
+
+		if len(roleBindings) > 0 {
+			logrus.Warnf("Pod: %s/%s has the following role bindings: %s", put.Namespace, put.Name, roleBindings)
+			tnf.ClaimFilePrintf("Pod: %s/%s has the following role bindings: %s", put.Namespace, put.Name, roleBindings)
+			failedPods = append(failedPods, put.Name)
+		}
+	}
+	if n := len(failedPods); n > 0 {
+		logrus.Debugf("Pods with role bindings: %+v", failedPods)
+		ginkgo.Fail(fmt.Sprintf("%d pods have role bindings in other namespaces.", n))
+	}
+}
+
+// TestPodClusterRoleBindings verifies that the pod utilizes a valid cluster role binding that does not cross namespaces
+//nolint:dupl
+func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
+	ginkgo.By("Should not have ClusterRoleBinding in other namespaces")
+	failedPods := []string{}
+
+	for _, put := range env.Pods {
+		ginkgo.By(fmt.Sprintf("Testing cluster role binding for pod: %s namespace: %s", put.Name, put.Namespace))
+		if put.Spec.ServiceAccountName == "" {
+			ginkgo.Skip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
+		}
+
+		// Create a new object with the ability to gather clusterrolebinding specs.
+		rbTester := rbac.NewClusterRoleBindingTester(put.Spec.ServiceAccountName, put.Namespace, clientsholder.NewClientsHolder())
+
+		// Get any clusterrolebindings that do not belong to the pod namespace.
+		clusterRoleBindings, err := rbTester.GetClusterRoleBindings()
+		if err != nil {
+			failedPods = append(failedPods, put.Name)
+		}
+
+		if len(clusterRoleBindings) > 0 {
+			logrus.Warnf("Pod: %s/%s has the following cluster role bindings: %s", put.Namespace, put.Name, clusterRoleBindings)
+			tnf.ClaimFilePrintf("Pod: %s/%s has the following cluster role bindings: %s", put.Namespace, put.Name, clusterRoleBindings)
+			failedPods = append(failedPods, put.Name)
+		}
+	}
+	if n := len(failedPods); n > 0 {
+		logrus.Debugf("Pods with cluster role bindings: %+v", failedPods)
+		ginkgo.Fail(fmt.Sprintf("%d pods have cluster role bindings in other namespaces.", n))
+	}
+}
+
+//nolint:funlen
+func TestAutomountServiceToken(env *provider.TestEnvironment) {
+	ginkgo.By("Should have automountServiceAccountToken set to false")
+
+	msg := []string{}
+	failedPods := []string{}
+	for _, put := range env.Pods {
+		ginkgo.By(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
+		gomega.Expect(put.Spec.ServiceAccountName).ToNot(gomega.BeEmpty())
+
+		// The token can be specified in the pod directly
+		// or it can be specified in the service account of the pod
+		// if no service account is configured, then the pod will use the configuration
+		// of the default service account in that namespace
+		// the token defined in the pod has takes precedence
+		// the test would pass iif token is explicitly set to false
+		// if the token is set to true in the pod, the test would fail right away
+		if put.Spec.AutomountServiceAccountToken != nil && *put.Spec.AutomountServiceAccountToken {
+			msg = append(msg, fmt.Sprintf("Pod %s:%s is configured with automountServiceAccountToken set to true ", put.Namespace, put.Name))
+			failedPods = append(failedPods, put.Name)
+			continue
+		}
+
+		// Collect information about the service account attached to the pod.
+		crbTester := rbac.NewAutomountTester(put.Spec.ServiceAccountName, put.Namespace, clientsholder.NewClientsHolder())
+		saAutomountServiceAccountToken, err := crbTester.AutomountServiceAccountSetOnSA()
+		if err != nil {
+			failedPods = append(failedPods, put.Name)
+			continue
+		}
+
+		// The pod token is false means the pod is configured properly
+		// The pod is not configured and the service account is configured with false means
+		// the pod will inherit the behavior `false` and the test would pass
+		if (put.Spec.AutomountServiceAccountToken != nil && !*put.Spec.AutomountServiceAccountToken) || (saAutomountServiceAccountToken != nil && !*saAutomountServiceAccountToken) {
+			continue
+		}
+
+		// the service account is configured with true means all the pods
+		// using this service account are not configured properly, register the error
+		// message and fail
+		if saAutomountServiceAccountToken != nil && *saAutomountServiceAccountToken {
+			msg = append(msg, fmt.Sprintf("serviceaccount %s:%s is configured with automountServiceAccountToken set to true, impacting pod %s ", put.Namespace, put.Spec.ServiceAccountName, put.Name))
+			failedPods = append(failedPods, put.Name)
+		}
+
+		// the token should be set explicitly to false, otherwise, it's a failure
+		// register the error message and check the next pod
+		if saAutomountServiceAccountToken == nil {
+			msg = append(msg, fmt.Sprintf("serviceaccount %s:%s is not configured with automountServiceAccountToken set to false, impacting pod %s ", put.Namespace, put.Spec.ServiceAccountName, put.Name))
+			failedPods = append(failedPods, put.Name)
+		}
+	}
+
+	if len(msg) > 0 {
+		tnf.ClaimFilePrintf(strings.Join(msg, ""))
+	}
+
+	if n := len(failedPods); n > 0 {
+		logrus.Debugf("Pods that failed automount test: %+v", failedPods)
+		tnf.ClaimFilePrintf("Pods that failed automount test: %+v", failedPods)
+		ginkgo.Fail(fmt.Sprintf("% d pods that failed automount test", n))
 	}
 }
