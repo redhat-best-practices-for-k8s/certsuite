@@ -116,7 +116,12 @@ func BuildTestEnvironment() { //nolint:funlen
 		}
 		for j := 0; j < len(pods[i].Spec.Containers); j++ {
 			cut := &(pods[i].Spec.Containers[j])
-			state := pods[i].Status.ContainerStatuses[j]
+			var state v1.ContainerStatus
+			if len(pods[i].Status.ContainerStatuses) > 0 {
+				state = pods[i].Status.ContainerStatuses[j]
+			} else {
+				logrus.Errorf("Pod %s is not ready, skipping status collection", PodToString(&pods[i]))
+			}
 			aRuntime, uid := GetRuntimeUID(&state)
 			container := Container{Podname: pods[i].Name, Namespace: pods[i].Namespace,
 				NodeName: pods[i].Spec.NodeName, Data: cut, Status: state, Runtime: aRuntime, UID: uid}
@@ -229,6 +234,13 @@ func (c *Container) StringShort() string {
 		c.Namespace,
 		c.Podname,
 		c.Data.Name,
+	)
+}
+
+func PodToString(pod *v1.Pod) string {
+	return fmt.Sprintf("ns:%s podName:%s",
+		pod.Namespace,
+		pod.Name,
 	)
 }
 
