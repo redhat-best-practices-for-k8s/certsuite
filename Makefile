@@ -21,6 +21,7 @@ GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 	clean \
 	lint \
 	test \
+	coverage-html \
 	build-cnf-tests \
 	run-cnf-tests \
 	run-generic-cnf-tests \
@@ -85,6 +86,9 @@ lint:
 test: mocks
 	go build ${COMMON_GO_ARGS} ./...
 	UNIT_TEST="true" go test -coverprofile=cover.out ./...
+
+coverage-html: test
+	go tool cover -html cover.out
 
 # generate the test catalog in JSON
 build-catalog-json: build-tnf-tool
