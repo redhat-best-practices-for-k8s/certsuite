@@ -84,6 +84,7 @@ lint:
 
 # Build and run unit tests
 test: mocks
+	./script/create-missing-test-files.sh
 	go build ${COMMON_GO_ARGS} ./...
 	UNIT_TEST="true" go test -coverprofile=cover.out ./...
 
