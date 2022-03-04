@@ -38,7 +38,6 @@ import (
 var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
-		provider.BuildTestEnvironment()
 		env = provider.GetTestEnvironment()
 	})
 

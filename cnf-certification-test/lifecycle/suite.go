@@ -18,6 +18,7 @@ package lifecycle
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
@@ -25,10 +26,16 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/ownerreference"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/scaling"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+
 	v1 "k8s.io/api/core/v1"
+)
+
+const (
+	timeout = 60 * time.Second
 )
 
 //
@@ -37,7 +44,6 @@ import (
 var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
-		provider.BuildTestEnvironment()
 		env = provider.GetTestEnvironment()
 	})
 	testContainersPreStop(&env)
@@ -56,6 +62,9 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testGracePeriod(&env)
 	})
 
+	if env.IsIntrusive() {
+		testScaling(&env, timeout)
+	}
 })
 
 func testContainersPreStop(env *provider.TestEnvironment) {
@@ -176,7 +185,7 @@ func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) 
 }
 
 
-func testTerminationGracePeriodOnPodSet(podsetsUnderTests []v1., env *provider.TestEnvironment) []configsections.PodSet {
+func testTerminationGracePeriodOnPodSet(podsetsUnderTests []., env *provider.TestEnvironment) []configsections.PodSet {
 	const ocCommandTemplate = "oc get %s %s -n %s -o jsonpath={.metadata.annotations\\.\"kubectl\\.kubernetes\\.io/last-applied-configuration\"}"
 
 	type lastAppliedConfigType struct {
@@ -217,6 +226,7 @@ func testTerminationGracePeriodOnPodSet(podsetsUnderTests []v1., env *provider.T
 
 	return badPodsets
 }
+
 func testTerminationGracePeriodOnPods(env *provider.TestEnvironment)([]*v1.Pod){
 	badPods := []*v1.Pod{}
 	numUnmanagedPods := 0
@@ -263,4 +273,49 @@ func testGracePeriod(env *provider.TestEnvironment) {
 		if numDeps > 0 || numSts > 0 || numPods > 0 {
 			ginkgo.Fail(fmt.Sprintf("Found %d deployments, %d statefulsets and %d pods without terminationGracePeriodSeconds param set.", numDeps, numSts, numPods))
 		}
+	}
+
+
+func testScaling(env *provider.TestEnvironment, timeout time.Duration) {
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestDeploymentScalingIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		ginkgo.By("Testing deployment scaling")
+		defer env.SetNeedsRefresh()
+
+		if len(env.Deployments) == 0 {
+			ginkgo.Skip("No test deployments found.")
+		}
+		failedDeployments := []string{}
+		skippedDeployments := []string{}
+		for i := range env.Deployments {
+			// TestDeploymentScaling test scaling of deployment
+			// This is the entry point for deployment scaling tests
+			deployment := env.Deployments[i]
+			ns, name := deployment.Namespace, deployment.Name
+			key := ns + name
+			if hpa, ok := env.HorizontalScaler[key]; ok {
+				// if the deployment is controller by
+				// horizontal scaler, then test that scaler
+				// can scale the deployment
+				if !scaling.TestScaleHpaDeployment(deployment, hpa, timeout) {
+					failedDeployments = append(failedDeployments, name)
+				}
+				continue
+			}
+			// if the deployment is not controller by HPA
+			// scale it directly
+			if !scaling.TestScaleDeployment(deployment, timeout) {
+				failedDeployments = append(failedDeployments, name)
+			}
+		}
+
+		if len(skippedDeployments) > 0 {
+			tnf.ClaimFilePrintf("not ready deployments : %v", skippedDeployments)
+		}
+		if len(failedDeployments) > 0 {
+			tnf.ClaimFilePrintf(" failed deployments: %v", failedDeployments)
+		}
+		gomega.Expect(0).To(gomega.Equal(len(failedDeployments)))
+		gomega.Expect(0).To(gomega.Equal(len(skippedDeployments)))
+	})
 }
