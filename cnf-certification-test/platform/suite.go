@@ -183,7 +183,6 @@ func testTainted(env *provider.TestEnvironment) {
 func testIsRedHatRelease(env *provider.TestEnvironment) {
 	ginkgo.By("should report a proper Red Hat version")
 	failedContainers := []string{}
-	logrus.Infof("looping through %d containers", len(env.Containers))
 	for _, cut := range env.Containers {
 		ginkgo.By(fmt.Sprintf("%s(%s) is checked for Red Hat version", cut.Podname, cut.Data.Name))
 		baseImageTester := isredhat.NewBaseImageTester(common.DefaultTimeout, clientsholder.NewClientsHolder(), clientsholder.Context{
@@ -194,11 +193,11 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 
 		result, err := baseImageTester.TestContainerIsRedHatRelease()
 		if err != nil {
-			logrus.Debug("failed to collect release information from container: ")
+			logrus.Error("failed to collect release information from container: ")
 		}
 		if !result {
 			failedContainers = append(failedContainers, cut.Namespace+"/"+cut.Podname+"/"+cut.Data.Name)
-			tnf.ClaimFilePrintf("Container: %s/%s (ns: %s) has failed the RHEL release check", cut.Podname, cut.Data.Name, cut.Namespace)
+			tnf.ClaimFilePrintf("Container: %s has failed the RHEL release check", cut.StringShort())
 		}
 	}
 
