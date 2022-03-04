@@ -24,6 +24,8 @@ import (
 	"github.com/sirupsen/logrus"
 	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	v1apps "k8s.io/api/apps/v1"
+	v1scaling "k8s.io/api/autoscaling/v1"
 	v1 "k8s.io/api/core/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
@@ -38,14 +40,19 @@ const (
 )
 
 type DiscoveredTestData struct {
-	Env        configuration.TestParameters
-	TestData   configuration.TestConfiguration
-	Pods       []v1.Pod
-	DebugPods  []v1.Pod
-	Crds       []*apiextv1.CustomResourceDefinition
-	Namespaces []string
-	Csvs       []olmv1Alpha.ClusterServiceVersion
+	Env         configuration.TestParameters
+	TestData    configuration.TestConfiguration
+	Pods        []v1.Pod
+	DebugPods   []v1.Pod
+	Crds        []*apiextv1.CustomResourceDefinition
+	Namespaces  []string
+	Csvs        []olmv1Alpha.ClusterServiceVersion
+	Deployments []v1apps.Deployment
+	StatefulSet []v1apps.StatefulSet
+	Hpas        map[string]*v1scaling.HorizontalPodAutoscaler
 }
+
+var data = DiscoveredTestData{}
 
 func buildLabelName(labelPrefix, labelName string) string {
 	if labelPrefix == "" {
@@ -61,9 +68,15 @@ func buildLabelQuery(label configuration.Label) string {
 	}
 	return fullLabelName
 }
+func buildLabelKeyValue(label configuration.Label) (key, value string) {
+	key = buildLabelName(label.Prefix, label.Name)
+	value = label.Value
+	return key, value
+}
 
+//nolint:funlen
+// DoAutoDiscover finds objects under test
 func DoAutoDiscover() DiscoveredTestData {
-	data := DiscoveredTestData{}
 	var err error
 	data.Env, err = configuration.LoadEnvironmentVariables()
 	if err != nil {
@@ -91,6 +104,9 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.DebugPods = findPodsByLabel(oc.Coreclient, debugLabels, debugNS)
 	data.Crds = FindTestCrdNames(data.TestData.CrdFilters)
 	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
+	data.Deployments = findDeploymentByLabel(oc.AppsClients, data.TestData.TargetPodLabels, data.Namespaces)
+	data.StatefulSet = findStatefulSetByLabel(oc.AppsClients, data.TestData.TargetPodLabels, data.Namespaces)
+	data.Hpas = findHpaControllers(oc.K8sClient, data.Namespaces)
 	return data
 }
 

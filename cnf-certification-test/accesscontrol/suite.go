@@ -47,7 +47,6 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	logrus.Debugf("Entering %s suite", common.AccessControlTestKey)
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
-		provider.BuildTestEnvironment()
 		env = provider.GetTestEnvironment()
 	})
 	// Security Context: non-compliant capabilities
