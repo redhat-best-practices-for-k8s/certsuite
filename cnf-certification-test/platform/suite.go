@@ -184,7 +184,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 	ginkgo.By("should report a proper Red Hat version")
 	failedContainers := []string{}
 	for _, cut := range env.Containers {
-		ginkgo.By(fmt.Sprintf("%s(%s) is checked for Red Hat version", cut.Podname, cut.Data.Name))
+		ginkgo.By(fmt.Sprintf("%s is checked for Red Hat version", cut.StringShort()))
 		baseImageTester := isredhat.NewBaseImageTester(common.DefaultTimeout, clientsholder.NewClientsHolder(), clientsholder.Context{
 			Namespace:     cut.Namespace,
 			Podname:       cut.Podname,
@@ -193,7 +193,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 
 		result, err := baseImageTester.TestContainerIsRedHatRelease()
 		if err != nil {
-			logrus.Error("failed to collect release information from container: ")
+			logrus.Error("failed to collect release information from container: ", err)
 		}
 		if !result {
 			failedContainers = append(failedContainers, cut.Namespace+"/"+cut.Podname+"/"+cut.Data.Name)
