@@ -19,11 +19,14 @@ package autodiscover
 import (
 	"context"
 
+	helmclient "github.com/mittwald/go-helm-client"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	clientOlm "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"helm.sh/helm/v3/pkg/release"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/rest"
 )
 
 func findOperatorsByLabel(olmClient *clientOlm.Clientset, labels []configuration.Label, namespaces []configuration.Namespace) []olmv1Alpha.ClusterServiceVersion {
@@ -69,10 +72,37 @@ func findSubscriptions(olmClient *clientOlm.Clientset, labels []configuration.La
 		}
 	}
 
-	logrus.Infof("Found %d CSVs:", len(subscriptions))
+	logrus.Infof("Found %d Subscriptions:", len(subscriptions))
 	for i := range subscriptions {
 		logrus.Infof(" Subscriptions name: %s (ns: %s)", subscriptions[i].Name, subscriptions[i].Namespace)
 	}
 
 	return subscriptions
+}
+
+func getHelmList(restConfig *rest.Config, namespaces []configuration.Namespace) [][]*release.Release {
+	helmlist := [][]*release.Release{}
+	for _, ns := range namespaces {
+		opt := &helmclient.RestConfClientOptions{
+			Options: &helmclient.Options{
+				Namespace:        ns.Name, // Change this to the namespace you wish the client to operate in.
+				RepositoryCache:  "/tmp/.helmcache",
+				RepositoryConfig: "/tmp/.helmrepo",
+				Debug:            true,
+				Linting:          true, // Change this to false if you don't want linting.
+				DebugLog: func(format string, v ...interface{}) {
+					// Change this to your own logger. Default is 'log.Printf(format, v...)'.
+				},
+			},
+			RestConfig: restConfig,
+		}
+
+		helmClient, err := helmclient.NewClientFromRestConf(opt)
+		if err != nil {
+			panic(err)
+		}
+		helmcharts, _ := helmClient.ListDeployedReleases()
+		helmlist = append(helmlist, helmcharts)
+	}
+	return helmlist
 }

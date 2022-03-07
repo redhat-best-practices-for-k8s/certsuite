@@ -1,5 +1,7 @@
 targetNameSpaces:
   - name: tnf
+  - name: default
+  - name: newtest
 targetPodLabels:
   - prefix: test-network-function.com
     name: generic
@@ -10,9 +12,14 @@ targetCrdFilters:
 certifiedcontainerinfo:
   - name: nginx-116  # working example
     repository: rhel8
+    tag: 1-112 # optional, "latest" assumed if empty
+    digest: # if set, takes precedence over tag. e.g. "sha256:aa34453a6417f8f76423ffd2cf874e9c4a1a5451ac872b78dc636ab54a0ebbc3"
+checkDiscoveredContainerCertificationStatus: false
 certifiedoperatorinfo:
   - name: etcd
     organization: community-operators # working example
 acceptedKernelTaints:
   - module: vboxsf
   - module: vboxguest
+skipHelmChartList:
+  - name: coredns

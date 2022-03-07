@@ -40,6 +40,7 @@ type ClientsHolder struct {
 	OlmClient     *clientOlm.Clientset
 	AppsClients   *appv1client.AppsV1Client
 	K8sClient     *kubernetes.Clientset
+	OClient       *clientconfigv1.ConfigV1Client
 
 	ready bool
 }
@@ -104,6 +105,12 @@ func NewClientsHolder(filenames ...string) *ClientsHolder { //nolint:funlen // t
 	if err != nil {
 		logrus.Panic("can't instantiate k8sclient", err)
 	}
+	// create the oc client
+	clientsHolder.OClient, err = clientconfigv1.NewForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		logrus.Panic("can't instantiate ocClient", err)
+	}
+
 	clientsHolder.ready = true
 	return &clientsHolder
 }

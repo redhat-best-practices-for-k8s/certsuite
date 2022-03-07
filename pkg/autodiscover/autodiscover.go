@@ -17,15 +17,24 @@
 package autodiscover
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"path/filepath"
 
+	configv1 "github.com/openshift/api/config/v1"
+	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
 	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"helm.sh/helm/v3/pkg/release"
 	v1 "k8s.io/api/core/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	kerrors "k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	"k8s.io/klog/v2"
 )
 
 const (
@@ -38,14 +47,17 @@ const (
 )
 
 type DiscoveredTestData struct {
-	Env           configuration.TestParameters
-	TestData      configuration.TestConfiguration
-	Pods          []v1.Pod
-	DebugPods     []v1.Pod
-	Crds          []*apiextv1.CustomResourceDefinition
-	Namespaces    []string
-	Csvs          []olmv1Alpha.ClusterServiceVersion
-	Subscriptions []olmv1Alpha.Subscription
+	Env              configuration.TestParameters
+	TestData         configuration.TestConfiguration
+	Pods             []v1.Pod
+	DebugPods        []v1.Pod
+	Crds             []*apiextv1.CustomResourceDefinition
+	Namespaces       []string
+	Csvs             []olmv1Alpha.ClusterServiceVersion
+	Subscriptions    []olmv1Alpha.Subscription
+	HelmList         [][]*release.Release
+	K8sVersion       string
+	OpenshiftVersion string
 }
 
 func buildLabelName(labelPrefix, labelName string) string {
@@ -93,6 +105,12 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.Crds = FindTestCrdNames(data.TestData.CrdFilters)
 	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
 	data.Subscriptions = findSubscriptions(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
+	data.HelmList = getHelmList(oc.RestConfig, data.TestData.TargetNameSpaces)
+	openshiftVersion, _ := getOpenshiftVersion(oc.OClient)
+	data.OpenshiftVersion = openshiftVersion
+	k8sVersion, _ := oc.K8sClient.DiscoveryClient.ServerVersion()
+	data.K8sVersion = k8sVersion.GitVersion
+	//logrus.Infof("k8sVersion=%s openshiftVersion=%s", k8sVersion, openshiftVersion)
 	return data
 
 }
@@ -102,4 +120,26 @@ func namespacesListToStringList(namespaceList []configuration.Namespace) (string
 		stringList = append(stringList, ns.Name)
 	}
 	return stringList
+}
+func getOpenshiftVersion(oClient *clientconfigv1.ConfigV1Client) (ver string, err error) {
+	var clusterOperator *configv1.ClusterOperator
+	clusterOperator, err = oClient.ClusterOperators().Get(context.TODO(), "openshift-apiserver", metav1.GetOptions{})
+	// error here indicates logged in as non-admin, log and move on
+	if err != nil {
+		switch {
+		case kerrors.IsForbidden(err), kerrors.IsNotFound(err):
+			klog.V(5).Infof("OpenShift Version not found (must be logged in to cluster as admin): %v", err)
+			err = nil
+		}
+	}
+	if clusterOperator != nil {
+		for _, ver := range clusterOperator.Status.Versions {
+			if ver.Name == "operator" {
+				// openshift-apiserver does not report version,
+				// clusteroperator/openshift-apiserver does, and only version number
+				return ver.Version, nil
+			}
+		}
+	}
+	return "", errors.New("could not get openshift version")
 }

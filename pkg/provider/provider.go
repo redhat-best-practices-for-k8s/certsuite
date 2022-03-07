@@ -29,6 +29,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"helm.sh/helm/v3/pkg/release"
 	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -42,23 +43,27 @@ const (
 )
 
 type TestEnvironment struct { // rename this with testTarget
-	Namespaces    []string //
-	Pods          []*v1.Pod
-	Containers    []*Container
-	Csvs          []*v1alpha1.ClusterServiceVersion
-	DebugPods     map[string]*v1.Pod // map from nodename to debugPod
-	Config        configuration.TestConfiguration
-	variables     configuration.TestParameters
-	Crds          []*apiextv1.CustomResourceDefinition
-	Subscriptions []*v1alpha1.Subscription
+	Namespaces       []string //
+	Pods             []*v1.Pod
+	Containers       []*Container
+	Csvs             []*v1alpha1.ClusterServiceVersion
+	DebugPods        map[string]*v1.Pod // map from nodename to debugPod
+	Config           configuration.TestConfiguration
+	variables        configuration.TestParameters
+	Crds             []*apiextv1.CustomResourceDefinition
+	Subscriptions    []*v1alpha1.Subscription
+	K8sVersion       string
+	OpenshiftVersion string
+	HelmList         []*release.Release
 }
 
 type Container struct {
-	Data      v1.Container
-	Status    v1.ContainerStatus
-	Namespace string
-	Podname   string
-	NodeName  string
+	Data                     v1.Container
+	Status                   v1.ContainerStatus
+	Namespace                string
+	Podname                  string
+	NodeName                 string
+	ContainerImageIdentifier configuration.ContainerImageIdentifier
 }
 
 var (
@@ -86,7 +91,8 @@ func BuildTestEnvironment() {
 			cut := pods[i].Spec.Containers[j]
 			state := pods[i].Status.ContainerStatuses[j]
 			container := Container{Podname: pods[i].Name, Namespace: pods[i].Namespace,
-				NodeName: pods[i].Spec.NodeName, Data: cut, Status: state}
+				NodeName: pods[i].Spec.NodeName, Data: cut, Status: state,
+				ContainerImageIdentifier: buildContainerImageSource(pods[i].Spec.Containers[j].Image)}
 			env.Containers = append(env.Containers, &container)
 		}
 	}
@@ -100,10 +106,36 @@ func BuildTestEnvironment() {
 	subscriptions := data.Subscriptions
 	for i := range csvs {
 		env.Csvs = append(env.Csvs, &csvs[i])
-		if IsinstalledCsv(&csvs[i], subscriptions) {
-			env.Subscriptions = append(env.Subscriptions, &subscriptions[i])
+		isCsv, sub := IsinstalledCsv(&csvs[i], subscriptions)
+		if isCsv {
+			env.Subscriptions = append(env.Subscriptions, &sub)
 		}
 	}
+	env.OpenshiftVersion = data.OpenshiftVersion
+	env.K8sVersion = data.K8sVersion
+	helmList := data.HelmList
+	for _, raw := range helmList {
+		if len(raw) > 0 {
+			for _, helm := range raw {
+				if !isSkipHelmChart(helm.Name, data.TestData.SkipHelmChartList) {
+					env.HelmList = append(env.HelmList, helm)
+				}
+			}
+		}
+	}
+
+}
+func isSkipHelmChart(helmName string, skipHelmChartList []configuration.SkipHelmChartList) bool {
+	if len(skipHelmChartList) == 0 {
+		return false
+	}
+	for _, helm := range skipHelmChartList {
+		if helmName == helm.Name {
+			logrus.Infof("Helm chart with name %s was skipped", helmName)
+			return true
+		}
+	}
+	return false
 }
 
 func GetTestEnvironment() TestEnvironment {
@@ -118,14 +150,15 @@ func IsOCPCluster() bool {
 	return !env.variables.NonOcpCluster
 }
 
-func IsinstalledCsv(csv *v1alpha1.ClusterServiceVersion, Subscriptions []v1alpha1.Subscription) bool {
-	for i := range Subscriptions {
-		if Subscriptions[i].Status.InstalledCSV == csv.Name {
-			return true
+func IsinstalledCsv(csv *v1alpha1.ClusterServiceVersion, subscriptions []v1alpha1.Subscription) (bool, v1alpha1.Subscription) {
+	var returnsub v1alpha1.Subscription
+	for i := range subscriptions {
+		if subscriptions[i].Status.InstalledCSV == csv.Name {
+			returnsub = subscriptions[i]
+			return true, returnsub
 		}
-
 	}
-	return false
+	return false, returnsub
 }
 func WaitDebugPodReady() {
 	oc := clientsholder.NewClientsHolder()
@@ -183,4 +216,28 @@ func (c *Container) GetUID() (string, error) {
 	}
 	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Data.Name, uid))
 	return uid, nil
+}
+
+//nolint:gomnd
+func buildContainerImageSource(url string) configuration.ContainerImageIdentifier {
+	source := configuration.ContainerImageIdentifier{}
+	urlSegments := strings.Split(url, "/")
+	n := len(urlSegments)
+	if n > 1 {
+		source.Repository = urlSegments[n-2]
+	}
+	colonIndex := strings.Index(urlSegments[n-1], ":")
+	atIndex := strings.Index(urlSegments[n-1], "@")
+	if atIndex == -1 {
+		if colonIndex == -1 {
+			source.Name = urlSegments[n-1]
+		} else {
+			source.Name = urlSegments[n-1][:colonIndex]
+			source.Tag = urlSegments[n-1][colonIndex+1:]
+		}
+	} else {
+		source.Name = urlSegments[n-1][:atIndex]
+		source.Digest = urlSegments[n-1][atIndex+1:]
+	}
+	return source
 }

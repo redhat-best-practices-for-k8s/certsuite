@@ -21,6 +21,7 @@ const (
 	unKnownRepository  = "wrong_repo"
 	unKnownImageName   = "wrong_id"
 	unknownPackageName = "unknownPackage"
+	version            = "4.8"
 	jsonResponseFound  = `{
 	"data": [{
 		"_id": "5ea8cf595a13466876a10215",
@@ -88,11 +89,12 @@ var (
 		expectedResult      bool
 		responseData        string
 		responseStatus      int
+		version             string
 	}{
 		{packageName: packageName, org: redHatOrg, expectedErrorString: "", id: "", expectedResult: true,
-			responseData: jsonResponseFound, responseStatus: http.StatusAccepted},
+			responseData: jsonResponseFound, responseStatus: http.StatusAccepted, version: version},
 		{packageName: unknownPackageName, org: marketPlaceOrg, expectedErrorString: api.GetContainer404Error().Error(), id: "", expectedResult: false,
-			responseData: jsonResponseNotFound, responseStatus: http.StatusNotFound},
+			responseData: jsonResponseNotFound, responseStatus: http.StatusNotFound, version: version},
 	}
 )
 
@@ -122,8 +124,8 @@ func TestApiClient_IsContainerCertified(t *testing.T) {
 func TestApiClient_IsOperatorCertified(t *testing.T) {
 	for _, c := range operatorTestCases {
 		GetDoFunc = getDoFunc(c.responseData, c.responseStatus) //nolint:bodyclose
-		result := client.IsOperatorCertified(c.org, c.packageName)
-		assert.Equal(t, c.expectedResult, result)
+		result, err := client.IsOperatorCertified(c.org, c.packageName, c.version)
+		assert.Equal(t, c.expectedResult, result, err)
 	}
 }
 
