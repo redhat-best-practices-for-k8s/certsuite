@@ -30,6 +30,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/isredhat"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
@@ -59,6 +60,11 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNonTaintedNodeKernelsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testTainted(&env) // minikube tainted kernels are allowed via config
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestIsRedHatReleaseIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testIsRedHatRelease(&env)
 	})
 })
 
@@ -172,4 +178,28 @@ func testTainted(env *provider.TestEnvironment) {
 	// 2) The modules loaded are all whitelisted.
 	gomega.Expect(taintedNodes).To(gomega.BeNil())
 	gomega.Expect(errNodes).To(gomega.BeNil())
+}
+
+func testIsRedHatRelease(env *provider.TestEnvironment) {
+	ginkgo.By("should report a proper Red Hat version")
+	failedContainers := []string{}
+	for _, cut := range env.Containers {
+		ginkgo.By(fmt.Sprintf("%s is checked for Red Hat version", cut.StringShort()))
+		baseImageTester := isredhat.NewBaseImageTester(common.DefaultTimeout, clientsholder.NewClientsHolder(), clientsholder.Context{
+			Namespace:     cut.Namespace,
+			Podname:       cut.Podname,
+			Containername: cut.Data.Name,
+		})
+
+		result, err := baseImageTester.TestContainerIsRedHatRelease()
+		if err != nil {
+			logrus.Error("failed to collect release information from container: ", err)
+		}
+		if !result {
+			failedContainers = append(failedContainers, cut.Namespace+"/"+cut.Podname+"/"+cut.Data.Name)
+			tnf.ClaimFilePrintf("Container: %s has failed the RHEL release check", cut.StringShort())
+		}
+	}
+
+	gomega.Expect(failedContainers).To(gomega.BeEmpty())
 }
