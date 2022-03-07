@@ -15,3 +15,74 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 package catalog
+
+import (
+	"errors"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestNewCommand(t *testing.T) {
+	assert.NotNil(t, NewCommand())
+}
+
+func TestCmdJoin(t *testing.T) {
+	testCases := []struct {
+		testElems []string
+		testSep   string
+		expected  string
+	}{
+		{
+			testElems: []string{"this", "is", "a", "test"},
+			testSep:   ".",
+			expected:  "`this`.`is`.`a`.`test`",
+		},
+		{
+			testElems: []string{},
+			testSep:   ".",
+			expected:  "",
+		},
+		{
+			testElems: []string{"this"},
+			testSep:   ".",
+			expected:  "`this`",
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expected, cmdJoin(tc.testElems, tc.testSep))
+	}
+}
+
+func TestEmitTextFromFile(t *testing.T) {
+	testCases := []struct {
+		filename    string
+		expectedErr error
+	}{
+		{
+			filename:    "testdata/testFile1.txt",
+			expectedErr: nil,
+		},
+		{
+			filename:    "testdata/unknown.txt",
+			expectedErr: errors.New("this is an error"),
+		},
+	}
+
+	for _, tc := range testCases {
+		if tc.expectedErr != nil {
+			assert.NotNil(t, emitTextFromFile(tc.filename))
+		} else {
+			assert.Nil(t, emitTextFromFile(tc.filename))
+		}
+	}
+}
+
+func TestRunGenerateMarkdownCmd(t *testing.T) {
+	assert.NotNil(t, runGenerateMarkdownCmd(nil, nil))
+}
+
+func TestRunGenerateJSONCmd(t *testing.T) {
+	assert.Nil(t, runGenerateJSONCmd(nil, nil))
+}
