@@ -234,7 +234,7 @@ func GetRuntimeUID(cs *v1.ContainerStatus) (runtime, uid string) {
 }
 
 func (c *Container) String() string {
-	return fmt.Sprintf("node:%s ns:%s podName:%s containerName:%s containerUID:%s containerRuntime:%s",
+	return fmt.Sprintf("node: %s ns: %s podName: %s containerName: %s containerUID: %s containerRuntime: %s",
 		c.NodeName,
 		c.Namespace,
 		c.Podname,
@@ -244,7 +244,7 @@ func (c *Container) String() string {
 	)
 }
 func (c *Container) StringShort() string {
-	return fmt.Sprintf("ns:%s podName:%s containerName:%s",
+	return fmt.Sprintf("ns: %s podName: %s containerName: %s",
 		c.Namespace,
 		c.Podname,
 		c.Data.Name,
@@ -252,9 +252,23 @@ func (c *Container) StringShort() string {
 }
 
 func PodToString(pod *v1.Pod) string {
-	return fmt.Sprintf("ns:%s podName:%s",
+	return fmt.Sprintf("ns: %s podName: %s",
 		pod.Namespace,
 		pod.Name,
+	)
+}
+
+func DeploymentToString(d *v1apps.Deployment) string {
+	return fmt.Sprintf("ns: %s deployment name: %s",
+		d.Namespace,
+		d.Name,
+	)
+}
+
+func StatefultsetToString(s *v1apps.StatefulSet) string {
+	return fmt.Sprintf("ns: %s statefulset name: %s",
+		s.Namespace,
+		s.Name,
 	)
 }
 
