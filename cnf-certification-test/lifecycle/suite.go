@@ -52,6 +52,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	testContainersReadinessProbe(&env)
 	testContainersLivenessProbe(&env)
 	testPodsOwnerReference(&env)
+	testHighAvailability(&env)
 
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodNodeSelectorAndAffinityBestPractices)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
@@ -255,5 +256,40 @@ func testScaling(env *provider.TestEnvironment, timeout time.Duration) {
 		}
 		gomega.Expect(0).To(gomega.Equal(len(failedDeployments)))
 		gomega.Expect(0).To(gomega.Equal(len(skippedDeployments)))
+	})
+}
+
+// testHighAvailability
+func testHighAvailability(env *provider.TestEnvironment) {
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHighAvailabilityBestPractices)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		ginkgo.By("Should set pod replica number greater than 1")
+		if len(env.Deployments) == 0 && len(env.SatetfulSets) == 0 {
+			ginkgo.Skip("No test deployments/statefulset found.")
+		}
+
+		badDeployments := []string{}
+		badStatefulSet := []string{}
+		for _, dp := range env.Deployments {
+			if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) == 1 {
+				badDeployments = append(badDeployments, provider.DeploymentToString(dp))
+			}
+		}
+		for _, st := range env.SatetfulSets {
+			if st.Spec.Replicas == nil || *(st.Spec.Replicas) == 1 {
+				badStatefulSet = append(badStatefulSet, provider.StatefultsetToString(st))
+			}
+		}
+
+		if n := len(badDeployments); n > 0 {
+			logrus.Errorf("Deployments without a valid high availability : %+v", badDeployments)
+			tnf.ClaimFilePrintf("Deployments without a valid high availability : %+v", badDeployments)
+		}
+		if n := len(badStatefulSet); n > 0 {
+			logrus.Errorf("Statefulset without a valid podAntiAffinity rule: %+v", badStatefulSet)
+			tnf.ClaimFilePrintf("Statefulset without a valid podAntiAffinity rule: %+v", badStatefulSet)
+		}
+		gomega.Expect(0).To(gomega.Equal(len(badDeployments)))
+		gomega.Expect(0).To(gomega.Equal(len(badStatefulSet)))
 	})
 }
