@@ -192,15 +192,15 @@ func testGracePeriod(env *provider.TestEnvironment) {
 
 	numDeps := len(badDeployments)
 	if numDeps > 0 {
-		logrus.Tracef("Deployments found without terminationGracePeriodSeconds param set: %+v", badDeployments)
+		logrus.Debugf("Deployments found without terminationGracePeriodSeconds param set: %+v", badDeployments)
 	}
 	numSts := len(badStatefulsets)
 	if numSts > 0 {
-		logrus.Tracef("Statefulsets found without terminationGracePeriodSeconds param set: %+v", badStatefulsets)
+		logrus.Debugf("Statefulsets found without terminationGracePeriodSeconds param set: %+v", badStatefulsets)
 	}
 	numPods := len(badPods)
 	if numPods > 0 {
-		logrus.Tracef("Pods found without terminationGracePeriodSeconds param set: %+v", badPods)
+		logrus.Debugf("Pods found without terminationGracePeriodSeconds param set: %+v", badPods)
 	}
 	ginkgo.By("Test results for grace period on deployments")
 	tnf.ClaimFilePrintf("%s", deploymentLogs)
