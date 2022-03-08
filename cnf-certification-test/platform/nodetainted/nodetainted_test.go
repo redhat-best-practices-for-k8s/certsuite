@@ -26,7 +26,7 @@ import (
 )
 
 /*func Test_NewNodeTaintedTester(t *testing.T) {
-	newNt := NewNodeTaintedTester(common.DefaultTimeout, clientsholder.NewClientsHolder(), clientsholder.Context{
+	newNt := NewNodeTaintedTester(common.DefaultTimeout, clientsholder.GetClientsHolder(), clientsholder.Context{
 		Namespace:     "testns1",
 		Podname:       "pod1",
 		Containername: "container1",

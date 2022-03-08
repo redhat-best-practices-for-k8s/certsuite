@@ -39,6 +39,17 @@ func FindDeploymentByNameByNamespace(appClient *appv1client.AppsV1Client, namesp
 	return dp, nil
 }
 
+func FindStatefulsetByNameByNamespace(appClient *appv1client.AppsV1Client, namespace, name string) (*v1.StatefulSet, error) {
+	ssClient := appClient.StatefulSets(namespace)
+	options := metav1.GetOptions{}
+	ss, err := ssClient.Get(context.TODO(), name, options)
+	if err != nil {
+		logrus.Error("Can't retrieve deployment in ns=", namespace, " name=", name)
+		return nil, err
+	}
+	return ss, nil
+}
+
 func findDeploymentByLabel(
 	appClient *appv1client.AppsV1Client,
 	labels []configuration.Label,
@@ -86,12 +97,12 @@ func findStatefulSetByLabel(
 			options := metav1.ListOptions{}
 			options.LabelSelector = label
 			statefulSetClient := appClient.StatefulSets(ns)
-			dps, err := statefulSetClient.List(context.TODO(), options)
+			ss, err := statefulSetClient.List(context.TODO(), options)
 			if err != nil {
 				logrus.Errorln("error when listing StatefulSets in ns=", ns, " label=", label, " trying to proceed")
 				continue
 			}
-			statefulset = append(statefulset, dps.Items...)
+			statefulset = append(statefulset, ss.Items...)
 		}
 	}
 	if len(statefulset) == 0 {

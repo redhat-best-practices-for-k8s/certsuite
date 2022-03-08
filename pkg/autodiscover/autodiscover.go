@@ -17,6 +17,7 @@
 package autodiscover
 
 import (
+	"context"
 	"fmt"
 	"path/filepath"
 
@@ -28,6 +29,7 @@ import (
 	v1scaling "k8s.io/api/autoscaling/v1"
 	v1 "k8s.io/api/core/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 const (
@@ -50,6 +52,7 @@ type DiscoveredTestData struct {
 	Deployments []v1apps.Deployment
 	StatefulSet []v1apps.StatefulSet
 	Hpas        map[string]*v1scaling.HorizontalPodAutoscaler
+	Nodes       *v1.NodeList
 }
 
 var data = DiscoveredTestData{}
@@ -107,6 +110,10 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.Deployments = findDeploymentByLabel(oc.AppsClients, data.TestData.TargetPodLabels, data.Namespaces)
 	data.StatefulSet = findStatefulSetByLabel(oc.AppsClients, data.TestData.TargetPodLabels, data.Namespaces)
 	data.Hpas = findHpaControllers(oc.K8sClient, data.Namespaces)
+	data.Nodes, err = oc.Coreclient.Nodes().List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		logrus.Fatalln("can't get list of nodes")
+	}
 	return data
 }
 

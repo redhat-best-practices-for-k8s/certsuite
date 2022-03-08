@@ -65,6 +65,7 @@ type TestEnvironment struct { // rename this with testTarget
 	Deployments        []*v1apps.Deployment
 	SatetfulSets       []*v1apps.StatefulSet
 	HorizontalScaler   map[string]*v1scaling.HorizontalPodAutoscaler
+	Nodes              *v1.NodeList
 }
 
 type Container struct {
@@ -96,6 +97,10 @@ func GetContainer() *Container {
 func GetUpdatedDeployment(ac *appv1client.AppsV1Client, namespace, podName string) (*v1apps.Deployment, error) {
 	return autodiscover.FindDeploymentByNameByNamespace(ac, namespace, podName)
 }
+func GetUpdatedStatefulset(ac *appv1client.AppsV1Client, namespace, podName string) (*v1apps.StatefulSet, error) {
+	return autodiscover.FindStatefulsetByNameByNamespace(ac, namespace, podName)
+}
+
 func buildTestEnvironment() { //nolint:funlen
 	// delete env
 	env = TestEnvironment{}
@@ -109,6 +114,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.MultusIPs = make(map[*v1.Pod]map[string][]string)
 	env.SkipNetTests = make(map[*v1.Pod]bool)
 	env.SkipMultusNetTests = make(map[*v1.Pod]bool)
+	env.Nodes = data.Nodes
 	pods := data.Pods
 	for i := 0; i < len(pods); i++ {
 		env.Pods = append(env.Pods, &pods[i])
@@ -259,14 +265,14 @@ func PodToString(pod *v1.Pod) string {
 }
 
 func DeploymentToString(d *v1apps.Deployment) string {
-	return fmt.Sprintf("ns: %s deployment name: %s",
+	return fmt.Sprintf("ns: %s deploymentName: %s",
 		d.Namespace,
 		d.Name,
 	)
 }
 
-func StatefultsetToString(s *v1apps.StatefulSet) string {
-	return fmt.Sprintf("ns: %s statefulset name: %s",
+func StatefulsetToString(s *v1apps.StatefulSet) string {
+	return fmt.Sprintf("ns: %s statefulsetName: %s",
 		s.Namespace,
 		s.Name,
 	)
