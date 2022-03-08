@@ -24,8 +24,10 @@ import (
 	clientOlm "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	"github.com/sirupsen/logrus"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/typed/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
+	testclient "k8s.io/client-go/kubernetes/fake"
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/rest"
@@ -40,12 +42,18 @@ type ClientsHolder struct {
 	APIExtClient  apiextv1.ApiextensionsV1Interface
 	OlmClient     *clientOlm.Clientset
 	AppsClients   *appv1client.AppsV1Client
-	K8sClient     *kubernetes.Clientset
+	K8sClient     kubernetes.Interface
 
 	ready bool
 }
 
 var clientsHolder = ClientsHolder{}
+
+func GetTestClientsHolder(mockObjects []runtime.Object, filenames ...string) *ClientsHolder {
+	// Overwrite the existing clients with mocked versions
+	clientsHolder.K8sClient = testclient.NewSimpleClientset(mockObjects...)
+	return &clientsHolder
+}
 
 // GetClientsHolder returns the singleton ClientsHolder object.
 func GetClientsHolder(filenames ...string) *ClientsHolder {
@@ -110,11 +118,11 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("can't instantiate appv1client: %s", err)
 	}
-	// create the k8sclient
 	clientsHolder.K8sClient, err = kubernetes.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("can't instantiate k8sclient: %s", err)
 	}
+
 	clientsHolder.ready = true
 	return &clientsHolder, nil
 }
