@@ -26,6 +26,7 @@ require (
 	github.com/operator-framework/api v0.13.0
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	helm.sh/helm/v3 v3.7.2
+	github.com/pkg/errors v0.9.1
 	k8s.io/api v0.23.4
 	k8s.io/apimachinery v0.23.4
 	k8s.io/klog/v2 v2.40.1
@@ -113,6 +114,7 @@ require (
 	github.com/opencontainers/runc v1.0.2 // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/openshift/api v0.0.0-20220124143425-d74727069f6f // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v1.11.0 // indirect
 	github.com/prometheus/client_model v0.2.0 // indirect
@@ -165,3 +167,4 @@ require (
 	github.com/openshift/api v0.0.0-20220124143425-d74727069f6f
 	k8s.io/apiextensions-apiserver v0.23.4
 )
+require k8s.io/apiextensions-apiserver v0.23.4

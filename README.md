@@ -80,8 +80,6 @@ The section can be configured as well as auto discovered. For manual configurati
 
 * CSVs to be tested by the `operator` spec are identified with the `test-network-function.com/operator=target`
 label. Any value is permitted but `target` is used here for consistency with the other specs.
-* `test-network-function.com/subscription_name` is optional and should contain a JSON-encoded string that's the name of
-the subscription for this CSV. If unset, the CSV name will be used.
 
 ### certifiedcontainerinfo and certifiedoperatorinfo
 
@@ -223,7 +221,7 @@ At a minimum, the following dependencies must be installed *prior* to running `m
 Dependency|Minimum Version
 ---|---
 [GoLang](https://golang.org/dl/)|1.17
-[golangci-lint](https://golangci-lint.run/usage/install/)|1.44.1
+[golangci-lint](https://golangci-lint.run/usage/install/)|1.44.2
 [jq](https://stedolan.github.io/jq/)|1.6
 [OpenShift Client](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/)|4.7
 

@@ -18,7 +18,7 @@ package ownerreference
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	v1 "k8s.io/api/core/v1"
 )
 
@@ -37,7 +37,7 @@ type OwnerReference struct {
 func NewOwnerReference(put *v1.Pod) *OwnerReference {
 	o := OwnerReference{
 		put:    put,
-		result: tnf.ERROR,
+		result: testhelper.ERROR,
 	}
 	return &o
 }
@@ -48,10 +48,10 @@ func (o *OwnerReference) RunTest() {
 	for _, k := range o.put.OwnerReferences {
 		logrus.Traceln("kind is ", k.Kind)
 		if k.Kind == statefulSet || k.Kind == replicaSet {
-			o.result = tnf.SUCCESS
+			o.result = testhelper.SUCCESS
 		} else {
 			logrus.Error("Pod ", o.put.Name, " has owner of type ", k.Kind)
-			o.result = tnf.FAILURE
+			o.result = testhelper.FAILURE
 			return
 		}
 	}

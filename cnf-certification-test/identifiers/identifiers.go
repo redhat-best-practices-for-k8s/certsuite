@@ -130,6 +130,21 @@ var (
 		Url:     formTestURL(common.NetworkingTestKey, "icmpv4-connectivity"),
 		Version: versionOne,
 	}
+	// TestICMPv6ConnectivityIdentifier tests icmpv6 connectivity.
+	TestICMPv6ConnectivityIdentifier = claim.Identifier{
+		Url:     formTestURL(common.NetworkingTestKey, "icmpv6-connectivity"),
+		Version: versionOne,
+	}
+	// TestICMPv4ConnectivityIdentifier tests icmpv4 Multus connectivity.
+	TestICMPv4ConnectivityMultusIdentifier = claim.Identifier{
+		Url:     formTestURL(common.NetworkingTestKey, "icmpv4-connectivity-multus"),
+		Version: versionOne,
+	}
+	// TestICMPv6ConnectivityIdentifier tests icmpv6 Multus connectivity.
+	TestICMPv6ConnectivityMultusIdentifier = claim.Identifier{
+		Url:     formTestURL(common.NetworkingTestKey, "icmpv6-connectivity-multus"),
+		Version: versionOne,
+	}
 	// TestNamespaceBestPracticesIdentifier ensures the namespace has followed best namespace practices.
 	TestNamespaceBestPracticesIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AccessControlTestKey, "namespace"),
@@ -186,6 +201,11 @@ var (
 	// TestPodDeploymentBestPracticesIdentifier ensures a CNF follows best Deployment practices.
 	TestPodDeploymentBestPracticesIdentifier = claim.Identifier{
 		Url:     formTestURL(common.LifecycleTestKey, "pod-owner-type"),
+		Version: versionOne,
+	}
+	// TestDeploymentScalingIdentifier ensures deployment scale in/out operations work correctly.
+	TestDeploymentScalingIdentifier = claim.Identifier{
+		Url:     formTestURL(common.LifecycleTestKey, "deployment-scaling"),
 		Version: versionOne,
 	}
 	// TestImagePullPolicyIdentifier ensures represent image pull policy practices.
@@ -305,6 +325,18 @@ func XformToGinkgoItIdentifierExtended(identifier claim.Identifier, extra string
 // Catalog is the JUnit testcase catalog of tests.
 var Catalog = map[claim.Identifier]TestCaseDescription{
 
+	TestDeploymentScalingIdentifier: {
+		Identifier: TestDeploymentScalingIdentifier,
+		Type:       normativeResult,
+		Description: formDescription(TestDeploymentScalingIdentifier,
+			`tests that CNF deployments support scale in/out operations. 
+			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the 
+			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.
+		    In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the 
+			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the deployment/s`),
+		Remediation:           `Make sure CNF deployments/replica sets can scale in/out successfully.`,
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+	},
 	TestSecConCapabilitiesIdentifier: {
 		Identifier:  TestSecConCapabilitiesIdentifier,
 		Type:        normativeResult,
@@ -408,15 +440,49 @@ they are the same.`),
 	TestICMPv4ConnectivityIdentifier: {
 		Identifier: TestICMPv4ConnectivityIdentifier,
 		Type:       normativeResult,
-		Remediation: `Ensure that the CNF is able to communicate via the Default OpenShift network.  In some rare cases,
-CNFs may require routing table changes in order to communicate over the Default network.  In other cases, if the
-Container base image does not provide the "ip" or "ping" binaries, this test may not be applicable.  For instructions on
-how to exclude a particular container from ICMPv4 connectivity tests, consult:
-[README.md](https://github.com/test-network-function/test-network-function#issue-161-some-containers-under-test-do-not-contain-ping-or-ip-binary-utilities).`,
+		Remediation: `Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases,
+CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod
+from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is not important, only its presence.`,
 		Description: formDescription(TestICMPv4ConnectivityIdentifier,
 			`checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network.  This
-test case requires the Deployment of the debug daemonset.
-`),
+test case requires the Deployment of the debug daemonset.`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+	},
+
+	TestICMPv6ConnectivityIdentifier: {
+		Identifier: TestICMPv6ConnectivityIdentifier,
+		Type:       normativeResult,
+		Remediation: `Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases,
+CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod
+from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is not important, only its presence.`,
+		Description: formDescription(TestICMPv6ConnectivityIdentifier,
+			`checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network.  This
+test case requires the Deployment of the debug daemonset.`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+	},
+
+	TestICMPv4ConnectivityMultusIdentifier: {
+		Identifier: TestICMPv4ConnectivityMultusIdentifier,
+		Type:       normativeResult,
+		Remediation: `Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases,
+CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod
+from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is not important, only its presence.`,
+		Description: formDescription(TestICMPv4ConnectivityMultusIdentifier,
+			`checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s).  This
+test case requires the Deployment of the debug daemonset.`),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+	},
+
+	TestICMPv6ConnectivityMultusIdentifier: {
+		Identifier: TestICMPv6ConnectivityMultusIdentifier,
+		Type:       normativeResult,
+		Remediation: `Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases,
+CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod
+from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is not important, only its presence.
+`,
+		Description: formDescription(TestICMPv6ConnectivityMultusIdentifier,
+			`checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s).  This
+test case requires the Deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
 
@@ -511,9 +577,9 @@ instantiation on any underlying Node.`),
 	TestPodHighAvailabilityBestPractices: {
 		Identifier:  TestPodHighAvailabilityBestPractices,
 		Type:        informativeResult,
-		Remediation: `In high availability cases, Pod podAntiAffinity rule should be specified for pod scheduling and pod replica value is set to more than 1 .`,
+		Remediation: `In high availability cases, Pod replicas value should be set to more than 1 .`,
 		Description: formDescription(TestPodHighAvailabilityBestPractices,
-			`ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.`),
+			`ensures that CNF Pods replicas value is set to more than 1.`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
 
@@ -707,8 +773,8 @@ the changes for you.`,
 		Identifier: TestCrdsStatusSubresourceIdentifier,
 		Type:       informativeResult,
 		Description: formDescription(TestCrdsStatusSubresourceIdentifier,
-			`checks that all CRDs have a status subresource specification.`),
-		Remediation:           `make sure that all the CRDs have a meaningful status specification.`,
+			`checks that all CRDs have a status subresource specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties["status"]).`),
+		Remediation:           `make sure that all the CRDs have a meaningful status specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties["status"]).`,
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
 	TestLoggingIdentifier: {

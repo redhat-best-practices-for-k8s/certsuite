@@ -35,8 +35,8 @@ func findPodsByLabel(oc *corev1client.CoreV1Client,
 		for _, l := range labels {
 			options := metav1.ListOptions{}
 			label := buildLabelQuery(l)
+			logrus.Trace("find pods in ", ns, " using label= ", label)
 			options.LabelSelector = label
-			// (*v1.PodList, error)
 			pods, err := oc.Pods(ns).List(context.TODO(), options)
 			if err != nil {
 				logrus.Errorln("error when listing pods in ns=", ns, " label=", label, " try to proceed")

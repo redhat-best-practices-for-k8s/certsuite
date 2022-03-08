@@ -29,6 +29,8 @@ import (
 	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"helm.sh/helm/v3/pkg/release"
+	v1apps "k8s.io/api/apps/v1"
+	v1scaling "k8s.io/api/autoscaling/v1"
 	v1 "k8s.io/api/core/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
@@ -47,18 +49,23 @@ const (
 )
 
 type DiscoveredTestData struct {
-	Env              configuration.TestParameters
-	TestData         configuration.TestConfiguration
-	Pods             []v1.Pod
-	DebugPods        []v1.Pod
-	Crds             []*apiextv1.CustomResourceDefinition
-	Namespaces       []string
-	Csvs             []olmv1Alpha.ClusterServiceVersion
-	Subscriptions    []olmv1Alpha.Subscription
+	Env         configuration.TestParameters
+	TestData    configuration.TestConfiguration
+	Pods        []v1.Pod
+	DebugPods   []v1.Pod
+	Crds        []*apiextv1.CustomResourceDefinition
+	Namespaces  []string
+	Csvs        []olmv1Alpha.ClusterServiceVersion
+	Deployments []v1apps.Deployment
+	StatefulSet []v1apps.StatefulSet
+	Hpas        map[string]*v1scaling.HorizontalPodAutoscaler
+  Subscriptions    []olmv1Alpha.Subscription
 	HelmList         [][]*release.Release
 	K8sVersion       string
 	OpenshiftVersion string
 }
+
+var data = DiscoveredTestData{}
 
 func buildLabelName(labelPrefix, labelName string) string {
 	if labelPrefix == "" {
@@ -74,9 +81,15 @@ func buildLabelQuery(label configuration.Label) string {
 	}
 	return fullLabelName
 }
+func buildLabelKeyValue(label configuration.Label) (key, value string) {
+	key = buildLabelName(label.Prefix, label.Name)
+	value = label.Value
+	return key, value
+}
 
+//nolint:funlen
+// DoAutoDiscover finds objects under test
 func DoAutoDiscover() DiscoveredTestData {
-	data := DiscoveredTestData{}
 	var err error
 	data.Env, err = configuration.LoadEnvironmentVariables()
 	if err != nil {
@@ -110,7 +123,9 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.OpenshiftVersion = openshiftVersion
 	k8sVersion, _ := oc.K8sClient.DiscoveryClient.ServerVersion()
 	data.K8sVersion = k8sVersion.GitVersion
-	//logrus.Infof("k8sVersion=%s openshiftVersion=%s", k8sVersion, openshiftVersion)
+	data.Deployments = findDeploymentByLabel(oc.AppsClients, data.TestData.TargetPodLabels, data.Namespaces)
+	data.StatefulSet = findStatefulSetByLabel(oc.AppsClients, data.TestData.TargetPodLabels, data.Namespaces)
+	data.Hpas = findHpaControllers(oc.K8sClient, data.Namespaces)
 	return data
 
 }
