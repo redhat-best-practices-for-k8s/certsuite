@@ -1,7 +1,5 @@
 targetNameSpaces:
   - name: tnf
-  - name: default
-  - name: newtest
 targetPodLabels:
   - prefix: test-network-function.com
     name: generic
