@@ -2,6 +2,8 @@ package tnf
 
 import (
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
@@ -16,4 +18,9 @@ func ClaimFilePrintf(format string, args ...interface{}) {
 	} else {
 		logrus.Trace(message)
 	}
+}
+
+func IsUnitTest() bool {
+	return strings.Contains(os.Args[1], "-test.") || strings.Contains(os.Args[0], ".test")
+	// return true
 }

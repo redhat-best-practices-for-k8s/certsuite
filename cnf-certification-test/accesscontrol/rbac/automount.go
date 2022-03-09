@@ -24,22 +24,34 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+//go:generate moq -out automount_moq.go . AutomountTokenFuncs
+type AutomountTokenFuncs interface {
+	AutomountServiceAccountSetOnSA(serviceAccountName, podNamespace string) (*bool, error)
+	GetClientsHolder() *clientsholder.ClientsHolder
+	SetTestingResult(result bool)
+}
 type AutomountToken struct {
-	serviceAccountName string
-	podNamespace       string
-	ClientHolder       *clientsholder.ClientsHolder
+	testingResult bool
+	ch            *clientsholder.ClientsHolder
 }
 
-func NewAutomountTester(serviceAccountName, podNamespace string, ch *clientsholder.ClientsHolder) *AutomountToken {
+func (at *AutomountToken) SetTestingResult(result bool) {
+	at.testingResult = result
+}
+
+func (at *AutomountToken) GetClientsHolder() *clientsholder.ClientsHolder {
+	return at.ch
+}
+
+func NewAutomountToken(ch *clientsholder.ClientsHolder) *AutomountToken {
 	return &AutomountToken{
-		serviceAccountName: serviceAccountName,
-		podNamespace:       podNamespace,
-		ClientHolder:       ch,
+		testingResult: false,
+		ch:            ch,
 	}
 }
 
-func (at *AutomountToken) AutomountServiceAccountSetOnSA() (*bool, error) {
-	sa, err := at.ClientHolder.K8sClient.CoreV1().ServiceAccounts(at.podNamespace).Get(context.TODO(), at.serviceAccountName, v1.GetOptions{})
+func (at *AutomountToken) AutomountServiceAccountSetOnSA(serviceAccountName, podNamespace string) (*bool, error) {
+	sa, err := at.ch.K8sClient.CoreV1().ServiceAccounts(podNamespace).Get(context.TODO(), serviceAccountName, v1.GetOptions{})
 	if err != nil {
 		logrus.Errorf("executing serviceaccount command failed with error: %s", err)
 		return nil, err
