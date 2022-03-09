@@ -102,8 +102,7 @@ func CountPods(nodeName string) (count int) {
 	return count
 }
 
-func GetDeploymentNodes(pods []*v1.Pod, dName string) (nodes []string) {
-	clients := clientsholder.GetClientsHolder()
+func GetDeploymentNodes(pods []*v1.Pod, dName string, ch *clientsholder.ClientsHolder) (nodes []string) {
 	for _, put := range pods {
 		deploymentFound := false
 		for _, or := range put.OwnerReferences {
@@ -111,7 +110,7 @@ func GetDeploymentNodes(pods []*v1.Pod, dName string) (nodes []string) {
 				break
 			}
 			if or.Kind == ReplicaSetString {
-				r, err := clients.AppsClients.ReplicaSets(put.Namespace).Get(context.TODO(), or.Name, metav1.GetOptions{})
+				r, err := ch.K8sClient.AppsV1().ReplicaSets(put.Namespace).Get(context.TODO(), or.Name, metav1.GetOptions{})
 				if err != nil {
 					logrus.Errorf("err: %s", err)
 					continue

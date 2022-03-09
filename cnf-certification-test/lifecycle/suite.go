@@ -30,6 +30,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podrecreation"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/scaling"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -307,7 +308,7 @@ func testHighAvailability(env *provider.TestEnvironment) {
 }
 
 // testPodsRecreationDeployment tests that pods belonging to deployments are re-created and ready in case a node is lost
-func testPodsRecreationDeployment(env *provider.TestEnvironment) { //nolint:dupl,funlen // not duplicate
+func testPodsRecreationDeployment(env *provider.TestEnvironment) { //nolint:funlen
 	ginkgo.By("Testing node draining effect of deployment")
 	for _, dut := range env.Deployments {
 		ginkgo.By(fmt.Sprintf("Testing pod-recreation for deployment: %s", provider.DeploymentToString(dut)))
@@ -316,8 +317,8 @@ func testPodsRecreationDeployment(env *provider.TestEnvironment) { //nolint:dupl
 			tnf.ClaimFilePrintf("deployment: %s is not in a good starting state", provider.DeploymentToString(dut))
 			continue
 		}
-		nodes := podrecreation.GetDeploymentNodes(env.Pods, dut.Name)
-		for _, n := range nodes {
+		nodes := podrecreation.GetDeploymentNodes(env.Pods, dut.Name, clientsholder.GetClientsHolder())
+		for _, n := range nodes { //nolint:dupl
 			err := podrecreation.CordonNode(n)
 			if err != nil {
 				logrus.Errorf("error cordoning the node: %s", n)
@@ -346,7 +347,7 @@ func testPodsRecreationDeployment(env *provider.TestEnvironment) { //nolint:dupl
 }
 
 // testPodsRecreationDeployment tests that pods belonging to statefulsets are re-created and ready in case a node is lost
-func testPodsRecreationStatefulset(env *provider.TestEnvironment) { //nolint:dupl,funlen // not duplicate
+func testPodsRecreationStatefulset(env *provider.TestEnvironment) { //nolint:funlen
 	ginkgo.By("Testing node draining effect of statefulset")
 	for _, sut := range env.SatetfulSets {
 		ginkgo.By(fmt.Sprintf("Testing pod-recreation for statefulset %s", provider.StatefulsetToString(sut)))
@@ -356,7 +357,7 @@ func testPodsRecreationStatefulset(env *provider.TestEnvironment) { //nolint:dup
 			continue
 		}
 		nodes := podrecreation.GetStatefulsetNodes(env.Pods, sut.Name)
-		for _, n := range nodes {
+		for _, n := range nodes { //nolint:dupl
 			err := podrecreation.CordonNode(n)
 			if err != nil {
 				logrus.Errorf("error cordoning the node: %s", n)

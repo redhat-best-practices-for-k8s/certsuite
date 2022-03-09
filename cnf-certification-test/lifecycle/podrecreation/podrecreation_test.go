@@ -20,67 +20,112 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	appv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 )
 
-/*func TestGetDeploymentNodes(t *testing.T) {
+func buildTestObjects() (testRuntimeObjects []runtime.Object) {
+	// Replicaset Object
+	aReplicaset := appv1.ReplicaSet{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "replicaset1",
+			Namespace: "tnf",
+			OwnerReferences: []metav1.OwnerReference{{
+				Kind: "Deployment",
+				Name: "deployment1",
+			}},
+		},
+	}
+	testRuntimeObjects = append(testRuntimeObjects, &aReplicaset)
+	return testRuntimeObjects
+}
+
+func TestGetDeploymentNodes(t *testing.T) { //nolint:funlen
 	type args struct {
 		pods  []*v1.Pod
 		dName string
 	}
-	tests := []struct {
+	tests := []struct { //nolint:dupl
 		name      string
 		args      args
 		wantNodes []string
 	}{
 		{
 			name: "ok",
-			args: args{ pods: []*v1.Pod{	{
+			args: args{pods: []*v1.Pod{{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:            "pod1",
+					Name:      "pod1",
 					Namespace: "tnf",
-					OwnerReferences: []metav1.OwnerReference{ {
-						Kind:               "ReplicaSet",
-						Name:               "stateful1",
+					OwnerReferences: []metav1.OwnerReference{{
+						Kind: "ReplicaSet",
+						Name: "replicaset1",
 					}},
-
 				},
 				Spec: v1.PodSpec{
-					NodeName:                     "node1",
+					NodeName: "node1",
 				},
-			}, 	{
+			}, {
 				ObjectMeta: metav1.ObjectMeta{
-					Name:            "pod2",
-					Namespace: "tnf2",
-					OwnerReferences: []metav1.OwnerReference{ {
-						Kind:               "StatefulSet",
-						Name:               "stateful1",
+					Name:      "pod2",
+					Namespace: "tnf",
+					OwnerReferences: []metav1.OwnerReference{{
+						Kind: "ReplicaSet",
+						Name: "replicaset1",
 					}},
-
 				},
 				Spec: v1.PodSpec{
-					NodeName:                     "node2",
+					NodeName: "node2",
 				},
-			}}, dName: "stateful1"}, wantNodes: []string{ "node1", "node2"},
+			}}, dName: "deployment1"}, wantNodes: []string{"node1", "node2"},
+		},
+		{
+			name: "nok",
+			args: args{pods: []*v1.Pod{{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "pod1",
+					Namespace: "tnf",
+					OwnerReferences: []metav1.OwnerReference{{
+						Kind: "ReplicaSet",
+						Name: "replicaset2",
+					}},
+				},
+				Spec: v1.PodSpec{
+					NodeName: "node1",
+				},
+			}, {
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "pod2",
+					Namespace: "tnf",
+					OwnerReferences: []metav1.OwnerReference{{
+						Kind: "ReplicaSet",
+						Name: "replicaset1",
+					}},
+				},
+				Spec: v1.PodSpec{
+					NodeName: "node2",
+				},
+			}}, dName: "deployment1"}, wantNodes: []string{"node2"},
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotNodes := GetDeploymentNodes(tt.args.pods, tt.args.dName); !reflect.DeepEqual(gotNodes, tt.wantNodes) {
+			if gotNodes := GetDeploymentNodes(tt.args.pods, tt.args.dName, clientsholder.GetTestClientsHolder(buildTestObjects())); !reflect.DeepEqual(gotNodes, tt.wantNodes) {
 				t.Errorf("GetDeploymentNodes() = %v, want %v", gotNodes, tt.wantNodes)
 			}
 		})
 	}
-}*/
+}
 
-func TestGetStatefulsetNodes(t *testing.T) {
+func TestGetStatefulsetNodes(t *testing.T) { //nolint:funlen
 	type args struct {
 		pods   []*v1.Pod
 		ssName string
 	}
-	tests := []struct {
+	tests := []struct { //nolint:dupl
 		name      string
 		args      args
 		wantNodes []string
@@ -112,6 +157,34 @@ func TestGetStatefulsetNodes(t *testing.T) {
 					NodeName: "node2",
 				},
 			}}, ssName: "stateful1"}, wantNodes: []string{"node1", "node2"},
+		},
+		{
+			name: "nok",
+			args: args{pods: []*v1.Pod{{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "pod1",
+					Namespace: "tnf",
+					OwnerReferences: []metav1.OwnerReference{{
+						Kind: "StatefulSet",
+						Name: "stateful2",
+					}},
+				},
+				Spec: v1.PodSpec{
+					NodeName: "node1",
+				},
+			}, {
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "pod2",
+					Namespace: "tnf2",
+					OwnerReferences: []metav1.OwnerReference{{
+						Kind: "StatefulSet",
+						Name: "stateful1",
+					}},
+				},
+				Spec: v1.PodSpec{
+					NodeName: "node2",
+				},
+			}}, ssName: "stateful1"}, wantNodes: []string{"node2"},
 		},
 	}
 
