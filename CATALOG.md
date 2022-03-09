@@ -285,6 +285,15 @@ Description|http://test-network-function.com/testcases/networking/service-type t
 Result Type|normative
 Suggested Remediation|Ensure Services are not configured to use NodePort(s).
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.3.1
+### http://test-network-function.com/testcases/networking/undeclared-container-ports-usage
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/networking/undeclared-container-ports-usage check that containers don't listen on ports that weren't declared in their specification
+Result Type|normative
+Suggested Remediation|ensure the CNF apps don't listen on undeclared containers' ports
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 16.3.1.1
 ### http://test-network-function.com/testcases/observability/container-logging
 
 Property|Description
