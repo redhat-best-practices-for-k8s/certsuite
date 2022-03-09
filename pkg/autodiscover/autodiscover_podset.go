@@ -100,7 +100,7 @@ func findStatefulSetByLabel(
 	return statefulset
 }
 
-func findHpaControllers(cs *kubernetes.Clientset, namespaces []string) map[string]*v1scaling.HorizontalPodAutoscaler {
+func findHpaControllers(cs kubernetes.Interface, namespaces []string) map[string]*v1scaling.HorizontalPodAutoscaler {
 	m := make(map[string]*v1scaling.HorizontalPodAutoscaler)
 	for _, ns := range namespaces {
 		hpas, err := cs.AutoscalingV1().HorizontalPodAutoscalers(ns).List(context.TODO(), metav1.ListOptions{})

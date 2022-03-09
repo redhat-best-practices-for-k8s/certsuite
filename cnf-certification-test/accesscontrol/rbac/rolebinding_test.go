@@ -15,3 +15,18 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 package rbac
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+)
+
+func TestGetRoleBinding(t *testing.T) {
+	rb := NewRoleBindingTester("testRole", "podNS", clientsholder.GetTestClientsHolder(buildTestObjects()))
+	assert.NotNil(t, rb)
+	gatheredRBs, err := rb.GetRoleBindings()
+	assert.Nil(t, err)
+	assert.Equal(t, "testNS:testRole", gatheredRBs[0])
+}

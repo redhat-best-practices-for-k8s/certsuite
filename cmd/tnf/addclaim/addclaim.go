@@ -17,7 +17,7 @@ var (
 	Reportdir string
 	Claim     string
 
-	addcalim = &cobra.Command{
+	addclaim = &cobra.Command{
 		Use:   "claim",
 		Short: "The test suite generates a \"claim\" file",
 		RunE:  claimUpdate,
@@ -107,6 +107,6 @@ func NewCommand() *cobra.Command {
 	if err != nil {
 		return nil
 	}
-	addcalim.AddCommand(claimAddFile)
-	return addcalim
+	addclaim.AddCommand(claimAddFile)
+	return addclaim
 }

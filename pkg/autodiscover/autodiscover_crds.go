@@ -32,7 +32,7 @@ import (
 
 // getClusterCrdNames returns a list of crd names found in the cluster.
 func getClusterCrdNames() (crdList []*apiextv1.CustomResourceDefinition, err error) {
-	oc := clientsholder.NewClientsHolder()
+	oc := clientsholder.GetClientsHolder()
 	options := metav1.ListOptions{}
 	crds, err := oc.APIExtClient.CustomResourceDefinitions().List(context.TODO(), options)
 	if err != nil {

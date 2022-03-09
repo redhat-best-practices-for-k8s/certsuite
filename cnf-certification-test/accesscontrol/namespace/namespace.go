@@ -56,7 +56,7 @@ func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespac
 // getCrsPerNamespaces gets the list of CRs instantiated in the cluster per namespace.
 // Returns a map indexed by namespace and data is a list of CR names
 func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces map[string][]string, err error) {
-	oc := clientsholder.NewClientsHolder()
+	oc := clientsholder.GetClientsHolder()
 	for _, version := range aCrd.Spec.Versions {
 		gvr := schema.GroupVersionResource{
 			Group:    aCrd.Spec.Group,

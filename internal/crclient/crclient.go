@@ -33,7 +33,7 @@ func ExecCommandContainerNSEnter(command string,
 		err = errors.Errorf("debug pod not found on Node: %s trying to run command: \" %s \" Namespace: %s Pod: %s container %s err:%s", aContainer.NodeName, command, aContainer.Namespace, aContainer.Podname, aContainer.Data.Name, err)
 		return "", "", err
 	}
-	o := clientsholder.NewClientsHolder()
+	o := clientsholder.GetClientsHolder()
 	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
 
 	// Starting to build nsenter command based on the container runtime: getting the container PID

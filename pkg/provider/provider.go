@@ -215,7 +215,7 @@ func IsinstalledCsv(csv *v1alpha1.ClusterServiceVersion, subscriptions []v1alpha
 	return false, returnsub
 }
 func WaitDebugPodReady() {
-	oc := clientsholder.NewClientsHolder()
+	oc := clientsholder.GetClientsHolder()
 	listOptions := metav1.ListOptions{}
 	nodes, err := oc.Coreclient.Nodes().List(context.TODO(), listOptions)
 

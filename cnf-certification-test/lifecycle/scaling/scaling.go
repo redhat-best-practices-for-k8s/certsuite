@@ -74,7 +74,7 @@ func isStatefulSetReady(statefulset *v1app.StatefulSet) bool {
 }
 
 func TestScaleDeployment(deployment *v1app.Deployment, timeout time.Duration) bool {
-	clients := clientsholder.NewClientsHolder()
+	clients := clientsholder.GetClientsHolder()
 	name, namespace := deployment.Name, deployment.Namespace
 	dpClients := clients.AppsClients.Deployments(namespace)
 	logrus.Trace("scale deployment not using HPA ", namespace, ":", name)
@@ -153,7 +153,7 @@ func scaleDeploymentHelper(clients *clientsholder.ClientsHolder, dpClient v1.Dep
 
 func isDeploymentReady(ns, name string, timeout time.Duration) bool {
 	logrus.Trace("check if deployment ", ns, ":", name, " is ready ")
-	clients := clientsholder.NewClientsHolder()
+	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
 		dp, err := provider.GetUpdatedDeployment(clients.AppsClients, ns, name)
@@ -168,7 +168,7 @@ func isDeploymentReady(ns, name string, timeout time.Duration) bool {
 }
 
 func TestScaleHpaDeployment(deployment *v1app.Deployment, hpa *v1autoscaling.HorizontalPodAutoscaler, timeout time.Duration) bool {
-	clients := clientsholder.NewClientsHolder()
+	clients := clientsholder.GetClientsHolder()
 	hpaName := hpa.Name
 	name, namespace := deployment.Name, deployment.Namespace
 	hpscaler := clients.K8sClient.AutoscalingV1().HorizontalPodAutoscalers(namespace)
