@@ -119,7 +119,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.HelmList = getHelmList(oc.RestConfig, data.Namespaces)
 	openshiftVersion, _ := getOpenshiftVersion(oc.OClient)
 	data.OpenshiftVersion = openshiftVersion
-	k8sVersion, err := oc.K8sClient.DiscoveryClient.ServerVersion()
+	k8sVersion, err := oc.K8sClientversion.DiscoveryClient.ServerVersion()
 	if err != nil {
 		logrus.Fatalln("can't get the K8s version")
 	}
