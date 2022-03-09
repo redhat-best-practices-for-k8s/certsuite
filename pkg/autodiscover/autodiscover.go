@@ -116,10 +116,13 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.Crds = FindTestCrdNames(data.TestData.CrdFilters)
 	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
 	data.Subscriptions = findSubscriptions(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
-	data.HelmList = getHelmList(oc.RestConfig, data.TestData.TargetNameSpaces)
+	data.HelmList = getHelmList(oc.RestConfig, data.Namespaces)
 	openshiftVersion, _ := getOpenshiftVersion(oc.OClient)
 	data.OpenshiftVersion = openshiftVersion
-	k8sVersion, _ := oc.K8sClient.DiscoveryClient.ServerVersion()
+	k8sVersion, err := oc.K8sClient.DiscoveryClient.ServerVersion()
+	if err != nil {
+		logrus.Fatalln("can't get the K8s version")
+	}
 	data.K8sVersion = k8sVersion.GitVersion
 	data.Deployments = findDeploymentByLabel(oc.AppsClients, data.TestData.TargetPodLabels, data.Namespaces)
 	data.StatefulSet = findStatefulSetByLabel(oc.AppsClients, data.TestData.TargetPodLabels, data.Namespaces)

@@ -76,22 +76,20 @@ func findSubscriptions(olmClient *clientOlm.Clientset, labels []configuration.La
 	for i := range subscriptions {
 		logrus.Infof(" Subscriptions name: %s (ns: %s)", subscriptions[i].Name, subscriptions[i].Namespace)
 	}
-
 	return subscriptions
 }
 
-func getHelmList(restConfig *rest.Config, namespaces []configuration.Namespace) [][]*release.Release {
+func getHelmList(restConfig *rest.Config, namespaces []string) [][]*release.Release {
 	helmlist := [][]*release.Release{}
 	for _, ns := range namespaces {
 		opt := &helmclient.RestConfClientOptions{
 			Options: &helmclient.Options{
-				Namespace:        ns.Name, // Change this to the namespace you wish the client to operate in.
+				Namespace:        ns,
 				RepositoryCache:  "/tmp/.helmcache",
 				RepositoryConfig: "/tmp/.helmrepo",
 				Debug:            true,
-				Linting:          true, // Change this to false if you don't want linting.
+				Linting:          true,
 				DebugLog: func(format string, v ...interface{}) {
-					// Change this to your own logger. Default is 'log.Printf(format, v...)'.
 				},
 			},
 			RestConfig: restConfig,
