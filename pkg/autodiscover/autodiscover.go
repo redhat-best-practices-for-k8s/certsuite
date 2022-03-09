@@ -35,8 +35,6 @@ import (
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
-	"k8s.io/klog/v2"
 )
 
 const (
@@ -49,17 +47,17 @@ const (
 )
 
 type DiscoveredTestData struct {
-	Env         configuration.TestParameters
-	TestData    configuration.TestConfiguration
-	Pods        []v1.Pod
-	DebugPods   []v1.Pod
-	Crds        []*apiextv1.CustomResourceDefinition
-	Namespaces  []string
-	Csvs        []olmv1Alpha.ClusterServiceVersion
-	Deployments []v1apps.Deployment
-	StatefulSet []v1apps.StatefulSet
-	Hpas        map[string]*v1scaling.HorizontalPodAutoscaler
-  Subscriptions    []olmv1Alpha.Subscription
+	Env              configuration.TestParameters
+	TestData         configuration.TestConfiguration
+	Pods             []v1.Pod
+	DebugPods        []v1.Pod
+	Crds             []*apiextv1.CustomResourceDefinition
+	Namespaces       []string
+	Csvs             []olmv1Alpha.ClusterServiceVersion
+	Deployments      []v1apps.Deployment
+	StatefulSet      []v1apps.StatefulSet
+	Hpas             map[string]*v1scaling.HorizontalPodAutoscaler
+	Subscriptions    []olmv1Alpha.Subscription
 	HelmList         [][]*release.Release
 	K8sVersion       string
 	OpenshiftVersion string
@@ -127,7 +125,6 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.StatefulSet = findStatefulSetByLabel(oc.AppsClients, data.TestData.TargetPodLabels, data.Namespaces)
 	data.Hpas = findHpaControllers(oc.K8sClient, data.Namespaces)
 	return data
-
 }
 
 func namespacesListToStringList(namespaceList []configuration.Namespace) (stringList []string) {
@@ -143,13 +140,13 @@ func getOpenshiftVersion(oClient *clientconfigv1.ConfigV1Client) (ver string, er
 	if err != nil {
 		switch {
 		case kerrors.IsForbidden(err), kerrors.IsNotFound(err):
-			klog.V(5).Infof("OpenShift Version not found (must be logged in to cluster as admin): %v", err)
+			logrus.Infof("OpenShift Version not found (must be logged in to cluster as admin): %v", err)
 			err = nil
 		}
 	}
 	if clusterOperator != nil {
 		for _, ver := range clusterOperator.Status.Versions {
-			if ver.Name == "operator" {
+			if ver.Name == tnfCsvTargetLabelName {
 				// openshift-apiserver does not report version,
 				// clusteroperator/openshift-apiserver does, and only version number
 				return ver.Version, nil

@@ -102,7 +102,9 @@ func getHelmList(restConfig *rest.Config, namespaces []configuration.Namespace) 
 			panic(err)
 		}
 		helmcharts, _ := helmClient.ListDeployedReleases()
-		helmlist = append(helmlist, helmcharts)
+		if len(helmcharts) > 0 {
+			helmlist = append(helmlist, helmcharts)
+		}
 	}
 	return helmlist
 }

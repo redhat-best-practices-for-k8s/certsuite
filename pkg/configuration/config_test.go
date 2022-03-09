@@ -8,28 +8,26 @@ import (
 )
 
 const (
-	filePath            = "testdata/tnf_test_config.yml"
-	nsLength            = 2
-	ns1                 = "tnf"
-	ns2                 = "test2"
-	labels              = 2
-	label1Prefix        = "targetPod1.com"
-	label1Name          = "name1"
-	label1Value         = "value1"
-	label2Prefix        = "targetPod2.com"
-	label2Name          = "name2"
-	label2Value         = "value2"
-	crds                = 2
-	crdSuffix1          = "group1.test.com"
-	crdSuffix2          = "group2.test.com"
-	containers          = 1
-	containerInfoName   = "nginx-116"
-	containerRepo       = "rhel8"
-	containerInfotag    = "1-112"
-	containerInfodigest = ""
-	operators           = 1
-	operatorName        = "etcd"
-	operatorOrg         = "community-operators"
+	filePath          = "testdata/tnf_test_config.yml"
+	nsLength          = 2
+	ns1               = "tnf"
+	ns2               = "test2"
+	labels            = 2
+	label1Prefix      = "targetPod1.com"
+	label1Name        = "name1"
+	label1Value       = "value1"
+	label2Prefix      = "targetPod2.com"
+	label2Name        = "name2"
+	label2Value       = "value2"
+	crds              = 2
+	crdSuffix1        = "group1.test.com"
+	crdSuffix2        = "group2.test.com"
+	containers        = 1
+	containerInfoName = "nginx-116"
+	containerRepo     = "rhel8"
+	operators         = 1
+	operatorName      = "etcd"
+	operatorOrg       = "community-operators"
 )
 
 //nolint:funlen

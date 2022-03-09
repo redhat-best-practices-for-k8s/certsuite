@@ -17,7 +17,6 @@
 package certification
 
 import (
-	//"fmt"
 	"fmt"
 	"strings"
 	"time"
@@ -36,10 +35,8 @@ import (
 
 const (
 	// timeout for eventually call
-	apiRequestTimeout           = 40 * time.Second
-	expectersVerboseModeEnabled = false
-	CertifiedOperator           = "certified-operators"
-	outMinikubeVersion          = "null"
+	apiRequestTimeout = 40 * time.Second
+	CertifiedOperator = "certified-operators"
 )
 
 var (
@@ -57,11 +54,10 @@ type ChartStruct struct {
 var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
-		provider.BuildTestEnvironment()
 		env = provider.GetTestEnvironment()
 	})
-	//testContainerCertificationStatus(&env)
-	//testAllOperatorCertified(&env)
+	testContainerCertificationStatus(&env)
+	testAllOperatorCertified(&env)
 	testHelmCertified(&env)
 })
 

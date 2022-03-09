@@ -30,7 +30,6 @@ func findPodsByLabel(oc *corev1client.CoreV1Client,
 	labels []configuration.Label,
 	namespaces []string) []v1.Pod {
 	Pods := []v1.Pod{}
-	//Secret := []v1.Secret{}
 	for _, ns := range namespaces {
 		for _, l := range labels {
 			options := metav1.ListOptions{}

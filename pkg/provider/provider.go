@@ -32,7 +32,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"helm.sh/helm/v3/pkg/release"
-	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -67,21 +66,21 @@ type TestEnvironment struct { // rename this with testTarget
 	Deployments        []*v1apps.Deployment
 	SatetfulSets       []*v1apps.StatefulSet
 	HorizontalScaler   map[string]*v1scaling.HorizontalPodAutoscaler
-  Subscriptions    []*v1alpha1.Subscription
-	K8sVersion       string
-	OpenshiftVersion string
-	HelmList         []*release.Release
+	Subscriptions      []*v1alpha1.Subscription
+	K8sVersion         string
+	OpenshiftVersion   string
+	HelmList           []*release.Release
 }
 
 type Container struct {
-	Data      *v1.Container
-	Status    v1.ContainerStatus
-	Namespace string
-	Podname   string
-	NodeName  string
-	Runtime   string
-	UID       string
-  ContainerImageIdentifier configuration.ContainerImageIdentifier
+	Data                     *v1.Container
+	Status                   v1.ContainerStatus
+	Namespace                string
+	Podname                  string
+	NodeName                 string
+	Runtime                  string
+	UID                      string
+	ContainerImageIdentifier configuration.ContainerImageIdentifier
 }
 type cniNetworkInterface struct {
 	Name      string                 `json:"name"`
@@ -103,7 +102,9 @@ func GetContainer() *Container {
 func GetUpdatedDeployment(ac *appv1client.AppsV1Client, namespace, podName string) (*v1apps.Deployment, error) {
 	return autodiscover.FindDeploymentByNameByNamespace(ac, namespace, podName)
 }
-func buildTestEnvironment() { //nolint:funlen
+
+//nolint:funlen
+func buildTestEnvironment() {
 	// delete env
 	env = TestEnvironment{}
 	// build Pods and Containers under test
@@ -141,7 +142,7 @@ func buildTestEnvironment() { //nolint:funlen
 			aRuntime, uid := GetRuntimeUID(&state)
 			container := Container{Podname: pods[i].Name, Namespace: pods[i].Namespace,
 				NodeName: pods[i].Spec.NodeName, Data: cut, Status: state, Runtime: aRuntime, UID: uid,
-        ContainerImageIdentifier: buildContainerImageSource(pods[i].Spec.Containers[j].Image)}
+				ContainerImageIdentifier: buildContainerImageSource(pods[i].Spec.Containers[j].Image)}
 			env.Containers = append(env.Containers, &container)
 			env.ContainersMap[cut] = &container
 		}
@@ -164,11 +165,9 @@ func buildTestEnvironment() { //nolint:funlen
 	env.K8sVersion = data.K8sVersion
 	helmList := data.HelmList
 	for _, raw := range helmList {
-		if len(raw) > 0 {
-			for _, helm := range raw {
-				if !isSkipHelmChart(helm.Name, data.TestData.SkipHelmChartList) {
-					env.HelmList = append(env.HelmList, helm)
-				}
+		for _, helm := range raw {
+			if !isSkipHelmChart(helm.Name, data.TestData.SkipHelmChartList) {
+				env.HelmList = append(env.HelmList, helm)
 			}
 		}
 	}
@@ -273,7 +272,6 @@ func (c *Container) GetUID() (string, error) {
 	return uid, nil
 }
 
-//nolint:gomnd
 func buildContainerImageSource(url string) configuration.ContainerImageIdentifier {
 	source := configuration.ContainerImageIdentifier{}
 	urlSegments := strings.Split(url, "/")
