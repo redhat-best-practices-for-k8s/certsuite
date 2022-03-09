@@ -94,7 +94,7 @@ func DoAutoDiscover() DiscoveredTestData {
 		path := filepath.Join(data.Env.Home, ".kube", "config")
 		filenames = append(filenames, path)
 	}
-	oc := clientsholder.NewClientsHolder(filenames...)
+	oc := clientsholder.GetClientsHolder(filenames...)
 	data.Namespaces = namespacesListToStringList(data.TestData.TargetNameSpaces)
 	data.Pods = findPodsByLabel(oc.Coreclient, data.TestData.TargetPodLabels, data.Namespaces)
 

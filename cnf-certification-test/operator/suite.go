@@ -118,7 +118,7 @@ func testOperatorOlmSubscription(env *provider.TestEnvironment) {
 		ginkgo.Skip("No CSVs to perform test, skipping.")
 	}
 
-	ocpClient := clientsholder.NewClientsHolder()
+	ocpClient := clientsholder.GetClientsHolder()
 	for _, csv := range env.Csvs {
 		ginkgo.By(fmt.Sprintf("Checking OLM subscription for CSV %s (ns %s)", csv.Name, csv.Namespace))
 		options := metav1.ListOptions{}
