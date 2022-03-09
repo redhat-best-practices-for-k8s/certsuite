@@ -147,7 +147,7 @@ func testContainerCertificationStatus(env *provider.TestEnvironment) {
 }
 
 func testAllOperatorCertified(env *provider.TestEnvironment) {
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestHelmIsCertifiedIdentifier)
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		operatorsToQuery := env.Subscriptions
 
@@ -184,7 +184,7 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 	})
 }
 func testHelmCertified(env *provider.TestEnvironment) {
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorIsCertifiedIdentifier)
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestHelmIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		certAPIClient = api.NewHTTPClient()
 		helmcharts := env.HelmList
