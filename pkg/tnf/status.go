@@ -7,12 +7,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const (
-	SUCCESS = iota
-	FAILURE
-	ERROR
-)
-
 // ClaimFilePrintf prints to claim and junit report files.
 func ClaimFilePrintf(format string, args ...interface{}) {
 	message := fmt.Sprintf(format+"\n", args...)
@@ -20,6 +14,6 @@ func ClaimFilePrintf(format string, args ...interface{}) {
 	if err != nil {
 		logrus.Errorf("Ginkgo writer could not write msg '%s' because: %s", message, err)
 	} else {
-		logrus.Error(message)
+		logrus.Trace(message)
 	}
 }

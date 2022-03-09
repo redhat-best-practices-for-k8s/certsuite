@@ -21,6 +21,7 @@ GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 	clean \
 	lint \
 	test \
+	coverage-html \
 	build-cnf-tests \
 	run-cnf-tests \
 	run-generic-cnf-tests \
@@ -46,7 +47,7 @@ COMMON_GO_ARGS=-race
 GIT_COMMIT=$(shell script/create-version-files.sh)
 GIT_RELEASE=$(shell script/get-git-release.sh)
 GIT_PREVIOUS_RELEASE=$(shell script/get-git-previous-release.sh)
-GOLANGCI_VERSION=v1.44.1
+GOLANGCI_VERSION=v1.44.2
 
 # Run the unit tests and build all binaries
 build:
@@ -83,8 +84,12 @@ lint:
 
 # Build and run unit tests
 test: mocks
+	./script/create-missing-test-files.sh
 	go build ${COMMON_GO_ARGS} ./...
-	go test -coverprofile=cover.out `go list ./... | grep -v "github.com/test-network-function/cnf-certification-test/cnf-certification-test" | grep -v mock`
+	UNIT_TEST="true" go test -coverprofile=cover.out ./...
+
+coverage-html: test
+	go tool cover -html cover.out
 
 # generate the test catalog in JSON
 build-catalog-json: build-tnf-tool
