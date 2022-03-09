@@ -147,7 +147,7 @@ func testContainerCertificationStatus(env *provider.TestEnvironment) {
 }
 
 func testAllOperatorCertified(env *provider.TestEnvironment) {
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorIsCertifiedIdentifier)
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestHelmIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		operatorsToQuery := env.Subscriptions
 
