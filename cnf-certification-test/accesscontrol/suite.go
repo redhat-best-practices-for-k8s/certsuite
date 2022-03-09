@@ -335,7 +335,7 @@ func TestPodRoleBindings(env *provider.TestEnvironment) {
 		}
 
 		// Create a new object with the ability to gather rolebinding specs.
-		rbTester := rbac.NewRoleBindingTester(put.Spec.ServiceAccountName, put.Namespace, clientsholder.NewClientsHolder())
+		rbTester := rbac.NewRoleBindingTester(put.Spec.ServiceAccountName, put.Namespace, clientsholder.GetClientsHolder())
 
 		// Get any rolebindings that do not belong to the pod namespace.
 		roleBindings, err := rbTester.GetRoleBindings()
@@ -368,7 +368,7 @@ func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 		}
 
 		// Create a new object with the ability to gather clusterrolebinding specs.
-		rbTester := rbac.NewClusterRoleBindingTester(put.Spec.ServiceAccountName, put.Namespace, clientsholder.NewClientsHolder())
+		rbTester := rbac.NewClusterRoleBindingTester(put.Spec.ServiceAccountName, put.Namespace, clientsholder.GetClientsHolder())
 
 		// Get any clusterrolebindings that do not belong to the pod namespace.
 		clusterRoleBindings, err := rbTester.GetClusterRoleBindings()
@@ -412,7 +412,7 @@ func TestAutomountServiceToken(env *provider.TestEnvironment) {
 		}
 
 		// Collect information about the service account attached to the pod.
-		crbTester := rbac.NewAutomountTester(put.Spec.ServiceAccountName, put.Namespace, clientsholder.NewClientsHolder())
+		crbTester := rbac.NewAutomountTester(put.Spec.ServiceAccountName, put.Namespace, clientsholder.GetClientsHolder())
 		saAutomountServiceAccountToken, err := crbTester.AutomountServiceAccountSetOnSA()
 		if err != nil {
 			failedPods = append(failedPods, put.Name)

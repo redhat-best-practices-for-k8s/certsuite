@@ -83,7 +83,7 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 		nodeName := cut.NodeName
 		debugPod := env.DebugPods[nodeName]
 
-		fsdiff.RunTest(clientsholder.NewClientsHolder(), clientsholder.Context{Namespace: debugPod.Namespace,
+		fsdiff.RunTest(clientsholder.GetClientsHolder(), clientsholder.Context{Namespace: debugPod.Namespace,
 			Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name})
 		switch fsdiff.GetResults() {
 		case testhelper.SUCCESS:
@@ -108,7 +108,7 @@ func testTainted(env *provider.TestEnvironment) {
 	// Loop through the debug pods that are tied to each node.
 	for _, dp := range env.DebugPods {
 		// Build a NodeTainted tester object.
-		c := clientsholder.NewClientsHolder()
+		c := clientsholder.GetClientsHolder()
 		tester := nodetainted.NewNodeTaintedTester(common.DefaultTimeout, c, clientsholder.Context{
 			Namespace:     dp.Namespace,
 			Podname:       dp.Name,
@@ -185,7 +185,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 	failedContainers := []string{}
 	for _, cut := range env.Containers {
 		ginkgo.By(fmt.Sprintf("%s is checked for Red Hat version", cut.StringShort()))
-		baseImageTester := isredhat.NewBaseImageTester(common.DefaultTimeout, clientsholder.NewClientsHolder(), clientsholder.Context{
+		baseImageTester := isredhat.NewBaseImageTester(common.DefaultTimeout, clientsholder.GetClientsHolder(), clientsholder.Context{
 			Namespace:     cut.Namespace,
 			Podname:       cut.Podname,
 			Containername: cut.Data.Name,

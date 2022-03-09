@@ -55,7 +55,7 @@ var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 // containerHasLoggingOutput helper function to get the last line of logging output from
 // a container. Returns true in case some output was found, false otherwise.
 func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
-	ocpClient := clientsholder.NewClientsHolder()
+	ocpClient := clientsholder.GetClientsHolder()
 
 	numLogLines := int64(1)
 	podLogOptions := v1.PodLogOptions{TailLines: &numLogLines, Container: cut.Data.Name}

@@ -168,7 +168,7 @@ func IsOCPCluster() bool {
 }
 
 func WaitDebugPodReady() {
-	oc := clientsholder.NewClientsHolder()
+	oc := clientsholder.GetClientsHolder()
 	listOptions := metav1.ListOptions{}
 	nodes, err := oc.Coreclient.Nodes().List(context.TODO(), listOptions)
 
