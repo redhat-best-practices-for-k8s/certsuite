@@ -18,10 +18,13 @@ package podsets
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	v1app "k8s.io/api/apps/v1"
+	v1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func TestIsDeploymentRead(t *testing.T) {
@@ -83,5 +86,83 @@ func TestIsStatefulSetReady(t *testing.T) {
 			fmt.Println(" k= ", k, " should be ", v, " is ", ready)
 		}
 		assert.Equal(t, v, ready)
+	}
+}
+
+func TestGetPodSetNodes(t *testing.T) { //nolint:funlen
+	type args struct {
+		pods    []*v1.Pod
+		ssName  string
+		nodesIn map[string]bool
+	}
+	tests := []struct {
+		name string
+		args args
+		want map[string]bool
+	}{
+		{
+			name: "ok",
+			args: args{pods: []*v1.Pod{{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "pod1",
+					Namespace: "tnf",
+					OwnerReferences: []metav1.OwnerReference{{
+						Kind: "StatefulSet",
+						Name: "stateful1",
+					}},
+				},
+				Spec: v1.PodSpec{
+					NodeName: "node1",
+				},
+			}, {
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "pod2",
+					Namespace: "tnf2",
+					OwnerReferences: []metav1.OwnerReference{{
+						Kind: "StatefulSet",
+						Name: "stateful1",
+					}},
+				},
+				Spec: v1.PodSpec{
+					NodeName: "node2",
+				},
+			}}, ssName: "stateful1", nodesIn: map[string]bool{}}, want: map[string]bool{"node1": true, "node2": true},
+		},
+		{
+			name: "nok",
+			args: args{pods: []*v1.Pod{{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "pod1",
+					Namespace: "tnf",
+					OwnerReferences: []metav1.OwnerReference{{
+						Kind: "StatefulSet",
+						Name: "stateful1",
+					}},
+				},
+				Spec: v1.PodSpec{
+					NodeName: "node1",
+				},
+			}, {
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "pod2",
+					Namespace: "tnf2",
+					OwnerReferences: []metav1.OwnerReference{{
+						Kind: "DD",
+						Name: "stateful1",
+					}},
+				},
+				Spec: v1.PodSpec{
+					NodeName: "node2",
+				},
+			}}, ssName: "stateful1", nodesIn: map[string]bool{}}, want: map[string]bool{"node1": true},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := GetPodSetNodes(tt.args.pods, tt.args.ssName, tt.args.nodesIn); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("GetPodSetNodes() = %v, want %v", got, tt.want)
+			}
+		})
 	}
 }

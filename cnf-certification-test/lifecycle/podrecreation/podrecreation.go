@@ -22,7 +22,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	v1 "k8s.io/api/core/v1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -67,22 +67,28 @@ func UncordonNode(name string) error {
 	return err
 }
 
-func DeletePods(nodeName string) {
+func DeletePods(nodeName string) (err error) {
 	clients := clientsholder.GetClientsHolder()
-	pods, err := clients.Coreclient.Pods("").List(context.TODO(), metav1.ListOptions{})
+	pods, err := clients.Coreclient.Pods("").List(context.TODO(), metav1.ListOptions{
+		FieldSelector: "spec.nodeName=" + nodeName, LabelSelector: "pod-template-hash",
+	})
 	if err != nil {
 		logrus.Errorf("error getting list of pods err: %s", err)
+		return err
 	}
 	for idx := range pods.Items {
 		for _, or := range pods.Items[idx].OwnerReferences {
-			if pods.Items[idx].Spec.NodeName == nodeName && or.Kind != DaemonSetString {
+			if or.Kind != DaemonSetString {
+				logrus.Tracef("deleting pod %s", provider.PodToString(&pods.Items[idx]))
 				err = clients.Coreclient.Pods(pods.Items[idx].Namespace).Delete(context.TODO(), pods.Items[idx].Name, metav1.DeleteOptions{})
 				if err != nil {
 					logrus.Errorf("error deleting pod %s err: %v", provider.PodToString(&pods.Items[idx]), err)
+					return err
 				}
 			}
 		}
 	}
+	return nil
 }
 
 func CountPods(nodeName string) (count int) {
@@ -100,47 +106,4 @@ func CountPods(nodeName string) (count int) {
 		}
 	}
 	return count
-}
-
-func GetDeploymentNodes(pods []*v1.Pod, dName string, ch *clientsholder.ClientsHolder) (nodes []string) {
-	for _, put := range pods {
-		deploymentFound := false
-		for _, or := range put.OwnerReferences {
-			if deploymentFound {
-				break
-			}
-			if or.Kind == ReplicaSetString {
-				r, err := ch.K8sClient.AppsV1().ReplicaSets(put.Namespace).Get(context.TODO(), or.Name, metav1.GetOptions{})
-				if err != nil {
-					logrus.Errorf("err: %s", err)
-					continue
-				}
-				for _, or := range r.OwnerReferences {
-					if or.Kind == DeploymentString && or.Name == dName {
-						nodes = append(nodes, put.Spec.NodeName)
-						deploymentFound = true
-						break
-					}
-				}
-			}
-		}
-	}
-	return nodes
-}
-
-func GetStatefulsetNodes(pods []*v1.Pod, ssName string) (nodes []string) {
-	for _, put := range pods {
-		statefulsetFound := false
-		for _, or := range put.OwnerReferences {
-			if statefulsetFound {
-				break
-			}
-			if or.Kind == StatefulsetString && or.Name == ssName {
-				nodes = append(nodes, put.Spec.NodeName)
-				statefulsetFound = true
-				break
-			}
-		}
-	}
-	return nodes
 }

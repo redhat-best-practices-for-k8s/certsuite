@@ -21,9 +21,15 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-
 	v1app "k8s.io/api/apps/v1"
+	v1 "k8s.io/api/core/v1"
+)
+
+const (
+	ReplicaSetString  = "ReplicaSet"
+	StatefulsetString = "StatefulSet"
 )
 
 func WaitForDeploymentSetReady(ns, name string, timeout time.Duration) bool { //nolint:dupl // not duplicate
@@ -64,6 +70,7 @@ func IsDeploymentReady(deployment *v1app.Deployment) bool {
 	}
 	return true
 }
+
 func WaitForStatefulSetReady(ns, name string, timeout time.Duration) bool { //nolint:dupl // not duplicate
 	logrus.Trace("check if statefulset ", ns, ":", name, " is ready ")
 	clients := clientsholder.GetClientsHolder()
@@ -79,6 +86,7 @@ func WaitForStatefulSetReady(ns, name string, timeout time.Duration) bool { //no
 	logrus.Error("statefulset ", ns, ":", name, " is not ready ")
 	return false
 }
+
 func IsStatefulSetReady(statefulset *v1app.StatefulSet) bool {
 	var replicas int32
 	if statefulset.Spec.Replicas != nil {
@@ -92,4 +100,48 @@ func IsStatefulSetReady(statefulset *v1app.StatefulSet) bool {
 		return false
 	}
 	return true
+}
+
+func WaitForAllPodSetReady(env *provider.TestEnvironment, timeoutPodSetReady time.Duration) (claimsLog loghelper.CuratedLogLines) {
+	for _, dut := range env.Deployments {
+		isReady := WaitForDeploymentSetReady(dut.Namespace, dut.Name, timeoutPodSetReady)
+		if isReady {
+			claimsLog = claimsLog.AddLogLine("deployment: %s Status: OK", provider.DeploymentToString(dut))
+		} else {
+			claimsLog = claimsLog.AddLogLine("deployment: %s Status: NOK", provider.DeploymentToString(dut))
+		}
+	}
+	for _, sut := range env.SatetfulSets {
+		isReady := WaitForDeploymentSetReady(sut.Namespace, sut.Name, timeoutPodSetReady)
+		if isReady {
+			claimsLog = claimsLog.AddLogLine("statefulset: %s Status: OK", provider.StatefulsetToString(sut))
+		} else {
+			claimsLog = claimsLog.AddLogLine("statefulset: %s Status: NOK", provider.StatefulsetToString(sut))
+		}
+	}
+	return claimsLog
+}
+
+func GetPodSetNodes(pods []*v1.Pod, ssName string, nodesIn map[string]bool) map[string]bool {
+	for _, put := range pods {
+		for _, or := range put.OwnerReferences {
+			if or.Kind != ReplicaSetString && or.Kind != StatefulsetString {
+				continue
+			}
+			nodesIn[put.Spec.NodeName] = true
+			break
+		}
+	}
+	return nodesIn
+}
+
+func GetAllNodesForAllPodSets(env *provider.TestEnvironment) (nodes map[string]bool) {
+	nodes = make(map[string]bool)
+	for _, dut := range env.Deployments {
+		nodes = GetPodSetNodes(env.Pods, dut.Name, nodes)
+	}
+	for _, sut := range env.SatetfulSets {
+		nodes = GetPodSetNodes(env.Pods, sut.Name, nodes)
+	}
+	return nodes
 }
