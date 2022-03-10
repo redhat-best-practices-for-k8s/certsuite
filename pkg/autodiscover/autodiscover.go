@@ -61,7 +61,7 @@ type DiscoveredTestData struct {
 	HelmList         [][]*release.Release
 	K8sVersion       string
 	OpenshiftVersion string
-	Nodes       *v1.NodeList
+	Nodes            *v1.NodeList
 }
 
 var data = DiscoveredTestData{}
