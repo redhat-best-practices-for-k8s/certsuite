@@ -41,8 +41,7 @@ func FindDeploymentByNameByNamespace(appClient *appv1client.AppsV1Client, namesp
 
 func FindStatefulsetByNameByNamespace(appClient *appv1client.AppsV1Client, namespace, name string) (*v1.StatefulSet, error) {
 	ssClient := appClient.StatefulSets(namespace)
-	options := metav1.GetOptions{}
-	ss, err := ssClient.Get(context.TODO(), name, options)
+	ss, err := ssClient.Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
 		logrus.Error("Can't retrieve deployment in ns=", namespace, " name=", name)
 		return nil, err

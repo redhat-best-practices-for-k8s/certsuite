@@ -34,7 +34,3 @@ func (list CuratedLogLines) AddLogLine(format string, args ...interface{}) Curat
 	logrus.Debug(message)
 	return list
 }
-func (list CuratedLogLines) Append(newLines CuratedLogLines) CuratedLogLines {
-	list.lines = append(list.lines, newLines.lines...)
-	return list
-}
