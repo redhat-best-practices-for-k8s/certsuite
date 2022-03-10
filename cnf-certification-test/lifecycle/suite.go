@@ -309,8 +309,7 @@ func testPodsRecreation(env *provider.TestEnvironment) {
 	ginkgo.By("Testing initial state for deployments")
 	claimsLog := podsets.WaitForAllPodSetReady(env, timeoutPodSetReady)
 	tnf.ClaimFilePrintf("%s", claimsLog)
-	nut := podsets.GetAllNodesForAllPodSets(env)
-	for n := range nut {
+	for n := range podsets.GetAllNodesForAllPodSets(env) {
 		err := podrecreation.CordonNode(n)
 		if err != nil {
 			logrus.Errorf("error cordoning the node: %s", n)
@@ -321,10 +320,13 @@ func testPodsRecreation(env *provider.TestEnvironment) {
 		}
 		ginkgo.By(fmt.Sprintf("Draining and Cordoning node %s: ", n))
 		logrus.Debugf("node: %s cordoned", n)
-		count := podrecreation.CountPods(n)
+		count, err := podrecreation.CountPodsWithDelete(n, false)
+		if err != nil {
+			ginkgo.Skip(fmt.Sprintf("Getting pods list to drain in node %s failed with err: %s. Test inconclusive, skipping", n, err))
+		}
 		nodeTimeout := timeoutPodSetReady + timeoutPodRecreationPerPod*time.Duration(count)
 		logrus.Debugf("draining node: %s with timeout: %s", n, nodeTimeout.String())
-		err = podrecreation.DeletePods(n)
+		_, err = podrecreation.CountPodsWithDelete(n, true)
 		if err != nil {
 			ginkgo.Skip(fmt.Sprintf("Draining node %s failed with err: %s. Test inconclusive, skipping", n, err))
 		}

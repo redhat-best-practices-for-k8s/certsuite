@@ -69,18 +69,23 @@ func UncordonNode(name string) error {
 	return err
 }
 
-func DeletePods(nodeName string) (err error) {
+func CountPodsWithDelete(nodeName string, isDelete bool) (count int, err error) {
 	clients := clientsholder.GetClientsHolder()
 	pods, err := clients.Coreclient.Pods("").List(context.TODO(), metav1.ListOptions{
 		FieldSelector: "spec.nodeName=" + nodeName, LabelSelector: "pod-template-hash",
 	})
 	if err != nil {
 		logrus.Errorf("error getting list of pods err: %s", err)
-		return err
+		return 0, err
 	}
+	count = 0
 	for idx := range pods.Items {
 		for _, or := range pods.Items[idx].OwnerReferences {
 			if or.Kind == DaemonSetString {
+				continue
+			}
+			count++
+			if !isDelete {
 				continue
 			}
 			logrus.Tracef("deleting pod %s", provider.PodToString(&pods.Items[idx]))
@@ -91,26 +96,9 @@ func DeletePods(nodeName string) (err error) {
 			err = clients.Coreclient.Pods(pods.Items[idx].Namespace).Delete(context.TODO(), pods.Items[idx].Name, deleteOptions)
 			if err != nil {
 				logrus.Errorf("error deleting pod %s err: %v", provider.PodToString(&pods.Items[idx]), err)
-				return err
+				return 0, err
 			}
 		}
 	}
-	return nil
-}
-
-func CountPods(nodeName string) (count int) {
-	count = 0
-	clients := clientsholder.GetClientsHolder()
-	pods, err := clients.Coreclient.Pods("").List(context.TODO(), metav1.ListOptions{})
-	if err != nil {
-		logrus.Errorf("error getting list of pods err: %s", err)
-	}
-	for idx := range pods.Items {
-		for _, or := range pods.Items[idx].OwnerReferences {
-			if pods.Items[idx].Spec.NodeName == nodeName && or.Kind != DaemonSetString {
-				count++
-			}
-		}
-	}
-	return count
+	return count, nil
 }
