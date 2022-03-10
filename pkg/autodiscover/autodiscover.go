@@ -115,7 +115,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.DebugPods = findPodsByLabel(oc.Coreclient, debugLabels, debugNS)
 	data.Crds = FindTestCrdNames(data.TestData.CrdFilters)
 	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
-	data.Subscriptions = findSubscriptions(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
+	data.Subscriptions = findSubscriptions(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.Namespaces)
 	data.HelmList = getHelmList(oc.RestConfig, data.Namespaces)
 	openshiftVersion, _ := getOpenshiftVersion(oc.OClient)
 	data.OpenshiftVersion = openshiftVersion

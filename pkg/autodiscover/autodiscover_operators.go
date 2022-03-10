@@ -54,7 +54,7 @@ func findOperatorsByLabel(olmClient *clientOlm.Clientset, labels []configuration
 
 	return csvs
 }
-func findSubscriptions(olmClient *clientOlm.Clientset, labels []configuration.Label, namespaces []configuration.Namespace) []olmv1Alpha.Subscription {
+func findSubscriptions(olmClient *clientOlm.Clientset, labels []configuration.Label, namespaces []string) []olmv1Alpha.Subscription {
 	subscriptions := []olmv1Alpha.Subscription{}
 	for _, ns := range namespaces {
 		logrus.Debugf("Searching subscriptions in namespace %s", ns)
@@ -63,7 +63,7 @@ func findSubscriptions(olmClient *clientOlm.Clientset, labels []configuration.La
 			options := metav1.ListOptions{}
 			label := buildLabelQuery(label)
 			options.LabelSelector = label
-			subscription, err := olmClient.OperatorsV1alpha1().Subscriptions(ns.Name).List(context.TODO(), metav1.ListOptions{})
+			subscription, err := olmClient.OperatorsV1alpha1().Subscriptions(ns).List(context.TODO(), metav1.ListOptions{})
 			if err != nil {
 				logrus.Errorln("error when listing subscriptions in ns=", ns, " label=", label)
 				continue
