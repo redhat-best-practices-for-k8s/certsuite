@@ -310,13 +310,11 @@ func testPodsRecreation(env *provider.TestEnvironment) {
 	claimsLog := podsets.WaitForAllPodSetReady(env, timeoutPodSetReady)
 	tnf.ClaimFilePrintf("%s", claimsLog)
 	for n := range podsets.GetAllNodesForAllPodSets(env) {
+		defer podrecreation.CordonCleanup(n) //nolint:gocritic // The defer in loop is intentional, calling the cleanup function once per node
 		err := podrecreation.CordonNode(n)
 		if err != nil {
 			logrus.Errorf("error cordoning the node: %s", n)
-			err = podrecreation.UncordonNode(n)
-			if err != nil {
-				logrus.Fatalf("error uncordoning the node: %s", n)
-			}
+			ginkgo.Skip(fmt.Sprintf("Cordoning node %s failed with err: %s. Test inconclusive, skipping", n, err))
 		}
 		ginkgo.By(fmt.Sprintf("Draining and Cordoning node %s: ", n))
 		logrus.Debugf("node: %s cordoned", n)

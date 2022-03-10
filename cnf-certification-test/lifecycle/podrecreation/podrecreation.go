@@ -102,3 +102,10 @@ func CountPodsWithDelete(nodeName string, isDelete bool) (count int, err error) 
 	}
 	return count, nil
 }
+
+func CordonCleanup(node string) {
+	err := UncordonNode(node)
+	if err != nil {
+		logrus.Fatalf("cleanup: error uncordoning the node: %s", node)
+	}
+}
