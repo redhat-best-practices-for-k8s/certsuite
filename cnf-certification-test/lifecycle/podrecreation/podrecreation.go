@@ -18,6 +18,7 @@ package podrecreation
 
 import (
 	"context"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
@@ -27,10 +28,11 @@ import (
 )
 
 const (
-	ReplicaSetString  = "ReplicaSet"
-	DeploymentString  = "Deployment"
-	StatefulsetString = "StatefulSet"
-	DaemonSetString   = "DaemonSet"
+	ReplicaSetString            = "ReplicaSet"
+	DeploymentString            = "Deployment"
+	StatefulsetString           = "StatefulSet"
+	DaemonSetString             = "DaemonSet"
+	DefaultGracePeriodInSeconds = 30
 )
 
 func CordonNode(name string) error {
@@ -78,13 +80,18 @@ func DeletePods(nodeName string) (err error) {
 	}
 	for idx := range pods.Items {
 		for _, or := range pods.Items[idx].OwnerReferences {
-			if or.Kind != DaemonSetString {
-				logrus.Tracef("deleting pod %s", provider.PodToString(&pods.Items[idx]))
-				err = clients.Coreclient.Pods(pods.Items[idx].Namespace).Delete(context.TODO(), pods.Items[idx].Name, metav1.DeleteOptions{})
-				if err != nil {
-					logrus.Errorf("error deleting pod %s err: %v", provider.PodToString(&pods.Items[idx]), err)
-					return err
-				}
+			if or.Kind == DaemonSetString {
+				continue
+			}
+			logrus.Tracef("deleting pod %s", provider.PodToString(&pods.Items[idx]))
+			deleteOptions := metav1.DeleteOptions{}
+			gracePeriodSeconds := int64(DefaultGracePeriodInSeconds + time.Duration(*pods.Items[idx].Spec.TerminationGracePeriodSeconds))
+			deleteOptions.GracePeriodSeconds = &gracePeriodSeconds
+
+			err = clients.Coreclient.Pods(pods.Items[idx].Namespace).Delete(context.TODO(), pods.Items[idx].Name, deleteOptions)
+			if err != nil {
+				logrus.Errorf("error deleting pod %s err: %v", provider.PodToString(&pods.Items[idx]), err)
+				return err
 			}
 		}
 	}
