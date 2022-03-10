@@ -27,7 +27,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func TestIsDeploymentRead(t *testing.T) {
+func TestIsDeploymentReady(t *testing.T) {
 	type dpStatus struct {
 		condition   v1app.DeploymentConditionType
 		replicas    int32
