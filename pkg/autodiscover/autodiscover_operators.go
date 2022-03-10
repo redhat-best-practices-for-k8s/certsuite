@@ -89,8 +89,7 @@ func getHelmList(restConfig *rest.Config, namespaces []string) [][]*release.Rele
 				RepositoryConfig: "/tmp/.helmrepo",
 				Debug:            true,
 				Linting:          true,
-				DebugLog: func(format string, v ...interface{}) {
-				},
+				DebugLog:         logrus.Printf,
 			},
 			RestConfig: restConfig,
 		}
