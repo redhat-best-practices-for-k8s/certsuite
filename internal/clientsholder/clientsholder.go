@@ -36,15 +36,16 @@ import (
 )
 
 type ClientsHolder struct {
-	RestConfig    *rest.Config
-	Coreclient    *corev1client.CoreV1Client
-	ClientConfig  clientconfigv1.ConfigV1Interface
-	DynamicClient dynamic.Interface
-	APIExtClient  apiextv1.ApiextensionsV1Interface
-	OlmClient     *clientOlm.Clientset
-	AppsClients   *appv1client.AppsV1Client
-	K8sClient     kubernetes.Interface
-	OClient       *clientconfigv1.ConfigV1Client
+	RestConfig       *rest.Config
+	Coreclient       *corev1client.CoreV1Client
+	ClientConfig     clientconfigv1.ConfigV1Interface
+	DynamicClient    dynamic.Interface
+	APIExtClient     apiextv1.ApiextensionsV1Interface
+	OlmClient        *clientOlm.Clientset
+	AppsClients      *appv1client.AppsV1Client
+	OClient          *clientconfigv1.ConfigV1Client
+	K8sClient        kubernetes.Interface
+	K8sClientversion *kubernetes.Clientset
 
 	ready bool
 }
@@ -123,6 +124,10 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	clientsHolder.K8sClient, err = kubernetes.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("can't instantiate k8sclient: %s", err)
+	}
+	clientsHolder.K8sClientversion, err = kubernetes.NewForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		return nil, fmt.Errorf("can't instantiate K8sClientversion: %s", err)
 	}
 	// create the oc client
 	clientsHolder.OClient, err = clientconfigv1.NewForConfig(clientsHolder.RestConfig)
