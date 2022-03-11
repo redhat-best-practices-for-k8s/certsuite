@@ -18,13 +18,14 @@ package podrecreation
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	retry "k8s.io/client-go/util/retry"
 )
 
 const (
@@ -33,40 +34,35 @@ const (
 	StatefulsetString           = "StatefulSet"
 	DaemonSetString             = "DaemonSet"
 	DefaultGracePeriodInSeconds = 30
+	Cordon                      = "cordon"
+	Uncordon                    = "uncordon"
 )
 
-func CordonNode(name string) error {
+func CordonHelper(name, operation string) error {
 	clients := clientsholder.GetClientsHolder()
-	// Fetch node object
-	node, err := clients.Coreclient.Nodes().Get(context.TODO(), name, metav1.GetOptions{})
 
-	if err != nil {
+	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
+		// Fetch node object
+		node, err := clients.Coreclient.Nodes().Get(context.TODO(), name, metav1.GetOptions{})
+		if err != nil {
+			return err
+		}
+		switch operation {
+		case Cordon:
+			node.Spec.Unschedulable = true
+		case Uncordon:
+			node.Spec.Unschedulable = false
+		default:
+			return fmt.Errorf("cordonHelper: Unsupported operation:%s", operation)
+		}
+		// Update the node
+		_, err = clients.Coreclient.Nodes().Update(context.TODO(), node, metav1.UpdateOptions{})
 		return err
+	})
+	if retryErr != nil {
+		logrus.Error("can't ", operation, " node: ", name, " error=", retryErr)
 	}
-
-	node.Spec.Unschedulable = true
-
-	// Update the node
-	_, err = clients.Coreclient.Nodes().Update(context.TODO(), node, metav1.UpdateOptions{})
-
-	return err
-}
-
-func UncordonNode(name string) error {
-	clients := clientsholder.GetClientsHolder()
-	// Fetch node object
-	node, err := clients.Coreclient.Nodes().Get(context.TODO(), name, metav1.GetOptions{})
-
-	if err != nil {
-		return err
-	}
-
-	node.Spec.Unschedulable = false
-
-	// Update the node
-	_, err = clients.Coreclient.Nodes().Update(context.TODO(), node, metav1.UpdateOptions{})
-
-	return err
+	return retryErr
 }
 
 func CountPodsWithDelete(nodeName string, isDelete bool) (count int, err error) {
@@ -104,7 +100,7 @@ func CountPodsWithDelete(nodeName string, isDelete bool) (count int, err error) 
 }
 
 func CordonCleanup(node string) {
-	err := UncordonNode(node)
+	err := CordonHelper(node, Uncordon)
 	if err != nil {
 		logrus.Fatalf("cleanup: error uncordoning the node: %s", node)
 	}
