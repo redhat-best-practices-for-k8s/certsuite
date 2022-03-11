@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-set -x 
+set -x
 # defaults
 export OUTPUT_LOC="$PWD/cnf-certification-test"
 
 usage() {
-	echo "$0 [-o OUTPUT_LOC] [-f SUITE...] -s [SUITE...]"
+	echo "$0 [-o OUTPUT_LOC] [-f SUITE...] -s [SUITE...] [-l LABEL...]"
 	echo "Call the script and list the test suites to run"
 	echo "  e.g."
 	echo "    $0 [ARGS] -f access-control lifecycle"
@@ -20,28 +20,34 @@ usage_error() {
 
 FOCUS=""
 SKIP=""
+LABEL=""
 BASEDIR=$(dirname $(realpath $0))
 # Parge args beginning with "-"
 while [[ $1 == -* ]]; do
 	case "$1" in
 		-h|--help|-\?) usage; exit 0;;
 		-o) if (($# > 1)); then
-				  OUTPUT_LOC=$2; shift
+				OUTPUT_LOC=$2; shift
 			else
 				echo "-o requires an argument" 1>&2
 				exit 1
 			fi ;;
 		-s|--skip)
-        	while (( "$#" >= 2 )) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]] ; do
-    			SKIP="$2|$SKIP"
-          		shift
-        	done;;
+			while (( "$#" >= 2 )) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]] ; do
+				SKIP="$2|$SKIP"
+				shift
+			done;;
 		-f|--focus)
-    	    while (( "$#" >= 2 )) && ! [[ $2 = --* ]]  && ! [[ $2 = -* ]] ; do
-        		FOCUS="$2|$FOCUS"
-        		shift
-        	done;;
-    	-*) echo "invalid option: $1" 1>&2; usage_error;;
+			while (( "$#" >= 2 )) && ! [[ $2 = --* ]]  && ! [[ $2 = -* ]] ; do
+				FOCUS="$2|$FOCUS"
+				shift
+			done;;
+		-l|--label)
+			while (( "$#" >= 2 )) && ! [[ $2 = --* ]]  && ! [[ $2 = -* ]] ; do
+				LABEL="$2|$LABEL"
+				shift
+			done;;
+		-*) echo "invalid option: $1" 1>&2; usage_error;;
 	esac
 	shift
 done
@@ -65,6 +71,7 @@ trap html_output EXIT
 
 FOCUS=${FOCUS%?}  # strip the trailing "|" from the concatenation
 SKIP=${SKIP%?} # strip the trailing "|" from the concatenation
+LABEL=${LABEL%?} # strip the trailing "|" from the concatenation
 
 res=`oc version | grep  Server`
 if [ -z "$res" ]
@@ -88,11 +95,16 @@ fi
 
 echo "Running with focus '$FOCUS'"
 echo "Running with skip  '$SKIP'"
+echo "Running with label filter '$LABEL'"
 echo "Report will be output to '$OUTPUT_LOC'"
 echo "ginkgo arguments '${GINKGO_ARGS}'"
 SKIP_STRING=""
+LABEL_STRING=""
 if [ -n "$SKIP" ]; then
 	SKIP_STRING=-ginkgo.skip="$SKIP"
 fi
+if [ -n "$LABEL" ]; then
+    LABEL_STRING=-ginkgo.label-filter="$LABEL"
+fi
 
-cd ./cnf-certification-test && ./cnf-certification-test.test -ginkgo.focus="$FOCUS" $SKIP_STRING ${GINKGO_ARGS}
+cd ./cnf-certification-test && ./cnf-certification-test.test -ginkgo.focus="$FOCUS" $SKIP_STRING $LABEL_STRING ${GINKGO_ARGS}

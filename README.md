@@ -287,6 +287,27 @@ cd test-network-function && ./test-network-function.test --help
 ```
 
 *Gotcha:* check that OCP cluster has resources to deploy [debug image](#check-cluster-resources)
+
+#### Running a single test or a subset
+All tests have unique labels, which can be used to filter which tests are to be run. This is useful when debugging
+a single test.
+
+You can select the test to be executed when running `run-cnf-suites.sh` with the following command-line:
+```shell script
+./run-cnf-suites.sh -f operator -l operator-install-source
+```
+
+Note that the `-l` parameter will be treated as a regular expression, so you can select more than one test by
+their labels.
+
+You can find all test labels by running the following commands:
+```shell script
+cd cnf-certification-test
+./cnf-certification-test.test --ginkgo.dry-run --ginkgo.v
+```
+
+You can also check the [CATALOG.md](CATALOG.md) to find all test labels.
+
 ## Available Test Specs
 
 There are two categories for CNF tests;  'General' and 'CNF-specific' (TODO).
