@@ -91,13 +91,15 @@ func IsStatefulSetReady(statefulset *v1app.StatefulSet) bool {
 	return true
 }
 
-func WaitForAllPodSetReady(env *provider.TestEnvironment, timeoutPodSetReady time.Duration) (claimsLog loghelper.CuratedLogLines) {
+func WaitForAllPodSetReady(env *provider.TestEnvironment, timeoutPodSetReady time.Duration) (claimsLog loghelper.CuratedLogLines, atLeastOnePodsetNotReady bool) {
+	atLeastOnePodsetNotReady = false
 	for _, dut := range env.Deployments {
 		isReady := WaitForDeploymentSetReady(dut.Namespace, dut.Name, timeoutPodSetReady)
 		if isReady {
 			claimsLog = claimsLog.AddLogLine("%s Status: OK", provider.DeploymentToString(dut))
 		} else {
 			claimsLog = claimsLog.AddLogLine("%s Status: NOK", provider.DeploymentToString(dut))
+			atLeastOnePodsetNotReady = true
 		}
 	}
 	for _, sut := range env.SatetfulSets {
@@ -106,31 +108,22 @@ func WaitForAllPodSetReady(env *provider.TestEnvironment, timeoutPodSetReady tim
 			claimsLog = claimsLog.AddLogLine("%s Status: OK", provider.StatefulsetToString(sut))
 		} else {
 			claimsLog = claimsLog.AddLogLine("%s Status: NOK", provider.StatefulsetToString(sut))
+			atLeastOnePodsetNotReady = true
 		}
 	}
-	return claimsLog
+	return claimsLog, atLeastOnePodsetNotReady
 }
 
-func GetPodSetNodes(pods []*v1.Pod, ssName string, nodesIn map[string]bool) map[string]bool {
+func GetAllNodesForAllPodSets(pods []*v1.Pod) (nodes map[string]bool) {
+	nodes = make(map[string]bool)
 	for _, put := range pods {
 		for _, or := range put.OwnerReferences {
 			if or.Kind != ReplicaSetString && or.Kind != StatefulsetString {
 				continue
 			}
-			nodesIn[put.Spec.NodeName] = true
+			nodes[put.Spec.NodeName] = true
 			break
 		}
-	}
-	return nodesIn
-}
-
-func GetAllNodesForAllPodSets(env *provider.TestEnvironment) (nodes map[string]bool) {
-	nodes = make(map[string]bool)
-	for _, dut := range env.Deployments {
-		nodes = GetPodSetNodes(env.Pods, dut.Name, nodes)
-	}
-	for _, sut := range env.SatetfulSets {
-		nodes = GetPodSetNodes(env.Pods, sut.Name, nodes)
 	}
 	return nodes
 }

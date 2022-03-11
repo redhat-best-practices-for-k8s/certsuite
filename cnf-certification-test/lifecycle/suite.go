@@ -304,12 +304,15 @@ func testHighAvailability(env *provider.TestEnvironment) {
 }
 
 // testPodsRecreation tests that pods belonging to deployments and statefulsets are re-created and ready in case a node is lost
-func testPodsRecreation(env *provider.TestEnvironment) {
+func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 	ginkgo.By("Testing node draining effect of deployment")
 	ginkgo.By("Testing initial state for deployments")
-	claimsLog := podsets.WaitForAllPodSetReady(env, timeoutPodSetReady)
+	claimsLog, atLeastOnePodsetNotReady := podsets.WaitForAllPodSetReady(env, timeoutPodSetReady)
 	tnf.ClaimFilePrintf("%s", claimsLog)
-	for n := range podsets.GetAllNodesForAllPodSets(env) {
+	if atLeastOnePodsetNotReady {
+		ginkgo.Skip("Some deployments or stateful sets are not in a good initial state. Cannot perform test, skipping")
+	}
+	for n := range podsets.GetAllNodesForAllPodSets(env.Pods) {
 		defer podrecreation.CordonCleanup(n) //nolint:gocritic // The defer in loop is intentional, calling the cleanup function once per node
 		err := podrecreation.CordonHelper(n, podrecreation.Cordon)
 		if err != nil {
@@ -328,8 +331,8 @@ func testPodsRecreation(env *provider.TestEnvironment) {
 		if err != nil {
 			ginkgo.Skip(fmt.Sprintf("Draining node %s failed with err: %s. Test inconclusive, skipping", n, err))
 		}
-		tnf.ClaimFilePrintf("%s", podsets.WaitForAllPodSetReady(env, nodeTimeout))
-
+		claimsLog, _ = podsets.WaitForAllPodSetReady(env, nodeTimeout)
+		tnf.ClaimFilePrintf("%s", claimsLog)
 		err = podrecreation.CordonHelper(n, podrecreation.Uncordon)
 		if err != nil {
 			logrus.Fatalf("error uncordoning the node: %s", n)
