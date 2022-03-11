@@ -50,27 +50,12 @@ func WaitForDeploymentSetReady(ns, name string, timeout time.Duration) bool { //
 	return false
 }
 func IsDeploymentReady(deployment *v1app.Deployment) bool {
-	notReady := true
 	for _, condition := range deployment.Status.Conditions {
 		if condition.Type == v1app.DeploymentAvailable {
-			notReady = false
-			break
+			return true
 		}
 	}
-	var replicas int32
-	if deployment.Spec.Replicas != nil {
-		replicas = *(deployment.Spec.Replicas)
-	} else {
-		replicas = 1
-	}
-	if notReady ||
-		deployment.Status.UnavailableReplicas != 0 ||
-		deployment.Status.ReadyReplicas != replicas ||
-		deployment.Status.AvailableReplicas != replicas ||
-		deployment.Status.UpdatedReplicas != replicas {
-		return false
-	}
-	return true
+	return false
 }
 
 func WaitForStatefulSetReady(ns, name string, timeout time.Duration) bool { //nolint:dupl // not duplicate
