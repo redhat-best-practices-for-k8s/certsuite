@@ -4,7 +4,6 @@
 package rbac
 
 import (
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"sync"
 )
 
@@ -21,9 +20,6 @@ var _ AutomountTokenFuncs = &AutomountTokenFuncsMock{}
 // 			AutomountServiceAccountSetOnSAFunc: func(serviceAccountName string, podNamespace string) (*bool, error) {
 // 				panic("mock out the AutomountServiceAccountSetOnSA method")
 // 			},
-// 			GetClientsHolderFunc: func() *clientsholder.ClientsHolder {
-// 				panic("mock out the GetClientsHolder method")
-// 			},
 // 			SetTestingResultFunc: func(result bool)  {
 // 				panic("mock out the SetTestingResult method")
 // 			},
@@ -37,9 +33,6 @@ type AutomountTokenFuncsMock struct {
 	// AutomountServiceAccountSetOnSAFunc mocks the AutomountServiceAccountSetOnSA method.
 	AutomountServiceAccountSetOnSAFunc func(serviceAccountName string, podNamespace string) (*bool, error)
 
-	// GetClientsHolderFunc mocks the GetClientsHolder method.
-	GetClientsHolderFunc func() *clientsholder.ClientsHolder
-
 	// SetTestingResultFunc mocks the SetTestingResult method.
 	SetTestingResultFunc func(result bool)
 
@@ -52,9 +45,6 @@ type AutomountTokenFuncsMock struct {
 			// PodNamespace is the podNamespace argument value.
 			PodNamespace string
 		}
-		// GetClientsHolder holds details about calls to the GetClientsHolder method.
-		GetClientsHolder []struct {
-		}
 		// SetTestingResult holds details about calls to the SetTestingResult method.
 		SetTestingResult []struct {
 			// Result is the result argument value.
@@ -62,7 +52,6 @@ type AutomountTokenFuncsMock struct {
 		}
 	}
 	lockAutomountServiceAccountSetOnSA sync.RWMutex
-	lockGetClientsHolder               sync.RWMutex
 	lockSetTestingResult               sync.RWMutex
 }
 
@@ -98,32 +87,6 @@ func (mock *AutomountTokenFuncsMock) AutomountServiceAccountSetOnSACalls() []str
 	mock.lockAutomountServiceAccountSetOnSA.RLock()
 	calls = mock.calls.AutomountServiceAccountSetOnSA
 	mock.lockAutomountServiceAccountSetOnSA.RUnlock()
-	return calls
-}
-
-// GetClientsHolder calls GetClientsHolderFunc.
-func (mock *AutomountTokenFuncsMock) GetClientsHolder() *clientsholder.ClientsHolder {
-	if mock.GetClientsHolderFunc == nil {
-		panic("AutomountTokenFuncsMock.GetClientsHolderFunc: method is nil but AutomountTokenFuncs.GetClientsHolder was just called")
-	}
-	callInfo := struct {
-	}{}
-	mock.lockGetClientsHolder.Lock()
-	mock.calls.GetClientsHolder = append(mock.calls.GetClientsHolder, callInfo)
-	mock.lockGetClientsHolder.Unlock()
-	return mock.GetClientsHolderFunc()
-}
-
-// GetClientsHolderCalls gets all the calls that were made to GetClientsHolder.
-// Check the length with:
-//     len(mockedAutomountTokenFuncs.GetClientsHolderCalls())
-func (mock *AutomountTokenFuncsMock) GetClientsHolderCalls() []struct {
-} {
-	var calls []struct {
-	}
-	mock.lockGetClientsHolder.RLock()
-	calls = mock.calls.GetClientsHolder
-	mock.lockGetClientsHolder.RUnlock()
 	return calls
 }
 

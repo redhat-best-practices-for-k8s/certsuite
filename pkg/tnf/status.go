@@ -21,6 +21,6 @@ func ClaimFilePrintf(format string, args ...interface{}) {
 }
 
 func IsUnitTest() bool {
-	return strings.Contains(os.Args[1], "-test.") || strings.Contains(os.Args[0], ".test")
-	// return true
+	//nolint:goconst
+	return strings.Contains(os.Args[1], "-test.") || strings.Contains(os.Args[0], ".test") || os.Getenv("UNIT_TEST") == "true"
 }

@@ -112,7 +112,7 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	// automount service token
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodAutomountServiceAccountIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		TestAutomountServiceToken(&env, rbac.NewAutomountToken(clientsholder.GetClientsHolder()))
+		TestAutomountServiceToken(&env, rbac.NewAutomountTokenTester(clientsholder.GetClientsHolder()))
 	})
 
 })
@@ -389,7 +389,7 @@ func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 }
 
 //nolint:funlen,gocyclo
-func TestAutomountServiceToken(env *provider.TestEnvironment, myFuncs rbac.AutomountTokenFuncs) {
+func TestAutomountServiceToken(env *provider.TestEnvironment, testerFuncs rbac.AutomountTokenFuncs) {
 	if !tnf.IsUnitTest() {
 		ginkgo.By("Should have automountServiceAccountToken set to false")
 	}
@@ -416,7 +416,7 @@ func TestAutomountServiceToken(env *provider.TestEnvironment, myFuncs rbac.Autom
 		}
 
 		// Collect information about the service account attached to the pod.
-		saAutomountServiceAccountToken, err := myFuncs.AutomountServiceAccountSetOnSA(put.Spec.ServiceAccountName, put.Namespace)
+		saAutomountServiceAccountToken, err := testerFuncs.AutomountServiceAccountSetOnSA(put.Spec.ServiceAccountName, put.Namespace)
 		if err != nil {
 			failedPods = append(failedPods, put.Name)
 			continue
@@ -458,6 +458,6 @@ func TestAutomountServiceToken(env *provider.TestEnvironment, myFuncs rbac.Autom
 	}
 
 	if tnf.IsUnitTest() {
-		myFuncs.SetTestingResult(len(failedPods) == 0)
+		testerFuncs.SetTestingResult(len(failedPods) == 0)
 	}
 }

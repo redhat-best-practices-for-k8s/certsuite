@@ -44,13 +44,13 @@ func TestAutomountServiceAccountSetOnSA(t *testing.T) {
 				Namespace: "podNS",
 				Name:      "testSA",
 			},
+			AutomountServiceAccountToken: &tc.automountServiceTokenSet,
 		}
 
-		testSA.AutomountServiceAccountToken = &tc.automountServiceTokenSet
 		var testRuntimeObjects []runtime.Object
 		testRuntimeObjects = append(testRuntimeObjects, &testSA)
 
-		obj := NewAutomountToken(clientsholder.GetTestClientsHolder(testRuntimeObjects))
+		obj := NewAutomountTokenTester(clientsholder.GetTestClientsHolder(testRuntimeObjects))
 		assert.NotNil(t, obj)
 		isSet, err := obj.AutomountServiceAccountSetOnSA("testSA", "podNS")
 		assert.Nil(t, err)

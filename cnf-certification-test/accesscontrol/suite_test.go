@@ -50,19 +50,22 @@ func TestTestAutomountServiceToken(t *testing.T) {
 	falseVar := false
 	trueVar := true
 
+	// The following test cases should cover all of the possible scenarios that determine pass/fail
+	// of the AutomountServiceToken test.
 	testCases := []struct {
 		podSATokenStatus *bool // pod token status is
 		saTokenStatus    *bool // returned from the mock API
 		expectedResult   bool
 		getSAErr         error
+		expectedAPICalls int
 	}{
-		{podSATokenStatus: &trueVar, saTokenStatus: &trueVar, getSAErr: nil, expectedResult: false},                             // FAIL because pod SA token is set to true
-		{podSATokenStatus: &trueVar, saTokenStatus: &falseVar, getSAErr: nil, expectedResult: false},                            // FAIL because pod SA token is set to true
-		{podSATokenStatus: &falseVar, saTokenStatus: &trueVar, getSAErr: nil, expectedResult: true},                             // PASS because pod SA set to false
-		{podSATokenStatus: &falseVar, saTokenStatus: nil, getSAErr: nil, expectedResult: true},                                  // PASS because pod SA set to false
-		{podSATokenStatus: &falseVar, saTokenStatus: &trueVar, getSAErr: errors.New("this is an error"), expectedResult: false}, // FAIL because failure to gather SA status from API
-		{podSATokenStatus: nil, saTokenStatus: &trueVar, getSAErr: nil, expectedResult: false},                                  // FAIL because pod SA token is set to true and the pod SA is nil
-		{podSATokenStatus: nil, saTokenStatus: nil, getSAErr: nil, expectedResult: false},                                       // FAIL because pod SA token is nil and the pod SA is nil
+		{podSATokenStatus: &trueVar, saTokenStatus: &trueVar, getSAErr: nil, expectedAPICalls: 0, expectedResult: false},                             // FAIL because pod SA token is set to true
+		{podSATokenStatus: &trueVar, saTokenStatus: &falseVar, getSAErr: nil, expectedAPICalls: 0, expectedResult: false},                            // FAIL because pod SA token is set to true
+		{podSATokenStatus: &falseVar, saTokenStatus: &trueVar, getSAErr: nil, expectedAPICalls: 1, expectedResult: true},                             // PASS because pod SA set to false
+		{podSATokenStatus: &falseVar, saTokenStatus: nil, getSAErr: nil, expectedAPICalls: 1, expectedResult: true},                                  // PASS because pod SA set to false
+		{podSATokenStatus: &falseVar, saTokenStatus: &trueVar, getSAErr: errors.New("this is an error"), expectedAPICalls: 1, expectedResult: false}, // FAIL because failure to gather SA status from API
+		{podSATokenStatus: nil, saTokenStatus: &trueVar, getSAErr: nil, expectedAPICalls: 1, expectedResult: false},                                  // FAIL because pod SA token is set to true and the pod SA is nil
+		{podSATokenStatus: nil, saTokenStatus: nil, getSAErr: nil, expectedAPICalls: 1, expectedResult: false},                                       // FAIL because pod SA token is nil and the pod SA is nil
 	}
 
 	for _, tc := range testCases {
@@ -79,5 +82,6 @@ func TestTestAutomountServiceToken(t *testing.T) {
 		}
 		TestAutomountServiceToken(generateEnv(tc.podSATokenStatus), mockFuncs)
 		assert.Equal(t, tc.expectedResult, sharedResult)
+		assert.Equal(t, tc.expectedAPICalls, len(mockFuncs.AutomountServiceAccountSetOnSACalls()))
 	}
 }
