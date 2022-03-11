@@ -87,7 +87,7 @@ func testContainersPreStop(env *provider.TestEnvironment) {
 
 			if cut.Data.Lifecycle == nil || (cut.Data.Lifecycle != nil && cut.Data.Lifecycle.PreStop == nil) {
 				badcontainers = append(badcontainers, cut.Data.Name)
-				tnf.ClaimFilePrintf("container %s does not have preStop defined", cut.StringShort())
+				tnf.ClaimFilePrintf("%s does not have preStop defined", cut.StringShort())
 			}
 		}
 		if len(badcontainers) > 0 {
@@ -181,11 +181,11 @@ func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) 
 	var badPods []*v1.Pod
 	for _, put := range env.Pods {
 		if len(put.Spec.NodeSelector) != 0 {
-			tnf.ClaimFilePrintf("ERROR: Pod: %s has a node selector clause. Node selector: %v", provider.PodToString(put), &put.Spec.NodeSelector)
+			tnf.ClaimFilePrintf("ERROR: %s has a node selector clause. Node selector: %v", provider.PodToString(put), &put.Spec.NodeSelector)
 			badPods = append(badPods, put)
 		}
 		if put.Spec.Affinity != nil && put.Spec.Affinity.NodeAffinity != nil {
-			tnf.ClaimFilePrintf("ERROR: Pod: %s has a node affinity clause. Node affinity: %v", provider.PodToString(put), put.Spec.Affinity.NodeAffinity)
+			tnf.ClaimFilePrintf("ERROR: %s has a node affinity clause. Node affinity: %v", provider.PodToString(put), put.Spec.Affinity.NodeAffinity)
 			badPods = append(badPods, put)
 		}
 	}

@@ -39,8 +39,10 @@ func WaitForDeploymentSetReady(ns, name string, timeout time.Duration) bool { //
 	for time.Since(start) < timeout {
 		dp, err := provider.GetUpdatedDeployment(clients.AppsClients, ns, name)
 		if err == nil && IsDeploymentReady(dp) {
-			logrus.Trace("deployment ", ns, ":", name, " is ready ")
+			logrus.Tracef("%s is ready, err: %s", provider.DeploymentToString(dp), err)
 			return true
+		} else if err != nil {
+			logrus.Errorf("Error while getting the %s, err: %s", provider.DeploymentToString(dp), err)
 		}
 		time.Sleep(time.Second)
 	}
@@ -78,8 +80,10 @@ func WaitForStatefulSetReady(ns, name string, timeout time.Duration) bool { //no
 	for time.Since(start) < timeout {
 		ss, err := provider.GetUpdatedStatefulset(clients.AppsClients, ns, name)
 		if err == nil && IsStatefulSetReady(ss) {
-			logrus.Trace("statefulset ", ns, ":", name, " is ready ")
+			logrus.Tracef("%s is ready, err: %s", provider.StatefulsetToString(ss), err)
 			return true
+		} else if err != nil {
+			logrus.Errorf("Error while getting the %s, err: %s", provider.StatefulsetToString(ss), err)
 		}
 		time.Sleep(time.Second)
 	}
@@ -106,17 +110,17 @@ func WaitForAllPodSetReady(env *provider.TestEnvironment, timeoutPodSetReady tim
 	for _, dut := range env.Deployments {
 		isReady := WaitForDeploymentSetReady(dut.Namespace, dut.Name, timeoutPodSetReady)
 		if isReady {
-			claimsLog = claimsLog.AddLogLine("deployment: %s Status: OK", provider.DeploymentToString(dut))
+			claimsLog = claimsLog.AddLogLine("%s Status: OK", provider.DeploymentToString(dut))
 		} else {
-			claimsLog = claimsLog.AddLogLine("deployment: %s Status: NOK", provider.DeploymentToString(dut))
+			claimsLog = claimsLog.AddLogLine("%s Status: NOK", provider.DeploymentToString(dut))
 		}
 	}
 	for _, sut := range env.SatetfulSets {
 		isReady := WaitForDeploymentSetReady(sut.Namespace, sut.Name, timeoutPodSetReady)
 		if isReady {
-			claimsLog = claimsLog.AddLogLine("statefulset: %s Status: OK", provider.StatefulsetToString(sut))
+			claimsLog = claimsLog.AddLogLine("%s Status: OK", provider.StatefulsetToString(sut))
 		} else {
-			claimsLog = claimsLog.AddLogLine("statefulset: %s Status: NOK", provider.StatefulsetToString(sut))
+			claimsLog = claimsLog.AddLogLine("%s Status: NOK", provider.StatefulsetToString(sut))
 		}
 	}
 	return claimsLog

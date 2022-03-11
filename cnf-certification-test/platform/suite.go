@@ -197,7 +197,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 		}
 		if !result {
 			failedContainers = append(failedContainers, cut.Namespace+"/"+cut.Podname+"/"+cut.Data.Name)
-			tnf.ClaimFilePrintf("Container: %s has failed the RHEL release check", cut.StringShort())
+			tnf.ClaimFilePrintf("%s has failed the RHEL release check", cut.StringShort())
 		}
 	}
 

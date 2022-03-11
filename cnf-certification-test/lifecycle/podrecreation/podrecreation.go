@@ -84,14 +84,14 @@ func CountPodsWithDelete(nodeName string, isDelete bool) (count int, err error) 
 			if !isDelete {
 				continue
 			}
-			logrus.Tracef("deleting pod %s", provider.PodToString(&pods.Items[idx]))
+			logrus.Tracef("deleting %s", provider.PodToString(&pods.Items[idx]))
 			deleteOptions := metav1.DeleteOptions{}
 			gracePeriodSeconds := int64(DefaultGracePeriodInSeconds + time.Duration(*pods.Items[idx].Spec.TerminationGracePeriodSeconds))
 			deleteOptions.GracePeriodSeconds = &gracePeriodSeconds
 
 			err = clients.Coreclient.Pods(pods.Items[idx].Namespace).Delete(context.TODO(), pods.Items[idx].Name, deleteOptions)
 			if err != nil {
-				logrus.Errorf("error deleting pod %s err: %v", provider.PodToString(&pods.Items[idx]), err)
+				logrus.Errorf("error deleting %s err: %v", provider.PodToString(&pods.Items[idx]), err)
 				return 0, err
 			}
 		}

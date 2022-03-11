@@ -141,7 +141,7 @@ func buildTestEnvironment() { //nolint:funlen
 			if len(pods[i].Status.ContainerStatuses) > 0 {
 				state = pods[i].Status.ContainerStatuses[j]
 			} else {
-				logrus.Errorf("Pod %s is not ready, skipping status collection", PodToString(&pods[i]))
+				logrus.Errorf("%s is not ready, skipping status collection", PodToString(&pods[i]))
 			}
 			aRuntime, uid := GetRuntimeUID(&state)
 			container := Container{Podname: pods[i].Name, Namespace: pods[i].Namespace,
@@ -318,31 +318,31 @@ func (c *Container) String() string {
 	)
 }
 func (c *Container) StringShort() string {
-	return fmt.Sprintf("ns: %s podName: %s containerName: %s",
-		c.Namespace,
-		c.Podname,
+	return fmt.Sprintf("container: %s pod: %s ns: %s",
 		c.Data.Name,
+		c.Podname,
+		c.Namespace,
 	)
 }
 
 func PodToString(pod *v1.Pod) string {
-	return fmt.Sprintf("ns: %s podName: %s",
-		pod.Namespace,
+	return fmt.Sprintf("pod: %s ns: %s",
 		pod.Name,
+		pod.Namespace,
 	)
 }
 
 func DeploymentToString(d *v1apps.Deployment) string {
-	return fmt.Sprintf("ns: %s deploymentName: %s",
-		d.Namespace,
+	return fmt.Sprintf("deployment: %s ns: %s",
 		d.Name,
+		d.Namespace,
 	)
 }
 
 func StatefulsetToString(s *v1apps.StatefulSet) string {
-	return fmt.Sprintf("ns: %s statefulsetName: %s",
-		s.Namespace,
+	return fmt.Sprintf("statefulset: %s ns: %s",
 		s.Name,
+		s.Namespace,
 	)
 }
 
