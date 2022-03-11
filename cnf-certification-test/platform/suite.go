@@ -59,7 +59,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNonTaintedNodeKernelsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testTainted(&env) // minikube tainted kernels are allowed via config
+		testTainted(&env, nodetainted.NewNodeTaintedTester(clientsholder.GetClientsHolder())) // minikube tainted kernels are allowed via config
 	})
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestIsRedHatReleaseIdentifier)
@@ -101,20 +101,21 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 }
 
 //nolint:funlen
-func testTainted(env *provider.TestEnvironment) {
+func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedFuncs) {
 	var taintedNodes []string
 	var errNodes []string
 
 	// Loop through the debug pods that are tied to each node.
 	for _, dp := range env.DebugPods {
-		// Build a NodeTainted tester object.
-		c := clientsholder.GetClientsHolder()
-		tester := nodetainted.NewNodeTaintedTester(common.DefaultTimeout, c, clientsholder.Context{
+		// Create OCP context to pass around
+		ocpContext := clientsholder.Context{
 			Namespace:     dp.Namespace,
 			Podname:       dp.Name,
 			Containername: dp.Spec.Containers[0].Name,
-		})
-		taintInfo, err := tester.GetKernelTaintInfo()
+		}
+
+		// Get the taint information from the node kernel
+		taintInfo, err := testerFuncs.GetKernelTaintInfo(ocpContext)
 		if err != nil {
 			logrus.Error("failed to retrieve kernel taint information from debug pod/host")
 			tnf.ClaimFilePrintf("failed to retrieve kernel taint information from debug pod/host")
@@ -135,31 +136,37 @@ func testTainted(env *provider.TestEnvironment) {
 		}
 		taintMsg, individualTaints := nodetainted.DecodeKernelTaints(taintedBitmap)
 
-		// We only will fail the tainted kernel check if the reason for the taint
-		// only pertains to `module was loaded`.
+		// Count how many taints come from `module was loaded` taints versus `other`
 		logrus.Debug("Checking for 'module was loaded' taints")
 		logrus.Debug("individualTaints", individualTaints)
-		moduleCheck := false
+		moduleCheckCtr := 0
+		otherTaintCtr := 0
 		for _, it := range individualTaints {
 			if strings.Contains(it, `module was loaded`) {
-				moduleCheck = true
-				break
+				moduleCheckCtr++
+			} else {
+				otherTaintCtr++
 			}
 		}
 
-		if moduleCheck {
+		if moduleCheckCtr > 0 {
 			// Retrieve the modules from the node (via the debug pod)
-			modules := tester.GetModulesFromNode(dp.Name)
+			modules := testerFuncs.GetModulesFromNode(ocpContext)
 			logrus.Debugf("Got the modules from node %s: %v", dp.Name, modules)
 
 			// Retrieve all of the out of tree modules.
-			taintedModules := nodetainted.GetOutOfTreeModules(modules, dp.Name, tester)
+			taintedModules := testerFuncs.GetOutOfTreeModules(modules, ocpContext)
 			logrus.Debug("Collected all of the tainted modules: ", taintedModules)
 			logrus.Debug("Modules allowed via configuration: ", env.Config.AcceptedKernelTaints)
 
 			// Looks through the accepted taints listed in the tnf-config file.
 			// If all of the tainted modules show up in the configuration file, don't fail the test.
 			nodeTaintsAccepted = nodetainted.TaintsAccepted(env.Config.AcceptedKernelTaints, taintedModules)
+		}
+
+		// If there are other taints than module was loaded, set the result to false/fail.
+		if otherTaintCtr > 0 {
+			nodeTaintsAccepted = false // taint was caused by something other than `module was loaded`
 		}
 
 		// Only add the tainted node to the slice if the taint is acceptable.
@@ -176,8 +183,16 @@ func testTainted(env *provider.TestEnvironment) {
 	// We are expecting tainted nodes to be Nil, but only if:
 	// 1) The reason for the tainted node is contains(`module was loaded`)
 	// 2) The modules loaded are all whitelisted.
-	gomega.Expect(taintedNodes).To(gomega.BeNil())
-	gomega.Expect(errNodes).To(gomega.BeNil())
+	tnf.GomegaExpectSliceBeNil(taintedNodes)
+	tnf.GomegaExpectSliceBeNil(errNodes)
+
+	if tnf.IsUnitTest() {
+		if len(taintedNodes) != 0 || len(errNodes) != 0 {
+			testerFuncs.SetTestingResult(false)
+		} else {
+			testerFuncs.SetTestingResult(true)
+		}
+	}
 }
 
 func testIsRedHatRelease(env *provider.TestEnvironment) {

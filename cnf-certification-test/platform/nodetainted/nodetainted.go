@@ -20,7 +20,6 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
@@ -29,22 +28,35 @@ import (
 
 // NodeTainted holds information about tainted nodes.
 type NodeTainted struct {
-	timeout      time.Duration
-	ClientHolder *clientsholder.ClientsHolder
-	OCPContext   clientsholder.Context
+	ClientHolder      *clientsholder.ClientsHolder
+	OCPContext        clientsholder.Context
+	unitTestingResult bool
 }
 
-// NewNodeTainted creates a new NodeTainted tnf.Test.
-func NewNodeTaintedTester(timeout time.Duration, client *clientsholder.ClientsHolder, ctx clientsholder.Context) *NodeTainted {
+//go:generate moq -out nodetainted_moq.go . TaintedFuncs
+type TaintedFuncs interface {
+	runCommand(cmd string, ctx clientsholder.Context) (string, error)
+	GetKernelTaintInfo(ctx clientsholder.Context) (string, error)
+	GetModulesFromNode(ctx clientsholder.Context) []string
+	ModuleInTree(moduleName string, ctx clientsholder.Context) bool
+	GetOutOfTreeModules(modules []string, ctx clientsholder.Context) []string
+	SetTestingResult(result bool)
+}
+
+// NewNodeTainted creates a new NodeTainted tester
+func NewNodeTaintedTester(client *clientsholder.ClientsHolder) *NodeTainted {
 	return &NodeTainted{
-		timeout:      timeout,
 		ClientHolder: client,
-		OCPContext:   ctx,
 	}
 }
 
-func (nt *NodeTainted) runCommand(cmd string) (string, error) {
-	output, outerr, err := nt.ClientHolder.ExecCommandContainer(nt.OCPContext, cmd)
+// SetTestingResult used exclusively for unit testing results
+func (nt *NodeTainted) SetTestingResult(result bool) {
+	nt.unitTestingResult = result
+}
+
+func (nt *NodeTainted) runCommand(cmd string, ctx clientsholder.Context) (string, error) {
+	output, outerr, err := nt.ClientHolder.ExecCommandContainer(ctx, cmd)
 	if err != nil {
 		logrus.Errorln("can't execute command on container ", err)
 		return "", err
@@ -56,8 +68,8 @@ func (nt *NodeTainted) runCommand(cmd string) (string, error) {
 	return output, nil
 }
 
-func (nt *NodeTainted) GetKernelTaintInfo() (string, error) {
-	output, err := nt.runCommand(`cat /proc/sys/kernel/tainted`)
+func (nt *NodeTainted) GetKernelTaintInfo(ctx clientsholder.Context) (string, error) {
+	output, err := nt.runCommand(`cat /proc/sys/kernel/tainted`, ctx)
 	if err != nil {
 		return "", err
 	}
@@ -77,20 +89,20 @@ func removeEmptyStrings(s []string) []string {
 	return r
 }
 
-func (nt *NodeTainted) GetModulesFromNode(nodeName string) []string {
+func (nt *NodeTainted) GetModulesFromNode(ctx clientsholder.Context) []string {
 	// Get the 1st column list of the modules running on the node.
 	// Split on the return/newline and get the list of the modules back.
 	//nolint:goconst // used only once
 	command := `chroot /host lsmod | awk '{ print $1 }' | grep -v Module`
-	output, _ := nt.runCommand(command)
+	output, _ := nt.runCommand(command, ctx)
 	output = strings.ReplaceAll(output, "\t", "")
 	moduleList := strings.Split(strings.ReplaceAll(output, "\r\n", "\n"), "\n")
 	return removeEmptyStrings(moduleList)
 }
 
-func (nt *NodeTainted) ModuleInTree(nodeName, moduleName string) bool {
+func (nt *NodeTainted) ModuleInTree(moduleName string, ctx clientsholder.Context) bool {
 	command := `chroot /host cat /sys/module/` + moduleName + `/taint`
-	cmdOutput, _ := nt.runCommand(command)
+	cmdOutput, _ := nt.runCommand(command, ctx)
 	return !strings.Contains(cmdOutput, "O")
 }
 
@@ -132,11 +144,11 @@ func DecodeKernelTaints(bitmap uint64) (string, []string) {
 	return out, individualTaints
 }
 
-func GetOutOfTreeModules(modules []string, nodeName string, nt *NodeTainted) []string {
+func (nt *NodeTainted) GetOutOfTreeModules(modules []string, ctx clientsholder.Context) []string {
 	taintedModules := []string{}
 	for _, module := range modules {
 		logrus.Debug(fmt.Sprintf("Looking for module in tree: %s", module))
-		if !nt.ModuleInTree(nodeName, module) {
+		if !nt.ModuleInTree(module, ctx) {
 			taintedModules = append(taintedModules, module)
 		}
 	}
