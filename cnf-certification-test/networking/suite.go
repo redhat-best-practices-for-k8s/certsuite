@@ -20,19 +20,20 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/icmp"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/icmp"
 )
 
 const (
-  defaultNumPings = 5
+	defaultNumPings   = 5
 	indexprotocolname = 0
 	indexport         = 4
 )
@@ -53,17 +54,8 @@ type Port []struct {
 //
 var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	logrus.Debugf("%s not moved yet to new framework", common.NetworkingTestKey)
-  
+
 	var env provider.TestEnvironment
-	ginkgo.BeforeEach(func() {
-		provider.BuildTestEnvironment()
-		env = provider.GetTestEnvironment()
-	})
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestUndeclaredContainerPortsUsage)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testListenAndDeclared(&env)
-	})
-  var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
 		provider.WaitDebugPodReady()
@@ -87,6 +79,11 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv6ConnectivityMultusIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testMultusNetworkConnectivity(&env, defaultNumPings, netcommons.IPv6)
+	})
+	// Default interface ICMP IPv6 test case
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv6ConnectivityIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testListenAndDeclared(&env)
 	})
 })
 
@@ -148,7 +145,7 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 	}
 
 	for _, dp := range env.DebugPods {
-		oc := clientsholder.NewClientsHolder()
+		oc := clientsholder.GetClientsHolder()
 		output, outerr, err := oc.ExecCommandContainer(clientsholder.Context{Namespace: dp.Namespace,
 			Podname: dp.Name, Containername: dp.Spec.Containers[0].Name}, `ss -tulwnH`)
 		if err != nil {
@@ -179,7 +176,7 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 
 	if nf, ns := len(failedPods), len(skippedPods); nf > 0 || ns > 0 {
 		ginkgo.Fail("Found %d pods with listening ports not declared and Skipped %d pods due to unexpected error", nf, ns)
-  }
+	}
 }
 
 // testDefaultNetworkConnectivity test the connectivity between the default interfaces of containers under test

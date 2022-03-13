@@ -218,9 +218,9 @@ Best Practice Reference|
 Property|Description
 ---|---
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/pod-high-availability ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.
+Description|http://test-network-function.com/testcases/lifecycle/pod-high-availability ensures that CNF Pods replicas value is set to more than 1.
 Result Type|informative
-Suggested Remediation|In high availability cases, Pod podAntiAffinity rule should be specified for pod scheduling and pod replica value is set to more than 1 .
+Suggested Remediation|In high availability cases, Pod replicas value should be set to more than 1 .
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
 ### http://test-network-function.com/testcases/lifecycle/pod-owner-type
 
@@ -311,6 +311,15 @@ Version|v1.0.0
 Description|http://test-network-function.com/testcases/networking/icmpv6-connectivity-multus checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s).  This test case requires the Deployment of the debug daemonset.
 Result Type|normative
 Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is not important, only its presence. 
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
+### http://test-network-function.com/testcases/networking/listen-and-declared
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/networking/listen-and-declared Test if all ports listening is declared.
+Result Type|normative
+Suggested Remediation|Make sure that all the ports listening is declared.
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
 ### http://test-network-function.com/testcases/networking/service-type
 

@@ -282,6 +282,10 @@ var (
 		Url:     formTestURL(common.NetworkingTestKey, "undeclared-container-ports-usage"),
 		Version: versionOne,
 	}
+	TestListenAndDeclaredIdentifier = claim.Identifier{
+		Url:     formTestURL(common.NetworkingTestKey, "listen-and-declared"),
+		Version: versionOne,
+	}
 	// TestClusterCsiInfoIdentifier list Cluster CSIdriver Identifier retrieves Third Party CSI driver info.
 	TestClusterCsiInfoIdentifier = claim.Identifier{
 		Url:     formTestURL(common.DiagnosticTestKey, "cluster-csi-info"),
@@ -329,6 +333,14 @@ func XformToGinkgoItIdentifierExtended(identifier claim.Identifier, extra string
 // Catalog is the JUnit testcase catalog of tests.
 var Catalog = map[claim.Identifier]TestCaseDescription{
 
+	TestListenAndDeclaredIdentifier: {
+		Identifier: TestListenAndDeclaredIdentifier,
+		Type:       normativeResult,
+		Description: formDescription(TestListenAndDeclaredIdentifier,
+			`Test if all ports listening is declared.`),
+		Remediation:           `Make sure that all the ports listening is declared.`,
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+	},
 	TestDeploymentScalingIdentifier: {
 		Identifier: TestDeploymentScalingIdentifier,
 		Type:       normativeResult,
