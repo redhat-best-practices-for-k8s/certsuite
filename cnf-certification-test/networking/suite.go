@@ -81,7 +81,7 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 		testMultusNetworkConnectivity(&env, defaultNumPings, netcommons.IPv6)
 	})
 	// Default interface ICMP IPv6 test case
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv6ConnectivityIdentifier)
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestListenAndDeclaredIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testListenAndDeclared(&env)
 	})
@@ -130,21 +130,21 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 	var failedPods string
 	var skippedPods string
 
-	for i := 0; i < len(env.Containers); i++ {
-		ports := env.Containers[i].Data.Ports
-		if ports == nil {
-			tnf.ClaimFilePrintf("Failed to get declared port for container %d due to %v, skipping pod %s", i, env.Containers[i].Namespace+"."+env.Containers[i].NodeName)
-			skippedPods += env.Containers[i].Namespace + "." + env.Containers[i].NodeName + "\n"
+	for _, dp := range env.Pods {
+		for i := 0; i < len(env.Containers); i++ {
+			ports := dp.Spec.Containers[0].Ports
+			fmt.Println(ports)
+			if ports == nil {
+				tnf.ClaimFilePrintf("Failed to get declared port for container %d due to %v, skipping pod %s", i, dp.Namespace+"."+dp.Name)
+				skippedPods += env.Containers[i].Namespace + "." + env.Containers[i].NodeName + "\n"
+			}
+			for i := 0; i < len(ports); i++ {
+				k.port = int(ports[i].ContainerPort)
+				k.protocol = string(ports[i].Protocol)
+				declaredPorts[k] = ports[i].Name
+			}
 		}
 
-		for i := 0; i < len(ports); i++ {
-			k.port = int(ports[i].ContainerPort)
-			k.protocol = string(ports[i].Protocol)
-			declaredPorts[k] = ports[i].Name
-		}
-	}
-
-	for _, dp := range env.DebugPods {
 		oc := clientsholder.GetClientsHolder()
 		output, outerr, err := oc.ExecCommandContainer(clientsholder.Context{Namespace: dp.Namespace,
 			Podname: dp.Name, Containername: dp.Spec.Containers[0].Name}, `ss -tulwnH`)
