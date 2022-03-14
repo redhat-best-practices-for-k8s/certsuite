@@ -66,6 +66,7 @@ type TestEnvironment struct { // rename this with testTarget
 	Deployments        []*v1apps.Deployment
 	SatetfulSets       []*v1apps.StatefulSet
 	HorizontalScaler   map[string]*v1scaling.HorizontalPodAutoscaler
+	Nodes              *v1.NodeList
 	Subscriptions      []*v1alpha1.Subscription
 	K8sVersion         string
 	OpenshiftVersion   string
@@ -102,9 +103,11 @@ func GetContainer() *Container {
 func GetUpdatedDeployment(ac *appv1client.AppsV1Client, namespace, podName string) (*v1apps.Deployment, error) {
 	return autodiscover.FindDeploymentByNameByNamespace(ac, namespace, podName)
 }
+func GetUpdatedStatefulset(ac *appv1client.AppsV1Client, namespace, podName string) (*v1apps.StatefulSet, error) {
+	return autodiscover.FindStatefulsetByNameByNamespace(ac, namespace, podName)
+}
 
-//nolint:funlen
-func buildTestEnvironment() {
+func buildTestEnvironment() { //nolint:funlen
 	// delete env
 	env = TestEnvironment{}
 	// build Pods and Containers under test
@@ -117,6 +120,7 @@ func buildTestEnvironment() {
 	env.MultusIPs = make(map[*v1.Pod]map[string][]string)
 	env.SkipNetTests = make(map[*v1.Pod]bool)
 	env.SkipMultusNetTests = make(map[*v1.Pod]bool)
+	env.Nodes = data.Nodes
 	pods := data.Pods
 	for i := 0; i < len(pods); i++ {
 		env.Pods = append(env.Pods, &pods[i])
@@ -137,7 +141,7 @@ func buildTestEnvironment() {
 			if len(pods[i].Status.ContainerStatuses) > 0 {
 				state = pods[i].Status.ContainerStatuses[j]
 			} else {
-				logrus.Errorf("Pod %s is not ready, skipping status collection", PodToString(&pods[i]))
+				logrus.Errorf("%s is not ready, skipping status collection", PodToString(&pods[i]))
 			}
 			aRuntime, uid := GetRuntimeUID(&state)
 			container := Container{Podname: pods[i].Name, Namespace: pods[i].Namespace,
@@ -314,31 +318,31 @@ func (c *Container) String() string {
 	)
 }
 func (c *Container) StringShort() string {
-	return fmt.Sprintf("ns: %s podName: %s containerName: %s",
-		c.Namespace,
-		c.Podname,
+	return fmt.Sprintf("container: %s pod: %s ns: %s",
 		c.Data.Name,
+		c.Podname,
+		c.Namespace,
 	)
 }
 
 func PodToString(pod *v1.Pod) string {
-	return fmt.Sprintf("ns: %s podName: %s",
-		pod.Namespace,
+	return fmt.Sprintf("pod: %s ns: %s",
 		pod.Name,
+		pod.Namespace,
 	)
 }
 
 func DeploymentToString(d *v1apps.Deployment) string {
-	return fmt.Sprintf("ns: %s deployment name: %s",
-		d.Namespace,
+	return fmt.Sprintf("deployment: %s ns: %s",
 		d.Name,
+		d.Namespace,
 	)
 }
 
-func StatefultsetToString(s *v1apps.StatefulSet) string {
-	return fmt.Sprintf("ns: %s statefulset name: %s",
-		s.Namespace,
+func StatefulsetToString(s *v1apps.StatefulSet) string {
+	return fmt.Sprintf("statefulset: %s ns: %s",
 		s.Name,
+		s.Namespace,
 	)
 }
 

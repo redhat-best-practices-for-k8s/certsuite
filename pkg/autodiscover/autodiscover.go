@@ -61,6 +61,7 @@ type DiscoveredTestData struct {
 	HelmList         [][]*release.Release
 	K8sVersion       string
 	OpenshiftVersion string
+	Nodes            *v1.NodeList
 }
 
 var data = DiscoveredTestData{}
@@ -127,6 +128,10 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.Deployments = findDeploymentByLabel(oc.AppsClients, data.TestData.TargetPodLabels, data.Namespaces)
 	data.StatefulSet = findStatefulSetByLabel(oc.AppsClients, data.TestData.TargetPodLabels, data.Namespaces)
 	data.Hpas = findHpaControllers(oc.K8sClient, data.Namespaces)
+	data.Nodes, err = oc.Coreclient.Nodes().List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		logrus.Fatalln("can't get list of nodes")
+	}
 	return data
 }
 
