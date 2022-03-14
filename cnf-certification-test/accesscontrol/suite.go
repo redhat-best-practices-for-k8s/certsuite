@@ -388,19 +388,15 @@ func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 	}
 }
 
-//nolint:funlen,gocyclo
+//nolint:funlen
 func TestAutomountServiceToken(env *provider.TestEnvironment, testerFuncs rbac.AutomountTokenFuncs) {
-	if !tnf.IsUnitTest() {
-		ginkgo.By("Should have automountServiceAccountToken set to false")
-	}
+	tnf.GinkgoBy("Should have automountServiceAccountToken set to false")
 
 	msg := []string{}
 	failedPods := []string{}
 	for _, put := range env.Pods {
-		if !tnf.IsUnitTest() {
-			ginkgo.By(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
-			gomega.Expect(put.Spec.ServiceAccountName).ToNot(gomega.BeEmpty())
-		}
+		tnf.GinkgoBy(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
+		tnf.GomegaExpectStringNotEmpty(put.Spec.ServiceAccountName)
 
 		// The token can be specified in the pod directly
 		// or it can be specified in the service account of the pod
@@ -452,9 +448,7 @@ func TestAutomountServiceToken(env *provider.TestEnvironment, testerFuncs rbac.A
 	if n := len(failedPods); n > 0 {
 		logrus.Debugf("Pods that failed automount test: %+v", failedPods)
 		tnf.ClaimFilePrintf("Pods that failed automount test: %+v", failedPods)
-		if !tnf.IsUnitTest() {
-			ginkgo.Fail(fmt.Sprintf("% d pods that failed automount test", n))
-		}
+		tnf.GinkgoFail(fmt.Sprintf("% d pods that failed automount test", n))
 	}
 
 	if tnf.IsUnitTest() {
