@@ -32,14 +32,14 @@ const (
 	StatefulsetString = "StatefulSet"
 )
 
-func WaitForDeploymentSetReady(ns, name string, timeout time.Duration) bool { //nolint:dupl // not duplicate
+func WaitForDeploymentSetReady(ns, name string, timeout time.Duration) bool {
 	logrus.Trace("check if deployment ", ns, ":", name, " is ready ")
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
 		dp, err := provider.GetUpdatedDeployment(clients.AppsClients, ns, name)
 		if err == nil && IsDeploymentReady(dp) {
-			logrus.Tracef("%s is ready, err: %s", provider.DeploymentToString(dp), err)
+			logrus.Tracef("%s is ready", provider.DeploymentToString(dp))
 			return true
 		} else if err != nil {
 			logrus.Errorf("Error while getting the %s, err: %s", provider.DeploymentToString(dp), err)
@@ -50,15 +50,30 @@ func WaitForDeploymentSetReady(ns, name string, timeout time.Duration) bool { //
 	return false
 }
 func IsDeploymentReady(deployment *v1app.Deployment) bool {
+	notReady := true
 	for _, condition := range deployment.Status.Conditions {
 		if condition.Type == v1app.DeploymentAvailable {
-			return true
+			notReady = false
+			break
 		}
 	}
-	return false
+	var replicas int32
+	if deployment.Spec.Replicas != nil {
+		replicas = *(deployment.Spec.Replicas)
+	} else {
+		replicas = 1
+	}
+	if notReady ||
+		deployment.Status.UnavailableReplicas != 0 ||
+		deployment.Status.ReadyReplicas != replicas ||
+		deployment.Status.AvailableReplicas != replicas ||
+		deployment.Status.UpdatedReplicas != replicas {
+		return false
+	}
+	return true
 }
 
-func WaitForStatefulSetReady(ns, name string, timeout time.Duration) bool { //nolint:dupl // not duplicate
+func WaitForStatefulSetReady(ns, name string, timeout time.Duration) bool {
 	logrus.Trace("check if statefulset ", ns, ":", name, " is ready ")
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()

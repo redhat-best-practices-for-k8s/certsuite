@@ -29,16 +29,30 @@ import (
 
 func TestIsDeploymentReady(t *testing.T) {
 	type dpStatus struct {
-		condition v1app.DeploymentConditionType
+		condition   v1app.DeploymentConditionType
+		replicas    int32
+		ready       int32
+		available   int32
+		unavailable int32
+		updated     int32
 	}
 	m := map[dpStatus]bool{
-		{v1app.DeploymentReplicaFailure}: false,
-		{v1app.DeploymentAvailable}:      true,
+		{v1app.DeploymentReplicaFailure, 10, 9, 10, 0, 0}: false,
+		{v1app.DeploymentAvailable, 10, 9, 9, 0, 10}:      false,
+		{v1app.DeploymentAvailable, 10, 10, 10, 1, 10}:    false,
+		{v1app.DeploymentAvailable, 10, 1, 10, 0, 10}:     false,
+		{v1app.DeploymentAvailable, 10, 10, 10, 0, 9}:     false,
+		{v1app.DeploymentAvailable, 10, 10, 10, 0, 10}:    true,
 	}
 	for key, v := range m {
 		dp := v1app.Deployment{}
 		dpCondition := v1app.DeploymentCondition{Type: key.condition}
 		dp.Status.Conditions = append(dp.Status.Conditions, dpCondition)
+		dp.Spec.Replicas = &(key.replicas)
+		dp.Status.ReadyReplicas = key.ready
+		dp.Status.AvailableReplicas = key.available
+		dp.Status.UnavailableReplicas = key.unavailable
+		dp.Status.UpdatedReplicas = key.updated
 		ready := IsDeploymentReady(&dp)
 		assert.Equal(t, v, ready)
 	}
