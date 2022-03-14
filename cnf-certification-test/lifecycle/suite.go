@@ -307,6 +307,7 @@ func testHighAvailability(env *provider.TestEnvironment) {
 func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 	ginkgo.By("Testing node draining effect of deployment")
 	ginkgo.By("Testing initial state for deployments")
+	defer env.SetNeedsRefresh()
 	claimsLog, atLeastOnePodsetNotReady := podsets.WaitForAllPodSetReady(env, timeoutPodSetReady)
 	tnf.ClaimFilePrintf("%s", claimsLog)
 	if atLeastOnePodsetNotReady {
