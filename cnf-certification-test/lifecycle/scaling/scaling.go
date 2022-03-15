@@ -27,8 +27,8 @@ import (
 
 	v1app "k8s.io/api/apps/v1"
 	v1autoscaling "k8s.io/api/autoscaling/v1"
-
 	v1machinery "k8s.io/apimachinery/pkg/apis/meta/v1"
+	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 	hps "k8s.io/client-go/kubernetes/typed/autoscaling/v1"
 	retry "k8s.io/client-go/util/retry"
 )
@@ -38,61 +38,25 @@ const (
 	statefulset = "statefulset"
 )
 
-func isDeploymentInstanceReady(deployment *v1app.Deployment) bool {
-	notReady := true
-	for _, condition := range deployment.Status.Conditions {
-		if condition.Type == v1app.DeploymentAvailable {
-			notReady = false
-			break
-		}
-	}
-	var replicas int32
-	if deployment.Spec.Replicas != nil {
-		replicas = *(deployment.Spec.Replicas)
-	} else {
-		replicas = 1
-	}
-	if notReady ||
-		deployment.Status.UnavailableReplicas != 0 ||
-		deployment.Status.ReadyReplicas != replicas ||
-		deployment.Status.AvailableReplicas != replicas ||
-		deployment.Status.UpdatedReplicas != replicas {
-		return false
-	}
-	return true
-}
-func isStatefulSetInstanceReady(statefulset *v1app.StatefulSet) bool {
-	var replicas int32
-	if statefulset.Spec.Replicas != nil {
-		replicas = *(statefulset.Spec.Replicas)
-	} else {
-		replicas = 1
-	}
-	if statefulset.Status.ReadyReplicas != replicas ||
-		statefulset.Status.AvailableReplicas != replicas ||
-		statefulset.Status.UpdatedReplicas != replicas {
-		return false
-	}
-	return true
-}
-
 //nolint:funlen
 func TestScaleDeployment(podset interface{}, timeout time.Duration) bool {
 	clients := clientsholder.GetClientsHolder()
 	var name, namespace, podsettype string
-	var replicaset interface{}
+	var replicaset, podSetClient interface{}
 	switch v := podset.(type) {
 	case *v1app.StatefulSet:
 		podsettype = statefulset
 		logrus.Infof("type is %v", v.Name)
 		podset, _ := podset.(*v1app.StatefulSet)
 		name, namespace = podset.Name, podset.Namespace
+		podSetClient = clients.AppsClients.StatefulSets(namespace)
 		replicaset = *podset.Spec.Replicas
 	case *v1app.Deployment:
 		podsettype = deployment
 		logrus.Infof("type is %v", v.Name)
 		podset, _ := podset.(*v1app.Deployment)
 		name, namespace = podset.Name, podset.Namespace
+		podSetClient = clients.AppsClients.Deployments(namespace)
 		replicaset = *podset.Spec.Replicas
 	}
 	logrus.Trace("scale deployment not using HPA ", namespace, ":", name)
@@ -106,25 +70,25 @@ func TestScaleDeployment(podset interface{}, timeout time.Duration) bool {
 	if replicas <= 1 {
 		// scale up
 		replicas++
-		if !scaleDeploymentHelper(clients, name, namespace, podsettype, replicas, timeout, true) {
+		if !scaleDeploymentHelper(podSetClient, name, namespace, podsettype, replicas, timeout, true) {
 			logrus.Error("can't scale deployment =", namespace, ":", name)
 			return false
 		}
 		// scale down
 		replicas--
-		if !scaleDeploymentHelper(clients, name, namespace, podsettype, replicas, timeout, false) {
+		if !scaleDeploymentHelper(podSetClient, name, namespace, podsettype, replicas, timeout, false) {
 			logrus.Error("can't scale deployment =", namespace, ":", name)
 			return false
 		}
 	} else {
 		// scale down
 		replicas--
-		if !scaleDeploymentHelper(clients, name, namespace, podsettype, replicas, timeout, false) {
+		if !scaleDeploymentHelper(podSetClient, name, namespace, podsettype, replicas, timeout, false) {
 			logrus.Error("can't scale deployment =", namespace, podsettype, ":", name)
 			return false
 		} // scale up
 		replicas++
-		if !scaleDeploymentHelper(clients, name, namespace, podsettype, replicas, timeout, true) {
+		if !scaleDeploymentHelper(podSetClient, name, namespace, podsettype, replicas, timeout, true) {
 			logrus.Error("can't scale deployment =", namespace, ":", name)
 			return false
 		}
@@ -132,7 +96,7 @@ func TestScaleDeployment(podset interface{}, timeout time.Duration) bool {
 	return true
 }
 
-func scaleDeploymentHelper(clients *clientsholder.ClientsHolder, name, namespace, podsettype string,
+func scaleDeploymentHelper(podSetClient interface{}, name, namespace, podsettype string,
 	replicas int32, timeout time.Duration, up bool) bool {
 	if up {
 		logrus.Trace("scale UP ", podsettype, " to ", replicas, " replicas ")
@@ -142,7 +106,7 @@ func scaleDeploymentHelper(clients *clientsholder.ClientsHolder, name, namespace
 	// Retrieve the latest version of Deployment before attempting update
 	// RetryOnConflict uses exponential backoff to avoid exhausting the apiserver
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
-		return runPodsetScale(clients, name, namespace, podsettype, replicas, timeout)
+		return runPodsetScale(podSetClient, name, namespace, podsettype, replicas, timeout)
 	})
 
 	if retryErr != nil {
@@ -152,12 +116,14 @@ func scaleDeploymentHelper(clients *clientsholder.ClientsHolder, name, namespace
 	return true
 }
 
-func runPodsetScale(clients *clientsholder.ClientsHolder, name,
+//nolint:funlen
+func runPodsetScale(podSetClient interface{}, name,
 	namespace, podsettype string, replicas int32, timeout time.Duration) error {
 	var errors error
-	switch podsettype {
-	case deployment:
-		dpClient := clients.AppsClients.Deployments(namespace)
+	switch v := podSetClient.(type) {
+	case appv1client.DeploymentInterface:
+		logrus.Infof("type is %v", v)
+		dpClient, _ := podSetClient.(appv1client.DeploymentInterface)
 		dp, err := dpClient.Get(context.TODO(), name, v1machinery.GetOptions{})
 		if err != nil {
 			logrus.Error("failed to get latest version of deployment ", namespace, ":", name)
@@ -165,8 +131,8 @@ func runPodsetScale(clients *clientsholder.ClientsHolder, name,
 		}
 		dp.Spec.Replicas = &replicas
 		_, errors = dpClient.Update(context.TODO(), dp, v1machinery.UpdateOptions{})
-	case statefulset:
-		stClient := clients.AppsClients.StatefulSets(namespace)
+	case appv1client.StatefulSetInterface:
+		stClient := podSetClient.(appv1client.StatefulSetInterface)
 		st, err := stClient.Get(context.TODO(), name, v1machinery.GetOptions{})
 		if err != nil {
 			logrus.Error("failed to get latest version of deployment ", namespace, ":", name)
