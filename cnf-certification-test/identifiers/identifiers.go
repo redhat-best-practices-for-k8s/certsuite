@@ -333,14 +333,6 @@ func XformToGinkgoItIdentifierExtended(identifier claim.Identifier, extra string
 // Catalog is the JUnit testcase catalog of tests.
 var Catalog = map[claim.Identifier]TestCaseDescription{
 
-	TestUndeclaredContainerPortsUsage: {
-		Identifier: TestUndeclaredContainerPortsUsage,
-		Type:       normativeResult,
-		Description: formDescription(TestUndeclaredContainerPortsUsage,
-			`Test if all ports listening is declared.`),
-		Remediation:           `Make sure that all the ports listening is declared.`,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
-	},
 	TestDeploymentScalingIdentifier: {
 		Identifier: TestDeploymentScalingIdentifier,
 		Type:       normativeResult,

@@ -139,44 +139,44 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 				tnf.ClaimFilePrintf("Failed to get declared port for container %d due to %v, skipping pod %s", container, pod.Namespace+"."+pod.Name)
 				skippedPods += pod.Namespace + " " + pod.Name + " " + container.Name + "\n"
 			}
-			for i := 0; i < len(ports); i++ {
-				k.port = int(ports[i].ContainerPort)
-				k.protocol = string(ports[i].Protocol)
-				declaredPorts[k] = ports[i].Name
+			for j := 0; j < len(ports); j++ {
+				k.port = int(ports[j].ContainerPort)
+				k.protocol = string(ports[j].Protocol)
+				declaredPorts[k] = ports[j].Name
 			}
-		}
 
-		oc := clientsholder.GetClientsHolder()
-		output, outerr, err := oc.ExecCommandContainer(clientsholder.Context{Namespace: pod.Namespace,
-			Podname: pod.Name, Containername: pod.Spec.Containers[0].Name}, `ss -tulwnH`)
-		if err != nil {
-			logrus.Errorln("can't execute command on container ", err)
-			continue
-		}
-		if outerr != "" {
-			logrus.Errorln("error when running listening command ", outerr)
-			continue
-		}
-		parseListening(output, listeningPorts)
-		if len(listeningPorts) == 0 {
-			tnf.ClaimFilePrintf("Failed to get listening port for pod name %s in pod namespace %s, skipping this pod", pod.Name, pod.Namespace, err)
-			continue
-		}
-		// compare between declaredPort,listeningPort
-		undeclaredPorts := checkIfListenIsDeclared(listeningPorts, declaredPorts)
-		for k := range undeclaredPorts {
-			tnf.ClaimFilePrintf("The port %d on protocol %s in pod name %s and pod namespace is %s not declared.", k.port, k.protocol, pod.Name, pod.Namespace)
-		}
-		if len(undeclaredPorts) != 0 {
-			for x := range undeclaredPorts {
-				p := strconv.Itoa(x.port)
-				failedPods += p + " " + x.protocol
+			oc := clientsholder.GetClientsHolder()
+			output, outerr, err := oc.ExecCommandContainer(clientsholder.Context{Namespace: pod.Namespace,
+				Podname: pod.Name, Containername: pod.Spec.Containers[i].Name}, `ss -tulwnH`)
+			if err != nil {
+				logrus.Errorln("can't execute command on container ", err)
+				continue
+			}
+			if outerr != "" {
+				logrus.Errorln("error when running listening command ", outerr)
+				continue
+			}
+			parseListening(output, listeningPorts)
+			if len(listeningPorts) == 0 {
+				tnf.ClaimFilePrintf("Failed to get listening port for pod name %s in pod namespace %s, skipping this pod", pod.Name, pod.Namespace, err)
+				continue
+			}
+			// compare between declaredPort,listeningPort
+			undeclaredPorts := checkIfListenIsDeclared(listeningPorts, declaredPorts)
+			for k := range undeclaredPorts {
+				tnf.ClaimFilePrintf("The port %d on protocol %s in pod name %s and pod namespace is %s not declared.", k.port, k.protocol, pod.Name, pod.Namespace)
+			}
+			if len(undeclaredPorts) != 0 {
+				for x := range undeclaredPorts {
+					p := strconv.Itoa(x.port)
+					failedPods += p + " " + x.protocol
+				}
 			}
 		}
 	}
 
 	if nf, ns := len(failedPods), len(skippedPods); nf > 0 || ns > 0 {
-		ginkgo.Fail("Found %d pods with listening ports not declared and Skipped %d pods due to unexpected error", nf, ns)
+		ginkgo.Fail("Found %d pods with listening ports not declared and skipped %d pods due to unexpected error", nf, ns)
 	}
 }
 
