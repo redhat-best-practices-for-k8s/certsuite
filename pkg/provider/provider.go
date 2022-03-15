@@ -106,9 +106,6 @@ func GetUpdatedDeployment(ac *appv1client.AppsV1Client, namespace, podName strin
 func GetUpdatedStatefulset(ac *appv1client.AppsV1Client, namespace, podName string) (*v1apps.StatefulSet, error) {
 	return autodiscover.FindStatefulsetByNameByNamespace(ac, namespace, podName)
 }
-func GetUpdatedStatefulSet(ac *appv1client.AppsV1Client, namespace, podName string) (*v1apps.StatefulSet, error) {
-	return autodiscover.FindStateFulSetByNameByNamespace(ac, namespace, podName)
-}
 
 func buildTestEnvironment() { //nolint:funlen
 	// delete env

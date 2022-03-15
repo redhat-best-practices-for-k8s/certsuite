@@ -31,6 +31,10 @@ const (
 	ReplicaSetString  = "ReplicaSet"
 	StatefulsetString = "StatefulSet"
 )
+const (
+	deployment  = "deployment"
+	statefulset = "statefulset"
+)
 
 func WaitForDeploymentSetReady(ns, name string, timeout time.Duration) bool {
 	logrus.Trace("check if deployment ", ns, ":", name, " is ready ")
@@ -141,4 +145,22 @@ func GetAllNodesForAllPodSets(pods []*v1.Pod) (nodes map[string]bool) {
 		}
 	}
 	return nodes
+}
+
+func IsPodsetReady(ns, name, podsettype string, timeout time.Duration) bool {
+	logrus.Trace("check if deployment ", ns, ":", name, " is ready ")
+	switch podsettype {
+	case deployment:
+		if WaitForDeploymentSetReady(ns, name, timeout) {
+			logrus.Trace("deployment ", ns, ":", name, " is ready ")
+			return true
+		}
+	case statefulset:
+		if WaitForStatefulSetReady(ns, name, timeout) {
+			logrus.Trace("statefulset ", ns, ":", name, " is ready ")
+			return true
+		}
+	}
+	logrus.Error(podsettype, " ", ns, ":", name, " is not ready ")
+	return false
 }

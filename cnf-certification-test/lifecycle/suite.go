@@ -42,9 +42,10 @@ const (
 	timeout                    = 60 * time.Second
 	timeoutPodRecreationPerPod = time.Minute
 	timeoutPodSetReady         = 7 * time.Minute
-  deployment  = "Deployment"
-	statefulset = "StateFulSet"
+	deployment                 = "Deployment"
+	statefulset                = "StateFulSet"
 )
+
 //
 // All actual test code belongs below here.  Utilities belong above.
 //
@@ -327,7 +328,7 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 		ginkgo.Fail("Some deployments or stateful sets are not in a good initial state. Cannot perform test.")
 	}
 	for n := range podsets.GetAllNodesForAllPodSets(env.Pods) {
-		defer podrecreation.CordonCleanup(n) //nolint:gocritic // The defer in loop is intentional, calling the cleanup function once per node
+		defer podrecreation.CordonCleanup(n)
 		err := podrecreation.CordonHelper(n, podrecreation.Cordon)
 		if err != nil {
 			logrus.Errorf("error cordoning the node: %s", n)

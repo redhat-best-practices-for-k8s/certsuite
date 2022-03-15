@@ -174,52 +174,17 @@ func runPodsetScale(clients *clientsholder.ClientsHolder, name,
 		}
 		st.Spec.Replicas = &replicas
 		_, errors = stClient.Update(context.TODO(), st, v1machinery.UpdateOptions{})
-		//if !podsets.WaitForDeploymentSetReady(namespace, name, timeout) {
-		//	logrus.Error("can't update deployment ", namespace, ":", name)
-		//	return errors.New("can't update deployment")
-	//	}
-	//	return nil
-//	})
-//	if retryErr != nil {
-	//	logrus.Error("can't scale deployment ", namespace, ":", name, " error=", retryErr)
-//		return false
 	}
-
 	if errors != nil {
 		logrus.Error("can't update", podsettype, " ", namespace, ":", name)
 		return errors
 	}
 
-	if !isPodsetReady(namespace, name, podsettype, timeout) {
+	if !podsets.IsPodsetReady(namespace, name, podsettype, timeout) {
 		logrus.Error("can't update", podsettype, " ", namespace, ":", name)
 		return fmt.Errorf("can't update %s", podsettype)
 	}
 	return nil
-}
-
-func isPodsetReady(ns, name, podsettype string, timeout time.Duration) bool {
-	logrus.Trace("check if deployment ", ns, ":", name, " is ready ")
-	clients := clientsholder.GetClientsHolder()
-	start := time.Now()
-	for time.Since(start) < timeout {
-		switch podsettype {
-		case deployment:
-			dp, err := provider.GetUpdatedDeployment(clients.AppsClients, ns, name)
-			if err == nil && isDeploymentInstanceReady(dp) {
-				logrus.Trace("deployment ", ns, ":", name, " is ready ")
-				return true
-			}
-		case statefulset:
-			st, err := provider.GetUpdatedStatefulSet(clients.AppsClients, ns, name)
-			if err == nil && isStatefulSetInstanceReady(st) {
-				logrus.Trace("statefulset ", ns, ":", name, " is ready ")
-				return true
-			}
-		}
-		time.Sleep(time.Second)
-	}
-	logrus.Error(podsettype, " ", ns, ":", name, " is not ready ")
-	return false
 }
 
 //nolint:funlen
@@ -227,17 +192,17 @@ func TestScaleHpaDeployment(podsetlist interface{}, hpa *v1autoscaling.Horizonta
 	clients := clientsholder.GetClientsHolder()
 	hpaName := hpa.Name
 	var name, namespace, typeset string
-	switch v := podset.(type) {
+	switch v := podsetlist.(type) {
 	case *v1app.StatefulSet:
 		typeset = statefulset
 		logrus.Infof("*v1app.Deployment:%v", v.Name)
-		podset, _ := podset.(*v1app.StatefulSet)
-		name, namespace = podset.Name, podset.Namespace
+		podsetlist, _ := podsetlist.(*v1app.StatefulSet)
+		name, namespace = podsetlist.Name, podsetlist.Namespace
 	case *v1app.Deployment:
 		typeset = deployment
 		logrus.Infof("*v1app.Deployment:%v", v.Name)
-		podset, _ := podset.(*v1app.Deployment)
-		name, namespace = podset.Name, podset.Namespace
+		podsetlist, _ := podsetlist.(*v1app.Deployment)
+		name, namespace = podsetlist.Name, podsetlist.Namespace
 	default:
 		fmt.Println("unknown")
 	}
@@ -305,9 +270,7 @@ func scaleHpaDeploymentHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpa
 			logrus.Error("can't Update autoscaler to scale ", namespace, ":", deploymentName, " error=", err)
 			return err
 		}
-		if !isPodsetReady(namespace, deploymentName, podset, timeout) {
-		//if !podsets.WaitForDeploymentSetReady(namespace, deploymentName, timeout) {
-
+		if !podsets.IsPodsetReady(namespace, deploymentName, podset, timeout) {
 			logrus.Error("deployment not ready after scale operation ", namespace, ":", deploymentName)
 		}
 		return nil
