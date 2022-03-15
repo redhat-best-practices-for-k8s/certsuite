@@ -32,6 +32,8 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17.8
+
+      - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
@@ -81,6 +83,8 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17.8
+
+      - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
@@ -124,6 +128,8 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17.8
+          
+      - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
