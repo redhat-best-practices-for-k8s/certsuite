@@ -46,3 +46,22 @@ func GinkgoFail(cmd string) {
 		ginkgo.Fail(cmd)
 	}
 }
+
+// GomegaExpectSliceBeNil is a wrapper for gomega
+func GomegaExpectSliceBeNil(incomingSlice []string) {
+	if !IsUnitTest() {
+		gomega.Expect(incomingSlice).To(gomega.BeNil())
+	}
+}
+
+func GinkgoSkip(cmd string) {
+	if !IsUnitTest() {
+		ginkgo.Skip(cmd)
+	}
+}
+
+func GinkgoAbortSuite(cmd string) {
+	if !IsUnitTest() {
+		ginkgo.AbortSuite(cmd)
+	}
+}

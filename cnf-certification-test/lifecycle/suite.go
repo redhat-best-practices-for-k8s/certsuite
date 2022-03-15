@@ -159,7 +159,7 @@ func testContainersLivenessProbe(env *provider.TestEnvironment) {
 func testPodsOwnerReference(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodDeploymentBestPracticesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		ginkgo.By("Testing owners of CNF pod, should be replicas Set")
+		tnf.GinkgoBy("Testing owners of CNF pod, should be replicas Set")
 		badPods := []string{}
 		for _, put := range env.Pods {
 			logrus.Debugln("check pod ", put.Namespace, " ", put.Name, " owner reference")
@@ -191,7 +191,7 @@ func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) 
 	}
 	if n := len(badPods); n > 0 {
 		logrus.Debugf("Pods with nodeSelector/nodeAffinity: %+v", badPods)
-		ginkgo.Fail(fmt.Sprintf("%d pods found with nodeSelector/nodeAffinity rules", n))
+		tnf.GinkgoFail(fmt.Sprintf("%d pods found with nodeSelector/nodeAffinity rules", n))
 	}
 }
 
@@ -212,26 +212,26 @@ func testGracePeriod(env *provider.TestEnvironment) {
 	if numPods > 0 {
 		logrus.Debugf("Pods found without terminationGracePeriodSeconds param set: %+v", badPods)
 	}
-	ginkgo.By("Test results for grace period on deployments")
+	tnf.GinkgoBy("Test results for grace period on deployments")
 	tnf.ClaimFilePrintf("%s", deploymentLogs)
-	ginkgo.By("Test results for grace period on statefulsets")
+	tnf.GinkgoBy("Test results for grace period on statefulsets")
 	tnf.ClaimFilePrintf("%s", statefulsetLogs)
-	ginkgo.By("Test results for grace period on unmanaged pods")
+	tnf.GinkgoBy("Test results for grace period on unmanaged pods")
 	tnf.ClaimFilePrintf("%s", podLogs)
 
 	if numDeps > 0 || numSts > 0 || numPods > 0 {
-		ginkgo.Fail(fmt.Sprintf("Found %d deployments, %d statefulsets and %d pods without terminationGracePeriodSeconds param set.", numDeps, numSts, numPods))
+		tnf.GinkgoFail(fmt.Sprintf("Found %d deployments, %d statefulsets and %d pods without terminationGracePeriodSeconds param set.", numDeps, numSts, numPods))
 	}
 }
 
 func testScaling(env *provider.TestEnvironment, timeout time.Duration) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestDeploymentScalingIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		ginkgo.By("Testing deployment scaling")
+		tnf.GinkgoBy("Testing deployment scaling")
 		defer env.SetNeedsRefresh()
 
 		if len(env.Deployments) == 0 {
-			ginkgo.Skip("No test deployments found.")
+			tnf.GinkgoSkip("No test deployments found.")
 		}
 		failedDeployments := []string{}
 		skippedDeployments := []string{}
@@ -272,9 +272,9 @@ func testScaling(env *provider.TestEnvironment, timeout time.Duration) {
 func testHighAvailability(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHighAvailabilityBestPractices)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		ginkgo.By("Should set pod replica number greater than 1")
+		tnf.GinkgoBy("Should set pod replica number greater than 1")
 		if len(env.Deployments) == 0 && len(env.SatetfulSets) == 0 {
-			ginkgo.Skip("No test deployments/statefulset found.")
+			tnf.GinkgoSkip("No test deployments/statefulset found.")
 		}
 
 		badDeployments := []string{}
@@ -305,32 +305,32 @@ func testHighAvailability(env *provider.TestEnvironment) {
 
 // testPodsRecreation tests that pods belonging to deployments and statefulsets are re-created and ready in case a node is lost
 func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
-	ginkgo.By("Testing node draining effect of deployment")
-	ginkgo.By("Testing initial state for deployments")
+	tnf.GinkgoBy("Testing node draining effect of deployment")
+	tnf.GinkgoBy("Testing initial state for deployments")
 	defer env.SetNeedsRefresh()
 	claimsLog, atLeastOnePodsetNotReady := podsets.WaitForAllPodSetReady(env, timeoutPodSetReady)
 	tnf.ClaimFilePrintf("%s", claimsLog)
 	if atLeastOnePodsetNotReady {
-		ginkgo.Fail("Some deployments or stateful sets are not in a good initial state. Cannot perform test.")
+		tnf.GinkgoFail("Some deployments or stateful sets are not in a good initial state. Cannot perform test.")
 	}
 	for n := range podsets.GetAllNodesForAllPodSets(env.Pods) {
 		defer podrecreation.CordonCleanup(n) //nolint:gocritic // The defer in loop is intentional, calling the cleanup function once per node
 		err := podrecreation.CordonHelper(n, podrecreation.Cordon)
 		if err != nil {
 			logrus.Errorf("error cordoning the node: %s", n)
-			ginkgo.Fail(fmt.Sprintf("Cordoning node %s failed with err: %s. Test inconclusive, skipping", n, err))
+			tnf.GinkgoFail(fmt.Sprintf("Cordoning node %s failed with err: %s. Test inconclusive, skipping", n, err))
 		}
-		ginkgo.By(fmt.Sprintf("Draining and Cordoning node %s: ", n))
+		tnf.GinkgoBy(fmt.Sprintf("Draining and Cordoning node %s: ", n))
 		logrus.Debugf("node: %s cordoned", n)
 		count, err := podrecreation.CountPodsWithDelete(n, false)
 		if err != nil {
-			ginkgo.Fail(fmt.Sprintf("Getting pods list to drain in node %s failed with err: %s. Test inconclusive.", n, err))
+			tnf.GinkgoFail(fmt.Sprintf("Getting pods list to drain in node %s failed with err: %s. Test inconclusive.", n, err))
 		}
 		nodeTimeout := timeoutPodSetReady + timeoutPodRecreationPerPod*time.Duration(count)
 		logrus.Debugf("draining node: %s with timeout: %s", n, nodeTimeout.String())
 		_, err = podrecreation.CountPodsWithDelete(n, true)
 		if err != nil {
-			ginkgo.Fail(fmt.Sprintf("Draining node %s failed with err: %s. Test inconclusive", n, err))
+			tnf.GinkgoFail(fmt.Sprintf("Draining node %s failed with err: %s. Test inconclusive", n, err))
 		}
 		claimsLog, _ = podsets.WaitForAllPodSetReady(env, nodeTimeout)
 		tnf.ClaimFilePrintf("%s", claimsLog)
