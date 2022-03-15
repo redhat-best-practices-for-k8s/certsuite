@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Red Hat, Inc.
+// Copyright (C) 2020-2022 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,19 +14,4 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package rbac
-
-import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-)
-
-func TestGetRoleBinding(t *testing.T) {
-	rb := NewRoleBindingTester("testRole", "podNS", clientsholder.GetTestClientsHolder(buildTestObjects()))
-	assert.NotNil(t, rb)
-	gatheredRBs, err := rb.GetRoleBindings()
-	assert.Nil(t, err)
-	assert.Equal(t, "testNS:testRole", gatheredRBs[0])
-}
+package podrecreation

@@ -31,6 +31,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"helm.sh/helm/v3/pkg/release"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -65,16 +66,22 @@ type TestEnvironment struct { // rename this with testTarget
 	Deployments        []*v1apps.Deployment
 	SatetfulSets       []*v1apps.StatefulSet
 	HorizontalScaler   map[string]*v1scaling.HorizontalPodAutoscaler
+	Nodes              *v1.NodeList
+	Subscriptions      []*v1alpha1.Subscription
+	K8sVersion         string
+	OpenshiftVersion   string
+	HelmList           []*release.Release
 }
 
 type Container struct {
-	Data      *v1.Container
-	Status    v1.ContainerStatus
-	Namespace string
-	Podname   string
-	NodeName  string
-	Runtime   string
-	UID       string
+	Data                     *v1.Container
+	Status                   v1.ContainerStatus
+	Namespace                string
+	Podname                  string
+	NodeName                 string
+	Runtime                  string
+	UID                      string
+	ContainerImageIdentifier configuration.ContainerImageIdentifier
 }
 type cniNetworkInterface struct {
 	Name      string                 `json:"name"`
@@ -96,6 +103,10 @@ func GetContainer() *Container {
 func GetUpdatedDeployment(ac *appv1client.AppsV1Client, namespace, podName string) (*v1apps.Deployment, error) {
 	return autodiscover.FindDeploymentByNameByNamespace(ac, namespace, podName)
 }
+func GetUpdatedStatefulset(ac *appv1client.AppsV1Client, namespace, podName string) (*v1apps.StatefulSet, error) {
+	return autodiscover.FindStatefulsetByNameByNamespace(ac, namespace, podName)
+}
+
 func buildTestEnvironment() { //nolint:funlen
 	// delete env
 	env = TestEnvironment{}
@@ -109,6 +120,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.MultusIPs = make(map[*v1.Pod]map[string][]string)
 	env.SkipNetTests = make(map[*v1.Pod]bool)
 	env.SkipMultusNetTests = make(map[*v1.Pod]bool)
+	env.Nodes = data.Nodes
 	pods := data.Pods
 	for i := 0; i < len(pods); i++ {
 		env.Pods = append(env.Pods, &pods[i])
@@ -129,11 +141,12 @@ func buildTestEnvironment() { //nolint:funlen
 			if len(pods[i].Status.ContainerStatuses) > 0 {
 				state = pods[i].Status.ContainerStatuses[j]
 			} else {
-				logrus.Errorf("Pod %s is not ready, skipping status collection", PodToString(&pods[i]))
+				logrus.Errorf("%s is not ready, skipping status collection", PodToString(&pods[i]))
 			}
 			aRuntime, uid := GetRuntimeUID(&state)
 			container := Container{Podname: pods[i].Name, Namespace: pods[i].Namespace,
-				NodeName: pods[i].Spec.NodeName, Data: cut, Status: state, Runtime: aRuntime, UID: uid}
+				NodeName: pods[i].Spec.NodeName, Data: cut, Status: state, Runtime: aRuntime, UID: uid,
+				ContainerImageIdentifier: buildContainerImageSource(pods[i].Spec.Containers[j].Image)}
 			env.Containers = append(env.Containers, &container)
 			env.ContainersMap[cut] = &container
 		}
@@ -143,8 +156,24 @@ func buildTestEnvironment() { //nolint:funlen
 		nodeName := data.DebugPods[i].Spec.NodeName
 		env.DebugPods[nodeName] = &data.DebugPods[i]
 	}
-	for i := range data.Csvs {
-		env.Csvs = append(env.Csvs, &data.Csvs[i])
+	csvs := data.Csvs
+	subscriptions := data.Subscriptions
+	for i := range csvs {
+		env.Csvs = append(env.Csvs, &csvs[i])
+		isCsv, sub := IsinstalledCsv(&csvs[i], subscriptions)
+		if isCsv {
+			env.Subscriptions = append(env.Subscriptions, &sub)
+		}
+	}
+	env.OpenshiftVersion = data.OpenshiftVersion
+	env.K8sVersion = data.K8sVersion
+	helmList := data.HelmList
+	for _, raw := range helmList {
+		for _, helm := range raw {
+			if !isSkipHelmChart(helm.Name, data.TestData.SkipHelmChartList) {
+				env.HelmList = append(env.HelmList, helm)
+			}
+		}
 	}
 	for i := range data.Deployments {
 		env.Deployments = append(env.Deployments, &data.Deployments[i])
@@ -153,6 +182,18 @@ func buildTestEnvironment() { //nolint:funlen
 		env.SatetfulSets = append(env.SatetfulSets, &data.StatefulSet[i])
 	}
 	env.HorizontalScaler = data.Hpas
+}
+func isSkipHelmChart(helmName string, skipHelmChartList []configuration.SkipHelmChartList) bool {
+	if len(skipHelmChartList) == 0 {
+		return false
+	}
+	for _, helm := range skipHelmChartList {
+		if helmName == helm.Name {
+			logrus.Infof("Helm chart with name %s was skipped", helmName)
+			return true
+		}
+	}
+	return false
 }
 
 func GetTestEnvironment() TestEnvironment {
@@ -167,6 +208,16 @@ func IsOCPCluster() bool {
 	return !env.variables.NonOcpCluster
 }
 
+func IsinstalledCsv(csv *v1alpha1.ClusterServiceVersion, subscriptions []v1alpha1.Subscription) (bool, v1alpha1.Subscription) {
+	var returnsub v1alpha1.Subscription
+	for i := range subscriptions {
+		if subscriptions[i].Status.InstalledCSV == csv.Name {
+			returnsub = subscriptions[i]
+			return true, returnsub
+		}
+	}
+	return false, returnsub
+}
 func WaitDebugPodReady() {
 	oc := clientsholder.GetClientsHolder()
 	listOptions := metav1.ListOptions{}
@@ -224,6 +275,29 @@ func (c *Container) GetUID() (string, error) {
 	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Data.Name, uid))
 	return uid, nil
 }
+
+func buildContainerImageSource(url string) configuration.ContainerImageIdentifier {
+	source := configuration.ContainerImageIdentifier{}
+	urlSegments := strings.Split(url, "/")
+	n := len(urlSegments)
+	if n > 1 {
+		source.Repository = urlSegments[n-2]
+	}
+	colonIndex := strings.Index(urlSegments[n-1], ":")
+	atIndex := strings.Index(urlSegments[n-1], "@")
+	if atIndex == -1 {
+		if colonIndex == -1 {
+			source.Name = urlSegments[n-1]
+		} else {
+			source.Name = urlSegments[n-1][:colonIndex]
+			source.Tag = urlSegments[n-1][colonIndex+1:]
+		}
+	} else {
+		source.Name = urlSegments[n-1][:atIndex]
+		source.Digest = urlSegments[n-1][atIndex+1:]
+	}
+	return source
+}
 func GetRuntimeUID(cs *v1.ContainerStatus) (runtime, uid string) {
 	split := strings.Split(cs.ContainerID, "://")
 	if len(split) > 0 {
@@ -244,31 +318,31 @@ func (c *Container) String() string {
 	)
 }
 func (c *Container) StringShort() string {
-	return fmt.Sprintf("ns: %s podName: %s containerName: %s",
-		c.Namespace,
-		c.Podname,
+	return fmt.Sprintf("container: %s pod: %s ns: %s",
 		c.Data.Name,
+		c.Podname,
+		c.Namespace,
 	)
 }
 
 func PodToString(pod *v1.Pod) string {
-	return fmt.Sprintf("ns: %s podName: %s",
-		pod.Namespace,
+	return fmt.Sprintf("pod: %s ns: %s",
 		pod.Name,
+		pod.Namespace,
 	)
 }
 
 func DeploymentToString(d *v1apps.Deployment) string {
-	return fmt.Sprintf("ns: %s deployment name: %s",
-		d.Namespace,
+	return fmt.Sprintf("deployment: %s ns: %s",
 		d.Name,
+		d.Namespace,
 	)
 }
 
-func StatefultsetToString(s *v1apps.StatefulSet) string {
-	return fmt.Sprintf("ns: %s statefulset name: %s",
-		s.Namespace,
+func StatefulsetToString(s *v1apps.StatefulSet) string {
+	return fmt.Sprintf("statefulset: %s ns: %s",
 		s.Name,
+		s.Namespace,
 	)
 }
 

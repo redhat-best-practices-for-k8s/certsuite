@@ -15,3 +15,45 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 package rbac
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	v1core "k8s.io/api/core/v1"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+)
+
+func TestAutomountServiceAccountSetOnSA(t *testing.T) {
+	testCases := []struct {
+		automountServiceTokenSet bool
+	}{
+		{
+			automountServiceTokenSet: true,
+		},
+		{
+			automountServiceTokenSet: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		testSA := v1core.ServiceAccount{
+			ObjectMeta: v1.ObjectMeta{
+				Namespace: "podNS",
+				Name:      "testSA",
+			},
+			AutomountServiceAccountToken: &tc.automountServiceTokenSet,
+		}
+
+		var testRuntimeObjects []runtime.Object
+		testRuntimeObjects = append(testRuntimeObjects, &testSA)
+
+		obj := NewAutomountTokenTester(clientsholder.GetTestClientsHolder(testRuntimeObjects))
+		assert.NotNil(t, obj)
+		isSet, err := obj.AutomountServiceAccountSetOnSA("testSA", "podNS")
+		assert.Nil(t, err)
+		assert.Equal(t, tc.automountServiceTokenSet, *isSet)
+	}
+}

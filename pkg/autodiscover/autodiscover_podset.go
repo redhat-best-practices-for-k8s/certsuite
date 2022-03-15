@@ -39,6 +39,16 @@ func FindDeploymentByNameByNamespace(appClient *appv1client.AppsV1Client, namesp
 	return dp, nil
 }
 
+func FindStatefulsetByNameByNamespace(appClient *appv1client.AppsV1Client, namespace, name string) (*v1.StatefulSet, error) {
+	ssClient := appClient.StatefulSets(namespace)
+	ss, err := ssClient.Get(context.TODO(), name, metav1.GetOptions{})
+	if err != nil {
+		logrus.Error("Can't retrieve deployment in ns=", namespace, " name=", name)
+		return nil, err
+	}
+	return ss, nil
+}
+
 func findDeploymentByLabel(
 	appClient *appv1client.AppsV1Client,
 	labels []configuration.Label,
@@ -86,12 +96,12 @@ func findStatefulSetByLabel(
 			options := metav1.ListOptions{}
 			options.LabelSelector = label
 			statefulSetClient := appClient.StatefulSets(ns)
-			dps, err := statefulSetClient.List(context.TODO(), options)
+			ss, err := statefulSetClient.List(context.TODO(), options)
 			if err != nil {
 				logrus.Errorln("error when listing StatefulSets in ns=", ns, " label=", label, " trying to proceed")
 				continue
 			}
-			statefulset = append(statefulset, dps.Items...)
+			statefulset = append(statefulset, ss.Items...)
 		}
 	}
 	if len(statefulset) == 0 {
@@ -100,7 +110,7 @@ func findStatefulSetByLabel(
 	return statefulset
 }
 
-func findHpaControllers(cs *kubernetes.Clientset, namespaces []string) map[string]*v1scaling.HorizontalPodAutoscaler {
+func findHpaControllers(cs kubernetes.Interface, namespaces []string) map[string]*v1scaling.HorizontalPodAutoscaler {
 	m := make(map[string]*v1scaling.HorizontalPodAutoscaler)
 	for _, ns := range namespaces {
 		hpas, err := cs.AutoscalingV1().HorizontalPodAutoscalers(ns).List(context.TODO(), metav1.ListOptions{})

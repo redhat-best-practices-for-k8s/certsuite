@@ -92,7 +92,7 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	// Namespace
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNamespaceBestPracticesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testNamespace(&env)
+		TestNamespace(&env)
 	})
 	// pod service account
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodServiceAccountBestPracticesIdentifier)
@@ -112,7 +112,7 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	// automount service token
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodAutomountServiceAccountIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		TestAutomountServiceToken(&env)
+		TestAutomountServiceToken(&env, rbac.NewAutomountTokenTester(clientsholder.GetClientsHolder()))
 	})
 
 })
@@ -272,7 +272,7 @@ func TestPodHostPID(env *provider.TestEnvironment) {
 }
 
 // Tests namespaces for invalid prefixed and CRs are not defined in namespaces not under test with CRDs under test
-func testNamespace(env *provider.TestEnvironment) {
+func TestNamespace(env *provider.TestEnvironment) {
 	ginkgo.By(fmt.Sprintf("CNF resources' Namespaces should not have any of the following prefixes: %v", invalidNamespacePrefixes))
 	var failedNamespaces []string
 	for _, namespace := range env.Namespaces {
@@ -389,14 +389,14 @@ func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 }
 
 //nolint:funlen
-func TestAutomountServiceToken(env *provider.TestEnvironment) {
-	ginkgo.By("Should have automountServiceAccountToken set to false")
+func TestAutomountServiceToken(env *provider.TestEnvironment, testerFuncs rbac.AutomountTokenFuncs) {
+	tnf.GinkgoBy("Should have automountServiceAccountToken set to false")
 
 	msg := []string{}
 	failedPods := []string{}
 	for _, put := range env.Pods {
-		ginkgo.By(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
-		gomega.Expect(put.Spec.ServiceAccountName).ToNot(gomega.BeEmpty())
+		tnf.GinkgoBy(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
+		tnf.GomegaExpectStringNotEmpty(put.Spec.ServiceAccountName)
 
 		// The token can be specified in the pod directly
 		// or it can be specified in the service account of the pod
@@ -412,8 +412,7 @@ func TestAutomountServiceToken(env *provider.TestEnvironment) {
 		}
 
 		// Collect information about the service account attached to the pod.
-		crbTester := rbac.NewAutomountTester(put.Spec.ServiceAccountName, put.Namespace, clientsholder.GetClientsHolder())
-		saAutomountServiceAccountToken, err := crbTester.AutomountServiceAccountSetOnSA()
+		saAutomountServiceAccountToken, err := testerFuncs.AutomountServiceAccountSetOnSA(put.Spec.ServiceAccountName, put.Namespace)
 		if err != nil {
 			failedPods = append(failedPods, put.Name)
 			continue
@@ -449,6 +448,10 @@ func TestAutomountServiceToken(env *provider.TestEnvironment) {
 	if n := len(failedPods); n > 0 {
 		logrus.Debugf("Pods that failed automount test: %+v", failedPods)
 		tnf.ClaimFilePrintf("Pods that failed automount test: %+v", failedPods)
-		ginkgo.Fail(fmt.Sprintf("% d pods that failed automount test", n))
+		tnf.GinkgoFail(fmt.Sprintf("% d pods that failed automount test", n))
+	}
+
+	if tnf.IsUnitTest() {
+		testerFuncs.SetTestingResult(len(failedPods) == 0)
 	}
 }

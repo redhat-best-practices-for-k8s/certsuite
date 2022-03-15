@@ -33,7 +33,9 @@ GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 	clean-mocks \
 	update-deps \
 	install-tools \
-	vet
+	vet \
+	generate \
+	install-moq
 
 # Get default value of $GOBIN if not explicitly set
 GO_PATH=$(shell go env GOPATH)
@@ -125,3 +127,9 @@ install-lint:
 
 vet:
 	go vet ${GO_PACKAGES}
+
+install-moq:
+	go install github.com/matryer/moq@latest
+
+generate: install-moq
+	go generate ./...

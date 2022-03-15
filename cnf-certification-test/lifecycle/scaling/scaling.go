@@ -22,8 +22,8 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 
 	v1app "k8s.io/api/apps/v1"
 	v1autoscaling "k8s.io/api/autoscaling/v1"
@@ -34,44 +34,6 @@ import (
 
 	hps "k8s.io/client-go/kubernetes/typed/autoscaling/v1"
 )
-
-func isDeploymentInstanceReady(deployment *v1app.Deployment) bool {
-	notReady := true
-	for _, condition := range deployment.Status.Conditions {
-		if condition.Type == v1app.DeploymentAvailable {
-			notReady = false
-			break
-		}
-	}
-	var replicas int32
-	if deployment.Spec.Replicas != nil {
-		replicas = *(deployment.Spec.Replicas)
-	} else {
-		replicas = 1
-	}
-	if notReady ||
-		deployment.Status.UnavailableReplicas != 0 ||
-		deployment.Status.ReadyReplicas != replicas ||
-		deployment.Status.AvailableReplicas != replicas ||
-		deployment.Status.UpdatedReplicas != replicas {
-		return false
-	}
-	return true
-}
-func isStatefulSetReady(statefulset *v1app.StatefulSet) bool {
-	var replicas int32
-	if statefulset.Spec.Replicas != nil {
-		replicas = *(statefulset.Spec.Replicas)
-	} else {
-		replicas = 1
-	}
-	if statefulset.Status.ReadyReplicas != replicas ||
-		statefulset.Status.AvailableReplicas != replicas ||
-		statefulset.Status.UpdatedReplicas != replicas {
-		return false
-	}
-	return true
-}
 
 func TestScaleDeployment(deployment *v1app.Deployment, timeout time.Duration) bool {
 	clients := clientsholder.GetClientsHolder()
@@ -138,7 +100,7 @@ func scaleDeploymentHelper(clients *clientsholder.ClientsHolder, dpClient v1.Dep
 			logrus.Error("can't update deployment ", namespace, ":", name)
 			return err
 		}
-		if !isDeploymentReady(namespace, name, timeout) {
+		if !podsets.WaitForDeploymentSetReady(namespace, name, timeout) {
 			logrus.Error("can't update deployment ", namespace, ":", name)
 			return errors.New("can't update deployment")
 		}
@@ -149,22 +111,6 @@ func scaleDeploymentHelper(clients *clientsholder.ClientsHolder, dpClient v1.Dep
 		return false
 	}
 	return true
-}
-
-func isDeploymentReady(ns, name string, timeout time.Duration) bool {
-	logrus.Trace("check if deployment ", ns, ":", name, " is ready ")
-	clients := clientsholder.GetClientsHolder()
-	start := time.Now()
-	for time.Since(start) < timeout {
-		dp, err := provider.GetUpdatedDeployment(clients.AppsClients, ns, name)
-		if err == nil && isDeploymentInstanceReady(dp) {
-			logrus.Trace("deployment ", ns, ":", name, " is ready ")
-			return true
-		}
-		time.Sleep(time.Second)
-	}
-	logrus.Error("deployment ", ns, ":", name, " is not ready ")
-	return false
 }
 
 func TestScaleHpaDeployment(deployment *v1app.Deployment, hpa *v1autoscaling.HorizontalPodAutoscaler, timeout time.Duration) bool {
@@ -234,7 +180,7 @@ func scaleHpaDeploymentHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpa
 			logrus.Error("can't Update autoscaler to scale ", namespace, ":", deploymentName, " error=", err)
 			return err
 		}
-		if !isDeploymentReady(namespace, deploymentName, timeout) {
+		if !podsets.WaitForDeploymentSetReady(namespace, deploymentName, timeout) {
 			logrus.Error("deployment not ready after scale operation ", namespace, ":", deploymentName)
 		}
 		return nil

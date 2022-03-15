@@ -26,6 +26,11 @@ type CertifiedContainerRequestInfo struct {
 	Repository string `yaml:"repository" json:"repository"`
 }
 
+type SkipHelmChartList struct {
+	// Name is the name of the `operator bundle package name` or `image-version` that you want to check if exists in the RedHat catalog
+	Name string `yaml:"name" json:"name"`
+}
+
 // CertifiedOperatorRequestInfo contains all certified operator request info
 type CertifiedOperatorRequestInfo struct {
 
@@ -60,6 +65,22 @@ type CrdFilter struct {
 	NameSuffix string `yaml:"nameSuffix" json:"nameSuffix"`
 }
 
+// Tag and Digest should not be populated at the same time. Digest takes precedence if both are populated
+type ContainerImageIdentifier struct {
+	// Name is the name of the image that you want to check if exists in the RedHat catalog
+	Name string `yaml:"name" json:"name"`
+
+	// Repository is the name of the repository `rhel8` of the container
+	// This is valid for container only and required field
+	Repository string `yaml:"repository" json:"repository"`
+
+	// Tag is the optional image tag. "latest" is implied if not specified
+	Tag string `yaml:"tag" json:"tag"`
+
+	// Digest is the image digest following the "@" in a URL, e.g. image@sha256:45b23dee08af5e43a7fea6c4cf9c25ccf269ee113168c19722f87876677c5cb2
+	Digest string `yaml:"digest" json:"digest"`
+}
+
 // TestConfiguration provides test related configuration
 type TestConfiguration struct {
 	// targetNameSpaces to be used in
@@ -67,13 +88,16 @@ type TestConfiguration struct {
 	// Custom Pod labels for discovering containers/pods under test
 	TargetPodLabels []Label `yaml:"targetPodLabels,omitempty" json:"targetPodLabels,omitempty"`
 	// CertifiedContainerInfo is the list of container images to be checked for certification status.
-	CertifiedContainerInfo []CertifiedContainerRequestInfo `yaml:"certifiedcontainerinfo,omitempty" json:"certifiedcontainerinfo,omitempty"`
+	CertifiedContainerInfo []ContainerImageIdentifier `yaml:"certifiedcontainerinfo,omitempty" json:"certifiedcontainerinfo,omitempty"`
 	// CertifiedOperatorInfo is list of operator bundle names that are queried for certification status.
 	CertifiedOperatorInfo []CertifiedOperatorRequestInfo `yaml:"certifiedoperatorinfo,omitempty" json:"certifiedoperatorinfo,omitempty"`
 	// CRDs section.
 	CrdFilters []CrdFilter `yaml:"targetCrdFilters" json:"targetCrdFilters"`
 	// AcceptedKernelTaints
 	AcceptedKernelTaints []AcceptedKernelTaintsInfo `yaml:"acceptedKernelTaints,omitempty" json:"acceptedKernelTaints,omitempty"`
+	SkipHelmChartList    []SkipHelmChartList        `yaml:"skipHelmChartList" json:"skipHelmChartList"`
+	// CheckDiscoveredContainerCertificationStatus controls whether the container certification test will validate images used by autodiscovered containers, in addition to the configured image list
+	CheckDiscoveredContainerCertificationStatus bool `yaml:"checkDiscoveredContainerCertificationStatus" json:"checkDiscoveredContainerCertificationStatus"`
 }
 
 type TestParameters struct {

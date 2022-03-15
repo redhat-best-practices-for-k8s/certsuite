@@ -19,11 +19,14 @@ package autodiscover
 import (
 	"context"
 
+	helmclient "github.com/mittwald/go-helm-client"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	clientOlm "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"helm.sh/helm/v3/pkg/release"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/rest"
 )
 
 func findOperatorsByLabel(olmClient *clientOlm.Clientset, labels []configuration.Label, namespaces []configuration.Namespace) []olmv1Alpha.ClusterServiceVersion {
@@ -50,4 +53,55 @@ func findOperatorsByLabel(olmClient *clientOlm.Clientset, labels []configuration
 	}
 
 	return csvs
+}
+func findSubscriptions(olmClient *clientOlm.Clientset, labels []configuration.Label, namespaces []string) []olmv1Alpha.Subscription {
+	subscriptions := []olmv1Alpha.Subscription{}
+	for _, ns := range namespaces {
+		logrus.Debugf("Searching subscriptions in namespace %s", ns)
+		for _, label := range labels {
+			logrus.Debugf("Searching subscriptions with label %+v", label)
+			options := metav1.ListOptions{}
+			label := buildLabelQuery(label)
+			options.LabelSelector = label
+			subscription, err := olmClient.OperatorsV1alpha1().Subscriptions(ns).List(context.TODO(), metav1.ListOptions{})
+			if err != nil {
+				logrus.Errorln("error when listing subscriptions in ns=", ns, " label=", label)
+				continue
+			}
+			subscriptions = append(subscriptions, subscription.Items...)
+		}
+	}
+
+	logrus.Infof("Found %d Subscriptions:", len(subscriptions))
+	for i := range subscriptions {
+		logrus.Infof(" Subscriptions name: %s (ns: %s)", subscriptions[i].Name, subscriptions[i].Namespace)
+	}
+	return subscriptions
+}
+
+func getHelmList(restConfig *rest.Config, namespaces []string) [][]*release.Release {
+	helmlist := [][]*release.Release{}
+	for _, ns := range namespaces {
+		opt := &helmclient.RestConfClientOptions{
+			Options: &helmclient.Options{
+				Namespace:        ns,
+				RepositoryCache:  "/tmp/.helmcache",
+				RepositoryConfig: "/tmp/.helmrepo",
+				Debug:            true,
+				Linting:          true,
+				DebugLog:         logrus.Printf,
+			},
+			RestConfig: restConfig,
+		}
+
+		helmClient, err := helmclient.NewClientFromRestConf(opt)
+		if err != nil {
+			panic(err)
+		}
+		helmcharts, _ := helmClient.ListDeployedReleases()
+		if len(helmcharts) > 0 {
+			helmlist = append(helmlist, helmcharts)
+		}
+	}
+	return helmlist
 }
