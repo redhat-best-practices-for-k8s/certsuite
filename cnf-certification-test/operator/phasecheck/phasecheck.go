@@ -31,12 +31,14 @@ const (
 	timeout = 5 * time.Minute
 )
 
-func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) {
+func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) v1alpha1.ClusterServiceVersionPhase {
 	oc := clientsholder.GetClientsHolder()
 	isReady := false
 	start := time.Now()
+	var freshCsv *v1alpha1.ClusterServiceVersion
 	for !isReady && time.Since(start) < timeout {
-		freshCsv, err := oc.OlmClient.OperatorsV1alpha1().ClusterServiceVersions(csv.Namespace).Get(context.TODO(), csv.Name, metav1.GetOptions{})
+		var err error
+		freshCsv, err = oc.OlmClient.OperatorsV1alpha1().ClusterServiceVersions(csv.Namespace).Get(context.TODO(), csv.Name, metav1.GetOptions{})
 		if err != nil {
 			logrus.Errorf("error getting %s", provider.CsvToString(freshCsv))
 		}
@@ -50,12 +52,9 @@ func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) {
 	if isReady {
 		logrus.Infof("%s is ready", provider.CsvToString(csv))
 	}
+	return freshCsv.Status.Phase
 }
 
 func isOperatorSucceeded(csv *v1alpha1.ClusterServiceVersion) (isReady bool) {
-	isReady = false
-	if csv.Status.Phase == v1alpha1.CSVPhaseSucceeded {
-		isReady = true
-	}
-	return isReady
+	return csv.Status.Phase == v1alpha1.CSVPhaseSucceeded
 }

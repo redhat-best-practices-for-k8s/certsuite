@@ -64,8 +64,8 @@ func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 	}
 
 	for _, csv := range env.Csvs {
-		phasecheck.WaitOperatorReady(csv)
-		if csv.Status.Phase != v1alpha1.CSVPhaseSucceeded {
+		phase := phasecheck.WaitOperatorReady(csv)
+		if phase != v1alpha1.CSVPhaseSucceeded {
 			badCsvs = append(badCsvs, fmt.Sprintf("%s.%s", csv.Namespace, csv.Name))
 			tnf.ClaimFilePrintf("CSV %s (ns %s) is in phase %s. Expected phase is %s",
 				csv.Name, csv.Namespace, csv.Status.Phase, v1alpha1.CSVPhaseSucceeded)
