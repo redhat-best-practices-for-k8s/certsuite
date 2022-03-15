@@ -53,7 +53,7 @@ type Port []struct {
 // All actual test code belongs below here.  Utilities belong above.
 //
 var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
-	logrus.Debugf("%s not moved yet to new framework", common.NetworkingTestKey)
+	logrus.Debugf("Entering %s suite", common.NetworkingTestKey)
 
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
@@ -81,7 +81,7 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 		testMultusNetworkConnectivity(&env, defaultNumPings, netcommons.IPv6)
 	})
 	// Default interface ICMP IPv6 test case
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestListenAndDeclaredIdentifier)
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestUndeclaredContainerPortsUsage)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testListenAndDeclared(&env)
 	})
@@ -130,13 +130,14 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 	var failedPods string
 	var skippedPods string
 
-	for _, dp := range env.Pods {
-		for i := 0; i < len(env.Containers); i++ {
-			ports := dp.Spec.Containers[0].Ports
+	for _, pod := range env.Pods {
+		for i := 0; i < len(pod.Spec.Containers); i++ {
+			container := &pod.Spec.Containers[i]
+			ports := container.Ports
 			fmt.Println(ports)
 			if ports == nil {
-				tnf.ClaimFilePrintf("Failed to get declared port for container %d due to %v, skipping pod %s", i, dp.Namespace+"."+dp.Name)
-				skippedPods += env.Containers[i].Namespace + "." + env.Containers[i].NodeName + "\n"
+				tnf.ClaimFilePrintf("Failed to get declared port for container %d due to %v, skipping pod %s", container, pod.Namespace+"."+pod.Name)
+				skippedPods += pod.Namespace + " " + pod.Name + " " + container.Name + "\n"
 			}
 			for i := 0; i < len(ports); i++ {
 				k.port = int(ports[i].ContainerPort)
@@ -146,8 +147,8 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 		}
 
 		oc := clientsholder.GetClientsHolder()
-		output, outerr, err := oc.ExecCommandContainer(clientsholder.Context{Namespace: dp.Namespace,
-			Podname: dp.Name, Containername: dp.Spec.Containers[0].Name}, `ss -tulwnH`)
+		output, outerr, err := oc.ExecCommandContainer(clientsholder.Context{Namespace: pod.Namespace,
+			Podname: pod.Name, Containername: pod.Spec.Containers[0].Name}, `ss -tulwnH`)
 		if err != nil {
 			logrus.Errorln("can't execute command on container ", err)
 			continue
@@ -158,13 +159,13 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 		}
 		parseListening(output, listeningPorts)
 		if len(listeningPorts) == 0 {
-			tnf.ClaimFilePrintf("Failed to get listening port for pod name %s in pod namespace %s, skipping this pod", dp.Name, dp.Namespace, err)
+			tnf.ClaimFilePrintf("Failed to get listening port for pod name %s in pod namespace %s, skipping this pod", pod.Name, pod.Namespace, err)
 			continue
 		}
 		// compare between declaredPort,listeningPort
 		undeclaredPorts := checkIfListenIsDeclared(listeningPorts, declaredPorts)
 		for k := range undeclaredPorts {
-			tnf.ClaimFilePrintf("The port %d on protocol %s in pod name %s and pod namespace is %s not declared.", k.port, k.protocol, dp.Name, dp.Namespace)
+			tnf.ClaimFilePrintf("The port %d on protocol %s in pod name %s and pod namespace is %s not declared.", k.port, k.protocol, pod.Name, pod.Namespace)
 		}
 		if len(undeclaredPorts) != 0 {
 			for x := range undeclaredPorts {

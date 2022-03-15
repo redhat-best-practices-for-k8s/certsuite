@@ -312,15 +312,6 @@ Description|http://test-network-function.com/testcases/networking/icmpv6-connect
 Result Type|normative
 Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is not important, only its presence. 
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
-### http://test-network-function.com/testcases/networking/listen-and-declared
-
-Property|Description
----|---
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/networking/listen-and-declared Test if all ports listening is declared.
-Result Type|normative
-Suggested Remediation|Make sure that all the ports listening is declared.
-Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
 ### http://test-network-function.com/testcases/networking/service-type
 
 Property|Description
