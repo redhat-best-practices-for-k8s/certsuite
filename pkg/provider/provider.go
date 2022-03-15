@@ -346,6 +346,13 @@ func StatefulsetToString(s *v1apps.StatefulSet) string {
 	)
 }
 
+func CsvToString(csv *v1alpha1.ClusterServiceVersion) string {
+	return fmt.Sprintf("operator csv: %s ns: %s",
+		csv.Name,
+		csv.Namespace,
+	)
+}
+
 // getPodIPsPerNet gets the IPs of a pod.
 // CNI annotation "k8s.v1.cni.cncf.io/networks-status".
 // Returns (ips, error).

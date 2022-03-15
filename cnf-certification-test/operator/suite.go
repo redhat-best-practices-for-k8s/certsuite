@@ -25,6 +25,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/phasecheck"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -63,6 +64,7 @@ func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 	}
 
 	for _, csv := range env.Csvs {
+		phasecheck.WaitOperatorReady(csv)
 		if csv.Status.Phase != v1alpha1.CSVPhaseSucceeded {
 			badCsvs = append(badCsvs, fmt.Sprintf("%s.%s", csv.Namespace, csv.Name))
 			tnf.ClaimFilePrintf("CSV %s (ns %s) is in phase %s. Expected phase is %s",
