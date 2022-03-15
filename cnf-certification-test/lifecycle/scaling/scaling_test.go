@@ -76,7 +76,7 @@ func TestIsStatefulSetReady(t *testing.T) {
 		statefulset.Status.ReadyReplicas = k.ready
 		statefulset.Status.AvailableReplicas = k.available
 		statefulset.Status.UpdatedReplicas = k.updated
-		ready := isStatefulSetReady(&statefulset)
+		ready := isStatefulSetInstanceReady(&statefulset)
 		if ready != v {
 			fmt.Println(" k= ", k, " should be ", v, " is ", ready)
 		}

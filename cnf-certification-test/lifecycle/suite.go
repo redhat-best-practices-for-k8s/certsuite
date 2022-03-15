@@ -18,6 +18,7 @@ package lifecycle
 
 import (
 	"fmt"
+	"reflect"
 	"time"
 
 	"github.com/onsi/ginkgo/v2"
@@ -36,7 +37,9 @@ import (
 )
 
 const (
-	timeout = 60 * time.Second
+	timeout     = 60 * time.Second
+	deployment  = "Deployment"
+	statefulset = "StateFulSet"
 )
 
 //
@@ -65,7 +68,14 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	})
 
 	if env.IsIntrusive() {
-		testScaling(&env, timeout)
+		testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestDeploymentScalingIdentifier)
+		ginkgo.It(testID, ginkgo.Label(testID), func() {
+			testPodSetScaling(&env, timeout, deployment)
+		})
+		testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestStateFulSetScalingIdentifier)
+		ginkgo.It(testID, ginkgo.Label(testID), func() {
+			testPodSetScaling(&env, timeout, statefulset)
+		})
 	}
 })
 
@@ -215,48 +225,52 @@ func testGracePeriod(env *provider.TestEnvironment) {
 	}
 }
 
-func testScaling(env *provider.TestEnvironment, timeout time.Duration) {
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestDeploymentScalingIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		ginkgo.By("Testing deployment scaling")
-		defer env.SetNeedsRefresh()
-
-		if len(env.Deployments) == 0 {
-			ginkgo.Skip("No test deployments found.")
+func testPodSetScaling(env *provider.TestEnvironment, timeout time.Duration, podsetType string) {
+	ginkgo.By("Testing deployment scaling")
+	defer env.SetNeedsRefresh()
+	var podsetlist interface{}
+	if podsetType == deployment {
+		podsetlist = env.Deployments
+	} else {
+		podsetlist = env.SatetfulSets
+	}
+	podsetlistval := reflect.ValueOf(podsetlist)
+	if podsetlistval.Len() == 0 {
+		ginkgo.Skip(fmt.Sprintf("No test %s found.", podsetType))
+	}
+	failedPodSets := []string{}
+	for i := 0; i < podsetlistval.Len(); i++ {
+		var ns, name string
+		var podset interface{}
+		// TestDeploymentScaling test scaling of deployment
+		// This is the entry point for deployment scaling tests
+		if podsetType == deployment {
+			podset = env.Deployments[i]
+			ns, name = env.Deployments[i].Namespace, env.Deployments[i].Name
+		} else {
+			podset = env.SatetfulSets[i]
+			ns, name = env.SatetfulSets[i].Namespace, env.SatetfulSets[i].Name
 		}
-		failedDeployments := []string{}
-		skippedDeployments := []string{}
-		for i := range env.Deployments {
-			// TestDeploymentScaling test scaling of deployment
-			// This is the entry point for deployment scaling tests
-			deployment := env.Deployments[i]
-			ns, name := deployment.Namespace, deployment.Name
-			key := ns + name
-			if hpa, ok := env.HorizontalScaler[key]; ok {
-				// if the deployment is controller by
-				// horizontal scaler, then test that scaler
-				// can scale the deployment
-				if !scaling.TestScaleHpaDeployment(deployment, hpa, timeout) {
-					failedDeployments = append(failedDeployments, name)
-				}
-				continue
+		key := ns + name
+		if hpa, ok := env.HorizontalScaler[key]; ok {
+			// if the deployment is controller by
+			// horizontal scaler, then test that scaler
+			// can scale the deployment
+			if !scaling.TestScaleHpaDeployment(podset, hpa, timeout) {
+				failedPodSets = append(failedPodSets, name)
 			}
-			// if the deployment is not controller by HPA
-			// scale it directly
-			if !scaling.TestScaleDeployment(deployment, timeout) {
-				failedDeployments = append(failedDeployments, name)
-			}
+			continue
 		}
-
-		if len(skippedDeployments) > 0 {
-			tnf.ClaimFilePrintf("not ready deployments : %v", skippedDeployments)
+		// if the deployment is not controller by HPA
+		// scale it directly
+		if !scaling.TestScaleDeployment(podset, timeout) {
+			failedPodSets = append(failedPodSets, name)
 		}
-		if len(failedDeployments) > 0 {
-			tnf.ClaimFilePrintf(" failed deployments: %v", failedDeployments)
-		}
-		gomega.Expect(0).To(gomega.Equal(len(failedDeployments)))
-		gomega.Expect(0).To(gomega.Equal(len(skippedDeployments)))
-	})
+	}
+	if len(failedPodSets) > 0 {
+		tnf.ClaimFilePrintf(" failed %ss: %v", podsetType, failedPodSets)
+	}
+	gomega.Expect(0).To(gomega.Equal(len(failedPodSets)))
 }
 
 // testHighAvailability
