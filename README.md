@@ -300,10 +300,9 @@ You can select the test to be executed when running `run-cnf-suites.sh` with the
 Note that the `-l` parameter will be treated as a regular expression, so you can select more than one test by
 their labels.
 
-You can find all test labels by running the following commands:
+You can find all test labels by running the following command:
 ```shell script
-cd cnf-certification-test
-./cnf-certification-test.test --ginkgo.dry-run --ginkgo.v
+./run-cnf-suites.sh --list
 ```
 
 You can also check the [CATALOG.md](CATALOG.md) to find all test labels.
