@@ -21,6 +21,7 @@ env:
   TNF_PARTNER_DIR: '/usr/tnf-partner'
   TNF_PARTNER_SRC_DIR: '${TNF_PARTNER_DIR}/src'
   ON_DEMAND_DEBUG_PODS: false
+  TERM: xterm-color
 
 jobs:
   lint:
@@ -128,7 +129,7 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17.8
-          
+
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
 
