@@ -27,6 +27,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
+
 	testclient "k8s.io/client-go/kubernetes/fake"
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
@@ -70,7 +71,7 @@ func GetClientsHolder(filenames ...string) *ClientsHolder {
 	return clientsHolder
 }
 
-// newClientsHolder instantiate an ocp client
+// GetClientsHolder instantiate an ocp client
 func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:funlen // this is a special function with lots of assignments
 	logrus.Infof("Creating k8s go-clients holder.")
 	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
@@ -133,7 +134,6 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		logrus.Panic("can't instantiate ocClient", err)
 	}
-
 	clientsHolder.ready = true
 	return &clientsHolder, nil
 }

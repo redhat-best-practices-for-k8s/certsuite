@@ -22,8 +22,8 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 
 	v1app "k8s.io/api/apps/v1"
 	v1autoscaling "k8s.io/api/autoscaling/v1"
@@ -174,6 +174,15 @@ func runPodsetScale(clients *clientsholder.ClientsHolder, name,
 		}
 		st.Spec.Replicas = &replicas
 		_, errors = stClient.Update(context.TODO(), st, v1machinery.UpdateOptions{})
+		//if !podsets.WaitForDeploymentSetReady(namespace, name, timeout) {
+		//	logrus.Error("can't update deployment ", namespace, ":", name)
+		//	return errors.New("can't update deployment")
+	//	}
+	//	return nil
+//	})
+//	if retryErr != nil {
+	//	logrus.Error("can't scale deployment ", namespace, ":", name, " error=", retryErr)
+//		return false
 	}
 
 	if errors != nil {
@@ -214,7 +223,7 @@ func isPodsetReady(ns, name, podsettype string, timeout time.Duration) bool {
 }
 
 //nolint:funlen
-func TestScaleHpaDeployment(podset interface{}, hpa *v1autoscaling.HorizontalPodAutoscaler, timeout time.Duration) bool {
+func TestScaleHpaDeployment(podsetlist interface{}, hpa *v1autoscaling.HorizontalPodAutoscaler, timeout time.Duration) bool {
 	clients := clientsholder.GetClientsHolder()
 	hpaName := hpa.Name
 	var name, namespace, typeset string
@@ -297,6 +306,8 @@ func scaleHpaDeploymentHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpa
 			return err
 		}
 		if !isPodsetReady(namespace, deploymentName, podset, timeout) {
+		//if !podsets.WaitForDeploymentSetReady(namespace, deploymentName, timeout) {
+
 			logrus.Error("deployment not ready after scale operation ", namespace, ":", deploymentName)
 		}
 		return nil
