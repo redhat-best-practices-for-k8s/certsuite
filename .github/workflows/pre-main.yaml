@@ -32,6 +32,7 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17.8
+        run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -80,6 +81,7 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17.8
+        run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -122,6 +124,7 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17.8
+        run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
