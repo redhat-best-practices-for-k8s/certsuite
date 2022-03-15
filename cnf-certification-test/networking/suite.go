@@ -130,47 +130,44 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 	var failedPods string
 	var skippedPods string
 
-	for _, pod := range env.Pods {
-		for i := 0; i < len(pod.Spec.Containers); i++ {
-			container := &pod.Spec.Containers[i]
-			ports := container.Ports
-			fmt.Println(ports)
-			if ports == nil {
-				tnf.ClaimFilePrintf("Failed to get declared port for container %d due to %v, skipping pod %s", container, pod.Namespace+"."+pod.Name)
-				skippedPods += pod.Namespace + " " + pod.Name + " " + container.Name + "\n"
-			}
-			for j := 0; j < len(ports); j++ {
-				k.port = int(ports[j].ContainerPort)
-				k.protocol = string(ports[j].Protocol)
-				declaredPorts[k] = ports[j].Name
-			}
+	for _, cut := range env.Containers {
+		ports := cut.Data.Ports
+		fmt.Println(ports)
+		if ports == nil {
+			tnf.ClaimFilePrintf("Failed to get declared port for %s", cut.StringShort())
+			skippedPods += cut.StringShort() + "\n"
+		}
+		for j := 0; j < len(ports); j++ {
+			k.port = int(ports[j].ContainerPort)
+			k.protocol = string(ports[j].Protocol)
+			declaredPorts[k] = ports[j].Name
+		}
 
-			oc := clientsholder.GetClientsHolder()
-			output, outerr, err := oc.ExecCommandContainer(clientsholder.Context{Namespace: pod.Namespace,
-				Podname: pod.Name, Containername: pod.Spec.Containers[i].Name}, `ss -tulwnH`)
-			if err != nil {
-				logrus.Errorln("can't execute command on container ", err)
-				continue
-			}
-			if outerr != "" {
-				logrus.Errorln("error when running listening command ", outerr)
-				continue
-			}
-			parseListening(output, listeningPorts)
-			if len(listeningPorts) == 0 {
-				tnf.ClaimFilePrintf("Failed to get listening port for pod name %s in pod namespace %s, skipping this pod", pod.Name, pod.Namespace, err)
-				continue
-			}
-			// compare between declaredPort,listeningPort
-			undeclaredPorts := checkIfListenIsDeclared(listeningPorts, declaredPorts)
-			for k := range undeclaredPorts {
-				tnf.ClaimFilePrintf("The port %d on protocol %s in pod name %s and pod namespace is %s not declared.", k.port, k.protocol, pod.Name, pod.Namespace)
-			}
-			if len(undeclaredPorts) != 0 {
-				for x := range undeclaredPorts {
-					p := strconv.Itoa(x.port)
-					failedPods += p + " " + x.protocol
-				}
+		oc := clientsholder.GetClientsHolder()
+		output, outerr, err := oc.ExecCommandContainer(clientsholder.Context{Namespace: cut.Namespace,
+			Podname: cut.Podname, Containername: cut.Data.Name}, `ss -tulwnH`)
+		if err != nil {
+			logrus.Errorln("can't execute command on container ", err)
+			continue
+		}
+		if outerr != "" {
+			logrus.Errorln("error when running listening command ", outerr)
+			continue
+		}
+		parseListening(output, listeningPorts)
+		if len(listeningPorts) == 0 {
+			tnf.ClaimFilePrintf("Failed to get listening port for %s", cut.StringShort())
+			continue
+		}
+		// compare between declaredPort,listeningPort
+		undeclaredPorts := checkIfListenIsDeclared(listeningPorts, declaredPorts)
+		for k := range undeclaredPorts {
+			tnf.ClaimFilePrintf("The port %d on protocol %s not declared on %s", k.port, k.protocol, cut.StringShort())
+		}
+		if len(undeclaredPorts) != 0 {
+			for x := range undeclaredPorts {
+				p := strconv.Itoa(x.port)
+				failedPods += p + " " + x.protocol
 			}
 		}
 	}
