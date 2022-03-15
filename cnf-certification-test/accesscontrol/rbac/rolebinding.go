@@ -24,27 +24,35 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+//go:generate moq -out rolebinding_moq.go . RoleBindingFuncs
+type RoleBindingFuncs interface {
+	GetRoleBindings(podNamespace, serviceAccountName string) ([]string, error)
+	SetTestingResult(result bool)
+}
+
 // RoleBinding holds information derived from running "oc get rolebindings" on the command line.
 type RoleBinding struct {
-	podNamespace       string
-	serviceAccountName string
-	ClientHolder       *clientsholder.ClientsHolder
+	unitTestingResult bool
+	ClientHolder      *clientsholder.ClientsHolder
 }
 
 // NewRoleBindingTester creates a new RoleBinding object
-func NewRoleBindingTester(serviceAccountName, podNamespace string, ch *clientsholder.ClientsHolder) *RoleBinding {
+func NewRoleBindingTester(ch *clientsholder.ClientsHolder) *RoleBinding {
 	// Just as a note, the old test suite ran the following command to help determine service accounts that fell outside of the pod's namespace:
 	// oc get rolebindings --all-namespaces -o custom-columns='NAMESPACE:metadata.namespace,NAME:metadata.name,SERVICE_ACCOUNTS:subjects[?(@.kind=="ServiceAccount")]' | grep -E '` + serviceAccountSubString + `|SERVICE_ACCOUNTS'
 
 	return &RoleBinding{
-		serviceAccountName: serviceAccountName,
-		podNamespace:       podNamespace,
-		ClientHolder:       ch,
+		unitTestingResult: false,
+		ClientHolder:      ch,
 	}
 }
 
+func (rb *RoleBinding) SetTestingResult(result bool) {
+	rb.unitTestingResult = result
+}
+
 // GetRoleBindings returns any role bindings extracted from the desired pod.
-func (rb *RoleBinding) GetRoleBindings() ([]string, error) {
+func (rb *RoleBinding) GetRoleBindings(podNamespace, serviceAccountName string) ([]string, error) {
 	// Get all of the rolebindings from all namespaces.
 	roleList, roleErr := rb.ClientHolder.K8sClient.RbacV1().Roles("").List(context.TODO(), v1.ListOptions{})
 	if roleErr != nil {
@@ -55,7 +63,7 @@ func (rb *RoleBinding) GetRoleBindings() ([]string, error) {
 	rolebindings := []string{}
 	for index := range roleList.Items {
 		// Determine if the role causes a failure of the test.
-		if roleOutOfNamespace(roleList.Items[index].Namespace, rb.podNamespace, roleList.Items[index].Name, rb.serviceAccountName) {
+		if roleOutOfNamespace(roleList.Items[index].Namespace, podNamespace, roleList.Items[index].Name, serviceAccountName) {
 			rolebindings = append(rolebindings, roleList.Items[index].Namespace+":"+roleList.Items[index].Name)
 		}
 	}

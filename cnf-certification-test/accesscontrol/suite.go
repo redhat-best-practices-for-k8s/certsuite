@@ -101,7 +101,7 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	// pod role bindings
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodRoleBindingsBestPracticesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		TestPodRoleBindings(&env)
+		TestPodRoleBindings(&env, rbac.NewRoleBindingTester(clientsholder.GetClientsHolder()))
 	})
 	// pod cluster role bindings
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodClusterRoleBindingsBestPracticesIdentifier)
@@ -322,8 +322,7 @@ func TestPodServiceAccount(env *provider.TestEnvironment) {
 }
 
 // TestPodRoleBindings verifies that the pod utilizes a valid role binding that does not cross namespaces
-//nolint:dupl
-func TestPodRoleBindings(env *provider.TestEnvironment) {
+func TestPodRoleBindings(env *provider.TestEnvironment, testerFuncs rbac.RoleBindingFuncs) {
 	tnf.GinkgoBy("Should not have RoleBinding in other namespaces")
 	failedPods := []string{}
 
@@ -333,11 +332,8 @@ func TestPodRoleBindings(env *provider.TestEnvironment) {
 			tnf.GinkgoSkip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
 		}
 
-		// Create a new object with the ability to gather rolebinding specs.
-		rbTester := rbac.NewRoleBindingTester(put.Spec.ServiceAccountName, put.Namespace, clientsholder.GetClientsHolder())
-
 		// Get any rolebindings that do not belong to the pod namespace.
-		roleBindings, err := rbTester.GetRoleBindings()
+		roleBindings, err := testerFuncs.GetRoleBindings(put.Namespace, put.Spec.ServiceAccountName)
 		if err != nil {
 			failedPods = append(failedPods, put.Name)
 		}
@@ -352,10 +348,13 @@ func TestPodRoleBindings(env *provider.TestEnvironment) {
 		logrus.Debugf("Pods with role bindings: %+v", failedPods)
 		tnf.GinkgoFail(fmt.Sprintf("%d pods have role bindings in other namespaces.", n))
 	}
+
+	if tnf.IsUnitTest() {
+		testerFuncs.SetTestingResult(len(failedPods) == 0)
+	}
 }
 
 // TestPodClusterRoleBindings verifies that the pod utilizes a valid cluster role binding that does not cross namespaces
-//nolint:dupl
 func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 	tnf.GinkgoBy("Should not have ClusterRoleBinding in other namespaces")
 	failedPods := []string{}

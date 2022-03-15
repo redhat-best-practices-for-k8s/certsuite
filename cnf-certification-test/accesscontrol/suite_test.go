@@ -85,3 +85,71 @@ func TestTestAutomountServiceToken(t *testing.T) {
 		assert.Equal(t, tc.expectedAPICalls, len(mockFuncs.AutomountServiceAccountSetOnSACalls()))
 	}
 }
+
+//nolint:funlen
+func TestTestPodRoleBindings(t *testing.T) {
+	generateEnv := func() *provider.TestEnvironment {
+		return &provider.TestEnvironment{
+			Pods: []*v1.Pod{
+				{
+					Spec: v1.PodSpec{
+						NodeName:           "worker01",
+						ServiceAccountName: "SA1",
+					},
+					ObjectMeta: v1meta.ObjectMeta{
+						Name:      "testPod",
+						Namespace: "testNamespace",
+					},
+				},
+			},
+		}
+	}
+	testCases := []struct {
+		// return values
+		getRoleBindingFuncsRet []string
+		getRoleBindingFuncsErr error
+
+		// expected results
+		expectedAPICalls int
+		expectedResult   bool
+	}{
+		{ // Test Case #1 - Pass with no rolebindingds found
+			getRoleBindingFuncsRet: []string{}, // No rolebindings found in other namespaces
+			getRoleBindingFuncsErr: nil,
+
+			expectedAPICalls: 1,
+			expectedResult:   true,
+		},
+		{ // Test Case #2 - Fail with rolebindings found
+			getRoleBindingFuncsRet: []string{"SA1"}, // rolebindings found in other namespaces
+			getRoleBindingFuncsErr: nil,
+
+			expectedAPICalls: 1,
+			expectedResult:   false,
+		},
+		{ // Test Case #3 - Fail with API call failure
+			getRoleBindingFuncsRet: []string{"SA1"},
+			getRoleBindingFuncsErr: errors.New("this is an error"),
+
+			expectedAPICalls: 1,
+			expectedResult:   false,
+		},
+	}
+
+	for _, tc := range testCases {
+		sharedResult := false
+
+		// Test the function with mocked internal functions.
+		mockFuncs := &rbac.RoleBindingFuncsMock{
+			GetRoleBindingsFunc: func(podNamespace, serviceAccountName string) ([]string, error) {
+				return tc.getRoleBindingFuncsRet, tc.getRoleBindingFuncsErr
+			},
+			SetTestingResultFunc: func(result bool) {
+				sharedResult = result
+			},
+		}
+		TestPodRoleBindings(generateEnv(), mockFuncs)
+		assert.Equal(t, tc.expectedResult, sharedResult)
+		assert.Equal(t, tc.expectedAPICalls, len(mockFuncs.GetRoleBindingsCalls()))
+	}
+}
