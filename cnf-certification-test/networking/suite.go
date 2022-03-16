@@ -91,7 +91,7 @@ func testDefaultNetworkConnectivity(env *provider.TestEnvironment, count int, aI
 
 	if n := len(badNets); n > 0 {
 		logrus.Debugf("Failed nets: %+v", badNets)
-		ginkgo.Fail(fmt.Sprintf("%d nets failed the default network %s ping test.", n, aIPVersion))
+		tnf.GinkgoFail(fmt.Sprintf("%d nets failed the default network %s ping test.", n, aIPVersion))
 	}
 }
 
@@ -121,6 +121,6 @@ func testMultusNetworkConnectivity(env *provider.TestEnvironment, count int, aIP
 
 	if n := len(badNets); n > 0 {
 		logrus.Debugf("Failed nets: %+v", badNets)
-		ginkgo.Fail(fmt.Sprintf("%d nets failed the multus %s ping test.", n, aIPVersion))
+		tnf.GinkgoFail(fmt.Sprintf("%d nets failed the multus %s ping test.", n, aIPVersion))
 	}
 }

@@ -79,14 +79,14 @@ func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 
 func testContainersLogging(env *provider.TestEnvironment) {
 	if len(env.Containers) == 0 {
-		ginkgo.Skip("No containers to run test, skipping")
+		tnf.GinkgoSkip("No containers to run test, skipping")
 	}
 
 	// Iterate through all the CUTs to get their log output. The TC checks that at least
 	// one log line is found.
 	badContainers := []string{}
 	for _, cut := range env.Containers {
-		ginkgo.By(fmt.Sprintf("Checking %s has some logging output", cut.StringShort()))
+		tnf.GinkgoBy(fmt.Sprintf("Checking %s has some logging output", cut.StringShort()))
 		hasLoggingOutput, err := containerHasLoggingOutput(cut)
 		if err != nil {
 			tnf.ClaimFilePrintf("Failed to get %s log output: %s", cut.StringShort(), err)
@@ -101,7 +101,7 @@ func testContainersLogging(env *provider.TestEnvironment) {
 
 	if n := len(badContainers); n > 0 {
 		logrus.Debugf("Containers without logging: %+v", badContainers)
-		ginkgo.Fail(fmt.Sprintf("%d containers don't have any log to stdout/stderr.", n))
+		tnf.GinkgoFail(fmt.Sprintf("%d containers don't have any log to stdout/stderr.", n))
 	}
 }
 
@@ -109,7 +109,7 @@ func testContainersLogging(env *provider.TestEnvironment) {
 func testCrds(env *provider.TestEnvironment) {
 	failedCrds := []string{}
 	for _, crd := range env.Crds {
-		ginkgo.By("Testing CRD " + crd.Name)
+		tnf.GinkgoBy("Testing CRD " + crd.Name)
 
 		for _, ver := range crd.Spec.Versions {
 			if _, ok := ver.Schema.OpenAPIV3Schema.Properties["status"]; !ok {
@@ -121,6 +121,6 @@ func testCrds(env *provider.TestEnvironment) {
 
 	if n := len(failedCrds); n > 0 {
 		logrus.Debugf("CRD.version without status subresource: %+v", failedCrds)
-		ginkgo.Fail(fmt.Sprintf("%d CRDs don't have status subresource", n))
+		tnf.GinkgoFail(fmt.Sprintf("%d CRDs don't have status subresource", n))
 	}
 }
