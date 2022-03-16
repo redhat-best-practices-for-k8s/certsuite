@@ -124,7 +124,7 @@ func testOperatorOlmSubscription(env *provider.TestEnvironment) {
 		options := metav1.ListOptions{}
 		subscriptions, err := ocpClient.OlmClient.OperatorsV1alpha1().Subscriptions(csv.Namespace).List(context.TODO(), options)
 		if err != nil {
-			ginkgo.Fail(fmt.Sprintf("Failed to get subscription for CSV %s (ns %s)", csv.Name, csv.Namespace))
+			ginkgo.Fail(fmt.Sprintf("Failed to get subscription for CSV %s (ns %s): %s", csv.Name, csv.Namespace, err))
 		}
 
 		// Iterate through namespace's subscriptions to get the installed CSV one.
