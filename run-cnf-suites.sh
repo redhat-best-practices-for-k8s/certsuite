@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-set -x
+
+# [debug] uncomment line below to print out the statements as they are being executed
+#set -x
+
 # defaults
 export OUTPUT_LOC="$PWD/cnf-certification-test"
 
@@ -11,6 +14,8 @@ usage() {
 	echo "  will run the access-control and lifecycle suites"
 	echo ""
 	echo "Allowed suites are listed in the README."
+	echo ""
+	echo "The specs can be listed with $0 -L|--list [-f SUITE...]"
 }
 
 usage_error() {
@@ -21,11 +26,13 @@ usage_error() {
 FOCUS=""
 SKIP=""
 LABEL=""
+LIST=false
 BASEDIR=$(dirname $(realpath $0))
 # Parge args beginning with "-"
 while [[ $1 == -* ]]; do
 	case "$1" in
 		-h|--help|-\?) usage; exit 0;;
+		-L|--list) LIST=true;;
 		-o) if (($# > 1)); then
 				OUTPUT_LOC=$2; shift
 			else
@@ -51,6 +58,14 @@ while [[ $1 == -* ]]; do
 	esac
 	shift
 done
+
+# List the specs (filtering by suite)
+if [ "$LIST" = true ] ; then
+	FOCUS=${FOCUS%?}  # strip the trailing "|" from the concatenation
+	$BASEDIR/cnf-certification-test/cnf-certification-test.test --ginkgo.dry-run --ginkgo.v --ginkgo.focus="$FOCUS"
+	exit 0;
+fi
+
 # specify Junit report file name.
 GINKGO_ARGS="-junit $OUTPUT_LOC -claimloc $OUTPUT_LOC --ginkgo.junit-report $OUTPUT_LOC/cnf-certification-tests_junit.xml -ginkgo.v -test.v"
 
