@@ -313,7 +313,6 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 	}
 	gomega.Expect(0).To(gomega.Equal(len(failedSatetfulSets)))
 	gomega.Expect(0).To(gomega.Equal(len(skippedSatetfulSets)))
-
 }
 
 // testHighAvailability
