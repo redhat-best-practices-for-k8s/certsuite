@@ -279,7 +279,7 @@ func testPodSetScaling(env *provider.TestEnvironment, timeout time.Duration, pod
 	if len(failedPodSets) > 0 {
 		tnf.ClaimFilePrintf(" failed %ss: %v", podsetType, failedPodSets)
 	}
-	gomega.Expect(0).To(gomega.Equal(len(failedPodSets)))
+	gomega.Expect(len(failedPodSets)).To(gomega.Equal(0))
 }
 
 // testHighAvailability
