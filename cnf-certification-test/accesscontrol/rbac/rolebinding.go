@@ -27,13 +27,11 @@ import (
 //go:generate moq -out rolebinding_moq.go . RoleBindingFuncs
 type RoleBindingFuncs interface {
 	GetRoleBindings(podNamespace, serviceAccountName string) ([]string, error)
-	SetTestingResult(result bool)
 }
 
 // RoleBinding holds information derived from running "oc get rolebindings" on the command line.
 type RoleBinding struct {
-	unitTestingResult bool
-	ClientHolder      *clientsholder.ClientsHolder
+	ClientHolder *clientsholder.ClientsHolder
 }
 
 // NewRoleBindingTester creates a new RoleBinding object
@@ -41,14 +39,11 @@ func NewRoleBindingTester(ch *clientsholder.ClientsHolder) *RoleBinding {
 	// Just as a note, the old test suite ran the following command to help determine service accounts that fell outside of the pod's namespace:
 	// oc get rolebindings --all-namespaces -o custom-columns='NAMESPACE:metadata.namespace,NAME:metadata.name,SERVICE_ACCOUNTS:subjects[?(@.kind=="ServiceAccount")]' | grep -E '` + serviceAccountSubString + `|SERVICE_ACCOUNTS'
 
-	return &RoleBinding{
-		unitTestingResult: false,
-		ClientHolder:      ch,
+	rbt := &RoleBinding{
+		ClientHolder: ch,
 	}
-}
 
-func (rb *RoleBinding) SetTestingResult(result bool) {
-	rb.unitTestingResult = result
+	return rbt
 }
 
 // GetRoleBindings returns any role bindings extracted from the desired pod.

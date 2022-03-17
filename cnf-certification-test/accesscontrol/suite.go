@@ -120,7 +120,7 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 func TestSecConCapabilities(env *provider.TestEnvironment) {
 	var badContainers []string
 	if len(env.Containers) == 0 {
-		tnf.GinkgoSkip("No containers to perform test, skipping")
+		env.GinkgoSkip("No containers to perform test, skipping")
 	}
 	for _, cut := range env.Containers {
 		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.Capabilities != nil {
@@ -140,7 +140,7 @@ func TestSecConCapabilities(env *provider.TestEnvironment) {
 func TestSecConRootUser(env *provider.TestEnvironment) {
 	var badContainers, badPods []string
 	if len(env.Containers) == 0 {
-		tnf.GinkgoSkip("No containers to perform test, skipping")
+		env.GinkgoSkip("No containers to perform test, skipping")
 	}
 	for _, put := range env.Pods {
 		if put.Spec.SecurityContext != nil && put.Spec.SecurityContext.RunAsUser != nil {
@@ -171,7 +171,7 @@ func TestSecConRootUser(env *provider.TestEnvironment) {
 func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 	var badContainers []string
 	if len(env.Containers) == 0 {
-		tnf.GinkgoSkip("No containers to perform test, skipping")
+		env.GinkgoSkip("No containers to perform test, skipping")
 	}
 	for _, cut := range env.Containers {
 		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.AllowPrivilegeEscalation != nil {
@@ -189,7 +189,7 @@ func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 func TestContainerHostPort(env *provider.TestEnvironment) {
 	var badContainers []string
 	if len(env.Containers) == 0 {
-		tnf.GinkgoSkip("No containers to perform test, skipping")
+		env.GinkgoSkip("No containers to perform test, skipping")
 	}
 	for _, cut := range env.Containers {
 		for _, aPort := range cut.Data.Ports {
@@ -207,7 +207,7 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 func TestPodHostNetwork(env *provider.TestEnvironment) {
 	var badPods []string
 	if len(env.Pods) == 0 {
-		tnf.GinkgoSkip("No Pods to run test, skipping")
+		env.GinkgoSkip("No Pods to run test, skipping")
 	}
 	for _, put := range env.Pods {
 		if put.Spec.HostNetwork {
@@ -223,7 +223,7 @@ func TestPodHostNetwork(env *provider.TestEnvironment) {
 func TestPodHostPath(env *provider.TestEnvironment) {
 	var badPods []string
 	if len(env.Pods) == 0 {
-		tnf.GinkgoSkip("No Pods to run test, skipping")
+		env.GinkgoSkip("No Pods to run test, skipping")
 	}
 	for _, put := range env.Pods {
 		for idx := range put.Spec.Volumes {
@@ -242,7 +242,7 @@ func TestPodHostPath(env *provider.TestEnvironment) {
 func TestPodHostIPC(env *provider.TestEnvironment) {
 	var badPods []string
 	if len(env.Pods) == 0 {
-		tnf.GinkgoSkip("No Pods to run test, skipping")
+		env.GinkgoSkip("No Pods to run test, skipping")
 	}
 	for _, put := range env.Pods {
 		if put.Spec.HostIPC {
@@ -258,7 +258,7 @@ func TestPodHostIPC(env *provider.TestEnvironment) {
 func TestPodHostPID(env *provider.TestEnvironment) {
 	var badPods []string
 	if len(env.Pods) == 0 {
-		tnf.GinkgoSkip("No Pods to run test, skipping")
+		env.GinkgoSkip("No Pods to run test, skipping")
 	}
 	for _, put := range env.Pods {
 		if put.Spec.HostPID {
@@ -272,10 +272,10 @@ func TestPodHostPID(env *provider.TestEnvironment) {
 
 // Tests namespaces for invalid prefixed and CRs are not defined in namespaces not under test with CRDs under test
 func TestNamespace(env *provider.TestEnvironment) {
-	tnf.GinkgoBy(fmt.Sprintf("CNF resources' Namespaces should not have any of the following prefixes: %v", invalidNamespacePrefixes))
+	env.GinkgoBy(fmt.Sprintf("CNF resources' Namespaces should not have any of the following prefixes: %v", invalidNamespacePrefixes))
 	var failedNamespaces []string
 	for _, namespace := range env.Namespaces {
-		tnf.GinkgoBy(fmt.Sprintf("Checking namespace %s", namespace))
+		env.GinkgoBy(fmt.Sprintf("Checking namespace %s", namespace))
 		for _, invalidPrefix := range invalidNamespacePrefixes {
 			if strings.HasPrefix(namespace, invalidPrefix) {
 				tnf.ClaimFilePrintf("Namespace %s has invalid prefix %s", namespace, invalidPrefix)
@@ -284,10 +284,10 @@ func TestNamespace(env *provider.TestEnvironment) {
 		}
 	}
 	if failedNamespacesNum := len(failedNamespaces); failedNamespacesNum > 0 {
-		tnf.GinkgoFail(fmt.Sprintf("Found %d Namespaces with an invalid prefix.", failedNamespacesNum))
+		env.GinkgoFail(fmt.Sprintf("Found %d Namespaces with an invalid prefix.", failedNamespacesNum))
 	}
-	tnf.GinkgoBy(fmt.Sprintf("CNF pods' should belong to any of the configured Namespaces: %v", env.Namespaces))
-	tnf.GinkgoBy(fmt.Sprintf("CRs from autodiscovered CRDs should belong only to the configured Namespaces: %v", env.Namespaces))
+	env.GinkgoBy(fmt.Sprintf("CNF pods' should belong to any of the configured Namespaces: %v", env.Namespaces))
+	env.GinkgoBy(fmt.Sprintf("CRs from autodiscovered CRDs should belong only to the configured Namespaces: %v", env.Namespaces))
 	invalidCrs, _ := namespace.TestCrsNamespaces(env.Crds, env.Namespaces)
 
 	invalidCrsNum := 0
@@ -300,16 +300,16 @@ func TestNamespace(env *provider.TestEnvironment) {
 				}
 			}
 		}
-		tnf.GinkgoFail(fmt.Sprintf("Found %d CRs belonging to invalid Namespaces.", invalidCrsNum))
+		env.GinkgoFail(fmt.Sprintf("Found %d CRs belonging to invalid Namespaces.", invalidCrsNum))
 	}
 }
 
 // TestPodServiceAccount verifies that the pod utilizes a valid service account
 func TestPodServiceAccount(env *provider.TestEnvironment) {
-	tnf.GinkgoBy("Tests that each pod utilizes a valid service account")
+	env.GinkgoBy("Tests that each pod utilizes a valid service account")
 	failedPods := []string{}
 	for _, put := range env.Pods {
-		tnf.GinkgoBy(fmt.Sprintf("Testing service account for pod %s (ns: %s)", put.Name, put.Namespace))
+		env.GinkgoBy(fmt.Sprintf("Testing service account for pod %s (ns: %s)", put.Name, put.Namespace))
 		if put.Spec.ServiceAccountName == "" {
 			tnf.ClaimFilePrintf("Pod %s (ns: %s) doesn't have a service account name.", put.Name, put.Namespace)
 			failedPods = append(failedPods, put.Name)
@@ -317,19 +317,19 @@ func TestPodServiceAccount(env *provider.TestEnvironment) {
 	}
 	if n := len(failedPods); n > 0 {
 		logrus.Debugf("Pods without service account: %+v", failedPods)
-		tnf.GinkgoFail(fmt.Sprintf("%d pods don't have a service account name.", n))
+		env.GinkgoFail(fmt.Sprintf("%d pods don't have a service account name.", n))
 	}
 }
 
 // TestPodRoleBindings verifies that the pod utilizes a valid role binding that does not cross namespaces
 func TestPodRoleBindings(env *provider.TestEnvironment, testerFuncs rbac.RoleBindingFuncs) {
-	tnf.GinkgoBy("Should not have RoleBinding in other namespaces")
+	env.GinkgoBy("Should not have RoleBinding in other namespaces")
 	failedPods := []string{}
 
 	for _, put := range env.Pods {
-		tnf.GinkgoBy(fmt.Sprintf("Testing role binding for pod: %s namespace: %s", put.Name, put.Namespace))
+		env.GinkgoBy(fmt.Sprintf("Testing role binding for pod: %s namespace: %s", put.Name, put.Namespace))
 		if put.Spec.ServiceAccountName == "" {
-			tnf.GinkgoSkip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
+			env.GinkgoSkip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
 		}
 
 		// Get any rolebindings that do not belong to the pod namespace.
@@ -346,23 +346,19 @@ func TestPodRoleBindings(env *provider.TestEnvironment, testerFuncs rbac.RoleBin
 	}
 	if n := len(failedPods); n > 0 {
 		logrus.Debugf("Pods with role bindings: %+v", failedPods)
-		tnf.GinkgoFail(fmt.Sprintf("%d pods have role bindings in other namespaces.", n))
-	}
-
-	if tnf.IsUnitTest() {
-		testerFuncs.SetTestingResult(len(failedPods) == 0)
+		env.GinkgoFail(fmt.Sprintf("%d pods have role bindings in other namespaces.", n))
 	}
 }
 
 // TestPodClusterRoleBindings verifies that the pod utilizes a valid cluster role binding that does not cross namespaces
 func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
-	tnf.GinkgoBy("Should not have ClusterRoleBinding in other namespaces")
+	env.GinkgoBy("Should not have ClusterRoleBinding in other namespaces")
 	failedPods := []string{}
 
 	for _, put := range env.Pods {
-		tnf.GinkgoBy(fmt.Sprintf("Testing cluster role binding for pod: %s namespace: %s", put.Name, put.Namespace))
+		env.GinkgoBy(fmt.Sprintf("Testing cluster role binding for pod: %s namespace: %s", put.Name, put.Namespace))
 		if put.Spec.ServiceAccountName == "" {
-			tnf.GinkgoSkip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
+			env.GinkgoSkip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
 		}
 
 		// Create a new object with the ability to gather clusterrolebinding specs.
@@ -382,18 +378,18 @@ func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 	}
 	if n := len(failedPods); n > 0 {
 		logrus.Debugf("Pods with cluster role bindings: %+v", failedPods)
-		tnf.GinkgoFail(fmt.Sprintf("%d pods have cluster role bindings in other namespaces.", n))
+		env.GinkgoFail(fmt.Sprintf("%d pods have cluster role bindings in other namespaces.", n))
 	}
 }
 
 //nolint:funlen
 func TestAutomountServiceToken(env *provider.TestEnvironment, testerFuncs rbac.AutomountTokenFuncs) {
-	tnf.GinkgoBy("Should have automountServiceAccountToken set to false")
+	env.GinkgoBy("Should have automountServiceAccountToken set to false")
 
 	msg := []string{}
 	failedPods := []string{}
 	for _, put := range env.Pods {
-		tnf.GinkgoBy(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
+		env.GinkgoBy(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
 		tnf.GomegaExpectStringNotEmpty(put.Spec.ServiceAccountName)
 
 		// The token can be specified in the pod directly
@@ -446,7 +442,7 @@ func TestAutomountServiceToken(env *provider.TestEnvironment, testerFuncs rbac.A
 	if n := len(failedPods); n > 0 {
 		logrus.Debugf("Pods that failed automount test: %+v", failedPods)
 		tnf.ClaimFilePrintf("Pods that failed automount test: %+v", failedPods)
-		tnf.GinkgoFail(fmt.Sprintf("% d pods that failed automount test", n))
+		env.GinkgoFail(fmt.Sprintf("% d pods that failed automount test", n))
 	}
 
 	if tnf.IsUnitTest() {

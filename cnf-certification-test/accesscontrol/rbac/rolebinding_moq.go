@@ -20,9 +20,6 @@ var _ RoleBindingFuncs = &RoleBindingFuncsMock{}
 // 			GetRoleBindingsFunc: func(podNamespace string, serviceAccountName string) ([]string, error) {
 // 				panic("mock out the GetRoleBindings method")
 // 			},
-// 			SetTestingResultFunc: func(result bool)  {
-// 				panic("mock out the SetTestingResult method")
-// 			},
 // 		}
 //
 // 		// use mockedRoleBindingFuncs in code that requires RoleBindingFuncs
@@ -33,9 +30,6 @@ type RoleBindingFuncsMock struct {
 	// GetRoleBindingsFunc mocks the GetRoleBindings method.
 	GetRoleBindingsFunc func(podNamespace string, serviceAccountName string) ([]string, error)
 
-	// SetTestingResultFunc mocks the SetTestingResult method.
-	SetTestingResultFunc func(result bool)
-
 	// calls tracks calls to the methods.
 	calls struct {
 		// GetRoleBindings holds details about calls to the GetRoleBindings method.
@@ -45,14 +39,8 @@ type RoleBindingFuncsMock struct {
 			// ServiceAccountName is the serviceAccountName argument value.
 			ServiceAccountName string
 		}
-		// SetTestingResult holds details about calls to the SetTestingResult method.
-		SetTestingResult []struct {
-			// Result is the result argument value.
-			Result bool
-		}
 	}
-	lockGetRoleBindings  sync.RWMutex
-	lockSetTestingResult sync.RWMutex
+	lockGetRoleBindings sync.RWMutex
 }
 
 // GetRoleBindings calls GetRoleBindingsFunc.
@@ -87,36 +75,5 @@ func (mock *RoleBindingFuncsMock) GetRoleBindingsCalls() []struct {
 	mock.lockGetRoleBindings.RLock()
 	calls = mock.calls.GetRoleBindings
 	mock.lockGetRoleBindings.RUnlock()
-	return calls
-}
-
-// SetTestingResult calls SetTestingResultFunc.
-func (mock *RoleBindingFuncsMock) SetTestingResult(result bool) {
-	if mock.SetTestingResultFunc == nil {
-		panic("RoleBindingFuncsMock.SetTestingResultFunc: method is nil but RoleBindingFuncs.SetTestingResult was just called")
-	}
-	callInfo := struct {
-		Result bool
-	}{
-		Result: result,
-	}
-	mock.lockSetTestingResult.Lock()
-	mock.calls.SetTestingResult = append(mock.calls.SetTestingResult, callInfo)
-	mock.lockSetTestingResult.Unlock()
-	mock.SetTestingResultFunc(result)
-}
-
-// SetTestingResultCalls gets all the calls that were made to SetTestingResult.
-// Check the length with:
-//     len(mockedRoleBindingFuncs.SetTestingResultCalls())
-func (mock *RoleBindingFuncsMock) SetTestingResultCalls() []struct {
-	Result bool
-} {
-	var calls []struct {
-		Result bool
-	}
-	mock.lockSetTestingResult.RLock()
-	calls = mock.calls.SetTestingResult
-	mock.lockSetTestingResult.RUnlock()
 	return calls
 }

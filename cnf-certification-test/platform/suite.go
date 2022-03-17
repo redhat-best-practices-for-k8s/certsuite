@@ -53,7 +53,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if provider.IsOCPCluster() {
 			testContainersFsDiff(&env)
 		} else {
-			tnf.GinkgoSkip(" non ocp cluster ")
+			env.GinkgoSkip(" non ocp cluster ")
 		}
 	})
 
@@ -181,10 +181,10 @@ func testTainted(env *provider.TestEnvironment) {
 }
 
 func testIsRedHatRelease(env *provider.TestEnvironment) {
-	tnf.GinkgoBy("should report a proper Red Hat version")
+	env.GinkgoBy("should report a proper Red Hat version")
 	failedContainers := []string{}
 	for _, cut := range env.Containers {
-		tnf.GinkgoBy(fmt.Sprintf("%s is checked for Red Hat version", cut.StringShort()))
+		env.GinkgoBy(fmt.Sprintf("%s is checked for Red Hat version", cut.StringShort()))
 		baseImageTester := isredhat.NewBaseImageTester(common.DefaultTimeout, clientsholder.GetClientsHolder(), clientsholder.Context{
 			Namespace:     cut.Namespace,
 			Podname:       cut.Podname,

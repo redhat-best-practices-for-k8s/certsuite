@@ -24,7 +24,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	retry "k8s.io/client-go/util/retry"
 )
@@ -100,9 +99,9 @@ func CountPodsWithDelete(nodeName string, isDelete bool) (count int, err error) 
 	return count, nil
 }
 
-func CordonCleanup(node string) {
+func CordonCleanup(node string, env *provider.TestEnvironment) {
 	err := CordonHelper(node, Uncordon)
 	if err != nil {
-		tnf.GinkgoAbortSuite(fmt.Sprintf("cleanup: error uncordoning the node: %s", node))
+		env.GinkgoAbortSuite(fmt.Sprintf("cleanup: error uncordoning the node: %s", node))
 	}
 }

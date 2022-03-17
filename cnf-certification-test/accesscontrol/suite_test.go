@@ -23,6 +23,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/rbac"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	v1 "k8s.io/api/core/v1"
 	v1meta "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -88,22 +89,6 @@ func TestTestAutomountServiceToken(t *testing.T) {
 
 //nolint:funlen
 func TestTestPodRoleBindings(t *testing.T) {
-	generateEnv := func() *provider.TestEnvironment {
-		return &provider.TestEnvironment{
-			Pods: []*v1.Pod{
-				{
-					Spec: v1.PodSpec{
-						NodeName:           "worker01",
-						ServiceAccountName: "SA1",
-					},
-					ObjectMeta: v1meta.ObjectMeta{
-						Name:      "testPod",
-						Namespace: "testNamespace",
-					},
-				},
-			},
-		}
-	}
 	testCases := []struct {
 		// return values
 		getRoleBindingFuncsRet []string
@@ -137,15 +122,39 @@ func TestTestPodRoleBindings(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		sharedResult := false
+		// Assume each test run is going to pass unless GinkgoFail is called.
+		sharedResult := true
+
+		// Generate the TestEnvironment
+		generateEnv := func() *provider.TestEnvironment {
+			return &provider.TestEnvironment{
+				Pods: []*v1.Pod{
+					{
+						Spec: v1.PodSpec{
+							NodeName:           "worker01",
+							ServiceAccountName: "SA1",
+						},
+						ObjectMeta: v1meta.ObjectMeta{
+							Name:      "testPod",
+							Namespace: "testNamespace",
+						},
+					},
+				},
+				GinkgoFuncs: &tnf.GinkgoFuncsMock{
+					GinkgoAbortSuiteFunc: func(message string, callerSkip ...int) {},
+					GinkgoByFunc:         func(text string, callback ...func()) {},
+					GinkgoFailFunc: func(message string, callerSkip ...int) {
+						sharedResult = false
+					},
+					GinkgoSkipFunc: func(message string, callerSkip ...int) {},
+				},
+			}
+		}
 
 		// Test the function with mocked internal functions.
 		mockFuncs := &rbac.RoleBindingFuncsMock{
 			GetRoleBindingsFunc: func(podNamespace, serviceAccountName string) ([]string, error) {
 				return tc.getRoleBindingFuncsRet, tc.getRoleBindingFuncsErr
-			},
-			SetTestingResultFunc: func(result bool) {
-				sharedResult = result
 			},
 		}
 		TestPodRoleBindings(generateEnv(), mockFuncs)
