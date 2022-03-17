@@ -15,4 +15,4 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 // Package diagnostic provides a test suite which gathers OpenShift cluster information.
-package diagnostic
+package diagnostics
