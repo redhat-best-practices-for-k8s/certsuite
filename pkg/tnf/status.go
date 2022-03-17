@@ -26,13 +26,6 @@ func IsUnitTest() bool {
 	return strings.Contains(os.Args[1], "-test.") || strings.Contains(os.Args[0], ".test") || os.Getenv("UNIT_TEST") == "true"
 }
 
-// // GinkgoBy is a wrapper for Ginkgo.By()
-// func GinkgoBy(cmd string) {
-// 	if !IsUnitTest() {
-// 		ginkgo.By(cmd)
-// 	}
-// }
-
 // GomegaExpectStringNotEmpty is a wrapper
 func GomegaExpectStringNotEmpty(incomingStr string) {
 	if !IsUnitTest() {
@@ -46,25 +39,6 @@ func GomegaExpectSliceBeNil(incomingSlice []string) {
 		gomega.Expect(incomingSlice).To(gomega.BeNil())
 	}
 }
-
-// // GinkgoFail is a wrapper for Ginkgo.Fail()
-// func GinkgoFail(cmd string) {
-// 	if !IsUnitTest() {
-// 		ginkgo.Fail(cmd)
-// 	}
-// }
-
-// func GinkgoSkip(cmd string) {
-// 	if !IsUnitTest() {
-// 		ginkgo.Skip(cmd)
-// 	}
-// }
-
-// func GinkgoAbortSuite(cmd string) {
-// 	if !IsUnitTest() {
-// 		ginkgo.AbortSuite(cmd)
-// 	}
-// }
 
 //go:generate moq -out status_moq.go . GinkgoFuncs
 type GinkgoFuncs interface {

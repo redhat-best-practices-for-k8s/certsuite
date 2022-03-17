@@ -444,8 +444,4 @@ func TestAutomountServiceToken(env *provider.TestEnvironment, testerFuncs rbac.A
 		tnf.ClaimFilePrintf("Pods that failed automount test: %+v", failedPods)
 		env.GinkgoFail(fmt.Sprintf("% d pods that failed automount test", n))
 	}
-
-	if tnf.IsUnitTest() {
-		testerFuncs.SetTestingResult(len(failedPods) == 0)
-	}
 }

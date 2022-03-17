@@ -30,24 +30,6 @@ import (
 
 //nolint:funlen
 func TestTestAutomountServiceToken(t *testing.T) {
-	generateEnv := func(tokenStatus *bool) *provider.TestEnvironment {
-		return &provider.TestEnvironment{
-			Pods: []*v1.Pod{
-				{
-					Spec: v1.PodSpec{
-						NodeName:                     "worker01",
-						AutomountServiceAccountToken: tokenStatus,
-						ServiceAccountName:           "SA1",
-					},
-					ObjectMeta: v1meta.ObjectMeta{
-						Name:      "testPod",
-						Namespace: "testNamespace",
-					},
-				},
-			},
-		}
-	}
-
 	falseVar := false
 	trueVar := true
 
@@ -70,15 +52,38 @@ func TestTestAutomountServiceToken(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		sharedResult := false
+		sharedResult := true
+
+		generateEnv := func(tokenStatus *bool) *provider.TestEnvironment {
+			return &provider.TestEnvironment{
+				Pods: []*v1.Pod{
+					{
+						Spec: v1.PodSpec{
+							NodeName:                     "worker01",
+							AutomountServiceAccountToken: tokenStatus,
+							ServiceAccountName:           "SA1",
+						},
+						ObjectMeta: v1meta.ObjectMeta{
+							Name:      "testPod",
+							Namespace: "testNamespace",
+						},
+					},
+				},
+				GinkgoFuncs: &tnf.GinkgoFuncsMock{
+					GinkgoAbortSuiteFunc: func(message string, callerSkip ...int) {},
+					GinkgoByFunc:         func(text string, callback ...func()) {},
+					GinkgoFailFunc: func(message string, callerSkip ...int) {
+						sharedResult = false
+					},
+					GinkgoSkipFunc: func(message string, callerSkip ...int) {},
+				},
+			}
+		}
 
 		// Test the function with mocked internal functions.
 		mockFuncs := &rbac.AutomountTokenFuncsMock{
 			AutomountServiceAccountSetOnSAFunc: func(serviceAccountName, podNamespace string) (*bool, error) {
 				return tc.saTokenStatus, tc.getSAErr
-			},
-			SetTestingResultFunc: func(result bool) {
-				sharedResult = result
 			},
 		}
 		TestAutomountServiceToken(generateEnv(tc.podSATokenStatus), mockFuncs)
