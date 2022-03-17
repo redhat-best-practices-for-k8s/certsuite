@@ -2,8 +2,6 @@ package tnf
 
 import (
 	"fmt"
-	"os"
-	"strings"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
@@ -21,26 +19,7 @@ func ClaimFilePrintf(format string, args ...interface{}) {
 	}
 }
 
-func IsUnitTest() bool {
-	//nolint:goconst
-	return strings.Contains(os.Args[1], "-test.") || strings.Contains(os.Args[0], ".test") || os.Getenv("UNIT_TEST") == "true"
-}
-
-// GomegaExpectStringNotEmpty is a wrapper
-func GomegaExpectStringNotEmpty(incomingStr string) {
-	if !IsUnitTest() {
-		gomega.Expect(incomingStr).ToNot(gomega.BeEmpty())
-	}
-}
-
-// GomegaExpectSliceBeNil is a wrapper for gomega
-func GomegaExpectSliceBeNil(incomingSlice []string) {
-	if !IsUnitTest() {
-		gomega.Expect(incomingSlice).To(gomega.BeNil())
-	}
-}
-
-//go:generate moq -out status_moq.go . GinkgoFuncs
+//go:generate moq -out ginkgofuncs_moq.go . GinkgoFuncs
 type GinkgoFuncs interface {
 	GinkgoBy(text string, callback ...func())
 	GinkgoFail(message string, callerSkip ...int)
@@ -65,4 +44,24 @@ func (gw *GinkgoWrapper) GinkgoSkip(message string, callerSkip ...int) {
 }
 func (gw *GinkgoWrapper) GinkgoAbortSuite(message string, callerSkip ...int) {
 	ginkgo.AbortSuite(message, callerSkip...)
+}
+
+//go:generate moq -out gomegafuncs_moq.go . GomegaFuncs
+type GomegaFuncs interface {
+	GomegaExpectStringNotEmpty(incomingStr string)
+	GomegaExpectSliceBeNil(incomingSlice []string)
+}
+
+func NewGomegaWrapper() GomegaFuncs {
+	return &GomegaWrapper{}
+}
+
+type GomegaWrapper struct{}
+
+func (gw *GomegaWrapper) GomegaExpectStringNotEmpty(incomingStr string) {
+	gomega.Expect(incomingStr).ToNot(gomega.BeEmpty())
+}
+
+func (gw *GomegaWrapper) GomegaExpectSliceBeNil(incomingSlice []string) {
+	gomega.Expect(incomingSlice).To(gomega.BeNil())
 }

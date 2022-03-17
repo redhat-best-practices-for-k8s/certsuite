@@ -139,17 +139,20 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 		// Count how many taints come from `module was loaded` taints versus `other`
 		logrus.Debug("Checking for 'module was loaded' taints")
 		logrus.Debug("individualTaints", individualTaints)
-		moduleCheckCtr := 0
-		otherTaintCtr := 0
+		moduleTaintsFound := false
+		otherTaintsFound := false
+
 		for _, it := range individualTaints {
 			if strings.Contains(it, `module was loaded`) {
-				moduleCheckCtr++
+				moduleTaintsFound = true
 			} else {
-				otherTaintCtr++
+				otherTaintsFound = true
 			}
 		}
 
-		if moduleCheckCtr > 0 {
+		if otherTaintsFound {
+			nodeTaintsAccepted = false
+		} else if moduleTaintsFound {
 			// Retrieve the modules from the node (via the debug pod)
 			modules := testerFuncs.GetModulesFromNode(ocpContext)
 			logrus.Debugf("Got the modules from node %s: %v", dp.Name, modules)
@@ -162,11 +165,6 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 			// Looks through the accepted taints listed in the tnf-config file.
 			// If all of the tainted modules show up in the configuration file, don't fail the test.
 			nodeTaintsAccepted = nodetainted.TaintsAccepted(env.Config.AcceptedKernelTaints, taintedModules)
-		}
-
-		// If there are other taints than module was loaded, set the result to false/fail.
-		if otherTaintCtr > 0 {
-			nodeTaintsAccepted = false // taint was caused by something other than `module was loaded`
 		}
 
 		// Only add the tainted node to the slice if the taint is acceptable.
@@ -183,16 +181,8 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 	// We are expecting tainted nodes to be Nil, but only if:
 	// 1) The reason for the tainted node is contains(`module was loaded`)
 	// 2) The modules loaded are all whitelisted.
-	tnf.GomegaExpectSliceBeNil(taintedNodes)
-	tnf.GomegaExpectSliceBeNil(errNodes)
-
-	if tnf.IsUnitTest() {
-		if len(taintedNodes) != 0 || len(errNodes) != 0 {
-			testerFuncs.SetTestingResult(false)
-		} else {
-			testerFuncs.SetTestingResult(true)
-		}
-	}
+	env.GomegaExpectSliceBeNil(taintedNodes)
+	env.GomegaExpectSliceBeNil(errNodes)
 }
 
 func testIsRedHatRelease(env *provider.TestEnvironment) {

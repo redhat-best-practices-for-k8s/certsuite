@@ -25,38 +25,13 @@ import (
 	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	v1 "k8s.io/api/core/v1"
 	v1meta "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 //nolint:funlen
 func TestTestTainted(t *testing.T) {
-	generateEnv := func(acceptedModule string) *provider.TestEnvironment {
-		return &provider.TestEnvironment{
-			DebugPods: map[string]*v1.Pod{
-				"debug-pod-01": {
-					Spec: v1.PodSpec{
-						NodeName: "worker01",
-						Containers: []v1.Container{
-							{},
-						},
-					},
-					ObjectMeta: v1meta.ObjectMeta{
-						Name:      "testPod",
-						Namespace: "testNamespace",
-					},
-				},
-			},
-			Config: configuration.TestConfiguration{
-				AcceptedKernelTaints: []configuration.AcceptedKernelTaintsInfo{
-					{
-						Module: acceptedModule,
-					},
-				},
-			},
-		}
-	}
-
 	testCases := []struct {
 		// Spoofed responses
 		taintInfoFuncRet       string
@@ -196,7 +171,48 @@ func TestTestTainted(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		sharedResult := false
+		sharedResult := true
+
+		generateEnv := func(acceptedModule string) *provider.TestEnvironment {
+			return &provider.TestEnvironment{
+				DebugPods: map[string]*v1.Pod{
+					"debug-pod-01": {
+						Spec: v1.PodSpec{
+							NodeName: "worker01",
+							Containers: []v1.Container{
+								{},
+							},
+						},
+						ObjectMeta: v1meta.ObjectMeta{
+							Name:      "testPod",
+							Namespace: "testNamespace",
+						},
+					},
+				},
+				Config: configuration.TestConfiguration{
+					AcceptedKernelTaints: []configuration.AcceptedKernelTaintsInfo{
+						{
+							Module: acceptedModule,
+						},
+					},
+				},
+				GinkgoFuncs: &tnf.GinkgoFuncsMock{
+					GinkgoAbortSuiteFunc: func(message string, callerSkip ...int) {},
+					GinkgoByFunc:         func(text string, callback ...func()) {},
+					GinkgoFailFunc:       func(message string, callerSkip ...int) {},
+					GinkgoSkipFunc:       func(message string, callerSkip ...int) {},
+				},
+				GomegaFuncs: &tnf.GomegaFuncsMock{
+					GomegaExpectSliceBeNilFunc: func(incomingSlice []string) {
+						if len(incomingSlice) != 0 {
+							sharedResult = false
+						}
+					},
+					GomegaExpectStringNotEmptyFunc: func(incomingStr string) {},
+				},
+			}
+		}
+
 		mockFuncs := &nodetainted.TaintedFuncsMock{
 			GetKernelTaintInfoFunc: func(ctx clientsholder.Context) (string, error) {
 				return tc.taintInfoFuncRet, tc.taintInfoFuncErr
@@ -209,9 +225,6 @@ func TestTestTainted(t *testing.T) {
 			},
 			ModuleInTreeFunc: func(moduleName string, ctx clientsholder.Context) bool {
 				return tc.modulesInTreeFuncRet
-			},
-			SetTestingResultFunc: func(result bool) {
-				sharedResult = result
 			},
 		}
 

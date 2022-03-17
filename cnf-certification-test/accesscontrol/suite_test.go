@@ -77,6 +77,10 @@ func TestTestAutomountServiceToken(t *testing.T) {
 					},
 					GinkgoSkipFunc: func(message string, callerSkip ...int) {},
 				},
+				GomegaFuncs: &tnf.GomegaFuncsMock{
+					GomegaExpectStringNotEmptyFunc: func(incomingStr string) {},
+					GomegaExpectSliceBeNilFunc:     func(incomingSlice []string) {},
+				},
 			}
 		}
 

@@ -28,9 +28,8 @@ import (
 
 // NodeTainted holds information about tainted nodes.
 type NodeTainted struct {
-	ClientHolder      *clientsholder.ClientsHolder
-	OCPContext        clientsholder.Context
-	unitTestingResult bool
+	ClientHolder *clientsholder.ClientsHolder
+	OCPContext   clientsholder.Context
 }
 
 //go:generate moq -out nodetainted_moq.go . TaintedFuncs
@@ -40,7 +39,6 @@ type TaintedFuncs interface {
 	GetModulesFromNode(ctx clientsholder.Context) []string
 	ModuleInTree(moduleName string, ctx clientsholder.Context) bool
 	GetOutOfTreeModules(modules []string, ctx clientsholder.Context) []string
-	SetTestingResult(result bool)
 }
 
 // NewNodeTainted creates a new NodeTainted tester
@@ -48,11 +46,6 @@ func NewNodeTaintedTester(client *clientsholder.ClientsHolder) *NodeTainted {
 	return &NodeTainted{
 		ClientHolder: client,
 	}
-}
-
-// SetTestingResult used exclusively for unit testing results
-func (nt *NodeTainted) SetTestingResult(result bool) {
-	nt.unitTestingResult = result
 }
 
 func (nt *NodeTainted) runCommand(cmd string, ctx clientsholder.Context) (string, error) {

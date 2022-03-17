@@ -30,9 +30,6 @@ var _ TaintedFuncs = &TaintedFuncsMock{}
 // 			ModuleInTreeFunc: func(moduleName string, ctx clientsholder.Context) bool {
 // 				panic("mock out the ModuleInTree method")
 // 			},
-// 			SetTestingResultFunc: func(result bool)  {
-// 				panic("mock out the SetTestingResult method")
-// 			},
 // 			runCommandFunc: func(cmd string, ctx clientsholder.Context) (string, error) {
 // 				panic("mock out the runCommand method")
 // 			},
@@ -54,9 +51,6 @@ type TaintedFuncsMock struct {
 
 	// ModuleInTreeFunc mocks the ModuleInTree method.
 	ModuleInTreeFunc func(moduleName string, ctx clientsholder.Context) bool
-
-	// SetTestingResultFunc mocks the SetTestingResult method.
-	SetTestingResultFunc func(result bool)
 
 	// runCommandFunc mocks the runCommand method.
 	runCommandFunc func(cmd string, ctx clientsholder.Context) (string, error)
@@ -87,11 +81,6 @@ type TaintedFuncsMock struct {
 			// Ctx is the ctx argument value.
 			Ctx clientsholder.Context
 		}
-		// SetTestingResult holds details about calls to the SetTestingResult method.
-		SetTestingResult []struct {
-			// Result is the result argument value.
-			Result bool
-		}
 		// runCommand holds details about calls to the runCommand method.
 		runCommand []struct {
 			// Cmd is the cmd argument value.
@@ -104,7 +93,6 @@ type TaintedFuncsMock struct {
 	lockGetModulesFromNode  sync.RWMutex
 	lockGetOutOfTreeModules sync.RWMutex
 	lockModuleInTree        sync.RWMutex
-	lockSetTestingResult    sync.RWMutex
 	lockrunCommand          sync.RWMutex
 }
 
@@ -237,37 +225,6 @@ func (mock *TaintedFuncsMock) ModuleInTreeCalls() []struct {
 	mock.lockModuleInTree.RLock()
 	calls = mock.calls.ModuleInTree
 	mock.lockModuleInTree.RUnlock()
-	return calls
-}
-
-// SetTestingResult calls SetTestingResultFunc.
-func (mock *TaintedFuncsMock) SetTestingResult(result bool) {
-	if mock.SetTestingResultFunc == nil {
-		panic("TaintedFuncsMock.SetTestingResultFunc: method is nil but TaintedFuncs.SetTestingResult was just called")
-	}
-	callInfo := struct {
-		Result bool
-	}{
-		Result: result,
-	}
-	mock.lockSetTestingResult.Lock()
-	mock.calls.SetTestingResult = append(mock.calls.SetTestingResult, callInfo)
-	mock.lockSetTestingResult.Unlock()
-	mock.SetTestingResultFunc(result)
-}
-
-// SetTestingResultCalls gets all the calls that were made to SetTestingResult.
-// Check the length with:
-//     len(mockedTaintedFuncs.SetTestingResultCalls())
-func (mock *TaintedFuncsMock) SetTestingResultCalls() []struct {
-	Result bool
-} {
-	var calls []struct {
-		Result bool
-	}
-	mock.lockSetTestingResult.RLock()
-	calls = mock.calls.SetTestingResult
-	mock.lockSetTestingResult.RUnlock()
 	return calls
 }
 
