@@ -27,21 +27,14 @@ import (
 //go:generate moq -out automount_moq.go . AutomountTokenFuncs
 type AutomountTokenFuncs interface {
 	AutomountServiceAccountSetOnSA(serviceAccountName, podNamespace string) (*bool, error)
-	SetTestingResult(result bool)
 }
 type AutomountToken struct {
-	unitTestingResult bool
-	ch                *clientsholder.ClientsHolder
-}
-
-func (at *AutomountToken) SetTestingResult(result bool) {
-	at.unitTestingResult = result
+	ch *clientsholder.ClientsHolder
 }
 
 func NewAutomountTokenTester(ch *clientsholder.ClientsHolder) *AutomountToken {
 	return &AutomountToken{
-		unitTestingResult: false,
-		ch:                ch,
+		ch: ch,
 	}
 }
 
