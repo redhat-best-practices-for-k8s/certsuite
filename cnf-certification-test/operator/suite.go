@@ -25,6 +25,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/phasecheck"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -59,11 +60,12 @@ var _ = ginkgo.Describe(common.OperatorTestKey, func() {
 func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 	badCsvs := []string{}
 	if len(env.Csvs) == 0 {
-		ginkgo.Skip("No CSVs to perform test, skipping.")
+		tnf.GinkgoSkip("No CSVs to perform test, skipping.")
 	}
 
 	for _, csv := range env.Csvs {
-		if csv.Status.Phase != v1alpha1.CSVPhaseSucceeded {
+		phase := phasecheck.WaitOperatorReady(csv)
+		if phase != v1alpha1.CSVPhaseSucceeded {
 			badCsvs = append(badCsvs, fmt.Sprintf("%s.%s", csv.Namespace, csv.Name))
 			tnf.ClaimFilePrintf("CSV %s (ns %s) is in phase %s. Expected phase is %s",
 				csv.Name, csv.Namespace, csv.Status.Phase, v1alpha1.CSVPhaseSucceeded)
@@ -71,14 +73,14 @@ func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 	}
 
 	if n := len(badCsvs); n > 0 {
-		ginkgo.Fail(fmt.Sprintf("Found %d CSVs whose phase is not %s.", n, v1alpha1.CSVPhaseSucceeded))
+		tnf.GinkgoFail(fmt.Sprintf("Found %d CSVs whose phase is not %s.", n, v1alpha1.CSVPhaseSucceeded))
 	}
 }
 
 func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 	badCsvs := []string{}
 	if len(env.Csvs) == 0 {
-		ginkgo.Skip("No CSVs to perform test, skipping.")
+		tnf.GinkgoSkip("No CSVs to perform test, skipping.")
 	}
 
 	for _, csv := range env.Csvs {
@@ -108,23 +110,23 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 	}
 
 	if n := len(badCsvs); n > 0 {
-		ginkgo.Fail(fmt.Sprintf("Found %d CSVs with priviledges on some resource names.", n))
+		tnf.GinkgoFail(fmt.Sprintf("Found %d CSVs with priviledges on some resource names.", n))
 	}
 }
 
 func testOperatorOlmSubscription(env *provider.TestEnvironment) {
 	badCsvs := []string{}
 	if len(env.Csvs) == 0 {
-		ginkgo.Skip("No CSVs to perform test, skipping.")
+		tnf.GinkgoSkip("No CSVs to perform test, skipping.")
 	}
 
 	ocpClient := clientsholder.GetClientsHolder()
 	for _, csv := range env.Csvs {
-		ginkgo.By(fmt.Sprintf("Checking OLM subscription for CSV %s (ns %s)", csv.Name, csv.Namespace))
+		tnf.GinkgoBy(fmt.Sprintf("Checking OLM subscription for CSV %s (ns %s)", csv.Name, csv.Namespace))
 		options := metav1.ListOptions{}
 		subscriptions, err := ocpClient.OlmClient.OperatorsV1alpha1().Subscriptions(csv.Namespace).List(context.TODO(), options)
 		if err != nil {
-			ginkgo.Fail(fmt.Sprintf("Failed to get subscription for CSV %s (ns %s)", csv.Name, csv.Namespace))
+			tnf.GinkgoFail(fmt.Sprintf("Failed to get subscription for CSV %s (ns %s): %s", csv.Name, csv.Namespace, err))
 		}
 
 		// Iterate through namespace's subscriptions to get the installed CSV one.
@@ -143,6 +145,6 @@ func testOperatorOlmSubscription(env *provider.TestEnvironment) {
 	}
 
 	if n := len(badCsvs); n > 0 {
-		ginkgo.Fail(fmt.Sprintf("Found %d CSVs not installed by OLM", n))
+		tnf.GinkgoFail(fmt.Sprintf("Found %d CSVs not installed by OLM", n))
 	}
 }
