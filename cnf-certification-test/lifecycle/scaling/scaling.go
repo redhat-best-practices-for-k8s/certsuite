@@ -147,7 +147,7 @@ func runPodsetScale(podSetClient interface{}, name,
 	}
 
 	if !podsets.IsPodsetReady(namespace, name, podsettype, timeout) {
-		logrus.Error("can't update", podsettype, " ", namespace, ":", name)
+		logrus.Error("can't update ", podsettype, " ", namespace, ":", name)
 		return fmt.Errorf("can't update %s", podsettype)
 	}
 	return nil
