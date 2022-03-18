@@ -18,30 +18,23 @@ package networking
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/declaredandlistening"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/icmp"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
 const (
-	defaultNumPings   = 5
-	indexprotocolname = 0
-	indexport         = 4
+	defaultNumPings = 5
+	cmd             = `ss -tulwnH`
 )
-
-type key struct {
-	port     int
-	protocol string
-}
 
 type Port []struct {
 	ContainerPort int
@@ -87,93 +80,49 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	})
 })
 
-func parseListening(res string, listeningPorts map[key]string) {
-	var k key
-	lines := strings.Split(res, "\n")
-	for _, line := range lines {
-		fields := strings.Fields(line)
-		if !strings.Contains(line, "LISTEN") {
-			continue
-		}
-		if indexprotocolname > len(fields) || indexport > len(fields) {
-			return
-		}
-		s := strings.Split(fields[indexport], ":")
-		p, _ := strconv.Atoi(s[1])
-		k.port = p
-		k.protocol = strings.ToUpper(fields[indexprotocolname])
-		k.protocol = strings.ReplaceAll(k.protocol, "\"", "")
-		listeningPorts[k] = ""
-	}
-}
-
-func checkIfListenIsDeclared(listeningPorts, declaredPorts map[key]string) map[key]string {
-	res := make(map[key]string)
-	if len(listeningPorts) == 0 {
-		return res
-	}
-	for k := range listeningPorts {
-		_, ok := declaredPorts[k]
-		if !ok {
-			tnf.ClaimFilePrintf(fmt.Sprintf("The port %d on protocol %s in pod %s is not declared.", k.port, k.protocol, listeningPorts[k]))
-			res[k] = listeningPorts[k]
-		}
-	}
-	return res
-}
-
 //nolint:funlen
 func testListenAndDeclared(env *provider.TestEnvironment) {
-	var k key
-	declaredPorts := make(map[key]string)
-	listeningPorts := make(map[key]string)
-	var failedPods string
-	var skippedPods string
+	var k declaredandlistening.Key
+	failedContainers := []string{}
 
 	for _, cut := range env.Containers {
+		declaredPorts := make(map[declaredandlistening.Key]*provider.Container)
+		listeningPorts := make(map[declaredandlistening.Key]*provider.Container)
 		ports := cut.Data.Ports
-		fmt.Println(ports)
+		fmt.Println(cut)
+		logrus.Debugf("%s declaredPorts: %v", cut.StringShort(), ports)
 		if ports == nil {
-			tnf.ClaimFilePrintf("Failed to get declared port for %s", cut.StringShort())
-			skippedPods += cut.StringShort() + "\n"
+			tnf.ClaimFilePrintf("%s doesn't not have any declared port", cut.StringShort())
 		}
 		for j := 0; j < len(ports); j++ {
-			k.port = int(ports[j].ContainerPort)
-			k.protocol = string(ports[j].Protocol)
-			declaredPorts[k] = ports[j].Name
+			k.Port = int(ports[j].ContainerPort)
+			k.Protocol = string(ports[j].Protocol)
+			declaredPorts[k] = cut
 		}
-
-		oc := clientsholder.GetClientsHolder()
-		output, outerr, err := oc.ExecCommandContainer(clientsholder.Context{Namespace: cut.Namespace,
-			Podname: cut.Podname, Containername: cut.Data.Name}, `ss -tulwnH`)
-		if err != nil {
-			logrus.Errorln("can't execute command on container ", err)
+		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, cut, env)
+		if err != nil || errStr != "" {
+			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s", cmd, cut.StringShort(), err)
+			failedContainers = append(failedContainers, cut.StringShort())
 			continue
 		}
-		if outerr != "" {
-			logrus.Errorln("error when running listening command ", outerr)
-			continue
-		}
-		parseListening(output, listeningPorts)
+		declaredandlistening.ParseListening(outStr, listeningPorts, cut)
 		if len(listeningPorts) == 0 {
-			tnf.ClaimFilePrintf("Failed to get listening port for %s", cut.StringShort())
+			tnf.ClaimFilePrintf("%s doesn't have any listening ports.", cut.StringShort())
 			continue
 		}
 		// compare between declaredPort,listeningPort
-		undeclaredPorts := checkIfListenIsDeclared(listeningPorts, declaredPorts)
+		undeclaredPorts := declaredandlistening.CheckIfListenIsDeclared(listeningPorts, declaredPorts)
 		for k := range undeclaredPorts {
-			tnf.ClaimFilePrintf("The port %d on protocol %s not declared on %s", k.port, k.protocol, cut.StringShort())
+			tnf.ClaimFilePrintf("The port %d on protocol %s not declared on %s", k.Port, k.Protocol, cut.StringShort())
 		}
 		if len(undeclaredPorts) != 0 {
-			for x := range undeclaredPorts {
-				p := strconv.Itoa(x.port)
-				failedPods += p + " " + x.protocol
-			}
+			failedContainers = append(failedContainers, fmt.Sprintf("%s undeclaredPorts: %v", cut.StringShort(), undeclaredPorts))
 		}
 	}
 
-	if nf, ns := len(failedPods), len(skippedPods); nf > 0 || ns > 0 {
-		ginkgo.Fail("Found %d pods with listening ports not declared and skipped %d pods due to unexpected error", nf, ns)
+	if n := len(failedContainers); n > 0 {
+		logrus.Debugf("Failed containers: %v", n)
+		ginkgo.Fail(fmt.Sprintf("Found %d pods with listening ports that had not been declared", n))
 	}
 }
 
