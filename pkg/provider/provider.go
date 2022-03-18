@@ -65,7 +65,7 @@ type TestEnvironment struct { // rename this with testTarget
 	SkipNetTests       map[*v1.Pod]bool
 	SkipMultusNetTests map[*v1.Pod]bool
 	Deployments        []*v1apps.Deployment
-	SatetfulSets       []*v1apps.StatefulSet
+	StatetfulSets      []*v1apps.StatefulSet
 	HorizontalScaler   map[string]*v1scaling.HorizontalPodAutoscaler
 	Nodes              *v1.NodeList
 	Subscriptions      []*v1alpha1.Subscription
@@ -181,7 +181,7 @@ func buildTestEnvironment() { //nolint:funlen
 		env.Deployments = append(env.Deployments, &data.Deployments[i])
 	}
 	for i := range data.StatefulSet {
-		env.SatetfulSets = append(env.SatetfulSets, &data.StatefulSet[i])
+		env.StatetfulSets = append(env.StatetfulSets, &data.StatefulSet[i])
 	}
 	env.HorizontalScaler = data.Hpas
 

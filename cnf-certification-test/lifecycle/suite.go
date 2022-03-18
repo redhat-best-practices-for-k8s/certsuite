@@ -273,7 +273,7 @@ func testHighAvailability(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHighAvailabilityBestPractices)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		env.GinkgoBy("Should set pod replica number greater than 1")
-		if len(env.Deployments) == 0 && len(env.SatetfulSets) == 0 {
+		if len(env.Deployments) == 0 && len(env.StatetfulSets) == 0 {
 			env.GinkgoSkip("No test deployments/statefulset found.")
 		}
 
@@ -284,7 +284,7 @@ func testHighAvailability(env *provider.TestEnvironment) {
 				badDeployments = append(badDeployments, provider.DeploymentToString(dp))
 			}
 		}
-		for _, st := range env.SatetfulSets {
+		for _, st := range env.StatetfulSets {
 			if st.Spec.Replicas == nil || *(st.Spec.Replicas) == 1 {
 				badStatefulSet = append(badStatefulSet, provider.StatefulsetToString(st))
 			}
