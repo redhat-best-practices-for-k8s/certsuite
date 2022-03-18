@@ -30,7 +30,7 @@ var _ TaintedFuncs = &TaintedFuncsMock{}
 // 			ModuleInTreeFunc: func(moduleName string, ctx clientsholder.Context) bool {
 // 				panic("mock out the ModuleInTree method")
 // 			},
-// 			runCommandFunc: func(cmd string, ctx clientsholder.Context) (string, error) {
+// 			runCommandFunc: func(ctx clientsholder.Context, cmd string) (string, error) {
 // 				panic("mock out the runCommand method")
 // 			},
 // 		}
@@ -53,7 +53,7 @@ type TaintedFuncsMock struct {
 	ModuleInTreeFunc func(moduleName string, ctx clientsholder.Context) bool
 
 	// runCommandFunc mocks the runCommand method.
-	runCommandFunc func(cmd string, ctx clientsholder.Context) (string, error)
+	runCommandFunc func(ctx clientsholder.Context, cmd string) (string, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
@@ -83,10 +83,10 @@ type TaintedFuncsMock struct {
 		}
 		// runCommand holds details about calls to the runCommand method.
 		runCommand []struct {
-			// Cmd is the cmd argument value.
-			Cmd string
 			// Ctx is the ctx argument value.
 			Ctx clientsholder.Context
+			// Cmd is the cmd argument value.
+			Cmd string
 		}
 	}
 	lockGetKernelTaintInfo  sync.RWMutex
@@ -229,33 +229,33 @@ func (mock *TaintedFuncsMock) ModuleInTreeCalls() []struct {
 }
 
 // runCommand calls runCommandFunc.
-func (mock *TaintedFuncsMock) runCommand(cmd string, ctx clientsholder.Context) (string, error) {
+func (mock *TaintedFuncsMock) runCommand(ctx clientsholder.Context, cmd string) (string, error) {
 	if mock.runCommandFunc == nil {
 		panic("TaintedFuncsMock.runCommandFunc: method is nil but TaintedFuncs.runCommand was just called")
 	}
 	callInfo := struct {
-		Cmd string
 		Ctx clientsholder.Context
+		Cmd string
 	}{
-		Cmd: cmd,
 		Ctx: ctx,
+		Cmd: cmd,
 	}
 	mock.lockrunCommand.Lock()
 	mock.calls.runCommand = append(mock.calls.runCommand, callInfo)
 	mock.lockrunCommand.Unlock()
-	return mock.runCommandFunc(cmd, ctx)
+	return mock.runCommandFunc(ctx, cmd)
 }
 
 // runCommandCalls gets all the calls that were made to runCommand.
 // Check the length with:
 //     len(mockedTaintedFuncs.runCommandCalls())
 func (mock *TaintedFuncsMock) runCommandCalls() []struct {
-	Cmd string
 	Ctx clientsholder.Context
+	Cmd string
 } {
 	var calls []struct {
-		Cmd string
 		Ctx clientsholder.Context
+		Cmd string
 	}
 	mock.lockrunCommand.RLock()
 	calls = mock.calls.runCommand

@@ -34,7 +34,7 @@ type NodeTainted struct {
 
 //go:generate moq -out nodetainted_moq.go . TaintedFuncs
 type TaintedFuncs interface {
-	runCommand(cmd string, ctx clientsholder.Context) (string, error)
+	runCommand(ctx clientsholder.Context, cmd string) (string, error)
 	GetKernelTaintInfo(ctx clientsholder.Context) (string, error)
 	GetModulesFromNode(ctx clientsholder.Context) []string
 	ModuleInTree(moduleName string, ctx clientsholder.Context) bool
@@ -48,7 +48,7 @@ func NewNodeTaintedTester(client *clientsholder.ClientsHolder) *NodeTainted {
 	}
 }
 
-func (nt *NodeTainted) runCommand(cmd string, ctx clientsholder.Context) (string, error) {
+func (nt *NodeTainted) runCommand(ctx clientsholder.Context, cmd string) (string, error) {
 	output, outerr, err := nt.ClientHolder.ExecCommandContainer(ctx, cmd)
 	if err != nil {
 		logrus.Errorln("can't execute command on container ", err)
@@ -62,7 +62,7 @@ func (nt *NodeTainted) runCommand(cmd string, ctx clientsholder.Context) (string
 }
 
 func (nt *NodeTainted) GetKernelTaintInfo(ctx clientsholder.Context) (string, error) {
-	output, err := nt.runCommand(`cat /proc/sys/kernel/tainted`, ctx)
+	output, err := nt.runCommand(ctx, `cat /proc/sys/kernel/tainted`)
 	if err != nil {
 		return "", err
 	}
@@ -87,7 +87,7 @@ func (nt *NodeTainted) GetModulesFromNode(ctx clientsholder.Context) []string {
 	// Split on the return/newline and get the list of the modules back.
 	//nolint:goconst // used only once
 	command := `chroot /host lsmod | awk '{ print $1 }' | grep -v Module`
-	output, _ := nt.runCommand(command, ctx)
+	output, _ := nt.runCommand(ctx, command)
 	output = strings.ReplaceAll(output, "\t", "")
 	moduleList := strings.Split(strings.ReplaceAll(output, "\r\n", "\n"), "\n")
 	return removeEmptyStrings(moduleList)
@@ -95,7 +95,7 @@ func (nt *NodeTainted) GetModulesFromNode(ctx clientsholder.Context) []string {
 
 func (nt *NodeTainted) ModuleInTree(moduleName string, ctx clientsholder.Context) bool {
 	command := `chroot /host cat /sys/module/` + moduleName + `/taint`
-	cmdOutput, _ := nt.runCommand(command, ctx)
+	cmdOutput, _ := nt.runCommand(ctx, command)
 	return !strings.Contains(cmdOutput, "O")
 }
 
