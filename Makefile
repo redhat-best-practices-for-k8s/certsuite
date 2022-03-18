@@ -132,4 +132,5 @@ install-moq:
 	go install github.com/matryer/moq@latest
 
 generate: install-moq
+	find . | grep _moq.go | xargs rm
 	go generate ./...

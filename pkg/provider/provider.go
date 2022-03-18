@@ -73,6 +73,7 @@ type TestEnvironment struct { // rename this with testTarget
 	OpenshiftVersion   string
 	HelmList           []*release.Release
 	tnf.GinkgoFuncs    // interface that holds references to Ginkgo calls
+	tnf.GomegaFuncs    // interface that holds references to Gomega calls
 }
 
 type Container struct {
@@ -187,6 +188,9 @@ func buildTestEnvironment() { //nolint:funlen
 
 	// Populate GinkgoFuncs with appropriate wrappers
 	env.GinkgoFuncs = tnf.NewGinkgoWrapper()
+
+	// Populate GomegaFuncs with appropriate wrappers
+	env.GomegaFuncs = tnf.NewGomegaWrapper()
 }
 func isSkipHelmChart(helmName string, skipHelmChartList []configuration.SkipHelmChartList) bool {
 	if len(skipHelmChartList) == 0 {

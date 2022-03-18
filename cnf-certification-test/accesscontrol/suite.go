@@ -133,7 +133,7 @@ func TestSecConCapabilities(env *provider.TestEnvironment) {
 		}
 	}
 	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
-	tnf.GomegaExpectSliceBeNil(badContainers)
+	env.GomegaExpectSliceBeNil(badContainers)
 }
 
 // TestSecConRootUser verifies that the container is not running as root
@@ -163,8 +163,8 @@ func TestSecConRootUser(env *provider.TestEnvironment) {
 	}
 	tnf.ClaimFilePrintf("bad pods: %v", badPods)
 	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
-	tnf.GomegaExpectSliceBeNil(badContainers)
-	tnf.GomegaExpectSliceBeNil(badPods)
+	env.GomegaExpectSliceBeNil(badContainers)
+	env.GomegaExpectSliceBeNil(badPods)
 }
 
 // TestSecConPrivilegeEscalation verifies that the container is not allowed privilege escalation
@@ -182,7 +182,7 @@ func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 		}
 	}
 	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
-	tnf.GomegaExpectSliceBeNil(badContainers)
+	env.GomegaExpectSliceBeNil(badContainers)
 }
 
 // TestContainerHostPort tests that containers are not configured with host port privileges
@@ -200,7 +200,7 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 		}
 	}
 	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
-	tnf.GomegaExpectSliceBeNil(badContainers)
+	env.GomegaExpectSliceBeNil(badContainers)
 }
 
 // TestPodHostNetwork verifies that the pod hostNetwork parameter is not set to true
@@ -216,7 +216,7 @@ func TestPodHostNetwork(env *provider.TestEnvironment) {
 		}
 	}
 	tnf.ClaimFilePrintf("bad pods: %v", badPods)
-	tnf.GomegaExpectSliceBeNil(badPods)
+	env.GomegaExpectSliceBeNil(badPods)
 }
 
 // TestPodHostPath verifies that the pod hostpath parameter is not set to true
@@ -235,7 +235,7 @@ func TestPodHostPath(env *provider.TestEnvironment) {
 		}
 	}
 	tnf.ClaimFilePrintf("bad pods: %v", badPods)
-	tnf.GomegaExpectSliceBeNil(badPods)
+	env.GomegaExpectSliceBeNil(badPods)
 }
 
 // TestPodHostIPC verifies that the pod hostIpc parameter is not set to true
@@ -251,7 +251,7 @@ func TestPodHostIPC(env *provider.TestEnvironment) {
 		}
 	}
 	tnf.ClaimFilePrintf("bad pods: %v", badPods)
-	tnf.GomegaExpectSliceBeNil(badPods)
+	env.GomegaExpectSliceBeNil(badPods)
 }
 
 // TestPodHostPID verifies that the pod hostPid parameter is not set to true
@@ -267,7 +267,7 @@ func TestPodHostPID(env *provider.TestEnvironment) {
 		}
 	}
 	tnf.ClaimFilePrintf("bad pods: %v", badPods)
-	tnf.GomegaExpectSliceBeNil(badPods)
+	env.GomegaExpectSliceBeNil(badPods)
 }
 
 // Tests namespaces for invalid prefixed and CRs are not defined in namespaces not under test with CRDs under test
@@ -390,7 +390,7 @@ func TestAutomountServiceToken(env *provider.TestEnvironment, testerFuncs rbac.A
 	failedPods := []string{}
 	for _, put := range env.Pods {
 		env.GinkgoBy(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
-		tnf.GomegaExpectStringNotEmpty(put.Spec.ServiceAccountName)
+		env.GomegaExpectStringNotEmpty(put.Spec.ServiceAccountName)
 
 		// The token can be specified in the pod directly
 		// or it can be specified in the service account of the pod
