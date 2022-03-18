@@ -52,6 +52,7 @@ type NodeHwInfo struct {
 	Lspci    []string
 }
 
+// GetCniPlugins gets a json representation of the CNI plugins installed in each nodes
 func GetCniPlugins() (out map[string][]interface{}) {
 	env := provider.GetTestEnvironment()
 	o := clientsholder.GetClientsHolder()
@@ -73,6 +74,7 @@ func GetCniPlugins() (out map[string][]interface{}) {
 	return out
 }
 
+// GetHwInfoAllNodes gets the Hardware information for each nodes
 func GetHwInfoAllNodes() (out map[string]NodeHwInfo) {
 	env := provider.GetTestEnvironment()
 	o := clientsholder.GetClientsHolder()
@@ -101,6 +103,7 @@ func GetHwInfoAllNodes() (out map[string]NodeHwInfo) {
 	return out
 }
 
+// getLscpu gets lscpu in Json format for a given node
 func getLscpu(debugPod *v1.Pod, o *clientsholder.ClientsHolder) (out interface{}, err error) { //nolint:dupl
 	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
 	outStr, errStr, err := o.ExecCommandContainer(ctx, lscpuCommand)
@@ -114,6 +117,7 @@ func getLscpu(debugPod *v1.Pod, o *clientsholder.ClientsHolder) (out interface{}
 	return out, nil
 }
 
+// getIPConfig gets ipconfig -a in Json format for a given node
 func getIPConfig(debugPod *v1.Pod, o *clientsholder.ClientsHolder) (out interface{}, err error) { //nolint:dupl
 	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
 	outStr, errStr, err := o.ExecCommandContainer(ctx, ipCommand)
@@ -127,6 +131,7 @@ func getIPConfig(debugPod *v1.Pod, o *clientsholder.ClientsHolder) (out interfac
 	return out, nil
 }
 
+// getLsblk gets lsblk in Json format for a given node
 func getLsblk(debugPod *v1.Pod, o *clientsholder.ClientsHolder) (out interface{}, err error) { //nolint:dupl
 	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
 	outStr, errStr, err := o.ExecCommandContainer(ctx, lsblkCommand)
@@ -140,6 +145,7 @@ func getLsblk(debugPod *v1.Pod, o *clientsholder.ClientsHolder) (out interface{}
 	return out, nil
 }
 
+// getLspci gets lspci in Json format for a given node
 func getLspci(debugPod *v1.Pod, o *clientsholder.ClientsHolder) (out []string, err error) {
 	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
 	outStr, errStr, err := o.ExecCommandContainer(ctx, lspciCommand)
@@ -150,6 +156,7 @@ func getLspci(debugPod *v1.Pod, o *clientsholder.ClientsHolder) (out []string, e
 	return strings.Split(outStr, "\n"), nil
 }
 
+// GetNodeJSON gets the nodes summary in JSON (similar to: oc get nodes -json)
 func GetNodeJSON() (out map[string]interface{}) {
 	env := provider.GetTestEnvironment()
 
@@ -174,6 +181,7 @@ func GetNodeJSON() (out map[string]interface{}) {
 	return out
 }
 
+// GetCsiDriver Gets the CSI driver list
 func GetCsiDriver() (out map[string]interface{}) {
 	o := clientsholder.GetClientsHolder()
 	csiDriver, err := o.StorageClient.CSIDrivers().List(context.TODO(), apimachineryv1.ListOptions{})
