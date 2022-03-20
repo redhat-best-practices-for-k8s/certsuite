@@ -45,8 +45,6 @@ func TestScaleStatefulSet(statefulset *v1app.StatefulSet, timeout time.Duration)
 	replicas := int32(1)
 	if statefulset.Spec.Replicas != nil {
 		replicas = *statefulset.Spec.Replicas
-	} else {
-		replicas = 1
 	}
 
 	if replicas <= 1 {
@@ -124,8 +122,6 @@ func TestScaleHpaStatefulSet(statefulset *v1app.StatefulSet, hpa *v1autoscaling.
 	min := int32(1)
 	if hpa.Spec.MinReplicas != nil {
 		min = *hpa.Spec.MinReplicas
-	} else {
-		min = 1
 	}
 	max := hpa.Spec.MaxReplicas
 	if min <= 1 {
