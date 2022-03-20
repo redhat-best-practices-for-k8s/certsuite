@@ -33,15 +33,16 @@ import (
 	v1machinery "k8s.io/apimachinery/pkg/apis/meta/v1"
 	retry "k8s.io/client-go/util/retry"
 
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	hps "k8s.io/client-go/kubernetes/typed/autoscaling/v1"
 )
 
-func TestScaleStateFulset(statefulset *v1app.StatefulSet, timeout time.Duration) bool {
+func TestScaleStatefulSet(statefulset *v1app.StatefulSet, timeout time.Duration) bool {
 	clients := clientsholder.GetClientsHolder()
 	name, namespace := statefulset.Name, statefulset.Namespace
 	ssClients := clients.AppsClients.StatefulSets(namespace)
 	logrus.Trace("scale statefulset not using HPA ", namespace, ":", name)
-	var replicas int32
+	replicas := int32(1)
 	if statefulset.Spec.Replicas != nil {
 		replicas = *statefulset.Spec.Replicas
 	} else {
@@ -92,6 +93,7 @@ func scaleStateFulsetHelper(clients *clientsholder.ClientsHolder, ssClient v1.St
 		// RetryOnConflict uses exponential backoff to avoid exhausting the apiserver
 		ss, err := ssClient.Get(context.TODO(), name, v1machinery.GetOptions{})
 		if err != nil {
+			tnf.ClaimFilePrintf("failed to get latest version of statefulset %s:%s with error %s", namespace, name, err)
 			logrus.Error("failed to get latest version of statefulset ", namespace, ":", name)
 			return err
 		}
@@ -119,7 +121,7 @@ func TestScaleHpaStatefulSet(statefulset *v1app.StatefulSet, hpa *v1autoscaling.
 	hpaName := hpa.Name
 	name, namespace := statefulset.Name, statefulset.Namespace
 	hpscaler := clients.K8sClient.AutoscalingV1().HorizontalPodAutoscalers(namespace)
-	var min int32
+	min := int32(1)
 	if hpa.Spec.MinReplicas != nil {
 		min = *hpa.Spec.MinReplicas
 	} else {

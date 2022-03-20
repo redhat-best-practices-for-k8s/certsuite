@@ -240,7 +240,6 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 		tnf.GinkgoSkip("No test deployments found.")
 	}
 	failedDeployments := []string{}
-	skippedDeployments := []string{}
 	for i := range env.Deployments {
 		// TestDeploymentScaling test scaling of deployment
 		// This is the entry point for deployment scaling tests
@@ -263,14 +262,10 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 		}
 	}
 
-	if len(skippedDeployments) > 0 {
-		tnf.ClaimFilePrintf("not ready deployments : %v", skippedDeployments)
-	}
 	if len(failedDeployments) > 0 {
 		tnf.ClaimFilePrintf(" failed deployments: %v", failedDeployments)
 	}
 	gomega.Expect(0).To(gomega.Equal(len(failedDeployments)))
-	gomega.Expect(0).To(gomega.Equal(len(skippedDeployments)))
 }
 
 //nolint:dupl
@@ -282,7 +277,6 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 		tnf.GinkgoSkip("No test statefulset found.")
 	}
 	failedSatetfulSets := []string{}
-	skippedSatetfulSets := []string{}
 	for i := range env.SatetfulSets {
 		// TeststatefulsetScaling test scaling of statefulset
 		// This is the entry point for statefulset scaling tests
@@ -300,19 +294,15 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 		}
 		// if the statefulset is not controller by HPA
 		// scale it directly
-		if !scaling.TestScaleStateFulset(statefulset, timeout) {
+		if !scaling.TestScaleStatefulSet(statefulset, timeout) {
 			failedSatetfulSets = append(failedSatetfulSets, name)
 		}
 	}
 
-	if len(skippedSatetfulSets) > 0 {
-		tnf.ClaimFilePrintf("not ready statefulsets : %v", skippedSatetfulSets)
-	}
 	if len(failedSatetfulSets) > 0 {
 		tnf.ClaimFilePrintf(" failed statefulsets: %v", failedSatetfulSets)
 	}
 	gomega.Expect(0).To(gomega.Equal(len(failedSatetfulSets)))
-	gomega.Expect(0).To(gomega.Equal(len(skippedSatetfulSets)))
 }
 
 // testHighAvailability
