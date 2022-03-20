@@ -2,8 +2,6 @@ package tnf
 
 import (
 	"fmt"
-	"os"
-	"strings"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
@@ -21,47 +19,49 @@ func ClaimFilePrintf(format string, args ...interface{}) {
 	}
 }
 
-func IsUnitTest() bool {
-	//nolint:goconst
-	return strings.Contains(os.Args[1], "-test.") || strings.Contains(os.Args[0], ".test") || os.Getenv("UNIT_TEST") == "true"
+//go:generate moq -out ginkgofuncs_moq.go . GinkgoFuncs
+type GinkgoFuncs interface {
+	GinkgoBy(text string, callback ...func())
+	GinkgoFail(message string, callerSkip ...int)
+	GinkgoSkip(message string, callerSkip ...int)
+	GinkgoAbortSuite(message string, callerSkip ...int)
 }
 
-// GinkgoBy is a wrapper for Ginkgo.By()
-func GinkgoBy(cmd string) {
-	if !IsUnitTest() {
-		ginkgo.By(cmd)
-	}
+func NewGinkgoWrapper() GinkgoFuncs {
+	return &GinkgoWrapper{}
 }
 
-// GomegaExpectStringNotEmpty is a wrapper
-func GomegaExpectStringNotEmpty(incomingStr string) {
-	if !IsUnitTest() {
-		gomega.Expect(incomingStr).ToNot(gomega.BeEmpty())
-	}
+type GinkgoWrapper struct{}
+
+func (gw *GinkgoWrapper) GinkgoBy(text string, callback ...func()) {
+	ginkgo.By(text, callback...)
+}
+func (gw *GinkgoWrapper) GinkgoFail(message string, callerSkip ...int) {
+	ginkgo.Fail(message, callerSkip...)
+}
+func (gw *GinkgoWrapper) GinkgoSkip(message string, callerSkip ...int) {
+	ginkgo.Skip(message, callerSkip...)
+}
+func (gw *GinkgoWrapper) GinkgoAbortSuite(message string, callerSkip ...int) {
+	ginkgo.AbortSuite(message, callerSkip...)
 }
 
-// GinkgoFail is a wrapper for Ginkgo.Fail()
-func GinkgoFail(cmd string) {
-	if !IsUnitTest() {
-		ginkgo.Fail(cmd)
-	}
+//go:generate moq -out gomegafuncs_moq.go . GomegaFuncs
+type GomegaFuncs interface {
+	GomegaExpectStringNotEmpty(incomingStr string)
+	GomegaExpectSliceBeNil(incomingSlice []string)
 }
 
-// GomegaExpectSliceBeNil is a wrapper for gomega
-func GomegaExpectSliceBeNil(incomingSlice []string) {
-	if !IsUnitTest() {
-		gomega.Expect(incomingSlice).To(gomega.BeNil())
-	}
+func NewGomegaWrapper() GomegaFuncs {
+	return &GomegaWrapper{}
 }
 
-func GinkgoSkip(cmd string) {
-	if !IsUnitTest() {
-		ginkgo.Skip(cmd)
-	}
+type GomegaWrapper struct{}
+
+func (gw *GomegaWrapper) GomegaExpectStringNotEmpty(incomingStr string) {
+	gomega.Expect(incomingStr).ToNot(gomega.BeEmpty())
 }
 
-func GinkgoAbortSuite(cmd string) {
-	if !IsUnitTest() {
-		ginkgo.AbortSuite(cmd)
-	}
+func (gw *GomegaWrapper) GomegaExpectSliceBeNil(incomingSlice []string) {
+	gomega.Expect(incomingSlice).To(gomega.BeNil())
 }

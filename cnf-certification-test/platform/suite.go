@@ -53,13 +53,13 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if provider.IsOCPCluster() {
 			testContainersFsDiff(&env)
 		} else {
-			tnf.GinkgoSkip(" non ocp cluster ")
+			env.GinkgoSkip(" non ocp cluster ")
 		}
 	})
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNonTaintedNodeKernelsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testTainted(&env) // minikube tainted kernels are allowed via config
+		testTainted(&env, nodetainted.NewNodeTaintedTester(clientsholder.GetClientsHolder())) // minikube tainted kernels are allowed via config
 	})
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestIsRedHatReleaseIdentifier)
@@ -101,20 +101,21 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 }
 
 //nolint:funlen
-func testTainted(env *provider.TestEnvironment) {
+func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedFuncs) {
 	var taintedNodes []string
 	var errNodes []string
 
 	// Loop through the debug pods that are tied to each node.
 	for _, dp := range env.DebugPods {
-		// Build a NodeTainted tester object.
-		c := clientsholder.GetClientsHolder()
-		tester := nodetainted.NewNodeTaintedTester(common.DefaultTimeout, c, clientsholder.Context{
+		// Create OCP context to pass around
+		ocpContext := clientsholder.Context{
 			Namespace:     dp.Namespace,
 			Podname:       dp.Name,
 			Containername: dp.Spec.Containers[0].Name,
-		})
-		taintInfo, err := tester.GetKernelTaintInfo()
+		}
+
+		// Get the taint information from the node kernel
+		taintInfo, err := testerFuncs.GetKernelTaintInfo(ocpContext)
 		if err != nil {
 			logrus.Error("failed to retrieve kernel taint information from debug pod/host")
 			tnf.ClaimFilePrintf("failed to retrieve kernel taint information from debug pod/host")
@@ -135,25 +136,29 @@ func testTainted(env *provider.TestEnvironment) {
 		}
 		taintMsg, individualTaints := nodetainted.DecodeKernelTaints(taintedBitmap)
 
-		// We only will fail the tainted kernel check if the reason for the taint
-		// only pertains to `module was loaded`.
+		// Count how many taints come from `module was loaded` taints versus `other`
 		logrus.Debug("Checking for 'module was loaded' taints")
 		logrus.Debug("individualTaints", individualTaints)
-		moduleCheck := false
+		moduleTaintsFound := false
+		otherTaintsFound := false
+
 		for _, it := range individualTaints {
 			if strings.Contains(it, `module was loaded`) {
-				moduleCheck = true
-				break
+				moduleTaintsFound = true
+			} else {
+				otherTaintsFound = true
 			}
 		}
 
-		if moduleCheck {
+		if otherTaintsFound {
+			nodeTaintsAccepted = false
+		} else if moduleTaintsFound {
 			// Retrieve the modules from the node (via the debug pod)
-			modules := tester.GetModulesFromNode(dp.Name)
+			modules := testerFuncs.GetModulesFromNode(ocpContext)
 			logrus.Debugf("Got the modules from node %s: %v", dp.Name, modules)
 
 			// Retrieve all of the out of tree modules.
-			taintedModules := nodetainted.GetOutOfTreeModules(modules, dp.Name, tester)
+			taintedModules := testerFuncs.GetOutOfTreeModules(modules, ocpContext)
 			logrus.Debug("Collected all of the tainted modules: ", taintedModules)
 			logrus.Debug("Modules allowed via configuration: ", env.Config.AcceptedKernelTaints)
 
@@ -176,15 +181,15 @@ func testTainted(env *provider.TestEnvironment) {
 	// We are expecting tainted nodes to be Nil, but only if:
 	// 1) The reason for the tainted node is contains(`module was loaded`)
 	// 2) The modules loaded are all whitelisted.
-	gomega.Expect(taintedNodes).To(gomega.BeNil())
-	gomega.Expect(errNodes).To(gomega.BeNil())
+	env.GomegaExpectSliceBeNil(taintedNodes)
+	env.GomegaExpectSliceBeNil(errNodes)
 }
 
 func testIsRedHatRelease(env *provider.TestEnvironment) {
-	tnf.GinkgoBy("should report a proper Red Hat version")
+	env.GinkgoBy("should report a proper Red Hat version")
 	failedContainers := []string{}
 	for _, cut := range env.Containers {
-		tnf.GinkgoBy(fmt.Sprintf("%s is checked for Red Hat version", cut.StringShort()))
+		env.GinkgoBy(fmt.Sprintf("%s is checked for Red Hat version", cut.StringShort()))
 		baseImageTester := isredhat.NewBaseImageTester(common.DefaultTimeout, clientsholder.GetClientsHolder(), clientsholder.Context{
 			Namespace:     cut.Namespace,
 			Podname:       cut.Podname,

@@ -20,9 +20,6 @@ var _ AutomountTokenFuncs = &AutomountTokenFuncsMock{}
 // 			AutomountServiceAccountSetOnSAFunc: func(serviceAccountName string, podNamespace string) (*bool, error) {
 // 				panic("mock out the AutomountServiceAccountSetOnSA method")
 // 			},
-// 			SetTestingResultFunc: func(result bool)  {
-// 				panic("mock out the SetTestingResult method")
-// 			},
 // 		}
 //
 // 		// use mockedAutomountTokenFuncs in code that requires AutomountTokenFuncs
@@ -33,9 +30,6 @@ type AutomountTokenFuncsMock struct {
 	// AutomountServiceAccountSetOnSAFunc mocks the AutomountServiceAccountSetOnSA method.
 	AutomountServiceAccountSetOnSAFunc func(serviceAccountName string, podNamespace string) (*bool, error)
 
-	// SetTestingResultFunc mocks the SetTestingResult method.
-	SetTestingResultFunc func(result bool)
-
 	// calls tracks calls to the methods.
 	calls struct {
 		// AutomountServiceAccountSetOnSA holds details about calls to the AutomountServiceAccountSetOnSA method.
@@ -45,14 +39,8 @@ type AutomountTokenFuncsMock struct {
 			// PodNamespace is the podNamespace argument value.
 			PodNamespace string
 		}
-		// SetTestingResult holds details about calls to the SetTestingResult method.
-		SetTestingResult []struct {
-			// Result is the result argument value.
-			Result bool
-		}
 	}
 	lockAutomountServiceAccountSetOnSA sync.RWMutex
-	lockSetTestingResult               sync.RWMutex
 }
 
 // AutomountServiceAccountSetOnSA calls AutomountServiceAccountSetOnSAFunc.
@@ -87,36 +75,5 @@ func (mock *AutomountTokenFuncsMock) AutomountServiceAccountSetOnSACalls() []str
 	mock.lockAutomountServiceAccountSetOnSA.RLock()
 	calls = mock.calls.AutomountServiceAccountSetOnSA
 	mock.lockAutomountServiceAccountSetOnSA.RUnlock()
-	return calls
-}
-
-// SetTestingResult calls SetTestingResultFunc.
-func (mock *AutomountTokenFuncsMock) SetTestingResult(result bool) {
-	if mock.SetTestingResultFunc == nil {
-		panic("AutomountTokenFuncsMock.SetTestingResultFunc: method is nil but AutomountTokenFuncs.SetTestingResult was just called")
-	}
-	callInfo := struct {
-		Result bool
-	}{
-		Result: result,
-	}
-	mock.lockSetTestingResult.Lock()
-	mock.calls.SetTestingResult = append(mock.calls.SetTestingResult, callInfo)
-	mock.lockSetTestingResult.Unlock()
-	mock.SetTestingResultFunc(result)
-}
-
-// SetTestingResultCalls gets all the calls that were made to SetTestingResult.
-// Check the length with:
-//     len(mockedAutomountTokenFuncs.SetTestingResultCalls())
-func (mock *AutomountTokenFuncsMock) SetTestingResultCalls() []struct {
-	Result bool
-} {
-	var calls []struct {
-		Result bool
-	}
-	mock.lockSetTestingResult.RLock()
-	calls = mock.calls.SetTestingResult
-	mock.lockSetTestingResult.RUnlock()
 	return calls
 }

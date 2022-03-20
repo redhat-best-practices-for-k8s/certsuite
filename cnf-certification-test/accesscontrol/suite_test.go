@@ -23,30 +23,13 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/rbac"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	v1 "k8s.io/api/core/v1"
 	v1meta "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 //nolint:funlen
 func TestTestAutomountServiceToken(t *testing.T) {
-	generateEnv := func(tokenStatus *bool) *provider.TestEnvironment {
-		return &provider.TestEnvironment{
-			Pods: []*v1.Pod{
-				{
-					Spec: v1.PodSpec{
-						NodeName:                     "worker01",
-						AutomountServiceAccountToken: tokenStatus,
-						ServiceAccountName:           "SA1",
-					},
-					ObjectMeta: v1meta.ObjectMeta{
-						Name:      "testPod",
-						Namespace: "testNamespace",
-					},
-				},
-			},
-		}
-	}
-
 	falseVar := false
 	trueVar := true
 
@@ -69,19 +52,122 @@ func TestTestAutomountServiceToken(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		sharedResult := false
+		sharedResult := true
+
+		generateEnv := func(tokenStatus *bool) *provider.TestEnvironment {
+			return &provider.TestEnvironment{
+				Pods: []*v1.Pod{
+					{
+						Spec: v1.PodSpec{
+							NodeName:                     "worker01",
+							AutomountServiceAccountToken: tokenStatus,
+							ServiceAccountName:           "SA1",
+						},
+						ObjectMeta: v1meta.ObjectMeta{
+							Name:      "testPod",
+							Namespace: "testNamespace",
+						},
+					},
+				},
+				GinkgoFuncs: &tnf.GinkgoFuncsMock{
+					GinkgoAbortSuiteFunc: func(message string, callerSkip ...int) {},
+					GinkgoByFunc:         func(text string, callback ...func()) {},
+					GinkgoFailFunc: func(message string, callerSkip ...int) {
+						sharedResult = false
+					},
+					GinkgoSkipFunc: func(message string, callerSkip ...int) {},
+				},
+				GomegaFuncs: &tnf.GomegaFuncsMock{
+					GomegaExpectStringNotEmptyFunc: func(incomingStr string) {},
+					GomegaExpectSliceBeNilFunc:     func(incomingSlice []string) {},
+				},
+			}
+		}
 
 		// Test the function with mocked internal functions.
 		mockFuncs := &rbac.AutomountTokenFuncsMock{
 			AutomountServiceAccountSetOnSAFunc: func(serviceAccountName, podNamespace string) (*bool, error) {
 				return tc.saTokenStatus, tc.getSAErr
 			},
-			SetTestingResultFunc: func(result bool) {
-				sharedResult = result
-			},
 		}
 		TestAutomountServiceToken(generateEnv(tc.podSATokenStatus), mockFuncs)
 		assert.Equal(t, tc.expectedResult, sharedResult)
 		assert.Equal(t, tc.expectedAPICalls, len(mockFuncs.AutomountServiceAccountSetOnSACalls()))
+	}
+}
+
+//nolint:funlen
+func TestTestPodRoleBindings(t *testing.T) {
+	testCases := []struct {
+		// return values
+		getRoleBindingFuncsRet []string
+		getRoleBindingFuncsErr error
+
+		// expected results
+		expectedAPICalls int
+		expectedResult   bool
+	}{
+		{ // Test Case #1 - Pass with no rolebindingds found
+			getRoleBindingFuncsRet: []string{}, // No rolebindings found in other namespaces
+			getRoleBindingFuncsErr: nil,
+
+			expectedAPICalls: 1,
+			expectedResult:   true,
+		},
+		{ // Test Case #2 - Fail with rolebindings found
+			getRoleBindingFuncsRet: []string{"SA1"}, // rolebindings found in other namespaces
+			getRoleBindingFuncsErr: nil,
+
+			expectedAPICalls: 1,
+			expectedResult:   false,
+		},
+		{ // Test Case #3 - Fail with API call failure
+			getRoleBindingFuncsRet: []string{"SA1"},
+			getRoleBindingFuncsErr: errors.New("this is an error"),
+
+			expectedAPICalls: 1,
+			expectedResult:   false,
+		},
+	}
+
+	for _, tc := range testCases {
+		// Assume each test run is going to pass unless GinkgoFail is called.
+		sharedResult := true
+
+		// Generate the TestEnvironment
+		generateEnv := func() *provider.TestEnvironment {
+			return &provider.TestEnvironment{
+				Pods: []*v1.Pod{
+					{
+						Spec: v1.PodSpec{
+							NodeName:           "worker01",
+							ServiceAccountName: "SA1",
+						},
+						ObjectMeta: v1meta.ObjectMeta{
+							Name:      "testPod",
+							Namespace: "testNamespace",
+						},
+					},
+				},
+				GinkgoFuncs: &tnf.GinkgoFuncsMock{
+					GinkgoAbortSuiteFunc: func(message string, callerSkip ...int) {},
+					GinkgoByFunc:         func(text string, callback ...func()) {},
+					GinkgoFailFunc: func(message string, callerSkip ...int) {
+						sharedResult = false
+					},
+					GinkgoSkipFunc: func(message string, callerSkip ...int) {},
+				},
+			}
+		}
+
+		// Test the function with mocked internal functions.
+		mockFuncs := &rbac.RoleBindingFuncsMock{
+			GetRoleBindingsFunc: func(podNamespace, serviceAccountName string) ([]string, error) {
+				return tc.getRoleBindingFuncsRet, tc.getRoleBindingFuncsErr
+			},
+		}
+		TestPodRoleBindings(generateEnv(), mockFuncs)
+		assert.Equal(t, tc.expectedResult, sharedResult)
+		assert.Equal(t, tc.expectedAPICalls, len(mockFuncs.GetRoleBindingsCalls()))
 	}
 }
