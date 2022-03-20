@@ -233,11 +233,11 @@ func testGracePeriod(env *provider.TestEnvironment) {
 
 //nolint:dupl
 func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration) {
-	tnf.GinkgoBy("Testing deployment scaling")
+	env.GinkgoBy("Testing deployment scaling")
 	defer env.SetNeedsRefresh()
 
 	if len(env.Deployments) == 0 {
-		tnf.GinkgoSkip("No test deployments found.")
+		env.GinkgoSkip("No test deployments found.")
 	}
 	failedDeployments := []string{}
 	for i := range env.Deployments {
@@ -270,17 +270,17 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 
 //nolint:dupl
 func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration) {
-	tnf.GinkgoBy("Testing statefulset scaling")
+	env.GinkgoBy("Testing statefulset scaling")
 	defer env.SetNeedsRefresh()
 
 	if len(env.Deployments) == 0 {
-		tnf.GinkgoSkip("No test statefulset found.")
+		env.GinkgoSkip("No test statefulset found.")
 	}
 	failedSatetfulSets := []string{}
-	for i := range env.SatetfulSets {
+	for i := range env.StatetfulSets {
 		// TeststatefulsetScaling test scaling of statefulset
 		// This is the entry point for statefulset scaling tests
-		statefulset := env.SatetfulSets[i]
+		statefulset := env.StatetfulSets[i]
 		ns, name := statefulset.Namespace, statefulset.Name
 		key := ns + name
 		if hpa, ok := env.HorizontalScaler[key]; ok {
