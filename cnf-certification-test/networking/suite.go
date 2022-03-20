@@ -14,7 +14,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package networking
+package declaredandlistening
 
 import (
 	"fmt"
@@ -89,11 +89,7 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 		declaredPorts := make(map[declaredandlistening.Key]*provider.Container)
 		listeningPorts := make(map[declaredandlistening.Key]*provider.Container)
 		ports := cut.Data.Ports
-		fmt.Println(cut)
 		logrus.Debugf("%s declaredPorts: %v", cut.StringShort(), ports)
-		if ports == nil {
-			tnf.ClaimFilePrintf("%s doesn't not have any declared port", cut.StringShort())
-		}
 		for j := 0; j < len(ports); j++ {
 			k.Port = int(ports[j].ContainerPort)
 			k.Protocol = string(ports[j].Protocol)
