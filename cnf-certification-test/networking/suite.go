@@ -97,7 +97,7 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 		}
 		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, cut, env)
 		if err != nil || errStr != "" {
-			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s", cmd, cut.StringShort(), err)
+			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s, errStr: %s", cmd, cut.StringShort(), err, errStr)
 			failedContainers = append(failedContainers, cut.StringShort())
 			continue
 		}
@@ -117,7 +117,7 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 	}
 
 	if n := len(failedContainers); n > 0 {
-		logrus.Debugf("Failed containers: %v", n)
+		logrus.Debugf("Failed containers: %v", failedContainers)
 		ginkgo.Fail(fmt.Sprintf("Found %d pods with listening ports that had not been declared", n))
 	}
 }
