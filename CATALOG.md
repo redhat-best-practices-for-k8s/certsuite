@@ -150,42 +150,6 @@ Description|http://test-network-function.com/testcases/affiliated-certification/
 Result Type|normative
 Suggested Remediation|Ensure that your Operator has passed Red Hat's Operator Certification Program (OCP).
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2.12 and Section 6.3.3
-### http://test-network-function.com/testcases/diagnostic/clusterversion
-
-Property|Description
----|---
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/diagnostic/clusterversion Extracts OCP versions from the cluster.
-Result Type|informative
-Suggested Remediation|
-Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.3.6
-### http://test-network-function.com/testcases/diagnostic/extract-node-information
-
-Property|Description
----|---
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/diagnostic/extract-node-information extracts informational information about the cluster.
-Result Type|informative
-Suggested Remediation|
-Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.3.6
-### http://test-network-function.com/testcases/diagnostic/list-cni-plugins
-
-Property|Description
----|---
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/diagnostic/list-cni-plugins lists CNI plugins
-Result Type|normative
-Suggested Remediation|
-Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2.4 and 6.3.7
-### http://test-network-function.com/testcases/diagnostic/nodes-hw-info
-
-Property|Description
----|---
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/diagnostic/nodes-hw-info list nodes HW info
-Result Type|normative
-Suggested Remediation|
-Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
 ### http://test-network-function.com/testcases/lifecycle/container-shutdown
 
 Property|Description

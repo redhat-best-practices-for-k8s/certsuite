@@ -59,21 +59,21 @@ usage() {
 	     (currently: $HOME/.kube/config).
 
 	Examples
-	  $0 -t ~/tnf/config -o ~/tnf/output -f diagnostic networking -s diagnostic-nodes-hw-info
+	  $0 -t ~/tnf/config -o ~/tnf/output -f networking access-control -s access-control-host-resource-PRIVILEGED_POD
 
 	  Because -k is omitted, $(basename $0) will first try to autodiscover local kubeconfig files.
-	  If it succeeds, the diagnostic and networking tests will be run using the autodiscovered configuration.
+	  If it succeeds, the networking and access-control tests will be run using the autodiscovered configuration.
 	  The test results will be saved to the '~/tnf/output' directory on the host.
 
-	  $0 -k ~/.kube/ABC:~/.kube/DEF -t ~/tnf/config -o ~/tnf/output -f diagnostic networking
+	  $0 -k ~/.kube/ABC:~/.kube/DEF -t ~/tnf/config -o ~/tnf/output -f access-control networking
 
 	  The command will bind two kubeconfig files (~/.kube/ABC and ~/.kube/DEF) to the TNF container,
-	  run the diagnostic and networking tests, and save the test results into the '~/tnf/output' directory
+	  run the access-control and networking tests, and save the test results into the '~/tnf/output' directory
 	  on the host.
 
-	  $0 -i custom-tnf-image:v1.2-dev -t ~/tnf/config -o ~/tnf/output -f diagnostic networking
+	  $0 -i custom-tnf-image:v1.2-dev -t ~/tnf/config -o ~/tnf/output -f access-control networking
 
-	  The command will run the diagnostic and networking tests as implemented in the custom-tnf-image:v1.2-dev
+	  The command will run the access-control and networking tests as implemented in the custom-tnf-image:v1.2-dev
 	  local image set by the -i parameter. The test results will be saved to the '~/tnf/output' directory.
 
 	Test suites
