@@ -50,25 +50,29 @@ func TestScaleStatefulSet(statefulset *v1app.StatefulSet, timeout time.Duration)
 	if replicas <= 1 {
 		// scale up
 		replicas++
-		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout, true) {
+		logrus.Trace("scale UP statefulset to ", replicas, " replicas ")
+		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout) {
 			logrus.Error("can't scale statefulset =", namespace, ":", name)
 			return false
 		}
 		// scale down
 		replicas--
-		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout, false) {
+		logrus.Trace("scale DOWN statefulset to ", replicas, " replicas ")
+		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout) {
 			logrus.Error("can't scale statefulset =", namespace, ":", name)
 			return false
 		}
 	} else {
 		// scale down
 		replicas--
-		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout, false) {
+		logrus.Trace("scale DOWN statefulset to ", replicas, " replicas ")
+		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout) {
 			logrus.Error("can't scale statefulset =", namespace, ":", name)
 			return false
 		} // scale up
 		replicas++
-		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout, true) {
+		logrus.Trace("scale UP statefulset to ", replicas, " replicas ")
+		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout) {
 			logrus.Error("can't scale statefulset =", namespace, ":", name)
 			return false
 		}
@@ -76,13 +80,7 @@ func TestScaleStatefulSet(statefulset *v1app.StatefulSet, timeout time.Duration)
 	return true
 }
 
-func scaleStateFulsetHelper(clients *clientsholder.ClientsHolder, ssClient v1.StatefulSetInterface, statefulset *v1app.StatefulSet, replicas int32, timeout time.Duration, up bool) bool {
-	if up {
-		logrus.Trace("scale UP statefulset to ", replicas, " replicas ")
-	} else {
-		logrus.Trace("scale DOWN statefulset to ", replicas, " replicas ")
-	}
-
+func scaleStateFulsetHelper(clients *clientsholder.ClientsHolder, ssClient v1.StatefulSetInterface, statefulset *v1app.StatefulSet, replicas int32, timeout time.Duration) bool {
 	name := statefulset.Name
 	namespace := statefulset.Namespace
 
@@ -92,7 +90,6 @@ func scaleStateFulsetHelper(clients *clientsholder.ClientsHolder, ssClient v1.St
 		ss, err := ssClient.Get(context.TODO(), name, v1machinery.GetOptions{})
 		if err != nil {
 			tnf.ClaimFilePrintf("failed to get latest version of statefulset %s:%s with error %s", namespace, name, err)
-			logrus.Error("failed to get latest version of statefulset ", namespace, ":", name)
 			return err
 		}
 		ss.Spec.Replicas = &replicas

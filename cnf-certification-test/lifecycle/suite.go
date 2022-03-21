@@ -251,19 +251,19 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 			// horizontal scaler, then test that scaler
 			// can scale the deployment
 			if !scaling.TestScaleHpaDeployment(deployment, hpa, timeout) {
-				failedDeployments = append(failedDeployments, name)
+				failedDeployments = append(failedDeployments, provider.DeploymentToString(deployment))
 			}
 			continue
 		}
 		// if the deployment is not controller by HPA
 		// scale it directly
 		if !scaling.TestScaleDeployment(deployment, timeout) {
-			failedDeployments = append(failedDeployments, name)
+			failedDeployments = append(failedDeployments, provider.DeploymentToString(deployment))
 		}
 	}
 
 	if len(failedDeployments) > 0 {
-		tnf.ClaimFilePrintf(" failed deployments: %v", failedDeployments)
+		tnf.ClaimFilePrintf("failed deployments: %v", failedDeployments)
 	}
 	gomega.Expect(0).To(gomega.Equal(len(failedDeployments)))
 }
@@ -288,14 +288,14 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 			// horizontal scaler, then test that scaler
 			// can scale the statefulset
 			if !scaling.TestScaleHpaStatefulSet(statefulset, hpa, timeout) {
-				failedSatetfulSets = append(failedSatetfulSets, name)
+				failedSatetfulSets = append(failedSatetfulSets, provider.StatefulsetToString(statefulset))
 			}
 			continue
 		}
 		// if the statefulset is not controller by HPA
 		// scale it directly
 		if !scaling.TestScaleStatefulSet(statefulset, timeout) {
-			failedSatetfulSets = append(failedSatetfulSets, name)
+			failedSatetfulSets = append(failedSatetfulSets, provider.StatefulsetToString(statefulset))
 		}
 	}
 
