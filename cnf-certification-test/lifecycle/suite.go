@@ -74,7 +74,14 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	})
 
 	if env.IsIntrusive() {
-		testScaling(&env, timeout)
+		testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestDeploymentScalingIdentifier)
+		ginkgo.It(testID, ginkgo.Label(testID), func() {
+			testDeploymentScaling(&env, timeout)
+		})
+		testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestStateFulSetScalingIdentifier)
+		ginkgo.It(testID, ginkgo.Label(testID), func() {
+			testStatefulSetScaling(&env, timeout)
+		})
 	}
 })
 
@@ -224,48 +231,78 @@ func testGracePeriod(env *provider.TestEnvironment) {
 	}
 }
 
-func testScaling(env *provider.TestEnvironment, timeout time.Duration) {
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestDeploymentScalingIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		env.GinkgoBy("Testing deployment scaling")
-		defer env.SetNeedsRefresh()
+//nolint:dupl
+func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration) {
+	env.GinkgoBy("Testing deployment scaling")
+	defer env.SetNeedsRefresh()
 
-		if len(env.Deployments) == 0 {
-			env.GinkgoSkip("No test deployments found.")
-		}
-		failedDeployments := []string{}
-		skippedDeployments := []string{}
-		for i := range env.Deployments {
-			// TestDeploymentScaling test scaling of deployment
-			// This is the entry point for deployment scaling tests
-			deployment := env.Deployments[i]
-			ns, name := deployment.Namespace, deployment.Name
-			key := ns + name
-			if hpa, ok := env.HorizontalScaler[key]; ok {
-				// if the deployment is controller by
-				// horizontal scaler, then test that scaler
-				// can scale the deployment
-				if !scaling.TestScaleHpaDeployment(deployment, hpa, timeout) {
-					failedDeployments = append(failedDeployments, name)
-				}
-				continue
+	if len(env.Deployments) == 0 {
+		env.GinkgoSkip("No test deployments found.")
+	}
+	failedDeployments := []string{}
+	for i := range env.Deployments {
+		// TestDeploymentScaling test scaling of deployment
+		// This is the entry point for deployment scaling tests
+		deployment := env.Deployments[i]
+		ns, name := deployment.Namespace, deployment.Name
+		key := ns + name
+		if hpa, ok := env.HorizontalScaler[key]; ok {
+			// if the deployment is controller by
+			// horizontal scaler, then test that scaler
+			// can scale the deployment
+			if !scaling.TestScaleHpaDeployment(deployment, hpa, timeout) {
+				failedDeployments = append(failedDeployments, provider.DeploymentToString(deployment))
 			}
-			// if the deployment is not controller by HPA
-			// scale it directly
-			if !scaling.TestScaleDeployment(deployment, timeout) {
-				failedDeployments = append(failedDeployments, name)
-			}
+			continue
 		}
+		// if the deployment is not controller by HPA
+		// scale it directly
+		if !scaling.TestScaleDeployment(deployment, timeout) {
+			failedDeployments = append(failedDeployments, provider.DeploymentToString(deployment))
+		}
+	}
 
-		if len(skippedDeployments) > 0 {
-			tnf.ClaimFilePrintf("not ready deployments : %v", skippedDeployments)
+	if len(failedDeployments) > 0 {
+		tnf.ClaimFilePrintf("failed deployments: %v", failedDeployments)
+	}
+	gomega.Expect(0).To(gomega.Equal(len(failedDeployments)))
+}
+
+//nolint:dupl
+func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration) {
+	env.GinkgoBy("Testing statefulset scaling")
+	defer env.SetNeedsRefresh()
+
+	if len(env.Deployments) == 0 {
+		env.GinkgoSkip("No test statefulset found.")
+	}
+	failedSatetfulSets := []string{}
+	for i := range env.StatetfulSets {
+		// TeststatefulsetScaling test scaling of statefulset
+		// This is the entry point for statefulset scaling tests
+		statefulset := env.StatetfulSets[i]
+		ns, name := statefulset.Namespace, statefulset.Name
+		key := ns + name
+		if hpa, ok := env.HorizontalScaler[key]; ok {
+			// if the statefulset is controller by
+			// horizontal scaler, then test that scaler
+			// can scale the statefulset
+			if !scaling.TestScaleHpaStatefulSet(statefulset, hpa, timeout) {
+				failedSatetfulSets = append(failedSatetfulSets, provider.StatefulsetToString(statefulset))
+			}
+			continue
 		}
-		if len(failedDeployments) > 0 {
-			tnf.ClaimFilePrintf(" failed deployments: %v", failedDeployments)
+		// if the statefulset is not controller by HPA
+		// scale it directly
+		if !scaling.TestScaleStatefulSet(statefulset, timeout) {
+			failedSatetfulSets = append(failedSatetfulSets, provider.StatefulsetToString(statefulset))
 		}
-		gomega.Expect(0).To(gomega.Equal(len(failedDeployments)))
-		gomega.Expect(0).To(gomega.Equal(len(skippedDeployments)))
-	})
+	}
+
+	if len(failedSatetfulSets) > 0 {
+		tnf.ClaimFilePrintf(" failed statefulsets: %v", failedSatetfulSets)
+	}
+	gomega.Expect(0).To(gomega.Equal(len(failedSatetfulSets)))
 }
 
 // testHighAvailability
