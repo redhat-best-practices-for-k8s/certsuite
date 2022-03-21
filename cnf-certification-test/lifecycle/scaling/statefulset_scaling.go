@@ -123,42 +123,46 @@ func TestScaleHpaStatefulSet(statefulset *v1app.StatefulSet, hpa *v1autoscaling.
 	if hpa.Spec.MinReplicas != nil {
 		min = *hpa.Spec.MinReplicas
 	}
+	replicas := int32(1)
+	if statefulset.Spec.Replicas != nil {
+		replicas = *statefulset.Spec.Replicas
+	}
 	max := hpa.Spec.MaxReplicas
-	if min <= 1 {
+	if replicas <= 1 {
 		// scale up
-		min++
-		max++
-		logrus.Trace("scale UP HPA ", namespace, ":", hpaName, "To min=", min, "max=", max)
-		pass := scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout)
+		replicas++
+		logrus.Trace("scale UP HPA ", namespace, ":", hpaName, "To min=", replicas, " max=", replicas)
+		pass := scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, replicas, replicas, timeout)
 		if !pass {
 			return false
 		}
 		// scale down
-		min--
-		max--
-		logrus.Trace("scale DOWN HPA ", namespace, ":", hpaName, "To min=", min, "max=", max)
-		pass = scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout)
+		replicas--
+		logrus.Trace("scale DOWN HPA ", namespace, ":", hpaName, "To min=", replicas, " max=", replicas)
+		pass = scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, replicas, replicas, timeout)
 		if !pass {
 			return false
 		}
 	} else {
 		// scale down
-		min--
-		max--
-		logrus.Trace("scale DOWN HPA ", namespace, ":", hpaName, "To min=", min, "max=", max)
-		pass := scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout)
+		replicas--
+		logrus.Trace("scale DOWN HPA ", namespace, ":", hpaName, "To min=", replicas, " max=", replicas)
+		pass := scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, replicas, replicas, timeout)
 		if !pass {
 			return false
 		}
 		// scale up
-		min++
-		max++
-		logrus.Trace("scale UP HPA ", namespace, ":", hpaName, "To min=", min, "max=", max)
-		pass = scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout)
+		replicas++
+		logrus.Trace("scale UP HPA ", namespace, ":", hpaName, "To min=", min, " max=", max)
+		pass = scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, replicas, replicas, timeout)
 		if !pass {
 			return false
 		}
 	}
+	// back the min and the max value of the hpa
+	logrus.Trace("back HPA ", namespace, ":", hpaName, "To min=", min, " max=", max)
+	pass := scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout)
+	return pass
 	return true
 }
 

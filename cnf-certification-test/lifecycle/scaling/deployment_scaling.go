@@ -125,49 +125,50 @@ func TestScaleHpaDeployment(deployment *v1app.Deployment, hpa *v1autoscaling.Hor
 	} else {
 		min = 1
 	}
+	replicas := int32(1)
+	if deployment.Spec.Replicas != nil {
+		replicas = *deployment.Spec.Replicas
+	}
 	max := hpa.Spec.MaxReplicas
-	if min <= 1 {
+	if replicas <= 1 {
 		// scale up
-		min++
-		max++
-		scaleUp := true
-		pass := scaleHpaDeploymentHelper(hpscaler, hpaName, name, namespace, min, max, timeout, scaleUp)
+		replicas++
+		logrus.Trace("scale UP HPA ", namespace, ":", hpaName, "To min=", replicas, " max=", replicas)
+		pass := scaleHpaDeploymentHelper(hpscaler, hpaName, name, namespace, replicas, replicas, timeout)
 		if !pass {
 			return false
 		}
 		// scale down
-		min--
-		max--
-		pass = scaleHpaDeploymentHelper(hpscaler, hpaName, name, namespace, min, max, timeout, !scaleUp)
+		replicas--
+		logrus.Trace("scale DOWN HPA ", namespace, ":", hpaName, "To min=", replicas, " max=", replicas)
+		pass = scaleHpaDeploymentHelper(hpscaler, hpaName, name, namespace, min, max, timeout)
 		if !pass {
 			return false
 		}
+
 	} else {
 		// scale down
-		min--
-		max--
-		scaleUp := false
-		pass := scaleHpaDeploymentHelper(hpscaler, hpaName, name, namespace, min, max, timeout, scaleUp)
+		replicas--
+		logrus.Trace("scale DOWN HPA ", namespace, ":", hpaName, "To min=", replicas, " max=", replicas)
+		pass := scaleHpaDeploymentHelper(hpscaler, hpaName, name, namespace, replicas, replicas, timeout)
 		if !pass {
 			return false
 		}
 		// scale up
-		min++
-		max++
-		pass = scaleHpaDeploymentHelper(hpscaler, hpaName, name, namespace, min, max, timeout, !scaleUp)
+		replicas++
+		logrus.Trace("scale UP HPA ", namespace, ":", hpaName, "To min=", replicas, " max=", replicas)
+		pass = scaleHpaDeploymentHelper(hpscaler, hpaName, name, namespace, replicas, replicas, timeout)
 		if !pass {
 			return false
 		}
 	}
-	return true
+	// back the min and the max value of the hpa
+	logrus.Trace("back HPA ", namespace, ":", hpaName, "To min=", min, " max=", max)
+	pass := scaleHpaDeploymentHelper(hpscaler, hpaName, name, namespace, min, max, timeout)
+	return pass
 }
 
-func scaleHpaDeploymentHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpaName, deploymentName, namespace string, min, max int32, timeout time.Duration, up bool) bool {
-	if up {
-		logrus.Trace("scale UP HPA ", namespace, ":", hpaName, "To min=", min, "max=", max)
-	} else {
-		logrus.Trace("scale DOWN HPA ", namespace, ":", hpaName, "To min=", min, "max=", max)
-	}
+func scaleHpaDeploymentHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpaName, deploymentName, namespace string, min, max int32, timeout time.Duration) bool {
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		hpa, err := hpscaler.Get(context.TODO(), hpaName, v1machinery.GetOptions{})
 		if err != nil {
