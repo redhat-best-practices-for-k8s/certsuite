@@ -59,11 +59,12 @@ var _ = ginkgo.Describe(common.OperatorTestKey, func() {
 
 func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 	badCsvs := []string{}
-	if len(env.Csvs) == 0 {
+	if len(env.Operators) == 0 {
 		ginkgo.Skip("No CSVs to perform test, skipping.")
 	}
 
-	for _, csv := range env.Csvs {
+	for i := range env.Operators {
+		csv := env.Operators[i].Csv
 		phase := phasecheck.WaitOperatorReady(csv)
 		if phase != v1alpha1.CSVPhaseSucceeded {
 			badCsvs = append(badCsvs, fmt.Sprintf("%s.%s", csv.Namespace, csv.Name))
@@ -79,11 +80,12 @@ func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 
 func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 	badCsvs := []string{}
-	if len(env.Csvs) == 0 {
+	if len(env.Operators) == 0 {
 		ginkgo.Skip("No CSVs to perform test, skipping.")
 	}
 
-	for _, csv := range env.Csvs {
+	for i := range env.Operators {
+		csv := env.Operators[i].Csv
 		clusterPermissions := csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
 		if len(clusterPermissions) == 0 {
 			logrus.Debugf("No clusterPermissions found in csv %s (ns %s)", csv.Name, csv.Namespace)
@@ -116,12 +118,13 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 
 func testOperatorOlmSubscription(env *provider.TestEnvironment) {
 	badCsvs := []string{}
-	if len(env.Csvs) == 0 {
+	if len(env.Operators) == 0 {
 		ginkgo.Skip("No CSVs to perform test, skipping.")
 	}
 
 	ocpClient := clientsholder.GetClientsHolder()
-	for _, csv := range env.Csvs {
+	for i := range env.Operators {
+		csv := env.Operators[i].Csv
 		ginkgo.By(fmt.Sprintf("Checking OLM subscription for CSV %s (ns %s)", csv.Name, csv.Namespace))
 		options := metav1.ListOptions{}
 		subscriptions, err := ocpClient.OlmClient.OperatorsV1alpha1().Subscriptions(csv.Namespace).List(context.TODO(), options)
