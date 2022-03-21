@@ -134,11 +134,11 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	// create the oc client
 	clientsHolder.OClient, err = clientconfigv1.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		logrus.Panic("can't instantiate ocClient", err)
+		return nil, fmt.Errorf("can't instantiate ocClient: %s", err)
 	}
 	clientsHolder.StorageClient, err = storageclient.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		logrus.Panic("can't instantiate csiClient", err)
+		return nil, fmt.Errorf("can't instantiate csiClient: %s", err)
 	}
 	clientsHolder.ready = true
 	return &clientsHolder, nil

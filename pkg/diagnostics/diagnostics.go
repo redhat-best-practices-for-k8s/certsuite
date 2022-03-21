@@ -35,10 +35,11 @@ import (
 )
 
 const (
-	lscpuCommand = `lscpu -J`
-	ipCommand    = `ip -j a`
-	lsblkCommand = `lsblk -J`
-	lspciCommand = `lspci`
+	lscpuCommand      = `lscpu -J`
+	ipCommand         = `ip -j a`
+	lsblkCommand      = `lsblk -J`
+	lspciCommand      = `lspci`
+	cniPluginsCommand = `cat /host/etc/cni/net.d/[0-999]* | jq -s '[ .[] | {name:.name, type:.type, version:.cniVersion, plugins: .plugins}]'`
 )
 
 // CniPlugin holds info about a CNI plugin
@@ -59,8 +60,9 @@ func GetCniPlugins() (out map[string][]interface{}) {
 	out = make(map[string][]interface{})
 	for _, debugPod := range env.DebugPods {
 		ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
-		outStr, errStr, err := o.ExecCommandContainer(ctx, `cat /host/etc/cni/net.d/[0-999]* | jq -s '[ .[] | {name:.name, type:.type, version:.cniVersion, plugins: .plugins}]'`)
+		outStr, errStr, err := o.ExecCommandContainer(ctx, cniPluginsCommand)
 		if err != nil || errStr != "" {
+			logrus.Errorf("Failed to execute command %s in debug pod %s", cniPluginsCommand, provider.PodToString(debugPod))
 			continue
 		}
 		decoded := []interface{}{}
