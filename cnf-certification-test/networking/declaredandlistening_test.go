@@ -28,46 +28,40 @@ func TestParseVariables(t *testing.T) {
 	testCases := []struct {
 		// inputRes is string that include the result after we run the command ""oc get pod %s -n %s -o json  | jq -r '.spec.containers[%d].ports'""
 		inputRes string
-		// now is empty but maybe in the future has be not empty.
-		listeningPorts map[declaredandlistening.Key]bool
 		// expected outputs here
 		expectedlisteningPorts map[declaredandlistening.Key]bool
 		expectedRes            string
 	}{
 		{
 			inputRes:               "tcp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\n",
-			listeningPorts:         map[declaredandlistening.Key]bool{},
 			expectedlisteningPorts: map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "TCP"}: true},
 			expectedRes:            "tcp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\n",
 		},
 		{
 			inputRes:               "",
-			listeningPorts:         map[declaredandlistening.Key]bool{},
 			expectedlisteningPorts: map[declaredandlistening.Key]bool{},
 			expectedRes:            "",
 		},
 		{
 			inputRes:               "\n",
-			listeningPorts:         map[declaredandlistening.Key]bool{},
 			expectedlisteningPorts: map[declaredandlistening.Key]bool{},
 			expectedRes:            "\n",
 		},
 		{
 			inputRes:               "tcp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\ntcp LISTEN 0      128    0.0.0.0:7878 0.0.0.0:*\n",
-			listeningPorts:         map[declaredandlistening.Key]bool{},
 			expectedlisteningPorts: map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "TCP"}: true, {Port: 7878, Protocol: "TCP"}: true},
 			expectedRes:            "tcp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\ntcp LISTEN 0      128    0.0.0.0:7878 0.0.0.0:*\n",
 		},
 		{
 			inputRes:               "udp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\nudp LISTEN 0      128    0.0.0.0:7878 0.0.0.0:*\n",
-			listeningPorts:         map[declaredandlistening.Key]bool{},
 			expectedlisteningPorts: map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "UDP"}: true, {Port: 7878, Protocol: "UDP"}: true},
 			expectedRes:            "udp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\nudp LISTEN 0      128    0.0.0.0:7878 0.0.0.0:*\n",
 		},
 	}
 	for _, tc := range testCases {
-		declaredandlistening.ParseListening(tc.inputRes, tc.listeningPorts)
-		assert.Equal(t, tc.expectedlisteningPorts, tc.listeningPorts)
+		listeningPorts := map[declaredandlistening.Key]bool{}
+		declaredandlistening.ParseListening(tc.inputRes, listeningPorts)
+		assert.Equal(t, tc.expectedlisteningPorts, listeningPorts)
 	}
 }
 
