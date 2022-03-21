@@ -37,41 +37,52 @@ func (o ClientHoldersMock) ExecCommandContainer(ctx clientsholder.Context, comma
 	return stdout, stderr, err
 }
 func TestRunTest(t *testing.T) {
-	fsdiff := &FsDiff{}
-	o := ClientHoldersMock{
-		stdout: "{}",
-		stderr: "",
-		err:    nil,
+	testCases := []struct {
+		clientErr      error
+		clientStdErr   string
+		clientStdOut   string
+		expectedResult int
+	}{
+		{ // test when no package is installed
+			expectedResult: testhelper.SUCCESS,
+			clientStdOut:   "{}",
+			clientStdErr:   "",
+		},
+		{ // test when an error occurred when running the command
+			expectedResult: testhelper.ERROR,
+			clientErr:      errors.New("error executing the command"),
+		},
+		{ // test when an error message was returned
+			expectedResult: testhelper.ERROR,
+			clientErr:      nil,
+			clientStdErr:   "container id not found",
+		},
+		{ // test when a package was installed
+			expectedResult: testhelper.FAILURE,
+			clientErr:      nil,
+			clientStdErr:   "",
+			clientStdOut: `{
+				changed: [
+					/usr/bin/lp,
+					/usr/local,
+					/usr/local/bin
+				],
+				added: [
+					/usr/local/bin/docker-entrypoint.sh
+				]
+			}`,
+		},
 	}
-	// test when no package is installed
-	fsdiff.RunTest(o, clientsholder.Context{})
-	assert.Equal(t, testhelper.SUCCESS, fsdiff.GetResults())
 
-	// test when an error occurred when running the command
-	o.err = errors.New("error executing the command")
-	fsdiff.RunTest(&o, clientsholder.Context{})
-	assert.Equal(t, testhelper.ERROR, fsdiff.GetResults())
+	for _, tc := range testCases {
+		chm := &ClientHoldersMock{
+			stdout: tc.clientStdOut,
+			stderr: tc.clientStdErr,
+			err:    tc.clientErr,
+		}
 
-	// test when an error message was returned
-	o.err = nil
-	o.stderr = "container id not found"
-	fsdiff.RunTest(&o, clientsholder.Context{})
-	assert.Equal(t, testhelper.ERROR, fsdiff.GetResults())
-
-	// test when a package was installed
-	o.err = nil
-	o.stderr = ""
-	o.stdout = `{
-		changed: [
-			/usr/bin/lp,
-			/usr/local,
-			/usr/local/bin
-		],
-		added: [
-			/usr/local/bin/docker-entrypoint.sh
-		]
-	}`
-	// "/usr/local/bin/docker-entrypoint.sh"
-	fsdiff.RunTest(&o, clientsholder.Context{})
-	assert.Equal(t, testhelper.FAILURE, fsdiff.GetResults())
+		fsdiff := NewFsDiffTester(chm)
+		fsdiff.RunTest(clientsholder.Context{})
+		assert.Equal(t, tc.expectedResult, fsdiff.GetResults())
+	}
 }

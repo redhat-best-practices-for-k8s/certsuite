@@ -51,7 +51,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestUnalteredBaseImageIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		if provider.IsOCPCluster() {
-			testContainersFsDiff(&env)
+			testContainersFsDiff(&env, cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder()))
 		} else {
 			env.GinkgoSkip(" non ocp cluster ")
 		}
@@ -69,23 +69,18 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 })
 
 // testContainersFsDiff test that all CUT didn't install new packages are starting
-func testContainersFsDiff(env *provider.TestEnvironment) {
+func testContainersFsDiff(env *provider.TestEnvironment, testerFuncs cnffsdiff.FsDiffFuncs) {
 	var badContainers []string
 	var errContainers []string
 	for _, cut := range env.Containers {
 		logrus.Debug(fmt.Sprintf("%s(%s) should not install new packages after starting", cut.Podname, cut.Data.Name))
-		fsdiff, err := cnffsdiff.NewFsDiff(cut)
-		if err != nil {
-			logrus.Error("can't create FsDiff instance")
-			errContainers = append(errContainers, cut.Data.Name)
-			continue
-		}
-		nodeName := cut.NodeName
-		debugPod := env.DebugPods[nodeName]
-
-		fsdiff.RunTest(clientsholder.GetClientsHolder(), clientsholder.Context{Namespace: debugPod.Namespace,
-			Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name})
-		switch fsdiff.GetResults() {
+		debugPod := env.DebugPods[cut.NodeName]
+		testerFuncs.RunTest(clientsholder.Context{
+			Namespace:     debugPod.Namespace,
+			Podname:       debugPod.Name,
+			Containername: debugPod.Spec.Containers[0].Name,
+		})
+		switch testerFuncs.GetResults() {
 		case testhelper.SUCCESS:
 			continue
 		case testhelper.FAILURE:
