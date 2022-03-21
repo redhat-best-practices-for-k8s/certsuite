@@ -163,7 +163,6 @@ func TestScaleHpaStatefulSet(statefulset *v1app.StatefulSet, hpa *v1autoscaling.
 	logrus.Trace("back HPA ", namespace, ":", hpaName, "To min=", min, " max=", max)
 	pass := scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout)
 	return pass
-	return true
 }
 
 func scaleHpaStatefulSetHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpaName, statefulsetName, namespace string, min, max int32, timeout time.Duration) bool {

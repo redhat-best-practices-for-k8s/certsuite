@@ -145,7 +145,6 @@ func TestScaleHpaDeployment(deployment *v1app.Deployment, hpa *v1autoscaling.Hor
 		if !pass {
 			return false
 		}
-
 	} else {
 		// scale down
 		replicas--
