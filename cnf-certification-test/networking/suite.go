@@ -14,26 +14,33 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package networking
+package declaredandlistening
 
 import (
-	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
-
-	"github.com/onsi/ginkgo/v2"
-
 	"fmt"
 
+	"github.com/onsi/ginkgo/v2"
+	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/declaredandlistening"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/icmp"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
+	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
 const (
 	defaultNumPings = 5
+	cmd             = `ss -tulwnH`
 )
+
+type Port []struct {
+	ContainerPort int
+	Name          string
+	Protocol      string
+}
 
 //
 // All actual test code belongs below here.  Utilities belong above.
@@ -46,7 +53,6 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 		env = provider.GetTestEnvironment()
 		provider.WaitDebugPodReady()
 	})
-
 	// Default interface ICMP IPv4 test case
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv4ConnectivityIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
@@ -67,7 +73,53 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testMultusNetworkConnectivity(&env, defaultNumPings, netcommons.IPv6)
 	})
+	// Default interface ICMP IPv6 test case
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestUndeclaredContainerPortsUsage)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testListenAndDeclared(&env)
+	})
 })
+
+//nolint:funlen
+func testListenAndDeclared(env *provider.TestEnvironment) {
+	var k declaredandlistening.Key
+	failedContainers := []string{}
+	for _, cut := range env.Containers {
+		declaredPorts := make(map[declaredandlistening.Key]bool)
+		listeningPorts := make(map[declaredandlistening.Key]bool)
+		ports := cut.Data.Ports
+		logrus.Debugf("%s declaredPorts: %v", cut.StringShort(), ports)
+		for j := 0; j < len(ports); j++ {
+			k.Port = int(ports[j].ContainerPort)
+			k.Protocol = string(ports[j].Protocol)
+			declaredPorts[k] = true
+		}
+		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, cut, env)
+		if err != nil || errStr != "" {
+			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s, errStr: %s", cmd, cut.StringShort(), err, errStr)
+			failedContainers = append(failedContainers, cut.StringShort())
+			continue
+		}
+		declaredandlistening.ParseListening(outStr, listeningPorts)
+		if len(listeningPorts) == 0 {
+			tnf.ClaimFilePrintf("%s does not have any listening ports.", cut.StringShort())
+			continue
+		}
+		// compare between declaredPort,listeningPort
+		undeclaredPorts := declaredandlistening.CheckIfListenIsDeclared(listeningPorts, declaredPorts)
+		for k := range undeclaredPorts {
+			tnf.ClaimFilePrintf("The port %d on protocol %s not declared on %s", k.Port, k.Protocol, cut.StringShort())
+		}
+		if len(undeclaredPorts) != 0 {
+			failedContainers = append(failedContainers, fmt.Sprintf("%s undeclaredPorts: %v", cut.StringShort(), undeclaredPorts))
+		}
+	}
+
+	if n := len(failedContainers); n > 0 {
+		logrus.Debugf("Failed containers: %v", failedContainers)
+		ginkgo.Fail(fmt.Sprintf("Found %d pods with listening ports that had not been declared", n))
+	}
+}
 
 // testDefaultNetworkConnectivity test the connectivity between the default interfaces of containers under test
 func testDefaultNetworkConnectivity(env *provider.TestEnvironment, count int, aIPVersion netcommons.IPVersion) {

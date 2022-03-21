@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 Red Hat, Inc.
+// Copyright (C) 2020-2022 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,8 +14,4 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-/*
-Package networking contains tests that check connectivity and networking config
-related best practices.
-*/
 package declaredandlistening
