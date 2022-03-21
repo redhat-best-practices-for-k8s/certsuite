@@ -24,7 +24,6 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-//go:generate moq -out rolebinding_moq.go . RoleBindingFuncs
 type RoleBindingFuncs interface {
 	GetRoleBindings(podNamespace, serviceAccountName string) ([]string, error)
 }
