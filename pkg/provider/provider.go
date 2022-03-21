@@ -138,22 +138,9 @@ func buildTestEnvironment() { //nolint:funlen
 		if pods[i].GetLabels()[skipMultusConnectivityTestsLabel] != "" {
 			env.SkipMultusNetTests[&pods[i]] = true
 		}
-		for j := 0; j < len(pods[i].Spec.Containers); j++ {
-			cut := &(pods[i].Spec.Containers[j])
-			var state v1.ContainerStatus
-			if len(pods[i].Status.ContainerStatuses) > 0 {
-				state = pods[i].Status.ContainerStatuses[j]
-			} else {
-				logrus.Errorf("%s is not ready, skipping status collection", PodToString(&pods[i]))
-			}
-			aRuntime, uid := GetRuntimeUID(&state)
-			container := Container{Podname: pods[i].Name, Namespace: pods[i].Namespace,
-				NodeName: pods[i].Spec.NodeName, Data: cut, Status: state, Runtime: aRuntime, UID: uid,
-				ContainerImageIdentifier: buildContainerImageSource(pods[i].Spec.Containers[j].Image)}
-			env.Containers = append(env.Containers, &container)
-			env.ContainersMap[cut] = &container
-		}
+		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
+	env.ContainersMap = createContainersMapByNode(env.Containers)
 	env.DebugPods = make(map[string]*v1.Pod)
 	for i := 0; i < len(data.DebugPods); i++ {
 		nodeName := data.DebugPods[i].Spec.NodeName
@@ -192,6 +179,33 @@ func buildTestEnvironment() { //nolint:funlen
 	// Populate GomegaFuncs with appropriate wrappers
 	env.GomegaFuncs = tnf.NewGomegaWrapper()
 }
+
+func getPodContainers(aPod *v1.Pod) (containerList []*Container) {
+	for j := 0; j < len(aPod.Spec.Containers); j++ {
+		cut := &(aPod.Spec.Containers[j])
+		var state v1.ContainerStatus
+		if len(aPod.Status.ContainerStatuses) > 0 {
+			state = aPod.Status.ContainerStatuses[j]
+		} else {
+			logrus.Errorf("%s is not ready, skipping status collection", PodToString(aPod))
+		}
+		aRuntime, uid := GetRuntimeUID(&state)
+		container := Container{Podname: aPod.Name, Namespace: aPod.Namespace,
+			NodeName: aPod.Spec.NodeName, Data: cut, Status: state, Runtime: aRuntime, UID: uid,
+			ContainerImageIdentifier: buildContainerImageSource(aPod.Spec.Containers[j].Image)}
+		containerList = append(containerList, &container)
+	}
+	return containerList
+}
+
+func createContainersMapByNode(containerList []*Container) (containersMap map[*v1.Container]*Container) {
+	containersMap = make(map[*v1.Container]*Container)
+	for _, c := range containerList {
+		containersMap[c.Data] = c
+	}
+	return containersMap
+}
+
 func isSkipHelmChart(helmName string, skipHelmChartList []configuration.SkipHelmChartList) bool {
 	if len(skipHelmChartList) == 0 {
 		return false

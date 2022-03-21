@@ -44,6 +44,7 @@ import (
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
+	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
 )
 
 const (
@@ -254,9 +255,9 @@ func generateNodes() map[string]interface{} {
 		csiDriverInfo    = "csiDriver"
 	)
 	nodes := map[string]interface{}{}
-	nodes[nodeSummaryField] = "" // add node summary
-	nodes[cniPluginsField] = ""  // add cni plugins
-	nodes[nodesHwInfo] = ""      // add nodes hardware information
-	nodes[csiDriverInfo] = ""    // add csi drivers info
+	nodes[nodeSummaryField] = diagnostics.GetNodeJSON()  // add node summary
+	nodes[cniPluginsField] = diagnostics.GetCniPlugins() // add cni plugins
+	nodes[nodesHwInfo] = diagnostics.GetHwInfoAllNodes() // add nodes hardware information
+	nodes[csiDriverInfo] = diagnostics.GetCsiDriver()    // add csi drivers info
 	return nodes
 }
