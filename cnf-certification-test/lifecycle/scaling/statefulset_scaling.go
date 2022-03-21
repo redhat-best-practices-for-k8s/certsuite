@@ -128,15 +128,16 @@ func TestScaleHpaStatefulSet(statefulset *v1app.StatefulSet, hpa *v1autoscaling.
 		// scale up
 		min++
 		max++
-		scaleUp := true
-		pass := scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout, scaleUp)
+		logrus.Trace("scale UP HPA ", namespace, ":", hpaName, "To min=", min, "max=", max)
+		pass := scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout)
 		if !pass {
 			return false
 		}
 		// scale down
 		min--
 		max--
-		pass = scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout, !scaleUp)
+		logrus.Trace("scale DOWN HPA ", namespace, ":", hpaName, "To min=", min, "max=", max)
+		pass = scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout)
 		if !pass {
 			return false
 		}
@@ -144,15 +145,16 @@ func TestScaleHpaStatefulSet(statefulset *v1app.StatefulSet, hpa *v1autoscaling.
 		// scale down
 		min--
 		max--
-		scaleUp := false
-		pass := scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout, scaleUp)
+		logrus.Trace("scale DOWN HPA ", namespace, ":", hpaName, "To min=", min, "max=", max)
+		pass := scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout)
 		if !pass {
 			return false
 		}
 		// scale up
 		min++
 		max++
-		pass = scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout, !scaleUp)
+		logrus.Trace("scale UP HPA ", namespace, ":", hpaName, "To min=", min, "max=", max)
+		pass = scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout)
 		if !pass {
 			return false
 		}
@@ -160,12 +162,7 @@ func TestScaleHpaStatefulSet(statefulset *v1app.StatefulSet, hpa *v1autoscaling.
 	return true
 }
 
-func scaleHpaStatefulSetHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpaName, statefulsetName, namespace string, min, max int32, timeout time.Duration, up bool) bool {
-	if up {
-		logrus.Trace("scale UP HPA ", namespace, ":", hpaName, "To min=", min, "max=", max)
-	} else {
-		logrus.Trace("scale DOWN HPA ", namespace, ":", hpaName, "To min=", min, "max=", max)
-	}
+func scaleHpaStatefulSetHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpaName, statefulsetName, namespace string, min, max int32, timeout time.Duration) bool {
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		hpa, err := hpscaler.Get(context.TODO(), hpaName, v1machinery.GetOptions{})
 		if err != nil {
