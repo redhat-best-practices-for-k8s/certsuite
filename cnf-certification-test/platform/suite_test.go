@@ -21,12 +21,10 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/nodetainted"
 	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	v1 "k8s.io/api/core/v1"
 	v1meta "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -236,87 +234,5 @@ func TestTestTainted(t *testing.T) {
 		// Assertions
 		assert.Equal(t, tc.expectedResult, sharedResult)
 		assert.Equal(t, tc.expectedGetKernelTaintInfoCalls, len(mockFuncs.GetKernelTaintInfoCalls()))
-	}
-}
-
-//nolint:funlen
-func TestTestContainersFsDiff(t *testing.T) {
-	testCases := []struct {
-		runTestReturn  int
-		expectedResult bool
-	}{
-		{
-			runTestReturn:  testhelper.SUCCESS,
-			expectedResult: true,
-		},
-		{
-			runTestReturn:  testhelper.FAILURE,
-			expectedResult: false,
-		},
-		{
-			runTestReturn:  testhelper.ERROR,
-			expectedResult: false,
-		},
-	}
-
-	for _, tc := range testCases {
-		sharedResult := true
-
-		generateEnv := func() *provider.TestEnvironment {
-			return &provider.TestEnvironment{
-				Containers: []*provider.Container{
-					{
-						Data: &v1.Container{
-							Name: "container1",
-						},
-						Podname:   "debug-pod-01",
-						Namespace: "testNamespace",
-						NodeName:  "worker01",
-					},
-				},
-				DebugPods: map[string]*v1.Pod{
-					"worker01": {
-						Spec: v1.PodSpec{
-							NodeName: "worker01",
-							Containers: []v1.Container{
-								{
-									Name: "container1",
-								},
-							},
-						},
-						ObjectMeta: v1meta.ObjectMeta{
-							Name:      "debug-pod-01",
-							Namespace: "testNamespace",
-						},
-					},
-				},
-				GinkgoFuncs: &tnf.GinkgoFuncsMock{
-					GinkgoAbortSuiteFunc: func(message string, callerSkip ...int) {},
-					GinkgoByFunc:         func(text string, callback ...func()) {},
-					GinkgoFailFunc:       func(message string, callerSkip ...int) {},
-					GinkgoSkipFunc:       func(message string, callerSkip ...int) {},
-				},
-				GomegaFuncs: &tnf.GomegaFuncsMock{
-					GomegaExpectSliceBeNilFunc: func(incomingSlice []string) {
-						if len(incomingSlice) != 0 {
-							sharedResult = false
-						}
-					},
-					GomegaExpectStringNotEmptyFunc: func(incomingStr string) {},
-				},
-			}
-		}
-
-		mockFuncs := &cnffsdiff.FsDiffFuncsMock{
-			RunTestFunc: func(ctx clientsholder.Context) {},
-			GetResultsFunc: func() int {
-				return tc.runTestReturn
-			},
-		}
-
-		testContainersFsDiff(generateEnv(), mockFuncs)
-
-		// Assertions
-		assert.Equal(t, tc.expectedResult, sharedResult)
 	}
 }

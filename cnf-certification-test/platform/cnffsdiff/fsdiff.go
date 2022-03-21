@@ -40,7 +40,6 @@ type FsDiff struct {
 	ClientHolder clientsholder.Command
 }
 
-//go:generate moq -out fsdiff_moq.go . FsDiffFuncs
 type FsDiffFuncs interface {
 	RunTest(ctx clientsholder.Context)
 	GetResults() int

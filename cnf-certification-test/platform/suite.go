@@ -91,8 +91,8 @@ func testContainersFsDiff(env *provider.TestEnvironment, testerFuncs cnffsdiff.F
 	}
 	logrus.Println("bad containers ", badContainers)
 	logrus.Println("err containers ", errContainers)
-	env.GomegaExpectSliceBeNil(badContainers)
-	env.GomegaExpectSliceBeNil(errContainers)
+	gomega.Expect(badContainers).To(gomega.BeNil())
+	gomega.Expect(errContainers).To(gomega.BeNil())
 }
 
 //nolint:funlen
