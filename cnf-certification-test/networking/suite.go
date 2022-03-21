@@ -84,16 +84,15 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 func testListenAndDeclared(env *provider.TestEnvironment) {
 	var k declaredandlistening.Key
 	failedContainers := []string{}
-
 	for _, cut := range env.Containers {
-		declaredPorts := make(map[declaredandlistening.Key]*provider.Container)
-		listeningPorts := make(map[declaredandlistening.Key]*provider.Container)
+		declaredPorts := make(map[declaredandlistening.Key]bool)
+		listeningPorts := make(map[declaredandlistening.Key]bool)
 		ports := cut.Data.Ports
 		logrus.Debugf("%s declaredPorts: %v", cut.StringShort(), ports)
 		for j := 0; j < len(ports); j++ {
 			k.Port = int(ports[j].ContainerPort)
 			k.Protocol = string(ports[j].Protocol)
-			declaredPorts[k] = cut
+			declaredPorts[k] = true
 		}
 		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, cut, env)
 		if err != nil || errStr != "" {
@@ -101,9 +100,9 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 			failedContainers = append(failedContainers, cut.StringShort())
 			continue
 		}
-		declaredandlistening.ParseListening(outStr, listeningPorts, cut)
+		declaredandlistening.ParseListening(outStr, listeningPorts)
 		if len(listeningPorts) == 0 {
-			tnf.ClaimFilePrintf("%s doesn't have any listening ports.", cut.StringShort())
+			tnf.ClaimFilePrintf("%s does not have any listening ports.", cut.StringShort())
 			continue
 		}
 		// compare between declaredPort,listeningPort

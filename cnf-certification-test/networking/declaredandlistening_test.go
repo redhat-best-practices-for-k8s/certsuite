@@ -21,304 +21,96 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/declaredandlistening"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	v1 "k8s.io/api/core/v1"
 )
 
-//nolint:dupl,funlen
 func TestParseVariables(t *testing.T) {
 	// expected inputs
 	testCases := []struct {
 		// inputRes is string that include the result after we run the command ""oc get pod %s -n %s -o json  | jq -r '.spec.containers[%d].ports'""
 		inputRes string
 		// now is empty but maybe in the future has be not empty.
-		listeningPorts map[declaredandlistening.Key]*provider.Container
-		container      *provider.Container
+		listeningPorts map[declaredandlistening.Key]bool
 		// expected outputs here
-		expectedlisteningPorts map[declaredandlistening.Key]*provider.Container
+		expectedlisteningPorts map[declaredandlistening.Key]bool
 		expectedRes            string
-		expectContainer        *provider.Container
 	}{
 		{
-			inputRes:       "tcp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\n",
-			listeningPorts: map[declaredandlistening.Key]*provider.Container{},
-			container: &provider.Container{
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-			expectedlisteningPorts: map[declaredandlistening.Key]*provider.Container{{Port: 8080, Protocol: "TCP"}: {
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-			},
-			expectedRes: "tcp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\n",
-			expectContainer: &provider.Container{
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
+			inputRes:               "tcp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\n",
+			listeningPorts:         map[declaredandlistening.Key]bool{},
+			expectedlisteningPorts: map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "TCP"}: true},
+			expectedRes:            "tcp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\n",
 		},
-
 		{
-			inputRes:       "",
-			listeningPorts: map[declaredandlistening.Key]*provider.Container{},
-			container: &provider.Container{
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-			expectedlisteningPorts: map[declaredandlistening.Key]*provider.Container{},
+			inputRes:               "",
+			listeningPorts:         map[declaredandlistening.Key]bool{},
+			expectedlisteningPorts: map[declaredandlistening.Key]bool{},
 			expectedRes:            "",
-			expectContainer: &provider.Container{
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
 		},
 		{
-			inputRes:       "\n",
-			listeningPorts: map[declaredandlistening.Key]*provider.Container{},
-			container: &provider.Container{
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-			expectedlisteningPorts: map[declaredandlistening.Key]*provider.Container{},
+			inputRes:               "\n",
+			listeningPorts:         map[declaredandlistening.Key]bool{},
+			expectedlisteningPorts: map[declaredandlistening.Key]bool{},
 			expectedRes:            "\n",
-			expectContainer: &provider.Container{
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
 		},
-
 		{
-			inputRes:       "tcp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\ntcp LISTEN 0      128    0.0.0.0:7878 0.0.0.0:*\n",
-			listeningPorts: map[declaredandlistening.Key]*provider.Container{},
-			container: &provider.Container{
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-			expectedlisteningPorts: map[declaredandlistening.Key]*provider.Container{{Port: 8080, Protocol: "TCP"}: {
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-				{Port: 7878, Protocol: "TCP"}: {
-					Data: &v1.Container{
-						Name: "",
-					},
-					Namespace: "",
-					Podname:   "",
-				},
-			},
-			expectedRes: "tcp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\ntcp LISTEN 0      128    0.0.0.0:7878 0.0.0.0:*\n",
-			expectContainer: &provider.Container{
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
+			inputRes:               "tcp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\ntcp LISTEN 0      128    0.0.0.0:7878 0.0.0.0:*\n",
+			listeningPorts:         map[declaredandlistening.Key]bool{},
+			expectedlisteningPorts: map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "TCP"}: true, {Port: 7878, Protocol: "TCP"}: true},
+			expectedRes:            "tcp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\ntcp LISTEN 0      128    0.0.0.0:7878 0.0.0.0:*\n",
 		},
-
 		{
-			inputRes:       "udp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\nudp LISTEN 0      128    0.0.0.0:7878 0.0.0.0:*\n",
-			listeningPorts: map[declaredandlistening.Key]*provider.Container{},
-			container: &provider.Container{
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-			expectedlisteningPorts: map[declaredandlistening.Key]*provider.Container{{Port: 8080, Protocol: "UDP"}: {
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-				{Port: 7878, Protocol: "UDP"}: {
-					Data: &v1.Container{
-						Name: "",
-					},
-					Namespace: "",
-					Podname:   "",
-				},
-			},
-			expectedRes: "udp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\nudp LISTEN 0      128    0.0.0.0:7878 0.0.0.0:*\n",
-			expectContainer: &provider.Container{
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
+			inputRes:               "udp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\nudp LISTEN 0      128    0.0.0.0:7878 0.0.0.0:*\n",
+			listeningPorts:         map[declaredandlistening.Key]bool{},
+			expectedlisteningPorts: map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "UDP"}: true, {Port: 7878, Protocol: "UDP"}: true},
+			expectedRes:            "udp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\nudp LISTEN 0      128    0.0.0.0:7878 0.0.0.0:*\n",
 		},
 	}
 	for _, tc := range testCases {
-		declaredandlistening.ParseListening(tc.inputRes, tc.listeningPorts, tc.container)
+		declaredandlistening.ParseListening(tc.inputRes, tc.listeningPorts)
 		assert.Equal(t, tc.expectedlisteningPorts, tc.listeningPorts)
 	}
 }
 
-//nolint:funlen
 func TestCheckIfListenIsDeclared(t *testing.T) {
 	// expected inputs
 	testCases := []struct {
-		// input
-		listeningPorts map[declaredandlistening.Key]*provider.Container
-		declaredPorts  map[declaredandlistening.Key]*provider.Container
+		// inputs
+		listeningPorts map[declaredandlistening.Key]bool
+		declaredPorts  map[declaredandlistening.Key]bool
 
 		// expected outputs here
-		expectedres map[declaredandlistening.Key]*provider.Container
+		expectedres map[declaredandlistening.Key]bool
 	}{
-
 		{
-			listeningPorts: map[declaredandlistening.Key]*provider.Container{},
-			declaredPorts:  map[declaredandlistening.Key]*provider.Container{},
-			expectedres:    map[declaredandlistening.Key]*provider.Container{},
+			listeningPorts: map[declaredandlistening.Key]bool{},
+			declaredPorts:  map[declaredandlistening.Key]bool{},
+			expectedres:    map[declaredandlistening.Key]bool{},
 		},
 		{
-			listeningPorts: map[declaredandlistening.Key]*provider.Container{{Port: 8080, Protocol: "TCP"}: {
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-			},
-			declaredPorts: map[declaredandlistening.Key]*provider.Container{{Port: 8080, Protocol: "TCP"}: {
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-			},
-			expectedres: map[declaredandlistening.Key]*provider.Container{},
+			listeningPorts: map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "TCP"}: true},
+			declaredPorts:  map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "TCP"}: true},
+			expectedres:    map[declaredandlistening.Key]bool{},
 		},
 
 		{
-			listeningPorts: map[declaredandlistening.Key]*provider.Container{{Port: 8080, Protocol: "TCP"}: {
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-			},
-			declaredPorts: map[declaredandlistening.Key]*provider.Container{},
-			expectedres: map[declaredandlistening.Key]*provider.Container{{Port: 8080, Protocol: "TCP"}: {
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-			},
-		},
-
-		{
-			listeningPorts: map[declaredandlistening.Key]*provider.Container{{Port: 8080, Protocol: "TCP"}: {
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-				{Port: 8443, Protocol: "TCP"}: {
-					Data: &v1.Container{
-						Name: "",
-					},
-					Namespace: "",
-					Podname:   "",
-				},
-			},
-			declaredPorts: map[declaredandlistening.Key]*provider.Container{{Port: 8080, Protocol: "TCP"}: {
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-			},
-			expectedres: map[declaredandlistening.Key]*provider.Container{{Port: 8443, Protocol: "TCP"}: {
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-			},
+			listeningPorts: map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "TCP"}: true},
+			declaredPorts:  map[declaredandlistening.Key]bool{},
+			expectedres:    map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "TCP"}: true},
 		},
 		{
-			listeningPorts: map[declaredandlistening.Key]*provider.Container{},
-			declaredPorts: map[declaredandlistening.Key]*provider.Container{{Port: 8080, Protocol: "TCP"}: {
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-			},
-			expectedres: map[declaredandlistening.Key]*provider.Container{},
+			listeningPorts: map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "TCP"}: true, {Port: 8443, Protocol: "TCP"}: true},
+			declaredPorts:  map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "TCP"}: true},
+			expectedres:    map[declaredandlistening.Key]bool{{Port: 8443, Protocol: "TCP"}: true},
 		},
-
 		{
-			listeningPorts: map[declaredandlistening.Key]*provider.Container{{Port: 8080, Protocol: "TCP"}: {
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-				{Port: 8443, Protocol: "TCP"}: {
-					Data: &v1.Container{
-						Name: "",
-					},
-					Namespace: "",
-					Podname:   "",
-				},
-			},
-			declaredPorts: map[declaredandlistening.Key]*provider.Container{{Port: 8080, Protocol: "TCP"}: {
-				Data: &v1.Container{
-					Name: "",
-				},
-				Namespace: "",
-				Podname:   "",
-			},
-				{Port: 8443, Protocol: "TCP"}: {
-					Data: &v1.Container{
-						Name: "",
-					},
-					Namespace: "",
-					Podname:   "",
-				},
-			},
-			expectedres: map[declaredandlistening.Key]*provider.Container{},
+			listeningPorts: map[declaredandlistening.Key]bool{},
+			declaredPorts:  map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "TCP"}: true},
+			expectedres:    map[declaredandlistening.Key]bool{},
+		},
+		{
+			listeningPorts: map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "TCP"}: true, {Port: 8443, Protocol: "TCP"}: true},
+			declaredPorts:  map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "TCP"}: true, {Port: 8443, Protocol: "TCP"}: true},
+			expectedres:    map[declaredandlistening.Key]bool{},
 		},
 	}
 	for _, tc := range testCases {

@@ -17,12 +17,8 @@
 package declaredandlistening
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
-
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
 const (
@@ -35,7 +31,7 @@ type Key struct {
 	Protocol string
 }
 
-func ParseListening(res string, listeningPorts map[Key]*provider.Container, cut *provider.Container) {
+func ParseListening(res string, listeningPorts map[Key]bool) {
 	var k Key
 	lines := strings.Split(res, "\n")
 	for _, line := range lines {
@@ -51,19 +47,18 @@ func ParseListening(res string, listeningPorts map[Key]*provider.Container, cut 
 		k.Port = p
 		k.Protocol = strings.ToUpper(fields[indexprotocolname])
 		k.Protocol = strings.ReplaceAll(k.Protocol, "\"", "")
-		listeningPorts[k] = cut
+		listeningPorts[k] = true
 	}
 }
 
-func CheckIfListenIsDeclared(listeningPorts, declaredPorts map[Key]*provider.Container) map[Key]*provider.Container {
-	res := make(map[Key]*provider.Container)
+func CheckIfListenIsDeclared(listeningPorts, declaredPorts map[Key]bool) map[Key]bool {
+	res := make(map[Key]bool)
 	if len(listeningPorts) == 0 {
 		return res
 	}
 	for k := range listeningPorts {
 		_, ok := declaredPorts[k]
 		if !ok {
-			tnf.ClaimFilePrintf(fmt.Sprintf("The port %d on protocol %s in pod %s is not declared.", k.Port, k.Protocol, listeningPorts[k]))
 			res[k] = listeningPorts[k]
 		}
 	}
