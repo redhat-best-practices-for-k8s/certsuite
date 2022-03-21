@@ -24,7 +24,6 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-//go:generate moq -out automount_moq.go . AutomountTokenFuncs
 type AutomountTokenFuncs interface {
 	AutomountServiceAccountSetOnSA(serviceAccountName, podNamespace string) (*bool, error)
 }

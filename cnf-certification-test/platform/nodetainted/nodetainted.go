@@ -29,10 +29,8 @@ import (
 // NodeTainted holds information about tainted nodes.
 type NodeTainted struct {
 	ClientHolder *clientsholder.ClientsHolder
-	OCPContext   clientsholder.Context
 }
 
-//go:generate moq -out nodetainted_moq.go . TaintedFuncs
 type TaintedFuncs interface {
 	runCommand(ctx clientsholder.Context, cmd string) (string, error)
 	GetKernelTaintInfo(ctx clientsholder.Context) (string, error)

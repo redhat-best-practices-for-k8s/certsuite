@@ -31,7 +31,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	"helm.sh/helm/v3/pkg/release"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -72,8 +71,6 @@ type TestEnvironment struct { // rename this with testTarget
 	K8sVersion         string
 	OpenshiftVersion   string
 	HelmList           []*release.Release
-	tnf.GinkgoFuncs    // interface that holds references to Ginkgo calls
-	tnf.GomegaFuncs    // interface that holds references to Gomega calls
 }
 
 type Container struct {
@@ -172,12 +169,6 @@ func buildTestEnvironment() { //nolint:funlen
 		env.StatetfulSets = append(env.StatetfulSets, &data.StatefulSet[i])
 	}
 	env.HorizontalScaler = data.Hpas
-
-	// Populate GinkgoFuncs with appropriate wrappers
-	env.GinkgoFuncs = tnf.NewGinkgoWrapper()
-
-	// Populate GomegaFuncs with appropriate wrappers
-	env.GomegaFuncs = tnf.NewGomegaWrapper()
 }
 
 func getPodContainers(aPod *v1.Pod) (containerList []*Container) {

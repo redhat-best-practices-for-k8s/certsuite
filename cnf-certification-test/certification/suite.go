@@ -71,9 +71,9 @@ func testContainerCertificationStatus(env *provider.TestEnvironment) {
 			}
 		}
 		if len(containersToQuery) == 0 {
-			env.GinkgoSkip("No containers to check configured in tnf_config.yml")
+			ginkgo.Skip("No containers to check configured in tnf_config.yml")
 		}
-		env.GinkgoBy(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
+		ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
 		certtool.CertAPIClient = api.NewHTTPClient()
 		failedContainers := []configuration.ContainerImageIdentifier{}
 		allContainersToQueryEmpty := true
@@ -83,7 +83,7 @@ func testContainerCertificationStatus(env *provider.TestEnvironment) {
 				continue
 			}
 			allContainersToQueryEmpty = false
-			env.GinkgoBy(fmt.Sprintf("Container %s/%s should eventually be verified as certified", c.Repository, c.Name))
+			ginkgo.By(fmt.Sprintf("Container %s/%s should eventually be verified as certified", c.Repository, c.Name))
 			entry := certtool.WaitForCertificationRequestToSuccess(certtool.GetContainerCertificationRequestFunction(c), apiRequestTimeout).(*api.ContainerCatalogEntry)
 			if entry == nil {
 				tnf.ClaimFilePrintf("Container %s (repository %s) is not found in the certified container catalog.", c.Name, c.Repository)
@@ -97,12 +97,12 @@ func testContainerCertificationStatus(env *provider.TestEnvironment) {
 			}
 		}
 		if allContainersToQueryEmpty {
-			env.GinkgoSkip("No containers to check because either container name or repository is empty for all containers in tnf_config.yml")
+			ginkgo.Skip("No containers to check because either container name or repository is empty for all containers in tnf_config.yml")
 		}
 
 		if n := len(failedContainers); n > 0 {
 			log.Warnf("Containers that are not certified: %+v", failedContainers)
-			env.GinkgoFail(fmt.Sprintf("%d container images are not certified.", n))
+			ginkgo.Fail(fmt.Sprintf("%d container images are not certified.", n))
 		}
 	})
 }
@@ -113,10 +113,10 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 		operatorsToQuery := env.Subscriptions
 
 		if len(operatorsToQuery) == 0 {
-			env.GinkgoSkip("No operators to check configured ")
+			ginkgo.Skip("No operators to check configured ")
 		}
 		certtool.CertAPIClient = api.NewHTTPClient()
-		env.GinkgoBy(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsToQuery)))
+		ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsToQuery)))
 		testFailed := false
 		for _, op := range operatorsToQuery {
 			ocpversion := ""
@@ -140,7 +140,7 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 			}
 		}
 		if testFailed {
-			env.GinkgoSkip("At least one  operator was not certified to run on this version of openshift. Check Claim.json file for details.")
+			ginkgo.Skip("At least one  operator was not certified to run on this version of openshift. Check Claim.json file for details.")
 		}
 	})
 }
@@ -150,14 +150,14 @@ func testHelmCertified(env *provider.TestEnvironment) {
 		certtool.CertAPIClient = api.NewHTTPClient()
 		helmcharts := env.HelmList
 		if len(helmcharts) == 0 {
-			env.GinkgoSkip("No helm charts to check")
+			ginkgo.Skip("No helm charts to check")
 		}
 		out, err := certtool.CertAPIClient.GetYamlFile()
 		if err != nil {
-			env.GinkgoFail(fmt.Sprintf("error while reading the helm yaml file from the api %s", err))
+			ginkgo.Fail(fmt.Sprintf("error while reading the helm yaml file from the api %s", err))
 		}
 		if out.Entries == nil {
-			env.GinkgoSkip("No helm charts from the api")
+			ginkgo.Skip("No helm charts from the api")
 		}
 		ourKubeVersion := env.K8sVersion
 		failedHelmCharts := [][]string{}
@@ -190,7 +190,7 @@ func testHelmCertified(env *provider.TestEnvironment) {
 		if len(failedHelmCharts) > 0 {
 			log.Errorf("Helms that are not certified: %+v", failedHelmCharts)
 			tnf.ClaimFilePrintf("Helms that are not certified: %+v", failedHelmCharts)
-			env.GinkgoFail(fmt.Sprintf("%d helms chart are not certified.", len(failedHelmCharts)))
+			ginkgo.Fail(fmt.Sprintf("%d helms chart are not certified.", len(failedHelmCharts)))
 		}
 	})
 }

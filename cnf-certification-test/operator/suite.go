@@ -60,7 +60,7 @@ var _ = ginkgo.Describe(common.OperatorTestKey, func() {
 func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 	badCsvs := []string{}
 	if len(env.Csvs) == 0 {
-		env.GinkgoSkip("No CSVs to perform test, skipping.")
+		ginkgo.Skip("No CSVs to perform test, skipping.")
 	}
 
 	for _, csv := range env.Csvs {
@@ -73,14 +73,14 @@ func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 	}
 
 	if n := len(badCsvs); n > 0 {
-		env.GinkgoFail(fmt.Sprintf("Found %d CSVs whose phase is not %s.", n, v1alpha1.CSVPhaseSucceeded))
+		ginkgo.Fail(fmt.Sprintf("Found %d CSVs whose phase is not %s.", n, v1alpha1.CSVPhaseSucceeded))
 	}
 }
 
 func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 	badCsvs := []string{}
 	if len(env.Csvs) == 0 {
-		env.GinkgoSkip("No CSVs to perform test, skipping.")
+		ginkgo.Skip("No CSVs to perform test, skipping.")
 	}
 
 	for _, csv := range env.Csvs {
@@ -110,23 +110,23 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 	}
 
 	if n := len(badCsvs); n > 0 {
-		env.GinkgoFail(fmt.Sprintf("Found %d CSVs with priviledges on some resource names.", n))
+		ginkgo.Fail(fmt.Sprintf("Found %d CSVs with priviledges on some resource names.", n))
 	}
 }
 
 func testOperatorOlmSubscription(env *provider.TestEnvironment) {
 	badCsvs := []string{}
 	if len(env.Csvs) == 0 {
-		env.GinkgoSkip("No CSVs to perform test, skipping.")
+		ginkgo.Skip("No CSVs to perform test, skipping.")
 	}
 
 	ocpClient := clientsholder.GetClientsHolder()
 	for _, csv := range env.Csvs {
-		env.GinkgoBy(fmt.Sprintf("Checking OLM subscription for CSV %s (ns %s)", csv.Name, csv.Namespace))
+		ginkgo.By(fmt.Sprintf("Checking OLM subscription for CSV %s (ns %s)", csv.Name, csv.Namespace))
 		options := metav1.ListOptions{}
 		subscriptions, err := ocpClient.OlmClient.OperatorsV1alpha1().Subscriptions(csv.Namespace).List(context.TODO(), options)
 		if err != nil {
-			env.GinkgoFail(fmt.Sprintf("Failed to get subscription for CSV %s (ns %s): %s", csv.Name, csv.Namespace, err))
+			ginkgo.Fail(fmt.Sprintf("Failed to get subscription for CSV %s (ns %s): %s", csv.Name, csv.Namespace, err))
 		}
 
 		// Iterate through namespace's subscriptions to get the installed CSV one.
@@ -145,6 +145,6 @@ func testOperatorOlmSubscription(env *provider.TestEnvironment) {
 	}
 
 	if n := len(badCsvs); n > 0 {
-		env.GinkgoFail(fmt.Sprintf("Found %d CSVs not installed by OLM", n))
+		ginkgo.Fail(fmt.Sprintf("Found %d CSVs not installed by OLM", n))
 	}
 }

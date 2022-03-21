@@ -53,7 +53,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if provider.IsOCPCluster() {
 			testContainersFsDiff(&env, cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder()))
 		} else {
-			env.GinkgoSkip(" non ocp cluster ")
+			ginkgo.Skip(" non ocp cluster ")
 		}
 	})
 
@@ -176,15 +176,15 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 	// We are expecting tainted nodes to be Nil, but only if:
 	// 1) The reason for the tainted node is contains(`module was loaded`)
 	// 2) The modules loaded are all whitelisted.
-	env.GomegaExpectSliceBeNil(taintedNodes)
-	env.GomegaExpectSliceBeNil(errNodes)
+	gomega.Expect(taintedNodes).To(gomega.BeNil())
+	gomega.Expect(errNodes).To(gomega.BeNil())
 }
 
 func testIsRedHatRelease(env *provider.TestEnvironment) {
-	env.GinkgoBy("should report a proper Red Hat version")
+	ginkgo.By("should report a proper Red Hat version")
 	failedContainers := []string{}
 	for _, cut := range env.Containers {
-		env.GinkgoBy(fmt.Sprintf("%s is checked for Red Hat version", cut.StringShort()))
+		ginkgo.By(fmt.Sprintf("%s is checked for Red Hat version", cut.StringShort()))
 		baseImageTester := isredhat.NewBaseImageTester(common.DefaultTimeout, clientsholder.GetClientsHolder(), clientsholder.Context{
 			Namespace:     cut.Namespace,
 			Podname:       cut.Podname,
