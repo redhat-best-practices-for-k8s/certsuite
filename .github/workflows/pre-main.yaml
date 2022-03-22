@@ -198,7 +198,10 @@ jobs:
           mkdir -p $TNF_CONFIG_DIR $TNF_OUTPUT_DIR
           cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
         shell: bash
-    
+
+      - name: 'Test: Run without any TS, just get diagnostic information'
+        run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
+          
       - name: 'Test: Run generic test suite in a TNF container'
         run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -f access-control lifecycle platform observability networking affiliated-certification operator
 

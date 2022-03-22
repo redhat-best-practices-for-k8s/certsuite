@@ -140,8 +140,14 @@ func TestTest(t *testing.T) {
 	if os.Getenv("UNIT_TEST") != "" {
 		t.Skip("Skipping test suite when running unit tests")
 	}
-	// set up input flags and register failure handlers.
-	flag.Parse()
+
+	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
+	log.Infof("Focused test suites : %v", ginkgoConfig.FocusStrings)
+	log.Infof("TC skip patterns    : %v", ginkgoConfig.SkipStrings)
+	log.Infof("Labels filter       : %v", ginkgoConfig.LabelFilter)
+
+	// Diagnostic functions will run also when no focus test suites were provided.
+	diagnosticMode := len(ginkgoConfig.FocusStrings) == 0
 
 	gomega.RegisterFailHandler(ginkgo.Fail)
 	// Display GinkGo Version
@@ -160,29 +166,37 @@ func TestTest(t *testing.T) {
 	claimData := claimRoot.Claim
 	claimData.Configurations = make(map[string]interface{})
 	claimData.Nodes = make(map[string]interface{})
-
-	// run the test suite
-	ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)
-	endTime := time.Now()
-
 	incorporateVersions(claimData)
-	// process the test results from this test suite, the cnf-features-deploy test suite, and any extra informational
-	// messages.
-	junitMap := make(map[string]interface{})
-	cnfCertificationJUnitFilename := filepath.Join(*junitPath, TNFJunitXMLFileName)
-	loadJUnitXMLIntoMap(junitMap, cnfCertificationJUnitFilename, TNFReportKey)
-	appendCNFFeatureValidationReportResults(junitPath, junitMap)
-	junitMap[extraInfoKey] = "" // tnf.TestsExtraInfo
 
-	// fill out the remaining claim information.
-	claimData.RawResults = junitMap
-	claimData.Results = results.GetReconciledResults()
 	configurations := marshalConfigurations()
 	claimData.Nodes = generateNodes()
 	unmarshalConfigurations(configurations, claimData.Configurations)
+
+	// Run tests specs only if not in diagnostic mode, otherwise all TSs would run.
+	if !diagnosticMode {
+		ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)
+	}
+
+	endTime := time.Now()
 	claimData.Metadata.EndTime = endTime.UTC().Format(dateTimeFormatDirective)
 
-	// marshal the claim and output to file
+	// Process the test results from the suites, the cnf-features-deploy test suite,
+	// and any extra informational messages.
+	junitMap := make(map[string]interface{})
+	cnfCertificationJUnitFilename := filepath.Join(*junitPath, TNFJunitXMLFileName)
+
+	if !diagnosticMode {
+		loadJUnitXMLIntoMap(junitMap, cnfCertificationJUnitFilename, TNFReportKey)
+		appendCNFFeatureValidationReportResults(junitPath, junitMap)
+	}
+
+	junitMap[extraInfoKey] = "" // tnf.TestsExtraInfo
+
+	// Append results to claim file data.
+	claimData.RawResults = junitMap
+	claimData.Results = results.GetReconciledResults()
+
+	// Marshal the claim and output to file
 	payload := marshalClaimOutput(claimRoot)
 	claimOutputFile := filepath.Join(*claimPath, claimFileName)
 	writeClaimOutput(claimOutputFile, payload)
@@ -193,9 +207,9 @@ func incorporateVersions(claimData *claim.Claim) {
 	claimData.Versions = &claim.Versions{
 		Tnf:          gitDisplayRelease,
 		TnfGitCommit: GitCommit,
-		OcClient:     "", // diagnostic.GetVersionsOcp().Oc,
-		Ocp:          "", // diagnostic.GetVersionsOcp().Ocp,
-		K8s:          "", // diagnostic.GetVersionsOcp().K8s,
+		OcClient:     diagnostics.GetVersionOcClient(),
+		Ocp:          diagnostics.GetVersionOcp(),
+		K8s:          diagnostics.GetVersionK8s(),
 	}
 }
 

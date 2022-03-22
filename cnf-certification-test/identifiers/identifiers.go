@@ -105,21 +105,6 @@ var (
 		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified"),
 		Version: versionOne,
 	}
-	// TestExtractNodeInformationIdentifier is a test which extracts Node information.
-	TestExtractNodeInformationIdentifier = claim.Identifier{
-		Url:     formTestURL(common.DiagnosticTestKey, "extract-node-information"),
-		Version: versionOne,
-	}
-	// TestListCniPluginsIdentifier retrieves list of CNI plugins.
-	TestListCniPluginsIdentifier = claim.Identifier{
-		Url:     formTestURL(common.DiagnosticTestKey, "list-cni-plugins"),
-		Version: versionOne,
-	}
-	// TestNodesHwInfoIdentifier retrieves nodes HW info.
-	TestNodesHwInfoIdentifier = claim.Identifier{
-		Url:     formTestURL(common.DiagnosticTestKey, "nodes-hw-info"),
-		Version: versionOne,
-	}
 	// TestHugepagesNotManuallyManipulated represents the test identifier testing hugepages have not been manipulated.
 	TestHugepagesNotManuallyManipulated = claim.Identifier{
 		Url:     formTestURL(common.PlatformAlterationTestKey, "hugepages-config"),
@@ -291,16 +276,6 @@ var (
 		Url:     formTestURL(common.NetworkingTestKey, "undeclared-container-ports-usage"),
 		Version: versionOne,
 	}
-	// TestClusterCsiInfoIdentifier list Cluster CSIdriver Identifier retrieves Third Party CSI driver info.
-	TestClusterCsiInfoIdentifier = claim.Identifier{
-		Url:     formTestURL(common.DiagnosticTestKey, "cluster-csi-info"),
-		Version: versionOne,
-	}
-	// TestclusterVersionIdentifier list Cluster CSIdriver Identifier retrieves Third Party CSI driver info.
-	TestclusterVersionIdentifier = claim.Identifier{
-		Url:     formTestURL(common.DiagnosticTestKey, "clusterversion"),
-		Version: versionOne,
-	}
 	TestLivenessProbeIdentifier = claim.Identifier{
 		Url:     formTestURL(common.LifecycleTestKey, "liveness"),
 		Version: versionOne,
@@ -437,13 +412,6 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation: `Set the spec.HostPid parameter to false in the pod configuration`,
 		Description: formDescription(TestPodHostPID,
 			`Verifies that the spec.HostPid parameter is set to false`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
-	},
-	TestExtractNodeInformationIdentifier: {
-		Identifier: TestExtractNodeInformationIdentifier,
-		Type:       informativeResult,
-		Description: formDescription(TestExtractNodeInformationIdentifier,
-			`extracts informational information about the cluster.`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
 	},
 	TestHugepagesNotManuallyManipulated: {
@@ -712,23 +680,6 @@ the changes for you.`,
 			`tests that boot parameters are set through the MachineConfigOperator, and not set manually on the Node.`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.13 and 6.2.14",
 	},
-	TestListCniPluginsIdentifier: {
-		Identifier:  TestListCniPluginsIdentifier,
-		Type:        normativeResult,
-		Remediation: "",
-		Description: formDescription(TestListCniPluginsIdentifier,
-			`lists CNI plugins`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.4 and 6.3.7",
-	},
-	TestNodesHwInfoIdentifier: {
-		Identifier:  TestNodesHwInfoIdentifier,
-		Type:        normativeResult,
-		Remediation: "",
-		Description: formDescription(TestNodesHwInfoIdentifier,
-			`list nodes HW info`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
-	},
-
 	TestShudtownIdentifier: {
 		Identifier: TestShudtownIdentifier,
 		Type:       normativeResult,
@@ -788,20 +739,6 @@ the changes for you.`,
 			`verifies if the container base image is redhat.`),
 		Remediation:           `build a new docker image that's based on UBI (redhat universal base image).`,
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
-	},
-	TestClusterCsiInfoIdentifier: {
-		Identifier: TestClusterCsiInfoIdentifier,
-		Type:       informativeResult,
-		Description: formDescription(TestClusterCsiInfoIdentifier,
-			`extracts CSI driver information in the cluster.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
-	},
-	TestClusterCsiInfoIdentifier: {
-		Identifier: TestclusterVersionIdentifier,
-		Type:       informativeResult,
-		Description: formDescription(TestclusterVersionIdentifier,
-			`Extracts OCP versions from the cluster.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
 	},
 	TestUndeclaredContainerPortsUsage: {
 		Identifier: TestUndeclaredContainerPortsUsage,

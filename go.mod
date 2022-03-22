@@ -92,6 +92,7 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0 // indirect
 	github.com/klauspost/compress v1.11.13 // indirect
+	github.com/kubernetes/csi-api v0.0.0-20190313123203-94ac839bf26c // indirect
 	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
 	github.com/lann/ps v0.0.0-20150810152359-62de8c46ede0 // indirect
 	github.com/lib/pq v1.10.0 // indirect
@@ -150,6 +151,7 @@ require (
 	k8s.io/apiserver v0.23.4 // indirect
 	k8s.io/cli-runtime v0.23.4 // indirect
 	k8s.io/component-base v0.23.4 // indirect
+	k8s.io/csi-api v0.0.0-20190313123203-94ac839bf26c // indirect
 	k8s.io/kube-openapi v0.0.0-20211115234752-e816edb12b65 // indirect
 	k8s.io/kubectl v0.22.4 // indirect
 	k8s.io/utils v0.0.0-20211116205334-6203023598ed // indirect
@@ -168,8 +170,4 @@ require (
 	k8s.io/apiextensions-apiserver v0.23.4
 )
 
-require (
-	github.com/kubernetes/csi-api v0.0.0-20190313123203-94ac839bf26c
-	github.com/openshift/api v0.0.0-20220124143425-d74727069f6f
-	k8s.io/csi-api v0.0.0-20190313123203-94ac839bf26c
-)
+require github.com/openshift/api v0.0.0-20220124143425-d74727069f6f
