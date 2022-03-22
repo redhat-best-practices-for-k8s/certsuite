@@ -15,3 +15,35 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 package namespace
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestGetInvalidCRsNum(t *testing.T) {
+	testCases := []struct {
+		invalidCrs         map[string]map[string][]string
+		expectedInvalidCRs int
+	}{
+		{
+			invalidCrs: map[string]map[string][]string{
+				"cr1": {
+					"ns1": {
+						"testCRDs",
+					},
+				},
+			},
+			expectedInvalidCRs: 1,
+		},
+		{
+			invalidCrs:         map[string]map[string][]string{},
+			expectedInvalidCRs: 0,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedInvalidCRs, GetInvalidCRsNum(tc.invalidCrs))
+	}
+}
