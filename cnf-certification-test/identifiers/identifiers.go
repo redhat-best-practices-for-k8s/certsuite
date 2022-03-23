@@ -272,6 +272,11 @@ var (
 		Url:     formTestURL(common.PlatformAlterationTestKey, "isredhat-release"),
 		Version: versionOne,
 	}
+	// TestIsSELinuxEnforcingIdentifier ensures platform is defined
+	TestIsSELinuxEnforcingIdentifier = claim.Identifier{
+		Url:     formTestURL(common.PlatformAlterationTestKey, "is-selinux-enforcing"),
+		Version: versionOne,
+	}
 	TestUndeclaredContainerPortsUsage = claim.Identifier{
 		Url:     formTestURL(common.NetworkingTestKey, "undeclared-container-ports-usage"),
 		Version: versionOne,
@@ -739,6 +744,14 @@ the changes for you.`,
 			`verifies if the container base image is redhat.`),
 		Remediation:           `build a new docker image that's based on UBI (redhat universal base image).`,
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+	},
+	TestIsSELinuxEnforcingIdentifier: {
+		Identifier: TestIsSELinuxEnforcingIdentifier,
+		Type:       normativeResult,
+		Description: formDescription(TestIsSELinuxEnforcingIdentifier,
+			`verifies that all k8splatform nodes have selinux in "Enforcing" mode.`),
+		Remediation:           `configure selinux and enable enforcing mode.`,
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 11.3 Pod Security",
 	},
 	TestUndeclaredContainerPortsUsage: {
 		Identifier: TestUndeclaredContainerPortsUsage,
