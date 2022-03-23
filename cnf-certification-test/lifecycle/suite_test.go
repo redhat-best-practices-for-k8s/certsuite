@@ -15,3 +15,66 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 package lifecycle
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	v1 "k8s.io/api/core/v1"
+)
+
+//nolint:funlen
+func TestTestPodTaintsTolerationHelper(t *testing.T) {
+	pod := v1.Pod{}
+	pod.Spec.Tolerations = append(pod.Spec.Tolerations,
+		v1.Toleration{
+			Key:      "test",
+			Value:    "test",
+			Operator: v1.TolerationOpEqual,
+			Effect:   v1.TaintEffectNoExecute},
+	)
+	result, err := testPodTaintsTolerationHelper(&pod)
+	assert.Equal(t, result, false)
+	assert.Equal(t, err, nil)
+
+	pod.Spec.Tolerations = []v1.Toleration{}
+	pod.Spec.Tolerations = append(pod.Spec.Tolerations,
+		v1.Toleration{
+			Key:      "test",
+			Value:    "test",
+			Operator: v1.TolerationOpEqual,
+			Effect:   v1.TaintEffectNoSchedule},
+	)
+	result, err = testPodTaintsTolerationHelper(&pod)
+	assert.Equal(t, result, false)
+	assert.Equal(t, err, nil)
+
+	pod.Spec.Tolerations = []v1.Toleration{}
+	pod.Spec.Tolerations = append(pod.Spec.Tolerations,
+		v1.Toleration{
+			Key:      "test",
+			Value:    "test",
+			Operator: v1.TolerationOpEqual,
+			Effect:   v1.TaintEffectPreferNoSchedule},
+	)
+	result, err = testPodTaintsTolerationHelper(&pod)
+	assert.Equal(t, result, false)
+	assert.Equal(t, err, nil)
+
+	pod.Spec.Tolerations = []v1.Toleration{}
+	pod.Spec.Tolerations = append(pod.Spec.Tolerations,
+		v1.Toleration{
+			Key:      "test",
+			Value:    "test",
+			Operator: v1.TolerationOpEqual,
+			Effect:   v1.TaintNodeDiskPressure},
+		v1.Toleration{
+			Key:      "test",
+			Value:    "test",
+			Operator: v1.TolerationOpEqual,
+			Effect:   v1.TaintNodeMemoryPressure},
+	)
+	result, err = testPodTaintsTolerationHelper(&pod)
+	assert.Equal(t, result, true)
+	assert.Equal(t, err, nil)
+}

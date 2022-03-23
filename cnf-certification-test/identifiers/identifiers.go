@@ -294,6 +294,10 @@ var (
 		Url:     formTestURL(common.LifecycleTestKey, "readiness"),
 		Version: versionOne,
 	}
+	TestPodTainsTolerationIdentifier = claim.Identifier{
+		Url:     formTestURL(common.LifecycleTestKey, "podtaintstoleration"),
+		Version: versionOne,
+	}
 )
 
 func formDescription(identifier claim.Identifier, description string) string {
@@ -810,5 +814,13 @@ the changes for you.`,
 		Description: formDescription(TestReadinessProbeIdentifier, `check that all containers under test
 		have readiness probe defined`),
 		Remediation: `add readiness probe to deployed containers`,
+	},
+	TestPodTainsTolerationIdentifier: {
+		Identifier: TestPodTainsTolerationIdentifier,
+		Type:       normativeResult,
+		Description: formDescription(TestPodTainsTolerationIdentifier, `check that all pods under test do not allow the following taints toleration:
+		NoExecute, PreferNoSchedule, and NoSchedule.
+`),
+		Remediation: `remove taints toleration from Pod spec`,
 	},
 }
