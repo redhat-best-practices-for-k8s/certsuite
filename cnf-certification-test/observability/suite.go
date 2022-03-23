@@ -50,6 +50,11 @@ var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testCrds(&env)
 	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestTerminationMessagePolicyIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testTerminationMessagePolicy(&env)
+	})
 })
 
 // containerHasLoggingOutput helper function to get the last line of logging output from
@@ -122,5 +127,21 @@ func testCrds(env *provider.TestEnvironment) {
 	if n := len(failedCrds); n > 0 {
 		logrus.Debugf("CRD.version without status subresource: %+v", failedCrds)
 		ginkgo.Fail(fmt.Sprintf("%d CRDs don't have status subresource", n))
+	}
+}
+
+// testTerminationMessagePolicy tests to make sure that pods
+func testTerminationMessagePolicy(env *provider.TestEnvironment) {
+	failedContainers := []string{}
+	for _, cut := range env.Containers {
+		ginkgo.By("Testing pod " + cut.Podname + " and container: " + cut.Data.Name + " for terminationMessagePolicy")
+		if cut.Data.TerminationMessagePolicy != v1.TerminationMessageFallbackToLogsOnError {
+			tnf.ClaimFilePrintf("FAILURE: Pod %s container %s does not have a TerminationMessagePolicy: FallbackToLogsOnError")
+			failedContainers = append(failedContainers, cut.Data.Name)
+		}
+	}
+	if n := len(failedContainers); n > 0 {
+		logrus.Debugf("There are %d containers that do not have a termination message policy set to FallbackToLogsOnError: %+v", len(failedContainers), failedContainers)
+		ginkgo.Fail(fmt.Sprintf("There are %d containers that do not have a termination message policy set to FallbackToLogsOnError: %+v", len(failedContainers), failedContainers))
 	}
 }

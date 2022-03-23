@@ -330,6 +330,15 @@ Description|http://test-network-function.com/testcases/observability/crd-status 
 Result Type|informative
 Suggested Remediation|make sure that all the CRDs have a meaningful status specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties["status"]).
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
+### http://test-network-function.com/testcases/observability/termination-policy
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/observability/termination-policy check that all containers are using terminationMessagePolicy: FallbackToLogsOnError
+Result Type|informative
+Suggested Remediation|make sure containers are all using FallbackToLogsOnError in terminationMessagePolicy
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 15.1
 ### http://test-network-function.com/testcases/operator/install-source
 
 Property|Description
