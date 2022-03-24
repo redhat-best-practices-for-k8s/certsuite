@@ -212,7 +212,7 @@ func appendCNFFeatureValidationReportResults(junitPath *string, junitMap map[str
 // this method fatally fails.
 func marshalConfigurations() []byte {
 	config := provider.GetTestEnvironment()
-	configurations, err := j.Marshal(config.Config)
+	configurations, err := j.Marshal(config)
 	if err != nil {
 		log.Fatalf("error converting configurations to JSON: %v", err)
 	}

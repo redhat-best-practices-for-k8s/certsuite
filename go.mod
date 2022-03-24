@@ -168,8 +168,4 @@ require (
 	k8s.io/apiextensions-apiserver v0.23.4
 )
 
-require (
-	github.com/kubernetes/csi-api v0.0.0-20190313123203-94ac839bf26c
-	github.com/openshift/api v0.0.0-20220124143425-d74727069f6f
-	k8s.io/csi-api v0.0.0-20190313123203-94ac839bf26c
-)
+require github.com/openshift/api v0.0.0-20220124143425-d74727069f6f
