@@ -134,14 +134,13 @@ func testCrds(env *provider.TestEnvironment) {
 func testTerminationMessagePolicy(env *provider.TestEnvironment) {
 	failedContainers := []string{}
 	for _, cut := range env.Containers {
-		ginkgo.By("Testing pod " + cut.Podname + " and container: " + cut.Data.Name + " for terminationMessagePolicy")
+		ginkgo.By("Testing for terminationMessagePolicy: " + cut.StringShort())
 		if cut.Data.TerminationMessagePolicy != v1.TerminationMessageFallbackToLogsOnError {
-			tnf.ClaimFilePrintf("FAILURE: Pod %s container %s does not have a TerminationMessagePolicy: FallbackToLogsOnError")
+			tnf.ClaimFilePrintf("FAILURE: %s does not have a TerminationMessagePolicy: FallbackToLogsOnError", cut.StringShort())
 			failedContainers = append(failedContainers, cut.Data.Name)
 		}
 	}
 	if n := len(failedContainers); n > 0 {
-		logrus.Debugf("There are %d containers that do not have a termination message policy set to FallbackToLogsOnError: %+v", len(failedContainers), failedContainers)
-		ginkgo.Fail(fmt.Sprintf("There are %d containers that do not have a termination message policy set to FallbackToLogsOnError: %+v", len(failedContainers), failedContainers))
+		ginkgo.Fail("Containers were found to not have a termination message policy set to FallbackToLogsOnError")
 	}
 }
