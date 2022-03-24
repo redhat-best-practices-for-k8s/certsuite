@@ -27,6 +27,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/rbac"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -49,6 +50,8 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
 	})
+	ginkgo.ReportAfterEach(results.RecordResult)
+
 	// Security Context: non-compliant capabilities
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConCapabilitiesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {

@@ -27,6 +27,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/api"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification/certtool"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -51,6 +52,8 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
 	})
+	ginkgo.ReportAfterEach(results.RecordResult)
+
 	testContainerCertificationStatus(&env)
 	testAllOperatorCertified(&env)
 	testHelmCertified(&env)
