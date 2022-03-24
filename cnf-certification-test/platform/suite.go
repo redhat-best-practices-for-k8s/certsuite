@@ -69,7 +69,11 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestIsSELinuxEnforcingIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testIsSELinuxEnforcing(&env)
+		if provider.IsOCPCluster() {
+			testIsSELinuxEnforcing(&env)
+		} else {
+			ginkgo.Skip(" non ocp cluster ")
+		}
 	})
 })
 
@@ -211,7 +215,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 
 func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
 	const (
-		getenforceCommand = "chroot /host getenforce"
+		getenforceCommand = "getenforce"
 		enforcingString   = "Enforcing\n"
 	)
 	o := clientsholder.GetClientsHolder()
