@@ -392,6 +392,10 @@ func CsvToString(csv *olmv1Alpha.ClusterServiceVersion) string {
 	)
 }
 
+func (op *Operator) String() string {
+	return fmt.Sprintf("csv: %s ns:%s subscription:%s", op.Name, op.Namespace, op.SubscriptionName)
+}
+
 // getPodIPsPerNet gets the IPs of a pod.
 // CNI annotation "k8s.v1.cni.cncf.io/networks-status".
 // Returns (ips, error).
