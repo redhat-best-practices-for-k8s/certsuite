@@ -384,6 +384,15 @@ Description|http://test-network-function.com/testcases/platform-alteration/hugep
 Result Type|normative
 Suggested Remediation|HugePage settings should be configured either directly through the MachineConfigOperator or indirectly using the PerformanceAddonOperator.  This ensures that OpenShift is aware of the special MachineConfig requirements, and can provision your CNF on a Node that is part of the corresponding MachineConfigSet.  Avoid making changes directly to an underlying Node, and let OpenShift handle the heavy lifting of configuring advanced settings.
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
+### http://test-network-function.com/testcases/platform-alteration/is-selinux-enforcing
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/platform-alteration/is-selinux-enforcing verifies that all openshift platform/cluster nodes have selinux in "Enforcing" mode.
+Result Type|normative
+Suggested Remediation|configure selinux and enable enforcing mode.
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 11.3 Pod Security
 ### http://test-network-function.com/testcases/platform-alteration/isredhat-release
 
 Property|Description
