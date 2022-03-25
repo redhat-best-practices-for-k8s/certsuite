@@ -225,7 +225,7 @@ func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
 		ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
 		outStr, errStr, err := o.ExecCommandContainer(ctx, getenforceCommand)
 		if err != nil || errStr != "" {
-			logrus.Errorf("Failed to execute command %s in debug pod %s", getenforceCommand, provider.PodToString(debugPod))
+			logrus.Errorf("Failed to execute command %s in debug %s, errStr: %s, err: %s", getenforceCommand, provider.PodToString(debugPod), errStr, err)
 			nodesError++
 			continue
 		}
