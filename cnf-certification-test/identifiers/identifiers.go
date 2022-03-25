@@ -272,7 +272,7 @@ var (
 		Url:     formTestURL(common.PlatformAlterationTestKey, "isredhat-release"),
 		Version: versionOne,
 	}
-	// TestIsSELinuxEnforcingIdentifier ensures platform is defined
+	// TestIsSELinuxEnforcingIdentifier ensures selinux is in enforcing mode
 	TestIsSELinuxEnforcingIdentifier = claim.Identifier{
 		Url:     formTestURL(common.PlatformAlterationTestKey, "is-selinux-enforcing"),
 		Version: versionOne,
