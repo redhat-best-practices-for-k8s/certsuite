@@ -85,7 +85,7 @@ type TestEnvironment struct { // rename this with testTarget
 	StatetfulSets      []*v1apps.StatefulSet                         `json:"testStatetfulSets`
 	HorizontalScaler   map[string]*v1scaling.HorizontalPodAutoscaler `json:"testHorizontalScaler`
 	Nodes              *v1.NodeList                                  `json:"testNodes`
-	Subscriptions      []*v1alpha1.Subscription                      `json:"testSubscriptions`
+	Subscriptions      []*olmv1Alpha.Subscription                    `json:"testSubscriptions`
 	K8sVersion         string
 	OpenshiftVersion   string
 	HelmList           []*release.Release `json:"testHelmList`
