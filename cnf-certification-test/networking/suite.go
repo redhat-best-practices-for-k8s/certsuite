@@ -129,7 +129,7 @@ func testDefaultNetworkConnectivity(env *provider.TestEnvironment, count int, aI
 	for _, put := range env.Pods {
 		// The first container is used to get the network namespace
 		aContainerInPod := &put.Spec.Containers[0]
-		if _, ok := env.SkipNetTests[provider.NewPodStruct(put)]; ok {
+		if _, ok := env.SkipNetTests[provider.NewPodWrapper(put)]; ok {
 			tnf.ClaimFilePrintf("Skipping pod %s because it is excluded from all connectivity tests", put.Name)
 			continue
 		}
@@ -156,15 +156,15 @@ func testMultusNetworkConnectivity(env *provider.TestEnvironment, count int, aIP
 		// The first container is used to get the network namespace
 		aContainerInPod := &put.Spec.Containers[0]
 
-		if _, ok := env.SkipNetTests[provider.NewPodStruct(put)]; ok {
+		if _, ok := env.SkipNetTests[provider.NewPodWrapper(put)]; ok {
 			tnf.ClaimFilePrintf("Skipping pod %s because it is excluded from all connectivity tests", put.Name)
 			continue
 		}
-		if _, ok := env.SkipNetTests[provider.NewPodStruct(put)]; ok {
+		if _, ok := env.SkipNetTests[provider.NewPodWrapper(put)]; ok {
 			tnf.ClaimFilePrintf("Skipping pod %s because it is excluded from multus connectivity tests only", put.Name)
 			continue
 		}
-		for netKey, multusIPAddress := range env.MultusIPs[provider.NewPodStruct(put)] {
+		for netKey, multusIPAddress := range env.MultusIPs[provider.NewPodWrapper(put)] {
 			icmp.ProcessContainerIpsPerNet(env.ContainersMap[aContainerInPod], netKey, multusIPAddress, netsUnderTest, aIPVersion)
 		}
 	}
