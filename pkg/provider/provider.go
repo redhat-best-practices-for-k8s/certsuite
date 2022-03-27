@@ -78,17 +78,17 @@ type TestEnvironment struct { // rename this with testTarget
 	variables          configuration.TestParameters
 	Crds               []*apiextv1.CustomResourceDefinition `json:"testCrds"`
 	ContainersMap      map[*v1.Container]*Container         `json:"-"`
-	MultusIPs          map[PodWrapper]map[string][]string   `json:"testMultusIPs`
+	MultusIPs          map[PodWrapper]map[string][]string   `json:"testMultusIPs"`
 	SkipNetTests       map[PodWrapper]bool
 	SkipMultusNetTests map[PodWrapper]bool
-	Deployments        []*v1apps.Deployment                          `json:"testDeployments`
-	StatetfulSets      []*v1apps.StatefulSet                         `json:"testStatetfulSets`
-	HorizontalScaler   map[string]*v1scaling.HorizontalPodAutoscaler `json:"testHorizontalScaler`
-	Nodes              *v1.NodeList                                  `json:"testNodes`
-	Subscriptions      []*olmv1Alpha.Subscription                    `json:"testSubscriptions`
+	Deployments        []*v1apps.Deployment                          `json:"testDeployments"`
+	StatetfulSets      []*v1apps.StatefulSet                         `json:"testStatetfulSets"`
+	HorizontalScaler   map[string]*v1scaling.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
+	Nodes              *v1.NodeList                                  `json:"testNodes"`
+	Subscriptions      []*olmv1Alpha.Subscription                    `json:"testSubscriptions"`
 	K8sVersion         string
 	OpenshiftVersion   string
-	HelmList           []*release.Release `json:"testHelmList`
+	HelmList           []*release.Release `json:"testHelmList"`
 }
 
 type CsvInstallPlan struct {
