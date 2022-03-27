@@ -69,11 +69,11 @@ func NewPodWrapper(aPod *v1.Pod) (out PodWrapper) {
 }
 
 type TestEnvironment struct { // rename this with testTarget
-	Namespaces         []string                          `json:"testNamespaces"`
-	Pods               []*v1.Pod                         `json:"testPods"`
-	Containers         []*Container                      `json:"testContainers"`
-	Operators          []Operator `json:"testOperators"`
-	DebugPods          map[string]*v1.Pod                // map from nodename to debugPod
+	Namespaces         []string           `json:"testNamespaces"`
+	Pods               []*v1.Pod          `json:"testPods"`
+	Containers         []*Container       `json:"testContainers"`
+	Operators          []Operator         `json:"testOperators"`
+	DebugPods          map[string]*v1.Pod // map from nodename to debugPod
 	Config             configuration.TestConfiguration
 	variables          configuration.TestParameters
 	Crds               []*apiextv1.CustomResourceDefinition `json:"testCrds"`
