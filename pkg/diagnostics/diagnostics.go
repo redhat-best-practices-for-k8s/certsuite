@@ -211,3 +211,20 @@ func GetCsiDriver() (out map[string]interface{}) {
 	}
 	return out
 }
+
+func GetVersionK8s() (out string) {
+	env := provider.GetTestEnvironment()
+	return env.K8sVersion
+}
+
+func GetVersionOcp() (out string) {
+	env := provider.GetTestEnvironment()
+	if env.OpenshiftVersion == "" {
+		return "n/a, (non-Openshift cluster)" //nolint:goconst
+	}
+	return env.OpenshiftVersion
+}
+
+func GetVersionOcClient() (out string) {
+	return "n/a, (not using oc or kubectl client)" //nolint:goconst
+}

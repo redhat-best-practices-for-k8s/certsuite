@@ -42,7 +42,7 @@ func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespac
 			if !stringhelper.StringInSlice(configNamespaces, namespace, false) {
 				logrus.Debugf("CRD: %s (kind:%s/ plural:%s) has CRs %v deployed in namespace (%s) not in configured namespaces %v",
 					crd.Name, crd.Spec.Names.Kind, crd.Spec.Names.Plural, crNames, namespace, configNamespaces)
-				// Initialize this map dimenension before use
+				// Initialize this map dimension before use
 				if invalidCrs[crd.Name] == nil {
 					invalidCrs[crd.Name] = make(map[string][]string)
 				}
@@ -88,4 +88,18 @@ func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces
 		}
 	}
 	return crdNamespaces, nil
+}
+
+// GetInvalidCRDsNum returns the number of invalid CRs in the map
+func GetInvalidCRsNum(invalidCrs map[string]map[string][]string) int {
+	invalidCrsNum := 0
+	for crdName, namespaces := range invalidCrs {
+		for namespace, crNames := range namespaces {
+			for _, crName := range crNames {
+				logrus.Debugf("crName=%s namespace=%s is invalid (crd=%s)", crName, namespace, crdName)
+				invalidCrsNum++
+			}
+		}
+	}
+	return invalidCrsNum
 }

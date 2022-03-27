@@ -68,6 +68,15 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testIsRedHatRelease(&env)
 	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestIsSELinuxEnforcingIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		if provider.IsOCPCluster() {
+			testIsSELinuxEnforcing(&env)
+		} else {
+			ginkgo.Skip(" non ocp cluster ")
+		}
+	})
 })
 
 // testContainersFsDiff test that all CUT didn't install new packages are starting
@@ -204,4 +213,33 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 	}
 
 	gomega.Expect(failedContainers).To(gomega.BeEmpty())
+}
+
+func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
+	const (
+		getenforceCommand = "getenforce"
+		enforcingString   = "Enforcing\n"
+	)
+	o := clientsholder.GetClientsHolder()
+	nodesFailed := 0
+	nodesError := 0
+	for _, debugPod := range env.DebugPods {
+		ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
+		outStr, errStr, err := o.ExecCommandContainer(ctx, getenforceCommand)
+		if err != nil || errStr != "" {
+			logrus.Errorf("Failed to execute command %s in debug %s, errStr: %s, err: %s", getenforceCommand, provider.PodToString(debugPod), errStr, err)
+			nodesError++
+			continue
+		}
+		if outStr != enforcingString {
+			tnf.ClaimFilePrintf(fmt.Sprintf("Node %s is not running selinux", debugPod.Spec.NodeName))
+			nodesFailed++
+		}
+	}
+	if nodesError > 0 {
+		ginkgo.Fail(fmt.Sprintf("Failed because could not run %s command on %d nodes", getenforceCommand, nodesError))
+	}
+	if nodesFailed > 0 {
+		ginkgo.Fail(fmt.Sprintf("Failed because %d nodes are not running selinux", nodesFailed))
+	}
 }
