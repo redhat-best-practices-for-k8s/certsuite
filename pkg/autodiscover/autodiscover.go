@@ -58,7 +58,7 @@ type DiscoveredTestData struct {
 	StatefulSet       []v1apps.StatefulSet
 	Hpas              map[string]*v1scaling.HorizontalPodAutoscaler
 	Subscriptions     []olmv1Alpha.Subscription
-	HelmChartReleases [][]*release.Release
+	HelmChartReleases map[string][]*release.Release
 	K8sVersion        string
 	OpenshiftVersion  string
 	Nodes             *v1.NodeList
