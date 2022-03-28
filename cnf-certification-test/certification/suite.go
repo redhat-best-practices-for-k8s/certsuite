@@ -162,32 +162,12 @@ func testHelmCertified(env *provider.TestEnvironment) {
 		if out.Entries == nil {
 			ginkgo.Skip("No helm charts from the api")
 		}
-		ourKubeVersion := env.K8sVersion
+
+		// Collect all of the failed helm charts
 		failedHelmCharts := [][]string{}
 		for _, helm := range helmchartsReleases {
-			certified := false
-			for _, entryList := range out.Entries {
-				for _, entry := range entryList {
-					if entry.Name == helm.Chart.Metadata.Name && entry.Version == helm.Chart.Metadata.Version {
-						if entry.KubeVersion != "" {
-							if certtool.CompareVersion(ourKubeVersion, entry.KubeVersion) {
-								certified = true
-								break
-							}
-						} else {
-							certified = true
-							break
-						}
-					}
-				}
-				if certified {
-					log.Info(fmt.Sprintf("Helm %s with version %s is certified", helm.Name, helm.Chart.Metadata.Version))
-					break
-				}
-			}
-			if !certified {
-				fail := []string{helm.Chart.Metadata.Version, helm.Name}
-				failedHelmCharts = append(failedHelmCharts, fail)
+			if !certtool.IsReleaseCertified(helm, env.K8sVersion, out) {
+				failedHelmCharts = append(failedHelmCharts, []string{helm.Chart.Metadata.Version, helm.Name})
 			}
 		}
 		if len(failedHelmCharts) > 0 {
