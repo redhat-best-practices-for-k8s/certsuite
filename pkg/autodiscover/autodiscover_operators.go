@@ -79,8 +79,8 @@ func findSubscriptions(olmClient *clientOlm.Clientset, labels []configuration.La
 	return subscriptions
 }
 
-func getHelmList(restConfig *rest.Config, namespaces []string) [][]*release.Release {
-	helmchartreleases := [][]*release.Release{}
+func getHelmList(restConfig *rest.Config, namespaces []string) map[string][]*release.Release {
+	helmChartReleases := map[string][]*release.Release{}
 	for _, ns := range namespaces {
 		opt := &helmclient.RestConfClientOptions{
 			Options: &helmclient.Options{
@@ -99,9 +99,7 @@ func getHelmList(restConfig *rest.Config, namespaces []string) [][]*release.Rele
 			panic(err)
 		}
 		nsHelmchartreleases, _ := helmClient.ListDeployedReleases()
-		if len(nsHelmchartreleases) > 0 {
-			helmchartreleases = append(helmchartreleases, nsHelmchartreleases)
-		}
+		helmChartReleases[ns] = nsHelmchartreleases
 	}
-	return helmchartreleases
+	return helmChartReleases
 }
