@@ -30,7 +30,7 @@ var (
 )
 
 const (
-	claimFilePermissions = 0644
+	claimFilePermissions = 0o644
 )
 
 //nolint:funlen

@@ -17,13 +17,7 @@ linters-settings:
       - performance
       - style
     disabled-checks:
-      - dupImport # https://github.com/go-critic/go-critic/issues/845
-      - ifElseChain
-      - octalLiteral
       - whyNoLint
-      - wrapperFunc
-      - ptrToRefParam
-      - sloppyReassign
   gocyclo:
     min-complexity: 15
   goimports:
@@ -102,7 +96,7 @@ linters:
   # - maligned
   # - nestif
   # - prealloc
-  # - scopelint
+  # - exportloopref
   # - structcheck
   # - testpackage
   # - wsl
