@@ -40,7 +40,7 @@ import (
 func TestScaleStatefulSet(statefulset *v1app.StatefulSet, timeout time.Duration) bool {
 	clients := clientsholder.GetClientsHolder()
 	name, namespace := statefulset.Name, statefulset.Namespace
-	ssClients := clients.AppsClients.StatefulSets(namespace)
+	ssClients := clients.K8sClient.AppsV1().StatefulSets(namespace)
 	logrus.Trace("scale statefulset not using HPA ", namespace, ":", name)
 	replicas := int32(1)
 	if statefulset.Spec.Replicas != nil {
@@ -93,7 +93,7 @@ func scaleStateFulsetHelper(clients *clientsholder.ClientsHolder, ssClient v1.St
 			return err
 		}
 		ss.Spec.Replicas = &replicas
-		_, err = clients.AppsClients.StatefulSets(namespace).Update(context.TODO(), ss, v1machinery.UpdateOptions{})
+		_, err = clients.K8sClient.AppsV1().StatefulSets(namespace).Update(context.TODO(), ss, v1machinery.UpdateOptions{})
 		if err != nil {
 			logrus.Error("can't update statefulset ", namespace, ":", name)
 			return err

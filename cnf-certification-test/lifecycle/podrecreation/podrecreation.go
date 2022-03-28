@@ -44,7 +44,7 @@ func CordonHelper(name, operation string) error {
 
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		// Fetch node object
-		node, err := clients.Coreclient.Nodes().Get(context.TODO(), name, metav1.GetOptions{})
+		node, err := clients.K8sClient.CoreV1().Nodes().Get(context.TODO(), name, metav1.GetOptions{})
 		if err != nil {
 			return err
 		}
@@ -57,7 +57,7 @@ func CordonHelper(name, operation string) error {
 			return fmt.Errorf("cordonHelper: Unsupported operation:%s", operation)
 		}
 		// Update the node
-		_, err = clients.Coreclient.Nodes().Update(context.TODO(), node, metav1.UpdateOptions{})
+		_, err = clients.K8sClient.CoreV1().Nodes().Update(context.TODO(), node, metav1.UpdateOptions{})
 		return err
 	})
 	if retryErr != nil {
@@ -68,7 +68,7 @@ func CordonHelper(name, operation string) error {
 
 func CountPodsWithDelete(nodeName string, isDelete bool) (count int, err error) {
 	clients := clientsholder.GetClientsHolder()
-	pods, err := clients.Coreclient.Pods("").List(context.TODO(), metav1.ListOptions{
+	pods, err := clients.K8sClient.CoreV1().Pods("").List(context.TODO(), metav1.ListOptions{
 		FieldSelector: "spec.nodeName=" + nodeName, LabelSelector: "pod-template-hash",
 	})
 	if err != nil {
@@ -90,7 +90,7 @@ func CountPodsWithDelete(nodeName string, isDelete bool) (count int, err error) 
 			gracePeriodSeconds := int64(DefaultGracePeriodInSeconds + time.Duration(*pods.Items[idx].Spec.TerminationGracePeriodSeconds))
 			deleteOptions.GracePeriodSeconds = &gracePeriodSeconds
 
-			err = clients.Coreclient.Pods(pods.Items[idx].Namespace).Delete(context.TODO(), pods.Items[idx].Name, deleteOptions)
+			err = clients.K8sClient.CoreV1().Pods(pods.Items[idx].Namespace).Delete(context.TODO(), pods.Items[idx].Name, deleteOptions)
 			if err != nil {
 				logrus.Errorf("error deleting %s err: %v", provider.PodToString(&pods.Items[idx]), err)
 				return 0, err
