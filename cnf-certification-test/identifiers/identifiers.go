@@ -105,21 +105,6 @@ var (
 		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified"),
 		Version: versionOne,
 	}
-	// TestExtractNodeInformationIdentifier is a test which extracts Node information.
-	TestExtractNodeInformationIdentifier = claim.Identifier{
-		Url:     formTestURL(common.DiagnosticTestKey, "extract-node-information"),
-		Version: versionOne,
-	}
-	// TestListCniPluginsIdentifier retrieves list of CNI plugins.
-	TestListCniPluginsIdentifier = claim.Identifier{
-		Url:     formTestURL(common.DiagnosticTestKey, "list-cni-plugins"),
-		Version: versionOne,
-	}
-	// TestNodesHwInfoIdentifier retrieves nodes HW info.
-	TestNodesHwInfoIdentifier = claim.Identifier{
-		Url:     formTestURL(common.DiagnosticTestKey, "nodes-hw-info"),
-		Version: versionOne,
-	}
 	// TestHugepagesNotManuallyManipulated represents the test identifier testing hugepages have not been manipulated.
 	TestHugepagesNotManuallyManipulated = claim.Identifier{
 		Url:     formTestURL(common.PlatformAlterationTestKey, "hugepages-config"),
@@ -212,6 +197,11 @@ var (
 		Url:     formTestURL(common.LifecycleTestKey, "deployment-scaling"),
 		Version: versionOne,
 	}
+	// TestStateFulSetScalingIdentifier ensures statefulset scale in/out operations work correctly.
+	TestStateFulSetScalingIdentifier = claim.Identifier{
+		Url:     formTestURL(common.LifecycleTestKey, "statefulset-scaling"),
+		Version: versionOne,
+	}
 	// TestImagePullPolicyIdentifier ensures represent image pull policy practices.
 	TestImagePullPolicyIdentifier = claim.Identifier{
 		Url:     formTestURL(common.LifecycleTestKey, "image-pull-policy"),
@@ -289,11 +279,15 @@ var (
 	// TestClusterCsiInfoIdentifier list Cluster CSIdriver Identifier retrieves Third Party CSI driver info.
 	TestClusterCsiInfoIdentifier = claim.Identifier{
 		Url:     formTestURL(common.DiagnosticTestKey, "cluster-csi-info"),
+    Version: versionOne,
+	}
+	// TestIsSELinuxEnforcingIdentifier ensures selinux is in enforcing mode
+	TestIsSELinuxEnforcingIdentifier = claim.Identifier{
+		Url:     formTestURL(common.PlatformAlterationTestKey, "is-selinux-enforcing"),
 		Version: versionOne,
 	}
-	// TestclusterVersionIdentifier list Cluster CSIdriver Identifier retrieves Third Party CSI driver info.
-	TestclusterVersionIdentifier = claim.Identifier{
-		Url:     formTestURL(common.DiagnosticTestKey, "clusterversion"),
+	TestUndeclaredContainerPortsUsage = claim.Identifier{
+		Url:     formTestURL(common.NetworkingTestKey, "undeclared-container-ports-usage"),
 		Version: versionOne,
 	}
 	TestLivenessProbeIdentifier = claim.Identifier{
@@ -343,6 +337,18 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		    In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the 
 			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the deployment/s`),
 		Remediation:           `Make sure CNF deployments/replica sets can scale in/out successfully.`,
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+	},
+	TestStateFulSetScalingIdentifier: {
+		Identifier: TestStateFulSetScalingIdentifier,
+		Type:       normativeResult,
+		Description: formDescription(TestStateFulSetScalingIdentifier,
+			`tests that CNF statefulsets support scale in/out operations. 
+			First, The test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the 
+			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s.
+			In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the 
+			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the statefulset/s`),
+		Remediation:           `Make sure CNF statefulsets/replica sets can scale in/out successfully.`,
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
 	TestSecConCapabilitiesIdentifier: {
@@ -420,13 +426,6 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation: `Set the spec.HostPid parameter to false in the pod configuration`,
 		Description: formDescription(TestPodHostPID,
 			`Verifies that the spec.HostPid parameter is set to false`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
-	},
-	TestExtractNodeInformationIdentifier: {
-		Identifier: TestExtractNodeInformationIdentifier,
-		Type:       informativeResult,
-		Description: formDescription(TestExtractNodeInformationIdentifier,
-			`extracts informational information about the cluster.`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
 	},
 	TestHugepagesNotManuallyManipulated: {
@@ -695,23 +694,6 @@ the changes for you.`,
 			`tests that boot parameters are set through the MachineConfigOperator, and not set manually on the Node.`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.13 and 6.2.14",
 	},
-	TestListCniPluginsIdentifier: {
-		Identifier:  TestListCniPluginsIdentifier,
-		Type:        normativeResult,
-		Remediation: "",
-		Description: formDescription(TestListCniPluginsIdentifier,
-			`lists CNI plugins`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.4 and 6.3.7",
-	},
-	TestNodesHwInfoIdentifier: {
-		Identifier:  TestNodesHwInfoIdentifier,
-		Type:        normativeResult,
-		Remediation: "",
-		Description: formDescription(TestNodesHwInfoIdentifier,
-			`list nodes HW info`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
-	},
-
 	TestShudtownIdentifier: {
 		Identifier: TestShudtownIdentifier,
 		Type:       normativeResult,
@@ -772,19 +754,21 @@ the changes for you.`,
 		Remediation:           `build a new docker image that's based on UBI (redhat universal base image).`,
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
-	TestClusterCsiInfoIdentifier: {
-		Identifier: TestClusterCsiInfoIdentifier,
-		Type:       informativeResult,
-		Description: formDescription(TestClusterCsiInfoIdentifier,
-			`extracts CSI driver information in the cluster.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
+	TestIsSELinuxEnforcingIdentifier: {
+		Identifier: TestIsSELinuxEnforcingIdentifier,
+		Type:       normativeResult,
+		Description: formDescription(TestIsSELinuxEnforcingIdentifier,
+			`verifies that all openshift platform/cluster nodes have selinux in "Enforcing" mode.`),
+		Remediation:           `configure selinux and enable enforcing mode.`,
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 11.3 Pod Security",
 	},
-	TestClusterCsiInfoIdentifier: {
-		Identifier: TestclusterVersionIdentifier,
-		Type:       informativeResult,
-		Description: formDescription(TestclusterVersionIdentifier,
-			`Extracts OCP versions from the cluster.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
+	TestUndeclaredContainerPortsUsage: {
+		Identifier: TestUndeclaredContainerPortsUsage,
+		Type:       normativeResult,
+		Description: formDescription(TestUndeclaredContainerPortsUsage,
+			`check that containers don't listen on ports that weren't declared in their specification`),
+		Remediation:           `ensure the CNF apps don't listen on undeclared containers' ports`,
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 16.3.1.1",
 	},
 	TestUndeclaredContainerPortsUsage: {
 		Identifier: TestUndeclaredContainerPortsUsage,

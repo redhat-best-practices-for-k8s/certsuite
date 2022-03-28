@@ -51,7 +51,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestUnalteredBaseImageIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		if provider.IsOCPCluster() {
-			testContainersFsDiff(&env)
+			testContainersFsDiff(&env, cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder()))
 		} else {
 			ginkgo.Skip(" non ocp cluster ")
 		}
@@ -59,33 +59,37 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNonTaintedNodeKernelsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testTainted(&env) // minikube tainted kernels are allowed via config
+		testTainted(&env, nodetainted.NewNodeTaintedTester(clientsholder.GetClientsHolder())) // minikube tainted kernels are allowed via config
 	})
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestIsRedHatReleaseIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testIsRedHatRelease(&env)
 	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestIsSELinuxEnforcingIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		if provider.IsOCPCluster() {
+			testIsSELinuxEnforcing(&env)
+		} else {
+			ginkgo.Skip(" non ocp cluster ")
+		}
+	})
 })
 
 // testContainersFsDiff test that all CUT didn't install new packages are starting
-func testContainersFsDiff(env *provider.TestEnvironment) {
+func testContainersFsDiff(env *provider.TestEnvironment, testerFuncs cnffsdiff.FsDiffFuncs) {
 	var badContainers []string
 	var errContainers []string
 	for _, cut := range env.Containers {
 		logrus.Debug(fmt.Sprintf("%s(%s) should not install new packages after starting", cut.Podname, cut.Data.Name))
-		fsdiff, err := cnffsdiff.NewFsDiff(cut)
-		if err != nil {
-			logrus.Error("can't create FsDiff instance")
-			errContainers = append(errContainers, cut.Data.Name)
-			continue
-		}
-		nodeName := cut.NodeName
-		debugPod := env.DebugPods[nodeName]
-
-		fsdiff.RunTest(clientsholder.GetClientsHolder(), clientsholder.Context{Namespace: debugPod.Namespace,
-			Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name})
-		switch fsdiff.GetResults() {
+		debugPod := env.DebugPods[cut.NodeName]
+		testerFuncs.RunTest(clientsholder.Context{
+			Namespace:     debugPod.Namespace,
+			Podname:       debugPod.Name,
+			Containername: debugPod.Spec.Containers[0].Name,
+		})
+		switch testerFuncs.GetResults() {
 		case testhelper.SUCCESS:
 			continue
 		case testhelper.FAILURE:
@@ -101,20 +105,21 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 }
 
 //nolint:funlen
-func testTainted(env *provider.TestEnvironment) {
+func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedFuncs) {
 	var taintedNodes []string
 	var errNodes []string
 
 	// Loop through the debug pods that are tied to each node.
 	for _, dp := range env.DebugPods {
-		// Build a NodeTainted tester object.
-		c := clientsholder.GetClientsHolder()
-		tester := nodetainted.NewNodeTaintedTester(common.DefaultTimeout, c, clientsholder.Context{
+		// Create OCP context to pass around
+		ocpContext := clientsholder.Context{
 			Namespace:     dp.Namespace,
 			Podname:       dp.Name,
 			Containername: dp.Spec.Containers[0].Name,
-		})
-		taintInfo, err := tester.GetKernelTaintInfo()
+		}
+
+		// Get the taint information from the node kernel
+		taintInfo, err := testerFuncs.GetKernelTaintInfo(ocpContext)
 		if err != nil {
 			logrus.Error("failed to retrieve kernel taint information from debug pod/host")
 			tnf.ClaimFilePrintf("failed to retrieve kernel taint information from debug pod/host")
@@ -135,25 +140,29 @@ func testTainted(env *provider.TestEnvironment) {
 		}
 		taintMsg, individualTaints := nodetainted.DecodeKernelTaints(taintedBitmap)
 
-		// We only will fail the tainted kernel check if the reason for the taint
-		// only pertains to `module was loaded`.
+		// Count how many taints come from `module was loaded` taints versus `other`
 		logrus.Debug("Checking for 'module was loaded' taints")
 		logrus.Debug("individualTaints", individualTaints)
-		moduleCheck := false
+		moduleTaintsFound := false
+		otherTaintsFound := false
+
 		for _, it := range individualTaints {
 			if strings.Contains(it, `module was loaded`) {
-				moduleCheck = true
-				break
+				moduleTaintsFound = true
+			} else {
+				otherTaintsFound = true
 			}
 		}
 
-		if moduleCheck {
+		if otherTaintsFound {
+			nodeTaintsAccepted = false
+		} else if moduleTaintsFound {
 			// Retrieve the modules from the node (via the debug pod)
-			modules := tester.GetModulesFromNode(dp.Name)
+			modules := testerFuncs.GetModulesFromNode(ocpContext)
 			logrus.Debugf("Got the modules from node %s: %v", dp.Name, modules)
 
 			// Retrieve all of the out of tree modules.
-			taintedModules := nodetainted.GetOutOfTreeModules(modules, dp.Name, tester)
+			taintedModules := testerFuncs.GetOutOfTreeModules(modules, ocpContext)
 			logrus.Debug("Collected all of the tainted modules: ", taintedModules)
 			logrus.Debug("Modules allowed via configuration: ", env.Config.AcceptedKernelTaints)
 
@@ -202,4 +211,33 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 	}
 
 	gomega.Expect(failedContainers).To(gomega.BeEmpty())
+}
+
+func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
+	const (
+		getenforceCommand = "getenforce"
+		enforcingString   = "Enforcing\n"
+	)
+	o := clientsholder.GetClientsHolder()
+	nodesFailed := 0
+	nodesError := 0
+	for _, debugPod := range env.DebugPods {
+		ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
+		outStr, errStr, err := o.ExecCommandContainer(ctx, getenforceCommand)
+		if err != nil || errStr != "" {
+			logrus.Errorf("Failed to execute command %s in debug %s, errStr: %s, err: %s", getenforceCommand, provider.PodToString(debugPod), errStr, err)
+			nodesError++
+			continue
+		}
+		if outStr != enforcingString {
+			tnf.ClaimFilePrintf(fmt.Sprintf("Node %s is not running selinux", debugPod.Spec.NodeName))
+			nodesFailed++
+		}
+	}
+	if nodesError > 0 {
+		ginkgo.Fail(fmt.Sprintf("Failed because could not run %s command on %d nodes", getenforceCommand, nodesError))
+	}
+	if nodesFailed > 0 {
+		ginkgo.Fail(fmt.Sprintf("Failed because %d nodes are not running selinux", nodesFailed))
+	}
 }

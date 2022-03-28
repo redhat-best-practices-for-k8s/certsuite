@@ -102,7 +102,7 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	// pod role bindings
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodRoleBindingsBestPracticesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		TestPodRoleBindings(&env)
+		TestPodRoleBindings(&env, rbac.NewRoleBindingTester(clientsholder.GetClientsHolder()))
 	})
 	// pod cluster role bindings
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodClusterRoleBindingsBestPracticesIdentifier)
@@ -289,19 +289,14 @@ func TestNamespace(env *provider.TestEnvironment) {
 	}
 	ginkgo.By(fmt.Sprintf("CNF pods' should belong to any of the configured Namespaces: %v", env.Namespaces))
 	ginkgo.By(fmt.Sprintf("CRs from autodiscovered CRDs should belong only to the configured Namespaces: %v", env.Namespaces))
-	invalidCrs, _ := namespace.TestCrsNamespaces(env.Crds, env.Namespaces)
+	invalidCrs, err := namespace.TestCrsNamespaces(env.Crds, env.Namespaces)
+	if err != nil {
+		ginkgo.Fail("error retrieving CRs")
+	}
 
-	invalidCrsNum := 0
-	if invalidCrdsNum := len(invalidCrs); invalidCrdsNum > 0 {
-		for crdName, namespaces := range invalidCrs {
-			for namespace, crNames := range namespaces {
-				for _, crName := range crNames {
-					tnf.ClaimFilePrintf("crName=%s namespace=%s is invalid (crd=%s)", crName, namespace, crdName)
-					invalidCrsNum++
-				}
-			}
-		}
-		ginkgo.Fail(fmt.Sprintf("Found %d CRs belonging to invalid Namespaces.", invalidCrsNum))
+	invalidCrsNum := namespace.GetInvalidCRsNum(invalidCrs)
+	if invalidCrsNum > 0 {
+		ginkgo.Fail(fmt.Sprintf("Found %d CRs belonging to invalid namespaces.", invalidCrsNum))
 	}
 }
 
@@ -323,8 +318,7 @@ func TestPodServiceAccount(env *provider.TestEnvironment) {
 }
 
 // TestPodRoleBindings verifies that the pod utilizes a valid role binding that does not cross namespaces
-//nolint:dupl
-func TestPodRoleBindings(env *provider.TestEnvironment) {
+func TestPodRoleBindings(env *provider.TestEnvironment, testerFuncs rbac.RoleBindingFuncs) {
 	ginkgo.By("Should not have RoleBinding in other namespaces")
 	failedPods := []string{}
 
@@ -334,11 +328,8 @@ func TestPodRoleBindings(env *provider.TestEnvironment) {
 			ginkgo.Skip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
 		}
 
-		// Create a new object with the ability to gather rolebinding specs.
-		rbTester := rbac.NewRoleBindingTester(put.Spec.ServiceAccountName, put.Namespace, clientsholder.GetClientsHolder())
-
 		// Get any rolebindings that do not belong to the pod namespace.
-		roleBindings, err := rbTester.GetRoleBindings()
+		roleBindings, err := testerFuncs.GetRoleBindings(put.Namespace, put.Spec.ServiceAccountName)
 		if err != nil {
 			failedPods = append(failedPods, put.Name)
 		}
@@ -356,7 +347,6 @@ func TestPodRoleBindings(env *provider.TestEnvironment) {
 }
 
 // TestPodClusterRoleBindings verifies that the pod utilizes a valid cluster role binding that does not cross namespaces
-//nolint:dupl
 func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 	ginkgo.By("Should not have ClusterRoleBinding in other namespaces")
 	failedPods := []string{}
@@ -388,56 +378,20 @@ func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 	}
 }
 
-//nolint:funlen
 func TestAutomountServiceToken(env *provider.TestEnvironment, testerFuncs rbac.AutomountTokenFuncs) {
-	tnf.GinkgoBy("Should have automountServiceAccountToken set to false")
+	ginkgo.By("Should have automountServiceAccountToken set to false")
 
 	msg := []string{}
 	failedPods := []string{}
 	for _, put := range env.Pods {
-		tnf.GinkgoBy(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
-		tnf.GomegaExpectStringNotEmpty(put.Spec.ServiceAccountName)
+		ginkgo.By(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
+		gomega.Expect(put.Spec.ServiceAccountName).ToNot(gomega.BeEmpty())
 
-		// The token can be specified in the pod directly
-		// or it can be specified in the service account of the pod
-		// if no service account is configured, then the pod will use the configuration
-		// of the default service account in that namespace
-		// the token defined in the pod has takes precedence
-		// the test would pass iif token is explicitly set to false
-		// if the token is set to true in the pod, the test would fail right away
-		if put.Spec.AutomountServiceAccountToken != nil && *put.Spec.AutomountServiceAccountToken {
-			msg = append(msg, fmt.Sprintf("Pod %s:%s is configured with automountServiceAccountToken set to true ", put.Namespace, put.Name))
+		// Evaluate the pod's automount service tokens and any attached service accounts
+		podPassed, newMsg := testerFuncs.EvaluateTokens(put)
+		if !podPassed {
 			failedPods = append(failedPods, put.Name)
-			continue
-		}
-
-		// Collect information about the service account attached to the pod.
-		saAutomountServiceAccountToken, err := testerFuncs.AutomountServiceAccountSetOnSA(put.Spec.ServiceAccountName, put.Namespace)
-		if err != nil {
-			failedPods = append(failedPods, put.Name)
-			continue
-		}
-
-		// The pod token is false means the pod is configured properly
-		// The pod is not configured and the service account is configured with false means
-		// the pod will inherit the behavior `false` and the test would pass
-		if (put.Spec.AutomountServiceAccountToken != nil && !*put.Spec.AutomountServiceAccountToken) || (saAutomountServiceAccountToken != nil && !*saAutomountServiceAccountToken) {
-			continue
-		}
-
-		// the service account is configured with true means all the pods
-		// using this service account are not configured properly, register the error
-		// message and fail
-		if saAutomountServiceAccountToken != nil && *saAutomountServiceAccountToken {
-			msg = append(msg, fmt.Sprintf("serviceaccount %s:%s is configured with automountServiceAccountToken set to true, impacting pod %s ", put.Namespace, put.Spec.ServiceAccountName, put.Name))
-			failedPods = append(failedPods, put.Name)
-		}
-
-		// the token should be set explicitly to false, otherwise, it's a failure
-		// register the error message and check the next pod
-		if saAutomountServiceAccountToken == nil {
-			msg = append(msg, fmt.Sprintf("serviceaccount %s:%s is not configured with automountServiceAccountToken set to false, impacting pod %s ", put.Namespace, put.Spec.ServiceAccountName, put.Name))
-			failedPods = append(failedPods, put.Name)
+			msg = append(msg, newMsg)
 		}
 	}
 
@@ -448,10 +402,6 @@ func TestAutomountServiceToken(env *provider.TestEnvironment, testerFuncs rbac.A
 	if n := len(failedPods); n > 0 {
 		logrus.Debugf("Pods that failed automount test: %+v", failedPods)
 		tnf.ClaimFilePrintf("Pods that failed automount test: %+v", failedPods)
-		tnf.GinkgoFail(fmt.Sprintf("% d pods that failed automount test", n))
-	}
-
-	if tnf.IsUnitTest() {
-		testerFuncs.SetTestingResult(len(failedPods) == 0)
+		ginkgo.Fail(fmt.Sprintf("% d pods that failed automount test", n))
 	}
 }

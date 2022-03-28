@@ -26,7 +26,6 @@ import (
 
 	"encoding/json"
 
-	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
@@ -35,6 +34,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	v1apps "k8s.io/api/apps/v1"
 	v1scaling "k8s.io/api/autoscaling/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -54,7 +54,7 @@ type TestEnvironment struct { // rename this with testTarget
 	Namespaces         []string
 	Pods               []*v1.Pod
 	Containers         []*Container
-	Csvs               []*v1alpha1.ClusterServiceVersion
+	Operators          []Operator
 	DebugPods          map[string]*v1.Pod // map from nodename to debugPod
 	Config             configuration.TestConfiguration
 	variables          configuration.TestParameters
@@ -64,15 +64,34 @@ type TestEnvironment struct { // rename this with testTarget
 	SkipNetTests       map[*v1.Pod]bool
 	SkipMultusNetTests map[*v1.Pod]bool
 	Deployments        []*v1apps.Deployment
-	SatetfulSets       []*v1apps.StatefulSet
+	StatetfulSets      []*v1apps.StatefulSet
 	HorizontalScaler   map[string]*v1scaling.HorizontalPodAutoscaler
 	Nodes              *v1.NodeList
-	Subscriptions      []*v1alpha1.Subscription
+	Subscriptions      []*olmv1Alpha.Subscription
 	K8sVersion         string
 	OpenshiftVersion   string
 	HelmList           []*release.Release
 }
 
+type CsvInstallPlan struct {
+	// Operator's installPlan name
+	Name string `yaml:"name" json:"name"`
+	// BundleImage is the URL referencing the bundle image
+	BundleImage string `yaml:"bundleImage" json:"bundleImage"`
+	// IndexImage is the URL referencing the index image
+	IndexImage string `yaml:"indexImage" json:"indexImage"`
+}
+
+type Operator struct {
+	Name             string                            `yaml:"name" json:"name"`
+	Namespace        string                            `yaml:"namespace" json:"namespace"`
+	Csv              *olmv1Alpha.ClusterServiceVersion `yaml:"csv" json:"csv"`
+	SubscriptionName string                            `yaml:"subscriptionName" json:"subscriptionName"`
+	InstallPlans     []CsvInstallPlan                  `yaml:"installPlans,omitempty" json:"installPlans,omitempty"`
+	Package          string                            `yaml:"packag" json:"packag"`
+	Org              string                            `yaml:"Org" json:"Org"`
+	Version          string                            `yaml:"Version" json:"Version"`
+}
 type Container struct {
 	Data                     *v1.Container
 	Status                   v1.ContainerStatus
@@ -122,6 +141,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.SkipMultusNetTests = make(map[*v1.Pod]bool)
 	env.Nodes = data.Nodes
 	pods := data.Pods
+
 	for i := 0; i < len(pods); i++ {
 		env.Pods = append(env.Pods, &pods[i])
 		var err error
@@ -135,22 +155,9 @@ func buildTestEnvironment() { //nolint:funlen
 		if pods[i].GetLabels()[skipMultusConnectivityTestsLabel] != "" {
 			env.SkipMultusNetTests[&pods[i]] = true
 		}
-		for j := 0; j < len(pods[i].Spec.Containers); j++ {
-			cut := &(pods[i].Spec.Containers[j])
-			var state v1.ContainerStatus
-			if len(pods[i].Status.ContainerStatuses) > 0 {
-				state = pods[i].Status.ContainerStatuses[j]
-			} else {
-				logrus.Errorf("%s is not ready, skipping status collection", PodToString(&pods[i]))
-			}
-			aRuntime, uid := GetRuntimeUID(&state)
-			container := Container{Podname: pods[i].Name, Namespace: pods[i].Namespace,
-				NodeName: pods[i].Spec.NodeName, Data: cut, Status: state, Runtime: aRuntime, UID: uid,
-				ContainerImageIdentifier: buildContainerImageSource(pods[i].Spec.Containers[j].Image)}
-			env.Containers = append(env.Containers, &container)
-			env.ContainersMap[cut] = &container
-		}
+		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
+	env.ContainersMap = createContainersMapByNode(env.Containers)
 	env.DebugPods = make(map[string]*v1.Pod)
 	for i := 0; i < len(data.DebugPods); i++ {
 		nodeName := data.DebugPods[i].Spec.NodeName
@@ -159,7 +166,6 @@ func buildTestEnvironment() { //nolint:funlen
 	csvs := data.Csvs
 	subscriptions := data.Subscriptions
 	for i := range csvs {
-		env.Csvs = append(env.Csvs, &csvs[i])
 		isCsv, sub := IsinstalledCsv(&csvs[i], subscriptions)
 		if isCsv {
 			env.Subscriptions = append(env.Subscriptions, &sub)
@@ -179,10 +185,43 @@ func buildTestEnvironment() { //nolint:funlen
 		env.Deployments = append(env.Deployments, &data.Deployments[i])
 	}
 	for i := range data.StatefulSet {
-		env.SatetfulSets = append(env.SatetfulSets, &data.StatefulSet[i])
+		env.StatetfulSets = append(env.StatetfulSets, &data.StatefulSet[i])
 	}
 	env.HorizontalScaler = data.Hpas
+
+	operators, err := createOperators(data.Csvs, data.Subscriptions)
+	if err != nil {
+		logrus.Errorf("Failed to get cluster operators: %s", err)
+	}
+	env.Operators = operators
 }
+
+func getPodContainers(aPod *v1.Pod) (containerList []*Container) {
+	for j := 0; j < len(aPod.Spec.Containers); j++ {
+		cut := &(aPod.Spec.Containers[j])
+		var state v1.ContainerStatus
+		if len(aPod.Status.ContainerStatuses) > 0 {
+			state = aPod.Status.ContainerStatuses[j]
+		} else {
+			logrus.Errorf("%s is not ready, skipping status collection", PodToString(aPod))
+		}
+		aRuntime, uid := GetRuntimeUID(&state)
+		container := Container{Podname: aPod.Name, Namespace: aPod.Namespace,
+			NodeName: aPod.Spec.NodeName, Data: cut, Status: state, Runtime: aRuntime, UID: uid,
+			ContainerImageIdentifier: buildContainerImageSource(aPod.Spec.Containers[j].Image)}
+		containerList = append(containerList, &container)
+	}
+	return containerList
+}
+
+func createContainersMapByNode(containerList []*Container) (containersMap map[*v1.Container]*Container) {
+	containersMap = make(map[*v1.Container]*Container)
+	for _, c := range containerList {
+		containersMap[c.Data] = c
+	}
+	return containersMap
+}
+
 func isSkipHelmChart(helmName string, skipHelmChartList []configuration.SkipHelmChartList) bool {
 	if len(skipHelmChartList) == 0 {
 		return false
@@ -208,8 +247,8 @@ func IsOCPCluster() bool {
 	return !env.variables.NonOcpCluster
 }
 
-func IsinstalledCsv(csv *v1alpha1.ClusterServiceVersion, subscriptions []v1alpha1.Subscription) (bool, v1alpha1.Subscription) {
-	var returnsub v1alpha1.Subscription
+func IsinstalledCsv(csv *olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription) (bool, olmv1Alpha.Subscription) {
+	var returnsub olmv1Alpha.Subscription
 	for i := range subscriptions {
 		if subscriptions[i].Status.InstalledCSV == csv.Name {
 			returnsub = subscriptions[i]
@@ -346,6 +385,17 @@ func StatefulsetToString(s *v1apps.StatefulSet) string {
 	)
 }
 
+func CsvToString(csv *olmv1Alpha.ClusterServiceVersion) string {
+	return fmt.Sprintf("operator csv: %s ns: %s",
+		csv.Name,
+		csv.Namespace,
+	)
+}
+
+func (op *Operator) String() string {
+	return fmt.Sprintf("csv: %s ns:%s subscription:%s", op.Name, op.Namespace, op.SubscriptionName)
+}
+
 // getPodIPsPerNet gets the IPs of a pod.
 // CNI annotation "k8s.v1.cni.cncf.io/networks-status".
 // Returns (ips, error).
@@ -376,4 +426,119 @@ func (env *TestEnvironment) SetNeedsRefresh() {
 
 func (env *TestEnvironment) IsIntrusive() bool {
 	return !env.variables.NonIntrusiveOnly
+}
+
+// getInstallPlansInNamespace is a helper function to get the installPlans in a namespace. The
+// map installPlans is used to store them in order to avoid repeating http requests for a namespace
+// whose installPlans were already obtained.
+func getInstallPlansInNamespace(namespace string, clusterInstallPlans map[string][]olmv1Alpha.InstallPlan) ([]olmv1Alpha.InstallPlan, error) {
+	// Check if installplans were stored before.
+	nsInstallPlans, exist := clusterInstallPlans[namespace]
+	if exist {
+		return nsInstallPlans, nil
+	}
+
+	clients := clientsholder.GetClientsHolder()
+	installPlanList, err := clients.OlmClient.OperatorsV1alpha1().InstallPlans(namespace).List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		return nil, fmt.Errorf("unable get installplans in namespace %s, err: %s", namespace, err)
+	}
+
+	nsInstallPlans = installPlanList.Items
+	clusterInstallPlans[namespace] = nsInstallPlans
+
+	return nsInstallPlans, nil
+}
+
+// getCsvInstallPlans is a helper function that returns the installPlans for a CSV in a namespace.
+// The map clusterInstallPlans is used to store previously retrieved installPlans, in order to save
+// http requests.
+func getCsvInstallPlans(namespace, csv string, clusterInstallPlans map[string][]olmv1Alpha.InstallPlan) ([]*olmv1Alpha.InstallPlan, error) {
+	nsInstallPlans, err := getInstallPlansInNamespace(namespace, clusterInstallPlans)
+	if err != nil {
+		return nil, err
+	}
+
+	installPlans := []*olmv1Alpha.InstallPlan{}
+	for i := range nsInstallPlans {
+		nsInstallPlan := &nsInstallPlans[i]
+		for _, csvName := range nsInstallPlan.Spec.ClusterServiceVersionNames {
+			if csv != csvName {
+				continue
+			}
+
+			if nsInstallPlan.Status.BundleLookups == nil {
+				logrus.Warnf("InstallPlan %s for csv %s (ns %s) does not have bundle lookups. It will be skipped.", nsInstallPlan.Name, csv, namespace)
+				continue
+			}
+
+			installPlans = append(installPlans, nsInstallPlan)
+		}
+	}
+
+	if len(installPlans) == 0 {
+		return nil, fmt.Errorf("no installplans found for csv %s (ns %s)", csv, namespace)
+	}
+
+	return installPlans, nil
+}
+
+func getCatalogSourceImageIndexFromInstallPlan(installPlan *olmv1Alpha.InstallPlan) (string, error) {
+	// ToDo/Technical debt: what to do if installPlan has more than one BundleLookups entries.
+	catalogSourceName := installPlan.Status.BundleLookups[0].CatalogSourceRef.Name
+	catalogSourceNamespace := installPlan.Status.BundleLookups[0].CatalogSourceRef.Namespace
+
+	clients := clientsholder.GetClientsHolder()
+	catalogSource, err := clients.OlmClient.OperatorsV1alpha1().CatalogSources(catalogSourceNamespace).Get(context.TODO(), catalogSourceName, metav1.GetOptions{})
+	if err != nil {
+		return "", fmt.Errorf("failed to get catalogsource: %s", err)
+	}
+
+	return catalogSource.Spec.Image, nil
+}
+
+func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription) ([]Operator, error) {
+	installPlans := map[string][]olmv1Alpha.InstallPlan{} // Helper: maps a namespace name to all its installplans.
+	operators := []Operator{}
+	for i := range csvs {
+		csv := &csvs[i]
+		op := Operator{Name: csv.Name, Namespace: csv.Namespace, Csv: csv}
+
+		packageAndVersion := strings.SplitN(csv.Name, ".", 2) //nolint:gomnd // ok
+		op.Version = packageAndVersion[1]
+
+		for s := range subscriptions {
+			subscription := &subscriptions[s]
+			if subscription.Status.InstalledCSV != csv.Name {
+				continue
+			}
+
+			op.SubscriptionName = subscription.Name
+			op.Package = subscription.Spec.Package
+			op.Org = subscription.Spec.CatalogSource
+
+			csvInstallPlans, err := getCsvInstallPlans(csv.Namespace, csv.Name, installPlans)
+			if err != nil {
+				return nil, fmt.Errorf("failed to get installPlans for csv %s (ns %s)", csv.Name, csv.Namespace)
+			}
+
+			for _, installPlan := range csvInstallPlans {
+				indexImage, err := getCatalogSourceImageIndexFromInstallPlan(installPlan)
+				if err != nil {
+					return nil, fmt.Errorf("failed to get installPlan image index for csv %s (ns %s) installPlan %s, err: %s",
+						csv.Name, csv.Namespace, installPlan.Name, err)
+				}
+
+				op.InstallPlans = append(op.InstallPlans, CsvInstallPlan{
+					Name:        installPlan.Name,
+					BundleImage: installPlan.Status.BundleLookups[0].Path,
+					IndexImage:  indexImage,
+				})
+			}
+		}
+
+		operators = append(operators, op)
+	}
+
+	return operators, nil
 }

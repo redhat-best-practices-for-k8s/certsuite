@@ -38,7 +38,6 @@ func FindDeploymentByNameByNamespace(appClient *appv1client.AppsV1Client, namesp
 	}
 	return dp, nil
 }
-
 func FindStatefulsetByNameByNamespace(appClient *appv1client.AppsV1Client, namespace, name string) (*v1.StatefulSet, error) {
 	ssClient := appClient.StatefulSets(namespace)
 	ss, err := ssClient.Get(context.TODO(), name, metav1.GetOptions{})

@@ -21,6 +21,7 @@ env:
   TNF_PARTNER_DIR: '/usr/tnf-partner'
   TNF_PARTNER_SRC_DIR: '${TNF_PARTNER_DIR}/src'
   ON_DEMAND_DEBUG_PODS: false
+  TERM: xterm-color
 
 jobs:
   lint:
@@ -32,6 +33,9 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17.8
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -81,6 +85,9 @@ jobs:
         with:
           go-version: 1.17.8
 
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
+
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
         with:
@@ -96,7 +103,7 @@ jobs:
 
       - name: Quality Gate - Test coverage shall be above threshold
         env:
-          TESTCOVERAGE_THRESHOLD: 20
+          TESTCOVERAGE_THRESHOLD: 15
         run: |
           echo "Quality Gate: checking test coverage is above threshold ..."
           echo "Threshold             : $TESTCOVERAGE_THRESHOLD %"
@@ -122,6 +129,9 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17.8
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -188,7 +198,10 @@ jobs:
           mkdir -p $TNF_CONFIG_DIR $TNF_OUTPUT_DIR
           cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
         shell: bash
-    
+
+      - name: 'Test: Run without any TS, just get diagnostic information'
+        run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
+          
       - name: 'Test: Run generic test suite in a TNF container'
         run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -f access-control lifecycle platform observability networking affiliated-certification operator
 

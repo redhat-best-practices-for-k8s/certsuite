@@ -150,42 +150,6 @@ Description|http://test-network-function.com/testcases/affiliated-certification/
 Result Type|normative
 Suggested Remediation|Ensure that your Operator has passed Red Hat's Operator Certification Program (OCP).
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2.12 and Section 6.3.3
-### http://test-network-function.com/testcases/diagnostic/clusterversion
-
-Property|Description
----|---
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/diagnostic/clusterversion Extracts OCP versions from the cluster.
-Result Type|informative
-Suggested Remediation|
-Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.3.6
-### http://test-network-function.com/testcases/diagnostic/extract-node-information
-
-Property|Description
----|---
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/diagnostic/extract-node-information extracts informational information about the cluster.
-Result Type|informative
-Suggested Remediation|
-Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.3.6
-### http://test-network-function.com/testcases/diagnostic/list-cni-plugins
-
-Property|Description
----|---
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/diagnostic/list-cni-plugins lists CNI plugins
-Result Type|normative
-Suggested Remediation|
-Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2.4 and 6.3.7
-### http://test-network-function.com/testcases/diagnostic/nodes-hw-info
-
-Property|Description
----|---
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/diagnostic/nodes-hw-info list nodes HW info
-Result Type|normative
-Suggested Remediation|
-Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
 ### http://test-network-function.com/testcases/lifecycle/container-shutdown
 
 Property|Description
@@ -284,6 +248,15 @@ Version|v1.0.0
 Description|http://test-network-function.com/testcases/lifecycle/scaling tests that CNF deployments support scale in/out operations.  			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the  			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.
 Result Type|normative
 Suggested Remediation|Make sure CNF deployments/replica sets can scale in/out successfully.
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
+### http://test-network-function.com/testcases/lifecycle/statefulset-scaling
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/statefulset-scaling tests that CNF statefulsets support scale in/out operations.  			First, The test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the  			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. 			In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the  			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the statefulset/s
+Result Type|normative
+Suggested Remediation|Make sure CNF statefulsets/replica sets can scale in/out successfully.
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
 ### http://test-network-function.com/testcases/networking/icmpv4-connectivity
 
@@ -411,6 +384,15 @@ Description|http://test-network-function.com/testcases/platform-alteration/hugep
 Result Type|normative
 Suggested Remediation|HugePage settings should be configured either directly through the MachineConfigOperator or indirectly using the PerformanceAddonOperator.  This ensures that OpenShift is aware of the special MachineConfig requirements, and can provision your CNF on a Node that is part of the corresponding MachineConfigSet.  Avoid making changes directly to an underlying Node, and let OpenShift handle the heavy lifting of configuring advanced settings.
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
+### http://test-network-function.com/testcases/platform-alteration/is-selinux-enforcing
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/platform-alteration/is-selinux-enforcing verifies that all openshift platform/cluster nodes have selinux in "Enforcing" mode.
+Result Type|normative
+Suggested Remediation|configure selinux and enable enforcing mode.
+Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 11.3 Pod Security
 ### http://test-network-function.com/testcases/platform-alteration/isredhat-release
 
 Property|Description

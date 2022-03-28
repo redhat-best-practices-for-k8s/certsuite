@@ -31,6 +31,7 @@ import (
 	testclient "k8s.io/client-go/kubernetes/fake"
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
+	storageclient "k8s.io/client-go/kubernetes/typed/storage/v1"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 )
@@ -46,6 +47,7 @@ type ClientsHolder struct {
 	OClient          *clientconfigv1.ConfigV1Client
 	K8sClient        kubernetes.Interface
 	K8sClientversion *kubernetes.Clientset
+	StorageClient    *storageclient.StorageV1Client
 
 	ready bool
 }
@@ -132,7 +134,11 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	// create the oc client
 	clientsHolder.OClient, err = clientconfigv1.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		logrus.Panic("can't instantiate ocClient", err)
+		return nil, fmt.Errorf("can't instantiate ocClient: %s", err)
+	}
+	clientsHolder.StorageClient, err = storageclient.NewForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		return nil, fmt.Errorf("can't instantiate csiClient: %s", err)
 	}
 	clientsHolder.ready = true
 	return &clientsHolder, nil

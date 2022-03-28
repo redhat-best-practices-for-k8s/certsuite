@@ -53,7 +53,7 @@ func getTerminationGracePeriodConfiguredInYaml(lastAppliedConfigString string) (
 }
 
 func TestTerminationGracePeriodOnStatefulsets(env *provider.TestEnvironment) (badStatefulsets []*v1app.StatefulSet, curatedLogs loghelper.CuratedLogLines) { //nolint:dupl
-	for _, sut := range env.SatetfulSets {
+	for _, sut := range env.StatetfulSets {
 		aTerminationGracePeriodSeconds, err := getTerminationGracePeriodConfiguredInYaml(sut.Annotations[`kubectl.kubernetes.io/last-applied-configuration`])
 
 		if err != nil {

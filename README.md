@@ -156,21 +156,21 @@ There are several required arguments:
 
 * `-t` gives the local directory that contains tnf config files set up for the test.
 * `-o` gives the local directory that the test results will be available in once the container exits. This directory must exist in order for the claim file to be written.
-* `-f` gives the list of suites to be run, space separated.
 
 Optional arguments are:
-
+* `-f` gives the list of suites to be run, space separated.
+* `-s` gives the name of tests that should be skipped. This flag is discarded if no `-f` was set.
 * `-i` gives a name to a custom TNF container image. Supports local images, as well as images from external registries.
 * `-k` gives a path to one or more kubeconfig files to be used by the container to authenticate with the cluster. Paths must be separated by a colon.
 * `-n` gives the network mode of the container. Defaults set to `host`, which requires selinux to be disabled. Alternatively, `bridge` mode can be used with selinux if TNF_CONTAINER_CLIENT is set to `docker` or running the test as root. See the [docker run --network parameter reference](https://docs.docker.com/engine/reference/run/#network-settings) for more information on how to configure network settings.
-* `-s` gives the name of tests that should be skipped
 
+If `-f` is not specified, the tnf will run in 'diagnostic' mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc...) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds...
 
 If `-k` is not specified, autodiscovery is performed.
 The autodiscovery first looks for paths in the `$KUBECONFIG` environment variable on the host system, and if the variable is not set or is empty, the default configuration stored in `$HOME/.kube/config` is checked.
 
 ```shell script
-./run-tnf-container.sh -k ~/.kube/config -t ~/tnf/config -o ~/tnf/output -f diagnostic access-control -s access-control-host-resource-PRIVILEGED_POD
+./run-tnf-container.sh -k ~/.kube/config -t ~/tnf/config -o ~/tnf/output -f networking access-control -s access-control-host-resource-PRIVILEGED_POD
 ```
 
 See [General tests](#general-tests) for a list of available keywords.
@@ -205,7 +205,7 @@ docker build -t test-network-function:v1.0.5 \
 To make `run-tnf-container.sh` use the newly built image, specify the custom TNF image using the `-i` parameter.
 
 ```shell script
-./run-tnf-container.sh -i test-network-function:v1.0.5 -t ~/tnf/config -o ~/tnf/output -f diagnostic access-control
+./run-tnf-container.sh -i test-network-function:v1.0.5 -t ~/tnf/config -o ~/tnf/output -f networking access-control
 ```
  Note: see [General tests](#general-tests) for a list of available keywords.
 
@@ -271,12 +271,14 @@ script.
 Run any combination of the suites keywords listed at in the [General tests](#general-tests) section, e.g.
 
 ```shell script
-./run-cnf-suites.sh -f diagnostic
-./run-cnf-suites.sh -f diagnostic lifecycle
-./run-cnf-suites.sh -f diagnostic networking operator
-./run-cnf-suites.sh -f diagnostic platform-alteration
-./run-cnf-suites.sh -f diagnostic lifecycle affiliated-certification operator
+./run-cnf-suites.sh -f lifecycle
+./run-cnf-suites.sh -f networking lifecycle
+./run-cnf-suites.sh -f operator networking
+./run-cnf-suites.sh -f networking platform-alteration
+./run-cnf-suites.sh -f networking lifecycle affiliated-certification operator
 ```
+
+As with "run-tnf-container.sh", if `-f` is not specified here, the tnf will run in 'diagnostic' mode. See [Run the tests](#run-the-tests) section for more info.
 
 By default the claim file will be output into the same location as the test executable. The `-o` argument for
 `run-cnf-suites.sh` can be used to provide a new location that the output files will be saved to. For more detailed
@@ -300,10 +302,9 @@ You can select the test to be executed when running `run-cnf-suites.sh` with the
 Note that the `-l` parameter will be treated as a regular expression, so you can select more than one test by
 their labels.
 
-You can find all test labels by running the following commands:
+You can find all test labels by running the following command:
 ```shell script
-cd cnf-certification-test
-./cnf-certification-test.test --ginkgo.dry-run --ginkgo.v
+./run-cnf-suites.sh --list
 ```
 
 You can also check the [CATALOG.md](CATALOG.md) to find all test labels.
@@ -329,7 +330,6 @@ Suite|Test Spec Description|Minimum OpenShift Version
 ---|---|---
 `access-control`|The access-control test suite is used to test  service account, namespace and cluster/pod role binding for the pods under test. It also tests the pods/containers configuration.|4.6.0
 `affiliated-certification`|The affiliated-certification test suite verifies that the containers and operators listed in the configuration file are certified by Redhat|4.6.0
-`diagnostic`|The diagnostic test suite is used to gather node information from an OpenShift cluster.  The diagnostic test suite should be run whenever generating a claim.json file.|4.6.0
 `lifecycle`| The lifecycle test suite verifies the pods deployment, creation, shutdown and  survivability. |4.6.0
 `networking`|The networking test suite contains tests that check connectivity and networking config related best practices.|4.6.0
 `operator`|The operator test suite is designed to test basic Kubernetes Operator functionality.|4.6.0
@@ -533,5 +533,5 @@ output.
 For example:
 
 ```shell script
-TNF_DEFAULT_BUFFER_SIZE=32768 ./run-cnf-suites.sh -f diagnostic
+TNF_DEFAULT_BUFFER_SIZE=32768 ./run-cnf-suites.sh -f networking
 ```
