@@ -127,23 +127,17 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 				ocpversion = env.OpenshiftVersion
 			}
 			pack := op.Status.InstalledCSV
-			org := op.Spec.CatalogSource
-			if org == CertifiedOperator {
-				isCertified := certtool.WaitForCertificationRequestToSuccess(certtool.GetOperatorCertificationRequestFunction(org, pack, ocpversion), apiRequestTimeout).(bool)
-				if !isCertified {
-					testFailed = true
-					log.Info(fmt.Sprintf("Operator %s (organization %s) not certified for Openshift %s .", pack, org, ocpversion))
-					tnf.ClaimFilePrintf("Operator %s (organization %s) failed to be certified for Openshift %s", pack, org, ocpversion)
-				} else {
-					log.Info(fmt.Sprintf("Operator %s (organization %s) certified OK.", pack, org))
-				}
-			} else {
+			isCertified := certtool.WaitForCertificationRequestToSuccess(certtool.GetOperatorCertificationRequestFunction(CertifiedOperator, pack, ocpversion), apiRequestTimeout).(bool)
+			if !isCertified {
 				testFailed = true
-				tnf.ClaimFilePrintf("Operator %s is not certified (needs to be part of the operator-certified organization in the catalog)", pack)
+				log.Info(fmt.Sprintf("Operator %s not certified for Openshift %s .", pack, ocpversion))
+				tnf.ClaimFilePrintf("Operator %s  failed to be certified for Openshift %s", pack, ocpversion)
+			} else {
+				log.Info(fmt.Sprintf("Operator %s certified OK.", pack))
 			}
 		}
 		if testFailed {
-			ginkgo.Skip("At least one  operator was not certified to run on this version of openshift. Check Claim.json file for details.")
+			ginkgo.Fail("At least one  operator was not certified to run on this version of openshift. Check Claim.json file for details.")
 		}
 	})
 }
