@@ -247,6 +247,11 @@ var (
 		Url:     formTestURL(common.ObservabilityTestKey, "container-logging"),
 		Version: versionOne,
 	}
+	// TestTerminationMessagePolicy ensures pods have FallbackToLogsOnError set
+	TestTerminationMessagePolicyIdentifier = claim.Identifier{
+		Url:     formTestURL(common.ObservabilityTestKey, "termination-policy"),
+		Version: versionOne,
+	}
 	// TestCrdsStatusSubresourceIdentifier ensures all CRDs have a valid status subresource
 	TestCrdsStatusSubresourceIdentifier = claim.Identifier{
 		Url:     formTestURL(common.ObservabilityTestKey, "crd-status"),
@@ -776,6 +781,14 @@ the changes for you.`,
 			`check that all containers under test use standard input output and standard error when logging`),
 		Remediation:           `make sure containers are not redirecting stdout/stderr`,
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 11.1",
+	},
+	TestTerminationMessagePolicyIdentifier: {
+		Identifier: TestTerminationMessagePolicyIdentifier,
+		Type:       informativeResult,
+		Description: formDescription(TestTerminationMessagePolicyIdentifier,
+			`check that all containers are using terminationMessagePolicy: FallbackToLogsOnError`),
+		Remediation:           `make sure containers are all using FallbackToLogsOnError in terminationMessagePolicy`,
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 15.1",
 	},
 	TestPodAutomountServiceAccountIdentifier: {
 		Identifier: TestPodAutomountServiceAccountIdentifier,
