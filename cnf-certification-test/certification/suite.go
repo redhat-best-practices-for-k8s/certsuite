@@ -151,8 +151,8 @@ func testHelmCertified(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestHelmIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		certtool.CertAPIClient = api.NewHTTPClient()
-		helmcharts := env.HelmList
-		if len(helmcharts) == 0 {
+		helmchartsReleases := env.HelmChartReleases
+		if len(helmchartsReleases) == 0 {
 			ginkgo.Skip("No helm charts to check")
 		}
 		out, err := certtool.CertAPIClient.GetYamlFile()
@@ -164,7 +164,7 @@ func testHelmCertified(env *provider.TestEnvironment) {
 		}
 		ourKubeVersion := env.K8sVersion
 		failedHelmCharts := [][]string{}
-		for _, helm := range helmcharts {
+		for _, helm := range helmchartsReleases {
 			certified := false
 			for _, entryList := range out.Entries {
 				for _, entry := range entryList {

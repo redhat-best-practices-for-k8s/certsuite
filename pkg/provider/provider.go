@@ -84,11 +84,11 @@ type TestEnvironment struct { // rename this with testTarget
 	Deployments        []*v1apps.Deployment                          `json:"testDeployments"`
 	StatetfulSets      []*v1apps.StatefulSet                         `json:"testStatetfulSets"`
 	HorizontalScaler   map[string]*v1scaling.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
-	Nodes              *v1.NodeList                                  `json:"testNodes"`
+	Nodes              *v1.NodeList                                  `json:"-"`
 	Subscriptions      []*olmv1Alpha.Subscription                    `json:"testSubscriptions"`
 	K8sVersion         string
 	OpenshiftVersion   string
-	HelmList           []*release.Release `json:"testHelmList"`
+	HelmChartReleases  []*release.Release `json:"testHelmChartReleases"`
 }
 
 type CsvInstallPlan struct {
@@ -191,11 +191,11 @@ func buildTestEnvironment() { //nolint:funlen
 	}
 	env.OpenshiftVersion = data.OpenshiftVersion
 	env.K8sVersion = data.K8sVersion
-	helmList := data.HelmList
-	for _, raw := range helmList {
+	helmchartreleases := data.HelmChartReleases
+	for _, raw := range helmchartreleases {
 		for _, helm := range raw {
 			if !isSkipHelmChart(helm.Name, data.TestData.SkipHelmChartList) {
-				env.HelmList = append(env.HelmList, helm)
+				env.HelmChartReleases = append(env.HelmChartReleases, helm)
 			}
 		}
 	}
