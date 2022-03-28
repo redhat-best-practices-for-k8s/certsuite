@@ -191,11 +191,10 @@ func buildTestEnvironment() { //nolint:funlen
 	}
 	env.OpenshiftVersion = data.OpenshiftVersion
 	env.K8sVersion = data.K8sVersion
-	helmChartReleases := data.HelmChartReleases
-	for _, nsHelmChartReleases := range helmChartReleases {
-		for _, helmRelease := range nsHelmChartReleases {
-			if !isSkipHelmChart(helmRelease.Name, data.TestData.SkipHelmChartList) {
-				env.HelmChartReleases = append(env.HelmChartReleases, helmRelease)
+	for _, nsHelmChartReleases := range data.HelmChartReleases {
+		for _, helmChartRelease := range nsHelmChartReleases {
+			if !isSkipHelmChart(helmChartRelease.Name, data.TestData.SkipHelmChartList) {
+				env.HelmChartReleases = append(env.HelmChartReleases, helmChartRelease)
 			}
 		}
 	}
