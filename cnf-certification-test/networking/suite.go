@@ -88,7 +88,8 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 	for _, podUnderTest := range env.Pods {
 		declaredPorts := make(map[declaredandlistening.Key]bool)
 		listeningPorts := make(map[declaredandlistening.Key]bool)
-		for _, container := range podUnderTest.Spec.Containers {
+		for i := range podUnderTest.Spec.Containers {
+			container := &podUnderTest.Spec.Containers[i]
 			ports := container.Ports
 			logrus.Debugf("container %s (%s) declaredPorts: %v", container.Name, provider.PodToString(podUnderTest), ports)
 			for j := 0; j < len(ports); j++ {
@@ -96,26 +97,26 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 				k.Protocol = string(ports[j].Protocol)
 				declaredPorts[k] = true
 			}
-			firstPodContainer := &podUnderTest.Spec.Containers[0]
-			outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, env.ContainersMap[firstPodContainer], env)
-			if err != nil || errStr != "" {
-				tnf.ClaimFilePrintf("Failed to execute command %s on container: %s pod: %s ns: %s, err: %s, errStr: %s", cmd, container, podUnderTest.Name, podUnderTest.Namespace, err, errStr)
-				failedPods = append(failedPods, podUnderTest)
-				continue
-			}
-			declaredandlistening.ParseListening(outStr, listeningPorts)
-			if len(listeningPorts) == 0 {
-				tnf.ClaimFilePrintf("%s does not have any listening ports.", container, podUnderTest.Name, podUnderTest.Namespace)
-				continue
-			}
-			// compare between declaredPort,listeningPort
-			undeclaredPorts := declaredandlistening.CheckIfListenIsDeclared(listeningPorts, declaredPorts)
-			for k := range undeclaredPorts {
-				tnf.ClaimFilePrintf("pod %s ns %s is listening on port %d protocol %d, but that port was not declared in any container spec.", podUnderTest.Name, podUnderTest.Namespace, k.Port, k.Protocol)
-			}
-			if len(undeclaredPorts) != 0 {
-				failedPods = append(failedPods, podUnderTest)
-			}
+		}
+		firstPodContainer := &podUnderTest.Spec.Containers[0]
+		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, env.ContainersMap[firstPodContainer], env)
+		if err != nil || errStr != "" {
+			tnf.ClaimFilePrintf("Failed to execute command %s on container: %s pod: %s ns: %s, err: %s, errStr: %s", cmd, firstPodContainer.Name, podUnderTest.Name, podUnderTest.Namespace, err, errStr)
+			failedPods = append(failedPods, podUnderTest)
+			continue
+		}
+		declaredandlistening.ParseListening(outStr, listeningPorts)
+		if len(listeningPorts) == 0 {
+			tnf.ClaimFilePrintf("%s does not have any listening ports.", firstPodContainer.Name, podUnderTest.Name, podUnderTest.Namespace)
+			continue
+		}
+		// compare between declaredPort,listeningPort
+		undeclaredPorts := declaredandlistening.CheckIfListenIsDeclared(listeningPorts, declaredPorts)
+		for k := range undeclaredPorts {
+			tnf.ClaimFilePrintf("pod %s ns %s is listening on port %d protocol %d, but that port was not declared in any container spec.", podUnderTest.Name, podUnderTest.Namespace, k.Port, k.Protocol)
+		}
+		if len(undeclaredPorts) != 0 {
+			failedPods = append(failedPods, podUnderTest)
 		}
 	}
 	if nf := len(failedPods); nf > 0 {
