@@ -272,15 +272,6 @@ var (
 		Url:     formTestURL(common.PlatformAlterationTestKey, "isredhat-release"),
 		Version: versionOne,
 	}
-	TestUndeclaredContainerPortsUsage = claim.Identifier{
-		Url:     formTestURL(common.NetworkingTestKey, "undeclared-container-ports-usage"),
-		Version: versionOne,
-	}
-	// TestClusterCsiInfoIdentifier list Cluster CSIdriver Identifier retrieves Third Party CSI driver info.
-	TestClusterCsiInfoIdentifier = claim.Identifier{
-		Url:     formTestURL(common.DiagnosticTestKey, "cluster-csi-info"),
-    Version: versionOne,
-	}
 	// TestIsSELinuxEnforcingIdentifier ensures selinux is in enforcing mode
 	TestIsSELinuxEnforcingIdentifier = claim.Identifier{
 		Url:     formTestURL(common.PlatformAlterationTestKey, "is-selinux-enforcing"),
@@ -761,14 +752,6 @@ the changes for you.`,
 			`verifies that all openshift platform/cluster nodes have selinux in "Enforcing" mode.`),
 		Remediation:           `configure selinux and enable enforcing mode.`,
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 11.3 Pod Security",
-	},
-	TestUndeclaredContainerPortsUsage: {
-		Identifier: TestUndeclaredContainerPortsUsage,
-		Type:       normativeResult,
-		Description: formDescription(TestUndeclaredContainerPortsUsage,
-			`check that containers don't listen on ports that weren't declared in their specification`),
-		Remediation:           `ensure the CNF apps don't listen on undeclared containers' ports`,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 16.3.1.1",
 	},
 	TestUndeclaredContainerPortsUsage: {
 		Identifier: TestUndeclaredContainerPortsUsage,

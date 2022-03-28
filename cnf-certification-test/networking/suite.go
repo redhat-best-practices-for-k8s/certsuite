@@ -84,33 +84,28 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 //nolint:funlen
 func testListenAndDeclared(env *provider.TestEnvironment) {
 	var k declaredandlistening.Key
-	var skippedPods []*v1.Pod
 	var failedPods []*v1.Pod
 	for _, podUnderTest := range env.Pods {
 		declaredPorts := make(map[declaredandlistening.Key]bool)
 		listeningPorts := make(map[declaredandlistening.Key]bool)
-		for _, cut := range env.Containers {
-			ports := cut.Data.Ports
-			if len(ports) == 0 {
-				tnf.ClaimFilePrintf("Failed to get declared port for %s", cut.StringShort())
-				skippedPods = append(skippedPods, podUnderTest)
-				continue
-			}
-			logrus.Debugf("%s declaredPorts: %v", cut.StringShort(), ports)
+		for _, container := range podUnderTest.Spec.Containers {
+			ports := container.Ports
+			logrus.Debugf("container %s (%s) declaredPorts: %v", container.Name, provider.PodToString(podUnderTest), ports)
 			for j := 0; j < len(ports); j++ {
 				k.Port = int(ports[j].ContainerPort)
 				k.Protocol = string(ports[j].Protocol)
 				declaredPorts[k] = true
 			}
-			outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, cut, env)
+			firstPodContainer := &podUnderTest.Spec.Containers[0]
+			outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, env.ContainersMap[firstPodContainer], env)
 			if err != nil || errStr != "" {
-				tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s, errStr: %s", cmd, cut.StringShort(), err, errStr)
+				tnf.ClaimFilePrintf("Failed to execute command %s on container: %s pod: %s ns: %s, err: %s, errStr: %s", cmd, container, podUnderTest.Name, podUnderTest.Namespace, err, errStr)
 				failedPods = append(failedPods, podUnderTest)
 				continue
 			}
 			declaredandlistening.ParseListening(outStr, listeningPorts)
 			if len(listeningPorts) == 0 {
-				tnf.ClaimFilePrintf("%s does not have any listening ports.", cut.StringShort())
+				tnf.ClaimFilePrintf("%s does not have any listening ports.", container, podUnderTest.Name, podUnderTest.Namespace)
 				continue
 			}
 			// compare between declaredPort,listeningPort
@@ -123,8 +118,8 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 			}
 		}
 	}
-	if nf, ns := len(failedPods), len(skippedPods); nf > 0 || ns > 0 {
-		ginkgo.Fail("Found %d pods with listening ports not declared and Skipped %d pods due to unexpected error", nf, ns)
+	if nf := len(failedPods); nf > 0 {
+		ginkgo.Fail("Found %d pods with listening ports not declared", nf)
 	}
 }
 
