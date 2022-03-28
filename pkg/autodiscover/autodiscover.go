@@ -47,21 +47,21 @@ const (
 )
 
 type DiscoveredTestData struct {
-	Env              configuration.TestParameters
-	TestData         configuration.TestConfiguration
-	Pods             []v1.Pod
-	DebugPods        []v1.Pod
-	Crds             []*apiextv1.CustomResourceDefinition
-	Namespaces       []string
-	Csvs             []olmv1Alpha.ClusterServiceVersion
-	Deployments      []v1apps.Deployment
-	StatefulSet      []v1apps.StatefulSet
-	Hpas             map[string]*v1scaling.HorizontalPodAutoscaler
-	Subscriptions    []olmv1Alpha.Subscription
-	HelmList         [][]*release.Release
-	K8sVersion       string
-	OpenshiftVersion string
-	Nodes            *v1.NodeList
+	Env               configuration.TestParameters
+	TestData          configuration.TestConfiguration
+	Pods              []v1.Pod
+	DebugPods         []v1.Pod
+	Crds              []*apiextv1.CustomResourceDefinition
+	Namespaces        []string
+	Csvs              []olmv1Alpha.ClusterServiceVersion
+	Deployments       []v1apps.Deployment
+	StatefulSet       []v1apps.StatefulSet
+	Hpas              map[string]*v1scaling.HorizontalPodAutoscaler
+	Subscriptions     []olmv1Alpha.Subscription
+	HelmChartReleases [][]*release.Release
+	K8sVersion        string
+	OpenshiftVersion  string
+	Nodes             *v1.NodeList
 }
 
 var data = DiscoveredTestData{}
@@ -117,7 +117,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.Crds = FindTestCrdNames(data.TestData.CrdFilters)
 	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
 	data.Subscriptions = findSubscriptions(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.Namespaces)
-	data.HelmList = getHelmList(oc.RestConfig, data.Namespaces)
+	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)
 	openshiftVersion, _ := getOpenshiftVersion(oc.OClient)
 	data.OpenshiftVersion = openshiftVersion
 	k8sVersion, err := oc.K8sClientversion.DiscoveryClient.ServerVersion()

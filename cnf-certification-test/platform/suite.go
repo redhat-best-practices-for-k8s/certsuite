@@ -31,6 +31,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/isredhat"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
@@ -47,6 +48,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		env = provider.GetTestEnvironment()
 		provider.WaitDebugPodReady()
 	})
+	ginkgo.ReportAfterEach(results.RecordResult)
 
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestUnalteredBaseImageIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {

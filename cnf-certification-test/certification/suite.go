@@ -27,6 +27,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/api"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification/certtool"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -51,6 +52,8 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
 	})
+	ginkgo.ReportAfterEach(results.RecordResult)
+
 	testContainerCertificationStatus(&env)
 	testAllOperatorCertified(&env)
 	testHelmCertified(&env)
@@ -148,8 +151,8 @@ func testHelmCertified(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestHelmIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		certtool.CertAPIClient = api.NewHTTPClient()
-		helmcharts := env.HelmList
-		if len(helmcharts) == 0 {
+		helmchartsReleases := env.HelmChartReleases
+		if len(helmchartsReleases) == 0 {
 			ginkgo.Skip("No helm charts to check")
 		}
 		out, err := certtool.CertAPIClient.GetYamlFile()
@@ -161,7 +164,7 @@ func testHelmCertified(env *provider.TestEnvironment) {
 		}
 		ourKubeVersion := env.K8sVersion
 		failedHelmCharts := [][]string{}
-		for _, helm := range helmcharts {
+		for _, helm := range helmchartsReleases {
 			certified := false
 			for _, entryList := range out.Entries {
 				for _, entry := range entryList {

@@ -50,27 +50,45 @@ const (
 	skipMultusConnectivityTestsLabel = "test-network-function.com/skip_multus_connectivity_tests"
 )
 
+type PodWrapper struct {
+	BasePod *v1.Pod
+}
+
+func (p PodWrapper) MarshalText() ([]byte, error) {
+	return json.Marshal(&struct {
+		Name      string `json:"Name"`
+		Namespace string `json:"Namespace"`
+	}{
+		Name:      p.BasePod.Name,
+		Namespace: p.BasePod.Namespace,
+	})
+}
+func NewPodWrapper(aPod *v1.Pod) (out PodWrapper) {
+	out.BasePod = aPod
+	return out
+}
+
 type TestEnvironment struct { // rename this with testTarget
-	Namespaces         []string
-	Pods               []*v1.Pod
-	Containers         []*Container
-	Operators          []Operator
+	Namespaces         []string           `json:"testNamespaces"`
+	Pods               []*v1.Pod          `json:"testPods"`
+	Containers         []*Container       `json:"testContainers"`
+	Operators          []Operator         `json:"testOperators"`
 	DebugPods          map[string]*v1.Pod // map from nodename to debugPod
 	Config             configuration.TestConfiguration
 	variables          configuration.TestParameters
-	Crds               []*apiextv1.CustomResourceDefinition
-	ContainersMap      map[*v1.Container]*Container
-	MultusIPs          map[*v1.Pod]map[string][]string
-	SkipNetTests       map[*v1.Pod]bool
-	SkipMultusNetTests map[*v1.Pod]bool
-	Deployments        []*v1apps.Deployment
-	StatetfulSets      []*v1apps.StatefulSet
-	HorizontalScaler   map[string]*v1scaling.HorizontalPodAutoscaler
-	Nodes              *v1.NodeList
-	Subscriptions      []*olmv1Alpha.Subscription
+	Crds               []*apiextv1.CustomResourceDefinition `json:"testCrds"`
+	ContainersMap      map[*v1.Container]*Container         `json:"-"`
+	MultusIPs          map[PodWrapper]map[string][]string   `json:"testMultusIPs"`
+	SkipNetTests       map[PodWrapper]bool
+	SkipMultusNetTests map[PodWrapper]bool
+	Deployments        []*v1apps.Deployment                          `json:"testDeployments"`
+	StatetfulSets      []*v1apps.StatefulSet                         `json:"testStatetfulSets"`
+	HorizontalScaler   map[string]*v1scaling.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
+	Nodes              *v1.NodeList                                  `json:"-"`
+	Subscriptions      []*olmv1Alpha.Subscription                    `json:"testSubscriptions"`
 	K8sVersion         string
 	OpenshiftVersion   string
-	HelmList           []*release.Release
+	HelmChartReleases  []*release.Release `json:"testHelmChartReleases"`
 }
 
 type CsvInstallPlan struct {
@@ -136,24 +154,24 @@ func buildTestEnvironment() { //nolint:funlen
 	env.Namespaces = data.Namespaces
 	env.variables = data.Env
 	env.ContainersMap = make(map[*v1.Container]*Container)
-	env.MultusIPs = make(map[*v1.Pod]map[string][]string)
-	env.SkipNetTests = make(map[*v1.Pod]bool)
-	env.SkipMultusNetTests = make(map[*v1.Pod]bool)
+	env.MultusIPs = make(map[PodWrapper]map[string][]string)
+	env.SkipNetTests = make(map[PodWrapper]bool)
+	env.SkipMultusNetTests = make(map[PodWrapper]bool)
 	env.Nodes = data.Nodes
 	pods := data.Pods
 
 	for i := 0; i < len(pods); i++ {
 		env.Pods = append(env.Pods, &pods[i])
 		var err error
-		env.MultusIPs[&pods[i]], err = getPodIPsPerNet(pods[i].GetAnnotations()[cniNetworksStatusKey])
+		env.MultusIPs[PodWrapper{&pods[i]}], err = getPodIPsPerNet(pods[i].GetAnnotations()[cniNetworksStatusKey])
 		if err != nil {
 			logrus.Errorf("Could not decode networks-status annotation")
 		}
 		if pods[i].GetLabels()[skipConnectivityTestsLabel] != "" {
-			env.SkipNetTests[&pods[i]] = true
+			env.SkipNetTests[PodWrapper{&pods[i]}] = true
 		}
 		if pods[i].GetLabels()[skipMultusConnectivityTestsLabel] != "" {
-			env.SkipMultusNetTests[&pods[i]] = true
+			env.SkipMultusNetTests[PodWrapper{&pods[i]}] = true
 		}
 		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
@@ -173,11 +191,11 @@ func buildTestEnvironment() { //nolint:funlen
 	}
 	env.OpenshiftVersion = data.OpenshiftVersion
 	env.K8sVersion = data.K8sVersion
-	helmList := data.HelmList
-	for _, raw := range helmList {
+	helmchartreleases := data.HelmChartReleases
+	for _, raw := range helmchartreleases {
 		for _, helm := range raw {
 			if !isSkipHelmChart(helm.Name, data.TestData.SkipHelmChartList) {
-				env.HelmList = append(env.HelmList, helm)
+				env.HelmChartReleases = append(env.HelmChartReleases, helm)
 			}
 		}
 	}
