@@ -195,7 +195,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 	ginkgo.By("should report a proper Red Hat version")
 	failedContainers := []string{}
 	for _, cut := range env.Containers {
-		ginkgo.By(fmt.Sprintf("%s is checked for Red Hat version", cut.StringShort()))
+		ginkgo.By(fmt.Sprintf("%s is checked for Red Hat version", cut.String()))
 		baseImageTester := isredhat.NewBaseImageTester(common.DefaultTimeout, clientsholder.GetClientsHolder(), clientsholder.Context{
 			Namespace:     cut.Namespace,
 			Podname:       cut.Podname,
@@ -208,7 +208,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 		}
 		if !result {
 			failedContainers = append(failedContainers, cut.Namespace+"/"+cut.Podname+"/"+cut.Data.Name)
-			tnf.ClaimFilePrintf("%s has failed the RHEL release check", cut.StringShort())
+			tnf.ClaimFilePrintf("%s has failed the RHEL release check", cut.String())
 		}
 	}
 
@@ -227,7 +227,7 @@ func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
 		ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
 		outStr, errStr, err := o.ExecCommandContainer(ctx, getenforceCommand)
 		if err != nil || errStr != "" {
-			logrus.Errorf("Failed to execute command %s in debug %s, errStr: %s, err: %s", getenforceCommand, provider.PodToString(debugPod), errStr, err)
+			logrus.Errorf("Failed to execute command %s in debug %s, errStr: %s, err: %s", getenforceCommand, debugPod.String(), errStr, err)
 			nodesError++
 			continue
 		}

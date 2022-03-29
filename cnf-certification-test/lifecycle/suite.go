@@ -96,7 +96,7 @@ func testContainersPreStop(env *provider.TestEnvironment) {
 
 			if cut.Data.Lifecycle == nil || (cut.Data.Lifecycle != nil && cut.Data.Lifecycle.PreStop == nil) {
 				badcontainers = append(badcontainers, cut.Data.Name)
-				tnf.ClaimFilePrintf("%s does not have preStop defined", cut.StringShort())
+				tnf.ClaimFilePrintf("%s does not have preStop defined", cut.String())
 			}
 		}
 		if len(badcontainers) > 0 {
@@ -171,11 +171,11 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 		ginkgo.By("Testing owners of CNF pod, should be replicas Set")
 		badPods := []string{}
 		for _, put := range env.Pods {
-			logrus.Debugln("check pod ", put.Namespace, " ", put.Name, " owner reference")
-			o := ownerreference.NewOwnerReference(put)
+			logrus.Debugln("check pod ", put.Data.Namespace, " ", put.Data.Name, " owner reference")
+			o := ownerreference.NewOwnerReference(put.Data)
 			o.RunTest()
 			if o.GetResults() != testhelper.SUCCESS {
-				s := put.Namespace + ":" + put.Name
+				s := put.Data.Namespace + ":" + put.Data.Name
 				badPods = append(badPods, s)
 			}
 		}
@@ -189,13 +189,13 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) {
 	var badPods []*v1.Pod
 	for _, put := range env.Pods {
-		if len(put.Spec.NodeSelector) != 0 {
-			tnf.ClaimFilePrintf("ERROR: %s has a node selector clause. Node selector: %v", provider.PodToString(put), &put.Spec.NodeSelector)
-			badPods = append(badPods, put)
+		if len(put.Data.Spec.NodeSelector) != 0 {
+			tnf.ClaimFilePrintf("ERROR: %s has a node selector clause. Node selector: %v", put.String(), &put.Data.Spec.NodeSelector)
+			badPods = append(badPods, put.Data)
 		}
-		if put.Spec.Affinity != nil && put.Spec.Affinity.NodeAffinity != nil {
-			tnf.ClaimFilePrintf("ERROR: %s has a node affinity clause. Node affinity: %v", provider.PodToString(put), put.Spec.Affinity.NodeAffinity)
-			badPods = append(badPods, put)
+		if put.Data.Spec.Affinity != nil && put.Data.Spec.Affinity.NodeAffinity != nil {
+			tnf.ClaimFilePrintf("ERROR: %s has a node affinity clause. Node affinity: %v", put.String(), put.Data.Spec.Affinity.NodeAffinity)
+			badPods = append(badPods, put.Data)
 		}
 	}
 	if n := len(badPods); n > 0 {

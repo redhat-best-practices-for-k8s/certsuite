@@ -62,7 +62,7 @@ func GetCniPlugins() (out map[string][]interface{}) {
 		ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
 		outStr, errStr, err := o.ExecCommandContainer(ctx, cniPluginsCommand)
 		if err != nil || errStr != "" {
-			logrus.Errorf("Failed to execute command %s in debug pod %s", cniPluginsCommand, provider.PodToString(debugPod))
+			logrus.Errorf("Failed to execute command %s in debug pod %s", cniPluginsCommand, debugPod.String())
 			continue
 		}
 		decoded := []interface{}{}

@@ -24,7 +24,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	v1app "k8s.io/api/apps/v1"
-	v1 "k8s.io/api/core/v1"
 )
 
 const (
@@ -129,14 +128,14 @@ func WaitForAllPodSetReady(env *provider.TestEnvironment, timeoutPodSetReady tim
 	return claimsLog, atLeastOnePodsetNotReady
 }
 
-func GetAllNodesForAllPodSets(pods []*v1.Pod) (nodes map[string]bool) {
+func GetAllNodesForAllPodSets(pods []*provider.PodWrapper) (nodes map[string]bool) {
 	nodes = make(map[string]bool)
 	for _, put := range pods {
-		for _, or := range put.OwnerReferences {
+		for _, or := range put.Data.OwnerReferences {
 			if or.Kind != ReplicaSetString && or.Kind != StatefulsetString {
 				continue
 			}
-			nodes[put.Spec.NodeName] = true
+			nodes[put.Data.Spec.NodeName] = true
 			break
 		}
 	}

@@ -22,6 +22,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	v1app "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -160,7 +161,7 @@ func TestGetPodSetNodes(t *testing.T) { //nolint:funlen
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := GetAllNodesForAllPodSets(tt.args.pods); !reflect.DeepEqual(got, tt.want) {
+			if got := GetAllNodesForAllPodSets(provider.ConvertArrayPods(tt.args.pods)); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("GetAllNodesForAllPodSets() = %v, want %v", got, tt.want)
 			}
 		})
