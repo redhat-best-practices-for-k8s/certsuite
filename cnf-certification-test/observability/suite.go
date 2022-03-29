@@ -67,7 +67,7 @@ func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 
 	numLogLines := int64(1)
 	podLogOptions := v1.PodLogOptions{TailLines: &numLogLines, Container: cut.Data.Name}
-	req := ocpClient.Coreclient.Pods(cut.Namespace).GetLogs(cut.Podname, &podLogOptions)
+	req := ocpClient.K8sClient.CoreV1().Pods(cut.Namespace).GetLogs(cut.Podname, &podLogOptions)
 
 	podLogsReaderCloser, err := req.Stream(context.TODO())
 	if err != nil {

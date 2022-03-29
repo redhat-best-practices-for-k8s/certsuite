@@ -39,7 +39,7 @@ import (
 func TestScaleDeployment(deployment *v1app.Deployment, timeout time.Duration) bool {
 	clients := clientsholder.GetClientsHolder()
 	name, namespace := deployment.Name, deployment.Namespace
-	dpClients := clients.AppsClients.Deployments(namespace)
+	dpClients := clients.K8sClient.AppsV1().Deployments(namespace)
 	logrus.Trace("scale deployment not using HPA ", namespace, ":", name)
 	var replicas int32
 	if deployment.Spec.Replicas != nil {
@@ -96,7 +96,7 @@ func scaleDeploymentHelper(clients *clientsholder.ClientsHolder, dpClient v1.Dep
 			return err
 		}
 		dp.Spec.Replicas = &replicas
-		_, err = clients.AppsClients.Deployments(namespace).Update(context.TODO(), dp, v1machinery.UpdateOptions{})
+		_, err = clients.K8sClient.AppsV1().Deployments(namespace).Update(context.TODO(), dp, v1machinery.UpdateOptions{})
 		if err != nil {
 			logrus.Error("can't update deployment ", namespace, ":", name)
 			return err

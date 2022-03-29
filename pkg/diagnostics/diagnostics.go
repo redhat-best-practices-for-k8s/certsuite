@@ -186,7 +186,7 @@ func GetNodeJSON() (out map[string]interface{}) {
 // GetCsiDriver Gets the CSI driver list
 func GetCsiDriver() (out map[string]interface{}) {
 	o := clientsholder.GetClientsHolder()
-	csiDriver, err := o.StorageClient.CSIDrivers().List(context.TODO(), apimachineryv1.ListOptions{})
+	csiDriver, err := o.K8sClient.StorageV1().CSIDrivers().List(context.TODO(), apimachineryv1.ListOptions{})
 	if err != nil {
 		logrus.Errorf("Fail CSIDrivers.list err:%s", err)
 		return out

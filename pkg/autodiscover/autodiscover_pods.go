@@ -26,7 +26,7 @@ import (
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
-func findPodsByLabel(oc *corev1client.CoreV1Client,
+func findPodsByLabel(oc corev1client.CoreV1Interface,
 	labels []configuration.Label,
 	namespaces []string) []v1.Pod {
 	Pods := []v1.Pod{}

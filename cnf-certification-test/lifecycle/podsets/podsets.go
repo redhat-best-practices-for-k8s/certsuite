@@ -37,7 +37,7 @@ func WaitForDeploymentSetReady(ns, name string, timeout time.Duration) bool {
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
-		dp, err := provider.GetUpdatedDeployment(clients.AppsClients, ns, name)
+		dp, err := provider.GetUpdatedDeployment(clients.K8sClient.AppsV1(), ns, name)
 		if err == nil && IsDeploymentReady(dp) {
 			logrus.Tracef("%s is ready", provider.DeploymentToString(dp))
 			return true
@@ -78,7 +78,7 @@ func WaitForStatefulSetReady(ns, name string, timeout time.Duration) bool {
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
-		ss, err := provider.GetUpdatedStatefulset(clients.AppsClients, ns, name)
+		ss, err := provider.GetUpdatedStatefulset(clients.K8sClient.AppsV1(), ns, name)
 		if err == nil && IsStatefulSetReady(ss) {
 			logrus.Tracef("%s is ready, err: %s", provider.StatefulsetToString(ss), err)
 			return true
