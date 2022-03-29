@@ -294,6 +294,11 @@ var (
 		Url:     formTestURL(common.LifecycleTestKey, "readiness"),
 		Version: versionOne,
 	}
+	// TestOneProcessPerContainerIdentifier ensures that only one process per container is running
+	TestOneProcessPerContainerIdentifier = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "one-process-per-container"),
+		Version: versionOne,
+	}
 )
 
 func formDescription(identifier claim.Identifier, description string) string {
@@ -810,5 +815,13 @@ the changes for you.`,
 		Description: formDescription(TestReadinessProbeIdentifier, `check that all containers under test
 		have readiness probe defined`),
 		Remediation: `add readiness probe to deployed containers`,
+	},
+	TestOneProcessPerContainerIdentifier: {
+		Identifier: TestOneProcessPerContainerIdentifier,
+		Type:       informativeResult,
+		Description: formDescription(TestOneProcessPerContainerIdentifier, `check that all containers under test
+		have only one process running`),
+		Remediation:           `launch only one process per container`,
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 11.8.3",
 	},
 }

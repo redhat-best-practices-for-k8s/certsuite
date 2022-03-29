@@ -117,6 +117,11 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		TestAutomountServiceToken(&env, rbac.NewAutomountTokenTester(clientsholder.GetClientsHolder()))
 	})
+	// one process per container
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestOneProcessPerContainerIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		TestOneProcessPerContainer(&env)
+	})
 
 })
 
@@ -406,5 +411,46 @@ func TestAutomountServiceToken(env *provider.TestEnvironment, testerFuncs rbac.A
 		logrus.Debugf("Pods that failed automount test: %+v", failedPods)
 		tnf.ClaimFilePrintf("Pods that failed automount test: %+v", failedPods)
 		ginkgo.Fail(fmt.Sprintf("% d pods that failed automount test", n))
+	}
+}
+
+func TestOneProcessPerContainer(env *provider.TestEnvironment) {
+	var badContainers []string
+
+	for _, cut := range env.Containers {
+		debugPod := env.DebugPods[cut.NodeName]
+		if debugPod == nil {
+			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
+		}
+
+		ocpContext := clientsholder.Context{
+			Namespace:     debugPod.Namespace,
+			Podname:       debugPod.Name,
+			Containername: debugPod.Spec.Containers[0].Name,
+		}
+
+		pid, err := getPidFromContainer(cut, ocpContext)
+		if err != nil {
+			tnf.ClaimFilePrintf("Could not get PID for: %s, error: %s", cut.StringShort(), err)
+			badContainers = append(badContainers, cut.Data.Name)
+			continue
+		}
+
+		nbProcesses, err := getNbOfProcessesInPidNamespace(ocpContext, pid)
+		if err != nil {
+			tnf.ClaimFilePrintf("Could not get number of processes for: %s, error: %s", cut.StringShort(), err)
+			badContainers = append(badContainers, cut.Data.Name)
+			continue
+		}
+		if nbProcesses > 1 {
+			tnf.ClaimFilePrintf("Container %s has more than one process running", cut.Data.Name)
+			badContainers = append(badContainers, cut.Data.Name)
+		}
+	}
+
+	if n := len(badContainers); n > 0 {
+		errMsg := fmt.Sprintf("Found %d containers with more than one process running", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
 	}
 }
