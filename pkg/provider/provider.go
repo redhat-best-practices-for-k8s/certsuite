@@ -45,7 +45,7 @@ const (
 	daemonSetNamespace               = "default"
 	daemonSetName                    = "debug"
 	timeout                          = 60 * time.Second
-	cniNetworksStatusKey             = "k8s.v1.cni.cncf.io/networks-status"
+	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/networks-status"
 	skipConnectivityTestsLabel       = "test-network-function.com/skip_connectivity_tests"
 	skipMultusConnectivityTestsLabel = "test-network-function.com/skip_multus_connectivity_tests"
 )
@@ -62,7 +62,7 @@ func NewPod(aPod *v1.Pod) (out Pod) {
 	var err error
 	out.Data = aPod
 	out.MultusIPs = make(map[string][]string)
-	out.MultusIPs, err = getPodIPsPerNet(aPod.GetAnnotations()[cniNetworksStatusKey])
+	out.MultusIPs, err = GetPodIPsPerNet(aPod.GetAnnotations()[CniNetworksStatusKey])
 	if err != nil {
 		logrus.Errorf("Could not decode networks-status annotation")
 	}
@@ -402,10 +402,10 @@ func (op *Operator) String() string {
 	return fmt.Sprintf("csv: %s ns:%s subscription:%s", op.Name, op.Namespace, op.SubscriptionName)
 }
 
-// getPodIPsPerNet gets the IPs of a pod.
+// GetPodIPsPerNet gets the IPs of a pod.
 // CNI annotation "k8s.v1.cni.cncf.io/networks-status".
 // Returns (ips, error).
-func getPodIPsPerNet(annotation string) (ips map[string][]string, err error) {
+func GetPodIPsPerNet(annotation string) (ips map[string][]string, err error) {
 	// This is a map indexed with the network name (network attachment) and
 	// listing all the IPs created in this subnet and belonging to the pod namespace
 	// The list of ips pr net is parsed from the content of the "k8s.v1.cni.cncf.io/networks-status" annotation.

@@ -17,13 +17,18 @@
 package icmp
 
 import (
+	"encoding/json"
+	"fmt"
 	"reflect"
 	"testing"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
+	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
+	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	v1 "k8s.io/api/core/v1"
+	v1meta "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func Test_parsePingResult(t *testing.T) { //nolint:funlen
@@ -149,6 +154,26 @@ func Test_parsePingResult(t *testing.T) { //nolint:funlen
 			wantResults: PingResults{outcome: testhelper.SUCCESS, transmitted: 10, received: 10, errors: 0},
 			wantErr:     false,
 		},
+		{
+			name: "decodingError",
+			args: args{stdout: `PING www.google.com (172.217.12.132) 56(84) bytes of data.
+			64 bytes from lga34s19-in-f4.1e100.net (172.217.12.132): icmp_seq=1 ttl=61 time=25.4 ms
+			64 bytes from lga34s19-in-f4.1e100.net (172.217.12.132): icmp_seq=2 ttl=61 time=27.1 ms
+			64 bytes from lga34s19-in-f4.1e100.net (172.217.12.132): icmp_seq=3 ttl=61 time=26.7 ms
+			64 bytes from lga34s19-in-f4.1e100.net (172.217.12.132): icmp_seq=4 ttl=61 time=24.2 ms
+			64 bytes from lga34s19-in-f4.1e100.net (172.217.12.132): icmp_seq=5 ttl=61 time=28.0 ms
+			64 bytes from lga34s19-in-f4.1e100.net (172.217.12.132): icmp_seq=6 ttl=61 time=37.0 ms
+			64 bytes from lga34s19-in-f4.1e100.net (172.217.12.132): icmp_seq=7 ttl=61 time=21.6 ms
+			64 bytes from lga34s19-in-f4.1e100.net (172.217.12.132): icmp_seq=8 ttl=61 time=30.6 ms
+			64 bytes from lga34s19-in-f4.1e100.net (172.217.12.132): icmp_seq=9 ttl=61 time=27.3 ms
+			64 bytes from lga34s19-in-f4.1e100.net (172.217.12.132): icmp_seq=10 ttl=61 time=27.9 ms
+			
+			--- www.google.com ping statistics ---
+			10 pacets transmitted, 10 received, 0% packet loss, time 9014ms
+			rtt min/avg/max/mdev = 21.650/27.619/37.003/3.885 ms`, stderr: ""},
+			wantResults: PingResults{outcome: testhelper.FAILURE, transmitted: 0, received: 0, errors: 0},
+			wantErr:     true,
+		},
 	}
 
 	for _, tt := range tests {
@@ -246,4 +271,548 @@ func TestProcessContainerIpsPerNet(t *testing.T) { //nolint:funlen
 			}
 		})
 	}
+}
+
+func loadEnvFromFile(claimFileName string) (env *provider.TestEnvironment, err error) { //nolint:deadcode,unused
+	return claimhelper.GetConfigurationFromClaimFile(claimFileName)
+}
+
+func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
+	type args struct {
+		pods       []*provider.Pod
+		aIPVersion netcommons.IPVersion
+		aType      netcommons.IFType
+	}
+	tests := []struct {
+		name              string
+		args              args
+		wantNetsUnderTest map[string]netcommons.NetTestContext
+		wantClaimsLog     loghelper.CuratedLogLines
+	}{
+		{
+			name: "ipv4ok",
+			args: args{pods: []*provider.Pod{&pod1, &pod2},
+				aIPVersion: netcommons.IPv4,
+				aType:      netcommons.DEFAULT,
+			},
+			wantNetsUnderTest: map[string]netcommons.NetTestContext{
+				"default": {
+					TesterContainerNodeName: "",
+					TesterSource: netcommons.ContainerIP{
+						IP: "10.244.195.231",
+						ContainerIdentifier: &provider.Container{
+							Data: &v1.Container{
+								Name: "test1",
+							},
+							Namespace: "tnf",
+							Podname:   "test-0",
+							NodeName:  "kind-worker3",
+							Runtime:   "containerd",
+							UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd261",
+						},
+					},
+					DestTargets: []netcommons.ContainerIP{{
+						IP: "10.244.195.232",
+						ContainerIdentifier: &provider.Container{
+							Data: &v1.Container{
+								Name: "test2",
+							},
+							Namespace: "tnf",
+							Podname:   "test-1",
+							NodeName:  "kind-worker4",
+							Runtime:   "containerd",
+							UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd262",
+						},
+					},
+					},
+				},
+			},
+
+			wantClaimsLog: loghelper.CuratedLogLines{},
+		},
+		{
+			name: "skip net test",
+			args: args{pods: []*provider.Pod{&pod1, &pod3},
+				aIPVersion: netcommons.IPv4,
+				aType:      netcommons.DEFAULT,
+			},
+			wantNetsUnderTest: map[string]netcommons.NetTestContext{
+				"default": {
+					TesterContainerNodeName: "",
+					TesterSource: netcommons.ContainerIP{
+						IP: "10.244.195.231",
+						ContainerIdentifier: &provider.Container{
+							Data: &v1.Container{
+								Name: "test1",
+							},
+							Namespace: "tnf",
+							Podname:   "test-0",
+							NodeName:  "kind-worker3",
+							Runtime:   "containerd",
+							UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd261",
+						},
+					},
+					DestTargets: nil,
+				},
+			},
+
+			wantClaimsLog: loghelper.CuratedLogLines{Lines: []string{"Skipping pod: pod2 ns: ns1 because it is excluded from all connectivity tests\n"}},
+		},
+		{
+			name: "ipv4ok multus",
+			args: args{pods: []*provider.Pod{&pod1, &pod2},
+				aIPVersion: netcommons.IPv4,
+				aType:      netcommons.MULTUS,
+			},
+
+			wantNetsUnderTest: map[string]netcommons.NetTestContext{
+				"tnf/mynet-ipv4-0": {
+					TesterSource: netcommons.ContainerIP{
+						IP: "192.168.0.3",
+						ContainerIdentifier: &provider.Container{
+							Data: &v1.Container{
+								Name: "test1",
+							},
+							Namespace: "tnf",
+							Podname:   "test-0",
+							NodeName:  "kind-worker3",
+							Runtime:   "containerd",
+							UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd261",
+						},
+					},
+					DestTargets: []netcommons.ContainerIP{
+						{
+							IP: "192.168.0.4",
+							ContainerIdentifier: &provider.Container{
+								Data: &v1.Container{
+									Name: "test2",
+								},
+								Namespace: "tnf",
+								Podname:   "test-1",
+								NodeName:  "kind-worker4",
+								Runtime:   "containerd",
+								UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd262",
+							},
+						},
+					},
+				},
+				"tnf/mynet-ipv4-1": {
+					TesterContainerNodeName: "",
+					TesterSource: netcommons.ContainerIP{
+						IP: "192.168.1.3",
+						ContainerIdentifier: &provider.Container{
+							Data: &v1.Container{
+								Name: "test1",
+							},
+							Namespace: "tnf",
+							Podname:   "test-0",
+							NodeName:  "kind-worker3",
+							Runtime:   "containerd",
+							UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd261",
+						},
+					},
+					DestTargets: []netcommons.ContainerIP{
+						{
+							IP: "192.168.1.4",
+							ContainerIdentifier: &provider.Container{
+								Data: &v1.Container{
+									Name: "test2",
+								},
+								Namespace: "tnf",
+								Podname:   "test-1",
+								NodeName:  "kind-worker4",
+								Runtime:   "containerd",
+								UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd262",
+							},
+						},
+					},
+				},
+			},
+
+			wantClaimsLog: loghelper.CuratedLogLines{},
+		},
+		{
+			name: "skip multus net test",
+			args: args{pods: []*provider.Pod{&pod1, &pod4},
+				aIPVersion: netcommons.IPv4,
+				aType:      netcommons.MULTUS,
+			},
+			wantNetsUnderTest: map[string]netcommons.NetTestContext{
+				"tnf/mynet-ipv4-0": {
+					TesterSource: netcommons.ContainerIP{
+						IP: "192.168.0.3",
+						ContainerIdentifier: &provider.Container{
+							Data: &v1.Container{
+								Name: "test1",
+							},
+							Namespace: "tnf",
+							Podname:   "test-0",
+							NodeName:  "kind-worker3",
+							Runtime:   "containerd",
+							UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd261",
+						},
+					},
+					DestTargets: nil,
+				},
+				"tnf/mynet-ipv4-1": {
+					TesterContainerNodeName: "",
+					TesterSource: netcommons.ContainerIP{
+						IP: "192.168.1.3",
+						ContainerIdentifier: &provider.Container{
+							Data: &v1.Container{
+								Name: "test1",
+							},
+							Namespace: "tnf",
+							Podname:   "test-0",
+							NodeName:  "kind-worker3",
+							Runtime:   "containerd",
+							UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd261",
+						},
+					},
+					DestTargets: nil,
+				},
+			},
+
+			wantClaimsLog: loghelper.CuratedLogLines{Lines: []string{"Skipping pod pod2 because it is excluded from Multus connectivity tests only\n"}},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			for idx := range tt.args.pods {
+				tt.args.pods[idx].MultusIPs = make(map[string][]string)
+				var err error
+				tt.args.pods[idx].MultusIPs, err = provider.GetPodIPsPerNet(tt.args.pods[idx].Data.GetAnnotations()[provider.CniNetworksStatusKey])
+				if err != nil {
+					fmt.Printf("Could not decode networks-status annotation")
+				}
+			}
+
+			gotNetsUnderTest, gotClaimsLog := BuildNetTestContext(tt.args.pods, tt.args.aIPVersion, tt.args.aType)
+
+			out, _ := json.MarshalIndent(gotNetsUnderTest, "", "")
+			fmt.Printf("%s", out)
+			if !reflect.DeepEqual(gotNetsUnderTest, tt.wantNetsUnderTest) {
+				t.Errorf("BuildNetTestContext() gotNetsUnderTest = %v, want %v", gotNetsUnderTest, tt.wantNetsUnderTest)
+			}
+			if !reflect.DeepEqual(gotClaimsLog, tt.wantClaimsLog) {
+				t.Errorf("BuildNetTestContext() gotClaimsLog = %v, want %v", gotClaimsLog, tt.wantClaimsLog)
+			}
+		})
+	}
+}
+
+var (
+	pod1 = provider.Pod{ //nolint:dupl
+		Data: &v1.Pod{
+			ObjectMeta: v1meta.ObjectMeta{
+				Name:      "pod1",
+				Namespace: "ns1",
+				Annotations: map[string]string{
+					"k8s.v1.cni.cncf.io/networks-status": "[{\n    \"name\": \"k8s-pod-network\",\n    \"ips\": [\n        \"10.244.195.231\",\n        \"fd00:10:244:88:58fd:b191:5c13:9ce6\"\n    ],\n    \"default\": true,\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-0\",\n    \"interface\": \"net1\",\n    \"ips\": [\n        \"192.168.0.3\"\n    ],\n    \"mac\": \"96:e8:f5:33:9c:66\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-1\",\n    \"interface\": \"net2\",\n    \"ips\": [\n        \"192.168.1.3\"\n    ],\n    \"mac\": \"4e:c5:60:c2:1c:55\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-0\",\n    \"interface\": \"net3\",\n    \"ips\": [\n        \"3ffe:ffff::3\"\n    ],\n    \"mac\": \"ca:f5:77:b4:2f:49\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-1\",\n    \"interface\": \"net4\",\n    \"ips\": [\n        \"3ffe:ffff:0:1::3\"\n    ],\n    \"mac\": \"26:7b:69:1b:b0:5c\",\n    \"dns\": {}\n}]", //nolint:lll
+				},
+			},
+			Status: v1.PodStatus{
+				PodIPs: []v1.PodIP{
+					{
+						IP: "10.244.195.231",
+					},
+					{
+						IP: "fd00:10:244:88:58fd:b191:5c13:9ce6",
+					},
+				},
+			},
+		},
+		MultusIPs: map[string][]string{
+			"": {},
+		},
+		SkipNetTests:       false,
+		SkipMultusNetTests: false,
+		Containers: []*provider.Container{
+			{
+				Data: &v1.Container{
+					Name: "test1",
+				},
+				Namespace: "tnf",
+				NodeName:  "kind-worker3",
+				Podname:   "test-0",
+				Runtime:   "containerd",
+				UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd261",
+			},
+		},
+	}
+	pod2 = provider.Pod{ //nolint:dupl
+		Data: &v1.Pod{
+			ObjectMeta: v1meta.ObjectMeta{
+				Name:      "pod2",
+				Namespace: "ns1",
+				Annotations: map[string]string{
+					"k8s.v1.cni.cncf.io/networks-status": "[{\n    \"name\": \"k8s-pod-network\",\n    \"ips\": [\n        \"10.244.195.232\",\n        \"fd00:10:244:88:58fd:b191:5c13:9ce7\"\n    ],\n    \"default\": true,\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-0\",\n    \"interface\": \"net1\",\n    \"ips\": [\n        \"192.168.0.4\"\n    ],\n    \"mac\": \"96:e8:f5:33:9c:67\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-1\",\n    \"interface\": \"net2\",\n    \"ips\": [\n        \"192.168.1.4\"\n    ],\n    \"mac\": \"4e:c5:60:c2:1c:56\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-0\",\n    \"interface\": \"net3\",\n    \"ips\": [\n        \"3ffe:ffff::4\"\n    ],\n    \"mac\": \"ca:f5:77:b4:2f:50\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-1\",\n    \"interface\": \"net4\",\n    \"ips\": [\n        \"3ffe:ffff:0:1::4\"\n    ],\n    \"mac\": \"26:7b:69:1b:b0:5d\",\n    \"dns\": {}\n}]", //nolint:lll
+				},
+			},
+			Status: v1.PodStatus{
+				PodIPs: []v1.PodIP{
+					{
+						IP: "10.244.195.232",
+					},
+					{
+						IP: "fd00:10:244:88:58fd:b191:5c13:9ce7",
+					},
+				},
+			},
+		},
+		MultusIPs: map[string][]string{
+			"": {},
+		},
+		SkipNetTests:       false,
+		SkipMultusNetTests: false,
+		Containers: []*provider.Container{
+			{
+				Data: &v1.Container{
+					Name: "test2",
+				},
+				Namespace: "tnf",
+				NodeName:  "kind-worker4",
+				Podname:   "test-1",
+				Runtime:   "containerd",
+				UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd262",
+			},
+		},
+	}
+	pod3 = provider.Pod{ //nolint:dupl
+		Data: &v1.Pod{
+			ObjectMeta: v1meta.ObjectMeta{
+				Name:      "pod2",
+				Namespace: "ns1",
+				Annotations: map[string]string{
+					"k8s.v1.cni.cncf.io/networks-status": "[{\n    \"name\": \"k8s-pod-network\",\n    \"ips\": [\n        \"10.244.195.232\",\n        \"fd00:10:244:88:58fd:b191:5c13:9ce7\"\n    ],\n    \"default\": true,\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-0\",\n    \"interface\": \"net1\",\n    \"ips\": [\n        \"192.168.0.4\"\n    ],\n    \"mac\": \"96:e8:f5:33:9c:67\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-1\",\n    \"interface\": \"net2\",\n    \"ips\": [\n        \"192.168.1.4\"\n    ],\n    \"mac\": \"4e:c5:60:c2:1c:56\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-0\",\n    \"interface\": \"net3\",\n    \"ips\": [\n        \"3ffe:ffff::4\"\n    ],\n    \"mac\": \"ca:f5:77:b4:2f:50\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-1\",\n    \"interface\": \"net4\",\n    \"ips\": [\n        \"3ffe:ffff:0:1::4\"\n    ],\n    \"mac\": \"26:7b:69:1b:b0:5d\",\n    \"dns\": {}\n}]", //nolint:lll
+				},
+			},
+			Status: v1.PodStatus{
+				PodIPs: []v1.PodIP{
+					{
+						IP: "10.244.195.232",
+					},
+					{
+						IP: "fd00:10:244:88:58fd:b191:5c13:9ce7",
+					},
+				},
+			},
+		},
+		MultusIPs: map[string][]string{
+			"": {},
+		},
+		SkipNetTests:       true,
+		SkipMultusNetTests: false,
+		Containers: []*provider.Container{
+			{
+				Data: &v1.Container{
+					Name: "test2",
+				},
+				Namespace: "tnf",
+				NodeName:  "kind-worker4",
+				Podname:   "test-1",
+				Runtime:   "containerd",
+				UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd262",
+			},
+		},
+	}
+	pod4 = provider.Pod{ //nolint:dupl
+		Data: &v1.Pod{
+			ObjectMeta: v1meta.ObjectMeta{
+				Name:      "pod2",
+				Namespace: "ns1",
+				Annotations: map[string]string{
+					"k8s.v1.cni.cncf.io/networks-status": "[{\n    \"name\": \"k8s-pod-network\",\n    \"ips\": [\n        \"10.244.195.232\",\n        \"fd00:10:244:88:58fd:b191:5c13:9ce7\"\n    ],\n    \"default\": true,\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-0\",\n    \"interface\": \"net1\",\n    \"ips\": [\n        \"192.168.0.4\"\n    ],\n    \"mac\": \"96:e8:f5:33:9c:67\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-1\",\n    \"interface\": \"net2\",\n    \"ips\": [\n        \"192.168.1.4\"\n    ],\n    \"mac\": \"4e:c5:60:c2:1c:56\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-0\",\n    \"interface\": \"net3\",\n    \"ips\": [\n        \"3ffe:ffff::4\"\n    ],\n    \"mac\": \"ca:f5:77:b4:2f:50\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-1\",\n    \"interface\": \"net4\",\n    \"ips\": [\n        \"3ffe:ffff:0:1::4\"\n    ],\n    \"mac\": \"26:7b:69:1b:b0:5d\",\n    \"dns\": {}\n}]", //nolint:lll
+				},
+			},
+			Status: v1.PodStatus{
+				PodIPs: []v1.PodIP{
+					{
+						IP: "10.244.195.232",
+					},
+					{
+						IP: "fd00:10:244:88:58fd:b191:5c13:9ce7",
+					},
+				},
+			},
+		},
+		MultusIPs: map[string][]string{
+			"": {},
+		},
+		SkipNetTests:       false,
+		SkipMultusNetTests: true,
+		Containers: []*provider.Container{
+			{
+				Data: &v1.Container{
+					Name: "test2",
+				},
+				Namespace: "tnf",
+				NodeName:  "kind-worker4",
+				Podname:   "test-1",
+				Runtime:   "containerd",
+				UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd262",
+			},
+		},
+	}
+)
+
+func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
+	type args struct {
+		netsUnderTest map[string]netcommons.NetTestContext
+		count         int
+		aIPVersion    netcommons.IPVersion
+		providedFuncs RequiredFuncs
+	}
+	tests := []struct {
+		name          string
+		args          args
+		wantBadNets   map[string][]string
+		wantClaimsLog loghelper.CuratedLogLines
+	}{
+		{name: "ok",
+			args: args{netsUnderTest: map[string]netcommons.NetTestContext{"default": {
+				TesterContainerNodeName: "",
+				TesterSource: netcommons.ContainerIP{
+					IP: "10.244.195.231",
+					ContainerIdentifier: &provider.Container{
+						Data: &v1.Container{
+							Name: "test1",
+						},
+						Namespace: "tnf",
+						Podname:   "test-0",
+						NodeName:  "kind-worker3",
+						Runtime:   "containerd",
+						UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd261",
+					},
+				},
+				DestTargets: []netcommons.ContainerIP{{
+					IP: "10.244.195.232",
+					ContainerIdentifier: &provider.Container{
+						Data: &v1.Container{
+							Name: "test2",
+						},
+						Namespace: "tnf",
+						Podname:   "test-1",
+						NodeName:  "kind-worker4",
+						Runtime:   "containerd",
+						UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd262",
+					},
+				},
+				},
+			},
+			}, count: 10, aIPVersion: netcommons.IPv4, providedFuncs: newTestObject(),
+			},
+			wantBadNets:   map[string][]string{},
+			wantClaimsLog: loghelper.CuratedLogLines{Lines: []string{"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: SUCCESS transmitted: 10 received: 10 errors: 0\n"}}, //nolint:lll
+		},
+		{name: "noNetToTest",
+			args: args{netsUnderTest: map[string]netcommons.NetTestContext{},
+				count: 10, aIPVersion: netcommons.IPv4, providedFuncs: newTestObject(),
+			},
+			wantBadNets:   nil,
+			wantClaimsLog: loghelper.CuratedLogLines{},
+		},
+		{name: "only one container",
+			args: args{netsUnderTest: map[string]netcommons.NetTestContext{"default": {
+				TesterContainerNodeName: "",
+				TesterSource: netcommons.ContainerIP{
+					IP: "10.244.195.231",
+					ContainerIdentifier: &provider.Container{
+						Data: &v1.Container{
+							Name: "test1",
+						},
+						Namespace: "tnf",
+						Podname:   "test-0",
+						NodeName:  "kind-worker3",
+						Runtime:   "containerd",
+						UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd261",
+					},
+				},
+				DestTargets: []netcommons.ContainerIP{},
+			},
+			}, count: 10, aIPVersion: netcommons.IPv4, providedFuncs: newTestObject(),
+			},
+			wantBadNets:   map[string][]string{},
+			wantClaimsLog: loghelper.CuratedLogLines{},
+		},
+		{name: "ping fails",
+			args: args{netsUnderTest: map[string]netcommons.NetTestContext{"default": {
+				TesterContainerNodeName: "",
+				TesterSource: netcommons.ContainerIP{
+					IP: "10.244.195.231",
+					ContainerIdentifier: &provider.Container{
+						Data: &v1.Container{
+							Name: "test1",
+						},
+						Namespace: "tnf",
+						Podname:   "test-0",
+						NodeName:  "kind-worker3",
+						Runtime:   "containerd",
+						UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd261",
+					},
+				},
+				DestTargets: []netcommons.ContainerIP{{
+					IP: "10.244.195.232",
+					ContainerIdentifier: &provider.Container{
+						Data: &v1.Container{
+							Name: "test2",
+						},
+						Namespace: "tnf",
+						Podname:   "test-1",
+						NodeName:  "kind-worker4",
+						Runtime:   "containerd",
+						UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd262",
+					},
+				},
+					{
+						IP: "10.244.195.233",
+						ContainerIdentifier: &provider.Container{
+							Data: &v1.Container{
+								Name: "test3",
+							},
+							Namespace: "tnf",
+							Podname:   "test-1",
+							NodeName:  "kind-worker4",
+							Runtime:   "containerd",
+							UID:       "a94eea4619dbf6046e843955744e823ea4e9d83daa435acc08973f4c35ddd264",
+						},
+					},
+				},
+			},
+			}, count: 10, aIPVersion: netcommons.IPv4, providedFuncs: newTestObjectError(),
+			},
+			wantBadNets: map[string][]string{"default": {"10.244.195.232", "10.244.195.233"}},
+			wantClaimsLog: loghelper.CuratedLogLines{Lines: []string{"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n", //nolint:lll
+				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test3 pod: test-1 ns: tnf dstip: 10.244.195.233 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n"}}, //nolint:lll
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotBadNets, gotClaimsLog := RunNetworkingTests(tt.args.netsUnderTest, tt.args.count, tt.args.aIPVersion, tt.args.providedFuncs)
+			if !reflect.DeepEqual(gotBadNets, tt.wantBadNets) {
+				t.Errorf("RunNetworkingTests() gotBadNets = %v, want %v", gotBadNets, tt.wantBadNets)
+			}
+			if !reflect.DeepEqual(gotClaimsLog, tt.wantClaimsLog) {
+				t.Errorf("RunNetworkingTests() gotClaimsLog = %v, want %v", gotClaimsLog, tt.wantClaimsLog)
+			}
+		})
+	}
+}
+
+type testObject bool
+
+func newTestObject() (out testObject) {
+	return out
+}
+func (testObject) TestPing(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
+	return PingResults{outcome: testhelper.SUCCESS, transmitted: 10, received: 10, errors: 0}, nil
+}
+
+type testObjectError bool
+
+func newTestObjectError() (out testObjectError) {
+	return out
+}
+func (testObjectError) TestPing(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
+	return PingResults{outcome: testhelper.FAILURE, transmitted: 10, received: 5, errors: 5}, fmt.Errorf("ping failed")
 }

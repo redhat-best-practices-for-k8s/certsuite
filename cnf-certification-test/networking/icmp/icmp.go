@@ -43,9 +43,46 @@ type PingResults struct {
 	received    int
 	errors      int
 }
+type RequiredFuncs interface {
+	TestPing(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error)
+}
+
+type Object bool
+
+func NewObject() (out Object) {
+	return out
+}
 
 func (results PingResults) String() string {
 	return fmt.Sprintf("outcome: %s transmitted: %d received: %d errors: %d", testhelper.ResultToString(results.outcome), results.transmitted, results.received, results.errors)
+}
+
+func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, aType netcommons.IFType) (netsUnderTest map[string]netcommons.NetTestContext, claimsLog loghelper.CuratedLogLines) {
+	netsUnderTest = make(map[string]netcommons.NetTestContext)
+	for _, put := range pods {
+		if put.SkipNetTests {
+			claimsLog = claimsLog.AddLogLine("Skipping %s because it is excluded from all connectivity tests", put)
+			continue
+		}
+
+		if aType == netcommons.MULTUS {
+			if put.SkipMultusNetTests {
+				claimsLog = claimsLog.AddLogLine("Skipping pod %s because it is excluded from %s connectivity tests only", put.Data.Name, aType)
+				continue
+			}
+			for netKey, multusIPAddress := range put.MultusIPs {
+				// The first container is used to get the network namespace
+				ProcessContainerIpsPerNet(put.Containers[0], netKey, multusIPAddress, netsUnderTest, aIPVersion)
+			}
+			continue
+		}
+
+		const defaultNetKey = "default"
+		defaultIPAddress := put.Data.Status.PodIPs
+		// The first container is used to get the network namespace
+		ProcessContainerIpsPerNet(put.Containers[0], defaultNetKey, netcommons.PodIPsToStringList(defaultIPAddress), netsUnderTest, aIPVersion)
+	}
+	return netsUnderTest, claimsLog
 }
 
 // processContainerIpsPerNet takes a container ip addresses for a given network attachment's and uses it as a test target.
@@ -91,10 +128,10 @@ func ProcessContainerIpsPerNet(containerID *provider.Container,
 
 // runNetworkingTests takes a map netcommons.NetTestContext, e.g. one context per network attachment
 // and runs pings test with it. Returns a network name to a slice of bad target IPs map.
-func RunNetworkingTests(env *provider.TestEnvironment,
+func RunNetworkingTests(
 	netsUnderTest map[string]netcommons.NetTestContext,
 	count int,
-	aIPVersion netcommons.IPVersion) (badNets map[string][]string, claimsLog loghelper.CuratedLogLines) {
+	aIPVersion netcommons.IPVersion, providedFuncs RequiredFuncs) (badNets map[string][]string, claimsLog loghelper.CuratedLogLines) {
 	logrus.Debugf("%s", netcommons.PrintNetTestContextMap(netsUnderTest))
 	if len(netsUnderTest) == 0 {
 		logrus.Debugf("There are no %s networks to test, skipping test", aIPVersion)
@@ -117,7 +154,7 @@ func RunNetworkingTests(env *provider.TestEnvironment,
 				aIPVersion, netName,
 				netUnderTest.TesterSource.ContainerIdentifier, netUnderTest.TesterSource.IP,
 				aDestIP.ContainerIdentifier, aDestIP.IP)
-			result, err := testPing(env, netUnderTest.TesterSource.ContainerIdentifier, aDestIP, count)
+			result, err := providedFuncs.TestPing(netUnderTest.TesterSource.ContainerIdentifier, aDestIP, count)
 			logrus.Debugf("Ping results: %s", result.String())
 			claimsLog = claimsLog.AddLogLine("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s ) result: %s",
 				aIPVersion, netName,
@@ -142,9 +179,9 @@ func RunNetworkingTests(env *provider.TestEnvironment,
 }
 
 // testPing Initiates a ping test between a source container and network (1 ip) and a destination container and network (1 ip)
-func testPing(env *provider.TestEnvironment, sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
+func (Object) TestPing(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
 	command := fmt.Sprintf("ping -c %d %s", count, targetContainerIP.IP)
-	stdout, stderr, err := crclient.ExecCommandContainerNSEnter(command, sourceContainerID, env)
+	stdout, stderr, err := crclient.ExecCommandContainerNSEnter(command, sourceContainerID)
 	if err != nil || stderr != "" {
 		results.outcome = testhelper.ERROR
 		return results, fmt.Errorf("ping failed with stderr:%s err:%s", stderr, err)

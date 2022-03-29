@@ -25,10 +25,13 @@ import (
 )
 
 type IPVersion string
+type IFType string
 
 const (
-	IPv4 IPVersion = "IPv4"
-	IPv6 IPVersion = "IPv6"
+	IPv4    IPVersion = "IPv4"
+	IPv6    IPVersion = "IPv6"
+	MULTUS  IFType    = "Multus"
+	DEFAULT IFType    = "Default"
 )
 
 // netTestContext this is a data structure describing a network test context for a given subnet (e.g. network attachment)
