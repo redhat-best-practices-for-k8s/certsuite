@@ -21,42 +21,8 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
-
-func getPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (int, error) {
-	var pidCmd string
-
-	switch cut.Runtime {
-	case "docker": //nolint:goconst // used only once
-		pidCmd = "chroot /host docker inspect -f '{{.State.Pid}}' " + cut.UID + " 2>/dev/null"
-	case "docker-pullable": //nolint:goconst // used only once
-		pidCmd = "chroot /host docker inspect -f '{{.State.Pid}}' " + cut.UID + " 2>/dev/null"
-	case "cri-o", "containerd": //nolint:goconst // used only once
-		pidCmd = "chroot /host crictl inspect --output go-template --template '{{.info.pid}}' " + cut.UID + " 2>/dev/null"
-	default:
-		logrus.Debugf("Container runtime %s not supported yet for this test, skipping", cut.Runtime)
-		return 0, errors.Errorf("Container runtime not supported")
-	}
-
-	ch := clientsholder.GetClientsHolder()
-	outStr, errStr, err := ch.ExecCommandContainer(ctx, pidCmd)
-	if err != nil {
-		return 0, errors.Errorf("can't execute command: \" %s \"  on %s err:%s", pidCmd, cut.StringShort(), err)
-	}
-	if errStr != "" {
-		return 0, errors.Errorf("cmd: \" %s \" on %s returned %s", pidCmd, cut.StringShort(), errStr)
-	}
-
-	pid, err := strconv.Atoi(strings.TrimSuffix(outStr, "\n"))
-	if err != nil {
-		return 0, err
-	}
-
-	return pid, nil
-}
 
 func getNbOfProcessesInPidNamespace(ctx clientsholder.Context, targetPid int) (int, error) {
 	cmd := "lsns -p " + strconv.Itoa(targetPid) + " -t pid -n"
@@ -71,10 +37,7 @@ func getNbOfProcessesInPidNamespace(ctx clientsholder.Context, targetPid int) (i
 	}
 
 	const nbProcessesIndex = 2
-	nbProcesses, err := strconv.Atoi(strings.Fields(outStr)[nbProcessesIndex])
-	if err != nil {
-		return 0, err
-	}
+	nbProcesses := strings.Fields(outStr)[nbProcessesIndex]
 
-	return nbProcesses, nil
+	return strconv.Atoi(nbProcesses)
 }

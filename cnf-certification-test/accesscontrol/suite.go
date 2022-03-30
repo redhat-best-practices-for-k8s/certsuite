@@ -29,6 +29,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
@@ -429,7 +430,7 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 			Containername: debugPod.Spec.Containers[0].Name,
 		}
 
-		pid, err := getPidFromContainer(cut, ocpContext)
+		pid, err := crclient.GetPidFromContainer(cut, ocpContext)
 		if err != nil {
 			tnf.ClaimFilePrintf("Could not get PID for: %s, error: %s", cut.StringShort(), err)
 			badContainers = append(badContainers, cut.Data.Name)
