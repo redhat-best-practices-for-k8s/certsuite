@@ -33,9 +33,8 @@ func TestTestPodTaintsTolerationHelper(t *testing.T) {
 			Operator: v1.TolerationOpEqual,
 			Effect:   v1.TaintEffectNoExecute},
 	)
-	result, err := testPodTaintsTolerationHelper(&pod)
-	assert.Equal(t, result, false)
-	assert.Equal(t, err, nil)
+	tolerations := getPodTaintsTolerations(&pod)
+	assert.NotEmpty(t, tolerations)
 
 	pod.Spec.Tolerations = []v1.Toleration{}
 	pod.Spec.Tolerations = append(pod.Spec.Tolerations,
@@ -45,9 +44,8 @@ func TestTestPodTaintsTolerationHelper(t *testing.T) {
 			Operator: v1.TolerationOpEqual,
 			Effect:   v1.TaintEffectNoSchedule},
 	)
-	result, err = testPodTaintsTolerationHelper(&pod)
-	assert.Equal(t, result, false)
-	assert.Equal(t, err, nil)
+	tolerations = getPodTaintsTolerations(&pod)
+	assert.NotEmpty(t, tolerations)
 
 	pod.Spec.Tolerations = []v1.Toleration{}
 	pod.Spec.Tolerations = append(pod.Spec.Tolerations,
@@ -57,9 +55,8 @@ func TestTestPodTaintsTolerationHelper(t *testing.T) {
 			Operator: v1.TolerationOpEqual,
 			Effect:   v1.TaintEffectPreferNoSchedule},
 	)
-	result, err = testPodTaintsTolerationHelper(&pod)
-	assert.Equal(t, result, false)
-	assert.Equal(t, err, nil)
+	tolerations = getPodTaintsTolerations(&pod)
+	assert.NotEmpty(t, tolerations)
 
 	pod.Spec.Tolerations = []v1.Toleration{}
 	pod.Spec.Tolerations = append(pod.Spec.Tolerations,
@@ -74,7 +71,6 @@ func TestTestPodTaintsTolerationHelper(t *testing.T) {
 			Operator: v1.TolerationOpEqual,
 			Effect:   v1.TaintNodeMemoryPressure},
 	)
-	result, err = testPodTaintsTolerationHelper(&pod)
-	assert.Equal(t, result, true)
-	assert.Equal(t, err, nil)
+	tolerations = getPodTaintsTolerations(&pod)
+	assert.Empty(t, tolerations)
 }

@@ -17,7 +17,6 @@
 package lifecycle
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
@@ -60,7 +59,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	testContainersLivenessProbe(&env)
 	testPodsOwnerReference(&env)
 	testHighAvailability(&env)
-	testPodTainsToleration(&env)
+	testPodTaintsToleration(&env)
 
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodNodeSelectorAndAffinityBestPractices)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
@@ -89,33 +88,29 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	}
 })
 
-func testPodTaintsTolerationHelper(put *v1.Pod) (bool, error) {
-	if put == nil {
-		return false, errors.New("invalid input, pod under test is nil")
-	}
+func getPodTaintsTolerations(put *v1.Pod) []string {
+	badTolerations := []string{}
 	for _, t := range put.Spec.Tolerations {
 		if t.Effect == v1.TaintEffectNoSchedule || t.Effect == v1.TaintEffectPreferNoSchedule ||
 			t.Effect == v1.TaintEffectNoExecute {
 			logrus.Error(fmt.Sprintf("pod %s:%s has toleration %s\n", put.Namespace, put.Name, t.Effect))
-			return false, nil
+			badTolerations = append(badTolerations, t.String())
 		}
 	}
-	return true, nil
+	return badTolerations
 }
 
-func testPodTainsToleration(env *provider.TestEnvironment) {
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodTainsTolerationIdentifier)
+func testPodTaintsToleration(env *provider.TestEnvironment) {
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodTaintsTolerationIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		badPods := []string{}
 		for _, put := range env.Pods {
-			logrus.Debugln("check pod ", put.Namespace, ":", put.Name, " taints toleration")
-			if b, err := testPodTaintsTolerationHelper(put); !b || err != nil {
-				badPods = append(badPods, put.Name)
-				tnf.ClaimFilePrintf("%s:%s does have taints defined", put.Namespace, put.Name)
+			logrus.Debugln("check pod ", provider.PodToString(put), " taints toleration")
+			if badTolerations := getPodTaintsTolerations(put); len(badTolerations) > 0 {
+				badPods = append(badPods, provider.PodToString(put))
+				tnf.ClaimFilePrintf("%s does have taints defined", provider.PodToString(put), badTolerations)
+
 			}
-		}
-		if len(badPods) > 0 {
-			tnf.ClaimFilePrintf("bad Pods %v", badPods)
 		}
 		gomega.Expect(0).To(gomega.Equal(len(badPods)))
 	})

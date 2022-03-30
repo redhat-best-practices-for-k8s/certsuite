@@ -294,7 +294,7 @@ var (
 		Url:     formTestURL(common.LifecycleTestKey, "readiness"),
 		Version: versionOne,
 	}
-	TestPodTainsTolerationIdentifier = claim.Identifier{
+	TestPodTaintsTolerationIdentifier = claim.Identifier{
 		Url:     formTestURL(common.LifecycleTestKey, "podtaintstoleration"),
 		Version: versionOne,
 	}
@@ -815,10 +815,10 @@ the changes for you.`,
 		have readiness probe defined`),
 		Remediation: `add readiness probe to deployed containers`,
 	},
-	TestPodTainsTolerationIdentifier: {
-		Identifier: TestPodTainsTolerationIdentifier,
+	TestPodTaintsTolerationIdentifier: {
+		Identifier: TestPodTaintsTolerationIdentifier,
 		Type:       normativeResult,
-		Description: formDescription(TestPodTainsTolerationIdentifier, `check that all pods under test do not allow the following taints toleration:
+		Description: formDescription(TestPodTaintsTolerationIdentifier, `check that all pods under test do not allow the following taints toleration:
 		NoExecute, PreferNoSchedule, and NoSchedule.
 `),
 		Remediation: `remove taints toleration from Pod spec`,
