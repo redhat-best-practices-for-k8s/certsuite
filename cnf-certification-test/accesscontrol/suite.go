@@ -450,7 +450,7 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 	}
 
 	if n := len(badContainers); n > 0 {
-		errMsg := fmt.Sprintf("Found %d containers with more than one process running", n)
+		errMsg := fmt.Sprintf("Number of faulty containers found: %d", n)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
 	}
