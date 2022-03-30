@@ -123,13 +123,13 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 		ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsToQuery)))
 		testFailed := false
 		for _, op := range operatorsToQuery {
-			ocpversion := ""
+			majorDotMinorVersion := ""
 			if env.OpenshiftVersion != "" {
-				ocpversion = env.OpenshiftVersion
+				// Converts	major.minor.patch version format to major.minor
+				const majorMinorPatchCount = 3
+				splitVersion := strings.SplitN(env.OpenshiftVersion, ".", majorMinorPatchCount)
+				majorDotMinorVersion = splitVersion[0] + "." + splitVersion[1]
 			}
-			const majorMinorPatchCount = 3
-			splitVersion := strings.SplitN(ocpversion, ".", majorMinorPatchCount)
-			majorDotMinorVersion := splitVersion[0] + "." + splitVersion[1]
 			pack := op.Status.InstalledCSV
 			isCertified := certtool.WaitForCertificationRequestToSuccess(certtool.GetOperatorCertificationRequestFunction(CertifiedOperator, pack, majorDotMinorVersion), apiRequestTimeout).(bool)
 			if !isCertified {
