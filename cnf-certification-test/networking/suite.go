@@ -107,7 +107,7 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 		}
 		declaredandlistening.ParseListening(outStr, listeningPorts)
 		if len(listeningPorts) == 0 {
-			tnf.ClaimFilePrintf("Non of the containers of %s have any listening port.", provider.PodToString(podUnderTest))
+			tnf.ClaimFilePrintf("None of the containers of %s have any listening port.", provider.PodToString(podUnderTest))
 			continue
 		}
 		// compare between declaredPort,listeningPort
