@@ -56,7 +56,7 @@ func ExecCommandContainerNSEnter(command string,
 	// Run the nsenter command on on the debug pod
 	outStr, errStr, err = o.ExecCommandContainer(ctx, nsenterCommand)
 	if err != nil {
-		return "", "", errors.Errorf("can't execute command: \" %s \"  on %s err:%s", command, aContainer.StringShort(), err)
+		return "", "", errors.Errorf("can't execute command: \" %s \"  on %s err:%s", command, aContainer, err)
 	}
 	return outStr, errStr, err
 }

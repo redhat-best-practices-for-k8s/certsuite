@@ -24,7 +24,6 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	retry "k8s.io/client-go/util/retry"
 )
@@ -85,14 +84,14 @@ func CountPodsWithDelete(nodeName string, isDelete bool) (count int, err error) 
 			if !isDelete {
 				continue
 			}
-			logrus.Tracef("deleting %s", provider.PodToString(&pods.Items[idx]))
+			logrus.Tracef("deleting %s", pods.Items[idx].String())
 			deleteOptions := metav1.DeleteOptions{}
 			gracePeriodSeconds := int64(DefaultGracePeriodInSeconds + time.Duration(*pods.Items[idx].Spec.TerminationGracePeriodSeconds))
 			deleteOptions.GracePeriodSeconds = &gracePeriodSeconds
 
 			err = clients.K8sClient.CoreV1().Pods(pods.Items[idx].Namespace).Delete(context.TODO(), pods.Items[idx].Name, deleteOptions)
 			if err != nil {
-				logrus.Errorf("error deleting %s err: %v", provider.PodToString(&pods.Items[idx]), err)
+				logrus.Errorf("error deleting %s err: %v", pods.Items[idx].String(), err)
 				return 0, err
 			}
 		}

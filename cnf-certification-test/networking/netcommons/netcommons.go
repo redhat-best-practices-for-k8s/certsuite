@@ -67,7 +67,7 @@ func (testContext NetTestContext) String() string {
 func (cip *ContainerIP) String() string {
 	return fmt.Sprintf("%s ( %s )",
 		cip.IP,
-		cip.ContainerIdentifier.String(),
+		cip.ContainerIdentifier.StringLong(),
 	)
 }
 

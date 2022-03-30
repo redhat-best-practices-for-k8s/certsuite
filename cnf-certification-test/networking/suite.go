@@ -30,7 +30,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
-	v1 "k8s.io/api/core/v1"
 )
 
 const (
@@ -86,36 +85,35 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 //nolint:funlen
 func testListenAndDeclared(env *provider.TestEnvironment) {
 	var k declaredandlistening.Key
-	var failedPods []*v1.Pod
+	var failedPods []*provider.Pod
 	for _, podUnderTest := range env.Pods {
 		declaredPorts := make(map[declaredandlistening.Key]bool)
 		listeningPorts := make(map[declaredandlistening.Key]bool)
-		for i := range podUnderTest.Spec.Containers {
-			container := &podUnderTest.Spec.Containers[i]
-			ports := container.Ports
-			logrus.Debugf("container %s (%s) declaredPorts: %v", container.Name, provider.PodToString(podUnderTest), ports)
+		for _, cut := range podUnderTest.Containers {
+			ports := cut.Data.Ports
+			logrus.Debugf("%s declaredPorts: %v", podUnderTest, ports)
 			for j := 0; j < len(ports); j++ {
 				k.Port = int(ports[j].ContainerPort)
 				k.Protocol = string(ports[j].Protocol)
 				declaredPorts[k] = true
 			}
 		}
-		firstPodContainer := &podUnderTest.Spec.Containers[0]
-		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, env.ContainersMap[firstPodContainer], env)
+		firstPodContainer := podUnderTest.Containers[0]
+		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, firstPodContainer, env)
 		if err != nil || errStr != "" {
-			tnf.ClaimFilePrintf("Failed to execute command %s on container: %s pod: %s ns: %s, err: %s, errStr: %s", cmd, firstPodContainer.Name, podUnderTest.Name, podUnderTest.Namespace, err, errStr)
+			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s, errStr: %s", cmd, firstPodContainer, err, errStr)
 			failedPods = append(failedPods, podUnderTest)
 			continue
 		}
 		declaredandlistening.ParseListening(outStr, listeningPorts)
 		if len(listeningPorts) == 0 {
-			tnf.ClaimFilePrintf("None of the containers of %s have any listening port.", provider.PodToString(podUnderTest))
+			tnf.ClaimFilePrintf("None of the containers of %s have any listening port.", podUnderTest)
 			continue
 		}
 		// compare between declaredPort,listeningPort
 		undeclaredPorts := declaredandlistening.CheckIfListenIsDeclared(listeningPorts, declaredPorts)
 		for k := range undeclaredPorts {
-			tnf.ClaimFilePrintf("pod %s is listening on port %d protocol %d, but that port was not declared in any container spec.", provider.PodToString(podUnderTest), k.Port, k.Protocol)
+			tnf.ClaimFilePrintf("%s is listening on port %d protocol %d, but that port was not declared in any container spec.", podUnderTest, k.Port, k.Protocol)
 		}
 		if len(undeclaredPorts) != 0 {
 			failedPods = append(failedPods, podUnderTest)
@@ -130,16 +128,14 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 func testDefaultNetworkConnectivity(env *provider.TestEnvironment, count int, aIPVersion netcommons.IPVersion) {
 	netsUnderTest := make(map[string]netcommons.NetTestContext)
 	for _, put := range env.Pods {
-		// The first container is used to get the network namespace
-		aContainerInPod := &put.Spec.Containers[0]
-		if _, ok := env.SkipNetTests[provider.NewPodWrapper(put)]; ok {
-			tnf.ClaimFilePrintf("Skipping pod %s because it is excluded from all connectivity tests", put.Name)
+		if put.SkipNetTests {
+			tnf.ClaimFilePrintf("Skipping pod %s because it is excluded from all connectivity tests", put.Data.Name)
 			continue
 		}
 		netKey := "default" //nolint:goconst // only used once
-		defaultIPAddress := put.Status.PodIPs
-
-		icmp.ProcessContainerIpsPerNet(env.ContainersMap[aContainerInPod], netKey, netcommons.PodIPsToStringList(defaultIPAddress), netsUnderTest, aIPVersion)
+		defaultIPAddress := put.Data.Status.PodIPs
+		// The first container is used to get the network namespace
+		icmp.ProcessContainerIpsPerNet(put.Containers[0], netKey, netcommons.PodIPsToStringList(defaultIPAddress), netsUnderTest, aIPVersion)
 	}
 	badNets, claimsLog := icmp.RunNetworkingTests(env, netsUnderTest, count, aIPVersion)
 
@@ -156,19 +152,17 @@ func testDefaultNetworkConnectivity(env *provider.TestEnvironment, count int, aI
 func testMultusNetworkConnectivity(env *provider.TestEnvironment, count int, aIPVersion netcommons.IPVersion) {
 	netsUnderTest := make(map[string]netcommons.NetTestContext)
 	for _, put := range env.Pods {
-		// The first container is used to get the network namespace
-		aContainerInPod := &put.Spec.Containers[0]
-
-		if _, ok := env.SkipNetTests[provider.NewPodWrapper(put)]; ok {
-			tnf.ClaimFilePrintf("Skipping pod %s because it is excluded from all connectivity tests", put.Name)
+		if put.SkipNetTests {
+			tnf.ClaimFilePrintf("Skipping pod %s because it is excluded from all connectivity tests", put.Data.Name)
 			continue
 		}
-		if _, ok := env.SkipNetTests[provider.NewPodWrapper(put)]; ok {
-			tnf.ClaimFilePrintf("Skipping pod %s because it is excluded from multus connectivity tests only", put.Name)
+		if put.SkipMultusNetTests {
+			tnf.ClaimFilePrintf("Skipping pod %s because it is excluded from multus connectivity tests only", put.Data.Name)
 			continue
 		}
-		for netKey, multusIPAddress := range env.MultusIPs[provider.NewPodWrapper(put)] {
-			icmp.ProcessContainerIpsPerNet(env.ContainersMap[aContainerInPod], netKey, multusIPAddress, netsUnderTest, aIPVersion)
+		for netKey, multusIPAddress := range put.MultusIPs {
+			// The first container is used to get the network namespace
+			icmp.ProcessContainerIpsPerNet(put.Containers[0], netKey, multusIPAddress, netsUnderTest, aIPVersion)
 		}
 	}
 	badNets, claimsLog := icmp.RunNetworkingTests(env, netsUnderTest, count, aIPVersion)
