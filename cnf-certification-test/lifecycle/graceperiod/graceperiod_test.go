@@ -74,7 +74,7 @@ func Test_getTerminationGracePeriodConfiguredInYaml(t *testing.T) {
 func TestTestTerminationGracePeriodOnPods(t *testing.T) {
 	generateEnv := func(podName, annotation string, gracePeriod int64) *provider.TestEnvironment {
 		return &provider.TestEnvironment{
-			Pods: []*corev1.Pod{
+			Pods: provider.ConvertArrayPods([]*corev1.Pod{
 				{
 					ObjectMeta: v1.ObjectMeta{
 						Name: podName,
@@ -86,7 +86,7 @@ func TestTestTerminationGracePeriodOnPods(t *testing.T) {
 						TerminationGracePeriodSeconds: &gracePeriod,
 					},
 				},
-			},
+			}),
 		}
 	}
 
