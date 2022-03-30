@@ -17,12 +17,10 @@
 package certtool
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
 	version "github.com/hashicorp/go-version"
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/api"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"helm.sh/helm/v3/pkg/release"
@@ -92,23 +90,18 @@ func CompareVersion(ver1, ver2 string) bool {
 }
 
 func IsReleaseCertified(helm *release.Release, ourKubeVersion string, out api.ChartStruct) bool {
-	certified := false
 	for _, entryList := range out.Entries {
 		for _, entry := range entryList {
 			if entry.Name == helm.Chart.Metadata.Name && entry.Version == helm.Chart.Metadata.Version {
 				if entry.KubeVersion != "" {
 					if CompareVersion(ourKubeVersion, entry.KubeVersion) {
-						certified = true
+						return true
 					}
 				} else {
-					certified = true
+					return true
 				}
 			}
 		}
-		if certified {
-			logrus.Info(fmt.Sprintf("Helm %s with version %s is certified", helm.Name, helm.Chart.Metadata.Version))
-			break
-		}
 	}
-	return certified
+	return false
 }
