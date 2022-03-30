@@ -30,6 +30,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	v1 "k8s.io/api/core/v1"
 )
 
 const (
@@ -85,41 +86,43 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 //nolint:funlen
 func testListenAndDeclared(env *provider.TestEnvironment) {
 	var k declaredandlistening.Key
-	failedContainers := []string{}
-	for _, cut := range env.Containers {
+	var failedPods []*v1.Pod
+	for _, podUnderTest := range env.Pods {
 		declaredPorts := make(map[declaredandlistening.Key]bool)
 		listeningPorts := make(map[declaredandlistening.Key]bool)
-		ports := cut.Data.Ports
-		logrus.Debugf("%s declaredPorts: %v", cut.StringShort(), ports)
-		for j := 0; j < len(ports); j++ {
-			k.Port = int(ports[j].ContainerPort)
-			k.Protocol = string(ports[j].Protocol)
-			declaredPorts[k] = true
+		for i := range podUnderTest.Spec.Containers {
+			container := &podUnderTest.Spec.Containers[i]
+			ports := container.Ports
+			logrus.Debugf("container %s (%s) declaredPorts: %v", container.Name, provider.PodToString(podUnderTest), ports)
+			for j := 0; j < len(ports); j++ {
+				k.Port = int(ports[j].ContainerPort)
+				k.Protocol = string(ports[j].Protocol)
+				declaredPorts[k] = true
+			}
 		}
-		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, cut, env)
+		firstPodContainer := &podUnderTest.Spec.Containers[0]
+		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, env.ContainersMap[firstPodContainer], env)
 		if err != nil || errStr != "" {
-			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s, errStr: %s", cmd, cut.StringShort(), err, errStr)
-			failedContainers = append(failedContainers, cut.StringShort())
+			tnf.ClaimFilePrintf("Failed to execute command %s on container: %s pod: %s ns: %s, err: %s, errStr: %s", cmd, firstPodContainer.Name, podUnderTest.Name, podUnderTest.Namespace, err, errStr)
+			failedPods = append(failedPods, podUnderTest)
 			continue
 		}
 		declaredandlistening.ParseListening(outStr, listeningPorts)
 		if len(listeningPorts) == 0 {
-			tnf.ClaimFilePrintf("%s does not have any listening ports.", cut.StringShort())
+			tnf.ClaimFilePrintf("None of the containers of %s have any listening port.", provider.PodToString(podUnderTest))
 			continue
 		}
 		// compare between declaredPort,listeningPort
 		undeclaredPorts := declaredandlistening.CheckIfListenIsDeclared(listeningPorts, declaredPorts)
 		for k := range undeclaredPorts {
-			tnf.ClaimFilePrintf("The port %d on protocol %s not declared on %s", k.Port, k.Protocol, cut.StringShort())
+			tnf.ClaimFilePrintf("pod %s is listening on port %d protocol %d, but that port was not declared in any container spec.", provider.PodToString(podUnderTest), k.Port, k.Protocol)
 		}
 		if len(undeclaredPorts) != 0 {
-			failedContainers = append(failedContainers, fmt.Sprintf("%s undeclaredPorts: %v", cut.StringShort(), undeclaredPorts))
+			failedPods = append(failedPods, podUnderTest)
 		}
 	}
-
-	if n := len(failedContainers); n > 0 {
-		logrus.Debugf("Failed containers: %v", failedContainers)
-		ginkgo.Fail(fmt.Sprintf("Found %d pods with listening ports that had not been declared", n))
+	if nf := len(failedPods); nf > 0 {
+		ginkgo.Fail(fmt.Sprintf("Found %d pods with listening ports not declared", nf))
 	}
 }
 

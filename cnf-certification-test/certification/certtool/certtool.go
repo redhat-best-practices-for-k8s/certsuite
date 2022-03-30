@@ -23,6 +23,7 @@ import (
 	version "github.com/hashicorp/go-version"
 	"github.com/test-network-function/cnf-certification-test/internal/api"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"helm.sh/helm/v3/pkg/release"
 )
 
 const (
@@ -31,7 +32,7 @@ const (
 )
 
 var (
-	CertAPIClient api.CertAPIClient
+	CertAPIClient api.CertAPIClientFuncs
 )
 
 // getContainerCertificationRequestFunction returns function that will try to get the certification status (CCP) for a container.
@@ -83,6 +84,23 @@ func CompareVersion(ver1, ver2 string) bool {
 		minVersion, _ := version.NewVersion(kubever[0])
 		if ourKubeVersion.GreaterThanOrEqual(minVersion) {
 			return true
+		}
+	}
+	return false
+}
+
+func IsReleaseCertified(helm *release.Release, ourKubeVersion string, out api.ChartStruct) bool {
+	for _, entryList := range out.Entries {
+		for _, entry := range entryList {
+			if entry.Name == helm.Chart.Metadata.Name && entry.Version == helm.Chart.Metadata.Version {
+				if entry.KubeVersion != "" {
+					if CompareVersion(ourKubeVersion, entry.KubeVersion) {
+						return true
+					}
+				} else {
+					return true
+				}
+			}
 		}
 	}
 	return false

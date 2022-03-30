@@ -155,6 +155,20 @@ type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
+//go:generate moq -out api_moq.go . CertAPIClientFuncs
+type CertAPIClientFuncs interface {
+	IsContainerCertified(repository, imageName string) bool
+	IsOperatorCertified(org, packageName, version string) (bool, error)
+	GetImageByID(id string) (response string, err error)
+	GetImageIDByRepository(repository, imageName string) (imageID string, err error)
+	GetContainerCatalogEntry(id configuration.ContainerImageIdentifier) (*ContainerCatalogEntry, error)
+	GetOperatorBundleIDByPackageName(org, name, version string) (string, error)
+	getRequest(url string) (response []byte, err error)
+	getIDFromResponse(response []byte) (id string, err error)
+	Find(obj interface{}, key string) (interface{}, bool)
+	GetYamlFile() (ChartStruct, error)
+}
+
 // CertAPIClient is http client to handle `pyxis` rest api
 type CertAPIClient struct {
 	Client HTTPClient
@@ -207,7 +221,7 @@ func (api CertAPIClient) GetImageIDByRepository(repository, imageName string) (i
 	return
 }
 
-type containerCatalogQueryResponse struct {
+type ContainerCatalogQueryResponse struct {
 	catalogQueryResponse
 	Data []ContainerCatalogEntry `json:"data"`
 }
@@ -216,7 +230,7 @@ type containerCatalogQueryResponse struct {
 func (api CertAPIClient) GetContainerCatalogEntry(id configuration.ContainerImageIdentifier) (*ContainerCatalogEntry, error) {
 	responseData, err := api.getRequest(CreateContainerCatalogQueryURL(id))
 	if err == nil {
-		var response containerCatalogQueryResponse
+		var response ContainerCatalogQueryResponse
 		err = json.Unmarshal(responseData, &response)
 		if err == nil && len(response.Data) > 0 {
 			return &response.Data[0], nil

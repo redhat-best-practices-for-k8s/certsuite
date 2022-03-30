@@ -43,7 +43,7 @@ func (clientsholder *ClientsHolder) ExecCommandContainer(
 	var buffOut bytes.Buffer
 	var buffErr bytes.Buffer
 	logrus.Trace(fmt.Sprintf("execute commands on ns=%s, pod=%s container=%s", ctx.Namespace, ctx.Podname, ctx.Containername))
-	req := clientsholder.Coreclient.RESTClient().
+	req := clientsholder.K8sClient.CoreV1().RESTClient().
 		Post().
 		Namespace(ctx.Namespace).
 		Resource("pods").

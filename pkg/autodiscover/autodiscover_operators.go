@@ -29,7 +29,7 @@ import (
 	"k8s.io/client-go/rest"
 )
 
-func findOperatorsByLabel(olmClient *clientOlm.Clientset, labels []configuration.Label, namespaces []configuration.Namespace) []olmv1Alpha.ClusterServiceVersion {
+func findOperatorsByLabel(olmClient clientOlm.Interface, labels []configuration.Label, namespaces []configuration.Namespace) []olmv1Alpha.ClusterServiceVersion {
 	csvs := []olmv1Alpha.ClusterServiceVersion{}
 	for _, ns := range namespaces {
 		logrus.Debugf("Searching CSVs in namespace %s", ns)
@@ -54,7 +54,7 @@ func findOperatorsByLabel(olmClient *clientOlm.Clientset, labels []configuration
 
 	return csvs
 }
-func findSubscriptions(olmClient *clientOlm.Clientset, labels []configuration.Label, namespaces []string) []olmv1Alpha.Subscription {
+func findSubscriptions(olmClient clientOlm.Interface, labels []configuration.Label, namespaces []string) []olmv1Alpha.Subscription {
 	subscriptions := []olmv1Alpha.Subscription{}
 	for _, ns := range namespaces {
 		logrus.Debugf("Searching subscriptions in namespace %s", ns)

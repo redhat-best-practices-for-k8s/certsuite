@@ -137,10 +137,10 @@ func GetContainer() *Container {
 	return &Container{}
 }
 
-func GetUpdatedDeployment(ac *appv1client.AppsV1Client, namespace, podName string) (*v1apps.Deployment, error) {
+func GetUpdatedDeployment(ac appv1client.AppsV1Interface, namespace, podName string) (*v1apps.Deployment, error) {
 	return autodiscover.FindDeploymentByNameByNamespace(ac, namespace, podName)
 }
-func GetUpdatedStatefulset(ac *appv1client.AppsV1Client, namespace, podName string) (*v1apps.StatefulSet, error) {
+func GetUpdatedStatefulset(ac appv1client.AppsV1Interface, namespace, podName string) (*v1apps.StatefulSet, error) {
 	return autodiscover.FindStatefulsetByNameByNamespace(ac, namespace, podName)
 }
 
@@ -277,7 +277,7 @@ func IsinstalledCsv(csv *olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1
 func WaitDebugPodReady() {
 	oc := clientsholder.GetClientsHolder()
 	listOptions := metav1.ListOptions{}
-	nodes, err := oc.Coreclient.Nodes().List(context.TODO(), listOptions)
+	nodes, err := oc.K8sClient.CoreV1().Nodes().List(context.TODO(), listOptions)
 
 	if err != nil {
 		logrus.Fatalf("Error getting node list, err:%s", err)
@@ -289,7 +289,7 @@ func WaitDebugPodReady() {
 	isReady := false
 	start := time.Now()
 	for !isReady && time.Since(start) < timeout {
-		daemonSet, err := oc.AppsClients.DaemonSets(daemonSetNamespace).Get(context.TODO(), daemonSetName, getOptions)
+		daemonSet, err := oc.K8sClient.AppsV1().DaemonSets(daemonSetNamespace).Get(context.TODO(), daemonSetName, getOptions)
 		if err != nil && daemonSet != nil {
 			logrus.Fatal("Error getting Daemonset, please create debug daemonset")
 		}
