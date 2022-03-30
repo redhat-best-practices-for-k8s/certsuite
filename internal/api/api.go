@@ -227,11 +227,11 @@ func (api CertAPIClient) GetContainerCatalogEntry(id configuration.ContainerImag
 
 // GetOperatorBundleIDByPackageName get published operator bundle Id by organization and package name.
 // Returns (ImageID, error).
-func (api CertAPIClient) GetOperatorBundleIDByPackageName(org, name, vsersion string) (string, error) {
+func (api CertAPIClient) GetOperatorBundleIDByPackageName(org, name, version string) (string, error) {
 	var imageID string
 	url := ""
-	if vsersion != "" {
-		url = fmt.Sprintf("%s/bundles?page_size=1&filter=organization==%s;csv_name==%s;ocp_version==%s", apiOperatorCatalogExternalBaseEndPoint, org, name, vsersion)
+	if version != "" {
+		url = fmt.Sprintf("%s/bundles?page_size=1&filter=organization==%s;csv_name==%s;ocp_version==%s", apiOperatorCatalogExternalBaseEndPoint, org, name, version)
 	} else {
 		url = fmt.Sprintf("%s/bundles?page_size=1&filter=organization==%s;csv_name==%s", apiOperatorCatalogExternalBaseEndPoint, org, name)
 	}

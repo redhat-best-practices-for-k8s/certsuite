@@ -18,6 +18,7 @@ package certification
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/onsi/ginkgo/v2"
@@ -126,12 +127,15 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 			if env.OpenshiftVersion != "" {
 				ocpversion = env.OpenshiftVersion
 			}
+			const majorMinorPatchCount = 3
+			splitVersion := strings.SplitN(ocpversion, ".", majorMinorPatchCount)
+			majorDotMinorVersion := splitVersion[0] + "." + splitVersion[1]
 			pack := op.Status.InstalledCSV
-			isCertified := certtool.WaitForCertificationRequestToSuccess(certtool.GetOperatorCertificationRequestFunction(CertifiedOperator, pack, ocpversion), apiRequestTimeout).(bool)
+			isCertified := certtool.WaitForCertificationRequestToSuccess(certtool.GetOperatorCertificationRequestFunction(CertifiedOperator, pack, majorDotMinorVersion), apiRequestTimeout).(bool)
 			if !isCertified {
 				testFailed = true
-				log.Info(fmt.Sprintf("Operator %s not certified for OpenShift %s .", pack, ocpversion))
-				tnf.ClaimFilePrintf("Operator %s  failed to be certified for OpenShift %s", pack, ocpversion)
+				log.Info(fmt.Sprintf("Operator %s not certified for OpenShift %s .", pack, majorDotMinorVersion))
+				tnf.ClaimFilePrintf("Operator %s  failed to be certified for OpenShift %s", pack, majorDotMinorVersion)
 			} else {
 				log.Info(fmt.Sprintf("Operator %s certified OK.", pack))
 			}
