@@ -90,7 +90,7 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 		declaredPorts := make(map[declaredandlistening.Key]bool)
 		listeningPorts := make(map[declaredandlistening.Key]bool)
 		ports := cut.Data.Ports
-		logrus.Debugf("%s declaredPorts: %v", cut.String(), ports)
+		logrus.Debugf("%s declaredPorts: %v", cut, ports)
 		for j := 0; j < len(ports); j++ {
 			k.Port = int(ports[j].ContainerPort)
 			k.Protocol = string(ports[j].Protocol)
@@ -98,22 +98,22 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 		}
 		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, cut, env)
 		if err != nil || errStr != "" {
-			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s, errStr: %s", cmd, cut.String(), err, errStr)
+			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s, errStr: %s", cmd, cut, err, errStr)
 			failedContainers = append(failedContainers, cut.String())
 			continue
 		}
 		declaredandlistening.ParseListening(outStr, listeningPorts)
 		if len(listeningPorts) == 0 {
-			tnf.ClaimFilePrintf("%s does not have any listening ports.", cut.String())
+			tnf.ClaimFilePrintf("%s does not have any listening ports.", cut)
 			continue
 		}
 		// compare between declaredPort,listeningPort
 		undeclaredPorts := declaredandlistening.CheckIfListenIsDeclared(listeningPorts, declaredPorts)
 		for k := range undeclaredPorts {
-			tnf.ClaimFilePrintf("The port %d on protocol %s not declared on %s", k.Port, k.Protocol, cut.String())
+			tnf.ClaimFilePrintf("The port %d on protocol %s not declared on %s", k.Port, k.Protocol, cut)
 		}
 		if len(undeclaredPorts) != 0 {
-			failedContainers = append(failedContainers, fmt.Sprintf("%s undeclaredPorts: %v", cut.String(), undeclaredPorts))
+			failedContainers = append(failedContainers, fmt.Sprintf("%s undeclaredPorts: %v", cut, undeclaredPorts))
 		}
 	}
 

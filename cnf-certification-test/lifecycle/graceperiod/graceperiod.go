@@ -103,16 +103,16 @@ func TestTerminationGracePeriodOnPods(env *provider.TestEnvironment) (badPods []
 		aTerminationGracePeriodSeconds, err := getTerminationGracePeriodConfiguredInYaml(put.Data.Annotations[`kubectl.kubernetes.io/last-applied-configuration`])
 
 		if err != nil {
-			curatedLogs = curatedLogs.AddLogLine("%s failed to get TerminationGracePeriodSeconds err: %s", put.String(), err)
+			curatedLogs = curatedLogs.AddLogLine("%s failed to get TerminationGracePeriodSeconds err: %s", put, err)
 			continue
 		}
 
 		if aTerminationGracePeriodSeconds == unconfiguredTerminationGracePeriod {
 			curatedLogs = curatedLogs.AddLogLine("%s does not have a terminationGracePeriodSeconds value set. Default value (%d) is used.",
-				put.String(), defaultTerminationGracePeriod)
+				put, defaultTerminationGracePeriod)
 			badPods = append(badPods, put.Data)
 		} else {
-			logrus.Debugf("%s last-applied-configuration's terminationGracePeriodSeconds: %d", put.String(), *put.Data.Spec.TerminationGracePeriodSeconds)
+			logrus.Debugf("%s last-applied-configuration's terminationGracePeriodSeconds: %d", put, *put.Data.Spec.TerminationGracePeriodSeconds)
 		}
 	}
 	logrus.Debugf("Number of unamanaged pods processed: %d", numUnmanagedPods)

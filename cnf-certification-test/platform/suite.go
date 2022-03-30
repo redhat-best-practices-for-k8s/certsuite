@@ -195,7 +195,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 	ginkgo.By("should report a proper Red Hat version")
 	failedContainers := []string{}
 	for _, cut := range env.Containers {
-		ginkgo.By(fmt.Sprintf("%s is checked for Red Hat version", cut.String()))
+		ginkgo.By(fmt.Sprintf("%s is checked for Red Hat version", cut))
 		baseImageTester := isredhat.NewBaseImageTester(common.DefaultTimeout, clientsholder.GetClientsHolder(), clientsholder.Context{
 			Namespace:     cut.Namespace,
 			Podname:       cut.Podname,
@@ -208,7 +208,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 		}
 		if !result {
 			failedContainers = append(failedContainers, cut.Namespace+"/"+cut.Podname+"/"+cut.Data.Name)
-			tnf.ClaimFilePrintf("%s has failed the RHEL release check", cut.String())
+			tnf.ClaimFilePrintf("%s has failed the RHEL release check", cut)
 		}
 	}
 

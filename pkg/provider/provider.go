@@ -50,7 +50,7 @@ const (
 	skipMultusConnectivityTestsLabel = "test-network-function.com/skip_multus_connectivity_tests"
 )
 
-type PodWrapper struct {
+type Pod struct {
 	Data               *v1.Pod
 	Containers         []*Container
 	MultusIPs          map[string][]string
@@ -58,16 +58,7 @@ type PodWrapper struct {
 	SkipMultusNetTests bool
 }
 
-/*func (p PodWrapper) MarshalText() ([]byte, error) {
-	return json.Marshal(&struct {
-		Name      string `json:"Name"`
-		Namespace string `json:"Namespace"`
-	}{
-		Name:      p.Data.Name,
-		Namespace: p.Data.Namespace,
-	})
-}*/
-func NewPodWrapper(aPod *v1.Pod) (out PodWrapper) {
+func NewPod(aPod *v1.Pod) (out Pod) {
 	var err error
 	out.Data = aPod
 	out.MultusIPs = make(map[string][]string)
@@ -85,9 +76,9 @@ func NewPodWrapper(aPod *v1.Pod) (out PodWrapper) {
 	return out
 }
 
-func ConvertArrayPods(pods []*v1.Pod) (out []*PodWrapper) {
+func ConvertArrayPods(pods []*v1.Pod) (out []*Pod) {
 	for i := range pods {
-		aPodWrapper := NewPodWrapper(pods[i])
+		aPodWrapper := NewPod(pods[i])
 		out = append(out, &aPodWrapper)
 	}
 	return out
@@ -95,7 +86,7 @@ func ConvertArrayPods(pods []*v1.Pod) (out []*PodWrapper) {
 
 type TestEnvironment struct { // rename this with testTarget
 	Namespaces        []string           `json:"testNamespaces"`
-	Pods              []*PodWrapper      `json:"testPods"`
+	Pods              []*Pod             `json:"testPods"`
 	Containers        []*Container       `json:"testContainers"`
 	Operators         []Operator         `json:"testOperators"`
 	DebugPods         map[string]*v1.Pod // map from nodename to debugPod
@@ -178,7 +169,7 @@ func buildTestEnvironment() { //nolint:funlen
 	pods := data.Pods
 
 	for i := 0; i < len(pods); i++ {
-		aNewPod := NewPodWrapper(&pods[i])
+		aNewPod := NewPod(&pods[i])
 		env.Pods = append(env.Pods, &aNewPod)
 		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
@@ -379,7 +370,7 @@ func (c *Container) String() string {
 	)
 }
 
-func (p *PodWrapper) String() string {
+func (p *Pod) String() string {
 	return fmt.Sprintf("pod: %s ns: %s",
 		p.Data.Name,
 		p.Data.Namespace,

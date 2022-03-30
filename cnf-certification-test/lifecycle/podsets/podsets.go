@@ -128,7 +128,7 @@ func WaitForAllPodSetReady(env *provider.TestEnvironment, timeoutPodSetReady tim
 	return claimsLog, atLeastOnePodsetNotReady
 }
 
-func GetAllNodesForAllPodSets(pods []*provider.PodWrapper) (nodes map[string]bool) {
+func GetAllNodesForAllPodSets(pods []*provider.Pod) (nodes map[string]bool) {
 	nodes = make(map[string]bool)
 	for _, put := range pods {
 		for _, or := range put.Data.OwnerReferences {

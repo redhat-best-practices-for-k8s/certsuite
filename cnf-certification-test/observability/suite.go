@@ -94,15 +94,15 @@ func testContainersLogging(env *provider.TestEnvironment) {
 	// one log line is found.
 	badContainers := []string{}
 	for _, cut := range env.Containers {
-		ginkgo.By(fmt.Sprintf("Checking %s has some logging output", cut.String()))
+		ginkgo.By(fmt.Sprintf("Checking %s has some logging output", cut))
 		hasLoggingOutput, err := containerHasLoggingOutput(cut)
 		if err != nil {
-			tnf.ClaimFilePrintf("Failed to get %s log output: %s", cut.String(), err)
+			tnf.ClaimFilePrintf("Failed to get %s log output: %s", cut, err)
 			badContainers = append(badContainers, cut.String())
 		}
 
 		if !hasLoggingOutput {
-			tnf.ClaimFilePrintf("%s does not have any line of log to stderr/stdout", cut.String())
+			tnf.ClaimFilePrintf("%s does not have any line of log to stderr/stdout", cut)
 			badContainers = append(badContainers, cut.String())
 		}
 	}
@@ -139,7 +139,7 @@ func testTerminationMessagePolicy(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		ginkgo.By("Testing for terminationMessagePolicy: " + cut.String())
 		if cut.Data.TerminationMessagePolicy != v1.TerminationMessageFallbackToLogsOnError {
-			tnf.ClaimFilePrintf("FAILURE: %s does not have a TerminationMessagePolicy: FallbackToLogsOnError", cut.String())
+			tnf.ClaimFilePrintf("FAILURE: %s does not have a TerminationMessagePolicy: FallbackToLogsOnError", cut)
 			failedContainers = append(failedContainers, cut.Data.Name)
 		}
 	}
