@@ -49,7 +49,7 @@ import (
 
 const (
 	claimFileName                        = "claim.json"
-	claimFilePermissions                 = 0644
+	claimFilePermissions                 = 0o644
 	claimPathFlagKey                     = "claimloc"
 	CnfCertificationTestSuiteName        = "CNF Certification Test Suite"
 	defaultClaimPath                     = ".."

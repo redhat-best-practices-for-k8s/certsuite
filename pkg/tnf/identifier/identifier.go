@@ -79,7 +79,7 @@ func (i *Identifier) UnmarshalJSON(b []byte) error {
 		return err
 	}
 
-	if err = i.unmarshalURL(objMap); err != nil {
+	if err := i.unmarshalURL(objMap); err != nil {
 		return err
 	}
 
