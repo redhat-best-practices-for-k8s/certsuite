@@ -59,7 +59,7 @@ func ProcessContainerIpsPerNet(containerID *provider.Container,
 	ipAddressesFiltered := netcommons.FilterIPListByIPVersion(ipAddresses, aIPVersion)
 	if len(ipAddressesFiltered) == 0 {
 		// if no multus addresses found, skip this container
-		logrus.Debugf("Skipping %s, Network %s because no multus IPs are present", containerID.StringShort(), netKey)
+		logrus.Debugf("Skipping %s, Network %s because no multus IPs are present", containerID, netKey)
 		return
 	}
 	// Create an entry at "key" if it is not present
@@ -71,7 +71,7 @@ func ProcessContainerIpsPerNet(containerID *provider.Container,
 	// Then modify the copy
 	firstIPIndex := 0
 	if entry.TesterSource.ContainerIdentifier == nil {
-		logrus.Debugf("%s selected to initiate ping tests", containerID.StringShort())
+		logrus.Debugf("%s selected to initiate ping tests", containerID)
 		entry.TesterSource.ContainerIdentifier = containerID
 		// if multiple interfaces are present for this network on this container/pod, pick the first one as the tester source ip
 		entry.TesterSource.IP = ipAddressesFiltered[firstIPIndex]
@@ -116,14 +116,14 @@ func RunNetworkingTests(env *provider.TestEnvironment,
 		for _, aDestIP := range netUnderTest.DestTargets {
 			logrus.Debugf("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s )",
 				aIPVersion, netName,
-				netUnderTest.TesterSource.ContainerIdentifier.StringShort(), netUnderTest.TesterSource.IP,
-				aDestIP.ContainerIdentifier.StringShort(), aDestIP.IP)
+				netUnderTest.TesterSource.ContainerIdentifier, netUnderTest.TesterSource.IP,
+				aDestIP.ContainerIdentifier, aDestIP.IP)
 			result, err := testPing(env, netUnderTest.TesterSource.ContainerIdentifier, aDestIP, count)
 			logrus.Debugf("Ping results: %s", result.String())
 			claimsLog = claimsLog.AddLogLine("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s ) result: %s",
 				aIPVersion, netName,
-				netUnderTest.TesterSource.ContainerIdentifier.StringShort(), netUnderTest.TesterSource.IP,
-				aDestIP.ContainerIdentifier.StringShort(), aDestIP.IP, result.String())
+				netUnderTest.TesterSource.ContainerIdentifier, netUnderTest.TesterSource.IP,
+				aDestIP.ContainerIdentifier, aDestIP.IP, result.String())
 			if err != nil {
 				logrus.Debugf("Ping failed with err:%s", err)
 			}

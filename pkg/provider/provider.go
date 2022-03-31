@@ -50,45 +50,57 @@ const (
 	skipMultusConnectivityTestsLabel = "test-network-function.com/skip_multus_connectivity_tests"
 )
 
-type PodWrapper struct {
-	BasePod *v1.Pod
+type Pod struct {
+	Data               *v1.Pod
+	Containers         []*Container
+	MultusIPs          map[string][]string
+	SkipNetTests       bool
+	SkipMultusNetTests bool
 }
 
-func (p PodWrapper) MarshalText() ([]byte, error) {
-	return json.Marshal(&struct {
-		Name      string `json:"Name"`
-		Namespace string `json:"Namespace"`
-	}{
-		Name:      p.BasePod.Name,
-		Namespace: p.BasePod.Namespace,
-	})
+func NewPod(aPod *v1.Pod) (out Pod) {
+	var err error
+	out.Data = aPod
+	out.MultusIPs = make(map[string][]string)
+	out.MultusIPs, err = getPodIPsPerNet(aPod.GetAnnotations()[cniNetworksStatusKey])
+	if err != nil {
+		logrus.Errorf("Could not decode networks-status annotation")
+	}
+	if aPod.GetLabels()[skipConnectivityTestsLabel] != "" {
+		out.SkipNetTests = true
+	}
+	if aPod.GetLabels()[skipMultusConnectivityTestsLabel] != "" {
+		out.SkipMultusNetTests = true
+	}
+	out.Containers = append(out.Containers, getPodContainers(aPod)...)
+	return out
 }
-func NewPodWrapper(aPod *v1.Pod) (out PodWrapper) {
-	out.BasePod = aPod
+
+func ConvertArrayPods(pods []*v1.Pod) (out []*Pod) {
+	for i := range pods {
+		aPodWrapper := NewPod(pods[i])
+		out = append(out, &aPodWrapper)
+	}
 	return out
 }
 
 type TestEnvironment struct { // rename this with testTarget
-	Namespaces         []string           `json:"testNamespaces"`
-	Pods               []*v1.Pod          `json:"testPods"`
-	Containers         []*Container       `json:"testContainers"`
-	Operators          []Operator         `json:"testOperators"`
-	DebugPods          map[string]*v1.Pod // map from nodename to debugPod
-	Config             configuration.TestConfiguration
-	variables          configuration.TestParameters
-	Crds               []*apiextv1.CustomResourceDefinition `json:"testCrds"`
-	ContainersMap      map[*v1.Container]*Container         `json:"-"`
-	MultusIPs          map[PodWrapper]map[string][]string   `json:"testMultusIPs"`
-	SkipNetTests       map[PodWrapper]bool
-	SkipMultusNetTests map[PodWrapper]bool
-	Deployments        []*v1apps.Deployment                          `json:"testDeployments"`
-	StatetfulSets      []*v1apps.StatefulSet                         `json:"testStatetfulSets"`
-	HorizontalScaler   map[string]*v1scaling.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
-	Nodes              *v1.NodeList                                  `json:"-"`
-	Subscriptions      []*olmv1Alpha.Subscription                    `json:"testSubscriptions"`
-	K8sVersion         string
-	OpenshiftVersion   string
-	HelmChartReleases  []*release.Release `json:"testHelmChartReleases"`
+	Namespaces        []string           `json:"testNamespaces"`
+	Pods              []*Pod             `json:"testPods"`
+	Containers        []*Container       `json:"testContainers"`
+	Operators         []Operator         `json:"testOperators"`
+	DebugPods         map[string]*v1.Pod // map from nodename to debugPod
+	Config            configuration.TestConfiguration
+	variables         configuration.TestParameters
+	Crds              []*apiextv1.CustomResourceDefinition          `json:"testCrds"`
+	Deployments       []*v1apps.Deployment                          `json:"testDeployments"`
+	StatetfulSets     []*v1apps.StatefulSet                         `json:"testStatetfulSets"`
+	HorizontalScaler  map[string]*v1scaling.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
+	Nodes             *v1.NodeList                                  `json:"-"`
+	Subscriptions     []*olmv1Alpha.Subscription                    `json:"testSubscriptions"`
+	K8sVersion        string
+	OpenshiftVersion  string
+	HelmChartReleases []*release.Release `json:"testHelmChartReleases"`
 }
 
 type CsvInstallPlan struct {
@@ -137,10 +149,10 @@ func GetContainer() *Container {
 	return &Container{}
 }
 
-func GetUpdatedDeployment(ac *appv1client.AppsV1Client, namespace, podName string) (*v1apps.Deployment, error) {
+func GetUpdatedDeployment(ac appv1client.AppsV1Interface, namespace, podName string) (*v1apps.Deployment, error) {
 	return autodiscover.FindDeploymentByNameByNamespace(ac, namespace, podName)
 }
-func GetUpdatedStatefulset(ac *appv1client.AppsV1Client, namespace, podName string) (*v1apps.StatefulSet, error) {
+func GetUpdatedStatefulset(ac appv1client.AppsV1Interface, namespace, podName string) (*v1apps.StatefulSet, error) {
 	return autodiscover.FindStatefulsetByNameByNamespace(ac, namespace, podName)
 }
 
@@ -153,29 +165,14 @@ func buildTestEnvironment() { //nolint:funlen
 	env.Crds = data.Crds
 	env.Namespaces = data.Namespaces
 	env.variables = data.Env
-	env.ContainersMap = make(map[*v1.Container]*Container)
-	env.MultusIPs = make(map[PodWrapper]map[string][]string)
-	env.SkipNetTests = make(map[PodWrapper]bool)
-	env.SkipMultusNetTests = make(map[PodWrapper]bool)
 	env.Nodes = data.Nodes
 	pods := data.Pods
 
 	for i := 0; i < len(pods); i++ {
-		env.Pods = append(env.Pods, &pods[i])
-		var err error
-		env.MultusIPs[PodWrapper{&pods[i]}], err = getPodIPsPerNet(pods[i].GetAnnotations()[cniNetworksStatusKey])
-		if err != nil {
-			logrus.Errorf("Could not decode networks-status annotation")
-		}
-		if pods[i].GetLabels()[skipConnectivityTestsLabel] != "" {
-			env.SkipNetTests[PodWrapper{&pods[i]}] = true
-		}
-		if pods[i].GetLabels()[skipMultusConnectivityTestsLabel] != "" {
-			env.SkipMultusNetTests[PodWrapper{&pods[i]}] = true
-		}
+		aNewPod := NewPod(&pods[i])
+		env.Pods = append(env.Pods, &aNewPod)
 		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
-	env.ContainersMap = createContainersMapByNode(env.Containers)
 	env.DebugPods = make(map[string]*v1.Pod)
 	for i := 0; i < len(data.DebugPods); i++ {
 		nodeName := data.DebugPods[i].Spec.NodeName
@@ -220,7 +217,7 @@ func getPodContainers(aPod *v1.Pod) (containerList []*Container) {
 		if len(aPod.Status.ContainerStatuses) > 0 {
 			state = aPod.Status.ContainerStatuses[j]
 		} else {
-			logrus.Errorf("%s is not ready, skipping status collection", PodToString(aPod))
+			logrus.Errorf("%s is not ready, skipping status collection", aPod.String())
 		}
 		aRuntime, uid := GetRuntimeUID(&state)
 		container := Container{Podname: aPod.Name, Namespace: aPod.Namespace,
@@ -229,14 +226,6 @@ func getPodContainers(aPod *v1.Pod) (containerList []*Container) {
 		containerList = append(containerList, &container)
 	}
 	return containerList
-}
-
-func createContainersMapByNode(containerList []*Container) (containersMap map[*v1.Container]*Container) {
-	containersMap = make(map[*v1.Container]*Container)
-	for _, c := range containerList {
-		containersMap[c.Data] = c
-	}
-	return containersMap
 }
 
 func isSkipHelmChart(helmName string, skipHelmChartList []configuration.SkipHelmChartList) bool {
@@ -277,7 +266,7 @@ func IsinstalledCsv(csv *olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1
 func WaitDebugPodReady() {
 	oc := clientsholder.GetClientsHolder()
 	listOptions := metav1.ListOptions{}
-	nodes, err := oc.Coreclient.Nodes().List(context.TODO(), listOptions)
+	nodes, err := oc.K8sClient.CoreV1().Nodes().List(context.TODO(), listOptions)
 
 	if err != nil {
 		logrus.Fatalf("Error getting node list, err:%s", err)
@@ -289,7 +278,7 @@ func WaitDebugPodReady() {
 	isReady := false
 	start := time.Now()
 	for !isReady && time.Since(start) < timeout {
-		daemonSet, err := oc.AppsClients.DaemonSets(daemonSetNamespace).Get(context.TODO(), daemonSetName, getOptions)
+		daemonSet, err := oc.K8sClient.AppsV1().DaemonSets(daemonSetNamespace).Get(context.TODO(), daemonSetName, getOptions)
 		if err != nil && daemonSet != nil {
 			logrus.Fatal("Error getting Daemonset, please create debug daemonset")
 		}
@@ -363,7 +352,7 @@ func GetRuntimeUID(cs *v1.ContainerStatus) (runtime, uid string) {
 	return runtime, uid
 }
 
-func (c *Container) String() string {
+func (c *Container) StringLong() string {
 	return fmt.Sprintf("node: %s ns: %s podName: %s containerName: %s containerUID: %s containerRuntime: %s",
 		c.NodeName,
 		c.Namespace,
@@ -373,7 +362,7 @@ func (c *Container) String() string {
 		c.Runtime,
 	)
 }
-func (c *Container) StringShort() string {
+func (c *Container) String() string {
 	return fmt.Sprintf("container: %s pod: %s ns: %s",
 		c.Data.Name,
 		c.Podname,
@@ -381,10 +370,10 @@ func (c *Container) StringShort() string {
 	)
 }
 
-func PodToString(pod *v1.Pod) string {
+func (p *Pod) String() string {
 	return fmt.Sprintf("pod: %s ns: %s",
-		pod.Name,
-		pod.Namespace,
+		p.Data.Name,
+		p.Data.Namespace,
 	)
 }
 

@@ -49,7 +49,7 @@ COMMON_GO_ARGS=-race
 GIT_COMMIT=$(shell script/create-version-files.sh)
 GIT_RELEASE=$(shell script/get-git-release.sh)
 GIT_PREVIOUS_RELEASE=$(shell script/get-git-previous-release.sh)
-GOLANGCI_VERSION=v1.44.2
+GOLANGCI_VERSION=v1.45.2
 
 # Run the unit tests and build all binaries
 build:

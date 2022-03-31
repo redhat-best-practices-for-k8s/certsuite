@@ -24,7 +24,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	v1app "k8s.io/api/apps/v1"
-	v1 "k8s.io/api/core/v1"
 )
 
 const (
@@ -37,7 +36,7 @@ func WaitForDeploymentSetReady(ns, name string, timeout time.Duration) bool {
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
-		dp, err := provider.GetUpdatedDeployment(clients.AppsClients, ns, name)
+		dp, err := provider.GetUpdatedDeployment(clients.K8sClient.AppsV1(), ns, name)
 		if err == nil && IsDeploymentReady(dp) {
 			logrus.Tracef("%s is ready", provider.DeploymentToString(dp))
 			return true
@@ -78,7 +77,7 @@ func WaitForStatefulSetReady(ns, name string, timeout time.Duration) bool {
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
-		ss, err := provider.GetUpdatedStatefulset(clients.AppsClients, ns, name)
+		ss, err := provider.GetUpdatedStatefulset(clients.K8sClient.AppsV1(), ns, name)
 		if err == nil && IsStatefulSetReady(ss) {
 			logrus.Tracef("%s is ready, err: %s", provider.StatefulsetToString(ss), err)
 			return true
@@ -129,14 +128,14 @@ func WaitForAllPodSetReady(env *provider.TestEnvironment, timeoutPodSetReady tim
 	return claimsLog, atLeastOnePodsetNotReady
 }
 
-func GetAllNodesForAllPodSets(pods []*v1.Pod) (nodes map[string]bool) {
+func GetAllNodesForAllPodSets(pods []*provider.Pod) (nodes map[string]bool) {
 	nodes = make(map[string]bool)
 	for _, put := range pods {
-		for _, or := range put.OwnerReferences {
+		for _, or := range put.Data.OwnerReferences {
 			if or.Kind != ReplicaSetString && or.Kind != StatefulsetString {
 				continue
 			}
-			nodes[put.Spec.NodeName] = true
+			nodes[put.Data.Spec.NodeName] = true
 			break
 		}
 	}

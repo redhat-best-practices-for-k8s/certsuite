@@ -28,7 +28,7 @@ import (
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 )
 
-func FindDeploymentByNameByNamespace(appClient *appv1client.AppsV1Client, namespace, name string) (*v1.Deployment, error) {
+func FindDeploymentByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*v1.Deployment, error) {
 	dpClient := appClient.Deployments(namespace)
 	options := metav1.GetOptions{}
 	dp, err := dpClient.Get(context.TODO(), name, options)
@@ -38,7 +38,7 @@ func FindDeploymentByNameByNamespace(appClient *appv1client.AppsV1Client, namesp
 	}
 	return dp, nil
 }
-func FindStatefulsetByNameByNamespace(appClient *appv1client.AppsV1Client, namespace, name string) (*v1.StatefulSet, error) {
+func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*v1.StatefulSet, error) {
 	ssClient := appClient.StatefulSets(namespace)
 	ss, err := ssClient.Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
@@ -49,7 +49,7 @@ func FindStatefulsetByNameByNamespace(appClient *appv1client.AppsV1Client, names
 }
 
 func findDeploymentByLabel(
-	appClient *appv1client.AppsV1Client,
+	appClient appv1client.AppsV1Interface,
 	labels []configuration.Label,
 	namespaces []string,
 ) []v1.Deployment {
@@ -83,7 +83,7 @@ func findDeploymentByLabel(
 }
 
 func findStatefulSetByLabel(
-	appClient *appv1client.AppsV1Client,
+	appClient appv1client.AppsV1Interface,
 	labels []configuration.Label,
 	namespaces []string,
 ) []v1.StatefulSet {

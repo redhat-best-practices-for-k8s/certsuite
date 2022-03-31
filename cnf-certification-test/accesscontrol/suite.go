@@ -154,20 +154,20 @@ func TestSecConRootUser(env *provider.TestEnvironment) {
 		ginkgo.Skip("No containers to perform test, skipping")
 	}
 	for _, put := range env.Pods {
-		if put.Spec.SecurityContext != nil && put.Spec.SecurityContext.RunAsUser != nil {
+		if put.Data.Spec.SecurityContext != nil && put.Data.Spec.SecurityContext.RunAsUser != nil {
 			// Check the pod level RunAsUser parameter
-			if *(put.Spec.SecurityContext.RunAsUser) == 0 {
-				tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in pod %s", put.Namespace+"."+put.Name)
-				badPods = append(badPods, put.Namespace+"."+put.Name)
+			if *(put.Data.Spec.SecurityContext.RunAsUser) == 0 {
+				tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in pod %s", put.Data.Namespace+"."+put.Data.Name)
+				badPods = append(badPods, put.Data.Namespace+"."+put.Data.Name)
 			}
 		}
-		for idx := range put.Spec.Containers {
-			cut := &(put.Spec.Containers[idx])
+		for idx := range put.Data.Spec.Containers {
+			cut := &(put.Data.Spec.Containers[idx])
 			// Check the container level RunAsUser parameter
 			if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
 				if *(cut.SecurityContext.RunAsUser) == 0 {
-					tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in container %s", put.Namespace+"."+put.Name+"."+cut.Name)
-					badContainers = append(badContainers, put.Namespace+"."+put.Name+"."+cut.Name)
+					tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in container %s", put.Data.Namespace+"."+put.Data.Name+"."+cut.Name)
+					badContainers = append(badContainers, put.Data.Namespace+"."+put.Data.Name+"."+cut.Name)
 				}
 			}
 		}
@@ -215,15 +215,15 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 }
 
 // TestPodHostNetwork verifies that the pod hostNetwork parameter is not set to true
-func TestPodHostNetwork(env *provider.TestEnvironment) {
+func TestPodHostNetwork(env *provider.TestEnvironment) { //nolint:dupl
 	var badPods []string
 	if len(env.Pods) == 0 {
 		ginkgo.Skip("No Pods to run test, skipping")
 	}
 	for _, put := range env.Pods {
-		if put.Spec.HostNetwork {
-			tnf.ClaimFilePrintf("Host network is set to true in pod %s.", put.Namespace+"."+put.Name)
-			badPods = append(badPods, put.Namespace+"."+put.Name)
+		if put.Data.Spec.HostNetwork {
+			tnf.ClaimFilePrintf("Host network is set to true in pod %s.", put.Data.Namespace+"."+put.Data.Name)
+			badPods = append(badPods, put.Data.Namespace+"."+put.Data.Name)
 		}
 	}
 	tnf.ClaimFilePrintf("bad pods: %v", badPods)
@@ -237,11 +237,11 @@ func TestPodHostPath(env *provider.TestEnvironment) {
 		ginkgo.Skip("No Pods to run test, skipping")
 	}
 	for _, put := range env.Pods {
-		for idx := range put.Spec.Volumes {
-			vol := &put.Spec.Volumes[idx]
+		for idx := range put.Data.Spec.Volumes {
+			vol := &put.Data.Spec.Volumes[idx]
 			if vol.HostPath != nil && vol.HostPath.Path != "" {
-				tnf.ClaimFilePrintf("An Hostpath path: %s is set in pod %s.", vol.HostPath.Path, put.Namespace+"."+put.Name)
-				badPods = append(badPods, put.Namespace+"."+put.Name)
+				tnf.ClaimFilePrintf("An Hostpath path: %s is set in pod %s.", vol.HostPath.Path, put.Data.Namespace+"."+put.Data.Name)
+				badPods = append(badPods, put.Data.Namespace+"."+put.Data.Name)
 			}
 		}
 	}
@@ -250,15 +250,15 @@ func TestPodHostPath(env *provider.TestEnvironment) {
 }
 
 // TestPodHostIPC verifies that the pod hostIpc parameter is not set to true
-func TestPodHostIPC(env *provider.TestEnvironment) {
+func TestPodHostIPC(env *provider.TestEnvironment) { //nolint:dupl
 	var badPods []string
 	if len(env.Pods) == 0 {
 		ginkgo.Skip("No Pods to run test, skipping")
 	}
 	for _, put := range env.Pods {
-		if put.Spec.HostIPC {
-			tnf.ClaimFilePrintf("HostIpc is set in pod %s.", put.Namespace+"."+put.Name)
-			badPods = append(badPods, put.Namespace+"."+put.Name)
+		if put.Data.Spec.HostIPC {
+			tnf.ClaimFilePrintf("HostIpc is set in pod %s.", put.Data.Namespace+"."+put.Data.Name)
+			badPods = append(badPods, put.Data.Namespace+"."+put.Data.Name)
 		}
 	}
 	tnf.ClaimFilePrintf("bad pods: %v", badPods)
@@ -266,15 +266,15 @@ func TestPodHostIPC(env *provider.TestEnvironment) {
 }
 
 // TestPodHostPID verifies that the pod hostPid parameter is not set to true
-func TestPodHostPID(env *provider.TestEnvironment) {
+func TestPodHostPID(env *provider.TestEnvironment) { //nolint:dupl
 	var badPods []string
 	if len(env.Pods) == 0 {
 		ginkgo.Skip("No Pods to run test, skipping")
 	}
 	for _, put := range env.Pods {
-		if put.Spec.HostPID {
-			tnf.ClaimFilePrintf("HostPid is set in pod %s.", put.Namespace+"."+put.Name)
-			badPods = append(badPods, put.Namespace+"."+put.Name)
+		if put.Data.Spec.HostPID {
+			tnf.ClaimFilePrintf("HostPid is set in pod %s.", put.Data.Namespace+"."+put.Data.Name)
+			badPods = append(badPods, put.Data.Namespace+"."+put.Data.Name)
 		}
 	}
 	tnf.ClaimFilePrintf("bad pods: %v", badPods)
@@ -315,10 +315,10 @@ func TestPodServiceAccount(env *provider.TestEnvironment) {
 	ginkgo.By("Tests that each pod utilizes a valid service account")
 	failedPods := []string{}
 	for _, put := range env.Pods {
-		ginkgo.By(fmt.Sprintf("Testing service account for pod %s (ns: %s)", put.Name, put.Namespace))
-		if put.Spec.ServiceAccountName == "" {
-			tnf.ClaimFilePrintf("Pod %s (ns: %s) doesn't have a service account name.", put.Name, put.Namespace)
-			failedPods = append(failedPods, put.Name)
+		ginkgo.By(fmt.Sprintf("Testing service account for pod %s (ns: %s)", put.Data.Name, put.Data.Namespace))
+		if put.Data.Spec.ServiceAccountName == "" {
+			tnf.ClaimFilePrintf("Pod %s (ns: %s) doesn't have a service account name.", put.Data.Name, put.Data.Namespace)
+			failedPods = append(failedPods, put.Data.Name)
 		}
 	}
 	if n := len(failedPods); n > 0 {
@@ -333,21 +333,21 @@ func TestPodRoleBindings(env *provider.TestEnvironment, testerFuncs rbac.RoleBin
 	failedPods := []string{}
 
 	for _, put := range env.Pods {
-		ginkgo.By(fmt.Sprintf("Testing role binding for pod: %s namespace: %s", put.Name, put.Namespace))
-		if put.Spec.ServiceAccountName == "" {
+		ginkgo.By(fmt.Sprintf("Testing role binding for pod: %s namespace: %s", put.Data.Name, put.Data.Namespace))
+		if put.Data.Spec.ServiceAccountName == "" {
 			ginkgo.Skip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
 		}
 
 		// Get any rolebindings that do not belong to the pod namespace.
-		roleBindings, err := testerFuncs.GetRoleBindings(put.Namespace, put.Spec.ServiceAccountName)
+		roleBindings, err := testerFuncs.GetRoleBindings(put.Data.Namespace, put.Data.Spec.ServiceAccountName)
 		if err != nil {
-			failedPods = append(failedPods, put.Name)
+			failedPods = append(failedPods, put.Data.Name)
 		}
 
 		if len(roleBindings) > 0 {
-			logrus.Warnf("Pod: %s/%s has the following role bindings: %s", put.Namespace, put.Name, roleBindings)
-			tnf.ClaimFilePrintf("Pod: %s/%s has the following role bindings: %s", put.Namespace, put.Name, roleBindings)
-			failedPods = append(failedPods, put.Name)
+			logrus.Warnf("Pod: %s/%s has the following role bindings: %s", put.Data.Namespace, put.Data.Name, roleBindings)
+			tnf.ClaimFilePrintf("Pod: %s/%s has the following role bindings: %s", put.Data.Namespace, put.Data.Name, roleBindings)
+			failedPods = append(failedPods, put.Data.Name)
 		}
 	}
 	if n := len(failedPods); n > 0 {
@@ -362,24 +362,24 @@ func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 	failedPods := []string{}
 
 	for _, put := range env.Pods {
-		ginkgo.By(fmt.Sprintf("Testing cluster role binding for pod: %s namespace: %s", put.Name, put.Namespace))
-		if put.Spec.ServiceAccountName == "" {
+		ginkgo.By(fmt.Sprintf("Testing cluster role binding for pod: %s namespace: %s", put.Data.Name, put.Data.Namespace))
+		if put.Data.Spec.ServiceAccountName == "" {
 			ginkgo.Skip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
 		}
 
 		// Create a new object with the ability to gather clusterrolebinding specs.
-		rbTester := rbac.NewClusterRoleBindingTester(put.Spec.ServiceAccountName, put.Namespace, clientsholder.GetClientsHolder())
+		rbTester := rbac.NewClusterRoleBindingTester(put.Data.Spec.ServiceAccountName, put.Data.Namespace, clientsholder.GetClientsHolder())
 
 		// Get any clusterrolebindings that do not belong to the pod namespace.
 		clusterRoleBindings, err := rbTester.GetClusterRoleBindings()
 		if err != nil {
-			failedPods = append(failedPods, put.Name)
+			failedPods = append(failedPods, put.Data.Name)
 		}
 
 		if len(clusterRoleBindings) > 0 {
-			logrus.Warnf("Pod: %s/%s has the following cluster role bindings: %s", put.Namespace, put.Name, clusterRoleBindings)
-			tnf.ClaimFilePrintf("Pod: %s/%s has the following cluster role bindings: %s", put.Namespace, put.Name, clusterRoleBindings)
-			failedPods = append(failedPods, put.Name)
+			logrus.Warnf("Pod: %s/%s has the following cluster role bindings: %s", put.Data.Namespace, put.Data.Name, clusterRoleBindings)
+			tnf.ClaimFilePrintf("Pod: %s/%s has the following cluster role bindings: %s", put.Data.Namespace, put.Data.Name, clusterRoleBindings)
+			failedPods = append(failedPods, put.Data.Name)
 		}
 	}
 	if n := len(failedPods); n > 0 {
@@ -394,13 +394,13 @@ func TestAutomountServiceToken(env *provider.TestEnvironment, testerFuncs rbac.A
 	msg := []string{}
 	failedPods := []string{}
 	for _, put := range env.Pods {
-		ginkgo.By(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
-		gomega.Expect(put.Spec.ServiceAccountName).ToNot(gomega.BeEmpty())
+		ginkgo.By(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Data.Namespace, put.Data.Name))
+		gomega.Expect(put.Data.Spec.ServiceAccountName).ToNot(gomega.BeEmpty())
 
 		// Evaluate the pod's automount service tokens and any attached service accounts
-		podPassed, newMsg := testerFuncs.EvaluateTokens(put)
+		podPassed, newMsg := testerFuncs.EvaluateTokens(put.Data)
 		if !podPassed {
-			failedPods = append(failedPods, put.Name)
+			failedPods = append(failedPods, put.Data.Name)
 			msg = append(msg, newMsg)
 		}
 	}

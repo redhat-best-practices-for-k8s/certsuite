@@ -21,42 +21,46 @@ import (
 	"time"
 
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
-	clientOlm "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
+	olmClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
+	olmFakeClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned/fake"
 	"github.com/sirupsen/logrus"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/typed/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 
-	testclient "k8s.io/client-go/kubernetes/fake"
-	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
-	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
-	storageclient "k8s.io/client-go/kubernetes/typed/storage/v1"
+	k8sFakeClient "k8s.io/client-go/kubernetes/fake"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 )
 
 type ClientsHolder struct {
-	RestConfig       *rest.Config
-	Coreclient       *corev1client.CoreV1Client
-	ClientConfig     clientconfigv1.ConfigV1Interface
-	DynamicClient    dynamic.Interface
-	APIExtClient     apiextv1.ApiextensionsV1Interface
-	OlmClient        *clientOlm.Clientset
-	AppsClients      *appv1client.AppsV1Client
-	OClient          *clientconfigv1.ConfigV1Client
-	K8sClient        kubernetes.Interface
-	K8sClientversion *kubernetes.Clientset
-	StorageClient    *storageclient.StorageV1Client
+	RestConfig    *rest.Config
+	DynamicClient dynamic.Interface
+	APIExtClient  apiextv1.ApiextensionsV1Interface
+	OlmClient     olmClient.Interface
+	OcpClient     clientconfigv1.ConfigV1Interface
+	K8sClient     kubernetes.Interface
 
 	ready bool
 }
 
 var clientsHolder = ClientsHolder{}
 
-func GetTestClientsHolder(mockObjects []runtime.Object, filenames ...string) *ClientsHolder {
-	// Overwrite the existing clients with mocked versions
-	clientsHolder.K8sClient = testclient.NewSimpleClientset(mockObjects...)
+// SetupFakeOlmClient Overrides the OLM client with the fake interface object for unit testing. Loads
+// the mocking objects so olmv interface methods can find them.
+func SetupFakeOlmClient(olmMockObjects []runtime.Object) {
+	clientsHolder.OlmClient = olmFakeClient.NewSimpleClientset(olmMockObjects...)
+}
+
+// GetTestClientHolder Overwrites the existing clientholders with a mocked version for unit testing.
+// Only pure k8s interfaces will be available. The runtime objects must be pure k8s ones.
+// For other (OLM, )
+// runtime mocking objects loading, use the proper clientset mocking function.
+func GetTestClientsHolder(k8sMockObjects []runtime.Object, filenames ...string) *ClientsHolder {
+	clientsHolder.K8sClient = k8sFakeClient.NewSimpleClientset(k8sMockObjects...)
+
+	clientsHolder.ready = true
 	return &clientsHolder
 }
 
@@ -99,14 +103,6 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	DefaultTimeout := 10 * time.Second
 	clientsHolder.RestConfig.Timeout = DefaultTimeout
 
-	clientsHolder.Coreclient, err = corev1client.NewForConfig(clientsHolder.RestConfig)
-	if err != nil {
-		return nil, fmt.Errorf("can't instantiate corev1client: %s", err)
-	}
-	clientsHolder.ClientConfig, err = clientconfigv1.NewForConfig(clientsHolder.RestConfig)
-	if err != nil {
-		return nil, fmt.Errorf("can't instantiate clientconfigv1: %s", err)
-	}
 	clientsHolder.DynamicClient, err = dynamic.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("can't instantiate dynamic client (unstructured/dynamic): %s", err)
@@ -115,31 +111,20 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("can't instantiate apiextv1: %s", err)
 	}
-	clientsHolder.OlmClient, err = clientOlm.NewForConfig(clientsHolder.RestConfig)
+	clientsHolder.OlmClient, err = olmClient.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("can't instantiate olm clientset: %s", err)
-	}
-	clientsHolder.AppsClients, err = appv1client.NewForConfig(clientsHolder.RestConfig)
-	if err != nil {
-		return nil, fmt.Errorf("can't instantiate appv1client: %s", err)
 	}
 	clientsHolder.K8sClient, err = kubernetes.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("can't instantiate k8sclient: %s", err)
 	}
-	clientsHolder.K8sClientversion, err = kubernetes.NewForConfig(clientsHolder.RestConfig)
-	if err != nil {
-		return nil, fmt.Errorf("can't instantiate K8sClientversion: %s", err)
-	}
 	// create the oc client
-	clientsHolder.OClient, err = clientconfigv1.NewForConfig(clientsHolder.RestConfig)
+	clientsHolder.OcpClient, err = clientconfigv1.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("can't instantiate ocClient: %s", err)
 	}
-	clientsHolder.StorageClient, err = storageclient.NewForConfig(clientsHolder.RestConfig)
-	if err != nil {
-		return nil, fmt.Errorf("can't instantiate csiClient: %s", err)
-	}
+
 	clientsHolder.ready = true
 	return &clientsHolder, nil
 }

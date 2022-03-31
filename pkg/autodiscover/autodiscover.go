@@ -108,27 +108,27 @@ func DoAutoDiscover() DiscoveredTestData {
 	}
 	oc := clientsholder.GetClientsHolder(filenames...)
 	data.Namespaces = namespacesListToStringList(data.TestData.TargetNameSpaces)
-	data.Pods = findPodsByLabel(oc.Coreclient, data.TestData.TargetPodLabels, data.Namespaces)
+	data.Pods = findPodsByLabel(oc.K8sClient.CoreV1(), data.TestData.TargetPodLabels, data.Namespaces)
 
 	debugLabel := configuration.Label{Prefix: debugLabelPrefix, Name: debugLabelName, Value: debugLabelValue}
 	debugLabels := []configuration.Label{debugLabel}
 	debugNS := []string{defaultNamespace}
-	data.DebugPods = findPodsByLabel(oc.Coreclient, debugLabels, debugNS)
+	data.DebugPods = findPodsByLabel(oc.K8sClient.CoreV1(), debugLabels, debugNS)
 	data.Crds = FindTestCrdNames(data.TestData.CrdFilters)
 	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
 	data.Subscriptions = findSubscriptions(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.Namespaces)
 	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)
-	openshiftVersion, _ := getOpenshiftVersion(oc.OClient)
+	openshiftVersion, _ := getOpenshiftVersion(oc.OcpClient)
 	data.OpenshiftVersion = openshiftVersion
-	k8sVersion, err := oc.K8sClientversion.DiscoveryClient.ServerVersion()
+	k8sVersion, err := oc.K8sClient.Discovery().ServerVersion()
 	if err != nil {
 		logrus.Fatalln("can't get the K8s version")
 	}
 	data.K8sVersion = k8sVersion.GitVersion
-	data.Deployments = findDeploymentByLabel(oc.AppsClients, data.TestData.TargetPodLabels, data.Namespaces)
-	data.StatefulSet = findStatefulSetByLabel(oc.AppsClients, data.TestData.TargetPodLabels, data.Namespaces)
+	data.Deployments = findDeploymentByLabel(oc.K8sClient.AppsV1(), data.TestData.TargetPodLabels, data.Namespaces)
+	data.StatefulSet = findStatefulSetByLabel(oc.K8sClient.AppsV1(), data.TestData.TargetPodLabels, data.Namespaces)
 	data.Hpas = findHpaControllers(oc.K8sClient, data.Namespaces)
-	data.Nodes, err = oc.Coreclient.Nodes().List(context.TODO(), metav1.ListOptions{})
+	data.Nodes, err = oc.K8sClient.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		logrus.Fatalln("can't get list of nodes")
 	}
@@ -141,7 +141,7 @@ func namespacesListToStringList(namespaceList []configuration.Namespace) (string
 	}
 	return stringList
 }
-func getOpenshiftVersion(oClient *clientconfigv1.ConfigV1Client) (ver string, err error) {
+func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, err error) {
 	var clusterOperator *configv1.ClusterOperator
 	clusterOperator, err = oClient.ClusterOperators().Get(context.TODO(), "openshift-apiserver", metav1.GetOptions{})
 	// error here indicates logged in as non-admin, log and move on
