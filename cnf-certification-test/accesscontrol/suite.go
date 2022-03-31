@@ -434,19 +434,19 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 		pid, err := crclient.GetPidFromContainer(cut, ocpContext)
 		if err != nil {
 			tnf.ClaimFilePrintf("Could not get PID for: %s, error: %s", cut.StringShort(), err)
-			badContainers = append(badContainers, cut.Data.Name)
+			badContainers = append(badContainers, cut.String())
 			continue
 		}
 
 		nbProcesses, err := getNbOfProcessesInPidNamespace(ocpContext, pid)
 		if err != nil {
 			tnf.ClaimFilePrintf("Could not get number of processes for: %s, error: %s", cut.StringShort(), err)
-			badContainers = append(badContainers, cut.Data.Name)
+			badContainers = append(badContainers, cut.String())
 			continue
 		}
 		if nbProcesses > 1 {
-			tnf.ClaimFilePrintf("Container %s has more than one process running", cut.Data.Name)
-			badContainers = append(badContainers, cut.Data.Name)
+			tnf.ClaimFilePrintf("Container %s has more than one process running", cut.String())
+			badContainers = append(badContainers, cut.String())
 		}
 	}
 

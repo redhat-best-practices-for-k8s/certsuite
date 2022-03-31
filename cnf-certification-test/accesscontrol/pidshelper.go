@@ -24,6 +24,8 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 )
 
+const nbProcessesIndex = 2
+
 func getNbOfProcessesInPidNamespace(ctx clientsholder.Context, targetPid int) (int, error) {
 	cmd := "lsns -p " + strconv.Itoa(targetPid) + " -t pid -n"
 
@@ -36,8 +38,10 @@ func getNbOfProcessesInPidNamespace(ctx clientsholder.Context, targetPid int) (i
 		return 0, errors.Errorf("cmd: \" %s \" returned %s", cmd, errStr)
 	}
 
-	const nbProcessesIndex = 2
-	nbProcesses := strings.Fields(outStr)[nbProcessesIndex]
+	retValues := strings.Fields(outStr)
+	if len(retValues) <= nbProcessesIndex {
+		return 0, errors.Errorf("cmd: \" %s \" returned an invalid value %s", cmd, outStr)
+	}
 
-	return strconv.Atoi(nbProcesses)
+	return strconv.Atoi(retValues[nbProcessesIndex])
 }
