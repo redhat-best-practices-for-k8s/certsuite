@@ -80,6 +80,10 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testListenAndDeclared(&env)
 	})
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestServicesDoNotUseNodeportsIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testNodePort(&env)
+	})
 })
 
 //nolint:funlen
@@ -121,6 +125,22 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 	}
 	if nf := len(failedPods); nf > 0 {
 		ginkgo.Fail(fmt.Sprintf("Found %d pods with listening ports not declared", nf))
+	}
+}
+
+func testNodePort(env *provider.TestEnvironment) {
+	badNamespaces := []string{}
+	for _, put := range env.Pods {
+		ginkgo.By(fmt.Sprintf("Testing service account for pod %s (ns: %s)", put.Data.Name, put.Data.Namespace))
+		if put.Data.Spec.ServiceAccountName == "" {
+			tnf.ClaimFilePrintf("NodePort test on pod %s namespace %s failed.", put.Data.Name, put.Data.Namespace)
+			badNamespaces = append(badNamespaces, put.Data.Namespace)
+			continue
+		}
+		tnf.ClaimFilePrintf("NodePort test on pod %s namespace %s succeeds", put.Data.Name, put.Data.Namespace)
+	}
+	if n := len(badNamespaces); n > 0 {
+		ginkgo.Fail(fmt.Sprintf("%d namespaces have nodePort/s.", n))
 	}
 }
 
