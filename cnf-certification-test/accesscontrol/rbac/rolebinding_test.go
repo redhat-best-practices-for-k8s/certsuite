@@ -24,9 +24,8 @@ import (
 )
 
 func TestGetRoleBinding(t *testing.T) {
-	rb := NewRoleBindingTester(clientsholder.GetTestClientsHolder(buildTestObjects()))
-	assert.NotNil(t, rb)
-	gatheredRBs, err := rb.GetRoleBindings("podNS", "testRole")
+	_ = clientsholder.GetTestClientsHolder(buildTestObjects())
+	gatheredRBs, err := GetRoleBindings("podNS", "testRole")
 	assert.Nil(t, err)
 	assert.Equal(t, "testNS:testRole", gatheredRBs[0])
 }

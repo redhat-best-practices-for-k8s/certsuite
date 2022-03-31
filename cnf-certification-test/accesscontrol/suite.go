@@ -107,7 +107,7 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	// pod role bindings
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodRoleBindingsBestPracticesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		TestPodRoleBindings(&env, rbac.NewRoleBindingTester(clientsholder.GetClientsHolder()))
+		TestPodRoleBindings(&env)
 	})
 	// pod cluster role bindings
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodClusterRoleBindingsBestPracticesIdentifier)
@@ -117,7 +117,7 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	// automount service token
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodAutomountServiceAccountIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		TestAutomountServiceToken(&env, rbac.NewAutomountTokenTester(clientsholder.GetClientsHolder()))
+		TestAutomountServiceToken(&env)
 	})
 	// one process per container
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestOneProcessPerContainerIdentifier)
@@ -328,7 +328,8 @@ func TestPodServiceAccount(env *provider.TestEnvironment) {
 }
 
 // TestPodRoleBindings verifies that the pod utilizes a valid role binding that does not cross namespaces
-func TestPodRoleBindings(env *provider.TestEnvironment, testerFuncs rbac.RoleBindingFuncs) {
+//nolint:dupl
+func TestPodRoleBindings(env *provider.TestEnvironment) {
 	ginkgo.By("Should not have RoleBinding in other namespaces")
 	failedPods := []string{}
 
@@ -339,7 +340,7 @@ func TestPodRoleBindings(env *provider.TestEnvironment, testerFuncs rbac.RoleBin
 		}
 
 		// Get any rolebindings that do not belong to the pod namespace.
-		roleBindings, err := testerFuncs.GetRoleBindings(put.Data.Namespace, put.Data.Spec.ServiceAccountName)
+		roleBindings, err := rbac.GetRoleBindings(put.Data.Namespace, put.Data.Spec.ServiceAccountName)
 		if err != nil {
 			failedPods = append(failedPods, put.Data.Name)
 		}
@@ -357,6 +358,7 @@ func TestPodRoleBindings(env *provider.TestEnvironment, testerFuncs rbac.RoleBin
 }
 
 // TestPodClusterRoleBindings verifies that the pod utilizes a valid cluster role binding that does not cross namespaces
+//nolint:dupl
 func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 	ginkgo.By("Should not have ClusterRoleBinding in other namespaces")
 	failedPods := []string{}
@@ -367,11 +369,8 @@ func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 			ginkgo.Skip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
 		}
 
-		// Create a new object with the ability to gather clusterrolebinding specs.
-		rbTester := rbac.NewClusterRoleBindingTester(put.Data.Spec.ServiceAccountName, put.Data.Namespace, clientsholder.GetClientsHolder())
-
 		// Get any clusterrolebindings that do not belong to the pod namespace.
-		clusterRoleBindings, err := rbTester.GetClusterRoleBindings()
+		clusterRoleBindings, err := rbac.GetClusterRoleBindings(put.Data.Namespace, put.Data.Spec.ServiceAccountName)
 		if err != nil {
 			failedPods = append(failedPods, put.Data.Name)
 		}
@@ -388,7 +387,7 @@ func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 	}
 }
 
-func TestAutomountServiceToken(env *provider.TestEnvironment, testerFuncs rbac.AutomountTokenFuncs) {
+func TestAutomountServiceToken(env *provider.TestEnvironment) {
 	ginkgo.By("Should have automountServiceAccountToken set to false")
 
 	msg := []string{}
@@ -398,7 +397,7 @@ func TestAutomountServiceToken(env *provider.TestEnvironment, testerFuncs rbac.A
 		gomega.Expect(put.Data.Spec.ServiceAccountName).ToNot(gomega.BeEmpty())
 
 		// Evaluate the pod's automount service tokens and any attached service accounts
-		podPassed, newMsg := testerFuncs.EvaluateTokens(put.Data)
+		podPassed, newMsg := rbac.EvaluateAutomountTokens(put.Data)
 		if !podPassed {
 			failedPods = append(failedPods, put.Data.Name)
 			msg = append(msg, newMsg)

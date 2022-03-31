@@ -24,9 +24,8 @@ import (
 )
 
 func TestGetClusterRoleBinding(t *testing.T) {
-	rb := NewClusterRoleBindingTester("testCR", "podNS", clientsholder.GetTestClientsHolder(buildTestObjects()))
-	assert.NotNil(t, rb)
-	gatheredCRBs, err := rb.GetClusterRoleBindings()
+	_ = clientsholder.GetTestClientsHolder(buildTestObjects())
+	gatheredCRBs, err := GetClusterRoleBindings("testCR", "podNS")
 	assert.Nil(t, err)
 	assert.Equal(t, "testNS:testCR", gatheredCRBs[0])
 }

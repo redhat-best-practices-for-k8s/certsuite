@@ -80,16 +80,15 @@ func TestAutomountServiceAccountSetOnSA(t *testing.T) {
 		var testRuntimeObjects []runtime.Object
 		testRuntimeObjects = append(testRuntimeObjects, &testSA)
 
-		obj := NewAutomountTokenTester(clientsholder.GetTestClientsHolder(testRuntimeObjects))
-		assert.NotNil(t, obj)
-		isSet, err := obj.AutomountServiceAccountSetOnSA("testSA", "podNS")
+		_ = clientsholder.GetTestClientsHolder(testRuntimeObjects)
+		isSet, err := AutomountServiceAccountSetOnSA("testSA", "podNS")
 		assert.Nil(t, err)
 		assert.Equal(t, tc.automountServiceTokenSet, *isSet)
 	}
 }
 
 //nolint:funlen
-func TestEvaluateTokens(t *testing.T) {
+func TestEvaluateAutomountTokens(t *testing.T) {
 	falseVar := false
 	trueVar := true
 
@@ -140,8 +139,8 @@ func TestEvaluateTokens(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		at := NewAutomountTokenTester(clientsholder.GetTestClientsHolder(buildServiceAccountTokenTestObjects()))
-		podPassed, msg := at.EvaluateTokens(tc.testPod)
+		_ = clientsholder.GetTestClientsHolder(buildServiceAccountTokenTestObjects())
+		podPassed, msg := EvaluateAutomountTokens(tc.testPod)
 		assert.Equal(t, tc.expectedMsg, msg)
 		assert.Equal(t, tc.expectedResult, podPassed)
 	}
