@@ -44,10 +44,10 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 	ch := clientsholder.GetClientsHolder()
 	outStr, errStr, err := ch.ExecCommandContainer(ctx, pidCmd)
 	if err != nil {
-		return 0, errors.Errorf("can't execute command: \" %s \"  on %s err:%s", pidCmd, cut.StringShort(), err)
+		return 0, errors.Errorf("can't execute command: \" %s \"  on %s err:%s", pidCmd, cut, err)
 	}
 	if errStr != "" {
-		return 0, errors.Errorf("cmd: \" %s \" on %s returned %s", pidCmd, cut.StringShort(), errStr)
+		return 0, errors.Errorf("cmd: \" %s \" on %s returned %s", pidCmd, cut, errStr)
 	}
 
 	return strconv.Atoi(strings.TrimSuffix(outStr, "\n"))
@@ -69,7 +69,7 @@ func ExecCommandContainerNSEnter(command string,
 	// Get the container PID to build the nsenter command
 	containerPid, err := GetPidFromContainer(aContainer, ctx)
 	if err != nil {
-		return "", "", errors.Errorf("cannot get PID from: %s, err: %s", aContainer.StringShort(), err)
+		return "", "", errors.Errorf("cannot get PID from: %s, err: %s", aContainer, err)
 	}
 
 	// Add the container PID and the specific command to run with nsenter
