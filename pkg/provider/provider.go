@@ -98,9 +98,9 @@ type TestEnvironment struct { // rename this with testTarget
 	HorizontalScaler  map[string]*v1scaling.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
 	Nodes             *v1.NodeList                                  `json:"-"`
 	Subscriptions     []*olmv1Alpha.Subscription                    `json:"testSubscriptions"`
-	K8sVersion        string
-	OpenshiftVersion  string
-	HelmChartReleases []*release.Release `json:"testHelmChartReleases"`
+	K8sVersion        string                                        `json:"-"`
+	OpenshiftVersion  string                                        `json:"-"`
+	HelmChartReleases []*release.Release                            `json:"testHelmChartReleases"`
 }
 
 type CsvInstallPlan struct {
