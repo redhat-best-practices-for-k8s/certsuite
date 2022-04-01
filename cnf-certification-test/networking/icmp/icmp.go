@@ -21,7 +21,6 @@ import (
 	"regexp"
 	"strconv"
 
-	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
@@ -148,7 +147,7 @@ func testPing(env *provider.TestEnvironment, sourceContainerID *provider.Contain
 	stdout, stderr, err := crclient.ExecCommandContainerNSEnter(command, sourceContainerID, env)
 	if err != nil || stderr != "" {
 		results.outcome = testhelper.ERROR
-		return results, errors.Errorf("Ping failed with stderr:%s err:%s", stderr, err)
+		return results, fmt.Errorf("ping failed with stderr:%s err:%s", stderr, err)
 	}
 	results, err = parsePingResult(stdout, stderr)
 	return results, err
@@ -160,14 +159,14 @@ func parsePingResult(stdout, stderr string) (results PingResults, err error) {
 	// If we find a error log we fail
 	if matched != nil {
 		results.outcome = testhelper.ERROR
-		return results, errors.Errorf("Ping failed with invalid arguments, stdout: %s, stderr: %s", stdout, stderr)
+		return results, fmt.Errorf("ping failed with invalid arguments, stdout: %s, stderr: %s", stdout, stderr)
 	}
 	re = regexp.MustCompile(SuccessfulOutputRegex)
 	matched = re.FindStringSubmatch(stdout)
 	// If we do not find a successful log, we fail
 	if matched == nil {
 		results.outcome = testhelper.FAILURE
-		return results, errors.Errorf("Ping output did not match successful regex, stdout: %s, stderr: %s", stdout, stderr)
+		return results, fmt.Errorf("ping output did not match successful regex, stdout: %s, stderr: %s", stdout, stderr)
 	}
 	// Ignore errors in converting matches to decimal integers.
 	// Regular expression `stat` is required to underwrite this assumption.

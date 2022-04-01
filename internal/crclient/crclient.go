@@ -17,10 +17,10 @@
 package crclient
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
-	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
@@ -38,16 +38,16 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 		pidCmd = "chroot /host crictl inspect --output go-template --template '{{.info.pid}}' " + cut.UID + " 2>/dev/null"
 	default:
 		logrus.Debugf("Container runtime %s not supported yet for this test, skipping", cut.Runtime)
-		return 0, errors.Errorf("Container runtime not supported")
+		return 0, fmt.Errorf("container runtime not supported")
 	}
 
 	ch := clientsholder.GetClientsHolder()
 	outStr, errStr, err := ch.ExecCommandContainer(ctx, pidCmd)
 	if err != nil {
-		return 0, errors.Errorf("can't execute command: \" %s \"  on %s err:%s", pidCmd, cut, err)
+		return 0, fmt.Errorf("can't execute command: \" %s \"  on %s err:%s", pidCmd, cut, err)
 	}
 	if errStr != "" {
-		return 0, errors.Errorf("cmd: \" %s \" on %s returned %s", pidCmd, cut, errStr)
+		return 0, fmt.Errorf("cmd: \" %s \" on %s returned %s", pidCmd, cut, errStr)
 	}
 
 	return strconv.Atoi(strings.TrimSuffix(outStr, "\n"))
@@ -60,7 +60,7 @@ func ExecCommandContainerNSEnter(command string,
 	// Get the debug pod corresponding to the container's node
 	debugPod := env.DebugPods[aContainer.NodeName]
 	if debugPod == nil {
-		err = errors.Errorf("debug pod not found on Node: %s trying to run command: \" %s \" Namespace: %s Pod: %s container %s err:%s", aContainer.NodeName, command, aContainer.Namespace, aContainer.Podname, aContainer.Data.Name, err)
+		err = fmt.Errorf("debug pod not found on Node: %s trying to run command: \" %s \" Namespace: %s Pod: %s container %s err:%s", aContainer.NodeName, command, aContainer.Namespace, aContainer.Podname, aContainer.Data.Name, err)
 		return "", "", err
 	}
 	o := clientsholder.GetClientsHolder()
@@ -69,7 +69,7 @@ func ExecCommandContainerNSEnter(command string,
 	// Get the container PID to build the nsenter command
 	containerPid, err := GetPidFromContainer(aContainer, ctx)
 	if err != nil {
-		return "", "", errors.Errorf("cannot get PID from: %s, err: %s", aContainer, err)
+		return "", "", fmt.Errorf("cannot get PID from: %s, err: %s", aContainer, err)
 	}
 
 	// Add the container PID and the specific command to run with nsenter
@@ -78,7 +78,7 @@ func ExecCommandContainerNSEnter(command string,
 	// Run the nsenter command on the debug pod
 	outStr, errStr, err = o.ExecCommandContainer(ctx, nsenterCommand)
 	if err != nil {
-		return "", "", errors.Errorf("can't execute command: \" %s \"  on %s err:%s", command, aContainer, err)
+		return "", "", fmt.Errorf("can't execute command: \" %s \"  on %s err:%s", command, aContainer, err)
 	}
 	return outStr, errStr, err
 }

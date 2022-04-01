@@ -438,7 +438,7 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 			continue
 		}
 
-		nbProcesses, err := getNbOfProcessesInPidNamespace(ocpContext, pid)
+		nbProcesses, err := getNbOfProcessesInPidNamespace(ocpContext, pid, clientsholder.GetClientsHolder())
 		if err != nil {
 			tnf.ClaimFilePrintf("Could not get number of processes for: %s, error: %s", cut, err)
 			badContainers = append(badContainers, cut.String())
