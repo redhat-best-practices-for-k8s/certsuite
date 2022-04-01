@@ -21,7 +21,7 @@ require (
 	github.com/mittwald/go-helm-client v0.9.0
 	github.com/onsi/ginkgo/v2 v2.1.3
 	github.com/openshift/client-go v0.0.0-20211209144617-7385dd6338e3
-	github.com/operator-framework/api v0.13.0
+	github.com/operator-framework/api v0.14.0
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1
 	helm.sh/helm/v3 v3.8.1
@@ -148,7 +148,7 @@ require (
 	k8s.io/kubectl v0.23.4 // indirect
 	k8s.io/utils v0.0.0-20211116205334-6203023598ed // indirect
 	oras.land/oras-go v1.1.0 // indirect
-	sigs.k8s.io/controller-runtime v0.10.0 // indirect
+	sigs.k8s.io/controller-runtime v0.11.0 // indirect
 	sigs.k8s.io/json v0.0.0-20211020170558-c049b76a60c6 // indirect
 	sigs.k8s.io/kustomize/api v0.10.1 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.13.0 // indirect
