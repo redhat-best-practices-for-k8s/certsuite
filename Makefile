@@ -88,9 +88,10 @@ lint:
 test: mocks
 	./script/create-missing-test-files.sh
 	go build ${COMMON_GO_ARGS} ./...
-	UNIT_TEST="true" go test -coverprofile=cover.out ./...
+	UNIT_TEST="true" go test -coverprofile=cover.out.tmp ./...
 
 coverage-html: test
+	cat cover.out.tmp | grep -v "_moq.go" > cover.out
 	go tool cover -html cover.out
 
 # generate the test catalog in JSON
