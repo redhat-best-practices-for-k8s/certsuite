@@ -515,34 +515,34 @@ func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []ol
 
 		for s := range subscriptions {
 			subscription := &subscriptions[s]
-			if subscription.Status.InstalledCSV != csv.Name {
+			if subscription.Status.InstalledCSV != csv.Name || subscription.Namespace != csv.Namespace {
 				continue
 			}
 
 			op.SubscriptionName = subscription.Name
 			op.Package = subscription.Spec.Package
 			op.Org = subscription.Spec.CatalogSource
-
-			csvInstallPlans, err := getCsvInstallPlans(csv.Namespace, csv.Name, installPlans)
-			if err != nil {
-				return nil, fmt.Errorf("failed to get installPlans for csv %s (ns %s)", csv.Name, csv.Namespace)
-			}
-
-			for _, installPlan := range csvInstallPlans {
-				indexImage, err := getCatalogSourceImageIndexFromInstallPlan(installPlan)
-				if err != nil {
-					return nil, fmt.Errorf("failed to get installPlan image index for csv %s (ns %s) installPlan %s, err: %s",
-						csv.Name, csv.Namespace, installPlan.Name, err)
-				}
-
-				op.InstallPlans = append(op.InstallPlans, CsvInstallPlan{
-					Name:        installPlan.Name,
-					BundleImage: installPlan.Status.BundleLookups[0].Path,
-					IndexImage:  indexImage,
-				})
-			}
+			break
 		}
 
+		csvInstallPlans, err := getCsvInstallPlans(csv.Namespace, csv.Name, installPlans)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get installPlans for csv %s (ns %s), err: %s", csv.Name, csv.Namespace, err)
+		}
+
+		for _, installPlan := range csvInstallPlans {
+			indexImage, err := getCatalogSourceImageIndexFromInstallPlan(installPlan)
+			if err != nil {
+				return nil, fmt.Errorf("failed to get installPlan image index for csv %s (ns %s) installPlan %s, err: %s",
+					csv.Name, csv.Namespace, installPlan.Name, err)
+			}
+
+			op.InstallPlans = append(op.InstallPlans, CsvInstallPlan{
+				Name:        installPlan.Name,
+				BundleImage: installPlan.Status.BundleLookups[0].Path,
+				IndexImage:  indexImage,
+			})
+		}
 		operators = append(operators, op)
 	}
 
