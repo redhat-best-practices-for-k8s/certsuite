@@ -32,6 +32,7 @@ type Context struct {
 	Containername string
 }
 
+//go:generate moq -out command_moq.go . Command
 type Command interface {
 	ExecCommandContainer(Context, string) (string, string, error)
 }
