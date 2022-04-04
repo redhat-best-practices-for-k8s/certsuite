@@ -24,31 +24,11 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type RoleBindingFuncs interface {
-	GetRoleBindings(podNamespace, serviceAccountName string) ([]string, error)
-}
-
-// RoleBinding holds information derived from running "oc get rolebindings" on the command line.
-type RoleBinding struct {
-	ClientHolder *clientsholder.ClientsHolder
-}
-
-// NewRoleBindingTester creates a new RoleBinding object
-func NewRoleBindingTester(ch *clientsholder.ClientsHolder) *RoleBinding {
-	// Just as a note, the old test suite ran the following command to help determine service accounts that fell outside of the pod's namespace:
-	// oc get rolebindings --all-namespaces -o custom-columns='NAMESPACE:metadata.namespace,NAME:metadata.name,SERVICE_ACCOUNTS:subjects[?(@.kind=="ServiceAccount")]' | grep -E '` + serviceAccountSubString + `|SERVICE_ACCOUNTS'
-
-	rbt := &RoleBinding{
-		ClientHolder: ch,
-	}
-
-	return rbt
-}
-
 // GetRoleBindings returns any role bindings extracted from the desired pod.
-func (rb *RoleBinding) GetRoleBindings(podNamespace, serviceAccountName string) ([]string, error) {
+func GetRoleBindings(podNamespace, serviceAccountName string) ([]string, error) {
 	// Get all of the rolebindings from all namespaces.
-	roleList, roleErr := rb.ClientHolder.K8sClient.RbacV1().Roles("").List(context.TODO(), v1.ListOptions{})
+	clientsHolder := clientsholder.GetClientsHolder()
+	roleList, roleErr := clientsHolder.K8sClient.RbacV1().Roles("").List(context.TODO(), v1.ListOptions{})
 	if roleErr != nil {
 		logrus.Errorf("executing rolebinding command failed with error: %s", roleErr)
 		return nil, roleErr

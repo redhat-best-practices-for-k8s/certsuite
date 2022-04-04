@@ -26,22 +26,9 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type AutomountTokenFuncs interface {
-	AutomountServiceAccountSetOnSA(serviceAccountName, podNamespace string) (*bool, error)
-	EvaluateTokens(put *v1core.Pod) (bool, string)
-}
-type AutomountToken struct {
-	clientsHolder *clientsholder.ClientsHolder
-}
-
-func NewAutomountTokenTester(ch *clientsholder.ClientsHolder) *AutomountToken {
-	return &AutomountToken{
-		clientsHolder: ch,
-	}
-}
-
-func (at *AutomountToken) AutomountServiceAccountSetOnSA(serviceAccountName, podNamespace string) (*bool, error) {
-	sa, err := at.clientsHolder.K8sClient.CoreV1().ServiceAccounts(podNamespace).Get(context.TODO(), serviceAccountName, v1.GetOptions{})
+func AutomountServiceAccountSetOnSA(serviceAccountName, podNamespace string) (*bool, error) {
+	clientsHolder := clientsholder.GetClientsHolder()
+	sa, err := clientsHolder.K8sClient.CoreV1().ServiceAccounts(podNamespace).Get(context.TODO(), serviceAccountName, v1.GetOptions{})
 	if err != nil {
 		logrus.Errorf("executing serviceaccount command failed with error: %s", err)
 		return nil, err
@@ -50,7 +37,7 @@ func (at *AutomountToken) AutomountServiceAccountSetOnSA(serviceAccountName, pod
 }
 
 //nolint:gocritic
-func (at *AutomountToken) EvaluateTokens(put *v1core.Pod) (bool, string) {
+func EvaluateAutomountTokens(put *v1core.Pod) (bool, string) {
 	// The token can be specified in the pod directly
 	// or it can be specified in the service account of the pod
 	// if no service account is configured, then the pod will use the configuration
@@ -63,7 +50,7 @@ func (at *AutomountToken) EvaluateTokens(put *v1core.Pod) (bool, string) {
 	}
 
 	// Collect information about the service account attached to the pod.
-	saAutomountServiceAccountToken, err := at.AutomountServiceAccountSetOnSA(put.Spec.ServiceAccountName, put.Namespace)
+	saAutomountServiceAccountToken, err := AutomountServiceAccountSetOnSA(put.Spec.ServiceAccountName, put.Namespace)
 	if err != nil {
 		return false, ""
 	}

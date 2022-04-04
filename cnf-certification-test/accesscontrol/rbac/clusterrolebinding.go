@@ -24,23 +24,10 @@ import (
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type ClusterRoleBinding struct {
-	serviceAccountName string
-	podNamespace       string
-	ClientsHolder      *clientsholder.ClientsHolder
-}
-
-func NewClusterRoleBindingTester(serviceAccountName, podNamespace string, ch *clientsholder.ClientsHolder) *ClusterRoleBinding {
-	return &ClusterRoleBinding{
-		serviceAccountName: serviceAccountName,
-		podNamespace:       podNamespace,
-		ClientsHolder:      ch,
-	}
-}
-
-func (crb *ClusterRoleBinding) GetClusterRoleBindings() ([]string, error) {
+func GetClusterRoleBindings(serviceAccountName, podNamespace string) ([]string, error) {
 	// Get all of the clusterrolebindings from all namespaces.
-	crbList, crbErr := crb.ClientsHolder.K8sClient.RbacV1().ClusterRoles().List(context.TODO(), v1.ListOptions{})
+	clientsHolder := clientsholder.GetClientsHolder()
+	crbList, crbErr := clientsHolder.K8sClient.RbacV1().ClusterRoles().List(context.TODO(), v1.ListOptions{})
 	if crbErr != nil {
 		logrus.Errorf("executing clusterrolebinding command failed with error: %s", crbErr)
 		return nil, crbErr
@@ -49,7 +36,7 @@ func (crb *ClusterRoleBinding) GetClusterRoleBindings() ([]string, error) {
 	clusterrolebindings := []string{}
 	for index := range crbList.Items {
 		// Determine if the role causes a failure of the test.
-		if roleOutOfNamespace(crbList.Items[index].Namespace, crb.podNamespace, crbList.Items[index].Name, crb.serviceAccountName) {
+		if roleOutOfNamespace(crbList.Items[index].Namespace, podNamespace, crbList.Items[index].Name, serviceAccountName) {
 			clusterrolebindings = append(clusterrolebindings, crbList.Items[index].Namespace+":"+crbList.Items[index].Name)
 		}
 	}
