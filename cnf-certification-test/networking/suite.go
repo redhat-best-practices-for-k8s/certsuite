@@ -17,6 +17,7 @@
 package declaredandlistening
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/onsi/ginkgo/v2"
@@ -27,14 +28,17 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/icmp"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 const (
 	defaultNumPings = 5
 	cmd             = `ss -tulwnH`
+	nodePort        = "NodePort"
 )
 
 type Port []struct {
@@ -130,14 +134,24 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 
 func testNodePort(env *provider.TestEnvironment) {
 	badNamespaces := []string{}
-	for _, put := range env.Pods {
-		ginkgo.By(fmt.Sprintf("Testing service account for pod %s (ns: %s)", put.Data.Name, put.Data.Namespace))
-		if put.Data.Spec.ServiceAccountName == "" {
-			tnf.ClaimFilePrintf("NodePort test on pod %s namespace %s failed.", put.Data.Name, put.Data.Namespace)
-			badNamespaces = append(badNamespaces, put.Data.Namespace)
-			continue
+	client := clientsholder.GetClientsHolder()
+	for _, ns := range env.Namespaces {
+		ginkgo.By(fmt.Sprintf("Testing service account for ns: %s", ns))
+		services, err := client.K8sClient.CoreV1().Services(ns).List(context.TODO(), metav1.ListOptions{})
+		if err != nil {
+			tnf.ClaimFilePrintf("nodePort test on namespace %s failed. Error: %v", ns, err)
+			badNamespaces = append(badNamespaces, ns)
 		}
-		tnf.ClaimFilePrintf("NodePort test on pod %s namespace %s succeeds", put.Data.Name, put.Data.Namespace)
+		index := 0
+		for index < len(services.Items) {
+			if services.Items[index].Spec.Type == nodePort {
+				serviceName := services.Items[index].ObjectMeta.Name
+				serviceNamespace := services.Items[index].ObjectMeta.Namespace
+				tnf.ClaimFilePrintf("FAILURE: Service %s (ns %s) type is nodePort", serviceName, serviceNamespace)
+				badNamespaces = append(badNamespaces, ns)
+			}
+			index++
+		}
 	}
 	if n := len(badNamespaces); n > 0 {
 		ginkgo.Fail(fmt.Sprintf("%d namespaces have nodePort/s.", n))
