@@ -543,7 +543,7 @@ following:
 
 ```go
 // 1. Create the Test.
-pingTester := ping.NewPing(defaultTimeout, targetPodIPAddress, count)
+pingTester := ping.NewPing(targetPodIPAddress, count)
 test, err := tnf.NewTest(oc.GetExpecter(), pingTester, []reel.Handler{pingTester}, oc.GetErrorChannel())
 gomega.Expect(err).To(gomega.BeNil())
 
