@@ -147,15 +147,13 @@ func testNodePort(env *provider.TestEnvironment) {
 		for i := range services.Items {
 			service := &services.Items[i]
 			if service.Spec.Type == nodePort {
-				serviceName := service.ObjectMeta.Name
-				serviceNamespace := service.ObjectMeta.Namespace
-				tnf.ClaimFilePrintf("FAILURE: Service %s (ns %s) type is nodePort", serviceName, serviceNamespace)
-				badServices = append(badServices, fmt.Sprintf("ns: %s, name: %s", serviceNamespace, serviceName))
+				tnf.ClaimFilePrintf("FAILURE: Service %s (ns %s) type is nodePort", service.ObjectMeta.Name, service.ObjectMeta.Namespace)
+				badServices = append(badServices, fmt.Sprintf("ns: %s, name: %s", service.ObjectMeta.Namespace, service.ObjectMeta.Name))
 			}
 		}
 	}
 	if ns, bs := len(badNamespaces), len(badServices); ns > 0 || bs > 0 {
-		ginkgo.Fail(fmt.Sprintf("%d namespaces have nodePort and %d services type is nodePort", ns, bs))
+		ginkgo.Fail(fmt.Sprintf("Failed to get services on %d namespaces. %d services found of type nodePort.", ns, bs))
 	}
 }
 
