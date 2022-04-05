@@ -116,9 +116,32 @@ func loadJUnitXMLIntoMap(result map[string]interface{}, junitFilename, key strin
 	}
 }
 
-// SetLogFormat sets the log format for logrus
-func SetLogFormat() {
-	log.Info("debug format initialization: start")
+// logLevel retrieves the TNF_LOG_LEVEL environment variable
+func logLevel() string {
+	logLevel := os.Getenv("TNF_LOG_LEVEL")
+	if logLevel == "" {
+		log.Info("TNF_LOG_LEVEL environment is not set, defaulting to DEBUG")
+		logLevel = "debug" //nolint:goconst
+	}
+
+	return logLevel
+}
+
+// setLogLevel sets the log level for logrus based on the "TNF_LOG_LEVEL" environment variable
+func setLogLevel() {
+	var logLevel, err = log.ParseLevel(logLevel())
+
+	if err != nil {
+		log.Error("TNF_LOG_LEVEL environment set with an invalid value, defaulting to DEBUG \n Valid values are:  trace, debug, info, warn, error, fatal, panic")
+		logLevel = log.DebugLevel
+	}
+
+	log.Info("Log level set to: ", logLevel)
+	log.SetLevel(logLevel)
+}
+
+// setLogFormat sets the log format for logrus
+func setLogFormat() {
 	customFormatter := new(log.TextFormatter)
 	customFormatter.TimestampFormat = time.StampMilli
 	customFormatter.PadLevelText = true
@@ -130,8 +153,6 @@ func SetLogFormat() {
 		return strconv.Itoa(f.Line) + "]", fmt.Sprintf("[%s:", filename)
 	}
 	log.SetFormatter(customFormatter)
-	log.Info("debug format initialization: done")
-	log.SetLevel(log.TraceLevel)
 }
 
 //nolint:funlen // TestTest invokes the CNF Certification Test Suite.
@@ -140,6 +161,10 @@ func TestTest(t *testing.T) {
 	if os.Getenv("UNIT_TEST") != "" {
 		t.Skip("Skipping test suite when running unit tests")
 	}
+
+	// Set up logging params for logrus
+	setLogFormat()
+	setLogLevel()
 
 	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
 	log.Infof("Focused test suites : %v", ginkgoConfig.FocusStrings)
@@ -160,7 +185,7 @@ func TestTest(t *testing.T) {
 		gitDisplayRelease = GitRelease
 	}
 	log.Info("Version: ", gitDisplayRelease, " ( ", GitCommit, " )")
-	SetLogFormat()
+
 	// Initialize the claim with the start time, tnf version, etc.
 	claimRoot := createClaimRoot()
 	claimData := claimRoot.Claim
