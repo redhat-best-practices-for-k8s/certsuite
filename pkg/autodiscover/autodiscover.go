@@ -20,13 +20,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"path/filepath"
 
 	configv1 "github.com/openshift/api/config/v1"
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
-	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"helm.sh/helm/v3/pkg/release"
 	v1apps "k8s.io/api/apps/v1"
@@ -90,7 +89,7 @@ func buildLabelKeyValue(label configuration.Label) (key, value string) {
 // DoAutoDiscover finds objects under test
 func DoAutoDiscover() DiscoveredTestData {
 	var err error
-	data.Env, err = configuration.LoadEnvironmentVariables()
+	data.Env = *configuration.GetTestParameters()
 	if err != nil {
 		logrus.Fatalln("can't load environment variable")
 	}
@@ -98,15 +97,8 @@ func DoAutoDiscover() DiscoveredTestData {
 	if err != nil {
 		logrus.Fatalln("can't load configuration")
 	}
-	filenames := []string{}
-	if data.Env.Kubeconfig != "" {
-		filenames = append(filenames, data.Env.Kubeconfig)
-	}
-	if data.Env.Home != "" {
-		path := filepath.Join(data.Env.Home, ".kube", "config")
-		filenames = append(filenames, path)
-	}
-	oc := clientsholder.GetClientsHolder(filenames...)
+
+	oc := clientsholder.GetClientsHolder()
 	data.Namespaces = namespacesListToStringList(data.TestData.TargetNameSpaces)
 	data.Pods = findPodsByLabel(oc.K8sClient.CoreV1(), data.TestData.TargetPodLabels, data.Namespaces)
 

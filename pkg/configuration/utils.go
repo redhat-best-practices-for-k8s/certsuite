@@ -28,8 +28,16 @@ var (
 	configuration = TestConfiguration{}
 	confLoaded    = false
 	parameters    = TestParameters{}
-	paramLoaded   = false
 )
+
+func init() {
+	log.Info("Saving environment variables & parameters.")
+	err := envconfig.Process("tnf", &parameters)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	log.Infof("Environment: %+v", parameters)
+}
 
 // LoadConfiguration return a function that loads
 // the configuration from a file once
@@ -52,17 +60,6 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 	return configuration, nil
 }
 
-// LoadEnvironmentVariables return a function
-// that loads the environment variables
-func LoadEnvironmentVariables() (TestParameters, error) {
-	if paramLoaded {
-		log.Debug("environment variables already processed, return previous element")
-		return parameters, nil
-	}
-	err := envconfig.Process("tnf", &parameters)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	paramLoaded = true
-	return parameters, nil
+func GetTestParameters() *TestParameters {
+	return &parameters
 }
