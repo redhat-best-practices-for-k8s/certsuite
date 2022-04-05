@@ -17,9 +17,11 @@
 package isredhat
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 )
 
 func TestIsRHEL(t *testing.T) {
@@ -47,5 +49,54 @@ func TestIsRHEL(t *testing.T) {
 
 	for _, tc := range testCases {
 		assert.Equal(t, tc.expected, IsRHEL(tc.testOutput))
+	}
+}
+
+func TestTestContainerIsRedHatRelease(t *testing.T) {
+	testCases := []struct {
+		resultStdOut string
+		resultStdErr string
+		resultErr    error
+
+		expectedResult bool
+		expectedErr    error
+	}{
+		{ // Test Case #1 - No error, RHEL release
+			resultStdOut:   "Red Hat Enterprise Linux release 8.5 (Ootpa)",
+			resultStdErr:   "",
+			resultErr:      nil,
+			expectedResult: true,
+			expectedErr:    nil,
+		},
+		{ // Test Case #2 - Error with exec, RHEL release
+			resultStdOut:   "Red Hat Enterprise Linux release 8.5 (Ootpa)",
+			resultStdErr:   "",
+			resultErr:      errors.New("this is an error"),
+			expectedResult: false,
+			expectedErr:    errors.New("this is an error"),
+		},
+		{ // Test Case #3 - Error with stderr, RHEL release
+			resultStdOut:   "Red Hat Enterprise Linux release 8.5 (Ootpa)",
+			resultStdErr:   "random error",
+			resultErr:      nil,
+			expectedResult: false,
+			expectedErr:    errors.New("random error"),
+		},
+	}
+
+	for _, tc := range testCases {
+		bit := NewBaseImageTester(&clientsholder.CommandMock{
+			// Mock out the return values from actually running the command.
+			ExecCommandContainerFunc: func(context clientsholder.Context, s string) (string, string, error) {
+				return tc.resultStdOut, tc.resultStdErr, tc.resultErr
+			}}, clientsholder.Context{
+			Namespace:     "testNamespace",
+			Podname:       "testPodName",
+			Containername: "testContainer",
+		})
+
+		result, err := bit.TestContainerIsRedHatRelease()
+		assert.Equal(t, tc.expectedErr, err)
+		assert.Equal(t, tc.expectedResult, result)
 	}
 }
