@@ -17,6 +17,7 @@
 package declaredandlistening
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/onsi/ginkgo/v2"
@@ -27,14 +28,17 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/icmp"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 const (
 	defaultNumPings = 5
 	cmd             = `ss -tulwnH`
+	nodePort        = "NodePort"
 )
 
 type Port []struct {
@@ -80,6 +84,10 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testListenAndDeclared(&env)
 	})
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestServicesDoNotUseNodeportsIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testNodePort(&env)
+	})
 })
 
 //nolint:funlen
@@ -121,6 +129,31 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 	}
 	if nf := len(failedPods); nf > 0 {
 		ginkgo.Fail(fmt.Sprintf("Found %d pods with listening ports not declared", nf))
+	}
+}
+
+func testNodePort(env *provider.TestEnvironment) {
+	badNamespaces := []string{}
+	badServices := []string{}
+	client := clientsholder.GetClientsHolder()
+	for _, ns := range env.Namespaces {
+		ginkgo.By(fmt.Sprintf("Testing services in namespace %s", ns))
+		services, err := client.K8sClient.CoreV1().Services(ns).List(context.TODO(), metav1.ListOptions{})
+		if err != nil {
+			tnf.ClaimFilePrintf("Failed to list services on namespace %s, Error: %v", ns, err)
+			badNamespaces = append(badNamespaces, ns)
+			continue
+		}
+		for i := range services.Items {
+			service := &services.Items[i]
+			if service.Spec.Type == nodePort {
+				tnf.ClaimFilePrintf("FAILURE: Service %s (ns %s) type is nodePort", service.Name, service.Namespace)
+				badServices = append(badServices, fmt.Sprintf("ns: %s, name: %s", service.Namespace, service.Name))
+			}
+		}
+	}
+	if ns, bs := len(badNamespaces), len(badServices); ns > 0 || bs > 0 {
+		ginkgo.Fail(fmt.Sprintf("Failed to get services on %d namespaces. %d services found of type nodePort.", ns, bs))
 	}
 }
 
