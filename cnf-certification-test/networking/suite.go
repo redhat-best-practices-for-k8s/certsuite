@@ -134,27 +134,28 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 
 func testNodePort(env *provider.TestEnvironment) {
 	badNamespaces := []string{}
+	badServices := []string{}
 	client := clientsholder.GetClientsHolder()
 	for _, ns := range env.Namespaces {
-		ginkgo.By(fmt.Sprintf("Testing service account for ns: %s", ns))
+		ginkgo.By(fmt.Sprintf("Testing services in namespace %s", ns))
 		services, err := client.K8sClient.CoreV1().Services(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			tnf.ClaimFilePrintf("nodePort test on namespace %s failed. Error: %v", ns, err)
+			tnf.ClaimFilePrintf("Failed to list services on namespace %s, Error: %v", ns, err)
 			badNamespaces = append(badNamespaces, ns)
+			continue
 		}
-		index := 0
-		for index < len(services.Items) {
-			if services.Items[index].Spec.Type == nodePort {
-				serviceName := services.Items[index].ObjectMeta.Name
-				serviceNamespace := services.Items[index].ObjectMeta.Namespace
+		for i := range services.Items {
+			service := &services.Items[i]
+			if service.Spec.Type == nodePort {
+				serviceName := service.ObjectMeta.Name
+				serviceNamespace := service.ObjectMeta.Namespace
 				tnf.ClaimFilePrintf("FAILURE: Service %s (ns %s) type is nodePort", serviceName, serviceNamespace)
-				badNamespaces = append(badNamespaces, ns)
+				badServices = append(badServices, fmt.Sprintf("ns: %s, name: %s", serviceNamespace, serviceName))
 			}
-			index++
 		}
 	}
-	if n := len(badNamespaces); n > 0 {
-		ginkgo.Fail(fmt.Sprintf("%d namespaces have nodePort/s.", n))
+	if ns, bs := len(badNamespaces), len(badServices); ns > 0 || bs > 0 {
+		ginkgo.Fail(fmt.Sprintf("%d namespaces have nodePort and %d services type is nodePort", ns, bs))
 	}
 }
 
