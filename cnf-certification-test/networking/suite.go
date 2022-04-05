@@ -147,8 +147,8 @@ func testNodePort(env *provider.TestEnvironment) {
 		for i := range services.Items {
 			service := &services.Items[i]
 			if service.Spec.Type == nodePort {
-				tnf.ClaimFilePrintf("FAILURE: Service %s (ns %s) type is nodePort", service.ObjectMeta.Name, service.ObjectMeta.Namespace)
-				badServices = append(badServices, fmt.Sprintf("ns: %s, name: %s", service.ObjectMeta.Namespace, service.ObjectMeta.Name))
+				tnf.ClaimFilePrintf("FAILURE: Service %s (ns %s) type is nodePort", service.Name, service.Namespace)
+				badServices = append(badServices, fmt.Sprintf("ns: %s, name: %s", service.Namespace, service.Name))
 			}
 		}
 	}
