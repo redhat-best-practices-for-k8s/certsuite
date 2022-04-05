@@ -121,7 +121,7 @@ func logLevel() string {
 	logLevel := os.Getenv("TNF_LOG_LEVEL")
 	if logLevel == "" {
 		log.Info("TNF_LOG_LEVEL environment is not set, defaulting to DEBUG")
-		logLevel = "debug" //nolint:goconst
+		logLevel = "debug"
 	}
 
 	return logLevel
