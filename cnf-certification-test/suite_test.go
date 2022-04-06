@@ -40,6 +40,7 @@ import (
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 )
 
 const (
@@ -85,6 +86,8 @@ func TestTest(t *testing.T) {
 	}
 
 	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
+	log.Infof("TNF Version         : %v", getGitVersion())
+	log.Infof("Ginkgo Version      : %v", ginkgo.GINKGO_VERSION)
 	log.Infof("Focused test suites : %v", ginkgoConfig.FocusStrings)
 	log.Infof("TC skip patterns    : %v", ginkgoConfig.SkipStrings)
 	log.Infof("Labels filter       : %v", ginkgoConfig.LabelFilter)
@@ -93,17 +96,12 @@ func TestTest(t *testing.T) {
 	diagnosticMode := len(ginkgoConfig.FocusStrings) == 0
 
 	gomega.RegisterFailHandler(ginkgo.Fail)
-	// Display GinkGo Version
-	log.Info("Ginkgo Version: ", ginkgo.GINKGO_VERSION)
-	// Display the latest previously released build in case this build is not released
-	// Otherwise display the build version
-	if GitRelease == "" {
-		gitDisplayRelease = "Unreleased build post " + GitPreviousRelease
-	} else {
-		gitDisplayRelease = GitRelease
-	}
-	log.Info("Version: ", gitDisplayRelease, " ( ", GitCommit, " )")
+
 	loghelper.SetLogFormat()
+
+	// Set clientsholder singleton with the filenames from the env vars.
+	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
+
 	// Initialize the claim with the start time, tnf version, etc.
 	claimRoot := claimhelper.CreateClaimRoot()
 	claimData := claimRoot.Claim

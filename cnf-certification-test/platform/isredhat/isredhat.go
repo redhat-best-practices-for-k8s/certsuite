@@ -19,7 +19,6 @@ package isredhat
 import (
 	"errors"
 	"regexp"
-	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
@@ -33,14 +32,12 @@ const (
 )
 
 type BaseImageInfo struct {
-	timeout      time.Duration
-	ClientHolder *clientsholder.ClientsHolder
+	ClientHolder clientsholder.Command
 	OCPContext   clientsholder.Context
 }
 
-func NewBaseImageTester(timeout time.Duration, client *clientsholder.ClientsHolder, ctx clientsholder.Context) *BaseImageInfo {
+func NewBaseImageTester(client clientsholder.Command, ctx clientsholder.Context) *BaseImageInfo {
 	return &BaseImageInfo{
-		timeout:      timeout,
 		ClientHolder: client,
 		OCPContext:   ctx,
 	}

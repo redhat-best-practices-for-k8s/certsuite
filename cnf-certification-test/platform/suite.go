@@ -46,7 +46,6 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
-		provider.WaitDebugPodReady()
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
 
@@ -196,7 +195,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 	failedContainers := []string{}
 	for _, cut := range env.Containers {
 		ginkgo.By(fmt.Sprintf("%s is checked for Red Hat version", cut))
-		baseImageTester := isredhat.NewBaseImageTester(common.DefaultTimeout, clientsholder.GetClientsHolder(), clientsholder.Context{
+		baseImageTester := isredhat.NewBaseImageTester(clientsholder.GetClientsHolder(), clientsholder.Context{
 			Namespace:     cut.Namespace,
 			Podname:       cut.Podname,
 			Containername: cut.Data.Name,
