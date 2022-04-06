@@ -50,7 +50,6 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
-		provider.WaitDebugPodReady()
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
 

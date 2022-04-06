@@ -44,7 +44,7 @@ import (
 const (
 	daemonSetNamespace               = "default"
 	daemonSetName                    = "debug"
-	timeout                          = 60 * time.Second
+	debugPodsTimeout                 = 60 * time.Second
 	cniNetworksStatusKey             = "k8s.v1.cni.cncf.io/networks-status"
 	skipConnectivityTestsLabel       = "test-network-function.com/skip_connectivity_tests"
 	skipMultusConnectivityTestsLabel = "test-network-function.com/skip_multus_connectivity_tests"
@@ -157,9 +157,14 @@ func GetUpdatedStatefulset(ac appv1client.AppsV1Interface, namespace, podName st
 }
 
 func buildTestEnvironment() { //nolint:funlen
-	// delete env
+	// Wait for the debug pods to be ready before the autodiscovery starts.
+	err := WaitDebugPodsReady()
+	if err != nil {
+		logrus.Errorf("Debug daemonset failure: %s", err)
+	}
+
 	env = TestEnvironment{}
-	// build Pods and Containers under test
+
 	data := autodiscover.DoAutoDiscover()
 	env.Config = data.TestData
 	env.Crds = data.Crds
@@ -263,50 +268,50 @@ func IsinstalledCsv(csv *olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1
 	}
 	return false, returnsub
 }
-func WaitDebugPodReady() {
+func WaitDebugPodsReady() error {
 	oc := clientsholder.GetClientsHolder()
-	listOptions := metav1.ListOptions{}
-	nodes, err := oc.K8sClient.CoreV1().Nodes().List(context.TODO(), listOptions)
-
+	nodes, err := oc.K8sClient.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		logrus.Fatalf("Error getting node list, err:%s", err)
+		return fmt.Errorf("failed to get node list, err:%s", err)
 	}
 
 	nodesCount := int32(len(nodes.Items))
-
-	getOptions := metav1.GetOptions{}
 	isReady := false
-	start := time.Now()
-	for !isReady && time.Since(start) < timeout {
-		daemonSet, err := oc.K8sClient.AppsV1().DaemonSets(daemonSetNamespace).Get(context.TODO(), daemonSetName, getOptions)
-		if err != nil && daemonSet != nil {
-			logrus.Fatal("Error getting Daemonset, please create debug daemonset")
+	for start := time.Now(); !isReady && time.Since(start) < debugPodsTimeout; {
+		daemonSet, err := oc.K8sClient.AppsV1().DaemonSets(daemonSetNamespace).Get(context.TODO(), daemonSetName, metav1.GetOptions{})
+		if err != nil {
+			return fmt.Errorf("failed to get daemonset, err: %s", err)
 		}
+
 		if daemonSet.Status.DesiredNumberScheduled != nodesCount {
-			logrus.Fatalf("Daemonset DesiredNumberScheduled not equal to number of nodes:%d, please instantiate debug pods on all nodes", nodesCount)
+			return fmt.Errorf("daemonset DesiredNumberScheduled not equal to number of nodes:%d, please instantiate debug pods on all nodes", nodesCount)
 		}
-		isReady = isDaemonSetReady(&daemonSet.Status)
-		logrus.Debugf("Waiting for debug pods to be ready: %v", daemonSet.Status)
+
+		logrus.Infof("Waiting for (%d) debug pods to be ready: %+v", nodesCount, daemonSet.Status)
+		if isDaemonSetReady(&daemonSet.Status) {
+			isReady = true
+			break
+		}
+
 		time.Sleep(time.Second)
 	}
-	if time.Since(start) > timeout {
-		logrus.Fatal("Timeout waiting for Daemonset to be ready")
+
+	if !isReady {
+		return errors.New("daemonset debug pods not ready")
 	}
-	if isReady {
-		logrus.Info("Daemonset is ready")
-	}
+
+	logrus.Infof("All the debug pods are ready.")
+	return nil
 }
 
-func isDaemonSetReady(status *v1apps.DaemonSetStatus) (isReady bool) {
-	isReady = false
-	if status.DesiredNumberScheduled == status.CurrentNumberScheduled && //nolint:gocritic
+func isDaemonSetReady(status *v1apps.DaemonSetStatus) bool {
+	//nolint:gocritic
+	return status.DesiredNumberScheduled == status.CurrentNumberScheduled &&
 		status.DesiredNumberScheduled == status.NumberAvailable &&
 		status.DesiredNumberScheduled == status.NumberReady &&
-		status.NumberMisscheduled == 0 {
-		isReady = true
-	}
-	return isReady
+		status.NumberMisscheduled == 0
 }
+
 func (c *Container) GetUID() (string, error) {
 	split := strings.Split(c.Status.ContainerID, "://")
 	uid := ""
