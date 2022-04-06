@@ -88,16 +88,13 @@ func buildLabelKeyValue(label configuration.Label) (key, value string) {
 //nolint:funlen
 // DoAutoDiscover finds objects under test
 func DoAutoDiscover() DiscoveredTestData {
-	var err error
 	data.Env = *configuration.GetTestParameters()
-	if err != nil {
-		logrus.Fatalln("can't load environment variable")
-	}
+
+	var err error
 	data.TestData, err = configuration.LoadConfiguration(data.Env.ConfigurationPath)
 	if err != nil {
 		logrus.Fatalln("can't load configuration")
 	}
-
 	oc := clientsholder.GetClientsHolder()
 	data.Namespaces = namespacesListToStringList(data.TestData.TargetNameSpaces)
 	data.Pods = findPodsByLabel(oc.K8sClient.CoreV1(), data.TestData.TargetPodLabels, data.Namespaces)

@@ -183,7 +183,7 @@ func TestTest(t *testing.T) {
 
 	SetLogFormat()
 
-	// Set clientsholder singletone with the filenames from the env vars.
+	// Set clientsholder singleton with the filenames from the env vars.
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 
 	// Initialize the claim with the start time, tnf version, etc.
