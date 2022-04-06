@@ -56,7 +56,6 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
-		provider.WaitDebugPodReady()
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
 	// Default interface ICMP IPv4 test case

@@ -19,6 +19,7 @@ package clientsholder
 import (
 	"bytes"
 	"fmt"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 	v1 "k8s.io/api/core/v1"
@@ -43,7 +44,7 @@ func (clientsholder *ClientsHolder) ExecCommandContainer(
 	commandStr := []string{"sh", "-c", command}
 	var buffOut bytes.Buffer
 	var buffErr bytes.Buffer
-	logrus.Trace(fmt.Sprintf("execute commands on ns=%s, pod=%s container=%s", ctx.Namespace, ctx.Podname, ctx.Containername))
+	logrus.Trace(fmt.Sprintf("execute command on ns=%s, pod=%s container=%s, cmd: %s", ctx.Namespace, ctx.Podname, ctx.Containername, strings.Join(commandStr, " ")))
 	req := clientsholder.K8sClient.CoreV1().RESTClient().
 		Post().
 		Namespace(ctx.Namespace).
