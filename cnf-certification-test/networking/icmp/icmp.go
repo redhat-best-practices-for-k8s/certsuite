@@ -43,15 +43,6 @@ type PingResults struct {
 	received    int
 	errors      int
 }
-type RequiredFuncs interface {
-	TestPing(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error)
-}
-
-type Object bool
-
-func NewObject() (out Object) {
-	return out
-}
 
 func (results PingResults) String() string {
 	return fmt.Sprintf("outcome: %s transmitted: %d received: %d errors: %d", testhelper.ResultToString(results.outcome), results.transmitted, results.received, results.errors)
@@ -131,7 +122,7 @@ func ProcessContainerIpsPerNet(containerID *provider.Container,
 func RunNetworkingTests(
 	netsUnderTest map[string]netcommons.NetTestContext,
 	count int,
-	aIPVersion netcommons.IPVersion, providedFuncs RequiredFuncs) (badNets map[string][]string, claimsLog loghelper.CuratedLogLines) {
+	aIPVersion netcommons.IPVersion) (badNets map[string][]string, claimsLog loghelper.CuratedLogLines) {
 	logrus.Debugf("%s", netcommons.PrintNetTestContextMap(netsUnderTest))
 	if len(netsUnderTest) == 0 {
 		logrus.Debugf("There are no %s networks to test, skipping test", aIPVersion)
@@ -154,7 +145,7 @@ func RunNetworkingTests(
 				aIPVersion, netName,
 				netUnderTest.TesterSource.ContainerIdentifier, netUnderTest.TesterSource.IP,
 				aDestIP.ContainerIdentifier, aDestIP.IP)
-			result, err := providedFuncs.TestPing(netUnderTest.TesterSource.ContainerIdentifier, aDestIP, count)
+			result, err := TestPing(netUnderTest.TesterSource.ContainerIdentifier, aDestIP, count)
 			logrus.Debugf("Ping results: %s", result.String())
 			claimsLog = claimsLog.AddLogLine("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s ) result: %s",
 				aIPVersion, netName,
@@ -178,8 +169,8 @@ func RunNetworkingTests(
 	return badNets, claimsLog
 }
 
-// testPing Initiates a ping test between a source container and network (1 ip) and a destination container and network (1 ip)
-func (Object) TestPing(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
+// TestPing Initiates a ping test between a source container and network (1 ip) and a destination container and network (1 ip)
+var TestPing = func(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
 	command := fmt.Sprintf("ping -c %d %s", count, targetContainerIP.IP)
 	stdout, stderr, err := crclient.ExecCommandContainerNSEnter(command, sourceContainerID)
 	if err != nil || stderr != "" {

@@ -356,7 +356,7 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 				},
 			},
 
-			wantClaimsLog: loghelper.CuratedLogLines{Lines: []string{"Skipping pod: pod2 ns: ns1 because it is excluded from all connectivity tests\n"}},
+			wantClaimsLog: loghelper.CuratedLogLines{}.Init("Skipping pod: pod2 ns: ns1 because it is excluded from all connectivity tests\n"),
 		},
 		{
 			name: "ipv4ok multus",
@@ -473,7 +473,7 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 				},
 			},
 
-			wantClaimsLog: loghelper.CuratedLogLines{Lines: []string{"Skipping pod pod2 because it is excluded from Multus connectivity tests only\n"}},
+			wantClaimsLog: loghelper.CuratedLogLines{}.Init("Skipping pod pod2 because it is excluded from Multus connectivity tests only\n"),
 		},
 	}
 	for _, tt := range tests {
@@ -661,13 +661,13 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 		netsUnderTest map[string]netcommons.NetTestContext
 		count         int
 		aIPVersion    netcommons.IPVersion
-		providedFuncs RequiredFuncs
 	}
 	tests := []struct {
-		name          string
-		args          args
-		wantBadNets   map[string][]string
-		wantClaimsLog loghelper.CuratedLogLines
+		name            string
+		args            args
+		wantBadNets     map[string][]string
+		wantClaimsLog   loghelper.CuratedLogLines
+		testPingSuccess bool
 	}{
 		{name: "ok",
 			args: args{netsUnderTest: map[string]netcommons.NetTestContext{"default": {
@@ -700,17 +700,19 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 				},
 				},
 			},
-			}, count: 10, aIPVersion: netcommons.IPv4, providedFuncs: newTestObject(),
+			}, count: 10, aIPVersion: netcommons.IPv4,
 			},
-			wantBadNets:   map[string][]string{},
-			wantClaimsLog: loghelper.CuratedLogLines{Lines: []string{"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: SUCCESS transmitted: 10 received: 10 errors: 0\n"}}, //nolint:lll
+			wantBadNets:     map[string][]string{},
+			wantClaimsLog:   loghelper.CuratedLogLines{}.Init("IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: SUCCESS transmitted: 10 received: 10 errors: 0\n"), //nolint:lll
+			testPingSuccess: true,
 		},
 		{name: "noNetToTest",
 			args: args{netsUnderTest: map[string]netcommons.NetTestContext{},
-				count: 10, aIPVersion: netcommons.IPv4, providedFuncs: newTestObject(),
+				count: 10, aIPVersion: netcommons.IPv4,
 			},
-			wantBadNets:   nil,
-			wantClaimsLog: loghelper.CuratedLogLines{},
+			wantBadNets:     nil,
+			wantClaimsLog:   loghelper.CuratedLogLines{},
+			testPingSuccess: true,
 		},
 		{name: "only one container",
 			args: args{netsUnderTest: map[string]netcommons.NetTestContext{"default": {
@@ -730,10 +732,11 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 				},
 				DestTargets: []netcommons.ContainerIP{},
 			},
-			}, count: 10, aIPVersion: netcommons.IPv4, providedFuncs: newTestObject(),
+			}, count: 10, aIPVersion: netcommons.IPv4,
 			},
-			wantBadNets:   map[string][]string{},
-			wantClaimsLog: loghelper.CuratedLogLines{},
+			wantBadNets:     map[string][]string{},
+			wantClaimsLog:   loghelper.CuratedLogLines{},
+			testPingSuccess: true,
 		},
 		{name: "ping fails",
 			args: args{netsUnderTest: map[string]netcommons.NetTestContext{"default": {
@@ -779,16 +782,22 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 					},
 				},
 			},
-			}, count: 10, aIPVersion: netcommons.IPv4, providedFuncs: newTestObjectError(),
+			}, count: 10, aIPVersion: netcommons.IPv4,
 			},
 			wantBadNets: map[string][]string{"default": {"10.244.195.232", "10.244.195.233"}},
-			wantClaimsLog: loghelper.CuratedLogLines{Lines: []string{"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n", //nolint:lll
-				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test3 pod: test-1 ns: tnf dstip: 10.244.195.233 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n"}}, //nolint:lll
+			wantClaimsLog: loghelper.CuratedLogLines{}.Init("IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n", //nolint:lll
+				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test3 pod: test-1 ns: tnf dstip: 10.244.195.233 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n"), //nolint:lll
+			testPingSuccess: false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotBadNets, gotClaimsLog := RunNetworkingTests(tt.args.netsUnderTest, tt.args.count, tt.args.aIPVersion, tt.args.providedFuncs)
+			if tt.testPingSuccess {
+				TestPing = TestPingSuccess
+			} else {
+				TestPing = TestPingFailure
+			}
+			gotBadNets, gotClaimsLog := RunNetworkingTests(tt.args.netsUnderTest, tt.args.count, tt.args.aIPVersion)
 			if !reflect.DeepEqual(gotBadNets, tt.wantBadNets) {
 				t.Errorf("RunNetworkingTests() gotBadNets = %v, want %v", gotBadNets, tt.wantBadNets)
 			}
@@ -799,20 +808,10 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 	}
 }
 
-type testObject bool
-
-func newTestObject() (out testObject) {
-	return out
-}
-func (testObject) TestPing(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
+var TestPingSuccess = func(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
 	return PingResults{outcome: testhelper.SUCCESS, transmitted: 10, received: 10, errors: 0}, nil
 }
 
-type testObjectError bool
-
-func newTestObjectError() (out testObjectError) {
-	return out
-}
-func (testObjectError) TestPing(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
+var TestPingFailure = func(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
 	return PingResults{outcome: testhelper.FAILURE, transmitted: 10, received: 5, errors: 5}, fmt.Errorf("ping failed")
 }

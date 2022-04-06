@@ -42,13 +42,14 @@ const (
 
 // marshalConfigurations creates a byte stream representation of the test configurations.  In the event of an error,
 // this method fatally fails.
-func MarshalConfigurations() []byte {
+func MarshalConfigurations() (configurations []byte, err error) {
 	config := provider.GetTestEnvironment()
-	configurations, err := j.Marshal(config)
+	configurations, err = j.Marshal(config)
 	if err != nil {
-		log.Fatalf("error converting configurations to JSON: %v", err)
+		log.Errorf("error converting configurations to JSON: %v", err)
+		return configurations, err
 	}
-	return configurations
+	return configurations, nil
 }
 
 // unmarshalConfigurations creates a map from configurations byte stream.  In the event of an error, this method fatally
@@ -137,13 +138,12 @@ func GenerateNodes() map[string]interface{} {
 func CreateClaimRoot() *claim.Root {
 	// Initialize the claim with the start time.
 	startTime := time.Now()
-	c := &claim.Claim{
-		Metadata: &claim.Metadata{
-			StartTime: startTime.UTC().Format(DateTimeFormatDirective),
-		},
-	}
 	return &claim.Root{
-		Claim: c,
+		Claim: &claim.Claim{
+			Metadata: &claim.Metadata{
+				StartTime: startTime.UTC().Format(DateTimeFormatDirective),
+			},
+		},
 	}
 }
 

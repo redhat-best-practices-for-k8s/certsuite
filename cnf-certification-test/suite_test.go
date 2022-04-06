@@ -111,7 +111,11 @@ func TestTest(t *testing.T) {
 	claimData.Nodes = make(map[string]interface{})
 	incorporateVersions(claimData)
 
-	configurations := claimhelper.MarshalConfigurations()
+	configurations, err := claimhelper.MarshalConfigurations()
+	if err != nil {
+		log.Errorf("Configuration node missing because of: %s", err)
+	}
+
 	claimData.Nodes = claimhelper.GenerateNodes()
 	claimhelper.UnmarshalConfigurations(configurations, claimData.Configurations)
 

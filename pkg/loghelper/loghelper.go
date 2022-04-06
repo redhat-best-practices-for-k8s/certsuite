@@ -28,19 +28,25 @@ import (
 
 // CuratedLogLines
 type CuratedLogLines struct {
-	Lines []string
+	lines []string
 }
 
 // AddLogLine checks a slice for a given string.
 func (list CuratedLogLines) AddLogLine(format string, args ...interface{}) CuratedLogLines {
 	message := fmt.Sprintf(format+"\n", args...)
-	list.Lines = append(list.Lines, message)
+	list.lines = append(list.lines, message)
 	logrus.Debug(message)
 	return list
 }
 
+// Init checks a slice for a given string.
+func (list CuratedLogLines) Init(lines ...string) CuratedLogLines {
+	list.lines = append(list.lines, lines...)
+	return list
+}
+
 func (list CuratedLogLines) GetLogLines() []string {
-	return list.Lines
+	return list.lines
 }
 
 // SetLogFormat sets the log format for logrus
