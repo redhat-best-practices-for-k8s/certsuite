@@ -39,8 +39,9 @@ import (
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
-	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
 )
 
 const (
@@ -76,6 +77,32 @@ func init() {
 		"the path where the claimfile will be output")
 	junitPath = flag.String(junitFlagKey, defaultCliArgValue,
 		"the path for the junit format report")
+}
+
+func getK8sClientsConfigFileNames() []string {
+	params := configuration.GetTestParameters()
+	fileNames := []string{}
+	if params.Kubeconfig != "" {
+		fileNames = append(fileNames, params.Kubeconfig)
+	}
+	if params.Home != "" {
+		kubeConfigFilePath := filepath.Join(params.Home, ".kube", "config")
+		fileNames = append(fileNames, kubeConfigFilePath)
+	}
+
+	return fileNames
+}
+
+// getGitVersion returns the git display version: the latest previously released
+// build in case this build is not released. Otherwise display the build version
+func getGitVersion() string {
+	if GitRelease == "" {
+		gitDisplayRelease = "Unreleased build post " + GitPreviousRelease
+	} else {
+		gitDisplayRelease = GitRelease
+	}
+
+	return gitDisplayRelease + " ( " + GitCommit + " )"
 }
 
 //nolint:funlen // TestTest invokes the CNF Certification Test Suite.
