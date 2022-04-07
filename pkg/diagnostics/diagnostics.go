@@ -84,15 +84,15 @@ func GetHwInfoAllNodes() (out map[string]NodeHwInfo) {
 	var err error
 	for _, debugPod := range env.DebugPods {
 		hw := NodeHwInfo{}
-		hw.Lscpu, err = getLscpu(debugPod, o)
+		hw.Lscpu, err = getHWJsonOutput(debugPod, o, lscpuCommand)
 		if err != nil {
 			logrus.Errorf("problem getting lscpu for node %s", debugPod.Spec.NodeName)
 		}
-		hw.IPconfig, err = getIPConfig(debugPod, o)
+		hw.IPconfig, err = getHWJsonOutput(debugPod, o, ipCommand)
 		if err != nil {
 			logrus.Errorf("problem getting ip config for node %s", debugPod.Spec.NodeName)
 		}
-		hw.Lsblk, err = getLsblk(debugPod, o)
+		hw.Lsblk, err = getHWJsonOutput(debugPod, o, lsblkCommand)
 		if err != nil {
 			logrus.Errorf("problem getting lsblk for node %s", debugPod.Spec.NodeName)
 		}
@@ -105,40 +105,12 @@ func GetHwInfoAllNodes() (out map[string]NodeHwInfo) {
 	return out
 }
 
-// getLscpu gets lscpu in Json format for a given node
-func getLscpu(debugPod *v1.Pod, o *clientsholder.ClientsHolder) (out interface{}, err error) { //nolint:dupl
+// getHWJsonOutput performs a query via debug pod and returns the JSON blob
+func getHWJsonOutput(debugPod *v1.Pod, o clientsholder.Command, cmd string) (out interface{}, err error) {
 	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
-	outStr, errStr, err := o.ExecCommandContainer(ctx, lscpuCommand)
+	outStr, errStr, err := o.ExecCommandContainer(ctx, cmd)
 	if err != nil || errStr != "" {
-		return out, fmt.Errorf("command %s failed with error err: %s , stderr: %s", lscpuCommand, err, errStr)
-	}
-	err = json.Unmarshal([]byte(outStr), &out)
-	if err != nil {
-		return out, fmt.Errorf("could not decode json file because of: %s", err)
-	}
-	return out, nil
-}
-
-// getIPConfig gets ipconfig -a in Json format for a given node
-func getIPConfig(debugPod *v1.Pod, o *clientsholder.ClientsHolder) (out interface{}, err error) { //nolint:dupl
-	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
-	outStr, errStr, err := o.ExecCommandContainer(ctx, ipCommand)
-	if err != nil || errStr != "" {
-		return out, fmt.Errorf("command %s failed with error err: %s , stderr: %s", ipCommand, err, errStr)
-	}
-	err = json.Unmarshal([]byte(outStr), &out)
-	if err != nil {
-		return out, fmt.Errorf("could not decode json file because of: %s", err)
-	}
-	return out, nil
-}
-
-// getLsblk gets lsblk in Json format for a given node
-func getLsblk(debugPod *v1.Pod, o *clientsholder.ClientsHolder) (out interface{}, err error) { //nolint:dupl
-	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
-	outStr, errStr, err := o.ExecCommandContainer(ctx, lsblkCommand)
-	if err != nil || errStr != "" {
-		return out, fmt.Errorf("command %s failed with error err: %s , stderr: %s", lsblkCommand, err, errStr)
+		return out, fmt.Errorf("command %s failed with error err: %s , stderr: %s", cmd, err, errStr)
 	}
 	err = json.Unmarshal([]byte(outStr), &out)
 	if err != nil {
@@ -148,7 +120,7 @@ func getLsblk(debugPod *v1.Pod, o *clientsholder.ClientsHolder) (out interface{}
 }
 
 // getLspci gets lspci in Json format for a given node
-func getLspci(debugPod *v1.Pod, o *clientsholder.ClientsHolder) (out []string, err error) {
+func getLspci(debugPod *v1.Pod, o clientsholder.Command) (out []string, err error) {
 	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
 	outStr, errStr, err := o.ExecCommandContainer(ctx, lspciCommand)
 	if err != nil || errStr != "" {
