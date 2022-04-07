@@ -118,9 +118,22 @@ func loadJUnitXMLIntoMap(result map[string]interface{}, junitFilename, key strin
 	}
 }
 
-// SetLogFormat sets the log format for logrus
-func SetLogFormat() {
-	log.Info("debug format initialization: start")
+// setLogLevel sets the log level for logrus based on the "TNF_LOG_LEVEL" environment variable
+func setLogLevel() {
+	params := configuration.GetTestParameters()
+
+	var logLevel, err = log.ParseLevel(params.LogLevel)
+	if err != nil {
+		log.Error("TNF_LOG_LEVEL environment set with an invalid value, defaulting to DEBUG \n Valid values are:  trace, debug, info, warn, error, fatal, panic")
+		logLevel = log.DebugLevel
+	}
+
+	log.Info("Log level set to: ", logLevel)
+	log.SetLevel(logLevel)
+}
+
+// setLogFormat sets the log format for logrus
+func setLogFormat() {
 	customFormatter := new(log.TextFormatter)
 	customFormatter.TimestampFormat = time.StampMilli
 	customFormatter.PadLevelText = true
@@ -132,8 +145,6 @@ func SetLogFormat() {
 		return strconv.Itoa(f.Line) + "]", fmt.Sprintf("[%s:", filename)
 	}
 	log.SetFormatter(customFormatter)
-	log.Info("debug format initialization: done")
-	log.SetLevel(log.TraceLevel)
 }
 
 func getK8sClientsConfigFileNames() []string {
@@ -169,6 +180,10 @@ func TestTest(t *testing.T) {
 		t.Skip("Skipping test suite when running unit tests")
 	}
 
+	// Set up logging params for logrus
+	setLogFormat()
+	setLogLevel()
+
 	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
 	log.Infof("TNF Version         : %v", getGitVersion())
 	log.Infof("Ginkgo Version      : %v", ginkgo.GINKGO_VERSION)
@@ -180,8 +195,6 @@ func TestTest(t *testing.T) {
 	diagnosticMode := len(ginkgoConfig.FocusStrings) == 0
 
 	gomega.RegisterFailHandler(ginkgo.Fail)
-
-	SetLogFormat()
 
 	// Set clientsholder singleton with the filenames from the env vars.
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)

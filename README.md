@@ -479,7 +479,7 @@ operator
     /Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:152
 ```
 ## Log level 
-The optional LOG_LEVEL environment variable sets the log level. Defaults to "info" if not set. Valid values are: trace, debug, info, warn, error, fatal, panic.
+The optional TNF_LOG_LEVEL environment variable sets the log level. Defaults to "info" if not set. Valid values are: trace, debug, info, warn, error, fatal, panic.
 
 ## Grading Tool
 ### Overview
