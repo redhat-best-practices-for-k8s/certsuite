@@ -31,6 +31,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -61,30 +62,36 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	// Default interface ICMP IPv4 test case
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv4ConnectivityIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testDefaultNetworkConnectivity(&env, defaultNumPings, netcommons.IPv4)
 	})
 	// Multus interfaces ICMP IPv4 test case
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv4ConnectivityMultusIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testMultusNetworkConnectivity(&env, defaultNumPings, netcommons.IPv4)
 	})
 	// Default interface ICMP IPv6 test case
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv6ConnectivityIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testDefaultNetworkConnectivity(&env, defaultNumPings, netcommons.IPv6)
 	})
 	// Multus interfaces ICMP IPv6 test case
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv6ConnectivityMultusIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testMultusNetworkConnectivity(&env, defaultNumPings, netcommons.IPv6)
 	})
 	// Default interface ICMP IPv6 test case
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestUndeclaredContainerPortsUsage)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testListenAndDeclared(&env)
 	})
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestServicesDoNotUseNodeportsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testNodePort(&env)
 	})
 })

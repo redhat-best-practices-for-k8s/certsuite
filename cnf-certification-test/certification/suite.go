@@ -31,6 +31,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
@@ -115,10 +116,7 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		operatorsToQuery := env.Subscriptions
-
-		if len(operatorsToQuery) == 0 {
-			ginkgo.Skip("No operators to check configured ")
-		}
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Operators)
 		certtool.CertAPIClient = api.NewHTTPClient()
 		ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsToQuery)))
 		testFailed := false
@@ -150,9 +148,7 @@ func testHelmCertified(env *provider.TestEnvironment) {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		certtool.CertAPIClient = api.NewHTTPClient()
 		helmchartsReleases := env.HelmChartReleases
-		if len(helmchartsReleases) == 0 {
-			ginkgo.Skip("No helm charts to check")
-		}
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, helmchartsReleases)
 		out, err := certtool.CertAPIClient.GetYamlFile()
 		if err != nil {
 			ginkgo.Fail(fmt.Sprintf("error while reading the helm yaml file from the api %s", err))

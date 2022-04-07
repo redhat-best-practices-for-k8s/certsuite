@@ -31,6 +31,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
@@ -56,82 +57,92 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	// Security Context: non-compliant capabilities
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConCapabilitiesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestSecConCapabilities(&env)
 	})
 	// container security context: non-root user
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConNonRootUserIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestSecConRootUser(&env)
 	})
 	// container security context: privileged escalation
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConPrivilegeEscalation)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestSecConPrivilegeEscalation(&env)
 	})
 	// container security context: host port
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestContainerHostPort)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestContainerHostPort(&env)
 	})
 	// container security context: host network
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostNetwork)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodHostNetwork(&env)
 	})
 	// pod host path
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostPath)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodHostPath(&env)
 	})
 	// pod host ipc
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostIPC)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodHostIPC(&env)
 	})
 	// pod host pid
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostPID)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodHostPID(&env)
 	})
 	// Namespace
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNamespaceBestPracticesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Namespaces)
 		TestNamespace(&env)
 	})
 	// pod service account
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodServiceAccountBestPracticesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodServiceAccount(&env)
 	})
 	// pod role bindings
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodRoleBindingsBestPracticesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodRoleBindings(&env)
 	})
 	// pod cluster role bindings
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodClusterRoleBindingsBestPracticesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodClusterRoleBindings(&env)
 	})
 	// automount service token
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodAutomountServiceAccountIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestAutomountServiceToken(&env)
 	})
 	// one process per container
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestOneProcessPerContainerIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestOneProcessPerContainer(&env)
 	})
-
 })
 
 // TestSecConCapabilities verifies that non compliant capabilities are not present
 func TestSecConCapabilities(env *provider.TestEnvironment) {
 	var badContainers []string
-	if len(env.Containers) == 0 {
-		ginkgo.Skip("No containers to perform test, skipping")
-	}
 	for _, cut := range env.Containers {
 		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.Capabilities != nil {
 			for _, ncc := range nonCompliantCapabilities {
@@ -149,9 +160,6 @@ func TestSecConCapabilities(env *provider.TestEnvironment) {
 // TestSecConRootUser verifies that the container is not running as root
 func TestSecConRootUser(env *provider.TestEnvironment) {
 	var badContainers, badPods []string
-	if len(env.Containers) == 0 {
-		ginkgo.Skip("No containers to perform test, skipping")
-	}
 	for _, put := range env.Pods {
 		if put.Data.Spec.SecurityContext != nil && put.Data.Spec.SecurityContext.RunAsUser != nil {
 			// Check the pod level RunAsUser parameter
@@ -180,9 +188,6 @@ func TestSecConRootUser(env *provider.TestEnvironment) {
 // TestSecConPrivilegeEscalation verifies that the container is not allowed privilege escalation
 func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 	var badContainers []string
-	if len(env.Containers) == 0 {
-		ginkgo.Skip("No containers to perform test, skipping")
-	}
 	for _, cut := range env.Containers {
 		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.AllowPrivilegeEscalation != nil {
 			if *(cut.Data.SecurityContext.AllowPrivilegeEscalation) {
@@ -198,9 +203,6 @@ func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 // TestContainerHostPort tests that containers are not configured with host port privileges
 func TestContainerHostPort(env *provider.TestEnvironment) {
 	var badContainers []string
-	if len(env.Containers) == 0 {
-		ginkgo.Skip("No containers to perform test, skipping")
-	}
 	for _, cut := range env.Containers {
 		for _, aPort := range cut.Data.Ports {
 			if aPort.HostPort != 0 {
@@ -214,11 +216,8 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 }
 
 // TestPodHostNetwork verifies that the pod hostNetwork parameter is not set to true
-func TestPodHostNetwork(env *provider.TestEnvironment) { //nolint:dupl
+func TestPodHostNetwork(env *provider.TestEnvironment) {
 	var badPods []string
-	if len(env.Pods) == 0 {
-		ginkgo.Skip("No Pods to run test, skipping")
-	}
 	for _, put := range env.Pods {
 		if put.Data.Spec.HostNetwork {
 			tnf.ClaimFilePrintf("Host network is set to true in pod %s.", put.Data.Namespace+"."+put.Data.Name)
@@ -232,9 +231,6 @@ func TestPodHostNetwork(env *provider.TestEnvironment) { //nolint:dupl
 // TestPodHostPath verifies that the pod hostpath parameter is not set to true
 func TestPodHostPath(env *provider.TestEnvironment) {
 	var badPods []string
-	if len(env.Pods) == 0 {
-		ginkgo.Skip("No Pods to run test, skipping")
-	}
 	for _, put := range env.Pods {
 		for idx := range put.Data.Spec.Volumes {
 			vol := &put.Data.Spec.Volumes[idx]
@@ -249,11 +245,8 @@ func TestPodHostPath(env *provider.TestEnvironment) {
 }
 
 // TestPodHostIPC verifies that the pod hostIpc parameter is not set to true
-func TestPodHostIPC(env *provider.TestEnvironment) { //nolint:dupl
+func TestPodHostIPC(env *provider.TestEnvironment) {
 	var badPods []string
-	if len(env.Pods) == 0 {
-		ginkgo.Skip("No Pods to run test, skipping")
-	}
 	for _, put := range env.Pods {
 		if put.Data.Spec.HostIPC {
 			tnf.ClaimFilePrintf("HostIpc is set in pod %s.", put.Data.Namespace+"."+put.Data.Name)
@@ -265,11 +258,8 @@ func TestPodHostIPC(env *provider.TestEnvironment) { //nolint:dupl
 }
 
 // TestPodHostPID verifies that the pod hostPid parameter is not set to true
-func TestPodHostPID(env *provider.TestEnvironment) { //nolint:dupl
+func TestPodHostPID(env *provider.TestEnvironment) {
 	var badPods []string
-	if len(env.Pods) == 0 {
-		ginkgo.Skip("No Pods to run test, skipping")
-	}
 	for _, put := range env.Pods {
 		if put.Data.Spec.HostPID {
 			tnf.ClaimFilePrintf("HostPid is set in pod %s.", put.Data.Namespace+"."+put.Data.Name)
