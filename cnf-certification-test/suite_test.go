@@ -118,21 +118,11 @@ func loadJUnitXMLIntoMap(result map[string]interface{}, junitFilename, key strin
 	}
 }
 
-// logLevel retrieves the TNF_LOG_LEVEL environment variable
-func logLevel() string {
-	logLevel := os.Getenv("TNF_LOG_LEVEL")
-	if logLevel == "" {
-		log.Info("TNF_LOG_LEVEL environment is not set, defaulting to DEBUG")
-		logLevel = "debug"
-	}
-
-	return logLevel
-}
-
 // setLogLevel sets the log level for logrus based on the "TNF_LOG_LEVEL" environment variable
 func setLogLevel() {
-	var logLevel, err = log.ParseLevel(logLevel())
+	params := configuration.GetTestParameters()
 
+	var logLevel, err = log.ParseLevel(params.LogLevel)
 	if err != nil {
 		log.Error("TNF_LOG_LEVEL environment set with an invalid value, defaulting to DEBUG \n Valid values are:  trace, debug, info, warn, error, fatal, panic")
 		logLevel = log.DebugLevel
