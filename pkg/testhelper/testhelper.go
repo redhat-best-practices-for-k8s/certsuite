@@ -42,7 +42,7 @@ func ResultToString(result int) (str string) {
 func SkipIfEmptyAny(skip func(string, ...int), object ...interface{}) {
 	for _, o := range object {
 		s := reflect.ValueOf(o)
-		if s.Kind() != reflect.Slice {
+		if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
 			panic("SkipIfEmpty given a non-slice type")
 		}
 
@@ -57,7 +57,7 @@ func SkipIfEmptyAll(skip func(string, ...int), object ...interface{}) {
 	allTypes := ""
 	for _, o := range object {
 		s := reflect.ValueOf(o)
-		if s.Kind() != reflect.Slice {
+		if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
 			panic("SkipIfEmpty given a non-slice type")
 		}
 
