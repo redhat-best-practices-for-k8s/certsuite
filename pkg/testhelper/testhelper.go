@@ -43,7 +43,7 @@ func SkipIfEmptyAny(skip func(string, ...int), object ...interface{}) {
 	for _, o := range object {
 		s := reflect.ValueOf(o)
 		if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
-			panic("SkipIfEmpty given a non-slice type")
+			panic("SkipIfEmpty was given a non slice/map type")
 		}
 
 		if s.Len() == 0 {
@@ -58,7 +58,7 @@ func SkipIfEmptyAll(skip func(string, ...int), object ...interface{}) {
 	for _, o := range object {
 		s := reflect.ValueOf(o)
 		if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
-			panic("SkipIfEmpty given a non-slice type")
+			panic("SkipIfEmpty was given a non slice/map type")
 		}
 
 		if s.Len() == 0 {
