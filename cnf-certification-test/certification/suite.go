@@ -38,6 +38,7 @@ const (
 	// timeout for eventually call
 	apiRequestTimeout = 40 * time.Second
 	CertifiedOperator = "certified-operators"
+	Online            = "online"
 )
 
 type ChartStruct struct {
@@ -63,7 +64,7 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 func testContainerCertificationStatus(env *provider.TestEnvironment) {
 	// Query API for certification status of listed containers
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestContainerIsCertifiedIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
 		containersToQuery := make(map[configuration.ContainerImageIdentifier]bool)
 
 		for _, c := range env.Config.CertifiedContainerInfo {
@@ -113,7 +114,7 @@ func testContainerCertificationStatus(env *provider.TestEnvironment) {
 
 func testAllOperatorCertified(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorIsCertifiedIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
 		operatorsToQuery := env.Subscriptions
 
 		if len(operatorsToQuery) == 0 {
@@ -147,7 +148,7 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 }
 func testHelmCertified(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestHelmIsCertifiedIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
 		certtool.CertAPIClient = api.NewHTTPClient()
 		helmchartsReleases := env.HelmChartReleases
 		if len(helmchartsReleases) == 0 {
