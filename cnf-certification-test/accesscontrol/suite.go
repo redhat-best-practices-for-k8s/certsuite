@@ -411,6 +411,7 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 		debugPod := env.DebugPods[cut.NodeName]
 		if debugPod == nil {
 			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
+			continue
 		}
 
 		ocpContext := clientsholder.Context{

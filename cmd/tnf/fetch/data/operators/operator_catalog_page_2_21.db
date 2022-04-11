@@ -1,0 +1,3626 @@
+{
+  "data": [
+    {
+      "_id": "623460095593ce895a7b5361",
+      "alm_examples": [
+        {
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "ppc64le"
+      ],
+      "bundle_path": "registry.connect.redhat.com/trilio/k8s-triliovault-ibm@sha256:85bdda572f98163d5e84adddb0ca47fb183ecd2cbeaa2ff0e905387c4d8f3d2d",
+      "bundle_path_digest": "sha256:85bdda572f98163d5e84adddb0ca47fb183ecd2cbeaa2ff0e905387c4d8f3d2d",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:33:45.854000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-ibm-stable.2.7.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-05T11:39:22.581000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault-ibm",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "version": "v1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
+          "image": "eu.gcr.io/amazing-chalice-243510/control-plane@sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
+          "name": "control-plane-1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a-annotation"
+        },
+        {
+          "digest": "sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
+          "image": "eu.gcr.io/amazing-chalice-243510/control-plane@sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:8a1f8d4ef507034e9210f49cf6d20a42e18a480bff9974ac73efd35438610ba8",
+          "image": "eu.gcr.io/amazing-chalice-243510/analyzer@sha256:8a1f8d4ef507034e9210f49cf6d20a42e18a480bff9974ac73efd35438610ba8",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:b1318b3e0ee719ae183a48a1876f158862f958e9c85fadb672ccab3de5593311",
+          "image": "eu.gcr.io/amazing-chalice-243510/trilio-admission-webhook@sha256:b1318b3e0ee719ae183a48a1876f158862f958e9c85fadb672ccab3de5593311",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:3900293f0afbd3c594136768b89b3233611b115918ede5834eb8eab7ac5c3f70",
+          "image": "eu.gcr.io/amazing-chalice-243510/exporter@sha256:3900293f0afbd3c594136768b89b3233611b115918ede5834eb8eab7ac5c3f70",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:0c0691485ff10b2318ce378fcb37a77130db556d8cba9f895a6bf6814774b604",
+          "image": "eu.gcr.io/amazing-chalice-243510/web@sha256:0c0691485ff10b2318ce378fcb37a77130db556d8cba9f895a6bf6814774b604",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:c66c43fde40f9bf910b56c519d09cea3509de03973c6962ae57ceb3e924a9542",
+          "image": "eu.gcr.io/amazing-chalice-243510/web-backend@sha256:c66c43fde40f9bf910b56c519d09cea3509de03973c6962ae57ceb3e924a9542",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
+          "image": "eu.gcr.io/amazing-chalice-243510/dex@sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
+          "image": "eu.gcr.io/amazing-chalice-243510/trilio-init@sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
+          "image": "eu.gcr.io/amazing-chalice-243510/trilio-init@sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:dc868ce5d6aa0f0fb194af84951f3e22922aa523f17ca1d7174441d72022cb77",
+          "image": "eu.gcr.io/amazing-chalice-243510/metamover@sha256:dc868ce5d6aa0f0fb194af84951f3e22922aa523f17ca1d7174441d72022cb77",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:222b9317935dd19e9a333520bdf0b1f68d9768880bce6f482cb1b2250806da76",
+          "image": "eu.gcr.io/amazing-chalice-243510/datamover@sha256:222b9317935dd19e9a333520bdf0b1f68d9768880bce6f482cb1b2250806da76",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:806090cc5ac8a65fcc5e90d82143dc7df230f742c29ff1c21e685bb49879aaa7",
+          "image": "eu.gcr.io/amazing-chalice-243510/datastore-attacher@sha256:806090cc5ac8a65fcc5e90d82143dc7df230f742c29ff1c21e685bb49879aaa7",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:8b3f03459aedfb7829dad4c2e9f731d2f11abf9ba38319c3d2f0d8303a642c5e",
+          "image": "eu.gcr.io/amazing-chalice-243510/backup-scheduler@sha256:8b3f03459aedfb7829dad4c2e9f731d2f11abf9ba38319c3d2f0d8303a642c5e",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:e687443babeb3b9850aa3050b6c6935976358bcdea66666fb79b487ee35c5c25",
+          "image": "eu.gcr.io/amazing-chalice-243510/backup-cleaner@sha256:e687443babeb3b9850aa3050b6c6935976358bcdea66666fb79b487ee35c5c25",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:3eb71f17b6b04a7207f3cc921f29cd070993402d951aa940a6c0be61733fe958",
+          "image": "eu.gcr.io/amazing-chalice-243510/backup-retention@sha256:3eb71f17b6b04a7207f3cc921f29cd070993402d951aa940a6c0be61733fe958",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:6729338fadd130c21e830fc9c5dacb4efae3ffb37427c415d377ee7c8f152872",
+          "image": "eu.gcr.io/amazing-chalice-243510/target-browser@sha256:6729338fadd130c21e830fc9c5dacb4efae3ffb37427c415d377ee7c8f152872",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:7a76cad51eab8ceb492426507cf6c92ed90047184ae2a8d0ce6c2e1a57762078",
+          "image": "eu.gcr.io/amazing-chalice-243510/hook-executor@sha256:7a76cad51eab8ceb492426507cf6c92ed90047184ae2a8d0ce6c2e1a57762078",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:08b4bb891506388fe6bc96490c3ee8117a2c4b7f99919e2e8a5333d2bc12ee5d",
+          "image": "eu.gcr.io/amazing-chalice-243510/resource-cleaner@sha256:08b4bb891506388fe6bc96490c3ee8117a2c4b7f99919e2e8a5333d2bc12ee5d",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:6015efd6fe0f935ee77588573d1f1e8c4a4d453d27e6925ef1c89fbab0aa1068",
+          "image": "eu.gcr.io/amazing-chalice-243510/minio@sha256:6015efd6fe0f935ee77588573d1f1e8c4a4d453d27e6925ef1c89fbab0aa1068",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
+          "image": "eu.gcr.io/amazing-chalice-243510/dex@sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
+          "image": "eu.gcr.io/amazing-chalice-243510/trilio-init@sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.7.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.7.0",
+      "version_original": "2.7.0"
+    },
+    {
+      "_id": "6234601a06c5dada0193e087",
+      "alm_examples": [
+        {
+          "kind": "PmemCSIDeployment",
+          "metadata": {
+            "name": "pmem-csi.intel.com"
+          },
+          "spec": {
+            "deviceMode": "lvm",
+            "nodeSelector": {
+              "feature.node.kubernetes.io/memory-nv.dax": "true"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:72c1ec043ba8bba57e710d1cabac54374612a18cbce05caca9b14310942faa8d",
+      "bundle_path_digest": "sha256:72c1ec043ba8bba57e710d1cabac54374612a18cbce05caca9b14310942faa8d",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-18T10:34:02.440000+00:00",
+      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
+      "csv_display_name": "Operator for PMEM-CSI driver",
+      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
+      "csv_name": "pmem-csi-operator.v1.0.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-04-05T11:39:00.679000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "pmem-csi-operator-os",
+      "provided_apis": [
+        {
+          "group": "pmem-csi.intel.com",
+          "kind": "PmemCSIDeployment",
+          "version": "v1beta1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "name": "pmem-csi-driver-os-09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a-annotation"
+        },
+        {
+          "digest": "sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "name": "pmem-csi-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.0.0",
+      "version_original": "1.0.0"
+    },
+    {
+      "_id": "6234601f5593ce895a7b5364",
+      "alm_examples": [
+        {
+          "kind": "PmemCSIDeployment",
+          "metadata": {
+            "name": "pmem-csi.intel.com"
+          },
+          "spec": {
+            "deviceMode": "lvm",
+            "nodeSelector": {
+              "feature.node.kubernetes.io/memory-nv.dax": "true"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:72c1ec043ba8bba57e710d1cabac54374612a18cbce05caca9b14310942faa8d",
+      "bundle_path_digest": "sha256:72c1ec043ba8bba57e710d1cabac54374612a18cbce05caca9b14310942faa8d",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:34:07.862000+00:00",
+      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
+      "csv_display_name": "Operator for PMEM-CSI driver",
+      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
+      "csv_name": "pmem-csi-operator.v1.0.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-05T11:39:02.716000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "pmem-csi-operator-os",
+      "provided_apis": [
+        {
+          "group": "pmem-csi.intel.com",
+          "kind": "PmemCSIDeployment",
+          "version": "v1beta1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "name": "pmem-csi-driver-os-09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a-annotation"
+        },
+        {
+          "digest": "sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "name": "pmem-csi-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.0.0",
+      "version_original": "1.0.0"
+    },
+    {
+      "_id": "623460245593ce895a7b5366",
+      "alm_examples": [
+        {
+          "kind": "Anzo",
+          "metadata": {
+            "name": "agent01"
+          },
+          "spec": {
+            "nodeConfig": {
+              "spec": {
+                "replicas": 1,
+                "selector": {
+                  "matchLabels": {
+                    "app": "anzo"
+                  }
+                },
+                "serviceName": "anzo-agent01",
+                "template": {
+                  "metadata": {
+                    "labels": {
+                      "app": "anzo"
+                    }
+                  },
+                  "spec": {
+                    "containers": [
+                      {
+                        "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+                        "name": "anzo",
+                        "resources": {
+                          "limits": {
+                            "cpu": "4000m",
+                            "memory": "12Gi"
+                          },
+                          "requests": {
+                            "cpu": "4000m",
+                            "memory": "12Gi"
+                          }
+                        }
+                      }
+                    ],
+                    "serviceAccountName": "anzo-operator"
+                  }
+                }
+              }
+            },
+            "role": "AnzoAgent"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzo-operator-bundle@sha256:28703523a1c160570fc23fb1236d2a02108b97e4423d42b0d3cde98c94d351cb",
+      "bundle_path_digest": "sha256:28703523a1c160570fc23fb1236d2a02108b97e4423d42b0d3cde98c94d351cb",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:34:12.674000+00:00",
+      "csv_description": "The Anzo Operator provides the way to install and configure an anzo agent setup on Red Hat K8S environment.\nCurrently, this is supported only through when deployed as an Anzo Agent as part of an Anzo Unstructured deployment.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzo/blob/v2.0.0/README.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzo/userdoc/cloud-deployments.htm )\n\n### Support\n\nWe offer Support to our customers through [ Cambridge Semantics Customer Center ]( https://customercenter.cambridgesemantics.com/ ).",
+      "csv_display_name": "Anzo Operator",
+      "csv_metadata_description": "kubernetes operator for Anzo",
+      "csv_name": "anzo-operator.v2.0.101",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-05T11:41:05.622000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "anzo-operator",
+      "provided_apis": [
+        {
+          "group": "anzo.cambridgesemantics.com",
+          "kind": "Anzo",
+          "version": "v1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
+          "name": "anzo-operator-563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0-annotation"
+        },
+        {
+          "digest": "sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+          "name": "anzo"
+        },
+        {
+          "digest": "sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+          "name": "anzo-d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.0.0",
+      "version_original": "2.0.0"
+    },
+    {
+      "_id": "623460265593ce895a7b5367",
+      "alm_examples": [
+        {
+          "kind": "AnzoGraph",
+          "metadata": {
+            "name": "azg01"
+          },
+          "spec": {
+            "db": {
+              "nodeConfig": {
+                "spec": {
+                  "replicas": 1,
+                  "selector": {
+                    "matchLabels": {
+                      "app_data": "anzograph-data-grpc",
+                      "app_mgmt": "anzograph-mgmt-grpc"
+                    }
+                  },
+                  "serviceName": "anzograph-azg01",
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app_data": "anzograph-data-grpc",
+                        "app_mgmt": "anzograph-mgmt-grpc"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-db@sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+                          "name": "db",
+                          "resources": {
+                            "limits": {
+                              "cpu": "8000m",
+                              "memory": "8Gi"
+                            },
+                            "requests": {
+                              "cpu": "8000m",
+                              "memory": "8Gi"
+                            }
+                          }
+                        }
+                      ],
+                      "serviceAccountName": "anzograph-operator"
+                    }
+                  }
+                }
+              }
+            },
+            "deployFrontend": false,
+            "frontend": {
+              "nodeConfig": {
+                "spec": {
+                  "replicas": 1,
+                  "selector": {
+                    "matchLabels": {
+                      "app_mgmt": "anzograph-frontend"
+                    }
+                  },
+                  "serviceName": "anzograph-azg01",
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app_mgmt": "anzograph-frontend"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-frontend@sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+                          "name": "frontend",
+                          "resources": {
+                            "limits": {
+                              "cpu": "2000m",
+                              "memory": "4Gi"
+                            },
+                            "requests": {
+                              "cpu": "2000m",
+                              "memory": "4Gi"
+                            }
+                          }
+                        }
+                      ],
+                      "serviceAccountName": "anzograph-operator"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzograph-operator-bundle@sha256:9418a3505873ac387f2b5455ec7e696739a2bb6f03232f8c0f59489c605b96f2",
+      "bundle_path_digest": "sha256:9418a3505873ac387f2b5455ec7e696739a2bb6f03232f8c0f59489c605b96f2",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:34:14.980000+00:00",
+      "csv_description": "The AnzoGraph Operator provides the way to install and configure an AnzoGraph\ncluster on Red Hat K8S environment.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzograph/blob/v2.0.1/README_openshift_marketplace.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzograph/userdoc/ )\n\n### Support\n\nWe offer Support to our customers with the AnzoGraph db Enterprise Edition License [here]( https://customercenter.cambridgesemantics.com/ ). For AnzoGraph db Free Edition questions, get help from our Anzograph User Community at Stack Overflow. When submitting a question, include the tag 'anzograph'.",
+      "csv_display_name": "AnzoGraph Operator",
+      "csv_metadata_description": "kubernetes operator for AnzoGraph DB",
+      "csv_name": "anzograph-operator.v2.0.102",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-05T11:41:01.818000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "anzograph-operator",
+      "provided_apis": [
+        {
+          "group": "anzograph.clusters.cambridgesemantics.com",
+          "kind": "AnzoGraph",
+          "version": "v2"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-operator@sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "name": "anzograph-operator-a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732-annotation"
+        },
+        {
+          "digest": "sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-operator@sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e3bdddf811b5ba69f388d023aea1ba538edd00e9f415c33ec555321d39129a36",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph@sha256:e3bdddf811b5ba69f388d023aea1ba538edd00e9f415c33ec555321d39129a36",
+          "name": "anzograph_allinone"
+        },
+        {
+          "digest": "sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-db@sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "name": "anzograph_db"
+        },
+        {
+          "digest": "sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-frontend@sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "name": "anzograph_frontend"
+        },
+        {
+          "digest": "sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-frontend@sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "name": "anzograph-frontend-c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3-annotation"
+        },
+        {
+          "digest": "sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-db@sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "name": "anzograph-db-8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.0.1",
+      "version_original": "2.0.1"
+    },
+    {
+      "_id": "6234603106c5dada0193e089",
+      "alm_examples": [
+        {
+          "kind": "HPEEzmeralCSIDriver",
+          "metadata": {
+            "name": "hpeezmeralcsidriver"
+          },
+          "spec": {
+            "controllerImage": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
+            "nodeImage": "registry.connect.redhat.com/maprtech/csi-kdfplugin@sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
+            "pullPolicy": "Always"
+          }
+        },
+        {
+          "kind": "HPEEzmeralNFSCSIDriver",
+          "metadata": {
+            "name": "hpeezmeralnfscsidriver"
+          },
+          "spec": {
+            "controllerImage": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
+            "nodeImage": "registry.connect.redhat.com/maprtech/csi-nfsplugin@sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
+            "pullPolicy": "Always"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator-bundle@sha256:b23ef079d0bcbeaa227a0d759c900c103f97310ad2e00a566a74b100f95a37ff",
+      "bundle_path_digest": "sha256:b23ef079d0bcbeaa227a0d759c900c103f97310ad2e00a566a74b100f95a37ff",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:34:25.003000+00:00",
+      "csv_description": "The HPE Ezmeral CSI Operator for Kubernetes packages, deploys, manages, upgrades the HPE Ezmeral CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on HPE Ezmeral Data Fabric platform.\nThe HPE Ezmeral CSI Driver for Kubernetes leverages HPE Ezmeral Data Fabric platform to provide scalable and persistent storage for stateful applications. Please refer to our CSI driver [documentation](https://docs.datafabric.hpe.com/home/CSIdriver/csi_overview.html) for full list of supported CSI features.\n## Installation\nRefer to the HPE Ezmeral CSI Operator for Kubernetes [documentation](https://docs.datafabric.hpe.com/home/CSIdriver/csi_installing_operator.html)\n",
+      "csv_display_name": "HPE Ezmeral Data Fabric CSI Operator for Kubernetes",
+      "csv_metadata_description": "A Container Storage Interface (CSI) driver for HPE Ezmeral Data Fabric platform. The CSI driver allows you to use HPE Ezmeral Data Fabric with your preferred container orchestrator.",
+      "csv_name": "hpe-ezmeral-csi-operator.v1.0.9",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-05T11:41:03.731000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "hpe-ezmeral-csi-operator",
+      "provided_apis": [
+        {
+          "group": "ezmeral.hpe.com",
+          "kind": "HPEEzmeralCSIDriver",
+          "version": "v1"
+        },
+        {
+          "group": "ezmeral.hpe.com",
+          "kind": "HPEEzmeralNFSCSIDriver",
+          "version": "v1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
+          "image": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator@sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
+          "name": "hpe-ezmeral-csi-operator-82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f-annotation"
+        },
+        {
+          "digest": "sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
+          "image": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator@sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
+          "name": "hpe-ezmeral-csi-operator"
+        },
+        {
+          "digest": "sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
+          "image": "registry.connect.redhat.com/maprtech/csi-nfsplugin@sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
+          "name": "csi-nfsplugin-35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822-annotation"
+        },
+        {
+          "digest": "sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
+          "image": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
+          "name": "csi-kdfprovisioner-89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42-annotation"
+        },
+        {
+          "digest": "sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
+          "image": "registry.connect.redhat.com/maprtech/csi-kdfplugin@sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
+          "name": "csi-kdfplugin-480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.0.9",
+      "version_original": "1.0.9"
+    },
+    {
+      "_id": "62346036314381d2b0756b42",
+      "alm_examples": [
+        {
+          "kind": "LinstorController",
+          "metadata": {
+            "name": "linstor"
+          },
+          "spec": {
+            "controllerImage": "",
+            "dbConnectionURL": "etcd://linstor-etcd:2379",
+            "drbdRepoCred": "",
+            "priorityClassName": ""
+          }
+        },
+        {
+          "kind": "LinstorCSIDriver",
+          "metadata": {
+            "name": "linstor"
+          },
+          "spec": {
+            "controllerEndpoint": "http://linstor:3370",
+            "controllerReplicas": 1,
+            "csiControllerServiceAccountName": "csi-controller",
+            "csiNodeServiceAccountName": "csi-node",
+            "imagePullSecret": "",
+            "linstorPluginImage": ""
+          }
+        },
+        {
+          "kind": "LinstorSatelliteSet",
+          "metadata": {
+            "name": "linstor-satellites"
+          },
+          "spec": {
+            "automaticStorageType": "None",
+            "controllerEndpoint": "http://linstor:3370",
+            "drbdRepoCred": "",
+            "kernelModuleInjectionMode": "ShippedModules",
+            "priorityClassName": "",
+            "satelliteImage": ""
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/linbit/linstor-operator-bundle@sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
+      "bundle_path_digest": "sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-18T10:34:30.810000+00:00",
+      "csv_description": "LINSTOR is a configuration management system for storage on Linux systems.\nIt manages LVM logical volumes and/or ZFS ZVOLs on a cluster of nodes.\nIt leverages DRBD for replication between different nodes and to provide block\nstorage devices to users and applications. It manages snapshots, encryption and\ncaching of HDD backed data in SSDs via bcache.\n\nLINBIT provides a certified LINSTOR operator to ease deployment of LINSTOR\non Openshift by installing DRBD, managing Satellite and Controller pods,\nand integrating with Openshift to provision persistent storage for your workloads.\n\nFor detailed instructions and more configuration options, see our [user guide].\n\n[user guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-openshift\n\n## Install\n\nUnlike deployment via the helm chart, the certified Openshift\noperator does not deploy the needed etcd cluster. You must deploy this\nyourself ahead of time. We do this via the etcd operator available in the\nOperatorHub.\n\nIMPORTANT: It is advised that the etcd deployment uses persistent\nstorage of some type. Either use an existing storage provisioner with\na default `StorageClass` or simply use `hostPath` volumes.\n\n### Installing the operator\n\nHit \"Install\", select the stable update channel and a namespace for the\noperator. Use of a new namespace is recommended.\n\nHit \"Install\" again. At this point you should have just one pod, the\noperator pod, running. Next we needs to configure the remaining provided APIs.\n\n#### A note on operator namespaces\nThe LINSTOR operator can only watch for events and manage\ncustom resources that are within the same namespace it is deployed\nwithin (OwnNamsespace). This means the LINSTOR Controller, LINSTOR\nSatellites, and LINSTOR CSI Driver pods all need to be deployed in the\nsame namsepace as the LINSTOR Operator pod.\n\n### Deploying the LINSTOR Controller\n\nNavigate to the left-hand control pane of the Openshift Web\nConsole. Expand the \"Operators\" section, selecting \"Installed Operators\".\nFind the entry for the \"Linstor Operator\", then select the \"LinstorController\"\nfrom the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorController\". Click the \"Create LinstorController\" button.\n\nHere you will be presented with options to configure the LINSTOR\nController. Either via the web-form view or the YAML View. Regardless\nof which view you select, make sure that the `dbConnectionURL` matches\nthe endpoint provided from your etcd deployment. Otherwise, the\ndefaults are usually fine for most purposes.\n\nLastly hit \"Create\", you should now see a linstor-controller pod\nrunning.\n\n### Deploying the LINSTOR Satellites\n\nNext we need to deploy the Satellites Set. Just as before navigate\nto the left-hand control pane of the Openshift Web Console. Expand the\n\"Operators\" section, but this time select \"Installed Operators\". Find\nthe entry for the \"Linstor Operator\", then select the\n\"LinstorSatelliteSet\" from the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorSatelliteSet\". Click the \"Create LinstorSatelliteSet\" button.\n\nHere you will be presented with the options to configure the LINSTOR\nSatellites. The defaults should be enough to get you started.\nMake sure the `controllerEndpoint` matches what is available in the\nopenshift endpoints. The default is usually correct here.\n\nYou can edit the `storagePools` section to configure LINSTOR storage pools,\nincluding preparing the backing devices. See our [storage guide].\n\n[storage guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-storage\n\nBelow is an example manifest:\n\n```yaml\napiVersion: linstor.linbit.com/v1\nkind: LinstorSatelliteSet\nmetadata:\n  name: linstor-satellites\nspec:\n  satelliteImage: ''\n  automaticStorageType: None\n  storagePools:\n    lvmThinPools:\n    - name: openshift-pool\n      volumeGroup: \"\"\n      thinVolume: openshift\n      devicePaths:\n      - /dev/vdb\n  drbdRepoCred: ''\n  kernelModuleInjectionMode: ShippedModules\n  controllerEndpoint: 'http://linstor:3370'\n  priorityClassName: ''\n```\n\nLastly hit \"Create\", you should now see a linstor-node pod\nrunning on every worker node.\n\n### Deploying the LINSTOR CSI driver\n\nLast bit left is the CSI pods to bridge the layer between the CSI and\nLINSTOR. Just as before navigate to the left-hand control pane of the\nOpenshift Web Console. Expand the \"Operators\" section, but this time\nselect \"Installed Operators\". Find the entry for the \"Linstor Operator\",\nthen select the \"LinstorCSIDriver\" from the \"Provided APIs\" column on the\nright.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorCSIDriver\". Click the \"Create LinstorCSIDriver\" button.\n\nAgain, you will be presented with the options. Make sure that the\n`controllerEndpoint` is correct. Otherwise the defaults are fine for\nmost use cases.\n\nLastly hit \"Create\". You will now see a single \"linstor-csi-controller\" pod,\nas well as a \"linstor-csi-node\" pod on all worker nodes.\n\n## Interacting with LINSTOR in Openshift.\n\nThe Controller pod includes a LINSTOR Client, making it easy to interact directly with LINSTOR.\nFor instance:\n\n```\noc exec deployment/linstor-cs-controller -- linstor storage-pool list\n```\n\nThis should only be necessary for investigating problems and accessing advanced functionality.\nRegular operation such as creating volumes should be achieved via the [Openshift/Kubernetes integration].\n\n[Openshift/Kubernetes integration]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-basic-configuration-and-deployment",
+      "csv_display_name": "Linstor Operator",
+      "csv_metadata_description": "LINSTOR Kubernetes Operator",
+      "csv_name": "linstor-operator.v1.5.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-04-05T11:42:52.753000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "linstor-operator",
+      "provided_apis": [
+        {
+          "group": "linstor.linbit.com",
+          "kind": "LinstorCSIDriver",
+          "version": "v1"
+        },
+        {
+          "group": "linstor.linbit.com",
+          "kind": "LinstorController",
+          "version": "v1"
+        },
+        {
+          "group": "linstor.linbit.com",
+          "kind": "LinstorSatelliteSet",
+          "version": "v1"
+        }
+      ],
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.5.1",
+      "version_original": "1.5.1"
+    },
+    {
+      "_id": "6234603806c5dada0193e08a",
+      "alm_examples": [
+        {
+          "kind": "LinstorController",
+          "metadata": {
+            "name": "linstor"
+          },
+          "spec": {
+            "controllerImage": "",
+            "dbConnectionURL": "etcd://linstor-etcd:2379",
+            "drbdRepoCred": "",
+            "priorityClassName": ""
+          }
+        },
+        {
+          "kind": "LinstorCSIDriver",
+          "metadata": {
+            "name": "linstor"
+          },
+          "spec": {
+            "controllerEndpoint": "http://linstor:3370",
+            "controllerReplicas": 1,
+            "csiControllerServiceAccountName": "csi-controller",
+            "csiNodeServiceAccountName": "csi-node",
+            "imagePullSecret": "",
+            "linstorPluginImage": ""
+          }
+        },
+        {
+          "kind": "LinstorSatelliteSet",
+          "metadata": {
+            "name": "linstor-satellites"
+          },
+          "spec": {
+            "automaticStorageType": "None",
+            "controllerEndpoint": "http://linstor:3370",
+            "drbdRepoCred": "",
+            "kernelModuleInjectionMode": "ShippedModules",
+            "priorityClassName": "",
+            "satelliteImage": ""
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/linbit/linstor-operator-bundle@sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
+      "bundle_path_digest": "sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:34:32.778000+00:00",
+      "csv_description": "LINSTOR is a configuration management system for storage on Linux systems.\nIt manages LVM logical volumes and/or ZFS ZVOLs on a cluster of nodes.\nIt leverages DRBD for replication between different nodes and to provide block\nstorage devices to users and applications. It manages snapshots, encryption and\ncaching of HDD backed data in SSDs via bcache.\n\nLINBIT provides a certified LINSTOR operator to ease deployment of LINSTOR\non Openshift by installing DRBD, managing Satellite and Controller pods,\nand integrating with Openshift to provision persistent storage for your workloads.\n\nFor detailed instructions and more configuration options, see our [user guide].\n\n[user guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-openshift\n\n## Install\n\nUnlike deployment via the helm chart, the certified Openshift\noperator does not deploy the needed etcd cluster. You must deploy this\nyourself ahead of time. We do this via the etcd operator available in the\nOperatorHub.\n\nIMPORTANT: It is advised that the etcd deployment uses persistent\nstorage of some type. Either use an existing storage provisioner with\na default `StorageClass` or simply use `hostPath` volumes.\n\n### Installing the operator\n\nHit \"Install\", select the stable update channel and a namespace for the\noperator. Use of a new namespace is recommended.\n\nHit \"Install\" again. At this point you should have just one pod, the\noperator pod, running. Next we needs to configure the remaining provided APIs.\n\n#### A note on operator namespaces\nThe LINSTOR operator can only watch for events and manage\ncustom resources that are within the same namespace it is deployed\nwithin (OwnNamsespace). This means the LINSTOR Controller, LINSTOR\nSatellites, and LINSTOR CSI Driver pods all need to be deployed in the\nsame namsepace as the LINSTOR Operator pod.\n\n### Deploying the LINSTOR Controller\n\nNavigate to the left-hand control pane of the Openshift Web\nConsole. Expand the \"Operators\" section, selecting \"Installed Operators\".\nFind the entry for the \"Linstor Operator\", then select the \"LinstorController\"\nfrom the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorController\". Click the \"Create LinstorController\" button.\n\nHere you will be presented with options to configure the LINSTOR\nController. Either via the web-form view or the YAML View. Regardless\nof which view you select, make sure that the `dbConnectionURL` matches\nthe endpoint provided from your etcd deployment. Otherwise, the\ndefaults are usually fine for most purposes.\n\nLastly hit \"Create\", you should now see a linstor-controller pod\nrunning.\n\n### Deploying the LINSTOR Satellites\n\nNext we need to deploy the Satellites Set. Just as before navigate\nto the left-hand control pane of the Openshift Web Console. Expand the\n\"Operators\" section, but this time select \"Installed Operators\". Find\nthe entry for the \"Linstor Operator\", then select the\n\"LinstorSatelliteSet\" from the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorSatelliteSet\". Click the \"Create LinstorSatelliteSet\" button.\n\nHere you will be presented with the options to configure the LINSTOR\nSatellites. The defaults should be enough to get you started.\nMake sure the `controllerEndpoint` matches what is available in the\nopenshift endpoints. The default is usually correct here.\n\nYou can edit the `storagePools` section to configure LINSTOR storage pools,\nincluding preparing the backing devices. See our [storage guide].\n\n[storage guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-storage\n\nBelow is an example manifest:\n\n```yaml\napiVersion: linstor.linbit.com/v1\nkind: LinstorSatelliteSet\nmetadata:\n  name: linstor-satellites\nspec:\n  satelliteImage: ''\n  automaticStorageType: None\n  storagePools:\n    lvmThinPools:\n    - name: openshift-pool\n      volumeGroup: \"\"\n      thinVolume: openshift\n      devicePaths:\n      - /dev/vdb\n  drbdRepoCred: ''\n  kernelModuleInjectionMode: ShippedModules\n  controllerEndpoint: 'http://linstor:3370'\n  priorityClassName: ''\n```\n\nLastly hit \"Create\", you should now see a linstor-node pod\nrunning on every worker node.\n\n### Deploying the LINSTOR CSI driver\n\nLast bit left is the CSI pods to bridge the layer between the CSI and\nLINSTOR. Just as before navigate to the left-hand control pane of the\nOpenshift Web Console. Expand the \"Operators\" section, but this time\nselect \"Installed Operators\". Find the entry for the \"Linstor Operator\",\nthen select the \"LinstorCSIDriver\" from the \"Provided APIs\" column on the\nright.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorCSIDriver\". Click the \"Create LinstorCSIDriver\" button.\n\nAgain, you will be presented with the options. Make sure that the\n`controllerEndpoint` is correct. Otherwise the defaults are fine for\nmost use cases.\n\nLastly hit \"Create\". You will now see a single \"linstor-csi-controller\" pod,\nas well as a \"linstor-csi-node\" pod on all worker nodes.\n\n## Interacting with LINSTOR in Openshift.\n\nThe Controller pod includes a LINSTOR Client, making it easy to interact directly with LINSTOR.\nFor instance:\n\n```\noc exec deployment/linstor-cs-controller -- linstor storage-pool list\n```\n\nThis should only be necessary for investigating problems and accessing advanced functionality.\nRegular operation such as creating volumes should be achieved via the [Openshift/Kubernetes integration].\n\n[Openshift/Kubernetes integration]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-basic-configuration-and-deployment",
+      "csv_display_name": "Linstor Operator",
+      "csv_metadata_description": "LINSTOR Kubernetes Operator",
+      "csv_name": "linstor-operator.v1.5.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-05T11:42:54.745000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "linstor-operator",
+      "provided_apis": [
+        {
+          "group": "linstor.linbit.com",
+          "kind": "LinstorCSIDriver",
+          "version": "v1"
+        },
+        {
+          "group": "linstor.linbit.com",
+          "kind": "LinstorController",
+          "version": "v1"
+        },
+        {
+          "group": "linstor.linbit.com",
+          "kind": "LinstorSatelliteSet",
+          "version": "v1"
+        }
+      ],
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.5.1",
+      "version_original": "1.5.1"
+    },
+    {
+      "_id": "624c2aea2793d604991eddf1",
+      "alm_examples": [
+        {
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:5b753d6a2c35daf1f1f687dfb8f23b77e12e3495daad8aae72835826e553b9ff",
+      "bundle_path_digest": "sha256:5b753d6a2c35daf1f1f687dfb8f23b77e12e3495daad8aae72835826e553b9ff",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-05T11:41:30.708000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.8.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-19T11:46:58.397000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "version": "v1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "name": "control-plane-da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa-annotation"
+        },
+        {
+          "digest": "sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:6b1e73016d82ef14b288931d7400a84cda44d152e4279e4fc8d55026f1670f53",
+          "image": "registry.connect.redhat.com/trilio/analyzer@sha256:6b1e73016d82ef14b288931d7400a84cda44d152e4279e4fc8d55026f1670f53",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:22dc88795009401e3b3be3b495988e2a674e828b7e5fc0d696f7773e16de4ab6",
+          "image": "registry.connect.redhat.com/trilio/trilio-admission-webhook@sha256:22dc88795009401e3b3be3b495988e2a674e828b7e5fc0d696f7773e16de4ab6",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:369855bd24f04c654560909e14e931b56b7c5f183f8a9bd9dae78c3357c1fab5",
+          "image": "registry.connect.redhat.com/trilio/exporter@sha256:369855bd24f04c654560909e14e931b56b7c5f183f8a9bd9dae78c3357c1fab5",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:7a81107e916ace686a5dd2ecfe2abc5392a6b1ea20ee5fdbdfe376efe6280584",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:7a81107e916ace686a5dd2ecfe2abc5392a6b1ea20ee5fdbdfe376efe6280584",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:93434d4bbc94ca2ea51e89241890fc71a4c6560a6290bde1eec6b823c639481b",
+          "image": "registry.connect.redhat.com/trilio/web-backend@sha256:93434d4bbc94ca2ea51e89241890fc71a4c6560a6290bde1eec6b823c639481b",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:a71c0fdb51c6c7b124d646371028c1537b0a8caf8e6b957522418094bff19fe4",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:a71c0fdb51c6c7b124d646371028c1537b0a8caf8e6b957522418094bff19fe4",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:106626ae6442bfa0ab02ce3ff24c9e3896cbb582929685eba8b16de1d2375c31",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:106626ae6442bfa0ab02ce3ff24c9e3896cbb582929685eba8b16de1d2375c31",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:e8e501d86fc63b3df7c80e37ef65dd486cee7baa9dae7059876e5759eeedfbb1",
+          "image": "registry.connect.redhat.com/trilio/datastore-attacher@sha256:e8e501d86fc63b3df7c80e37ef65dd486cee7baa9dae7059876e5759eeedfbb1",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:bd9ef186416b48d4cdf5a6683fdca9ff0ee883bd006153270d0b0b14621d4382",
+          "image": "registry.connect.redhat.com/trilio/backup-scheduler@sha256:bd9ef186416b48d4cdf5a6683fdca9ff0ee883bd006153270d0b0b14621d4382",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:5b77387d7271cec5605a404726825d77639f6b011458697e6bb5611f84f7789b",
+          "image": "registry.connect.redhat.com/trilio/backup-cleaner@sha256:5b77387d7271cec5605a404726825d77639f6b011458697e6bb5611f84f7789b",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:36f92687f030fede59e8a99db14bd429af3d793dad9a23b4df3bd7a8fd4248b9",
+          "image": "registry.connect.redhat.com/trilio/backup-retention@sha256:36f92687f030fede59e8a99db14bd429af3d793dad9a23b4df3bd7a8fd4248b9",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:16b4accf64c5f8927f550ea08008ed3d4c72977a14daad7ee7efc1cdaae06ec7",
+          "image": "registry.connect.redhat.com/trilio/target-browser@sha256:16b4accf64c5f8927f550ea08008ed3d4c72977a14daad7ee7efc1cdaae06ec7",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:9aaaf8c7977bee47e85b8380a728b651d267a324094bb680a5be2e316f8220b0",
+          "image": "registry.connect.redhat.com/trilio/hook-executor@sha256:9aaaf8c7977bee47e85b8380a728b651d267a324094bb680a5be2e316f8220b0",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:ee41cc6157600dd03084259a47a8ecc2d89277839c1a77d9a4efd25eb6d6faaa",
+          "image": "registry.connect.redhat.com/trilio/resource-cleaner@sha256:ee41cc6157600dd03084259a47a8ecc2d89277839c1a77d9a4efd25eb6d6faaa",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.8.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.8.0",
+      "version_original": "2.8.0"
+    },
+    {
+      "_id": "624c2b3fefa705f49f5dfbbc",
+      "alm_examples": [
+        {
+          "kind": "HXCSIDriver",
+          "metadata": {
+            "name": "cisco-hyperflex-csi-driver"
+          },
+          "spec": {
+            "affinity": {},
+            "autoscaling": {},
+            "fullnameOverride": "",
+            "hx": {
+              "clientId": "INPUT_VALUE_HERE",
+              "dockerRegistryName": "INPUT_VALUE_HERE",
+              "iscsiUrl": "INPUT_VALUE_HERE",
+              "token": "INPUT_VALUE_HERE",
+              "url": "INPUT_VALUE_HERE"
+            },
+            "image": {
+              "attacher": "hxcsi-csi-attacher:3.2.1-cisco1",
+              "hxcsi": "hxcsi-ubi8:hxcsi-1.2.4-latest",
+              "provisioner": "hxcsi-csi-provisioner:2.2.1-cisco1",
+              "pullPolicy": "Always",
+              "registrar": "hxcsi-csi-node-driver-registrar:2.2.0-cisco1",
+              "resizer": "hxcsi-csi-resizer:1.2.0-cisco1",
+              "tag": ""
+            },
+            "ingress": {},
+            "nameOverride": "",
+            "nodeSelector": {},
+            "podAnnotations": {},
+            "podSecurityContext": {},
+            "replicaCount": 2,
+            "resources": {},
+            "securityContext": {},
+            "service": {},
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": ""
+            },
+            "storageClass": {
+              "isDefault": "false",
+              "name": "hyperflex"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/hxcsiadmin/hxcsi-helm-bundle@sha256:3906d0837e6745f0024a8819f1cc6d93da7d1289ed9db9ccd47552918c11e9f4",
+      "bundle_path_digest": "sha256:3906d0837e6745f0024a8819f1cc6d93da7d1289ed9db9ccd47552918c11e9f4",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-05T11:42:55.950000+00:00",
+      "csv_description": "\nCisco HyperFlex Data Platform (HX Data Platform) is a hyperconverged software appliance that transforms Cisco servers into a single pool of compute and storage resources. It eliminates the need for network storage and enables seamless interoperability between computing and storage in virtual environments. The Cisco HX Data Platform provides a highly fault-tolerant distributed storage system that preserves data integrity and optimizes performance for virtual machine (VM) storage workloads. In addition, native compression and deduplication reduce storage space occupied by the VMs and VM workloads.\n### HyperFlex CSI Driver\nThe Cisco HyperFlex Kubernetes CSI Integration allows Cisco HyperFlex to dynamically provide persistent storage to stateful Kubernetes workloads running on Cisco HyperFlex. The integration enables orchestration of the entire Persistent Volume object lifecycle to be offloaded and managed by Cisco HyperFlex, while being driven (initiated) by developers and users through standard Kubernetes Persistent Volume Claim objects. Developers and users get the benefit of leveraging Cisco HyperFlex for their Kubernetes persistent storage needs with zero additional administration overhead from their perspective.\n### Features Support\n- Support for CSI Spec 1.2 APIs\n- Kubernetes 1.18, 1.19, 1.20, 1.21 support\n- Kubernetes Cluster multi tenancy target masking using dedicated initiator group\n- Dynamic creation and deletion of volumes\n- Dynamic volume attach and detach\n- Block access support\n- CHAP support for iSCSI sessions\n- Clone volume (when source volume is from the same Datastore)\n- PV support with different filesystems (Ext4, Ext3, XFS)\n- Volume space statistics reporting per CSI specs\n- Multi-writer support (ReadWriteMany) for Block Mode only\n- Volume resize support for block mode volumes and ext3, ext4 filesystem volumes (expansion)\n",
+      "csv_display_name": "Cisco Hyperflex CSI Operator",
+      "csv_metadata_description": "Cisco HXCSI Plugin for RedHat OpenShift Platform",
+      "csv_name": "cisco-hxcsi-operator.v1.2.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-05T11:42:55.950000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "cisco-hxcsi-operator",
+      "provided_apis": [
+        {
+          "group": "hxcsi.cisco.com",
+          "kind": "HXCSIDriver",
+          "version": "v1"
+        },
+        {
+          "group": "hxcsi.cisco.com",
+          "kind": "HXCSIDriver",
+          "version": "v2"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee",
+          "image": "quay.io/hxcsiadmin/hxcsi-helm-bundle@sha256:3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee",
+          "name": "hxcsi-helm-bundle-3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee-annotation"
+        },
+        {
+          "digest": "sha256:f000432f07cd187469f0310e3ed9dcf9a5db2be14b8bab9c5293dd1ee8518176",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:f000432f07cd187469f0310e3ed9dcf9a5db2be14b8bab9c5293dd1ee8518176",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:76551da5c57ea629f1b6cf8b05b90bfa6dbc6b4e1cd886b9374fa6adb52f877d",
+          "image": "quay.io/hxcsiadmin/hxcsi-helm-operator@sha256:76551da5c57ea629f1b6cf8b05b90bfa6dbc6b4e1cd886b9374fa6adb52f877d",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.2.4",
+      "version_original": "1.2.4"
+    },
+    {
+      "_id": "624c2d561bf4f81c51bc8954",
+      "alm_examples": [
+        {
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:5b753d6a2c35daf1f1f687dfb8f23b77e12e3495daad8aae72835826e553b9ff",
+      "bundle_path_digest": "sha256:5b753d6a2c35daf1f1f687dfb8f23b77e12e3495daad8aae72835826e553b9ff",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-05T11:51:50.641000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.8.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-19T12:01:09.545000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "plural": "clusterbackups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "plural": "clusterbackupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "plural": "clusterrestores",
+          "version": "v1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "name": "control-plane-da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa-annotation"
+        },
+        {
+          "digest": "sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:6b1e73016d82ef14b288931d7400a84cda44d152e4279e4fc8d55026f1670f53",
+          "image": "registry.connect.redhat.com/trilio/analyzer@sha256:6b1e73016d82ef14b288931d7400a84cda44d152e4279e4fc8d55026f1670f53",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:22dc88795009401e3b3be3b495988e2a674e828b7e5fc0d696f7773e16de4ab6",
+          "image": "registry.connect.redhat.com/trilio/trilio-admission-webhook@sha256:22dc88795009401e3b3be3b495988e2a674e828b7e5fc0d696f7773e16de4ab6",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:369855bd24f04c654560909e14e931b56b7c5f183f8a9bd9dae78c3357c1fab5",
+          "image": "registry.connect.redhat.com/trilio/exporter@sha256:369855bd24f04c654560909e14e931b56b7c5f183f8a9bd9dae78c3357c1fab5",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:7a81107e916ace686a5dd2ecfe2abc5392a6b1ea20ee5fdbdfe376efe6280584",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:7a81107e916ace686a5dd2ecfe2abc5392a6b1ea20ee5fdbdfe376efe6280584",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:93434d4bbc94ca2ea51e89241890fc71a4c6560a6290bde1eec6b823c639481b",
+          "image": "registry.connect.redhat.com/trilio/web-backend@sha256:93434d4bbc94ca2ea51e89241890fc71a4c6560a6290bde1eec6b823c639481b",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:a71c0fdb51c6c7b124d646371028c1537b0a8caf8e6b957522418094bff19fe4",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:a71c0fdb51c6c7b124d646371028c1537b0a8caf8e6b957522418094bff19fe4",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:106626ae6442bfa0ab02ce3ff24c9e3896cbb582929685eba8b16de1d2375c31",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:106626ae6442bfa0ab02ce3ff24c9e3896cbb582929685eba8b16de1d2375c31",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:e8e501d86fc63b3df7c80e37ef65dd486cee7baa9dae7059876e5759eeedfbb1",
+          "image": "registry.connect.redhat.com/trilio/datastore-attacher@sha256:e8e501d86fc63b3df7c80e37ef65dd486cee7baa9dae7059876e5759eeedfbb1",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:bd9ef186416b48d4cdf5a6683fdca9ff0ee883bd006153270d0b0b14621d4382",
+          "image": "registry.connect.redhat.com/trilio/backup-scheduler@sha256:bd9ef186416b48d4cdf5a6683fdca9ff0ee883bd006153270d0b0b14621d4382",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:5b77387d7271cec5605a404726825d77639f6b011458697e6bb5611f84f7789b",
+          "image": "registry.connect.redhat.com/trilio/backup-cleaner@sha256:5b77387d7271cec5605a404726825d77639f6b011458697e6bb5611f84f7789b",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:36f92687f030fede59e8a99db14bd429af3d793dad9a23b4df3bd7a8fd4248b9",
+          "image": "registry.connect.redhat.com/trilio/backup-retention@sha256:36f92687f030fede59e8a99db14bd429af3d793dad9a23b4df3bd7a8fd4248b9",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:16b4accf64c5f8927f550ea08008ed3d4c72977a14daad7ee7efc1cdaae06ec7",
+          "image": "registry.connect.redhat.com/trilio/target-browser@sha256:16b4accf64c5f8927f550ea08008ed3d4c72977a14daad7ee7efc1cdaae06ec7",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:9aaaf8c7977bee47e85b8380a728b651d267a324094bb680a5be2e316f8220b0",
+          "image": "registry.connect.redhat.com/trilio/hook-executor@sha256:9aaaf8c7977bee47e85b8380a728b651d267a324094bb680a5be2e316f8220b0",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:ee41cc6157600dd03084259a47a8ecc2d89277839c1a77d9a4efd25eb6d6faaa",
+          "image": "registry.connect.redhat.com/trilio/resource-cleaner@sha256:ee41cc6157600dd03084259a47a8ecc2d89277839c1a77d9a4efd25eb6d6faaa",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.8.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.8.0",
+      "version_original": "2.8.0"
+    },
+    {
+      "_id": "624c2db69065edc05c072ced",
+      "alm_examples": [
+        {
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:5b753d6a2c35daf1f1f687dfb8f23b77e12e3495daad8aae72835826e553b9ff",
+      "bundle_path_digest": "sha256:5b753d6a2c35daf1f1f687dfb8f23b77e12e3495daad8aae72835826e553b9ff",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-05T11:53:26.454000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.8.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-19T12:04:06.050000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "plural": "clusterbackupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "plural": "clusterrestores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "plural": "clusterbackups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "name": "control-plane-da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa-annotation"
+        },
+        {
+          "digest": "sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:6b1e73016d82ef14b288931d7400a84cda44d152e4279e4fc8d55026f1670f53",
+          "image": "registry.connect.redhat.com/trilio/analyzer@sha256:6b1e73016d82ef14b288931d7400a84cda44d152e4279e4fc8d55026f1670f53",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:22dc88795009401e3b3be3b495988e2a674e828b7e5fc0d696f7773e16de4ab6",
+          "image": "registry.connect.redhat.com/trilio/trilio-admission-webhook@sha256:22dc88795009401e3b3be3b495988e2a674e828b7e5fc0d696f7773e16de4ab6",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:369855bd24f04c654560909e14e931b56b7c5f183f8a9bd9dae78c3357c1fab5",
+          "image": "registry.connect.redhat.com/trilio/exporter@sha256:369855bd24f04c654560909e14e931b56b7c5f183f8a9bd9dae78c3357c1fab5",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:7a81107e916ace686a5dd2ecfe2abc5392a6b1ea20ee5fdbdfe376efe6280584",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:7a81107e916ace686a5dd2ecfe2abc5392a6b1ea20ee5fdbdfe376efe6280584",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:93434d4bbc94ca2ea51e89241890fc71a4c6560a6290bde1eec6b823c639481b",
+          "image": "registry.connect.redhat.com/trilio/web-backend@sha256:93434d4bbc94ca2ea51e89241890fc71a4c6560a6290bde1eec6b823c639481b",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:a71c0fdb51c6c7b124d646371028c1537b0a8caf8e6b957522418094bff19fe4",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:a71c0fdb51c6c7b124d646371028c1537b0a8caf8e6b957522418094bff19fe4",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:106626ae6442bfa0ab02ce3ff24c9e3896cbb582929685eba8b16de1d2375c31",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:106626ae6442bfa0ab02ce3ff24c9e3896cbb582929685eba8b16de1d2375c31",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:e8e501d86fc63b3df7c80e37ef65dd486cee7baa9dae7059876e5759eeedfbb1",
+          "image": "registry.connect.redhat.com/trilio/datastore-attacher@sha256:e8e501d86fc63b3df7c80e37ef65dd486cee7baa9dae7059876e5759eeedfbb1",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:bd9ef186416b48d4cdf5a6683fdca9ff0ee883bd006153270d0b0b14621d4382",
+          "image": "registry.connect.redhat.com/trilio/backup-scheduler@sha256:bd9ef186416b48d4cdf5a6683fdca9ff0ee883bd006153270d0b0b14621d4382",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:5b77387d7271cec5605a404726825d77639f6b011458697e6bb5611f84f7789b",
+          "image": "registry.connect.redhat.com/trilio/backup-cleaner@sha256:5b77387d7271cec5605a404726825d77639f6b011458697e6bb5611f84f7789b",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:36f92687f030fede59e8a99db14bd429af3d793dad9a23b4df3bd7a8fd4248b9",
+          "image": "registry.connect.redhat.com/trilio/backup-retention@sha256:36f92687f030fede59e8a99db14bd429af3d793dad9a23b4df3bd7a8fd4248b9",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:16b4accf64c5f8927f550ea08008ed3d4c72977a14daad7ee7efc1cdaae06ec7",
+          "image": "registry.connect.redhat.com/trilio/target-browser@sha256:16b4accf64c5f8927f550ea08008ed3d4c72977a14daad7ee7efc1cdaae06ec7",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:9aaaf8c7977bee47e85b8380a728b651d267a324094bb680a5be2e316f8220b0",
+          "image": "registry.connect.redhat.com/trilio/hook-executor@sha256:9aaaf8c7977bee47e85b8380a728b651d267a324094bb680a5be2e316f8220b0",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:ee41cc6157600dd03084259a47a8ecc2d89277839c1a77d9a4efd25eb6d6faaa",
+          "image": "registry.connect.redhat.com/trilio/resource-cleaner@sha256:ee41cc6157600dd03084259a47a8ecc2d89277839c1a77d9a4efd25eb6d6faaa",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.8.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.8.0",
+      "version_original": "2.8.0"
+    },
+    {
+      "_id": "624c2dda9065edc05c072cee",
+      "alm_examples": [
+        {
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:5b753d6a2c35daf1f1f687dfb8f23b77e12e3495daad8aae72835826e553b9ff",
+      "bundle_path_digest": "sha256:5b753d6a2c35daf1f1f687dfb8f23b77e12e3495daad8aae72835826e553b9ff",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-05T11:54:02.930000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.8.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-19T12:14:06.189000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "plural": "clusterbackups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "plural": "clusterbackupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "plural": "clusterrestores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "name": "control-plane-da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa-annotation"
+        },
+        {
+          "digest": "sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:6b1e73016d82ef14b288931d7400a84cda44d152e4279e4fc8d55026f1670f53",
+          "image": "registry.connect.redhat.com/trilio/analyzer@sha256:6b1e73016d82ef14b288931d7400a84cda44d152e4279e4fc8d55026f1670f53",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:22dc88795009401e3b3be3b495988e2a674e828b7e5fc0d696f7773e16de4ab6",
+          "image": "registry.connect.redhat.com/trilio/trilio-admission-webhook@sha256:22dc88795009401e3b3be3b495988e2a674e828b7e5fc0d696f7773e16de4ab6",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:369855bd24f04c654560909e14e931b56b7c5f183f8a9bd9dae78c3357c1fab5",
+          "image": "registry.connect.redhat.com/trilio/exporter@sha256:369855bd24f04c654560909e14e931b56b7c5f183f8a9bd9dae78c3357c1fab5",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:7a81107e916ace686a5dd2ecfe2abc5392a6b1ea20ee5fdbdfe376efe6280584",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:7a81107e916ace686a5dd2ecfe2abc5392a6b1ea20ee5fdbdfe376efe6280584",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:93434d4bbc94ca2ea51e89241890fc71a4c6560a6290bde1eec6b823c639481b",
+          "image": "registry.connect.redhat.com/trilio/web-backend@sha256:93434d4bbc94ca2ea51e89241890fc71a4c6560a6290bde1eec6b823c639481b",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:a71c0fdb51c6c7b124d646371028c1537b0a8caf8e6b957522418094bff19fe4",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:a71c0fdb51c6c7b124d646371028c1537b0a8caf8e6b957522418094bff19fe4",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:106626ae6442bfa0ab02ce3ff24c9e3896cbb582929685eba8b16de1d2375c31",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:106626ae6442bfa0ab02ce3ff24c9e3896cbb582929685eba8b16de1d2375c31",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:e8e501d86fc63b3df7c80e37ef65dd486cee7baa9dae7059876e5759eeedfbb1",
+          "image": "registry.connect.redhat.com/trilio/datastore-attacher@sha256:e8e501d86fc63b3df7c80e37ef65dd486cee7baa9dae7059876e5759eeedfbb1",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:bd9ef186416b48d4cdf5a6683fdca9ff0ee883bd006153270d0b0b14621d4382",
+          "image": "registry.connect.redhat.com/trilio/backup-scheduler@sha256:bd9ef186416b48d4cdf5a6683fdca9ff0ee883bd006153270d0b0b14621d4382",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:5b77387d7271cec5605a404726825d77639f6b011458697e6bb5611f84f7789b",
+          "image": "registry.connect.redhat.com/trilio/backup-cleaner@sha256:5b77387d7271cec5605a404726825d77639f6b011458697e6bb5611f84f7789b",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:36f92687f030fede59e8a99db14bd429af3d793dad9a23b4df3bd7a8fd4248b9",
+          "image": "registry.connect.redhat.com/trilio/backup-retention@sha256:36f92687f030fede59e8a99db14bd429af3d793dad9a23b4df3bd7a8fd4248b9",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:16b4accf64c5f8927f550ea08008ed3d4c72977a14daad7ee7efc1cdaae06ec7",
+          "image": "registry.connect.redhat.com/trilio/target-browser@sha256:16b4accf64c5f8927f550ea08008ed3d4c72977a14daad7ee7efc1cdaae06ec7",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:9aaaf8c7977bee47e85b8380a728b651d267a324094bb680a5be2e316f8220b0",
+          "image": "registry.connect.redhat.com/trilio/hook-executor@sha256:9aaaf8c7977bee47e85b8380a728b651d267a324094bb680a5be2e316f8220b0",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:ee41cc6157600dd03084259a47a8ecc2d89277839c1a77d9a4efd25eb6d6faaa",
+          "image": "registry.connect.redhat.com/trilio/resource-cleaner@sha256:ee41cc6157600dd03084259a47a8ecc2d89277839c1a77d9a4efd25eb6d6faaa",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.8.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "2.8.0",
+      "version_original": "2.8.0"
+    },
+    {
+      "_id": "624c2f751bf4f81c51bc8955",
+      "alm_examples": [
+        {
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:5b753d6a2c35daf1f1f687dfb8f23b77e12e3495daad8aae72835826e553b9ff",
+      "bundle_path_digest": "sha256:5b753d6a2c35daf1f1f687dfb8f23b77e12e3495daad8aae72835826e553b9ff",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-05T12:00:53.170000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.8.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-19T12:00:32.719000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "plural": "clusterbackups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "plural": "clusterrestores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "plural": "clusterbackupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "name": "control-plane-da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa-annotation"
+        },
+        {
+          "digest": "sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:6b1e73016d82ef14b288931d7400a84cda44d152e4279e4fc8d55026f1670f53",
+          "image": "registry.connect.redhat.com/trilio/analyzer@sha256:6b1e73016d82ef14b288931d7400a84cda44d152e4279e4fc8d55026f1670f53",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:22dc88795009401e3b3be3b495988e2a674e828b7e5fc0d696f7773e16de4ab6",
+          "image": "registry.connect.redhat.com/trilio/trilio-admission-webhook@sha256:22dc88795009401e3b3be3b495988e2a674e828b7e5fc0d696f7773e16de4ab6",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:369855bd24f04c654560909e14e931b56b7c5f183f8a9bd9dae78c3357c1fab5",
+          "image": "registry.connect.redhat.com/trilio/exporter@sha256:369855bd24f04c654560909e14e931b56b7c5f183f8a9bd9dae78c3357c1fab5",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:7a81107e916ace686a5dd2ecfe2abc5392a6b1ea20ee5fdbdfe376efe6280584",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:7a81107e916ace686a5dd2ecfe2abc5392a6b1ea20ee5fdbdfe376efe6280584",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:93434d4bbc94ca2ea51e89241890fc71a4c6560a6290bde1eec6b823c639481b",
+          "image": "registry.connect.redhat.com/trilio/web-backend@sha256:93434d4bbc94ca2ea51e89241890fc71a4c6560a6290bde1eec6b823c639481b",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:a71c0fdb51c6c7b124d646371028c1537b0a8caf8e6b957522418094bff19fe4",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:a71c0fdb51c6c7b124d646371028c1537b0a8caf8e6b957522418094bff19fe4",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:106626ae6442bfa0ab02ce3ff24c9e3896cbb582929685eba8b16de1d2375c31",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:106626ae6442bfa0ab02ce3ff24c9e3896cbb582929685eba8b16de1d2375c31",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:e8e501d86fc63b3df7c80e37ef65dd486cee7baa9dae7059876e5759eeedfbb1",
+          "image": "registry.connect.redhat.com/trilio/datastore-attacher@sha256:e8e501d86fc63b3df7c80e37ef65dd486cee7baa9dae7059876e5759eeedfbb1",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:bd9ef186416b48d4cdf5a6683fdca9ff0ee883bd006153270d0b0b14621d4382",
+          "image": "registry.connect.redhat.com/trilio/backup-scheduler@sha256:bd9ef186416b48d4cdf5a6683fdca9ff0ee883bd006153270d0b0b14621d4382",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:5b77387d7271cec5605a404726825d77639f6b011458697e6bb5611f84f7789b",
+          "image": "registry.connect.redhat.com/trilio/backup-cleaner@sha256:5b77387d7271cec5605a404726825d77639f6b011458697e6bb5611f84f7789b",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:36f92687f030fede59e8a99db14bd429af3d793dad9a23b4df3bd7a8fd4248b9",
+          "image": "registry.connect.redhat.com/trilio/backup-retention@sha256:36f92687f030fede59e8a99db14bd429af3d793dad9a23b4df3bd7a8fd4248b9",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:16b4accf64c5f8927f550ea08008ed3d4c72977a14daad7ee7efc1cdaae06ec7",
+          "image": "registry.connect.redhat.com/trilio/target-browser@sha256:16b4accf64c5f8927f550ea08008ed3d4c72977a14daad7ee7efc1cdaae06ec7",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:9aaaf8c7977bee47e85b8380a728b651d267a324094bb680a5be2e316f8220b0",
+          "image": "registry.connect.redhat.com/trilio/hook-executor@sha256:9aaaf8c7977bee47e85b8380a728b651d267a324094bb680a5be2e316f8220b0",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:ee41cc6157600dd03084259a47a8ecc2d89277839c1a77d9a4efd25eb6d6faaa",
+          "image": "registry.connect.redhat.com/trilio/resource-cleaner@sha256:ee41cc6157600dd03084259a47a8ecc2d89277839c1a77d9a4efd25eb6d6faaa",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.8.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.8.0",
+      "version_original": "2.8.0"
+    },
+    {
+      "_id": "624c31dc9065edc05c072cf0",
+      "alm_examples": [
+        {
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:5b753d6a2c35daf1f1f687dfb8f23b77e12e3495daad8aae72835826e553b9ff",
+      "bundle_path_digest": "sha256:5b753d6a2c35daf1f1f687dfb8f23b77e12e3495daad8aae72835826e553b9ff",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-05T12:11:08.098000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.8.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-19T12:08:26.589000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "plural": "clusterbackupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "plural": "clusterbackups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "plural": "clusterrestores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "name": "control-plane-da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa-annotation"
+        },
+        {
+          "digest": "sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:da9c7a7ed17f220ce9aedfa0797aa33abe51d7d19ff32f082529b08509fefafa",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:6b1e73016d82ef14b288931d7400a84cda44d152e4279e4fc8d55026f1670f53",
+          "image": "registry.connect.redhat.com/trilio/analyzer@sha256:6b1e73016d82ef14b288931d7400a84cda44d152e4279e4fc8d55026f1670f53",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:22dc88795009401e3b3be3b495988e2a674e828b7e5fc0d696f7773e16de4ab6",
+          "image": "registry.connect.redhat.com/trilio/trilio-admission-webhook@sha256:22dc88795009401e3b3be3b495988e2a674e828b7e5fc0d696f7773e16de4ab6",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:369855bd24f04c654560909e14e931b56b7c5f183f8a9bd9dae78c3357c1fab5",
+          "image": "registry.connect.redhat.com/trilio/exporter@sha256:369855bd24f04c654560909e14e931b56b7c5f183f8a9bd9dae78c3357c1fab5",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:7a81107e916ace686a5dd2ecfe2abc5392a6b1ea20ee5fdbdfe376efe6280584",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:7a81107e916ace686a5dd2ecfe2abc5392a6b1ea20ee5fdbdfe376efe6280584",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:93434d4bbc94ca2ea51e89241890fc71a4c6560a6290bde1eec6b823c639481b",
+          "image": "registry.connect.redhat.com/trilio/web-backend@sha256:93434d4bbc94ca2ea51e89241890fc71a4c6560a6290bde1eec6b823c639481b",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:a71c0fdb51c6c7b124d646371028c1537b0a8caf8e6b957522418094bff19fe4",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:a71c0fdb51c6c7b124d646371028c1537b0a8caf8e6b957522418094bff19fe4",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:106626ae6442bfa0ab02ce3ff24c9e3896cbb582929685eba8b16de1d2375c31",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:106626ae6442bfa0ab02ce3ff24c9e3896cbb582929685eba8b16de1d2375c31",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:e8e501d86fc63b3df7c80e37ef65dd486cee7baa9dae7059876e5759eeedfbb1",
+          "image": "registry.connect.redhat.com/trilio/datastore-attacher@sha256:e8e501d86fc63b3df7c80e37ef65dd486cee7baa9dae7059876e5759eeedfbb1",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:bd9ef186416b48d4cdf5a6683fdca9ff0ee883bd006153270d0b0b14621d4382",
+          "image": "registry.connect.redhat.com/trilio/backup-scheduler@sha256:bd9ef186416b48d4cdf5a6683fdca9ff0ee883bd006153270d0b0b14621d4382",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:5b77387d7271cec5605a404726825d77639f6b011458697e6bb5611f84f7789b",
+          "image": "registry.connect.redhat.com/trilio/backup-cleaner@sha256:5b77387d7271cec5605a404726825d77639f6b011458697e6bb5611f84f7789b",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:36f92687f030fede59e8a99db14bd429af3d793dad9a23b4df3bd7a8fd4248b9",
+          "image": "registry.connect.redhat.com/trilio/backup-retention@sha256:36f92687f030fede59e8a99db14bd429af3d793dad9a23b4df3bd7a8fd4248b9",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:16b4accf64c5f8927f550ea08008ed3d4c72977a14daad7ee7efc1cdaae06ec7",
+          "image": "registry.connect.redhat.com/trilio/target-browser@sha256:16b4accf64c5f8927f550ea08008ed3d4c72977a14daad7ee7efc1cdaae06ec7",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:9aaaf8c7977bee47e85b8380a728b651d267a324094bb680a5be2e316f8220b0",
+          "image": "registry.connect.redhat.com/trilio/hook-executor@sha256:9aaaf8c7977bee47e85b8380a728b651d267a324094bb680a5be2e316f8220b0",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:ee41cc6157600dd03084259a47a8ecc2d89277839c1a77d9a4efd25eb6d6faaa",
+          "image": "registry.connect.redhat.com/trilio/resource-cleaner@sha256:ee41cc6157600dd03084259a47a8ecc2d89277839c1a77d9a4efd25eb6d6faaa",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:12a5aa85c81ccb51249ba4eb8f05a31301cc8449a3c1ffe208ea74d6f01154b9",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "image": "registry.connect.redhat.com/trilio/trilio-init@sha256:d850ea17b88ba7b90a4a0ea4ba2331bbcb29012de6e40aa5379b907f63e33a67",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.8.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.8.0",
+      "version_original": "2.8.0"
+    },
+    {
+      "_id": "6262a38984481d5f5229990f",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/iomesh/iomesh@sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "bundle_path_digest": "sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:46:01.981000+00:00",
+      "csv_description": "IOMesh (https://www.iomesh.com/) is a cloud-native storage product specifically designed and developed for Kubernetes. It takes ZBS as its core, a \u201cproduction-ready\u201d distributed storage system developed independently by SmartX, to provide production-level high performance and reliable persistent storage for business-critical applications such as MySQL, Cassandra, MongoDB, etc., contributing to the containerized transformation of stateful applications.      \n## Pre-Requisites\n* According to https://docs.iomesh.com/deploy/prerequisites, make sure that your openshift cluster meets the \"Installation Requirements\" and set up the worker nodes correctly according to the \"Setup Worker Node\" chapter.\n* Run IOMesh Operator pre-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install the dependencies of IOMesh Operator and specific IOMesh settings for the openshift cluster:\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-pre-install-openshift.sh | sh -\n```\n## Install IOMesh Operator and IOMesh Cluster\n* Click install button on the current web page to install IOMesh Operator\n* On the **Installed Operators** -> **IOMesh Operator** -> **Create instance** -> **YAML view**, fill in an IOMesh Custom Resources according https://iomesh.run/iomesh.yaml, change the `spec.*.dataCIDR` to your own data network CIDR:\n## Post Install\n* Run IOMesh Operator post-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install IOMesh CSI Driver\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-post-install-openshift.sh | sh -\n```\n## Getting Started\n* Try to quickstart setup and use IOMesh: https://docs.iomesh.com/deploy/setup-iomesh\n",
+      "csv_display_name": "IOMesh Operator",
+      "csv_metadata_description": "",
+      "csv_name": "iomesh-operator.0.10.1-rc4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-22T12:46:01.981000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "iomesh-operator",
+      "provided_apis": [
+        {
+          "group": "iomesh.com",
+          "kind": "IOMeshCluster",
+          "version": "v1alpha1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator-52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3-annotation"
+        },
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "0.10.1-rc4",
+      "version_original": "0.10.1-rc4"
+    },
+    {
+      "_id": "6262a41b834f257293b60f46",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/iomesh/iomesh@sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "bundle_path_digest": "sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:48:27.703000+00:00",
+      "csv_description": "IOMesh (https://www.iomesh.com/) is a cloud-native storage product specifically designed and developed for Kubernetes. It takes ZBS as its core, a \u201cproduction-ready\u201d distributed storage system developed independently by SmartX, to provide production-level high performance and reliable persistent storage for business-critical applications such as MySQL, Cassandra, MongoDB, etc., contributing to the containerized transformation of stateful applications.      \n## Pre-Requisites\n* According to https://docs.iomesh.com/deploy/prerequisites, make sure that your openshift cluster meets the \"Installation Requirements\" and set up the worker nodes correctly according to the \"Setup Worker Node\" chapter.\n* Run IOMesh Operator pre-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install the dependencies of IOMesh Operator and specific IOMesh settings for the openshift cluster:\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-pre-install-openshift.sh | sh -\n```\n## Install IOMesh Operator and IOMesh Cluster\n* Click install button on the current web page to install IOMesh Operator\n* On the **Installed Operators** -> **IOMesh Operator** -> **Create instance** -> **YAML view**, fill in an IOMesh Custom Resources according https://iomesh.run/iomesh.yaml, change the `spec.*.dataCIDR` to your own data network CIDR:\n## Post Install\n* Run IOMesh Operator post-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install IOMesh CSI Driver\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-post-install-openshift.sh | sh -\n```\n## Getting Started\n* Try to quickstart setup and use IOMesh: https://docs.iomesh.com/deploy/setup-iomesh\n",
+      "csv_display_name": "IOMesh Operator",
+      "csv_metadata_description": "",
+      "csv_name": "iomesh-operator.0.10.1-rc4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-22T12:48:27.703000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "iomesh-operator",
+      "provided_apis": [
+        {
+          "group": "iomesh.com",
+          "kind": "IOMeshCluster",
+          "plural": "iomeshclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator-52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3-annotation"
+        },
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.10.1-rc4",
+      "version_original": "0.10.1-rc4"
+    },
+    {
+      "_id": "6262a51f834f257293b60f5a",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/iomesh/iomesh@sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "bundle_path_digest": "sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:52:47.046000+00:00",
+      "csv_description": "IOMesh (https://www.iomesh.com/) is a cloud-native storage product specifically designed and developed for Kubernetes. It takes ZBS as its core, a \u201cproduction-ready\u201d distributed storage system developed independently by SmartX, to provide production-level high performance and reliable persistent storage for business-critical applications such as MySQL, Cassandra, MongoDB, etc., contributing to the containerized transformation of stateful applications.      \n## Pre-Requisites\n* According to https://docs.iomesh.com/deploy/prerequisites, make sure that your openshift cluster meets the \"Installation Requirements\" and set up the worker nodes correctly according to the \"Setup Worker Node\" chapter.\n* Run IOMesh Operator pre-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install the dependencies of IOMesh Operator and specific IOMesh settings for the openshift cluster:\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-pre-install-openshift.sh | sh -\n```\n## Install IOMesh Operator and IOMesh Cluster\n* Click install button on the current web page to install IOMesh Operator\n* On the **Installed Operators** -> **IOMesh Operator** -> **Create instance** -> **YAML view**, fill in an IOMesh Custom Resources according https://iomesh.run/iomesh.yaml, change the `spec.*.dataCIDR` to your own data network CIDR:\n## Post Install\n* Run IOMesh Operator post-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install IOMesh CSI Driver\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-post-install-openshift.sh | sh -\n```\n## Getting Started\n* Try to quickstart setup and use IOMesh: https://docs.iomesh.com/deploy/setup-iomesh\n",
+      "csv_display_name": "IOMesh Operator",
+      "csv_metadata_description": "",
+      "csv_name": "iomesh-operator.0.10.1-rc4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-22T12:52:47.046000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "iomesh-operator",
+      "provided_apis": [
+        {
+          "group": "iomesh.com",
+          "kind": "IOMeshCluster",
+          "plural": "iomeshclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator-52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3-annotation"
+        },
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.10.1-rc4",
+      "version_original": "0.10.1-rc4"
+    },
+    {
+      "_id": "6262a672834f257293b60f88",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/iomesh/iomesh@sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "bundle_path_digest": "sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:58:26.012000+00:00",
+      "csv_description": "IOMesh (https://www.iomesh.com/) is a cloud-native storage product specifically designed and developed for Kubernetes. It takes ZBS as its core, a \u201cproduction-ready\u201d distributed storage system developed independently by SmartX, to provide production-level high performance and reliable persistent storage for business-critical applications such as MySQL, Cassandra, MongoDB, etc., contributing to the containerized transformation of stateful applications.      \n## Pre-Requisites\n* According to https://docs.iomesh.com/deploy/prerequisites, make sure that your openshift cluster meets the \"Installation Requirements\" and set up the worker nodes correctly according to the \"Setup Worker Node\" chapter.\n* Run IOMesh Operator pre-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install the dependencies of IOMesh Operator and specific IOMesh settings for the openshift cluster:\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-pre-install-openshift.sh | sh -\n```\n## Install IOMesh Operator and IOMesh Cluster\n* Click install button on the current web page to install IOMesh Operator\n* On the **Installed Operators** -> **IOMesh Operator** -> **Create instance** -> **YAML view**, fill in an IOMesh Custom Resources according https://iomesh.run/iomesh.yaml, change the `spec.*.dataCIDR` to your own data network CIDR:\n## Post Install\n* Run IOMesh Operator post-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install IOMesh CSI Driver\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-post-install-openshift.sh | sh -\n```\n## Getting Started\n* Try to quickstart setup and use IOMesh: https://docs.iomesh.com/deploy/setup-iomesh\n",
+      "csv_display_name": "IOMesh Operator",
+      "csv_metadata_description": "",
+      "csv_name": "iomesh-operator.0.10.1-rc4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-22T12:58:26.012000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "iomesh-operator",
+      "provided_apis": [
+        {
+          "group": "iomesh.com",
+          "kind": "IOMeshCluster",
+          "plural": "iomeshclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator-52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3-annotation"
+        },
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.10.1-rc4",
+      "version_original": "0.10.1-rc4"
+    },
+    {
+      "_id": "6262ae60cde83e2b177c228f",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/iomesh/iomesh@sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "bundle_path_digest": "sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:32:16.506000+00:00",
+      "csv_description": "IOMesh (https://www.iomesh.com/) is a cloud-native storage product specifically designed and developed for Kubernetes. It takes ZBS as its core, a \u201cproduction-ready\u201d distributed storage system developed independently by SmartX, to provide production-level high performance and reliable persistent storage for business-critical applications such as MySQL, Cassandra, MongoDB, etc., contributing to the containerized transformation of stateful applications.      \n## Pre-Requisites\n* According to https://docs.iomesh.com/deploy/prerequisites, make sure that your openshift cluster meets the \"Installation Requirements\" and set up the worker nodes correctly according to the \"Setup Worker Node\" chapter.\n* Run IOMesh Operator pre-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install the dependencies of IOMesh Operator and specific IOMesh settings for the openshift cluster:\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-pre-install-openshift.sh | sh -\n```\n## Install IOMesh Operator and IOMesh Cluster\n* Click install button on the current web page to install IOMesh Operator\n* On the **Installed Operators** -> **IOMesh Operator** -> **Create instance** -> **YAML view**, fill in an IOMesh Custom Resources according https://iomesh.run/iomesh.yaml, change the `spec.*.dataCIDR` to your own data network CIDR:\n## Post Install\n* Run IOMesh Operator post-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install IOMesh CSI Driver\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-post-install-openshift.sh | sh -\n```\n## Getting Started\n* Try to quickstart setup and use IOMesh: https://docs.iomesh.com/deploy/setup-iomesh\n",
+      "csv_display_name": "IOMesh Operator",
+      "csv_metadata_description": "",
+      "csv_name": "iomesh-operator.0.10.1-rc4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-22T13:32:16.506000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "iomesh-operator",
+      "provided_apis": [
+        {
+          "group": "iomesh.com",
+          "kind": "IOMeshCluster",
+          "plural": "iomeshclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator-52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3-annotation"
+        },
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.10.1-rc4",
+      "version_original": "0.10.1-rc4"
+    },
+    {
+      "_id": "6262af7684481d5f52299b86",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/iomesh/iomesh@sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "bundle_path_digest": "sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:36:54.493000+00:00",
+      "csv_description": "IOMesh (https://www.iomesh.com/) is a cloud-native storage product specifically designed and developed for Kubernetes. It takes ZBS as its core, a \u201cproduction-ready\u201d distributed storage system developed independently by SmartX, to provide production-level high performance and reliable persistent storage for business-critical applications such as MySQL, Cassandra, MongoDB, etc., contributing to the containerized transformation of stateful applications.      \n## Pre-Requisites\n* According to https://docs.iomesh.com/deploy/prerequisites, make sure that your openshift cluster meets the \"Installation Requirements\" and set up the worker nodes correctly according to the \"Setup Worker Node\" chapter.\n* Run IOMesh Operator pre-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install the dependencies of IOMesh Operator and specific IOMesh settings for the openshift cluster:\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-pre-install-openshift.sh | sh -\n```\n## Install IOMesh Operator and IOMesh Cluster\n* Click install button on the current web page to install IOMesh Operator\n* On the **Installed Operators** -> **IOMesh Operator** -> **Create instance** -> **YAML view**, fill in an IOMesh Custom Resources according https://iomesh.run/iomesh.yaml, change the `spec.*.dataCIDR` to your own data network CIDR:\n## Post Install\n* Run IOMesh Operator post-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install IOMesh CSI Driver\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-post-install-openshift.sh | sh -\n```\n## Getting Started\n* Try to quickstart setup and use IOMesh: https://docs.iomesh.com/deploy/setup-iomesh\n",
+      "csv_display_name": "IOMesh Operator",
+      "csv_metadata_description": "",
+      "csv_name": "iomesh-operator.0.10.1-rc4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-22T13:36:54.493000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "iomesh-operator",
+      "provided_apis": [
+        {
+          "group": "iomesh.com",
+          "kind": "IOMeshCluster",
+          "plural": "iomeshclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator-52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3-annotation"
+        },
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.10.1-rc4",
+      "version_original": "0.10.1-rc4"
+    }
+  ],
+  "page": 2,
+  "page_size": 100,
+  "total": 221
+}

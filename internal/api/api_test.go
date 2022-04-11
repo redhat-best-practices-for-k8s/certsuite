@@ -113,6 +113,7 @@ func getDoFunc(data string, status int) func(req *http.Request) (*http.Response,
 		}, nil
 	}
 }
+
 func TestApiClient_IsContainerCertified(t *testing.T) {
 	for _, c := range containerTestCases {
 		GetDoFunc = getDoFunc(c.responseData, c.responseStatus)
