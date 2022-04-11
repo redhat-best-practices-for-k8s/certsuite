@@ -52,6 +52,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestUnalteredBaseImageIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		if provider.IsOCPCluster() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 			testContainersFsDiff(&env, cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder()))
 		} else {
 			ginkgo.Skip(" non ocp cluster ")
@@ -60,17 +61,20 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNonTaintedNodeKernelsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
 		testTainted(&env, nodetainted.NewNodeTaintedTester(clientsholder.GetClientsHolder())) // minikube tainted kernels are allowed via config
 	})
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestIsRedHatReleaseIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		testIsRedHatRelease(&env)
 	})
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestIsSELinuxEnforcingIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		if provider.IsOCPCluster() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
 			testIsSELinuxEnforcing(&env)
 		} else {
 			ginkgo.Skip(" non ocp cluster ")
