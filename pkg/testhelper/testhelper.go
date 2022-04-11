@@ -47,7 +47,7 @@ func SkipIfEmptyAny(skip func(string, ...int), object ...interface{}) {
 		}
 
 		if s.Len() == 0 {
-			skip(fmt.Sprintf("Test failed because there are no %s to test, please check under test labels", reflect.TypeOf(o)))
+			skip(fmt.Sprintf("Test skipped because there are no %s to test, please check under test labels", reflect.TypeOf(o)))
 		}
 	}
 }
@@ -68,6 +68,6 @@ func SkipIfEmptyAll(skip func(string, ...int), object ...interface{}) {
 	}
 	// all objects have len() of 0
 	if countLenZero == len(object) {
-		skip(fmt.Sprintf("Test failed because there are no %s to test, please check under test labels", allTypes))
+		skip(fmt.Sprintf("Test skipped because there are no %s to test, please check under test labels", allTypes))
 	}
 }
