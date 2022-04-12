@@ -96,7 +96,7 @@ func GetHwInfoAllNodes() (out map[string]NodeHwInfo) {
 		if err != nil {
 			logrus.Errorf("problem getting lsblk for node %s", debugPod.Spec.NodeName)
 		}
-		hw.Lspci, err = getLspci(debugPod, o)
+		hw.Lspci, err = getHWTextOutput(debugPod, o, lspciCommand)
 		if err != nil {
 			logrus.Errorf("problem getting lspci for node %s", debugPod.Spec.NodeName)
 		}
@@ -119,10 +119,10 @@ func getHWJsonOutput(debugPod *v1.Pod, o clientsholder.Command, cmd string) (out
 	return out, nil
 }
 
-// getLspci gets lspci in Json format for a given node
-func getLspci(debugPod *v1.Pod, o clientsholder.Command) (out []string, err error) {
+// getHWTextOutput performs a query via debug and returns plaintext lines
+func getHWTextOutput(debugPod *v1.Pod, o clientsholder.Command, cmd string) (out []string, err error) {
 	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
-	outStr, errStr, err := o.ExecCommandContainer(ctx, lspciCommand)
+	outStr, errStr, err := o.ExecCommandContainer(ctx, cmd)
 	if err != nil || errStr != "" {
 		return out, fmt.Errorf("command %s failed with error err: %s , stderr: %s", lspciCommand, err, errStr)
 	}

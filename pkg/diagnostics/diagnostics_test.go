@@ -101,7 +101,7 @@ func TestGetHWJsonOutput(t *testing.T) {
 }
 
 //nolint:funlen
-func TestGetLspci(t *testing.T) {
+func TestGetHWTextOutput(t *testing.T) {
 	testCases := []struct {
 		execStdout string
 		execStderr string
@@ -137,7 +137,7 @@ func TestGetLspci(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		result, err := getLspci(&v1.Pod{
+		result, err := getHWTextOutput(&v1.Pod{
 			Spec: v1.PodSpec{
 				// Note: We don't actually care about the podname
 				// for this test, but the function uses it to build the
@@ -152,7 +152,7 @@ func TestGetLspci(t *testing.T) {
 			ExecCommandContainerFunc: func(context clientsholder.Context, s string) (string, string, error) {
 				return tc.execStdout, tc.execStderr, nil
 			},
-		})
+		}, lspciCommand)
 
 		assert.Equal(t, tc.expectedErr, err)
 		assert.Equal(t, tc.expectedResult, result)
