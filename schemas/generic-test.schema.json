@@ -5,7 +5,7 @@
   "definitions": {
     "identifier": {
       "$id": "#identifier",
-      "description": "identifier is a per tnf.Test unique identifier.  For more information, consult https://github.com/test-network-function/test-network-function/blob/main/DEVELOPING.md#test-identifiers.",
+      "description": "",
       "properties": {
         "url": {
           "type": "string",
@@ -244,7 +244,7 @@
   "properties": {
     "identifier": {
       "$ref": "#identifier",
-      "description": "identifier is a per tnf.Test unique identifier.  For more information, consult https://github.com/test-network-function/test-network-function/blob/main/DEVELOPING.md#test-identifiers."
+      "description": ""
     },
     "arguments": {
       "description": "arguments is the Unix command array.",
