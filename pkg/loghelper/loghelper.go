@@ -18,6 +18,10 @@ package loghelper
 
 import (
 	"fmt"
+	"path"
+	"runtime"
+	"strconv"
+	"time"
 
 	"github.com/sirupsen/logrus"
 )
@@ -35,6 +39,27 @@ func (list CuratedLogLines) AddLogLine(format string, args ...interface{}) Curat
 	return list
 }
 
+// Init checks a slice for a given string.
+func (list CuratedLogLines) Init(lines ...string) CuratedLogLines {
+	list.lines = append(list.lines, lines...)
+	return list
+}
+
 func (list CuratedLogLines) GetLogLines() []string {
 	return list.lines
+}
+
+// SetLogFormat sets the log format for logrus
+func SetLogFormat() {
+	customFormatter := new(logrus.TextFormatter)
+	customFormatter.TimestampFormat = time.StampMilli
+	customFormatter.PadLevelText = true
+	customFormatter.FullTimestamp = true
+	customFormatter.ForceColors = true
+	logrus.SetReportCaller(true)
+	customFormatter.CallerPrettyfier = func(f *runtime.Frame) (string, string) {
+		_, filename := path.Split(f.File)
+		return strconv.Itoa(f.Line) + "]", fmt.Sprintf("[%s:", filename)
+	}
+	logrus.SetFormatter(customFormatter)
 }

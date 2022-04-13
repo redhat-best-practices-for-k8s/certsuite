@@ -55,9 +55,10 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 
 // ExecCommandContainerNSEnter executes a command in the specified container namespace using nsenter
 func ExecCommandContainerNSEnter(command string,
-	aContainer *provider.Container,
-	env *provider.TestEnvironment) (outStr, errStr string, err error) {
-	// Get the debug pod corresponding to the container's node
+	aContainer *provider.Container) (outStr, errStr string, err error) {
+	// Getting env
+	env := provider.GetTestEnvironment()
+	// Getting the debug pod corresponding to the container's node
 	debugPod := env.DebugPods[aContainer.NodeName]
 	if debugPod == nil {
 		err = fmt.Errorf("debug pod not found on Node: %s trying to run command: \" %s \" Namespace: %s Pod: %s container %s err:%s", aContainer.NodeName, command, aContainer.Namespace, aContainer.Podname, aContainer.Data.Name, err)

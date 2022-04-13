@@ -63,25 +63,25 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv4ConnectivityIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
-		testDefaultNetworkConnectivity(&env, defaultNumPings, netcommons.IPv4)
+		testNetworkConnectivity(&env, defaultNumPings, netcommons.IPv4, netcommons.DEFAULT)
 	})
 	// Multus interfaces ICMP IPv4 test case
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv4ConnectivityMultusIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
-		testMultusNetworkConnectivity(&env, defaultNumPings, netcommons.IPv4)
+		testNetworkConnectivity(&env, defaultNumPings, netcommons.IPv4, netcommons.MULTUS)
 	})
 	// Default interface ICMP IPv6 test case
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv6ConnectivityIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
-		testDefaultNetworkConnectivity(&env, defaultNumPings, netcommons.IPv6)
+		testNetworkConnectivity(&env, defaultNumPings, netcommons.IPv6, netcommons.DEFAULT)
 	})
 	// Multus interfaces ICMP IPv6 test case
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv6ConnectivityMultusIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
-		testMultusNetworkConnectivity(&env, defaultNumPings, netcommons.IPv6)
+		testNetworkConnectivity(&env, defaultNumPings, netcommons.IPv6, netcommons.MULTUS)
 	})
 	// Default interface ICMP IPv6 test case
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestUndeclaredContainerPortsUsage)
@@ -113,7 +113,7 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 			}
 		}
 		firstPodContainer := podUnderTest.Containers[0]
-		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, firstPodContainer, env)
+		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, firstPodContainer)
 		if err != nil || errStr != "" {
 			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s, errStr: %s", cmd, firstPodContainer, err, errStr)
 			failedPods = append(failedPods, podUnderTest)
@@ -164,53 +164,16 @@ func testNodePort(env *provider.TestEnvironment) {
 }
 
 // testDefaultNetworkConnectivity test the connectivity between the default interfaces of containers under test
-func testDefaultNetworkConnectivity(env *provider.TestEnvironment, count int, aIPVersion netcommons.IPVersion) {
-	netsUnderTest := make(map[string]netcommons.NetTestContext)
-	for _, put := range env.Pods {
-		if put.SkipNetTests {
-			tnf.ClaimFilePrintf("Skipping pod %s because it is excluded from all connectivity tests", put.Data.Name)
-			continue
-		}
-		netKey := "default" //nolint:goconst // only used once
-		defaultIPAddress := put.Data.Status.PodIPs
-		// The first container is used to get the network namespace
-		icmp.ProcessContainerIpsPerNet(put.Containers[0], netKey, netcommons.PodIPsToStringList(defaultIPAddress), netsUnderTest, aIPVersion)
-	}
-	badNets, claimsLog := icmp.RunNetworkingTests(env, netsUnderTest, count, aIPVersion)
-
-	// Saving all curated logs to claims file
+func testNetworkConnectivity(env *provider.TestEnvironment, count int, aIPVersion netcommons.IPVersion, aType netcommons.IFType) { //nolint:unparam
+	netsUnderTest, claimsLog := icmp.BuildNetTestContext(env.Pods, aIPVersion, aType)
+	// Saving  curated logs to claims file
+	tnf.ClaimFilePrintf("%s", claimsLog)
+	badNets, claimsLog := icmp.RunNetworkingTests(netsUnderTest, count, aIPVersion)
+	// Saving curated logs to claims file
 	tnf.ClaimFilePrintf("%s", claimsLog)
 
 	if n := len(badNets); n > 0 {
 		logrus.Debugf("Failed nets: %+v", badNets)
-		ginkgo.Fail(fmt.Sprintf("%d nets failed the default network %s ping test.", n, aIPVersion))
-	}
-}
-
-// testMultusNetworkConnectivity tests the connectivity between the multus interfaces of the containers under test
-func testMultusNetworkConnectivity(env *provider.TestEnvironment, count int, aIPVersion netcommons.IPVersion) {
-	netsUnderTest := make(map[string]netcommons.NetTestContext)
-	for _, put := range env.Pods {
-		if put.SkipNetTests {
-			tnf.ClaimFilePrintf("Skipping pod %s because it is excluded from all connectivity tests", put.Data.Name)
-			continue
-		}
-		if put.SkipMultusNetTests {
-			tnf.ClaimFilePrintf("Skipping pod %s because it is excluded from multus connectivity tests only", put.Data.Name)
-			continue
-		}
-		for netKey, multusIPAddress := range put.MultusIPs {
-			// The first container is used to get the network namespace
-			icmp.ProcessContainerIpsPerNet(put.Containers[0], netKey, multusIPAddress, netsUnderTest, aIPVersion)
-		}
-	}
-	badNets, claimsLog := icmp.RunNetworkingTests(env, netsUnderTest, count, aIPVersion)
-
-	// Saving all curated logs to claims file
-	tnf.ClaimFilePrintf("%s", claimsLog)
-
-	if n := len(badNets); n > 0 {
-		logrus.Debugf("Failed nets: %+v", badNets)
-		ginkgo.Fail(fmt.Sprintf("%d nets failed the multus %s ping test.", n, aIPVersion))
+		ginkgo.Fail(fmt.Sprintf("%d nets failed the %s network %s ping test.", n, aType, aIPVersion))
 	}
 }

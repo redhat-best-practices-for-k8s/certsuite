@@ -17,14 +17,9 @@
 package suite
 
 import (
-	j "encoding/json"
 	"flag"
-	"fmt"
 	"os"
-	"path"
 	"path/filepath"
-	"runtime"
-	"strconv"
 	"testing"
 	"time"
 
@@ -32,10 +27,8 @@ import (
 	"github.com/onsi/gomega"
 	log "github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	"github.com/test-network-function/cnf-certification-test/pkg/junit"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
+	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
@@ -46,24 +39,21 @@ import (
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
 )
 
 const (
-	claimFileName                        = "claim.json"
-	claimFilePermissions                 = 0o644
-	claimPathFlagKey                     = "claimloc"
-	CnfCertificationTestSuiteName        = "CNF Certification Test Suite"
-	defaultClaimPath                     = ".."
-	defaultCliArgValue                   = ""
-	junitFlagKey                         = "junit"
-	TNFJunitXMLFileName                  = "cnf-certification-tests_junit.xml"
-	TNFReportKey                         = "cnf-certification-test"
-	CNFFeatureValidationJunitXMLFileName = "validation_junit.xml"
-	CNFFeatureValidationReportKey        = "cnf-feature-validation"
-	// dateTimeFormatDirective is the directive used to format date/time according to ISO 8601.
-	dateTimeFormatDirective = "2006-01-02T15:04:05+00:00"
-	extraInfoKey            = "testsExtraInfo"
+	claimFileName                 = "claim.json"
+	claimPathFlagKey              = "claimloc"
+	CnfCertificationTestSuiteName = "CNF Certification Test Suite"
+	defaultClaimPath              = ".."
+	defaultCliArgValue            = ""
+	junitFlagKey                  = "junit"
+	TNFJunitXMLFileName           = "cnf-certification-tests_junit.xml"
+	TNFReportKey                  = "cnf-certification-test"
+	extraInfoKey                  = "testsExtraInfo"
 )
 
 var (
@@ -89,35 +79,6 @@ func init() {
 		"the path for the junit format report")
 }
 
-// createClaimRoot creates the claim based on the model created in
-// https://github.com/test-network-function/cnf-certification-test-claim.
-func createClaimRoot() *claim.Root {
-	// Initialize the claim with the start time.
-	startTime := time.Now()
-	c := &claim.Claim{
-		Metadata: &claim.Metadata{
-			StartTime: startTime.UTC().Format(dateTimeFormatDirective),
-		},
-	}
-	return &claim.Root{
-		Claim: c,
-	}
-}
-
-// loadJUnitXMLIntoMap converts junitFilename's XML-formatted JUnit test results into a Go map, and adds the result to
-// the result Map.
-func loadJUnitXMLIntoMap(result map[string]interface{}, junitFilename, key string) {
-	var err error
-	if key == "" {
-		var extension = filepath.Ext(junitFilename)
-		key = junitFilename[0 : len(junitFilename)-len(extension)]
-	}
-	result[key], err = junit.ExportJUnitAsMap(junitFilename)
-	if err != nil {
-		log.Fatalf("error reading JUnit XML file into JSON: %v", err)
-	}
-}
-
 // setLogLevel sets the log level for logrus based on the "TNF_LOG_LEVEL" environment variable
 func setLogLevel() {
 	params := configuration.GetTestParameters()
@@ -130,21 +91,6 @@ func setLogLevel() {
 
 	log.Info("Log level set to: ", logLevel)
 	log.SetLevel(logLevel)
-}
-
-// setLogFormat sets the log format for logrus
-func setLogFormat() {
-	customFormatter := new(log.TextFormatter)
-	customFormatter.TimestampFormat = time.StampMilli
-	customFormatter.PadLevelText = true
-	customFormatter.FullTimestamp = true
-	customFormatter.ForceColors = true
-	log.SetReportCaller(true)
-	customFormatter.CallerPrettyfier = func(f *runtime.Frame) (string, string) {
-		_, filename := path.Split(f.File)
-		return strconv.Itoa(f.Line) + "]", fmt.Sprintf("[%s:", filename)
-	}
-	log.SetFormatter(customFormatter)
 }
 
 func getK8sClientsConfigFileNames() []string {
@@ -181,7 +127,7 @@ func TestTest(t *testing.T) {
 	}
 
 	// Set up logging params for logrus
-	setLogFormat()
+	loghelper.SetLogFormat()
 	setLogLevel()
 
 	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
@@ -200,15 +146,19 @@ func TestTest(t *testing.T) {
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 
 	// Initialize the claim with the start time, tnf version, etc.
-	claimRoot := createClaimRoot()
+	claimRoot := claimhelper.CreateClaimRoot()
 	claimData := claimRoot.Claim
 	claimData.Configurations = make(map[string]interface{})
 	claimData.Nodes = make(map[string]interface{})
 	incorporateVersions(claimData)
 
-	configurations := marshalConfigurations()
-	claimData.Nodes = generateNodes()
-	unmarshalConfigurations(configurations, claimData.Configurations)
+	configurations, err := claimhelper.MarshalConfigurations()
+	if err != nil {
+		log.Errorf("Configuration node missing because of: %s", err)
+	}
+
+	claimData.Nodes = claimhelper.GenerateNodes()
+	claimhelper.UnmarshalConfigurations(configurations, claimData.Configurations)
 
 	// Run tests specs only if not in diagnostic mode, otherwise all TSs would run.
 	if !diagnosticMode {
@@ -216,7 +166,7 @@ func TestTest(t *testing.T) {
 	}
 
 	endTime := time.Now()
-	claimData.Metadata.EndTime = endTime.UTC().Format(dateTimeFormatDirective)
+	claimData.Metadata.EndTime = endTime.UTC().Format(claimhelper.DateTimeFormatDirective)
 
 	// Process the test results from the suites, the cnf-features-deploy test suite,
 	// and any extra informational messages.
@@ -224,8 +174,8 @@ func TestTest(t *testing.T) {
 	cnfCertificationJUnitFilename := filepath.Join(*junitPath, TNFJunitXMLFileName)
 
 	if !diagnosticMode {
-		loadJUnitXMLIntoMap(junitMap, cnfCertificationJUnitFilename, TNFReportKey)
-		appendCNFFeatureValidationReportResults(junitPath, junitMap)
+		claimhelper.LoadJUnitXMLIntoMap(junitMap, cnfCertificationJUnitFilename, TNFReportKey)
+		claimhelper.AppendCNFFeatureValidationReportResults(junitPath, junitMap)
 	}
 
 	junitMap[extraInfoKey] = "" // tnf.TestsExtraInfo
@@ -235,9 +185,9 @@ func TestTest(t *testing.T) {
 	claimData.Results = results.GetReconciledResults()
 
 	// Marshal the claim and output to file
-	payload := marshalClaimOutput(claimRoot)
+	payload := claimhelper.MarshalClaimOutput(claimRoot)
 	claimOutputFile := filepath.Join(*claimPath, claimFileName)
-	writeClaimOutput(claimOutputFile, payload)
+	claimhelper.WriteClaimOutput(claimOutputFile, payload)
 }
 
 // incorporateTNFVersion adds the TNF version to the claim.
@@ -249,67 +199,4 @@ func incorporateVersions(claimData *claim.Claim) {
 		Ocp:          diagnostics.GetVersionOcp(),
 		K8s:          diagnostics.GetVersionK8s(),
 	}
-}
-
-// appendCNFFeatureValidationReportResults is a helper method to add the results of running the cnf-features-deploy
-// test suite to the claim file.
-func appendCNFFeatureValidationReportResults(junitPath *string, junitMap map[string]interface{}) {
-	cnfFeaturesDeployJUnitFile := filepath.Join(*junitPath, CNFFeatureValidationJunitXMLFileName)
-	if _, err := os.Stat(cnfFeaturesDeployJUnitFile); err == nil {
-		loadJUnitXMLIntoMap(junitMap, cnfFeaturesDeployJUnitFile, CNFFeatureValidationReportKey)
-	}
-}
-
-// marshalConfigurations creates a byte stream representation of the test configurations.  In the event of an error,
-// this method fatally fails.
-func marshalConfigurations() []byte {
-	config := provider.GetTestEnvironment()
-	configurations, err := j.Marshal(config)
-	if err != nil {
-		log.Fatalf("error converting configurations to JSON: %v", err)
-	}
-	return configurations
-}
-
-// unmarshalConfigurations creates a map from configurations byte stream.  In the event of an error, this method fatally
-// fails.
-func unmarshalConfigurations(configurations []byte, claimConfigurations map[string]interface{}) {
-	err := j.Unmarshal(configurations, &claimConfigurations)
-	if err != nil {
-		log.Fatalf("error unmarshalling configurations: %v", err)
-	}
-}
-
-// marshalClaimOutput is a helper function to serialize a claim as JSON for output.  In the event of an error, this
-// method fatally fails.
-func marshalClaimOutput(claimRoot *claim.Root) []byte {
-	payload, err := j.MarshalIndent(claimRoot, "", "  ")
-	if err != nil {
-		log.Fatalf("Failed to generate the claim: %v", err)
-	}
-	return payload
-}
-
-// writeClaimOutput writes the output payload to the claim file.  In the event of an error, this method fatally fails.
-func writeClaimOutput(claimOutputFile string, payload []byte) {
-	err := os.WriteFile(claimOutputFile, payload, claimFilePermissions)
-	if err != nil {
-		log.Fatalf("Error writing claim data:\n%s", string(payload))
-	}
-}
-
-//no-lint:commentedOutCode
-func generateNodes() map[string]interface{} {
-	const (
-		nodeSummaryField = "nodeSummary"
-		cniPluginsField  = "cniPlugins"
-		nodesHwInfo      = "nodesHwInfo"
-		csiDriverInfo    = "csiDriver"
-	)
-	nodes := map[string]interface{}{}
-	nodes[nodeSummaryField] = diagnostics.GetNodeJSON()  // add node summary
-	nodes[cniPluginsField] = diagnostics.GetCniPlugins() // add cni plugins
-	nodes[nodesHwInfo] = diagnostics.GetHwInfoAllNodes() // add nodes hardware information
-	nodes[csiDriverInfo] = diagnostics.GetCsiDriver()    // add csi drivers info
-	return nodes
 }
