@@ -38,7 +38,7 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 		pidCmd = "chroot /host crictl inspect --output go-template --template '{{.info.pid}}' " + cut.UID + " 2>/dev/null"
 	default:
 		logrus.Debugf("Container runtime %s not supported yet for this test, skipping", cut.Runtime)
-		return 0, fmt.Errorf("container runtime not supported")
+		return 0, fmt.Errorf("container runtime %s not supported", cut.Runtime)
 	}
 
 	ch := clientsholder.GetClientsHolder()
