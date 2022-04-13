@@ -29,6 +29,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 
 	v1 "k8s.io/api/core/v1"
@@ -46,16 +47,19 @@ var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestLoggingIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		testContainersLogging(&env)
 	})
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestCrdsStatusSubresourceIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Crds)
 		testCrds(&env)
 	})
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestTerminationMessagePolicyIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		testTerminationMessagePolicy(&env)
 	})
 })
@@ -86,10 +90,6 @@ func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 }
 
 func testContainersLogging(env *provider.TestEnvironment) {
-	if len(env.Containers) == 0 {
-		ginkgo.Skip("No containers to run test, skipping")
-	}
-
 	// Iterate through all the CUTs to get their log output. The TC checks that at least
 	// one log line is found.
 	badContainers := []string{}

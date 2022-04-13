@@ -29,6 +29,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -46,26 +47,25 @@ var _ = ginkgo.Describe(common.OperatorTestKey, func() {
 
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorInstallStatusSucceededIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Operators)
 		testOperatorInstallationPhaseSucceeded(&env)
 	})
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorNoPrivileges)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Operators)
 		testOperatorInstallationWithoutPrivileges(&env)
 	})
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorIsInstalledViaOLMIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Operators)
 		testOperatorOlmSubscription(&env)
 	})
 })
 
 func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 	badOperators := []string{}
-	if len(env.Operators) == 0 {
-		ginkgo.Skip("No operators found to perform test, skipping.")
-	}
-
 	for i := range env.Operators {
 		csv := env.Operators[i].Csv
 		phase := phasecheck.WaitOperatorReady(csv)
@@ -83,10 +83,6 @@ func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 
 func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 	badOperators := []string{}
-	if len(env.Operators) == 0 {
-		ginkgo.Skip("No operators found to perform test, skipping.")
-	}
-
 	for i := range env.Operators {
 		csv := env.Operators[i].Csv
 		clusterPermissions := csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
@@ -121,10 +117,6 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 
 func testOperatorOlmSubscription(env *provider.TestEnvironment) {
 	badCsvs := []string{}
-	if len(env.Operators) == 0 {
-		ginkgo.Skip("No CSVs to perform test, skipping.")
-	}
-
 	ocpClient := clientsholder.GetClientsHolder()
 	for i := range env.Operators {
 		csv := env.Operators[i].Csv

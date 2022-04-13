@@ -51,7 +51,6 @@ func (list CuratedLogLines) GetLogLines() []string {
 
 // SetLogFormat sets the log format for logrus
 func SetLogFormat() {
-	logrus.Info("debug format initialization: start")
 	customFormatter := new(logrus.TextFormatter)
 	customFormatter.TimestampFormat = time.StampMilli
 	customFormatter.PadLevelText = true
@@ -63,6 +62,4 @@ func SetLogFormat() {
 		return strconv.Itoa(f.Line) + "]", fmt.Sprintf("[%s:", filename)
 	}
 	logrus.SetFormatter(customFormatter)
-	logrus.Info("debug format initialization: done")
-	logrus.SetLevel(logrus.TraceLevel)
 }

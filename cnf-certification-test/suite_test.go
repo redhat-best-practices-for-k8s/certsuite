@@ -79,6 +79,20 @@ func init() {
 		"the path for the junit format report")
 }
 
+// setLogLevel sets the log level for logrus based on the "TNF_LOG_LEVEL" environment variable
+func setLogLevel() {
+	params := configuration.GetTestParameters()
+
+	var logLevel, err = log.ParseLevel(params.LogLevel)
+	if err != nil {
+		log.Error("TNF_LOG_LEVEL environment set with an invalid value, defaulting to DEBUG \n Valid values are:  trace, debug, info, warn, error, fatal, panic")
+		logLevel = log.DebugLevel
+	}
+
+	log.Info("Log level set to: ", logLevel)
+	log.SetLevel(logLevel)
+}
+
 func getK8sClientsConfigFileNames() []string {
 	params := configuration.GetTestParameters()
 	fileNames := []string{}
@@ -112,6 +126,10 @@ func TestTest(t *testing.T) {
 		t.Skip("Skipping test suite when running unit tests")
 	}
 
+	// Set up logging params for logrus
+	loghelper.SetLogFormat()
+	setLogLevel()
+
 	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
 	log.Infof("TNF Version         : %v", getGitVersion())
 	log.Infof("Ginkgo Version      : %v", ginkgo.GINKGO_VERSION)
@@ -123,8 +141,6 @@ func TestTest(t *testing.T) {
 	diagnosticMode := len(ginkgoConfig.FocusStrings) == 0
 
 	gomega.RegisterFailHandler(ginkgo.Fail)
-
-	loghelper.SetLogFormat()
 
 	// Set clientsholder singleton with the filenames from the env vars.
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)

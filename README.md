@@ -308,6 +308,12 @@ You can find all test labels by running the following command:
 ```
 
 You can also check the [CATALOG.md](CATALOG.md) to find all test labels.
+#### Labels to run in offline environments
+Some tests do require connectivity to Redhat servers to validate certification status.
+If you're running the tests in an offline environment, you can skip the tests using the `l` option as explained in [Label use](#running-a-single-test-or-a-subset)
+```shell script
+./run-cnf-suites.sh -l '!online'
+```
 
 ## Available Test Specs
 
@@ -479,7 +485,7 @@ operator
     /Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:152
 ```
 ## Log level 
-The optional LOG_LEVEL environment variable sets the log level. Defaults to "info" if not set. Valid values are: trace, debug, info, warn, error, fatal, panic.
+The optional TNF_LOG_LEVEL environment variable sets the log level. Defaults to "info" if not set. Valid values are: trace, debug, info, warn, error, fatal, panic.
 
 ## Grading Tool
 ### Overview

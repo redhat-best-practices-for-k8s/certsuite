@@ -16,6 +16,11 @@
 
 package testhelper
 
+import (
+	"fmt"
+	"reflect"
+)
+
 const (
 	SUCCESS = iota
 	FAILURE
@@ -32,4 +37,37 @@ func ResultToString(result int) (str string) {
 		return "ERROR" //nolint:goconst
 	}
 	return ""
+}
+
+func SkipIfEmptyAny(skip func(string, ...int), object ...interface{}) {
+	for _, o := range object {
+		s := reflect.ValueOf(o)
+		if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
+			panic("SkipIfEmpty was given a non slice/map type")
+		}
+
+		if s.Len() == 0 {
+			skip(fmt.Sprintf("Test skipped because there are no %s to test, please check under test labels", reflect.TypeOf(o)))
+		}
+	}
+}
+
+func SkipIfEmptyAll(skip func(string, ...int), object ...interface{}) {
+	countLenZero := 0
+	allTypes := ""
+	for _, o := range object {
+		s := reflect.ValueOf(o)
+		if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
+			panic("SkipIfEmpty was given a non slice/map type")
+		}
+
+		if s.Len() == 0 {
+			countLenZero++
+			allTypes = allTypes + reflect.TypeOf(o).String() + ", "
+		}
+	}
+	// all objects have len() of 0
+	if countLenZero == len(object) {
+		skip(fmt.Sprintf("Test skipped because there are no %s to test, please check under test labels", allTypes))
+	}
 }

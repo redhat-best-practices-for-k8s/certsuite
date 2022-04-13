@@ -613,3 +613,75 @@ func TestCreateOperators(t *testing.T) {
 		}
 	}
 }
+
+//nolint:funlen
+func TestConvertArrayPods(t *testing.T) {
+	testCases := []struct {
+		testPods     []*v1.Pod
+		expectedPods []*Pod
+	}{
+		{ // Test Case 1 - No containers
+			testPods: []*v1.Pod{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "testpod1",
+						Namespace: "testnamespace1",
+					},
+				},
+			},
+			expectedPods: []*Pod{
+				{
+					Data: &v1.Pod{
+						ObjectMeta: metav1.ObjectMeta{
+							Name:      "testpod1",
+							Namespace: "testnamespace1",
+						},
+					},
+				},
+			},
+		},
+		{ // Test Case 2 - Containers
+			testPods: []*v1.Pod{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "testpod1",
+						Namespace: "testnamespace1",
+					},
+					Spec: v1.PodSpec{
+						Containers: []v1.Container{
+							{
+								Name: "testcontainer1",
+							},
+						},
+					},
+				},
+			},
+			expectedPods: []*Pod{
+				{
+					Data: &v1.Pod{
+						ObjectMeta: metav1.ObjectMeta{
+							Name:      "testpod1",
+							Namespace: "testnamespace1",
+						},
+					},
+					Containers: []*Container{
+						{
+							Data: &v1.Container{
+								Name: "testcontainer1",
+							},
+							Namespace: "testnamespace1",
+							Podname:   "testpod1",
+						},
+					},
+				},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		convertedArray := ConvertArrayPods(tc.testPods)
+		assert.Equal(t, tc.expectedPods[0].Containers, convertedArray[0].Containers)
+		assert.Equal(t, tc.expectedPods[0].Data.Name, convertedArray[0].Data.Name)
+		assert.Equal(t, tc.expectedPods[0].Data.Namespace, convertedArray[0].Data.Namespace)
+	}
+}

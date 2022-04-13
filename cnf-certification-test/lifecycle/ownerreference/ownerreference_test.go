@@ -16,38 +16,51 @@
 
 package ownerreference_test
 
-/* Failing unit test
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/ownerreference"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-
 func TestRunTest(t *testing.T) {
-	// instantiate test pod
-	pod := v1.Pod{}
-	// test when pods owner reference is not specified
-	o := ownerreference.NewOwnerReference(&pod)
-	o.RunTest()
-	assert.Equal(t, testhelper.ERROR, o.GetResults())
-	// test when pods owner is not StatefulSet Or ReplicaSet
-	pod.OwnerReferences = append(pod.OwnerReferences, metav1.OwnerReference{Kind: "bad_kind"})
-	o.RunTest()
-	assert.Equal(t, testhelper.FAILURE, o.GetResults())
-	// test when pods owner is StatefulSet Or ReplicaSet
-	pod.OwnerReferences = pod.OwnerReferences[1:]
-	pod.OwnerReferences = append(pod.OwnerReferences, metav1.OwnerReference{Kind: "StatefulSet"}, metav1.OwnerReference{Kind: "ReplicaSet"})
-	o.RunTest()
-	assert.Equal(t, testhelper.SUCCESS, o.GetResults())
+	testCases := []struct {
+		podKind        string
+		expectedResult int
+	}{
+		{
+			podKind:        "StatefulSet",
+			expectedResult: testhelper.SUCCESS,
+		},
+		{
+			podKind:        "ReplicaSet",
+			expectedResult: testhelper.SUCCESS,
+		},
+		{
+			podKind:        "NotARealKind",
+			expectedResult: testhelper.FAILURE,
+		},
+	}
 
-	// test when pods owner is StatefulSet And bad kind
-	pod.OwnerReferences = append(pod.OwnerReferences, metav1.OwnerReference{Kind: "bad_kind"})
-	o.RunTest()
-	assert.Equal(t, testhelper.SUCCESS, o.GetResults())
+	for _, tc := range testCases {
+		testPod := &corev1.Pod{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: "testpod",
+				OwnerReferences: []metav1.OwnerReference{
+					{
+						Kind: tc.podKind,
+					},
+				},
+			},
+			Spec: corev1.PodSpec{},
+		}
+
+		ownerRef := ownerreference.NewOwnerReference(testPod)
+		assert.NotNil(t, ownerRef)
+		ownerRef.RunTest()
+		assert.Equal(t, tc.expectedResult, ownerRef.GetResults())
+	}
 }
-*/

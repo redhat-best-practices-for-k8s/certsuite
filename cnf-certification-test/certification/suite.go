@@ -31,6 +31,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
@@ -38,6 +39,7 @@ const (
 	// timeout for eventually call
 	apiRequestTimeout = 40 * time.Second
 	CertifiedOperator = "certified-operators"
+	Online            = "online"
 )
 
 type ChartStruct struct {
@@ -63,7 +65,7 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 func testContainerCertificationStatus(env *provider.TestEnvironment) {
 	// Query API for certification status of listed containers
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestContainerIsCertifiedIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
 		containersToQuery := make(map[configuration.ContainerImageIdentifier]bool)
 
 		for _, c := range env.Config.CertifiedContainerInfo {
@@ -113,12 +115,9 @@ func testContainerCertificationStatus(env *provider.TestEnvironment) {
 
 func testAllOperatorCertified(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorIsCertifiedIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
 		operatorsToQuery := env.Subscriptions
-
-		if len(operatorsToQuery) == 0 {
-			ginkgo.Skip("No operators to check configured ")
-		}
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Operators)
 		certtool.CertAPIClient = api.NewHTTPClient()
 		ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsToQuery)))
 		testFailed := false
@@ -147,12 +146,10 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 }
 func testHelmCertified(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestHelmIsCertifiedIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
 		certtool.CertAPIClient = api.NewHTTPClient()
 		helmchartsReleases := env.HelmChartReleases
-		if len(helmchartsReleases) == 0 {
-			ginkgo.Skip("No helm charts to check")
-		}
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, helmchartsReleases)
 		out, err := certtool.CertAPIClient.GetYamlFile()
 		if err != nil {
 			ginkgo.Fail(fmt.Sprintf("error while reading the helm yaml file from the api %s", err))

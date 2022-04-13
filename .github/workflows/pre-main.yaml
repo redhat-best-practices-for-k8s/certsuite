@@ -32,7 +32,7 @@ jobs:
       - name: Set up Go 1.17
         uses: actions/setup-go@v2
         with:
-          go-version: 1.17.8
+          go-version: 1.17.9
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -83,7 +83,7 @@ jobs:
       - name: Set up Go 1.17
         uses: actions/setup-go@v2
         with:
-          go-version: 1.17.8
+          go-version: 1.17.9
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -128,7 +128,7 @@ jobs:
       - name: Set up Go 1.17
         uses: actions/setup-go@v2
         with:
-          go-version: 1.17.8
+          go-version: 1.17.9
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"

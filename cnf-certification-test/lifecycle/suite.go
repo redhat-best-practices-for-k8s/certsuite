@@ -62,15 +62,18 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodNodeSelectorAndAffinityBestPractices)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		testPodNodeSelectorAndAffinityBestPractices(&env)
 	})
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNonDefaultGracePeriodIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatetfulSets)
 		testGracePeriod(&env)
 	})
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodRecreationIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatetfulSets)
 		// Testing pod re-creation for deployments
 		testPodsRecreation(&env)
 	})
@@ -78,10 +81,12 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	if env.IsIntrusive() {
 		testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestDeploymentScalingIdentifier)
 		ginkgo.It(testID, ginkgo.Label(testID), func() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Deployments)
 			testDeploymentScaling(&env, timeout)
 		})
 		testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestStateFulSetScalingIdentifier)
 		ginkgo.It(testID, ginkgo.Label(testID), func() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.StatetfulSets)
 			testStatefulSetScaling(&env, timeout)
 		})
 	}
@@ -109,6 +114,7 @@ func testContainersPreStop(env *provider.TestEnvironment) {
 func testContainersImagePolicy(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestImagePullPolicyIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		badcontainers := []string{}
 		for _, cut := range env.Containers {
 			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " pull policy, should be ", v1.PullIfNotPresent)
@@ -129,6 +135,7 @@ func testContainersImagePolicy(env *provider.TestEnvironment) {
 func testContainersReadinessProbe(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestReadinessProbeIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		badcontainers := []string{}
 		for _, cut := range env.Containers {
 			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " readiness probe ")
@@ -149,6 +156,7 @@ func testContainersReadinessProbe(env *provider.TestEnvironment) {
 func testContainersLivenessProbe(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestLivenessProbeIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		badcontainers := []string{}
 		for _, cut := range env.Containers {
 			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " liveness probe ")
@@ -168,6 +176,7 @@ func testContainersLivenessProbe(env *provider.TestEnvironment) {
 func testPodsOwnerReference(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodDeploymentBestPracticesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Pods)
 		ginkgo.By("Testing owners of CNF pod, should be replicas Set")
 		badPods := []string{}
 		for _, put := range env.Pods {
@@ -237,10 +246,6 @@ func testGracePeriod(env *provider.TestEnvironment) {
 func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration) {
 	ginkgo.By("Testing deployment scaling")
 	defer env.SetNeedsRefresh()
-
-	if len(env.Deployments) == 0 {
-		ginkgo.Skip("No test deployments found.")
-	}
 	failedDeployments := []string{}
 	for i := range env.Deployments {
 		// TestDeploymentScaling test scaling of deployment
@@ -274,10 +279,6 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration) {
 	ginkgo.By("Testing statefulset scaling")
 	defer env.SetNeedsRefresh()
-
-	if len(env.Deployments) == 0 {
-		ginkgo.Skip("No test statefulset found.")
-	}
 	failedSatetfulSets := []string{}
 	for i := range env.StatetfulSets {
 		// TeststatefulsetScaling test scaling of statefulset
@@ -312,9 +313,7 @@ func testHighAvailability(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHighAvailabilityBestPractices)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		ginkgo.By("Should set pod replica number greater than 1")
-		if len(env.Deployments) == 0 && len(env.StatetfulSets) == 0 {
-			ginkgo.Skip("No test deployments/statefulset found.")
-		}
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatetfulSets)
 
 		badDeployments := []string{}
 		badStatefulSet := []string{}
