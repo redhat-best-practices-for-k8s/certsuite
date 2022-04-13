@@ -115,7 +115,7 @@ func getDoFunc(data string, status int) func(req *http.Request) (*http.Response,
 }
 func TestApiClient_IsContainerCertified(t *testing.T) {
 	for _, c := range containerTestCases {
-		GetDoFunc = getDoFunc(c.responseData, c.responseStatus) //nolint:bodyclose
+		GetDoFunc = getDoFunc(c.responseData, c.responseStatus)
 		result := client.IsContainerCertified(c.repository, c.name)
 		assert.Equal(t, c.expectedResult, result)
 	}
@@ -123,7 +123,7 @@ func TestApiClient_IsContainerCertified(t *testing.T) {
 
 func TestApiClient_IsOperatorCertified(t *testing.T) {
 	for _, c := range operatorTestCases {
-		GetDoFunc = getDoFunc(c.responseData, c.responseStatus) //nolint:bodyclose
+		GetDoFunc = getDoFunc(c.responseData, c.responseStatus)
 		result, err := client.IsOperatorCertified(c.org, c.packageName, c.version)
 		assert.Equal(t, c.expectedResult, result, err)
 	}
@@ -132,7 +132,7 @@ func TestApiClient_IsOperatorCertified(t *testing.T) {
 func TestApiClient_GetImageById(t *testing.T) {
 	containerTestCases[0].id = id
 	for _, c := range containerTestCases {
-		GetDoFunc = getDoFunc(c.responseData, c.responseStatus) //nolint:bodyclose
+		GetDoFunc = getDoFunc(c.responseData, c.responseStatus)
 		result, err := client.GetImageByID(c.id)
 		assert.Equal(t, c.expectedError, err)
 		if err == nil {

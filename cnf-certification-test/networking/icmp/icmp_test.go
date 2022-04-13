@@ -273,7 +273,7 @@ func TestProcessContainerIpsPerNet(t *testing.T) { //nolint:funlen
 	}
 }
 
-func loadEnvFromFile(claimFileName string) (env *provider.TestEnvironment, err error) { //nolint:deadcode,unused
+func loadEnvFromFile(claimFileName string) (env *provider.TestEnvironment, err error) { //nolint:deadcode
 	return claimhelper.GetConfigurationFromClaimFile(claimFileName)
 }
 

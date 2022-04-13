@@ -260,7 +260,7 @@ func (api CertAPIClient) GetOperatorBundleIDByPackageName(org, name, version str
 
 // getRequest a http call to rest api, returns byte array or error
 func (api CertAPIClient) getRequest(url string) (response []byte, err error) {
-	req, err := http.NewRequest(http.MethodGet, url, http.NoBody) //nolint:noctx
+	req, err := http.NewRequest(http.MethodGet, url, http.NoBody)
 	if err != nil {
 		return nil, err
 	}
