@@ -164,7 +164,7 @@ func testNodePort(env *provider.TestEnvironment) {
 }
 
 // testDefaultNetworkConnectivity test the connectivity between the default interfaces of containers under test
-func testNetworkConnectivity(env *provider.TestEnvironment, count int, aIPVersion netcommons.IPVersion, aType netcommons.IFType) { //nolint:unparam
+func testNetworkConnectivity(env *provider.TestEnvironment, count int, aIPVersion netcommons.IPVersion, aType netcommons.IFType) {
 	netsUnderTest, claimsLog := icmp.BuildNetTestContext(env.Pods, aIPVersion, aType)
 	// Saving  curated logs to claims file
 	tnf.ClaimFilePrintf("%s", claimsLog)
