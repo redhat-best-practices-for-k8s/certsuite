@@ -56,12 +56,7 @@ commits focused (`git add -p` will help with this).
 
 ## Test Implementation guidelines
 
-Each contributed test is expected to implement the `reel.Handler` and `tnf.Tester` interfaces.  Additionally, each test
-must be based on CLI commands.  No tests should utilize OpenShift client libraries.  The choice to avoid OpenShift
-client is deliberate, and was decided to aid in support of all versions of OpenShift despite the API(s) changing.
-Generally speaking, the CLI API changes much less quickly.
-
-For more details on how to add a new Test either as a JSON definition, or in code, please see [DEVELOPING.md](DEVELOPING.md)
+TODO: After the recent refactor we need to re-write the developer's guide.
 
 ### Unit Testing Tests
 
