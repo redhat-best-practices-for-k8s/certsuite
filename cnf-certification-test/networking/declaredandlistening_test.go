@@ -57,6 +57,16 @@ func TestParseVariables(t *testing.T) {
 			expectedlisteningPorts: map[declaredandlistening.Key]bool{{Port: 8080, Protocol: "UDP"}: true, {Port: 7878, Protocol: "UDP"}: true},
 			expectedRes:            "udp LISTEN 0      128    0.0.0.0:8080 0.0.0.0:*\nudp LISTEN 0      128    0.0.0.0:7878 0.0.0.0:*\n",
 		},
+		{
+			inputRes:               "tcp LISTEN 0      128    [::]:22\n",
+			expectedlisteningPorts: map[declaredandlistening.Key]bool{{Port: 22, Protocol: "TCP"}: true},
+			expectedRes:           "tcp LISTEN 0      128    [::]:22\n",
+		},
+		{
+			inputRes:               ":tcp LISTEN 0      128   [::]22\n",
+			expectedlisteningPorts: map[declaredandlistening.Key]bool{{Port: 22, Protocol: "TCP"}: true},
+			expectedRes:            ":tcp LISTEN 0      128   [::]22\n",
+		},
 	}
 	for _, tc := range testCases {
 		listeningPorts := map[declaredandlistening.Key]bool{}
