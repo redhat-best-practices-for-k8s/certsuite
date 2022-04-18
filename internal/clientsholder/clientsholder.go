@@ -64,6 +64,11 @@ func GetTestClientsHolder(k8sMockObjects []runtime.Object, filenames ...string) 
 	return &clientsHolder
 }
 
+func ClearTestClientsHolder() {
+	clientsHolder.K8sClient = nil
+	clientsHolder.ready = false
+}
+
 // GetClientsHolder returns the singleton ClientsHolder object.
 func GetClientsHolder(filenames ...string) *ClientsHolder {
 	if clientsHolder.ready {
