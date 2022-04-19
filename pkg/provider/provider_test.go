@@ -29,6 +29,7 @@ import (
 	olmFakeClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned/fake"
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	k8sTesting "k8s.io/client-go/testing"
@@ -684,4 +685,154 @@ func TestConvertArrayPods(t *testing.T) {
 		assert.Equal(t, tc.expectedPods[0].Data.Name, convertedArray[0].Data.Name)
 		assert.Equal(t, tc.expectedPods[0].Data.Namespace, convertedArray[0].Data.Namespace)
 	}
+}
+
+func TestIsSkipHelmChart(t *testing.T) {
+	testCases := []struct {
+		testHelmName   string
+		testList       []configuration.SkipHelmChartList
+		expectedOutput bool
+	}{
+		{ // Test Case #1 - Helm Chart names match, skipping
+			testHelmName: "test1",
+			testList: []configuration.SkipHelmChartList{
+				{
+					Name: "test1",
+				},
+			},
+			expectedOutput: true,
+		},
+		{ // Test Case #2 - Helm Chart names mismatch, not skipping
+			testHelmName: "test2",
+			testList: []configuration.SkipHelmChartList{
+				{
+					Name: "test1",
+				},
+			},
+			expectedOutput: false,
+		},
+		{ // Test Case #3 - Empty list
+			testHelmName:   "test3",
+			testList:       []configuration.SkipHelmChartList{},
+			expectedOutput: false,
+		},
+		{ // Test Case #4 - Empty list, helm name empty
+			testHelmName:   "",
+			testList:       []configuration.SkipHelmChartList{},
+			expectedOutput: false,
+		},
+		{ // Test Case #5 - Helm Chart name missing
+			testHelmName: "",
+			testList: []configuration.SkipHelmChartList{
+				{
+					Name: "test1",
+				},
+			},
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, isSkipHelmChart(tc.testHelmName, tc.testList))
+	}
+}
+
+func TestContainerStringFuncs(t *testing.T) {
+	testCases := []struct {
+		nodename    string
+		namespace   string
+		podname     string
+		name        string
+		containerID string
+		runtime     string
+
+		expectedStringOutput     string
+		expectedStringLongOutput string
+	}{
+		{
+			nodename:                 "testnode",
+			namespace:                "testnamespace",
+			podname:                  "testpod",
+			name:                     "name1",
+			containerID:              "cID1",
+			runtime:                  "runtime1",
+			expectedStringLongOutput: "node: testnode ns: testnamespace podName: testpod containerName: name1 containerUID: cID1 containerRuntime: runtime1",
+			expectedStringOutput:     "container: name1 pod: testpod ns: testnamespace",
+		},
+		{
+			nodename:                 "testnode",
+			namespace:                "testnamespace",
+			podname:                  "testpod",
+			name:                     "name2",
+			containerID:              "cID2",
+			runtime:                  "runtime2",
+			expectedStringLongOutput: "node: testnode ns: testnamespace podName: testpod containerName: name2 containerUID: cID2 containerRuntime: runtime2",
+			expectedStringOutput:     "container: name2 pod: testpod ns: testnamespace",
+		},
+	}
+
+	for _, tc := range testCases {
+		c := &Container{
+			NodeName:  tc.nodename,
+			Namespace: tc.namespace,
+			Podname:   tc.podname,
+			Data: &v1.Container{
+				Name: tc.name,
+			},
+			Status: v1.ContainerStatus{
+				ContainerID: tc.containerID,
+			},
+			Runtime: tc.runtime,
+		}
+		assert.Equal(t, tc.expectedStringLongOutput, c.StringLong())
+		assert.Equal(t, tc.expectedStringOutput, c.String())
+	}
+}
+
+func TestDeploymentToString(t *testing.T) {
+	assert.Equal(t, "deployment: test1 ns: testNS", DeploymentToString(&appsv1.Deployment{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "test1",
+			Namespace: "testNS",
+		},
+	}))
+}
+
+func TestStatefulsetToString(t *testing.T) {
+	assert.Equal(t, "statefulset: test1 ns: testNS", StatefulsetToString(&appsv1.StatefulSet{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "test1",
+			Namespace: "testNS",
+		},
+	}))
+}
+
+func TestCsvToString(t *testing.T) {
+	assert.Equal(t, "operator csv: test1 ns: testNS", CsvToString(&olmv1Alpha.ClusterServiceVersion{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "test1",
+			Namespace: "testNS",
+		},
+	}))
+}
+
+func TestPodString(t *testing.T) {
+	p := Pod{
+		Data: &v1.Pod{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test1",
+				Namespace: "testNS",
+			},
+		},
+	}
+	assert.Equal(t, "pod: test1 ns: testNS", p.String())
+}
+
+func TestOperatorString(t *testing.T) {
+	o := Operator{
+		Name:             "test1",
+		Namespace:        "testNS",
+		SubscriptionName: "sub1",
+	}
+	assert.Equal(t, "csv: test1 ns:testNS subscription:sub1", o.String())
 }
