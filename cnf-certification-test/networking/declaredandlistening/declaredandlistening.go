@@ -43,12 +43,14 @@ func ParseListening(res string, listeningPorts map[Key]bool) {
 			return
 		}
 		s := strings.Split(fields[indexport], ":")
+		if len(s) == 0{	
+			continue
+		}
 		p, _ := strconv.Atoi(s[len(s)-1])
 		k.Port = p
 		k.Protocol = strings.ToUpper(fields[indexprotocolname])
 		k.Protocol = strings.ReplaceAll(k.Protocol, "\"", "")
 		k.Protocol = strings.ReplaceAll(k.Protocol, ":", "")
-		fmt.println(k.Protocol)
 		listeningPorts[k] = true
 	}
 }

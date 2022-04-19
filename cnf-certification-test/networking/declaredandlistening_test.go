@@ -60,12 +60,12 @@ func TestParseVariables(t *testing.T) {
 		{
 			inputRes:               "tcp LISTEN 0      128    [::]:22\n",
 			expectedlisteningPorts: map[declaredandlistening.Key]bool{{Port: 22, Protocol: "TCP"}: true},
-			expectedRes:           "tcp LISTEN 0      128    [::]:22\n",
+			expectedRes:            "tcp LISTEN 0      128    [::]:22\n",
 		},
 		{
-			inputRes:               ":tcp LISTEN 0      128   [::]22\n",
+			inputRes:               ":tcp LISTEN 0      128   [::]:22\n",
 			expectedlisteningPorts: map[declaredandlistening.Key]bool{{Port: 22, Protocol: "TCP"}: true},
-			expectedRes:            ":tcp LISTEN 0      128   [::]22\n",
+			expectedRes:            ":tcp LISTEN 0      128   [::]:22\n",
 		},
 	}
 	for _, tc := range testCases {
