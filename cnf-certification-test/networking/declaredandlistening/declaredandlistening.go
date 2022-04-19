@@ -19,6 +19,8 @@ package declaredandlistening
 import (
 	"strconv"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -44,6 +46,7 @@ func ParseListening(res string, listeningPorts map[Key]bool) {
 		}
 		s := strings.Split(fields[indexport], ":")
 		if len(s) == 0 {
+			log.Errorf("error decoding port number for line: %s", line)
 			continue
 		}
 		p, _ := strconv.Atoi(s[len(s)-1])
