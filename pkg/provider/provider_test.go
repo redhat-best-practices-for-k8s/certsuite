@@ -711,6 +711,25 @@ func TestIsSkipHelmChart(t *testing.T) {
 			},
 			expectedOutput: false,
 		},
+		{ // Test Case #3 - Empty list
+			testHelmName:   "test3",
+			testList:       []configuration.SkipHelmChartList{},
+			expectedOutput: false,
+		},
+		{ // Test Case #4 - Empty list, helm name empty
+			testHelmName:   "",
+			testList:       []configuration.SkipHelmChartList{},
+			expectedOutput: false,
+		},
+		{ // Test Case #5 - Helm Chart name missing
+			testHelmName: "",
+			testList: []configuration.SkipHelmChartList{
+				{
+					Name: "test1",
+				},
+			},
+			expectedOutput: false,
+		},
 	}
 
 	for _, tc := range testCases {
