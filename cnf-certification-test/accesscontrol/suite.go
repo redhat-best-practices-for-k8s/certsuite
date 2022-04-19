@@ -138,6 +138,12 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestOneProcessPerContainer(&env)
 	})
+	// no 1337 UID's being used by pods
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.Test1337UIDIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		Test1337UIDs(&env)
+	})
 })
 
 // TestSecConCapabilities verifies that non compliant capabilities are not present
@@ -440,6 +446,24 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 
 	if n := len(badContainers); n > 0 {
 		errMsg := fmt.Sprintf("Number of faulty containers found: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
+	}
+}
+
+func Test1337UIDs(env *provider.TestEnvironment) {
+	const leetNum = 1337
+	var badPods []string
+	for _, put := range env.Pods {
+		ginkgo.By(fmt.Sprintf("checking if pod %s has a securityContext RunAsUser 1337 (ns= %s)", put.Data.Name, put.Data.Namespace))
+		if put.Data.Spec.SecurityContext.RunAsUser != nil && *put.Data.Spec.SecurityContext.RunAsUser == int64(leetNum) {
+			tnf.ClaimFilePrintf("Pod: %s/%s is found to use securityContext RunAsUser 1337", put.Data.Namespace, put.Data.Name)
+			badPods = append(badPods, put.Data.Name)
+		}
+	}
+
+	if n := len(badPods); n > 0 {
+		errMsg := fmt.Sprintf("Number of pods found using UID 1337: %d", n)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
 	}

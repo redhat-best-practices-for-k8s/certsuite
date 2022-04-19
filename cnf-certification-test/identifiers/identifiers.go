@@ -299,6 +299,11 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "one-process-per-container"),
 		Version: versionOne,
 	}
+	// Test1337UIDIdentifier ensures that no pods are configured to use UID 1337
+	Test1337UIDIdentifier = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "no-1337-uid"),
+		Version: versionOne,
+	}
 )
 
 func formDescription(identifier claim.Identifier, description string) string {
@@ -823,5 +828,12 @@ the changes for you.`,
 		have only one process running`),
 		Remediation:           `launch only one process per container`,
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 11.8.3",
+	},
+	Test1337UIDIdentifier: {
+		Identifier:  Test1337UIDIdentifier,
+		Type:        informativeResult,
+		Description: formDescription(Test1337UIDIdentifier, `check that all pods do not use securityContext UID 1337`),
+		Remediation: `specify another user ID in the security context`,
+		// BestPracticeReference: bestPracticeDocV1dot2URL + " Section 11.8.3",
 	},
 }

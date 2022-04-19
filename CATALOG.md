@@ -33,6 +33,15 @@ Description|http://test-network-function.com/testcases/access-control/namespace 
 Result Type|normative
 Suggested Remediation|Ensure that your CNF utilizes namespaces declared in the yaml config file. Additionally, the namespaces should not start with "default, openshift-, istio- or aspenmesh-", except in rare cases.
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2, 16.3.8 & 16.3.9
+### http://test-network-function.com/testcases/access-control/no-1337-uid
+
+Property|Description
+---|---
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/no-1337-uid check that all pods do not use securityContext UID 1337
+Result Type|informative
+Suggested Remediation|specify another user ID in the security context
+Best Practice Reference|
 ### http://test-network-function.com/testcases/access-control/one-process-per-container
 
 Property|Description
