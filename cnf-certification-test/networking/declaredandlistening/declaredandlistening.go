@@ -19,6 +19,8 @@ package declaredandlistening
 import (
 	"strconv"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -43,10 +45,15 @@ func ParseListening(res string, listeningPorts map[Key]bool) {
 			return
 		}
 		s := strings.Split(fields[indexport], ":")
-		p, _ := strconv.Atoi(s[1])
+		if len(s) == 0 {
+			log.Errorf("error decoding port number for line: %s", line)
+			continue
+		}
+		p, _ := strconv.Atoi(s[len(s)-1])
 		k.Port = p
 		k.Protocol = strings.ToUpper(fields[indexprotocolname])
 		k.Protocol = strings.ReplaceAll(k.Protocol, "\"", "")
+		k.Protocol = strings.ReplaceAll(k.Protocol, ":", "")
 		listeningPorts[k] = true
 	}
 }
