@@ -43,7 +43,7 @@ func ParseListening(res string, listeningPorts map[Key]bool) {
 			return
 		}
 		s := strings.Split(fields[indexport], ":")
-		if len(s) == 0{	
+		if len(s) == 0 {
 			continue
 		}
 		p, _ := strconv.Atoi(s[len(s)-1])
