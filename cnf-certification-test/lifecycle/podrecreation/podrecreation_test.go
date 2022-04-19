@@ -17,6 +17,7 @@
 package podrecreation
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -26,7 +27,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
-func generatePod(name, kind string) corev1.Pod {
+func generatePod(name, ownerKind string) corev1.Pod {
 	getIntPointer := func(val int64) *int64 {
 		return &val
 	}
@@ -36,7 +37,7 @@ func generatePod(name, kind string) corev1.Pod {
 			Name: name,
 			OwnerReferences: []metav1.OwnerReference{
 				{
-					Kind: kind,
+					Kind: ownerKind,
 				},
 			},
 			Labels: map[string]string{
@@ -127,8 +128,17 @@ func TestCordonHelper(t *testing.T) {
 		}
 		// Clean and recreate the clientsHolder
 		clientsholder.ClearTestClientsHolder()
-		_ = clientsholder.GetTestClientsHolder(testRuntimeObjects)
+		client := clientsholder.GetTestClientsHolder(testRuntimeObjects)
 		err := CordonHelper("node1", tc.operation)
 		assert.Nil(t, err)
+
+		// Check that the node is actually cordoned or uncordoned
+		node, err := client.K8sClient.CoreV1().Nodes().Get(context.TODO(), "node1", metav1.GetOptions{})
+		assert.Nil(t, err)
+		if tc.operation == Cordon {
+			assert.True(t, node.Spec.Unschedulable)
+		} else {
+			assert.False(t, node.Spec.Unschedulable)
+		}
 	}
 }
