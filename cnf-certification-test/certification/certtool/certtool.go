@@ -23,6 +23,7 @@ import (
 	version "github.com/hashicorp/go-version"
 	"github.com/test-network-function/cnf-certification-test/internal/api"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"helm.sh/helm/v3/pkg/release"
 )
 
@@ -104,4 +105,17 @@ func IsReleaseCertified(helm *release.Release, ourKubeVersion string, out api.Ch
 		}
 	}
 	return false
+}
+
+func GetContainersToQuery(env *provider.TestEnvironment) map[configuration.ContainerImageIdentifier]bool {
+	containersToQuery := make(map[configuration.ContainerImageIdentifier]bool)
+	for _, c := range env.Config.CertifiedContainerInfo {
+		containersToQuery[c] = true
+	}
+	if env.Config.CheckDiscoveredContainerCertificationStatus {
+		for _, cut := range env.Containers {
+			containersToQuery[cut.ContainerImageIdentifier] = true
+		}
+	}
+	return containersToQuery
 }

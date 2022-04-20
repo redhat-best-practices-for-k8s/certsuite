@@ -66,16 +66,7 @@ func testContainerCertificationStatus(env *provider.TestEnvironment) {
 	// Query API for certification status of listed containers
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestContainerIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
-		containersToQuery := make(map[configuration.ContainerImageIdentifier]bool)
-
-		for _, c := range env.Config.CertifiedContainerInfo {
-			containersToQuery[c] = true
-		}
-		if env.Config.CheckDiscoveredContainerCertificationStatus {
-			for _, cut := range env.Containers {
-				containersToQuery[cut.ContainerImageIdentifier] = true
-			}
-		}
+		containersToQuery := certtool.GetContainersToQuery(env)
 		if len(containersToQuery) == 0 {
 			ginkgo.Skip("No containers to check configured in tnf_config.yml")
 		}
