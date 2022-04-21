@@ -246,7 +246,7 @@ func TestIsReleaseCertified(t *testing.T) {
 
 //nolint:funlen
 func TestGetContainersToQuery(t *testing.T) {
-	generateEnv := func(certName string, checkDiscovered bool, CIDs []configuration.ContainerImageIdentifier, CIIs []*provider.Container) *provider.TestEnvironment {
+	generateEnv := func(checkDiscovered bool, CIDs []configuration.ContainerImageIdentifier, CIIs []*provider.Container) *provider.TestEnvironment {
 		return &provider.TestEnvironment{
 			Config: configuration.TestConfiguration{
 				CertifiedContainerInfo:                      CIDs,
@@ -261,7 +261,7 @@ func TestGetContainersToQuery(t *testing.T) {
 		expectedMap map[configuration.ContainerImageIdentifier]bool
 	}{
 		{ // Test Case #1 - Different images in the map
-			testEnv: generateEnv("certified1", true, []configuration.ContainerImageIdentifier{
+			testEnv: generateEnv(true, []configuration.ContainerImageIdentifier{
 				{
 					Name: "image1",
 				},
@@ -278,7 +278,7 @@ func TestGetContainersToQuery(t *testing.T) {
 			},
 		},
 		{ // Test Case 2 - Map is overwritten with image1
-			testEnv: generateEnv("certified2", true, []configuration.ContainerImageIdentifier{
+			testEnv: generateEnv(true, []configuration.ContainerImageIdentifier{
 				{
 					Name: "image1",
 				},
@@ -294,11 +294,11 @@ func TestGetContainersToQuery(t *testing.T) {
 			},
 		},
 		{ // Test Case 3 - Empty map
-			testEnv:     generateEnv("certified3", true, []configuration.ContainerImageIdentifier{}, []*provider.Container{}),
+			testEnv:     generateEnv(true, []configuration.ContainerImageIdentifier{}, []*provider.Container{}),
 			expectedMap: map[configuration.ContainerImageIdentifier]bool{},
 		},
 		{ // Test Case 4 - CheckDiscoveredContainerCertificationStatus is false
-			testEnv: generateEnv("certified4", false, []configuration.ContainerImageIdentifier{
+			testEnv: generateEnv(false, []configuration.ContainerImageIdentifier{
 				{
 					Name: "image1",
 				},
