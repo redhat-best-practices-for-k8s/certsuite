@@ -15,10 +15,10 @@ prior to merging a Pull Request.
 ## Workflow
 
 If you have a problem with the tools or want to suggest a new addition, The first thing to do is create an
-[Issue](https://github.com/test-network-function/test-network-function/issues) for discussion.
+[Issue](https://github.com/test-network-function/cnf-certification-test/issues) for discussion.
 
 When you have a change you want us to include in the main codebase, please open a
-[Pull Request](https://github.com/test-network-function/test-network-function/pulls) for your changes and link it to the
+[Pull Request](https://github.com/test-network-function/cnf-certification-test/pulls) for your changes and link it to the
 associated issue(s).
 
 ### Fork and Pull
