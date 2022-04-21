@@ -14,7 +14,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-require k8s.io/client-go v0.23.5
+require k8s.io/client-go v0.23.6
 
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
