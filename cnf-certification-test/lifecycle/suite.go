@@ -25,7 +25,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/graceperiod"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/ownerreference"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podrecreation"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
@@ -66,11 +65,6 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testPodNodeSelectorAndAffinityBestPractices(&env)
 	})
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNonDefaultGracePeriodIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatetfulSets)
-		testGracePeriod(&env)
-	})
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodRecreationIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatetfulSets)
@@ -210,35 +204,6 @@ func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) 
 	if n := len(badPods); n > 0 {
 		logrus.Debugf("Pods with nodeSelector/nodeAffinity: %+v", badPods)
 		ginkgo.Fail(fmt.Sprintf("%d pods found with nodeSelector/nodeAffinity rules", n))
-	}
-}
-
-func testGracePeriod(env *provider.TestEnvironment) {
-	badDeployments, deploymentLogs := graceperiod.TestTerminationGracePeriodOnDeployments(env)
-	badStatefulsets, statefulsetLogs := graceperiod.TestTerminationGracePeriodOnStatefulsets(env)
-	badPods, podLogs := graceperiod.TestTerminationGracePeriodOnPods(env)
-
-	numDeps := len(badDeployments)
-	if numDeps > 0 {
-		logrus.Debugf("Deployments found without terminationGracePeriodSeconds param set: %+v", badDeployments)
-	}
-	numSts := len(badStatefulsets)
-	if numSts > 0 {
-		logrus.Debugf("Statefulsets found without terminationGracePeriodSeconds param set: %+v", badStatefulsets)
-	}
-	numPods := len(badPods)
-	if numPods > 0 {
-		logrus.Debugf("Pods found without terminationGracePeriodSeconds param set: %+v", badPods)
-	}
-	ginkgo.By("Test results for grace period on deployments")
-	tnf.ClaimFilePrintf("%s", deploymentLogs)
-	ginkgo.By("Test results for grace period on statefulsets")
-	tnf.ClaimFilePrintf("%s", statefulsetLogs)
-	ginkgo.By("Test results for grace period on unmanaged pods")
-	tnf.ClaimFilePrintf("%s", podLogs)
-
-	if numDeps > 0 || numSts > 0 || numPods > 0 {
-		ginkgo.Fail(fmt.Sprintf("Found %d deployments, %d statefulsets and %d pods without terminationGracePeriodSeconds param set.", numDeps, numSts, numPods))
 	}
 }
 
