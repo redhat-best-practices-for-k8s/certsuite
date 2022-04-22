@@ -111,7 +111,7 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 	}
 
 	if n := len(badOperators); n > 0 {
-		ginkgo.Fail(fmt.Sprintf("Found %d operators with priviledges on some resource names.", n))
+		ginkgo.Fail(fmt.Sprintf("Found %d operators with privileges on some resource names.", n))
 	}
 }
 
