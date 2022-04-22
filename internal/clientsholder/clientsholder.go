@@ -25,11 +25,14 @@ import (
 	olmClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	olmFakeClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned/fake"
 	"github.com/sirupsen/logrus"
-	apiextv1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/typed/apiextensions/v1"
+
+	apiextv1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 
+	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
+	apiextv1fake "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/fake"
 	k8sFakeClient "k8s.io/client-go/kubernetes/fake"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -38,7 +41,7 @@ import (
 type ClientsHolder struct {
 	RestConfig    *rest.Config
 	DynamicClient dynamic.Interface
-	APIExtClient  apiextv1.ApiextensionsV1Interface
+	APIExtClient  apiextv1.Interface
 	OlmClient     olmClient.Interface
 	OcpClient     clientconfigv1.ConfigV1Interface
 	K8sClient     kubernetes.Interface
@@ -61,6 +64,13 @@ func SetupFakeOlmClient(olmMockObjects []runtime.Object) {
 func GetTestClientsHolder(k8sMockObjects []runtime.Object, filenames ...string) *ClientsHolder {
 	clientsHolder.K8sClient = k8sFakeClient.NewSimpleClientset(k8sMockObjects...)
 
+	clientsHolder.ready = true
+	return &clientsHolder
+}
+
+// GetTestClientsHolderAPIExt Overwrites the existing clientholders with a mocked version for unit testing.
+func GetTestClientsHolderAPIExt(k8sMockObjects []runtime.Object, filenames ...string) *ClientsHolder {
+	clientsHolder.APIExtClient = apiextv1fake.NewSimpleClientset(k8sMockObjects...)
 	clientsHolder.ready = true
 	return &clientsHolder
 }
