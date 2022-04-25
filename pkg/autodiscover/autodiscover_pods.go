@@ -26,17 +26,15 @@ import (
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
-func findPodsByLabel(oc corev1client.CoreV1Interface,
-	labels []configuration.Label,
-	namespaces []string) []v1.Pod {
+func findPodsByLabel(oc corev1client.CoreV1Interface, labels []configuration.Label, namespaces []string) []v1.Pod {
 	Pods := []v1.Pod{}
 	for _, ns := range namespaces {
 		for _, l := range labels {
-			options := metav1.ListOptions{}
 			label := buildLabelQuery(l)
 			logrus.Trace("find pods in ", ns, " using label= ", label)
-			options.LabelSelector = label
-			pods, err := oc.Pods(ns).List(context.TODO(), options)
+			pods, err := oc.Pods(ns).List(context.TODO(), metav1.ListOptions{
+				LabelSelector: label,
+			})
 			if err != nil {
 				logrus.Errorln("error when listing pods in ns=", ns, " label=", label, " try to proceed")
 				continue
