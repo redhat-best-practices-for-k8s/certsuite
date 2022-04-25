@@ -66,8 +66,7 @@ func TestFindTestCrdNames(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		_ = clientsholder.GetTestClientsHolderAPIExt(generateObjects())
-
+		_ = clientsholder.GetTestClientsHolder(generateObjects())
 		// Run the function and assert the results
 		assert.Equal(t, tc.expectedTargetCRDs, FindTestCrdNames(tc.spoofCRDFilters))
 	}
