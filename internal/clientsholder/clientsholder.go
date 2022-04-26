@@ -21,6 +21,7 @@ import (
 	"time"
 
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
+	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
 	olmClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	olmFakeClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned/fake"
 	"github.com/sirupsen/logrus"
@@ -29,7 +30,6 @@ import (
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 
-	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
 	k8sFakeClient "k8s.io/client-go/kubernetes/fake"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
