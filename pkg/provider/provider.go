@@ -30,6 +30,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"helm.sh/helm/v3/pkg/release"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -48,6 +49,13 @@ const (
 	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/networks-status"
 	skipConnectivityTestsLabel       = "test-network-function.com/skip_connectivity_tests"
 	skipMultusConnectivityTestsLabel = "test-network-function.com/skip_multus_connectivity_tests"
+)
+
+// Node's roles labels. Node is role R if it has **any** of the labels of each list.
+// Master's role label "master" is deprecated since k8s 1.20.
+var (
+	WorkerLabels = []string{"node-role.kubernetes.io/worker"}
+	MasterLabels = []string{"node-role.kubernetes.io/master", "node-role.kubernetes.io/control-plane"}
 )
 
 type Pod struct {
@@ -132,6 +140,25 @@ type Container struct {
 	UID                      string
 	ContainerImageIdentifier configuration.ContainerImageIdentifier
 }
+
+func IsWorkerNode(node *v1.Node) bool {
+	for nodeLabel := range node.Labels {
+		if stringhelper.StringInSlice(WorkerLabels, nodeLabel, true) {
+			return true
+		}
+	}
+	return false
+}
+
+func IsMasterNode(node *v1.Node) bool {
+	for nodeLabel := range node.Labels {
+		if stringhelper.StringInSlice(MasterLabels, nodeLabel, true) {
+			return true
+		}
+	}
+	return false
+}
+
 type cniNetworkInterface struct {
 	Name      string                 `json:"name"`
 	Interface string                 `json:"interface"`
