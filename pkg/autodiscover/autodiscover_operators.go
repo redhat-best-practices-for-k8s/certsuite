@@ -35,10 +35,10 @@ func findOperatorsByLabel(olmClient clientOlm.Interface, labels []configuration.
 		logrus.Debugf("Searching CSVs in namespace %s", ns)
 		for _, label := range labels {
 			logrus.Debugf("Searching CSVs with label %+v", label)
-			options := metav1.ListOptions{}
 			label := buildLabelQuery(label)
-			options.LabelSelector = label
-			csvList, err := olmClient.OperatorsV1alpha1().ClusterServiceVersions(ns.Name).List(context.TODO(), options)
+			csvList, err := olmClient.OperatorsV1alpha1().ClusterServiceVersions(ns.Name).List(context.TODO(), metav1.ListOptions{
+				LabelSelector: label,
+			})
 			if err != nil {
 				logrus.Errorln("error when listing csvs in ns=", ns, " label=", label)
 				continue
@@ -60,10 +60,10 @@ func findSubscriptions(olmClient clientOlm.Interface, labels []configuration.Lab
 		logrus.Debugf("Searching subscriptions in namespace %s", ns)
 		for _, label := range labels {
 			logrus.Debugf("Searching subscriptions with label %+v", label)
-			options := metav1.ListOptions{}
 			label := buildLabelQuery(label)
-			options.LabelSelector = label
-			subscription, err := olmClient.OperatorsV1alpha1().Subscriptions(ns).List(context.TODO(), metav1.ListOptions{})
+			subscription, err := olmClient.OperatorsV1alpha1().Subscriptions(ns).List(context.TODO(), metav1.ListOptions{
+				LabelSelector: label,
+			})
 			if err != nil {
 				logrus.Errorln("error when listing subscriptions in ns=", ns, " label=", label)
 				continue

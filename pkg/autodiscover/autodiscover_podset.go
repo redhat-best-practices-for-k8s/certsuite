@@ -55,9 +55,8 @@ func findDeploymentByLabel(
 ) []v1.Deployment {
 	deployments := []v1.Deployment{}
 	for _, ns := range namespaces {
-		options := metav1.ListOptions{}
 		dpClient := appClient.Deployments(ns)
-		dps, err := dpClient.List(context.TODO(), options)
+		dps, err := dpClient.List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
 			logrus.Errorln("error when listing Deployments in ns=", ns, " try to proceed")
 			continue
@@ -92,10 +91,10 @@ func findStatefulSetByLabel(
 		for _, l := range labels {
 			label := buildLabelQuery(l)
 			logrus.Trace("find StatefulSet in ", ns, " using label ", label)
-			options := metav1.ListOptions{}
-			options.LabelSelector = label
 			statefulSetClient := appClient.StatefulSets(ns)
-			ss, err := statefulSetClient.List(context.TODO(), options)
+			ss, err := statefulSetClient.List(context.TODO(), metav1.ListOptions{
+				LabelSelector: label,
+			})
 			if err != nil {
 				logrus.Errorln("error when listing StatefulSets in ns=", ns, " label=", label, " trying to proceed")
 				continue
