@@ -93,7 +93,7 @@ func testContainersFsDiff(env *provider.TestEnvironment, testerFuncs cnffsdiff.F
 			Namespace:     debugPod.Namespace,
 			Podname:       debugPod.Name,
 			Containername: debugPod.Spec.Containers[0].Name,
-		})
+		}, cut.UID)
 		switch testerFuncs.GetResults() {
 		case testhelper.SUCCESS:
 			continue
