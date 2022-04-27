@@ -26,19 +26,19 @@ import (
 
 	"encoding/json"
 
+	mcv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
+	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"helm.sh/helm/v3/pkg/release"
-	v1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
-	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	v1apps "k8s.io/api/apps/v1"
 	v1scaling "k8s.io/api/autoscaling/v1"
+	v1 "k8s.io/api/core/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 )
 
@@ -104,7 +104,7 @@ type TestEnvironment struct { // rename this with testTarget
 	Deployments       []*v1apps.Deployment                          `json:"testDeployments"`
 	StatetfulSets     []*v1apps.StatefulSet                         `json:"testStatetfulSets"`
 	HorizontalScaler  map[string]*v1scaling.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
-	Nodes             *v1.NodeList                                  `json:"-"`
+	Nodes             map[string]Node                               `json:"-"`
 	Subscriptions     []*olmv1Alpha.Subscription                    `json:"testSubscriptions"`
 	K8sVersion        string                                        `json:"-"`
 	OpenshiftVersion  string                                        `json:"-"`
@@ -141,8 +141,29 @@ type Container struct {
 	ContainerImageIdentifier configuration.ContainerImageIdentifier
 }
 
-func IsWorkerNode(node *v1.Node) bool {
-	for nodeLabel := range node.Labels {
+type systemdHugePagesUnit struct {
+	Contents string `json:"contents"`
+	Name     string `json:"name"`
+}
+type MachineConfig struct {
+	*mcv1.MachineConfig
+	Config struct {
+		Systemd struct {
+			Units []struct {
+				Contents string `json:"contents"`
+				Name     string `json:"name"`
+			} `json:"units"`
+		} `json:"systemd"`
+	} `json:"config"`
+}
+
+type Node struct {
+	node *v1.Node
+	mc   MachineConfig `json:"-"`
+}
+
+func (node *Node) IsWorkerNode() bool {
+	for nodeLabel := range node.node.Labels {
 		if stringhelper.StringInSlice(WorkerLabels, nodeLabel, true) {
 			return true
 		}
@@ -150,8 +171,8 @@ func IsWorkerNode(node *v1.Node) bool {
 	return false
 }
 
-func IsMasterNode(node *v1.Node) bool {
-	for nodeLabel := range node.Labels {
+func (node *Node) IsMasterNode() bool {
+	for nodeLabel := range node.node.Labels {
 		if stringhelper.StringInSlice(MasterLabels, nodeLabel, true) {
 			return true
 		}
@@ -197,7 +218,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.Crds = data.Crds
 	env.Namespaces = data.Namespaces
 	env.variables = data.Env
-	env.Nodes = data.Nodes
+	env.Nodes = createNodes(data.Nodes.Items)
 	pods := data.Pods
 
 	for i := 0; i < len(pods); i++ {
@@ -579,4 +600,57 @@ func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []ol
 	}
 
 	return operators, nil
+}
+
+func getMachineConfig(mcName string, machineConfigs map[string]MachineConfig) (MachineConfig, error) {
+	client := clientsholder.GetClientsHolder()
+
+	// Check whether we had already downloaded and parsed that machineConfig resource.
+	if mc, exists := machineConfigs[mcName]; exists {
+		return mc, nil
+	}
+
+	nodeMc, err := client.MachineCfg.MachineconfigurationV1().MachineConfigs().Get(context.TODO(), mcName, metav1.GetOptions{})
+	if err != nil {
+		return MachineConfig{}, err
+	}
+
+	mc := MachineConfig{
+		MachineConfig: nodeMc,
+	}
+
+	err = json.Unmarshal([]byte(nodeMc.Spec.Config.Raw), &mc.Config)
+	if err != nil {
+		return MachineConfig{}, fmt.Errorf("failed to unmarshal mc's Config field, err: %v", err)
+	}
+
+	return mc, nil
+}
+
+func createNodes(nodes []v1.Node) map[string]Node {
+	wrapperNodes := map[string]Node{}
+
+	// machineConfigs is a helper map to avoid download & process the same mc twice.
+	machineConfigs := map[string]MachineConfig{}
+	for _, node := range nodes {
+		// Get Node's machineConfig name
+		mcName, exists := node.Annotations["machineconfiguration.openshift.io/currentConfig"]
+		if !exists {
+			logrus.Errorf("Failed to get machineConfig name for node %s", node.Name)
+			continue
+		}
+		logrus.Infof("Node %s - mc name: %s", node.Name, mcName)
+		mc, err := getMachineConfig(mcName, machineConfigs)
+		if err != nil {
+			logrus.Errorf("Failed to get machineConfig %s, err: %v", mcName, err)
+			continue
+		}
+
+		wrapperNodes[node.Name] = Node{
+			node: &node,
+			mc:   mc,
+		}
+	}
+
+	return wrapperNodes
 }

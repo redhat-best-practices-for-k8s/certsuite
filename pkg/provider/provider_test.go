@@ -889,7 +889,8 @@ func TestIsWorkerNode(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		assert.Equal(t, tc.expectedResult, IsWorkerNode(tc.node))
+		node := Node{node: tc.node}
+		assert.Equal(t, tc.expectedResult, node.IsWorkerNode())
 	}
 }
 
@@ -961,6 +962,7 @@ func TestIsMasterNode(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		assert.Equal(t, tc.expectedResult, IsMasterNode(tc.node))
+		node := Node{node: tc.node}
+		assert.Equal(t, tc.expectedResult, node.IsMasterNode())
 	}
 }
