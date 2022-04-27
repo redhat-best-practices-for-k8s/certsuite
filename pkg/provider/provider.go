@@ -141,10 +141,6 @@ type Container struct {
 	ContainerImageIdentifier configuration.ContainerImageIdentifier
 }
 
-type systemdHugePagesUnit struct {
-	Contents string `json:"contents"`
-	Name     string `json:"name"`
-}
 type MachineConfig struct {
 	*mcv1.MachineConfig
 	Config struct {
@@ -158,12 +154,16 @@ type MachineConfig struct {
 }
 
 type Node struct {
-	node *v1.Node
-	mc   MachineConfig `json:"-"`
+	Data *v1.Node
+	Mc   MachineConfig `json:"-"`
+}
+
+func (node Node) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&node.Data)
 }
 
 func (node *Node) IsWorkerNode() bool {
-	for nodeLabel := range node.node.Labels {
+	for nodeLabel := range node.Data.Labels {
 		if stringhelper.StringInSlice(WorkerLabels, nodeLabel, true) {
 			return true
 		}
@@ -172,7 +172,7 @@ func (node *Node) IsWorkerNode() bool {
 }
 
 func (node *Node) IsMasterNode() bool {
-	for nodeLabel := range node.node.Labels {
+	for nodeLabel := range node.Data.Labels {
 		if stringhelper.StringInSlice(MasterLabels, nodeLabel, true) {
 			return true
 		}
@@ -619,7 +619,7 @@ func getMachineConfig(mcName string, machineConfigs map[string]MachineConfig) (M
 		MachineConfig: nodeMc,
 	}
 
-	err = json.Unmarshal([]byte(nodeMc.Spec.Config.Raw), &mc.Config)
+	err = json.Unmarshal(nodeMc.Spec.Config.Raw, &mc.Config)
 	if err != nil {
 		return MachineConfig{}, fmt.Errorf("failed to unmarshal mc's Config field, err: %v", err)
 	}
@@ -632,7 +632,8 @@ func createNodes(nodes []v1.Node) map[string]Node {
 
 	// machineConfigs is a helper map to avoid download & process the same mc twice.
 	machineConfigs := map[string]MachineConfig{}
-	for _, node := range nodes {
+	for i := range nodes {
+		node := &nodes[i]
 		// Get Node's machineConfig name
 		mcName, exists := node.Annotations["machineconfiguration.openshift.io/currentConfig"]
 		if !exists {
@@ -647,8 +648,8 @@ func createNodes(nodes []v1.Node) map[string]Node {
 		}
 
 		wrapperNodes[node.Name] = Node{
-			node: &node,
-			mc:   mc,
+			Data: node,
+			Mc:   mc,
 		}
 	}
 

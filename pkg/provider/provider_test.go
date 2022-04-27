@@ -837,8 +837,7 @@ func TestOperatorString(t *testing.T) {
 	assert.Equal(t, "csv: test1 ns:testNS subscription:sub1", o.String())
 }
 
-// WorkerLabels = []string{"node-role.kubernetes.io/worker"}
-// MasterLabels = []string{"node-role.kubernetes.io/master", "node-role.kubernetes.io/control-plane"}
+//nolint:funlen
 func TestIsWorkerNode(t *testing.T) {
 	testCases := []struct {
 		node           *v1.Node
@@ -889,11 +888,12 @@ func TestIsWorkerNode(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		node := Node{node: tc.node}
+		node := Node{Data: tc.node}
 		assert.Equal(t, tc.expectedResult, node.IsWorkerNode())
 	}
 }
 
+//nolint:funlen
 func TestIsMasterNode(t *testing.T) {
 	testCases := []struct {
 		node           *v1.Node
@@ -962,7 +962,7 @@ func TestIsMasterNode(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		node := Node{node: tc.node}
+		node := Node{Data: tc.node}
 		assert.Equal(t, tc.expectedResult, node.IsMasterNode())
 	}
 }
