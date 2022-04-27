@@ -836,3 +836,133 @@ func TestOperatorString(t *testing.T) {
 	}
 	assert.Equal(t, "csv: test1 ns:testNS subscription:sub1", o.String())
 }
+
+//nolint:funlen
+func TestIsWorkerNode(t *testing.T) {
+	testCases := []struct {
+		node           *v1.Node
+		expectedResult bool
+	}{
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{}},
+			},
+			expectedResult: false,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1"}},
+			},
+			expectedResult: false,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/master": ""}},
+			},
+			expectedResult: false,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/worker": ""}},
+			},
+			expectedResult: true,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/worker": "blahblah"}},
+			},
+			expectedResult: true,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/worker": ""}},
+			},
+			expectedResult: true,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/worker": ""}},
+			},
+			expectedResult: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		node := Node{Data: tc.node}
+		assert.Equal(t, tc.expectedResult, node.IsWorkerNode())
+	}
+}
+
+//nolint:funlen
+func TestIsMasterNode(t *testing.T) {
+	testCases := []struct {
+		node           *v1.Node
+		expectedResult bool
+	}{
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{}},
+			},
+			expectedResult: false,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1"}},
+			},
+			expectedResult: false,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/worker": ""}},
+			},
+			expectedResult: false,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/master": ""}},
+			},
+			expectedResult: true,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/master": "blahblah"}},
+			},
+			expectedResult: true,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/control-plane": ""}},
+			},
+			expectedResult: true,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/control-plane": "blablah"}},
+			},
+			expectedResult: true,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/master": ""}},
+			},
+			expectedResult: true,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/control-plane": ""}},
+			},
+			expectedResult: true,
+		},
+		{
+			node: &v1.Node{
+				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/master": "", "node-role.kubernetes.io/control-plane": ""}},
+			},
+			expectedResult: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		node := Node{Data: tc.node}
+		assert.Equal(t, tc.expectedResult, node.IsMasterNode())
+	}
+}

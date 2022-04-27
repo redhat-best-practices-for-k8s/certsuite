@@ -29,6 +29,7 @@ import (
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 
+	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
 	k8sFakeClient "k8s.io/client-go/kubernetes/fake"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -41,8 +42,8 @@ type ClientsHolder struct {
 	OlmClient     olmClient.Interface
 	OcpClient     clientconfigv1.ConfigV1Interface
 	K8sClient     kubernetes.Interface
-
-	ready bool
+	MachineCfg    ocpMachine.Interface
+	ready         bool
 }
 
 var clientsHolder = ClientsHolder{}
@@ -128,6 +129,10 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	clientsHolder.OcpClient, err = clientconfigv1.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("can't instantiate ocClient: %s", err)
+	}
+	clientsHolder.MachineCfg, err = ocpMachine.NewForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		return nil, fmt.Errorf("can't instantiate MachineCfg client: %s", err)
 	}
 
 	clientsHolder.ready = true

@@ -134,24 +134,16 @@ func getHWTextOutput(debugPod *v1.Pod, o clientsholder.Command, cmd string) (out
 func GetNodeJSON() (out map[string]interface{}) {
 	env := provider.GetTestEnvironment()
 
-	scheme := runtime.NewScheme()
-	err := v1.AddToScheme(scheme)
+	nodesJSON, err := json.Marshal(env.Nodes)
 	if err != nil {
-		logrus.Errorf("Fail GetNodeJSON err:%s", err)
-		return out
-	}
-	codec := serializer.NewCodecFactory(scheme).LegacyCodec(v1.SchemeGroupVersion)
-	data, err := runtime.Encode(codec, env.Nodes)
-	if err != nil {
-		logrus.Errorf("Fail to encode Nodes to json, er: %s", err)
-		return out
+		logrus.Errorf("Could not Marshall env.Nodes, err=%v", err)
 	}
 
-	err = json.Unmarshal(data, &out)
+	err = json.Unmarshal(nodesJSON, &out)
 	if err != nil {
-		logrus.Errorf("failed to marshall nodes json, err: %s", err)
-		return out
+		logrus.Errorf("Could not unMarshall env.Nodes, err=%v", err)
 	}
+
 	return out
 }
 
