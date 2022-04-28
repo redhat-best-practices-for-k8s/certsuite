@@ -40,15 +40,15 @@ func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container
 	}
 	mcKernelArgumentsMap, err := getMcKernelArguments(env, cut.NodeName)
 	if err != nil {
-		return claimsLog, fmt.Errorf("error getting kernel arguments in node %s", cut.NodeName)
+		return claimsLog, fmt.Errorf("error getting kernel arguments in node %s, err=%s", cut.NodeName, err)
 	}
 	currentKernelArgsMap, err := getCurrentKernelCmdlineArgs(cut)
 	if err != nil {
-		return claimsLog, fmt.Errorf("error getting kernel cli arguments from container: %s", cut)
+		return claimsLog, fmt.Errorf("error getting kernel cli arguments from container: %s, err=%s", cut, err)
 	}
 	grubKernelConfigMap, err := getGrubKernelArgs(env, cut.NodeName)
 	if err != nil {
-		return claimsLog, fmt.Errorf("error getting grub  kernel arguments for node: %s", cut.NodeName)
+		return claimsLog, fmt.Errorf("error getting grub  kernel arguments for node: %s, err=%s", cut.NodeName, err)
 	}
 	for key, mcVal := range mcKernelArgumentsMap {
 		if currentVal, ok := currentKernelArgsMap[key]; ok {
