@@ -140,11 +140,6 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "namespace"),
 		Version: versionOne,
 	}
-	// TestNonDefaultGracePeriodIdentifier tests best grace period practices.
-	TestNonDefaultGracePeriodIdentifier = claim.Identifier{
-		Url:     formTestURL(common.LifecycleTestKey, "pod-termination-grace-period"),
-		Version: versionOne,
-	}
 	// TestNonTaintedNodeKernelsIdentifier is the identifier for the test checking tainted nodes.
 	TestNonTaintedNodeKernelsIdentifier = claim.Identifier{
 		Url:     formTestURL(common.PlatformAlterationTestKey, "tainted-node-kernel"),
@@ -517,20 +512,6 @@ the namespaces should not start with "default, openshift-, istio- or aspenmesh-"
 the following conditions: (1) It was declared in the yaml config file under the targetNameSpaces
 tag. (2) It doesn't have any of the following prefixes: default, openshift-, istio- and aspenmesh-`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2, 16.3.8 & 16.3.9",
-	},
-
-	TestNonDefaultGracePeriodIdentifier: {
-		Identifier: TestNonDefaultGracePeriodIdentifier,
-		Type:       informativeResult,
-		Remediation: `Choose a terminationGracePeriod that is appropriate for your given CNF.  If the default (30s) is appropriate, then feel
-free to ignore this informative message.  This test is meant to raise awareness around how Pods are terminated, and to
-suggest that a CNF is configured based on its requirements.  In addition to a terminationGracePeriod, consider utilizing
-a termination hook in the case that your application requires special shutdown instructions.`,
-		Description: formDescription(TestNonDefaultGracePeriodIdentifier,
-			`tests whether the terminationGracePeriod is CNF-specific, or if the default (30s) is utilized.  This test is
-informative, and will not affect CNF Certification.  In many cases, the default terminationGracePeriod is perfectly
-acceptable for a CNF.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
 
 	TestNonTaintedNodeKernelsIdentifier: {

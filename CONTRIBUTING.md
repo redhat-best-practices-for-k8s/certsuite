@@ -15,10 +15,10 @@ prior to merging a Pull Request.
 ## Workflow
 
 If you have a problem with the tools or want to suggest a new addition, The first thing to do is create an
-[Issue](https://github.com/test-network-function/test-network-function/issues) for discussion.
+[Issue](https://github.com/test-network-function/cnf-certification-test/issues) for discussion.
 
 When you have a change you want us to include in the main codebase, please open a
-[Pull Request](https://github.com/test-network-function/test-network-function/pulls) for your changes and link it to the
+[Pull Request](https://github.com/test-network-function/cnf-certification-test/pulls) for your changes and link it to the
 associated issue(s).
 
 ### Fork and Pull
@@ -56,12 +56,7 @@ commits focused (`git add -p` will help with this).
 
 ## Test Implementation guidelines
 
-Each contributed test is expected to implement the `reel.Handler` and `tnf.Tester` interfaces.  Additionally, each test
-must be based on CLI commands.  No tests should utilize OpenShift client libraries.  The choice to avoid OpenShift
-client is deliberate, and was decided to aid in support of all versions of OpenShift despite the API(s) changing.
-Generally speaking, the CLI API changes much less quickly.
-
-For more details on how to add a new Test either as a JSON definition, or in code, please see [DEVELOPING.md](DEVELOPING.md)
+TODO: After the recent refactor we need to re-write the developer's guide.
 
 ### Unit Testing Tests
 

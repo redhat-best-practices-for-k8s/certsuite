@@ -14,19 +14,19 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-require k8s.io/client-go v0.23.5
+require k8s.io/client-go v0.23.6
 
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/mittwald/go-helm-client v0.9.0
-	github.com/onsi/ginkgo/v2 v2.1.3
+	github.com/mittwald/go-helm-client v0.9.2
+	github.com/onsi/ginkgo/v2 v2.1.4
 	github.com/openshift/client-go v0.0.0-20211209144617-7385dd6338e3
 	github.com/operator-framework/api v0.14.0
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
 	helm.sh/helm/v3 v3.8.2
-	k8s.io/api v0.23.5
-	k8s.io/apimachinery v0.23.5
+	k8s.io/api v0.23.6
+	k8s.io/apimachinery v0.23.6
 	k8s.io/klog/v2 v2.40.1 // indirect
 )
 
@@ -56,7 +56,6 @@ require (
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
 	github.com/docker/go-units v0.4.0 // indirect
-	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7 // indirect
 	github.com/evanphx/json-patch v4.12.0+incompatible // indirect
 	github.com/exponent-io/jsonpath v0.0.0-20151013193312-d6023ce2651d // indirect
 	github.com/fatih/color v1.13.0 // indirect
@@ -119,7 +118,7 @@ require (
 	github.com/spf13/cast v1.4.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/objx v0.3.0 // indirect
-	github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f // indirect
+	github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb // indirect
 	github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 // indirect
 	github.com/xlab/treeprint v0.0.0-20181112141820-a009c3971eca // indirect
 	github.com/yvasiyarov/go-metrics v0.0.0-20150112132944-c25f46c4b940 // indirect
@@ -162,4 +161,9 @@ require (
 	k8s.io/apiextensions-apiserver v0.23.5
 )
 
-require github.com/openshift/api v0.0.0-20220124143425-d74727069f6f
+require (
+	github.com/openshift/api v0.0.0-20220124143425-d74727069f6f
+	github.com/openshift/machine-config-operator v0.0.0-00010101000000-000000000000
+)
+
+replace github.com/openshift/machine-config-operator => github.com/openshift/machine-config-operator v0.0.1-0.20200913004441-7eba765c69c9

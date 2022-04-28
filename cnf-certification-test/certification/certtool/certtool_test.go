@@ -24,6 +24,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/internal/api"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"helm.sh/helm/v3/pkg/chart"
 	"helm.sh/helm/v3/pkg/release"
 )
@@ -240,5 +241,78 @@ func TestIsReleaseCertified(t *testing.T) {
 
 	for _, tc := range testCases {
 		assert.Equal(t, tc.expectedCertified, IsReleaseCertified(tc.testRelease, tc.testKubeVersion, tc.testChartStruct))
+	}
+}
+
+//nolint:funlen
+func TestGetContainersToQuery(t *testing.T) {
+	generateEnv := func(checkDiscovered bool, CIDs []configuration.ContainerImageIdentifier, CIIs []*provider.Container) *provider.TestEnvironment {
+		return &provider.TestEnvironment{
+			Config: configuration.TestConfiguration{
+				CertifiedContainerInfo:                      CIDs,
+				CheckDiscoveredContainerCertificationStatus: checkDiscovered,
+			},
+			Containers: CIIs,
+		}
+	}
+
+	testCases := []struct {
+		testEnv     *provider.TestEnvironment
+		expectedMap map[configuration.ContainerImageIdentifier]bool
+	}{
+		{ // Test Case #1 - Different images in the map
+			testEnv: generateEnv(true, []configuration.ContainerImageIdentifier{
+				{
+					Name: "image1",
+				},
+			}, []*provider.Container{
+				{
+					ContainerImageIdentifier: configuration.ContainerImageIdentifier{
+						Name: "image2",
+					},
+				},
+			}),
+			expectedMap: map[configuration.ContainerImageIdentifier]bool{
+				{Name: "image1"}: true,
+				{Name: "image2"}: true,
+			},
+		},
+		{ // Test Case 2 - Map is overwritten with image1
+			testEnv: generateEnv(true, []configuration.ContainerImageIdentifier{
+				{
+					Name: "image1",
+				},
+			}, []*provider.Container{
+				{
+					ContainerImageIdentifier: configuration.ContainerImageIdentifier{
+						Name: "image1",
+					},
+				},
+			}),
+			expectedMap: map[configuration.ContainerImageIdentifier]bool{
+				{Name: "image1"}: true,
+			},
+		},
+		{ // Test Case 3 - Empty map
+			testEnv:     generateEnv(true, []configuration.ContainerImageIdentifier{}, []*provider.Container{}),
+			expectedMap: map[configuration.ContainerImageIdentifier]bool{},
+		},
+		{ // Test Case 4 - CheckDiscoveredContainerCertificationStatus is false
+			testEnv: generateEnv(false, []configuration.ContainerImageIdentifier{
+				{
+					Name: "image1",
+				},
+			}, []*provider.Container{
+				{ContainerImageIdentifier: configuration.ContainerImageIdentifier{Name: "image2"}},
+				{ContainerImageIdentifier: configuration.ContainerImageIdentifier{Name: "image3"}},
+			}),
+			expectedMap: map[configuration.ContainerImageIdentifier]bool{
+				{Name: "image1"}: true,
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedMap, GetContainersToQuery(tc.testEnv))
 	}
 }

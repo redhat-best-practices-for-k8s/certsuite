@@ -21,6 +21,7 @@ import (
 	"time"
 
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
+	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
 	olmClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	olmFakeClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned/fake"
 	"github.com/sirupsen/logrus"
@@ -43,6 +44,7 @@ type ClientsHolder struct {
 	OcpClient     clientconfigv1.ConfigV1Interface
 	K8sClient     kubernetes.Interface
 	RbacClient    *rbac.RbacV1Client
+	MachineCfg    ocpMachine.Interface
 	ready         bool
 }
 
@@ -63,6 +65,11 @@ func GetTestClientsHolder(k8sMockObjects []runtime.Object, filenames ...string) 
 
 	clientsHolder.ready = true
 	return &clientsHolder
+}
+
+func ClearTestClientsHolder() {
+	clientsHolder.K8sClient = nil
+	clientsHolder.ready = false
 }
 
 // GetClientsHolder returns the singleton ClientsHolder object.
@@ -128,6 +135,10 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	clientsHolder.RbacClient, err = rbac.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("can't instantiate ocClient: %s", err)
+	}
+	clientsHolder.MachineCfg, err = ocpMachine.NewForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		return nil, fmt.Errorf("can't instantiate MachineCfg client: %s", err)
 	}
 	clientsHolder.ready = true
 	return &clientsHolder, nil

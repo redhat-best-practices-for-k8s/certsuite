@@ -33,8 +33,7 @@ import (
 // getClusterCrdNames returns a list of crd names found in the cluster.
 func getClusterCrdNames() (crdList []*apiextv1.CustomResourceDefinition, err error) {
 	oc := clientsholder.GetClientsHolder()
-	options := metav1.ListOptions{}
-	crds, err := oc.APIExtClient.CustomResourceDefinitions().List(context.TODO(), options)
+	crds, err := oc.APIExtClient.CustomResourceDefinitions().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		logrus.Errorln("error when listing crds")
 		return crdList, err

@@ -1,5 +1,5 @@
 
-# Test Network Function ![build](https://github.com/test-network-function/test-network-function/actions/workflows/merge.yaml/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/test-network-function/test-network-function)](https://goreportcard.com/report/github.com/test-network-function/test-network-function)
+# Test Network Function ![build](https://github.com/test-network-function/cnf-certification-test/actions/workflows/merge.yaml/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/test-network-function/test-network-function)](https://goreportcard.com/report/github.com/test-network-function/cnf-certification-test)
 
 
 This repository contains a set of Cloud-Native Network Functions (CNFs) test cases and the framework to build more. The tests and framework are intended 
@@ -397,7 +397,7 @@ Here's an example of a Test pass.  It verifies that the CNF is using a replica s
 ------------------------------
 lifecycle when Testing owners of CNF pod 
   Should be only ReplicaSet
-  /Users/$USER/cnf-cert/test-network-function/test-network-function/lifecycle/suite.go:339
+  /Users/$USER/cnf-cert/test-network-function/cnf-certification-test/lifecycle/suite.go:339
 2021/07/27 11:41:25 Sent: "oc -n tnf get pods test-697ff58f87-d55zx -o custom-columns=OWNERKIND:.metadata.ownerReferences\\[\\*\\].kind && echo END_OF_TEST_SENTINEL\n"
 2021/07/27 11:41:26 Match for RE: "(?s)OWNERKIND\n.+((.|\n)*END_OF_TEST_SENTINEL\n)" found: ["OWNERKIND\nReplicaSet\nEND_OF_TEST_SENTINEL\n" "END_OF_TEST_SENTINEL\n" ""] Buffer: "OWNERKIND\nReplicaSet\nEND_OF_TEST_SENTINEL\n"
 •
@@ -413,18 +413,18 @@ is installed correctly, but does not find it (the operator was not present on th
 ------------------------------
 operator Runs test on operators when under test is: my-etcd/etcdoperator.v0.9.4  
   tests for: CSV_INSTALLED
-  /Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:122
+  /Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:122
 2020/12/15 15:28:19 Sent: "oc get csv etcdoperator.v0.9.4 -n my-etcd -o json | jq -r '.status.phase'\n"
 
 • Failure [10.002 seconds]
 operator
-/Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:58
+/Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:58
   Runs test on operators
-  /Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:71
+  /Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:71
     when under test is: my-etcd/etcdoperator.v0.9.4 
-    /Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:121
+    /Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:121
       tests for: CSV_INSTALLED [It]
-      /Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:122
+      /Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:122
 
       Expected
           <int>: 0
@@ -440,18 +440,18 @@ is installed correctly, but does not find it (the operator was not present on th
 ------------------------------
 operator Runs test on operators when under test is: my-etcd/etcd
   tests for: SUBSCRIPTION_INSTALLED
-  /Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:129
+  /Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:129
 2021/04/09 12:37:10 Sent: "oc get subscription etcd -n my-etcd -ojson | jq -r '.spec.name'\n"
 
 • Failure [10.000 seconds]
 operator
-/Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:55
+/Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:55
   Runs test on operators
-  /Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:68
+  /Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:68
     when under test is: default/etcdoperator.v0.9.4 
-    /Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:128
+    /Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:128
       tests for: SUBSCRIPTION_INSTALLED [It]
-      /Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:129
+      /Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:129
 
       Expected
           <int>: 0
@@ -467,22 +467,22 @@ specific CSV, but does not find it (the operator was not present on the cluster 
 ------------------------------
 operator Runs test on operators 
   should eventually be verified as certified (operator redhat-marketplace/etcd-operator)
-  /Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:146
+  /Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:146
 
 • Failure [30.002 seconds]
 operator
-/Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:76
+/Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:76
   Runs test on operators
-  /Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:89
+  /Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:89
     should eventually be verified as certified (operator redhat-marketplace/etcd-operator) [It]
-    /Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:146
+    /Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:146
 
     Timed out after 30.001s.
     Expected
         <bool>: false
     to be true
 
-    /Users/$USER/cnf-cert/test-network-function/test-network-function/operator/suite.go:152
+    /Users/$USER/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:152
 ```
 ## Log level 
 The optional TNF_LOG_LEVEL environment variable sets the log level. Defaults to "info" if not set. Valid values are: trace, debug, info, warn, error, fatal, panic.

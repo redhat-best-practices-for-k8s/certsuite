@@ -82,7 +82,7 @@ func TestRunTest(t *testing.T) {
 		}
 
 		fsdiff := NewFsDiffTester(chm)
-		fsdiff.RunTest(clientsholder.Context{})
+		fsdiff.RunTest(clientsholder.Context{}, "fakeUID")
 		assert.Equal(t, tc.expectedResult, fsdiff.GetResults())
 	}
 }

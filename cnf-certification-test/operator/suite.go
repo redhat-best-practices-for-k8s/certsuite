@@ -111,7 +111,7 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 	}
 
 	if n := len(badOperators); n > 0 {
-		ginkgo.Fail(fmt.Sprintf("Found %d operators with priviledges on some resource names.", n))
+		ginkgo.Fail(fmt.Sprintf("Found %d operators with privileges on some resource names.", n))
 	}
 }
 
@@ -121,8 +121,7 @@ func testOperatorOlmSubscription(env *provider.TestEnvironment) {
 	for i := range env.Operators {
 		csv := env.Operators[i].Csv
 		ginkgo.By(fmt.Sprintf("Checking OLM subscription for %s", provider.CsvToString(csv)))
-		options := metav1.ListOptions{}
-		subscriptions, err := ocpClient.OlmClient.OperatorsV1alpha1().Subscriptions(csv.Namespace).List(context.TODO(), options)
+		subscriptions, err := ocpClient.OlmClient.OperatorsV1alpha1().Subscriptions(csv.Namespace).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
 			ginkgo.Fail(fmt.Sprintf("Failed to get subscription for %s: %s", provider.CsvToString(csv), err))
 		}

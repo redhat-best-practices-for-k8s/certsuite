@@ -17,6 +17,7 @@
 package cnffsdiff
 
 import (
+	"fmt"
 	"regexp"
 
 	"github.com/sirupsen/logrus"
@@ -41,7 +42,7 @@ type FsDiff struct {
 }
 
 type FsDiffFuncs interface {
-	RunTest(ctx clientsholder.Context)
+	RunTest(ctx clientsholder.Context, containerUID string)
 	GetResults() int
 }
 
@@ -52,9 +53,9 @@ func NewFsDiffTester(client clientsholder.Command) *FsDiff {
 	}
 }
 
-func (f *FsDiff) RunTest(ctx clientsholder.Context) {
+func (f *FsDiff) RunTest(ctx clientsholder.Context, containerUID string) {
 	expected := []string{varlibrpm, varlibdpkg, bin, sbin, lib, usrbin, usrsbin, usrlib}
-	output, outerr, err := f.ClientHolder.ExecCommandContainer(ctx, `chroot /host podman diff --format json`)
+	output, outerr, err := f.ClientHolder.ExecCommandContainer(ctx, fmt.Sprintf("chroot /host podman diff --format json %s", containerUID))
 	if err != nil {
 		logrus.Errorln("can't execute command on container ", err)
 		f.result = testhelper.ERROR

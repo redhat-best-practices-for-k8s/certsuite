@@ -18,7 +18,6 @@ package results
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/onsi/ginkgo/v2/types"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
@@ -32,14 +31,8 @@ var results = map[string][]claim.Result{}
 // Multiple results for a given identifier are aggregated as an array under the same key.
 func RecordResult(report types.SpecReport) { //nolint:gocritic // From Ginkgo
 	if claimID, ok := identifiers.TestIDToClaimID[report.LeafNodeText]; ok {
-		var key string
-		for _, level := range report.ContainerHierarchyTexts {
-			levelNoSpace := strings.ReplaceAll(level, " ", "_")
-			key = key + "-" + levelNoSpace
-		}
-		key = strings.TrimLeft(key, "-") + "-" + report.LeafNodeText
 		testText := identifiers.Catalog[claimID].Description
-		results[key] = append(results[key], claim.Result{
+		results[report.LeafNodeText] = append(results[report.LeafNodeText], claim.Result{
 			Duration:           int(report.RunTime.Nanoseconds()),
 			FailureLocation:    report.FailureLocation().String(),
 			FailureLineContent: report.FailureLocation().ContentsOfLine(),
