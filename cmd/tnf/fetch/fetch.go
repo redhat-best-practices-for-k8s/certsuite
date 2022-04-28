@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	filterCsi              = "&filter=csv_description=iregex=CSI;organization==certified-operators"
+	filterCsi              = "&filter=organization==certified-operators"
 	containercatalogURL    = "https://catalog.redhat.com/api/containers/v1/images?page_size=%d&page=%d&filter=certified==true"
 	operatorcatalogURL     = "https://catalog.redhat.com/api/containers/v1/operators/bundles?"
 	helmcatalogURL         = "https://charts.openshift.io/index.yaml"
@@ -59,7 +59,7 @@ func NewCommand() *cobra.Command {
 
 // RunCommand execute the fetch subcommands
 func RunCommand(cmd *cobra.Command, args []string) error {
-	data := getCertifiedNumbers()
+	data := getCertifiedCatalogOnDisk()
 	log.Info(data)
 	b, err := cmd.PersistentFlags().GetBool(operatorFlag)
 	if err != nil {
@@ -102,7 +102,7 @@ func getHTTPBody(url string) []uint8 {
 	return body
 }
 
-func getCertifiedNumbers() CertifiedCatalog {
+func getCertifiedCatalogOnDisk() CertifiedCatalog {
 	path, err := os.Getwd()
 	if err != nil {
 		log.Println(err)

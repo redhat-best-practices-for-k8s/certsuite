@@ -102,14 +102,9 @@ func loadOperatorsCatalog(pathToRoot string) {
 // ocpVersion is Major.Minor OCP version
 func IsOperatorCertified(operatorName, ocpVersion string) bool {
 	name, operatorVersion := extractNameVersionFromName(operatorName)
-	data := OperatorOcpVersionMatch{ocpVersion: ocpVersion, operatorVersion: operatorVersion}
 	if v, ok := operatordb[name]; ok {
-		if ocpVersion == "" {
-			log.Trace("operator ", name, " found in db")
-			return true
-		}
 		for _, version := range v {
-			if version.ocpVersion == data.ocpVersion && version.operatorVersion == data.operatorVersion {
+			if version.operatorVersion == operatorVersion && (ocpVersion == "" || version.ocpVersion == ocpVersion) {
 				log.Trace("operator ", name, " found in db")
 				return true
 			}
