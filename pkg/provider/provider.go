@@ -634,6 +634,14 @@ func createNodes(nodes []v1.Node) map[string]Node {
 	machineConfigs := map[string]MachineConfig{}
 	for i := range nodes {
 		node := &nodes[i]
+
+		if !IsOCPCluster() {
+			// Avoid getting Mc info for non ocp clusters.
+			wrapperNodes[node.Name] = Node{Data: node}
+			logrus.Warnf("Non OCP cluster detected. MachineConfig retrieval for node %s skipped.", node.Name)
+			continue
+		}
+
 		// Get Node's machineConfig name
 		mcName, exists := node.Annotations["machineconfiguration.openshift.io/currentConfig"]
 		if !exists {
