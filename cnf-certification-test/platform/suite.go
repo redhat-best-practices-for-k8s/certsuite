@@ -74,7 +74,6 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		testIsRedHatRelease(&env)
 	})
 
-
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestIsSELinuxEnforcingIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		if provider.IsOCPCluster() {
