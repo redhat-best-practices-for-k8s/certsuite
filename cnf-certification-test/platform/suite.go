@@ -30,7 +30,9 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/hugepages"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/isredhat"
+
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 
 	"github.com/onsi/ginkgo/v2"
@@ -76,6 +78,16 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if provider.IsOCPCluster() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
 			testIsSELinuxEnforcing(&env)
+		} else {
+			ginkgo.Skip(" non ocp cluster ")
+		}
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestHugepagesNotManuallyManipulated)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		if provider.IsOCPCluster() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+			testHugepages(&env)
 		} else {
 			ginkgo.Skip(" non ocp cluster ")
 		}
@@ -244,5 +256,30 @@ func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
 	}
 	if nodesFailed > 0 {
 		ginkgo.Fail(fmt.Sprintf("Failed because %d nodes are not running selinux", nodesFailed))
+	}
+}
+
+func testHugepages(env *provider.TestEnvironment) {
+	var badNodes []string
+	for i := range env.Nodes {
+		node := env.Nodes[i]
+		if !node.IsWorkerNode() {
+			continue
+		}
+
+		hpTester, err := hugepages.NewTester(&node, env.DebugPods[node.Data.Name])
+		if err != nil {
+			tnf.ClaimFilePrintf("Unable to get node hugepages tester for node %s, err: %v", node.Data.Name, err)
+			badNodes = append(badNodes, node.Data.Name)
+		}
+
+		if err := hpTester.Run(); err != nil {
+			tnf.ClaimFilePrintf("Node %s: %v", node.Data.Name, err)
+			badNodes = append(badNodes, node.Data.Name)
+		}
+	}
+
+	if n := len(badNodes); n > 0 {
+		ginkgo.Fail(fmt.Sprintf("Found %d failing nodes: %v", n, badNodes))
 	}
 }
