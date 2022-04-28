@@ -30,6 +30,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 
 	k8sFakeClient "k8s.io/client-go/kubernetes/fake"
+	rbac "k8s.io/client-go/kubernetes/typed/rbac/v1"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 )
@@ -41,8 +42,8 @@ type ClientsHolder struct {
 	OlmClient     olmClient.Interface
 	OcpClient     clientconfigv1.ConfigV1Interface
 	K8sClient     kubernetes.Interface
-
-	ready bool
+	RbacClient    *rbac.RbacV1Client
+	ready         bool
 }
 
 var clientsHolder = ClientsHolder{}
@@ -124,7 +125,10 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("can't instantiate ocClient: %s", err)
 	}
-
+	clientsHolder.RbacClient, err = rbac.NewForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		return nil, fmt.Errorf("can't instantiate ocClient: %s", err)
+	}
 	clientsHolder.ready = true
 	return &clientsHolder, nil
 }

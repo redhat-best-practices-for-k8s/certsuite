@@ -5,7 +5,7 @@ description:
 kind: ChaosExperiment
 metadata:
   name: pod-delete
-  namespace: tnf
+  namespace: {{ APP_NAMESPACE }}
   labels:
     name: pod-delete
     app.kubernetes.io/part-of: litmus
@@ -98,7 +98,7 @@ spec:
       
     labels:
       name: pod-delete
-      namespace: tnf
+      namespace: {{ APP_NAMESPACE }}
       app.kubernetes.io/part-of: litmus
       app.kubernetes.io/component: experiment-job
       app.kubernetes.io/version: 2.7.0
