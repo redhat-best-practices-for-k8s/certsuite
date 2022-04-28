@@ -48,6 +48,7 @@ func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, nam
 	return ss, nil
 }
 
+//nolint:dupl
 func findDeploymentByLabel(
 	appClient appv1client.AppsV1Interface,
 	labels []configuration.Label,
@@ -81,6 +82,7 @@ func findDeploymentByLabel(
 	return deployments
 }
 
+//nolint:dupl
 func findStatefulSetByLabel(
 	appClient appv1client.AppsV1Interface,
 	labels []configuration.Label,
