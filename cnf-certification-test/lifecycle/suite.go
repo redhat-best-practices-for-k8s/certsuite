@@ -322,8 +322,8 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 	ginkgo.By("Testing initial state for deployments")
 	defer env.SetNeedsRefresh()
 	claimsLog, atLeastOnePodsetNotReady := podsets.WaitForAllPodSetReady(env, timeoutPodSetReady)
-	tnf.ClaimFilePrintf("%s", claimsLog)
 	if atLeastOnePodsetNotReady {
+		tnf.ClaimFilePrintf("%s", claimsLog)
 		ginkgo.Fail("Some deployments or stateful sets are not in a good initial state. Cannot perform test.")
 	}
 	for n := range podsets.GetAllNodesForAllPodSets(env.Pods) {
@@ -345,8 +345,13 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 		if err != nil {
 			ginkgo.Fail(fmt.Sprintf("Draining node %s failed with err: %s. Test inconclusive", n, err))
 		}
-		claimsLog, _ = podsets.WaitForAllPodSetReady(env, nodeTimeout)
-		tnf.ClaimFilePrintf("%s", claimsLog)
+
+		claimsLog, podsNotReady := podsets.WaitForAllPodSetReady(env, nodeTimeout)
+		if podsNotReady {
+			tnf.ClaimFilePrintf("%s", claimsLog)
+			ginkgo.Fail(fmt.Sprintf("Some pods are not ready after draining the node %s", n))
+		}
+
 		err = podrecreation.CordonHelper(n, podrecreation.Uncordon)
 		if err != nil {
 			logrus.Fatalf("error uncordoning the node: %s", n)
