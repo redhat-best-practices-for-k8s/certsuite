@@ -19,12 +19,15 @@ package podrecreation
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/watch"
 	retry "k8s.io/client-go/util/retry"
 )
 
@@ -65,7 +68,7 @@ func CordonHelper(name, operation string) error {
 	return retryErr
 }
 
-func CountPodsWithDelete(nodeName string, isDelete bool) (count int, err error) {
+func CountPodsWithDelete(nodeName string, isDelete, waitForDeletion bool) (count int, err error) {
 	clients := clientsholder.GetClientsHolder()
 	pods, err := clients.K8sClient.CoreV1().Pods("").List(context.TODO(), metav1.ListOptions{
 		FieldSelector: "spec.nodeName=" + nodeName, LabelSelector: "pod-template-hash",
@@ -75,33 +78,89 @@ func CountPodsWithDelete(nodeName string, isDelete bool) (count int, err error) 
 		return 0, err
 	}
 	count = 0
+	var wg sync.WaitGroup
 	for idx := range pods.Items {
-		for _, or := range pods.Items[idx].OwnerReferences {
-			if or.Kind == DaemonSetString {
-				continue
-			}
-			count++
-			if !isDelete {
-				continue
-			}
-			logrus.Tracef("deleting %s", pods.Items[idx].String())
-			deleteOptions := metav1.DeleteOptions{}
-			gracePeriodSeconds := int64(DefaultGracePeriodInSeconds + time.Duration(*pods.Items[idx].Spec.TerminationGracePeriodSeconds))
-			deleteOptions.GracePeriodSeconds = &gracePeriodSeconds
-
-			err = clients.K8sClient.CoreV1().Pods(pods.Items[idx].Namespace).Delete(context.TODO(), pods.Items[idx].Name, deleteOptions)
-			if err != nil {
-				logrus.Errorf("error deleting %s err: %v", pods.Items[idx].String(), err)
-				return 0, err
-			}
+		if skipDaemonPod(&pods.Items[idx]) {
+			continue
+		}
+		count++
+		if !isDelete {
+			continue
+		}
+		err := deletePod(&pods.Items[idx], waitForDeletion, &wg)
+		if err != nil {
+			logrus.Errorf("error deleting %s", &pods.Items[idx])
 		}
 	}
+
+	wg.Wait()
 	return count, nil
+}
+func skipDaemonPod(pod *v1.Pod) bool {
+	for _, or := range pod.OwnerReferences {
+		if or.Kind == DaemonSetString {
+			return true
+		}
+	}
+	return false
+}
+
+func deletePod(pod *v1.Pod, waitForDeletion bool, wg *sync.WaitGroup) error {
+	clients := clientsholder.GetClientsHolder()
+	logrus.Tracef("deleting %s", pod.String())
+	deleteOptions := metav1.DeleteOptions{}
+	gracePeriodSeconds := int64(DefaultGracePeriodInSeconds + time.Duration(*pod.Spec.TerminationGracePeriodSeconds))
+	deleteOptions.GracePeriodSeconds = &gracePeriodSeconds
+
+	err := clients.K8sClient.CoreV1().Pods(pod.Namespace).Delete(context.TODO(), pod.Name, deleteOptions)
+	if err != nil {
+		logrus.Errorf("error deleting %s err: %v", pod.String(), err)
+		return err
+	}
+	if !waitForDeletion {
+		return nil
+	}
+	wg.Add(1)
+	podName := pod.Name
+	namespace := pod.Namespace
+	go func() {
+		time.Sleep(1 * time.Second)
+		err = waitPodDeleted(namespace, podName, gracePeriodSeconds)
+		if err != nil {
+			logrus.Errorf("waitPodDeleted failed with err=%s", err)
+		}
+		wg.Done()
+	}()
+	return nil
 }
 
 func CordonCleanup(node string) {
 	err := CordonHelper(node, Uncordon)
 	if err != nil {
 		ginkgo.AbortSuite(fmt.Sprintf("cleanup: error uncordoning the node: %s", node))
+	}
+}
+
+func waitPodDeleted(ns, podName string, timeout int64) error {
+	logrus.Tracef("Entering waitPodDeleted ns=%s pod=%s", ns, podName)
+	clients := clientsholder.GetClientsHolder()
+	watcher, err := clients.K8sClient.CoreV1().Pods(ns).Watch(context.TODO(), metav1.ListOptions{
+		FieldSelector: "metadata.name=" + podName + ",metadata.namespace=" + ns,
+	})
+	defer watcher.Stop()
+	if err != nil {
+		return fmt.Errorf("waitPodDeleted ns=%s pod=%s, err=%s", ns, podName, err)
+	}
+	for {
+		select {
+		case event := <-watcher.ResultChan():
+			if event.Type == watch.Deleted || event.Type == "" {
+				logrus.Debugf("ns=%s pod=%s deleted", ns, podName)
+				return nil
+			}
+		case <-time.After(time.Duration(timeout) * time.Second):
+			logrus.Infof("watch for pod deletion timedout after %d seconds", timeout)
+			return nil
+		}
 	}
 }

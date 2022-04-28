@@ -117,7 +117,7 @@ func WaitForAllPodSetReady(env *provider.TestEnvironment, timeoutPodSetReady tim
 		}
 	}
 	for _, sut := range env.StatetfulSets {
-		isReady := WaitForDeploymentSetReady(sut.Namespace, sut.Name, timeoutPodSetReady)
+		isReady := WaitForStatefulSetReady(sut.Namespace, sut.Name, timeoutPodSetReady)
 		if isReady {
 			claimsLog = claimsLog.AddLogLine("%s Status: OK", provider.StatefulsetToString(sut))
 		} else {

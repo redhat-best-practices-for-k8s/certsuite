@@ -335,13 +335,13 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 		}
 		ginkgo.By(fmt.Sprintf("Draining and Cordoning node %s: ", n))
 		logrus.Debugf("node: %s cordoned", n)
-		count, err := podrecreation.CountPodsWithDelete(n, false)
+		count, err := podrecreation.CountPodsWithDelete(n, false, true)
 		if err != nil {
 			ginkgo.Fail(fmt.Sprintf("Getting pods list to drain in node %s failed with err: %s. Test inconclusive.", n, err))
 		}
 		nodeTimeout := timeoutPodSetReady + timeoutPodRecreationPerPod*time.Duration(count)
 		logrus.Debugf("draining node: %s with timeout: %s", n, nodeTimeout.String())
-		_, err = podrecreation.CountPodsWithDelete(n, true)
+		_, err = podrecreation.CountPodsWithDelete(n, true, true)
 		if err != nil {
 			ginkgo.Fail(fmt.Sprintf("Draining node %s failed with err: %s. Test inconclusive", n, err))
 		}
