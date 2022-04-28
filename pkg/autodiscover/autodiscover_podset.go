@@ -58,7 +58,7 @@ func findDeploymentByLabel(
 	for _, ns := range namespaces {
 		dps, err := appClient.Deployments(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			logrus.Errorln("Failed to list deployments in ns=", ns, ", trying to proceed")
+			logrus.Errorf("Failed to list deployments in ns=%s, err: %v . Trying to proceed.", ns, err)
 			continue
 		}
 		if len(dps.Items) == 0 {
@@ -92,7 +92,7 @@ func findStatefulSetByLabel(
 	for _, ns := range namespaces {
 		ss, err := appClient.StatefulSets(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			logrus.Errorln("Failed to list statefulsets in ns=", ns, ", trying to proceed")
+			logrus.Errorf("Failed to list statefulsets in ns=%s, err: %v . Trying to proceed.", ns, err)
 			continue
 		}
 		if len(ss.Items) == 0 {
