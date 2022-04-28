@@ -29,6 +29,7 @@ import (
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/bootparams"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/hugepages"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/isredhat"
@@ -88,6 +89,16 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if provider.IsOCPCluster() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
 			testHugepages(&env)
+		} else {
+			ginkgo.Skip(" non ocp cluster ")
+		}
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestUnalteredStartupBootParamsIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		if provider.IsOCPCluster() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+			testUnalteredBootParams(&env)
 		} else {
 			ginkgo.Skip(" non ocp cluster ")
 		}
@@ -282,4 +293,17 @@ func testHugepages(env *provider.TestEnvironment) {
 	if n := len(badNodes); n > 0 {
 		ginkgo.Fail(fmt.Sprintf("Found %d failing nodes: %v", n, badNodes))
 	}
+}
+
+func testUnalteredBootParams(env *provider.TestEnvironment) {
+	failedContainers := []string{}
+	for _, cut := range env.Containers {
+		claimsLog, err := bootparams.TestBootParamsHelper(env, cut)
+
+		if err != nil || len(claimsLog.GetLogLines()) != 0 {
+			failedContainers = append(failedContainers, cut.String())
+			tnf.ClaimFilePrintf("%s", claimsLog)
+		}
+	}
+	gomega.Expect(failedContainers).To(gomega.BeEmpty())
 }
