@@ -18,6 +18,7 @@ env:
   TNF_OUTPUT_DIR: /tmp/tnf/output
   TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
   TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${IMAGE_NAME}:${IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
+  TNF_SMOKE_TESTS_LOG_LEVEL: trace
   TNF_PARTNER_DIR: '/usr/tnf-partner'
   TNF_PARTNER_SRC_DIR: '${TNF_PARTNER_DIR}/src'
   ON_DEMAND_DEBUG_PODS: false
@@ -168,7 +169,7 @@ jobs:
       # Perform smoke tests.
 
       - name: 'Test: Run test suites'
-        run: ./run-cnf-suites.sh --focus access-control lifecycle platform observability networking affiliated-certification operator
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh --focus access-control lifecycle platform observability networking affiliated-certification operator
 
       - name: Upload smoke test results as an artifact
         uses: actions/upload-artifact@v2
@@ -200,10 +201,10 @@ jobs:
         shell: bash
 
       - name: 'Test: Run without any TS, just get diagnostic information'
-        run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
           
-      - name: 'Test: Run generic test suite in a TNF container'
-        run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -f access-control lifecycle platform observability networking affiliated-certification operator
+      - name: 'Test: Run Smoke Tests in a TNF container'
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -f access-control lifecycle platform observability networking affiliated-certification operator
 
       - name: Upload container test results as an artifact
         uses: actions/upload-artifact@v2
