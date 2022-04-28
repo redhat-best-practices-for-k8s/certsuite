@@ -38,7 +38,7 @@ func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container
 		err = fmt.Errorf("debug pod for container %s not found on node %s", cut, cut.NodeName)
 		return claimsLog, err
 	}
-	mcKernelArgumentsMap, err := getMcKernelArguments(env, cut.NodeName)
+	mcKernelArgumentsMap, err := GetMcKernelArguments(env, cut.NodeName)
 	if err != nil {
 		return claimsLog, fmt.Errorf("error getting kernel arguments in node %s, err=%s", cut.NodeName, err)
 	}
@@ -69,7 +69,7 @@ func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container
 	return claimsLog, nil
 }
 
-func getMcKernelArguments(env *provider.TestEnvironment, nodeName string) (aMap map[string]string, err error) {
+func GetMcKernelArguments(env *provider.TestEnvironment, nodeName string) (aMap map[string]string, err error) {
 	mcKernelArgumentsMap := arrayhelper.ArgListToMap(env.Nodes[nodeName].Mc.Spec.KernelArguments)
 	return mcKernelArgumentsMap, nil
 }

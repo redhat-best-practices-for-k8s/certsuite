@@ -33,6 +33,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/hugepages"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/isredhat"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/sysctlconfig"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 
@@ -99,6 +100,16 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if provider.IsOCPCluster() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
 			testUnalteredBootParams(&env)
+		} else {
+			ginkgo.Skip(" non ocp cluster ")
+		}
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSysctlConfigsIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		if provider.IsOCPCluster() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+			testSysctlConfigs(&env)
 		} else {
 			ginkgo.Skip(" non ocp cluster ")
 		}
@@ -306,4 +317,44 @@ func testUnalteredBootParams(env *provider.TestEnvironment) {
 		}
 	}
 	gomega.Expect(failedContainers).To(gomega.BeEmpty())
+}
+
+func testSysctlConfigs(env *provider.TestEnvironment) {
+	badContainers := []string{}
+	for _, cut := range env.Containers {
+		debugPod := env.DebugPods[cut.NodeName]
+		if debugPod == nil {
+			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
+		}
+
+		sysctlSettings, err := sysctlconfig.GetSysctlSettings(env, cut.NodeName)
+		if err != nil {
+			tnf.ClaimFilePrintf("Could not get sysctl settings for node %s, error: %s", cut.NodeName, err)
+			badContainers = append(badContainers, cut.String())
+			continue
+		}
+
+		mcKernelArgumentsMap, err := bootparams.GetMcKernelArguments(env, cut.NodeName)
+		if err != nil {
+			tnf.ClaimFilePrintf("Failed to get the machine config kernel arguments for node %s", cut.NodeName)
+			badContainers = append(badContainers, cut.String())
+			continue
+		}
+
+		for key, sysctlConfigVal := range sysctlSettings {
+			if mcVal, ok := mcKernelArgumentsMap[key]; ok {
+				if mcVal != sysctlConfigVal {
+					tnf.ClaimFilePrintf(fmt.Sprintf("Kernel config mismatch in node %s for %s (sysctl value: %s, machine config value: %s)",
+						cut.NodeName, key, sysctlConfigVal, mcVal))
+					badContainers = append(badContainers, cut.String())
+				}
+			}
+		}
+	}
+
+	if n := len(badContainers); n > 0 {
+		errMsg := fmt.Sprintf("Number of containers running of faulty nodes: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
+	}
 }
