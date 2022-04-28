@@ -283,13 +283,23 @@ func testHighAvailability(env *provider.TestEnvironment) {
 		badDeployments := []string{}
 		badStatefulSet := []string{}
 		for _, dp := range env.Deployments {
-			if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) == 1 {
+			if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) <= 1 {
+				badDeployments = append(badDeployments, provider.DeploymentToString(dp))
+				continue
+			}
+			if dp.Spec.Template.Spec.Affinity == nil ||
+				dp.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
 				badDeployments = append(badDeployments, provider.DeploymentToString(dp))
 			}
 		}
 		for _, st := range env.StatetfulSets {
-			if st.Spec.Replicas == nil || *(st.Spec.Replicas) == 1 {
+			if st.Spec.Replicas == nil || *(st.Spec.Replicas) <= 1 {
 				badStatefulSet = append(badStatefulSet, provider.StatefulsetToString(st))
+				continue
+			}
+			if st.Spec.Template.Spec.Affinity == nil ||
+				st.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
+				badDeployments = append(badDeployments, provider.StatefulsetToString(st))
 			}
 		}
 
