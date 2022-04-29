@@ -17,6 +17,7 @@
 package testhelper
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -35,5 +36,49 @@ func TestResultToString(t *testing.T) {
 
 	for _, tc := range testCases {
 		assert.Equal(t, tc.expectedResult, ResultToString(tc.input))
+	}
+}
+
+func TestSkipIfEmptyFuncs(t *testing.T) {
+	testCases := []struct {
+		objects interface{}
+		skipped bool
+	}{
+		{ // Test Case #1 - Skip because objects is empty, no panic because []string type
+			objects: []string{},
+			skipped: true,
+		},
+		{ // Test Case #2 - Skip because objects is empty, no panic because map type
+			objects: make(map[string]string),
+			skipped: true,
+		},
+		{ // Test Case #3 - No skip because objects is populated, no panic because []string type
+			objects: []string{"test"},
+			skipped: false,
+		},
+		// Note: Cannot test calls to panic
+	}
+
+	for _, tc := range testCases {
+		result := false
+
+		SkipIfEmptyAll(func(s string, i ...int) {
+			if strings.Contains(s, "Test skipped") {
+				result = true
+			} else {
+				result = false
+			}
+		}, tc.objects)
+		assert.Equal(t, tc.skipped, result)
+
+		SkipIfEmptyAny(func(s string, i ...int) {
+			if strings.Contains(s, "Test skipped") {
+				result = true
+			} else {
+				result = false
+			}
+		}, tc.objects)
+
+		assert.Equal(t, tc.skipped, result)
 	}
 }
