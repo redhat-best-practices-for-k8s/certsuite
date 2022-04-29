@@ -321,7 +321,14 @@ func testUnalteredBootParams(env *provider.TestEnvironment) {
 
 func testSysctlConfigs(env *provider.TestEnvironment) {
 	badContainers := []string{}
+
+	alreadyCheckedNodes := map[string]bool{}
 	for _, cut := range env.Containers {
+		if alreadyCheckedNodes[cut.NodeName] {
+			continue
+		}
+		alreadyCheckedNodes[cut.NodeName] = true
+
 		debugPod := env.DebugPods[cut.NodeName]
 		if debugPod == nil {
 			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
@@ -336,7 +343,7 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 
 		mcKernelArgumentsMap, err := bootparams.GetMcKernelArguments(env, cut.NodeName)
 		if err != nil {
-			tnf.ClaimFilePrintf("Failed to get the machine config kernel arguments for node %s", cut.NodeName)
+			tnf.ClaimFilePrintf("Failed to get the machine config kernel arguments for node %s, error: %s", cut.NodeName, err)
 			badContainers = append(badContainers, cut.String())
 			continue
 		}

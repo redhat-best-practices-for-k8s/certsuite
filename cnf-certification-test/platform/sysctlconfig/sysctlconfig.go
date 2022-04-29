@@ -30,21 +30,17 @@ func parseSysctlSystemOutput(sysctlSystemOutput string) map[string]string {
 	retval := make(map[string]string)
 	splitConfig := strings.Split(sysctlSystemOutput, "\n")
 	for _, line := range splitConfig {
-		if line == "" {
-			continue
-		}
-
 		if strings.HasPrefix(line, "*") {
 			continue
 		}
 
-		keyValRegexp := regexp.MustCompile(`(\S+)(\s*)=(\s*)(\S+)`) // A line is of the form "kernel.yama.ptrace_scope = 0"
+		keyValRegexp := regexp.MustCompile(`(\S+)\s*=\s*(\S+)`) // A line is of the form "kernel.yama.ptrace_scope = 0"
 		if !keyValRegexp.MatchString(line) {
 			continue
 		}
 		regexResults := keyValRegexp.FindStringSubmatch(line)
 		key := regexResults[1]
-		val := regexResults[4]
+		val := regexResults[2]
 		retval[key] = val
 	}
 	return retval
