@@ -39,6 +39,9 @@ const (
 	DefaultGracePeriodInSeconds = 30
 	Cordon                      = "cordon"
 	Uncordon                    = "uncordon"
+	DeleteBackground            = "deleteBackground"
+	DeleteForeground            = "deleteForeground"
+	NoDelete                    = "noDelete"
 )
 
 func CordonHelper(name, operation string) error {
@@ -68,7 +71,7 @@ func CordonHelper(name, operation string) error {
 	return retryErr
 }
 
-func CountPodsWithDelete(nodeName string, isDelete, waitForDeletion bool) (count int, err error) {
+func CountPodsWithDelete(nodeName, mode string) (count int, err error) {
 	clients := clientsholder.GetClientsHolder()
 	pods, err := clients.K8sClient.CoreV1().Pods("").List(context.TODO(), metav1.ListOptions{
 		FieldSelector: "spec.nodeName=" + nodeName, LabelSelector: "pod-template-hash",
@@ -84,10 +87,10 @@ func CountPodsWithDelete(nodeName string, isDelete, waitForDeletion bool) (count
 			continue
 		}
 		count++
-		if !isDelete {
+		if mode == NoDelete {
 			continue
 		}
-		err := deletePod(&pods.Items[idx], waitForDeletion, &wg)
+		err := deletePod(&pods.Items[idx], mode, &wg)
 		if err != nil {
 			logrus.Errorf("error deleting %s", &pods.Items[idx])
 		}
@@ -105,19 +108,26 @@ func skipDaemonPod(pod *v1.Pod) bool {
 	return false
 }
 
-func deletePod(pod *v1.Pod, waitForDeletion bool, wg *sync.WaitGroup) error {
+func deletePod(pod *v1.Pod, mode string, wg *sync.WaitGroup) error {
 	clients := clientsholder.GetClientsHolder()
-	logrus.Tracef("deleting %s", pod.String())
+	logrus.Debugf("deleting ns=%s pod=%s with %s mode", pod.Namespace, pod.Name, mode)
 	deleteOptions := metav1.DeleteOptions{}
-	gracePeriodSeconds := int64(DefaultGracePeriodInSeconds + time.Duration(*pod.Spec.TerminationGracePeriodSeconds))
+	gracePeriodSeconds := *pod.Spec.TerminationGracePeriodSeconds
 	deleteOptions.GracePeriodSeconds = &gracePeriodSeconds
-
-	err := clients.K8sClient.CoreV1().Pods(pod.Namespace).Delete(context.TODO(), pod.Name, deleteOptions)
+	// Create watcher before deleting pod
+	watcher, err := clients.K8sClient.CoreV1().Pods(pod.Namespace).Watch(context.TODO(), metav1.ListOptions{
+		FieldSelector: "metadata.name=" + pod.Name + ",metadata.namespace=" + pod.Namespace,
+	})
+	if err != nil {
+		return fmt.Errorf("waitPodDeleted ns=%s pod=%s, err=%s", pod.Namespace, pod.Name, err)
+	}
+	// Actually deleting pod
+	err = clients.K8sClient.CoreV1().Pods(pod.Namespace).Delete(context.TODO(), pod.Name, deleteOptions)
 	if err != nil {
 		logrus.Errorf("error deleting %s err: %v", pod.String(), err)
 		return err
 	}
-	if !waitForDeletion {
+	if mode == DeleteBackground {
 		return nil
 	}
 	wg.Add(1)
@@ -125,7 +135,7 @@ func deletePod(pod *v1.Pod, waitForDeletion bool, wg *sync.WaitGroup) error {
 	namespace := pod.Namespace
 	go func() {
 		time.Sleep(1 * time.Second)
-		err = waitPodDeleted(namespace, podName, gracePeriodSeconds)
+		err = waitPodDeleted(namespace, podName, gracePeriodSeconds, watcher)
 		if err != nil {
 			logrus.Errorf("waitPodDeleted failed with err=%s", err)
 		}
@@ -141,16 +151,10 @@ func CordonCleanup(node string) {
 	}
 }
 
-func waitPodDeleted(ns, podName string, timeout int64) error {
+func waitPodDeleted(ns, podName string, timeout int64, watcher watch.Interface) error {
 	logrus.Tracef("Entering waitPodDeleted ns=%s pod=%s", ns, podName)
-	clients := clientsholder.GetClientsHolder()
-	watcher, err := clients.K8sClient.CoreV1().Pods(ns).Watch(context.TODO(), metav1.ListOptions{
-		FieldSelector: "metadata.name=" + podName + ",metadata.namespace=" + ns,
-	})
 	defer watcher.Stop()
-	if err != nil {
-		return fmt.Errorf("waitPodDeleted ns=%s pod=%s, err=%s", ns, podName, err)
-	}
+
 	for {
 		select {
 		case event := <-watcher.ResultChan():
