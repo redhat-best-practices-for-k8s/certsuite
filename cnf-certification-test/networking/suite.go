@@ -168,10 +168,12 @@ func testNetworkConnectivity(env *provider.TestEnvironment, count int, aIPVersio
 	netsUnderTest, claimsLog := icmp.BuildNetTestContext(env.Pods, aIPVersion, aType)
 	// Saving  curated logs to claims file
 	tnf.ClaimFilePrintf("%s", claimsLog)
-	badNets, claimsLog := icmp.RunNetworkingTests(netsUnderTest, count, aIPVersion)
+	badNets, claimsLog, skip := icmp.RunNetworkingTests(netsUnderTest, count, aIPVersion)
 	// Saving curated logs to claims file
 	tnf.ClaimFilePrintf("%s", claimsLog)
-
+	if skip {
+		ginkgo.Skip(fmt.Sprintf("There are no %s networks to test, skipping test", aIPVersion))
+	}
 	if n := len(badNets); n > 0 {
 		logrus.Debugf("Failed nets: %+v", badNets)
 		ginkgo.Fail(fmt.Sprintf("%d nets failed the %s network %s ping test.", n, aType, aIPVersion))

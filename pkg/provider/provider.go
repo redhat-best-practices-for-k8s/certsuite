@@ -74,10 +74,11 @@ func NewPod(aPod *v1.Pod) (out Pod) {
 	if err != nil {
 		logrus.Errorf("Could not decode networks-status annotation")
 	}
-	if aPod.GetLabels()[skipConnectivityTestsLabel] != "" {
+
+	if _, ok := aPod.GetLabels()[skipConnectivityTestsLabel]; ok {
 		out.SkipNetTests = true
 	}
-	if aPod.GetLabels()[skipMultusConnectivityTestsLabel] != "" {
+	if _, ok := aPod.GetLabels()[skipMultusConnectivityTestsLabel]; ok {
 		out.SkipMultusNetTests = true
 	}
 	out.Containers = append(out.Containers, getPodContainers(aPod)...)

@@ -797,7 +797,7 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 			} else {
 				TestPing = TestPingFailure
 			}
-			gotBadNets, gotClaimsLog := RunNetworkingTests(tt.args.netsUnderTest, tt.args.count, tt.args.aIPVersion)
+			gotBadNets, gotClaimsLog, _ := RunNetworkingTests(tt.args.netsUnderTest, tt.args.count, tt.args.aIPVersion)
 			if !reflect.DeepEqual(gotBadNets, tt.wantBadNets) {
 				t.Errorf("RunNetworkingTests() gotBadNets = %v, want %v", gotBadNets, tt.wantBadNets)
 			}
