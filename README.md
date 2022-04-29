@@ -72,7 +72,8 @@ For Network Interfaces:
 * The annotation test-network-function.com/defaultnetworkinterface is the highest priority, and must contain a JSON-encoded string of the primary network interface for the pod. This must be explicitly set if needed. Examples can be seen in cnf-certification-test-partner
 * If the above is not present, the k8s.v1.cni.cncf.io/networks-status annotation is checked and the "interface" from the first entry found with "default"=true is used. This annotation is automatically managed in OpenShift but may not be present in K8s.
 
-The label test-network-function.com/skip_connectivity_tests excludes pods from connectivity tests. The label value is not important, only its presence.
+The label test-network-function.com/skip_connectivity_tests excludes pods from all connectivity tests. The label value is not important, only its presence.
+The label test-network-function.com/skip_multus_connectivity_tests excludes pods from multus connectivity tests. Tests on default interface are still done. The label value is not important, only its presence.
 
 #### operators
 
