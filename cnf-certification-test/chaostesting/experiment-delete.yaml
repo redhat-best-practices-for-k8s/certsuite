@@ -26,7 +26,7 @@ spec:
       # Fetch configmaps details and mount it to the experiment pod (if specified)
       - apiGroups: [""]
         resources: ["configmaps"]
-        verbs: ["get", "list",]
+        verbs: ["get", "list", ]
       # Track and get the runner, experiment, and helper pods log 
       - apiGroups: [""]
         resources: ["pods/log"]
