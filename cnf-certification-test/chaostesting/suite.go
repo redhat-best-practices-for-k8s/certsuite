@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"time"
 
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
@@ -32,11 +32,11 @@ import (
 
 const (
 	// timeout for eventually call
-	RequestTimeout     = 120 * time.Second
+	TestCaseTimeout    = 120 * time.Second
 	Deployment         = "deployment"
-	ServiceAccountFile = "chaostesting/servicAccount.yaml"
-	ExperimentFile     = "chaostesting/deleteExperment.yaml"
-	chaosEngineFile    = "chaostesting/chaosEngine.yaml"
+	ServiceAccountFile = "chaostesting/service-account.yaml"
+	ExperimentFile     = "chaostesting/experiment-delete.yaml"
+	chaosEngineFile    = "chaostesting/chaos-engine.yaml"
 	chaosname          = "pod-delete"
 	completedResult    = "completed"
 )
@@ -59,48 +59,58 @@ var _ = ginkgo.Describe(common.ChaosTesting, func() {
 
 func testPodDelete(env *provider.TestEnvironment) {
 	for _, dep := range env.Deployments {
-		namespace := dep.ObjectMeta.Namespace
-		label := "app=" + dep.Spec.Template.ObjectMeta.Labels["app"]
-		fileName, err := applyTemplate(label, Deployment, namespace, ExperimentFile)
-		if err != nil {
-			logrus.Debugf("cant create the file of the test: %e", err)
-			ginkgo.Fail(fmt.Sprintf("cant create the file of the test: %e.", err))
-		}
-		if _, err = createResource(fileName); err != nil {
-			ginkgo.Fail(fmt.Sprintf("%e error create the chaos experment resources.", err))
-		}
-		fileName, err = applyTemplate(label, Deployment, namespace, ServiceAccountFile)
-		if err != nil {
-			logrus.Debugf("cant create the file of the test: %e", err)
-			ginkgo.Fail(fmt.Sprintf("cant create the file of the test: %e.", err))
-		}
-		if _, err = createResource(fileName); err != nil {
-			ginkgo.Fail(fmt.Sprintf("error create the service account: %e .", err))
-		}
-		fileName, err = applyTemplate(label, Deployment, namespace, chaosEngineFile)
-		if err != nil {
-			logrus.Debugf("cant create the file of the test: %e", err)
-			ginkgo.Fail(fmt.Sprintf("cant create the file of the test: %e.", err))
-		}
-		// create the chaos engine for every deployment in the cluster
-		if _, err = createResource(fileName); err != nil {
-			ginkgo.Fail(fmt.Sprintf("%e error create the chaos engine.", err))
+		namespace := dep.Namespace
+		label := "app=" + "test"
+		if err := applyAndCreateFiles(label, Deployment, namespace); err != nil {
+			ginkgo.Fail(fmt.Sprintf("test failed while creating the files %s", err))
 		}
 		time.Sleep(1 * time.Second)
-		completed := waitForTestFinish(RequestTimeout)
-		if completed {
-			if finalResult, result := returnResult(); finalResult {
-				// delete the chaos engin crd
-				deleteAllResources(namespace)
-			} else {
-				logrus.Debugf("test completed but it failed with reason %s", result)
-				ginkgo.Fail(fmt.Sprintf("test completed but it failed with reason %s", result))
-			}
-		} else {
+		completed := waitForTestFinish(TestCaseTimeout)
+		if !completed {
+			deleteAllResources(namespace)
 			logrus.Debug("test failed to be completed")
 			ginkgo.Fail("test failed to be completed")
 		}
+		if finalResult := returnResult(); !finalResult {
+			// delete the chaos engin crd
+			deleteAllResources(namespace)
+			ginkgo.Fail("test completed but it failed with reason ")
+		}
+
+		deleteAllResources(namespace)
 	}
+}
+
+func applyAndCreateFiles(appLabel, appKind, namespace string) error {
+	fileName, err := applyTemplate(appLabel, appKind, namespace, ExperimentFile)
+	if err != nil {
+		logrus.Debugf("cant create the file of the test: %s", err)
+		return err
+	}
+	if err = createResource(fileName); err != nil {
+		logrus.Debugf("%s error create the chaos experment resources.", err)
+		return err
+	}
+	fileName, err = applyTemplate(appLabel, appKind, namespace, ServiceAccountFile)
+	if err != nil {
+		logrus.Debugf("cant create the file of the test: %s", err)
+		return err
+	}
+	if err = createResource(fileName); err != nil {
+		logrus.Debugf("error create the service account: %s .", err)
+		return err
+	}
+	fileName, err = applyTemplate(appLabel, appKind, namespace, chaosEngineFile)
+	if err != nil {
+		logrus.Debugf("cant create the file of the test: %s", err)
+		return err
+	}
+	// create the chaos engine for every deployment in the cluster
+	if err = createResource(fileName); err != nil {
+		logrus.Debugf("%s error create the chaos engine.", err)
+		return err
+	}
+	return nil
 }
 
 func deleteAllResources(namespace string) {
@@ -127,31 +137,32 @@ func deleteAllResources(namespace string) {
 	if err := oc.DynamicClient.Resource(gvr).Namespace(namespace).Delete(context.TODO(), chaosname, deleteOptions); err != nil {
 		logrus.Debugf("error while removing the chaos engine resources %e", err)
 	}
-	e := os.Remove("chaostesting/chaosEngine.yaml.tmp")
+	e := os.Remove(chaosEngineFile + ".tmp")
 	if e != nil {
 		logrus.Debugf("error while removing the temp file of the chaos engine %e", e)
 	}
-	e = os.Remove("chaostesting/servicAccount.yaml.tmp")
+	e = os.Remove(ServiceAccountFile + ".tmp")
 	if e != nil {
 		logrus.Debugf("error while removing the temp file of the servicAccount %e", e)
 	}
-	e = os.Remove("chaostesting/deleteExperment.yaml.tmp")
+	e = os.Remove(ExperimentFile + ".tmp")
 	if e != nil {
 		logrus.Debugf("error while removing the temp file of the deleteExperment %e", e)
 	}
 }
 
-func applyTemplate(appLabel, appKind, namespace, fileename string) (string, error) {
-	input, err := os.ReadFile(fileename)
+func applyTemplate(appLabel, appKind, namespace, filename string) (string, error) {
+	input, err := os.ReadFile(filename)
 	if err != nil {
-		fmt.Println(err)
+		tnf.ClaimFilePrintf("error while reading the yaml file : %s ,%s", filename, err)
 		return "", err
 	}
 	output := bytes.ReplaceAll(input, []byte("{{ APP_NAMESPACE }}"), []byte(namespace))
 	output = bytes.ReplaceAll(output, []byte("{{ APP_LABEL }}"), []byte(appLabel))
 	output = bytes.ReplaceAll(output, []byte("{{ APP_KIND }}"), []byte(appKind))
-	fileName := fileename + ".tmp"
-	if err = os.WriteFile(fileName, output, 0700); err != nil {
+	fileName := filename + ".tmp"
+	const permision = 0o600
+	if err = os.WriteFile(fileName, output, permision); err != nil {
 		fmt.Println(err)
 		return "", err
 	}
@@ -174,7 +185,7 @@ func waitForTestFinish(timeout time.Duration) bool {
 	return result
 }
 
-func returnResult() (bool, string) {
+func returnResult() bool {
 	oc := clientsholder.GetClientsHolder()
 	gvr := schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosresults"}
 	crs, err := oc.DynamicClient.Resource(gvr).List(context.Background(), metav1.ListOptions{})
@@ -186,13 +197,13 @@ func returnResult() (bool, string) {
 		expKind := cr.Object["spec"].(map[string]interface{})["experiment"]
 		if expKind == chaosname {
 			if result == "N/A" {
-				return true, ""
+				return true
 			}
-			return false, result.(string)
-
+			logrus.Debugf("test completed but it failed with reason %s", result.(string))
+			return false
 		}
 	}
-	return false, ""
+	return false
 }
 
 func waitForResult() bool {
@@ -206,28 +217,20 @@ func waitForResult() bool {
 		typ := cr.Object["status"].(map[string]interface{})["experiments"].([]interface{})
 		status := cr.Object["status"].(map[string]interface{})["engineStatus"]
 		if typ[0].(map[string]interface{})["name"] == chaosname {
-			if status == completedResult {
-				return true
-			} else {
-				return false
-			}
+			return status == completedResult
 		}
 	}
 	return false
 }
 
 //nolint:funlen //
-func createResource(filepath string) (bool, error) {
+func createResource(filepath string) error {
 	oc := clientsholder.GetClientsHolder()
-
 	b, err := os.ReadFile(filepath)
 	if err != nil {
-		return false, err
+		return err
 	}
-	log.Printf("%q \n", string(b))
-
 	c := oc.K8sClient
-
 	dd := oc.DynamicClient
 	const oneh = 100
 	decoder := yamlutil.NewYAMLOrJSONDecoder(bytes.NewReader(b), oneh)
@@ -237,26 +240,26 @@ func createResource(filepath string) (bool, error) {
 			break
 		}
 
-		obj, gvk, error := yaml.NewDecodingSerializer(unstructured.UnstructuredJSONScheme).Decode(rawObj.Raw, nil, nil)
-		if error != nil {
-			return false, error
+		obj, gvk, err := yaml.NewDecodingSerializer(unstructured.UnstructuredJSONScheme).Decode(rawObj.Raw, nil, nil)
+		if err != nil {
+			return err
 		}
 		unstructuredMap, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 		if err != nil {
-			return false, err
+			return err
 		}
 
 		unstructuredObj := &unstructured.Unstructured{Object: unstructuredMap}
 
 		gr, err := restmapper.GetAPIGroupResources(c.Discovery())
 		if err != nil {
-			return false, err
+			return err
 		}
 
 		mapper := restmapper.NewDiscoveryRESTMapper(gr)
 		mapping, err := mapper.RESTMapping(gvk.GroupKind(), gvk.Version)
 		if err != nil {
-			return false, err
+			return err
 		}
 
 		var dri dynamic.ResourceInterface
@@ -270,11 +273,11 @@ func createResource(filepath string) (bool, error) {
 		}
 
 		if _, err := dri.Create(context.Background(), unstructuredObj, metav1.CreateOptions{}); err != nil {
-			return false, err
+			return err
 		}
 	}
 	if err != io.EOF {
-		return false, err
+		return err
 	}
-	return true, nil
+	return nil
 }
