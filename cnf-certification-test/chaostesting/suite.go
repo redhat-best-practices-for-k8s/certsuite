@@ -157,9 +157,9 @@ func applyTemplate(appLabel, appKind, namespace, filename string) (string, error
 		tnf.ClaimFilePrintf("error while reading the yaml file : %s ,%s", filename, err)
 		return "", err
 	}
-	output := bytes.ReplaceAll(input, []byte("{{ APP_NAMESPACE }}"), []byte(namespace))
-	output = bytes.ReplaceAll(output, []byte("{{ APP_LABEL }}"), []byte(appLabel))
-	output = bytes.ReplaceAll(output, []byte("{{ APP_KIND }}"), []byte(appKind))
+	output := bytes.ReplaceAll(input, []byte("{{APP_NAMESPACE}}"), []byte(namespace))
+	output = bytes.ReplaceAll(output, []byte("{{APP_LABEL}}"), []byte(appLabel))
+	output = bytes.ReplaceAll(output, []byte("{{APP_KIND}}"), []byte(appKind))
 	fileName := filename + ".tmp"
 	const permision = 0o600
 	if err = os.WriteFile(fileName, output, permision); err != nil {
