@@ -22,11 +22,11 @@ spec:
       # Performs CRUD operations on the events inside chaosengine and chaosresult
       - apiGroups: [""]
         resources: ["events"]
-        verbs: ["create","get", "list", "patch", "update"]
+        verbs: ["create", "get", "list", "patch", "update"]
       # Fetch configmaps details and mount it to the experiment pod (if specified)
       - apiGroups: [""]
         resources: ["configmaps"]
-        verbs: ["get","list",]
+        verbs: ["get", "list",]
       # Track and get the runner, experiment, and helper pods log 
       - apiGroups: [""]
         resources: ["pods/log"]
@@ -58,7 +58,7 @@ spec:
       # for creation, status polling and deletion of litmus chaos resources used within a chaos workflow
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines", "chaosexperiments", "chaosresults"]
-        verbs: ["create", "list","get", "patch", "update", "delete"]
+        verbs: ["create", "list", "get", "patch", "update", "delete"]
     image: "litmuschaos/go-runner:2.7.0"
     imagePullPolicy: Always
     args:
