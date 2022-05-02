@@ -26,7 +26,7 @@ jobs:
           ref: ${{ github.sha }}
 
       - name: Install ginkgo
-        run: go install github.com/onsi/ginkgo/v2/ginkgo@v2.1.3
+        run: go install github.com/onsi/ginkgo/v2/ginkgo@v2.1.4
 
       - name: Execute `make build`
         run: make build

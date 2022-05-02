@@ -15,15 +15,15 @@ import (
 )
 
 var (
-	filterCsi              = "&filter=organization==certified-operators"
-	containercatalogURL    = "https://catalog.redhat.com/api/containers/v1/images?page_size=%d&page=%d&filter=certified==true"
-	operatorcatalogURL     = "https://catalog.redhat.com/api/containers/v1/operators/bundles?"
-	helmcatalogURL         = "https://charts.openshift.io/index.yaml"
-	containersRelativePath = "%s/cmd/tnf/fetch/data/containers/containers.db"
-	operatorsRelativePath  = "%s/cmd/tnf/fetch/data/operators/"
-	helmRelativePath       = "%s/cmd/tnf/fetch/data/helm/helm.db"
-	certifiedcatalogdata   = "%s/cmd/tnf/fetch/data/archive.db"
-	operatorFileFormat     = "operator_catalog_page_%d_%d.db"
+	filterCertifiedOperators = "&filter=organization==certified-operators"
+	containercatalogURL      = "https://catalog.redhat.com/api/containers/v1/images?page_size=%d&page=%d&filter=certified==true"
+	operatorcatalogURL       = "https://catalog.redhat.com/api/containers/v1/operators/bundles?"
+	helmcatalogURL           = "https://charts.openshift.io/index.yaml"
+	containersRelativePath   = "%s/cmd/tnf/fetch/data/containers/containers.db"
+	operatorsRelativePath    = "%s/cmd/tnf/fetch/data/operators/"
+	helmRelativePath         = "%s/cmd/tnf/fetch/data/helm/helm.db"
+	certifiedcatalogdata     = "%s/cmd/tnf/fetch/data/archive.db"
+	operatorFileFormat       = "operator_catalog_page_%d_%d.db"
 )
 
 const (
@@ -150,7 +150,7 @@ func serializeData(data CertifiedCatalog) {
 	log.Info("serialization time", time.Since(start))
 }
 func getOperatorCatalogSize() (size, pagesize uint) {
-	body := getHTTPBody(fmt.Sprintf("%spage=%d%s", operatorcatalogURL, 0, filterCsi))
+	body := getHTTPBody(fmt.Sprintf("%spage=%d%s", operatorcatalogURL, 0, filterCertifiedOperators))
 	var aCatalog registry.OperatorCatalog
 	err := json.Unmarshal(body, &aCatalog)
 	if err != nil {
@@ -165,7 +165,7 @@ func getOperatorCatalogPage(page, size uint) {
 		log.Error("can't get current working dir", err)
 		return
 	}
-	url := fmt.Sprintf("%spage=%d%s", operatorcatalogURL, page, filterCsi)
+	url := fmt.Sprintf("%spage=%d%s", operatorcatalogURL, page, filterCertifiedOperators)
 	body := getHTTPBody(url)
 	filename := fmt.Sprintf(operatorsRelativePath+"/"+operatorFileFormat, path, page, size)
 
