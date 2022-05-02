@@ -56,6 +56,10 @@ func TestSkipIfEmptyFuncs(t *testing.T) {
 			objects: []string{"test"},
 			skipped: false,
 		},
+		{ // Test Case #4 - Multiple objects
+			objects: []string{"test1", "test2"},
+			skipped: false,
+		},
 		// Note: Cannot test calls to panic
 	}
 
