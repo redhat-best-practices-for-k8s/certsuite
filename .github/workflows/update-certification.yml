@@ -1,0 +1,42 @@
+name: Update Certification Files
+
+on:
+  # Triggers the workflow every day
+  schedule:
+    - cron: "* * * 1 *"
+jobs:
+  update-certification:
+    name: Run Smoke Tests
+    runs-on: ubuntu-20.04
+    env:
+      SHELL: /bin/bash        
+
+    steps:
+      - name: Set up Go 1.18.1
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.18.1
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Install ginkgo
+        run: go install github.com/onsi/ginkgo/v2/ginkgo@v2.1.4
+
+      - name: Execute `make build`
+        run: make build
+      - name: Execute `tnf fetch`
+        run: ./tnf fetch --operator --container --helm
+      - name: create PR
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: Update certification files
+          title: Update certification files
+          body: |
+            - certification files updates
+          branch: update-dependencies

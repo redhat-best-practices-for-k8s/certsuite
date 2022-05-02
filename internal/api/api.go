@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -264,7 +265,7 @@ func (api CertAPIClient) getRequest(url string) (response []byte, err error) {
 	if err != nil {
 		return nil, err
 	}
-	resp, err := api.Client.Do(req)
+	resp, err := api.Client.Do(req.WithContext(context.TODO()))
 	if err != nil {
 		return
 	}

@@ -92,7 +92,7 @@ func TestCountPodsWithDelete(t *testing.T) {
 func generateNode(name string) corev1.Node {
 	return corev1.Node{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "node1",
+			Name: name,
 		},
 		Spec: corev1.NodeSpec{
 			Unschedulable: false,

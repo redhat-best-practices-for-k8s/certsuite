@@ -35,3 +35,16 @@ func StringInSlice(s []string, str string, contains bool) bool {
 	}
 	return false
 }
+
+// RemoveDuplicates returns a new slice with unique element in input slice
+func RemoveDuplicates(str []string) []string {
+	keys := make(map[string]bool)
+	list := []string{}
+	for _, entry := range str {
+		if !keys[entry] {
+			keys[entry] = true
+			list = append(list, entry)
+		}
+	}
+	return list
+}
