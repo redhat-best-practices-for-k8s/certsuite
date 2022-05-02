@@ -32,6 +32,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 
 	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
+	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextv1fake "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/fake"
@@ -63,6 +64,7 @@ func SetupFakeOlmClient(olmMockObjects []runtime.Object) {
 // Only pure k8s interfaces will be available. The runtime objects must be pure k8s ones.
 // For other (OLM, )
 // runtime mocking objects loading, use the proper clientset mocking function.
+//nolint:funlen
 func GetTestClientsHolder(k8sMockObjects []runtime.Object, filenames ...string) *ClientsHolder {
 	// Build slices of different objects depending on what client
 	// is supposed to expect them.
@@ -88,6 +90,8 @@ func GetTestClientsHolder(k8sMockObjects []runtime.Object, filenames ...string) 
 		case *corev1.Pod:
 			k8sClientObjects = append(k8sClientObjects, v)
 		case *corev1.Node:
+			k8sClientObjects = append(k8sClientObjects, v)
+		case *appsv1.Deployment:
 			k8sClientObjects = append(k8sClientObjects, v)
 
 		// K8s Extension Client Objects

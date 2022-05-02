@@ -31,7 +31,7 @@ const (
 	StatefulsetString = "StatefulSet"
 )
 
-func WaitForDeploymentSetReady(ns, name string, timeout time.Duration) bool {
+var WaitForDeploymentSetReady = func(ns, name string, timeout time.Duration) bool {
 	logrus.Trace("check if deployment ", ns, ":", name, " is ready ")
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
@@ -48,6 +48,7 @@ func WaitForDeploymentSetReady(ns, name string, timeout time.Duration) bool {
 	logrus.Error("deployment ", ns, ":", name, " is not ready ")
 	return false
 }
+
 func IsDeploymentReady(deployment *v1app.Deployment) bool {
 	notReady := true
 	for _, condition := range deployment.Status.Conditions {
