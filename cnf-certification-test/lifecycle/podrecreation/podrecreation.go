@@ -111,9 +111,7 @@ func skipDaemonPod(pod *v1.Pod) bool {
 func deletePod(pod *v1.Pod, mode string, wg *sync.WaitGroup) error {
 	clients := clientsholder.GetClientsHolder()
 	logrus.Debugf("deleting ns=%s pod=%s with %s mode", pod.Namespace, pod.Name, mode)
-	deleteOptions := metav1.DeleteOptions{}
 	gracePeriodSeconds := *pod.Spec.TerminationGracePeriodSeconds
-	deleteOptions.GracePeriodSeconds = &gracePeriodSeconds
 	// Create watcher before deleting pod
 	watcher, err := clients.K8sClient.CoreV1().Pods(pod.Namespace).Watch(context.TODO(), metav1.ListOptions{
 		FieldSelector: "metadata.name=" + pod.Name + ",metadata.namespace=" + pod.Namespace,
@@ -122,7 +120,9 @@ func deletePod(pod *v1.Pod, mode string, wg *sync.WaitGroup) error {
 		return fmt.Errorf("waitPodDeleted ns=%s pod=%s, err=%s", pod.Namespace, pod.Name, err)
 	}
 	// Actually deleting pod
-	err = clients.K8sClient.CoreV1().Pods(pod.Namespace).Delete(context.TODO(), pod.Name, deleteOptions)
+	err = clients.K8sClient.CoreV1().Pods(pod.Namespace).Delete(context.TODO(), pod.Name, metav1.DeleteOptions{
+		GracePeriodSeconds: &gracePeriodSeconds,
+	})
 	if err != nil {
 		logrus.Errorf("error deleting %s err: %v", pod.String(), err)
 		return err
