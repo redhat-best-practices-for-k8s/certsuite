@@ -575,9 +575,9 @@ instantiation on any underlying Node.`),
 	TestPodHighAvailabilityBestPractices: {
 		Identifier:  TestPodHighAvailabilityBestPractices,
 		Type:        informativeResult,
-		Remediation: `In high availability cases, Pod replicas value should be set to more than 1 .`,
+		Remediation: `In high availability cases, Pod podAntiAffinity rule should be specified for pod scheduling and pod replica value is set to more than 1 .`,
 		Description: formDescription(TestPodHighAvailabilityBestPractices,
-			`ensures that CNF Pods replicas value is set to more than 1.`),
+			`ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
 

@@ -102,6 +102,9 @@ build-catalog-json: build-tnf-tool
 build-catalog-md: build-tnf-tool
 	./tnf generate catalog markdown > CATALOG.md
 
+update-certified-catalog:
+	./tnf fetch --operator --container --helm
+
 # build the CNF test binary
 build-cnf-tests:
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "-X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitCommit=${GIT_COMMIT} -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitRelease=${GIT_RELEASE} -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}" ./cnf-certification-test
@@ -118,7 +121,7 @@ update-deps:
 
 # Install build tools and other required software.
 install-tools:
-	go install github.com/onsi/ginkgo/v2/ginkgo@v2.1.3
+	go install github.com/onsi/ginkgo/v2/ginkgo@v2.1.4
 	go install github.com/onsi/gomega
 	go install github.com/golang/mock/mockgen@v1.6.0
 

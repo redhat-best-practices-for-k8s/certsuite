@@ -48,6 +48,7 @@ func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, nam
 	return ss, nil
 }
 
+//nolint:dupl
 func findDeploymentByLabel(
 	appClient appv1client.AppsV1Interface,
 	labels []configuration.Label,
@@ -55,57 +56,64 @@ func findDeploymentByLabel(
 ) []v1.Deployment {
 	deployments := []v1.Deployment{}
 	for _, ns := range namespaces {
-		dpClient := appClient.Deployments(ns)
-		dps, err := dpClient.List(context.TODO(), metav1.ListOptions{})
+		dps, err := appClient.Deployments(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			logrus.Errorln("error when listing Deployments in ns=", ns, " try to proceed")
+			logrus.Errorf("Failed to list deployments in ns=%s, err: %v . Trying to proceed.", ns, err)
 			continue
 		}
 		if len(dps.Items) == 0 {
-			logrus.Trace("did not find any deployments in ns=", ns)
+			logrus.Warn("Did not find any deployments in ns=", ns)
 		}
+
 		for i := 0; i < len(dps.Items); i++ {
 			for _, l := range labels {
 				key, value := buildLabelKeyValue(l)
-				logrus.Trace("find deployment in ", ns, " using label ", key, "=", value)
+				logrus.Tracef("Searching pods in deployment %q found in ns %q using label %s=%s", dps.Items[i].Name, ns, key, value)
 				if dps.Items[i].Spec.Template.ObjectMeta.Labels[key] == value {
 					deployments = append(deployments, dps.Items[i])
-					logrus.Info("deployment ", dps.Items[i].Name, " found in ", dps.Items[i].Namespace)
+					logrus.Info("Deployment ", dps.Items[i].Name, " found in ns ", ns)
 				}
 			}
 		}
 	}
 	if len(deployments) == 0 {
-		logrus.Info("did not find any deployments in all namespaces")
+		logrus.Warnf("Did not find any deployment in the configured namespaces %v", namespaces)
 	}
 	return deployments
 }
 
+//nolint:dupl
 func findStatefulSetByLabel(
 	appClient appv1client.AppsV1Interface,
 	labels []configuration.Label,
 	namespaces []string,
 ) []v1.StatefulSet {
-	statefulset := []v1.StatefulSet{}
+	statefulsets := []v1.StatefulSet{}
 	for _, ns := range namespaces {
-		for _, l := range labels {
-			label := buildLabelQuery(l)
-			logrus.Trace("find StatefulSet in ", ns, " using label ", label)
-			statefulSetClient := appClient.StatefulSets(ns)
-			ss, err := statefulSetClient.List(context.TODO(), metav1.ListOptions{
-				LabelSelector: label,
-			})
-			if err != nil {
-				logrus.Errorln("error when listing StatefulSets in ns=", ns, " label=", label, " trying to proceed")
-				continue
+		ss, err := appClient.StatefulSets(ns).List(context.TODO(), metav1.ListOptions{})
+		if err != nil {
+			logrus.Errorf("Failed to list statefulsets in ns=%s, err: %v . Trying to proceed.", ns, err)
+			continue
+		}
+		if len(ss.Items) == 0 {
+			logrus.Warn("Did not find any statefulSet in ns=", ns)
+		}
+
+		for i := 0; i < len(ss.Items); i++ {
+			for _, l := range labels {
+				key, value := buildLabelKeyValue(l)
+				logrus.Tracef("Searching pods in statefulset %q found in ns %q using label %s=%s", ss.Items[i].Name, ns, key, value)
+				if ss.Items[i].Spec.Template.ObjectMeta.Labels[key] == value {
+					statefulsets = append(statefulsets, ss.Items[i])
+					logrus.Info("StatefulSet ", ss.Items[i].Name, " found in ns ", ns)
+				}
 			}
-			statefulset = append(statefulset, ss.Items...)
 		}
 	}
-	if len(statefulset) == 0 {
-		logrus.Info("did not find any statefulset")
+	if len(statefulsets) == 0 {
+		logrus.Warnf("Did not find any statefulset in the configured namespaces %v", namespaces)
 	}
-	return statefulset
+	return statefulsets
 }
 
 func findHpaControllers(cs kubernetes.Interface, namespaces []string) map[string]*v1scaling.HorizontalPodAutoscaler {

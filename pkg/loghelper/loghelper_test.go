@@ -15,3 +15,18 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 package loghelper
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestLogLines(t *testing.T) {
+	SetLogFormat()
+	ll := CuratedLogLines{}
+	ll = ll.Init("one", "two", "three")
+	assert.Equal(t, []string{"one", "two", "three"}, ll.GetLogLines())
+	ll = ll.AddLogLine("four") // adds a newline
+	assert.Equal(t, []string{"one", "two", "three", "four\n"}, ll.GetLogLines())
+}

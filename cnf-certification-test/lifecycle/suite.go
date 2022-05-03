@@ -283,13 +283,23 @@ func testHighAvailability(env *provider.TestEnvironment) {
 		badDeployments := []string{}
 		badStatefulSet := []string{}
 		for _, dp := range env.Deployments {
-			if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) == 1 {
+			if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) <= 1 {
+				badDeployments = append(badDeployments, provider.DeploymentToString(dp))
+				continue
+			}
+			if dp.Spec.Template.Spec.Affinity == nil ||
+				dp.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
 				badDeployments = append(badDeployments, provider.DeploymentToString(dp))
 			}
 		}
 		for _, st := range env.StatetfulSets {
-			if st.Spec.Replicas == nil || *(st.Spec.Replicas) == 1 {
+			if st.Spec.Replicas == nil || *(st.Spec.Replicas) <= 1 {
 				badStatefulSet = append(badStatefulSet, provider.StatefulsetToString(st))
+				continue
+			}
+			if st.Spec.Template.Spec.Affinity == nil ||
+				st.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
+				badDeployments = append(badDeployments, provider.StatefulsetToString(st))
 			}
 		}
 
@@ -312,8 +322,8 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 	ginkgo.By("Testing initial state for deployments")
 	defer env.SetNeedsRefresh()
 	claimsLog, atLeastOnePodsetNotReady := podsets.WaitForAllPodSetReady(env, timeoutPodSetReady)
-	tnf.ClaimFilePrintf("%s", claimsLog)
 	if atLeastOnePodsetNotReady {
+		tnf.ClaimFilePrintf("%s", claimsLog)
 		ginkgo.Fail("Some deployments or stateful sets are not in a good initial state. Cannot perform test.")
 	}
 	for n := range podsets.GetAllNodesForAllPodSets(env.Pods) {
@@ -335,8 +345,13 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 		if err != nil {
 			ginkgo.Fail(fmt.Sprintf("Draining node %s failed with err: %s. Test inconclusive", n, err))
 		}
-		claimsLog, _ = podsets.WaitForAllPodSetReady(env, nodeTimeout)
-		tnf.ClaimFilePrintf("%s", claimsLog)
+
+		claimsLog, podsNotReady := podsets.WaitForAllPodSetReady(env, nodeTimeout)
+		if podsNotReady {
+			tnf.ClaimFilePrintf("%s", claimsLog)
+			ginkgo.Fail(fmt.Sprintf("Some pods are not ready after draining the node %s", n))
+		}
+
 		err = podrecreation.CordonHelper(n, podrecreation.Uncordon)
 		if err != nil {
 			logrus.Fatalf("error uncordoning the node: %s", n)

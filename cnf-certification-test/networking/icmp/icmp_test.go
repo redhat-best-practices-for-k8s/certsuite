@@ -23,7 +23,6 @@ import (
 	"testing"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
-	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -271,10 +270,6 @@ func TestProcessContainerIpsPerNet(t *testing.T) { //nolint:funlen
 			}
 		})
 	}
-}
-
-func loadEnvFromFile(claimFileName string) (env *provider.TestEnvironment, err error) { //nolint:deadcode
-	return claimhelper.GetConfigurationFromClaimFile(claimFileName)
 }
 
 func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
@@ -797,7 +792,7 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 			} else {
 				TestPing = TestPingFailure
 			}
-			gotBadNets, gotClaimsLog := RunNetworkingTests(tt.args.netsUnderTest, tt.args.count, tt.args.aIPVersion)
+			gotBadNets, gotClaimsLog, _ := RunNetworkingTests(tt.args.netsUnderTest, tt.args.count, tt.args.aIPVersion)
 			if !reflect.DeepEqual(gotBadNets, tt.wantBadNets) {
 				t.Errorf("RunNetworkingTests() gotBadNets = %v, want %v", gotBadNets, tt.wantBadNets)
 			}

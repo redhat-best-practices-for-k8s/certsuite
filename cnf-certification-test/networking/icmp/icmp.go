@@ -119,14 +119,16 @@ func ProcessContainerIpsPerNet(containerID *provider.Container,
 
 // runNetworkingTests takes a map netcommons.NetTestContext, e.g. one context per network attachment
 // and runs pings test with it. Returns a network name to a slice of bad target IPs map.
-func RunNetworkingTests(
+func RunNetworkingTests( //nolint:funlen
 	netsUnderTest map[string]netcommons.NetTestContext,
 	count int,
-	aIPVersion netcommons.IPVersion) (badNets map[string][]string, claimsLog loghelper.CuratedLogLines) {
+	aIPVersion netcommons.IPVersion) (badNets map[string][]string, claimsLog loghelper.CuratedLogLines, skip bool) {
 	logrus.Debugf("%s", netcommons.PrintNetTestContextMap(netsUnderTest))
+	skip = false
 	if len(netsUnderTest) == 0 {
 		logrus.Debugf("There are no %s networks to test, skipping test", aIPVersion)
-		return badNets, claimsLog
+		skip = true
+		return badNets, claimsLog, skip
 	}
 	// maps a net name to a list of failed destination IPs
 	badNets = map[string][]string{}
@@ -164,9 +166,10 @@ func RunNetworkingTests(
 		}
 	}
 	if !atLeastOneNetworkTested {
-		logrus.Debugf("There are no network to test for any %s networks, skipping test", aIPVersion)
+		logrus.Debugf("There are no %s networks to test, skipping test", aIPVersion)
+		skip = true
 	}
-	return badNets, claimsLog
+	return badNets, claimsLog, skip
 }
 
 // TestPing Initiates a ping test between a source container and network (1 ip) and a destination container and network (1 ip)
