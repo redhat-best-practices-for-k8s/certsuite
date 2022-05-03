@@ -134,7 +134,6 @@ func deletePod(pod *v1.Pod, mode string, wg *sync.WaitGroup) error {
 	podName := pod.Name
 	namespace := pod.Namespace
 	go func() {
-		time.Sleep(1 * time.Second)
 		err = waitPodDeleted(namespace, podName, gracePeriodSeconds, watcher)
 		if err != nil {
 			logrus.Errorf("waitPodDeleted failed with err=%s", err)
