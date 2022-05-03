@@ -319,6 +319,7 @@ func testUnalteredBootParams(env *provider.TestEnvironment) {
 	gomega.Expect(failedContainers).To(gomega.BeEmpty())
 }
 
+//nolint:funlen
 func testSysctlConfigs(env *provider.TestEnvironment) {
 	badContainers := []string{}
 
