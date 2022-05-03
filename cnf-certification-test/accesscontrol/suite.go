@@ -147,8 +147,8 @@ func TestSecConCapabilities(env *provider.TestEnvironment) {
 		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.Capabilities != nil {
 			for _, ncc := range nonCompliantCapabilities {
 				if strings.Contains(cut.Data.SecurityContext.Capabilities.String(), ncc) {
-					tnf.ClaimFilePrintf("Non compliant %s capability detected in container %s. All container caps: %s", ncc, cut.Namespace+"."+cut.Podname+"."+cut.Data.Name, cut.Data.SecurityContext.Capabilities.String())
-					badContainers = append(badContainers, cut.Namespace+"."+cut.Podname+"."+cut.Data.Name)
+					tnf.ClaimFilePrintf("Non compliant %s capability detected in container %s. All container caps: %s", ncc, cut.String(), cut.Data.SecurityContext.Capabilities.String())
+					badContainers = append(badContainers, cut.String())
 				}
 			}
 		}
@@ -206,8 +206,8 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		for _, aPort := range cut.Data.Ports {
 			if aPort.HostPort != 0 {
-				tnf.ClaimFilePrintf("Host port %d is configured in container %s.", aPort.HostPort, cut.Namespace+"."+cut.Podname+"."+cut.Data.Name)
-				badContainers = append(badContainers, cut.Namespace+"."+cut.Podname+"."+cut.Data.Name)
+				tnf.ClaimFilePrintf("Host port %d is configured in container %s.", aPort.HostPort, cut.String())
+				badContainers = append(badContainers, cut.String())
 			}
 		}
 	}
