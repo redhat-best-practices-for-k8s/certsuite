@@ -83,7 +83,7 @@ func TestCountPodsWithDelete(t *testing.T) {
 		clientsholder.ClearTestClientsHolder()
 		_ = clientsholder.GetTestClientsHolder(testRuntimeObjects)
 
-		result, err := CountPodsWithDelete("node1", true)
+		result, err := CountPodsWithDelete("node1", DeleteBackground)
 		assert.Nil(t, err)
 		assert.Equal(t, tc.expectedCount, result)
 	}
