@@ -53,16 +53,18 @@ func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container
 	for key, mcVal := range mcKernelArgumentsMap {
 		if currentVal, ok := currentKernelArgsMap[key]; ok {
 			if currentVal != mcVal {
-				claimsLog = claimsLog.AddLogLine("%s ContainerKernelArgs!=mcVal %s!=%s", cut, currentVal, mcVal)
+				claimsLog = claimsLog.AddLogLine("%s KernelCmdLineArg %q does not match MachineConfig value: %q!=%q",
+					cut.NodeName, key, currentVal, mcVal)
 			} else {
-				logrus.Tracef("%s ContainerKernelArgs==mcVal %s==%s", cut, currentVal, mcVal)
+				logrus.Tracef("%s KernelCmdLineArg==mcVal %q: %q==%q", cut.NodeName, key, currentVal, mcVal)
 			}
 		}
 		if grubVal, ok := grubKernelConfigMap[key]; ok {
 			if grubVal != mcVal {
-				claimsLog = claimsLog.AddLogLine("%s NodeGrubKernelArgs!=mcVal %s!=%s", cut, grubVal, mcVal)
+				claimsLog = claimsLog.AddLogLine("%s NodeGrubKernelArgs %q does not match MachineConfig value: %q!=%q",
+					cut.NodeName, key, mcVal, grubVal)
 			} else {
-				logrus.Tracef("%s NodeGrubKernelArgs==mcVal %s==%s", cut, grubVal, mcVal)
+				logrus.Tracef("%s NodeGrubKernelArg==mcVal %q: %q==%q", cut.NodeName, key, grubVal, mcVal)
 			}
 		}
 	}
@@ -106,6 +108,6 @@ func getCurrentKernelCmdlineArgs(cut *provider.Container) (aMap map[string]strin
 	if err != nil || errStr != "" {
 		return aMap, fmt.Errorf("cannot execute %s on container %s, err=%s, stderr=%s", grubKernelArgsCommand, cut, err, errStr)
 	}
-	currentSplitKernelCmdlineArgs := strings.Split(currnetKernelCmdlineArgs, " ")
+	currentSplitKernelCmdlineArgs := strings.Split(strings.TrimSuffix(currnetKernelCmdlineArgs, "\n"), " ")
 	return arrayhelper.ArgListToMap(currentSplitKernelCmdlineArgs), nil
 }
