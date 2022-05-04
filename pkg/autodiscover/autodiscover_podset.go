@@ -29,9 +29,7 @@ import (
 )
 
 func FindDeploymentByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*v1.Deployment, error) {
-	dpClient := appClient.Deployments(namespace)
-	options := metav1.GetOptions{}
-	dp, err := dpClient.Get(context.TODO(), name, options)
+	dp, err := appClient.Deployments(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
 		logrus.Error("Can't retrieve deployment in ns=", namespace, " name=", name)
 		return nil, err
@@ -39,8 +37,7 @@ func FindDeploymentByNameByNamespace(appClient appv1client.AppsV1Interface, name
 	return dp, nil
 }
 func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*v1.StatefulSet, error) {
-	ssClient := appClient.StatefulSets(namespace)
-	ss, err := ssClient.Get(context.TODO(), name, metav1.GetOptions{})
+	ss, err := appClient.StatefulSets(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
 		logrus.Error("Can't retrieve deployment in ns=", namespace, " name=", name)
 		return nil, err
