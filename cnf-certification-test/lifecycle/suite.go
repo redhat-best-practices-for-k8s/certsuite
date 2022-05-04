@@ -175,7 +175,7 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 			o := ownerreference.NewOwnerReference(put.Data)
 			o.RunTest()
 			if o.GetResults() != testhelper.SUCCESS {
-				badPods = append(badPods, put.Data.Namespace+":"+put.Data.Name)
+				badPods = append(badPods, put.String())
 			}
 		}
 		if len(badPods) > 0 {
