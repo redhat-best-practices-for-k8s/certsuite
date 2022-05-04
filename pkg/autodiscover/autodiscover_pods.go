@@ -45,9 +45,9 @@ func findPodsByLabel(oc corev1client.CoreV1Interface, labels []configuration.Lab
 			}
 
 			// Filter out any pod set to be deleted
-			for _, pod := range pods.Items {
-				if pod.ObjectMeta.DeletionTimestamp == nil {
-					Pods = append(Pods, pod)
+			for i := 0; i < len(pods.Items); i++ {
+				if pods.Items[i].ObjectMeta.DeletionTimestamp == nil {
+					Pods = append(Pods, pods.Items[i])
 				}
 			}
 		}
