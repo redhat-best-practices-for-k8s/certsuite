@@ -22,6 +22,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -91,15 +92,14 @@ func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces
 }
 
 // GetInvalidCRDsNum returns the number of invalid CRs in the map
-func GetInvalidCRsNum(invalidCrs map[string]map[string][]string) int {
-	invalidCrsNum := 0
+func GetInvalidCRsNum(invalidCrs map[string]map[string][]string) (invalidCrsNum int, claimsLog loghelper.CuratedLogLines) {
 	for crdName, namespaces := range invalidCrs {
 		for namespace, crNames := range namespaces {
 			for _, crName := range crNames {
-				logrus.Debugf("crName=%s namespace=%s is invalid (crd=%s)", crName, namespace, crdName)
+				claimsLog = claimsLog.AddLogLine("crName=%s namespace=%s is invalid (crd=%s)", crName, namespace, crdName)
 				invalidCrsNum++
 			}
 		}
 	}
-	return invalidCrsNum
+	return invalidCrsNum, claimsLog
 }

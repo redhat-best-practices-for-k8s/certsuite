@@ -44,6 +44,7 @@ func TestGetInvalidCRsNum(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		assert.Equal(t, tc.expectedInvalidCRs, GetInvalidCRsNum(tc.invalidCrs))
+		result, _ := GetInvalidCRsNum(tc.invalidCrs)
+		assert.Equal(t, tc.expectedInvalidCRs, result)
 	}
 }
