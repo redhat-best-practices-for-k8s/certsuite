@@ -21,7 +21,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	corev1 "k8s.io/api/core/v1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
@@ -32,7 +32,7 @@ import (
 func TestFindPodsByLabel(t *testing.T) {
 	generatePod := func(podname, namespace, label string) *corev1.Pod {
 		return &corev1.Pod{
-			ObjectMeta: v1.ObjectMeta{
+			ObjectMeta: metav1.ObjectMeta{
 				Name:      podname,
 				Namespace: namespace,
 				Labels: map[string]string{
@@ -58,7 +58,7 @@ func TestFindPodsByLabel(t *testing.T) {
 
 			expectedResults: []corev1.Pod{
 				{
-					ObjectMeta: v1.ObjectMeta{
+					ObjectMeta: metav1.ObjectMeta{
 						Name:      "testPod",
 						Namespace: "testNamespace",
 						Labels: map[string]string{

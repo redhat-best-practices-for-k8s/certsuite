@@ -33,8 +33,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
-
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 )
 
 const (
@@ -111,8 +110,8 @@ func testContainersImagePolicy(env *provider.TestEnvironment) {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		badcontainers := []string{}
 		for _, cut := range env.Containers {
-			logrus.Debugln("check container ", cut.String(), " pull policy, should be ", v1.PullIfNotPresent)
-			if cut.Data.ImagePullPolicy != v1.PullIfNotPresent {
+			logrus.Debugln("check container ", cut.String(), " pull policy, should be ", corev1.PullIfNotPresent)
+			if cut.Data.ImagePullPolicy != corev1.PullIfNotPresent {
 				badcontainers = append(badcontainers, cut.String())
 				logrus.Errorln("container ", cut.Data.Name, " is using ", cut.Data.ImagePullPolicy, " as image policy")
 			}
@@ -186,7 +185,7 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 }
 
 func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) {
-	var badPods []*v1.Pod
+	var badPods []*corev1.Pod
 	for _, put := range env.Pods {
 		if len(put.Data.Spec.NodeSelector) != 0 {
 			tnf.ClaimFilePrintf("ERROR: %s has a node selector clause. Node selector: %v", put, &put.Data.Spec.NodeSelector)

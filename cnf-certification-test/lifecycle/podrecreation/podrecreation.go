@@ -25,7 +25,7 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
 	retry "k8s.io/client-go/util/retry"
@@ -99,7 +99,7 @@ func CountPodsWithDelete(nodeName, mode string) (count int, err error) {
 	wg.Wait()
 	return count, nil
 }
-func skipDaemonPod(pod *v1.Pod) bool {
+func skipDaemonPod(pod *corev1.Pod) bool {
 	for _, or := range pod.OwnerReferences {
 		if or.Kind == DaemonSetString {
 			return true
@@ -108,7 +108,7 @@ func skipDaemonPod(pod *v1.Pod) bool {
 	return false
 }
 
-func deletePod(pod *v1.Pod, mode string, wg *sync.WaitGroup) error {
+func deletePod(pod *corev1.Pod, mode string, wg *sync.WaitGroup) error {
 	clients := clientsholder.GetClientsHolder()
 	logrus.Debugf("deleting ns=%s pod=%s with %s mode", pod.Namespace, pod.Name, mode)
 	gracePeriodSeconds := *pod.Spec.TerminationGracePeriodSeconds

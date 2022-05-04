@@ -21,14 +21,14 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // GetRoleBindings returns any role bindings extracted from the desired pod.
 func GetRoleBindings(podNamespace, serviceAccountName string) ([]string, error) {
 	// Get all of the rolebindings from all namespaces.
 	clientsHolder := clientsholder.GetClientsHolder()
-	roleList, roleErr := clientsHolder.K8sClient.RbacV1().Roles("").List(context.TODO(), v1.ListOptions{})
+	roleList, roleErr := clientsHolder.K8sClient.RbacV1().Roles("").List(context.TODO(), metav1.ListOptions{})
 	if roleErr != nil {
 		logrus.Errorf("executing rolebinding command failed with error: %s", roleErr)
 		return nil, roleErr

@@ -20,7 +20,7 @@ import (
 	"testing"
 
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func Test_isOperatorSucceeded(t *testing.T) { //nolint:funlen
@@ -34,7 +34,7 @@ func Test_isOperatorSucceeded(t *testing.T) { //nolint:funlen
 	}{
 		{name: "ok",
 			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: v1.ObjectMeta{
+				ObjectMeta: metav1.ObjectMeta{
 					Name:      "aCSV",
 					Namespace: "aNamespace",
 				},
@@ -46,7 +46,7 @@ func Test_isOperatorSucceeded(t *testing.T) { //nolint:funlen
 		},
 		{name: "nok",
 			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: v1.ObjectMeta{
+				ObjectMeta: metav1.ObjectMeta{
 					Name:      "aCSV",
 					Namespace: "aNamespace",
 				},
@@ -58,7 +58,7 @@ func Test_isOperatorSucceeded(t *testing.T) { //nolint:funlen
 		},
 		{name: "nok",
 			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: v1.ObjectMeta{
+				ObjectMeta: metav1.ObjectMeta{
 					Name:      "aCSV",
 					Namespace: "aNamespace",
 				},
@@ -70,7 +70,7 @@ func Test_isOperatorSucceeded(t *testing.T) { //nolint:funlen
 		},
 		{name: "nok",
 			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: v1.ObjectMeta{
+				ObjectMeta: metav1.ObjectMeta{
 					Name:      "aCSV",
 					Namespace: "aNamespace",
 				},
@@ -81,7 +81,7 @@ func Test_isOperatorSucceeded(t *testing.T) { //nolint:funlen
 		},
 		{name: "nok",
 			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: v1.ObjectMeta{
+				ObjectMeta: metav1.ObjectMeta{
 					Name:      "aCSV",
 					Namespace: "aNamespace",
 				},
@@ -93,7 +93,7 @@ func Test_isOperatorSucceeded(t *testing.T) { //nolint:funlen
 		},
 		{name: "nok",
 			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: v1.ObjectMeta{
+				ObjectMeta: metav1.ObjectMeta{
 					Name:      "aCSV",
 					Namespace: "aNamespace",
 				},
@@ -105,7 +105,7 @@ func Test_isOperatorSucceeded(t *testing.T) { //nolint:funlen
 		},
 		{name: "nok",
 			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: v1.ObjectMeta{
+				ObjectMeta: metav1.ObjectMeta{
 					Name:      "aCSV",
 					Namespace: "aNamespace",
 				},
@@ -117,7 +117,7 @@ func Test_isOperatorSucceeded(t *testing.T) { //nolint:funlen
 		},
 		{name: "nok",
 			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: v1.ObjectMeta{
+				ObjectMeta: metav1.ObjectMeta{
 					Name:      "aCSV",
 					Namespace: "aNamespace",
 				},
@@ -129,7 +129,7 @@ func Test_isOperatorSucceeded(t *testing.T) { //nolint:funlen
 		},
 		{name: "nok",
 			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: v1.ObjectMeta{
+				ObjectMeta: metav1.ObjectMeta{
 					Name:      "aCSV",
 					Namespace: "aNamespace",
 				},
@@ -142,7 +142,7 @@ func Test_isOperatorSucceeded(t *testing.T) { //nolint:funlen
 		},
 		{name: "nok",
 			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: v1.ObjectMeta{
+				ObjectMeta: metav1.ObjectMeta{
 					Name:      "aCSV",
 					Namespace: "aNamespace",
 				},

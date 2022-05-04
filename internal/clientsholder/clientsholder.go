@@ -32,8 +32,8 @@ import (
 	"k8s.io/client-go/kubernetes"
 
 	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
-	v1core "k8s.io/api/core/v1"
-	v1rbac "k8s.io/api/rbac/v1"
+	corev1 "k8s.io/api/core/v1"
+	rbacv1 "k8s.io/api/rbac/v1"
 	apiextv1fake "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/fake"
 	k8sFakeClient "k8s.io/client-go/kubernetes/fake"
 	"k8s.io/client-go/rest"
@@ -75,19 +75,19 @@ func GetTestClientsHolder(k8sMockObjects []runtime.Object, filenames ...string) 
 		// Add more items below if/when needed.
 		switch v.(type) {
 		// K8s Client Objects
-		case *v1core.ServiceAccount:
+		case *corev1.ServiceAccount:
 			k8sClientObjects = append(k8sClientObjects, v)
-		case *v1rbac.ClusterRole:
+		case *rbacv1.ClusterRole:
 			k8sClientObjects = append(k8sClientObjects, v)
-		case *v1rbac.ClusterRoleBinding:
+		case *rbacv1.ClusterRoleBinding:
 			k8sClientObjects = append(k8sClientObjects, v)
-		case *v1rbac.Role:
+		case *rbacv1.Role:
 			k8sClientObjects = append(k8sClientObjects, v)
-		case *v1rbac.RoleBinding:
+		case *rbacv1.RoleBinding:
 			k8sClientObjects = append(k8sClientObjects, v)
-		case *v1core.Pod:
+		case *corev1.Pod:
 			k8sClientObjects = append(k8sClientObjects, v)
-		case *v1core.Node:
+		case *corev1.Node:
 			k8sClientObjects = append(k8sClientObjects, v)
 
 		// K8s Extension Client Objects

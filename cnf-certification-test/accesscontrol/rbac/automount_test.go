@@ -21,31 +21,31 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	v1core "k8s.io/api/core/v1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
 func buildServiceAccountTokenTestObjects() []runtime.Object {
 	falseVar := false
 	trueVar := true
-	testSAwithSATokenTrue := v1core.ServiceAccount{
+	testSAwithSATokenTrue := corev1.ServiceAccount{
 		AutomountServiceAccountToken: &trueVar,
-		ObjectMeta: v1.ObjectMeta{
+		ObjectMeta: metav1.ObjectMeta{
 			Name:      "SAAutomountTrue",
 			Namespace: "testNamespace",
 		},
 	}
-	testSAwithSATokenFalse := v1core.ServiceAccount{
+	testSAwithSATokenFalse := corev1.ServiceAccount{
 		AutomountServiceAccountToken: &falseVar,
-		ObjectMeta: v1.ObjectMeta{
+		ObjectMeta: metav1.ObjectMeta{
 			Name:      "SAAutomountFalse",
 			Namespace: "testNamespace",
 		},
 	}
-	testSAwithSATokenNil := v1core.ServiceAccount{
+	testSAwithSATokenNil := corev1.ServiceAccount{
 		AutomountServiceAccountToken: nil,
-		ObjectMeta: v1.ObjectMeta{
+		ObjectMeta: metav1.ObjectMeta{
 			Name:      "SAAutomountNil",
 			Namespace: "testNamespace",
 		},
@@ -69,8 +69,8 @@ func TestAutomountServiceAccountSetOnSA(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		testSA := v1core.ServiceAccount{
-			ObjectMeta: v1.ObjectMeta{
+		testSA := corev1.ServiceAccount{
+			ObjectMeta: metav1.ObjectMeta{
 				Namespace: "podNS",
 				Name:      "testSA",
 			},
@@ -92,14 +92,14 @@ func TestEvaluateAutomountTokens(t *testing.T) {
 	falseVar := false
 	trueVar := true
 
-	generatePod := func(tokenStatus *bool, saName string) *v1core.Pod {
-		return &v1core.Pod{
-			Spec: v1core.PodSpec{
+	generatePod := func(tokenStatus *bool, saName string) *corev1.Pod {
+		return &corev1.Pod{
+			Spec: corev1.PodSpec{
 				NodeName:                     "worker01",
 				AutomountServiceAccountToken: tokenStatus,
 				ServiceAccountName:           saName,
 			},
-			ObjectMeta: v1.ObjectMeta{
+			ObjectMeta: metav1.ObjectMeta{
 				Name:      "testPod",
 				Namespace: "testNamespace",
 			},
@@ -107,7 +107,7 @@ func TestEvaluateAutomountTokens(t *testing.T) {
 	}
 
 	testCases := []struct {
-		testPod        *v1core.Pod
+		testPod        *corev1.Pod
 		expectedMsg    string
 		expectedResult bool
 	}{
