@@ -39,26 +39,35 @@ func TestResultToString(t *testing.T) {
 	}
 }
 
+//nolint:funlen
 func TestSkipIfEmptyFuncs(t *testing.T) {
 	testCases := []struct {
-		objects interface{}
-		skipped bool
+		map1, slice1           interface{}
+		skippedAny, skippedAll bool
 	}{
 		{ // Test Case #1 - Skip because objects is empty, no panic because []string type
-			objects: []string{},
-			skipped: true,
+			slice1:     []string{},
+			map1:       make(map[string]string),
+			skippedAny: true,
+			skippedAll: true,
 		},
 		{ // Test Case #2 - Skip because objects is empty, no panic because map type
-			objects: make(map[string]string),
-			skipped: true,
+			slice1:     make(map[string]string),
+			map1:       make(map[string]string),
+			skippedAny: true,
+			skippedAll: true,
 		},
 		{ // Test Case #3 - No skip because objects is populated, no panic because []string type
-			objects: []string{"test"},
-			skipped: false,
+			slice1:     []string{"test"},
+			map1:       make(map[string]string),
+			skippedAny: true,
+			skippedAll: false,
 		},
 		{ // Test Case #4 - Multiple objects
-			objects: []string{"test1", "test2"},
-			skipped: false,
+			slice1:     []string{"test1", "test2"},
+			map1:       make(map[string]string),
+			skippedAny: true,
+			skippedAll: false,
 		},
 		// Note: Cannot test calls to panic
 	}
@@ -72,8 +81,8 @@ func TestSkipIfEmptyFuncs(t *testing.T) {
 			} else {
 				result = false
 			}
-		}, tc.objects)
-		assert.Equal(t, tc.skipped, result)
+		}, tc.slice1, tc.map1)
+		assert.Equal(t, tc.skippedAll, result)
 
 		SkipIfEmptyAny(func(s string, i ...int) {
 			if strings.Contains(s, "Test skipped") {
@@ -81,8 +90,8 @@ func TestSkipIfEmptyFuncs(t *testing.T) {
 			} else {
 				result = false
 			}
-		}, tc.objects)
+		}, tc.slice1, tc.map1)
 
-		assert.Equal(t, tc.skipped, result)
+		assert.Equal(t, tc.skippedAny, result)
 	}
 }
