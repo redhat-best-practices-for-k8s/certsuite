@@ -307,16 +307,23 @@ func testHugepages(env *provider.TestEnvironment) {
 }
 
 func testUnalteredBootParams(env *provider.TestEnvironment) {
-	failedContainers := []string{}
+	failedNodes := []string{}
+	alreadyCheckedNodes := map[string]bool{}
 	for _, cut := range env.Containers {
+		if alreadyCheckedNodes[cut.NodeName] {
+			logrus.Debugf("Skipping node %s: already checked.", cut.NodeName)
+			continue
+		}
+		alreadyCheckedNodes[cut.NodeName] = true
+
 		claimsLog, err := bootparams.TestBootParamsHelper(env, cut)
 
 		if err != nil || len(claimsLog.GetLogLines()) != 0 {
-			failedContainers = append(failedContainers, cut.String())
+			failedNodes = append(failedNodes, fmt.Sprintf("node %s (%s)", cut.NodeName, cut.String()))
 			tnf.ClaimFilePrintf("%s", claimsLog)
 		}
 	}
-	gomega.Expect(failedContainers).To(gomega.BeEmpty())
+	gomega.Expect(failedNodes).To(gomega.BeEmpty())
 }
 
 //nolint:funlen
