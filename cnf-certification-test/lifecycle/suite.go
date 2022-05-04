@@ -91,7 +91,7 @@ func testContainersPreStop(env *provider.TestEnvironment) {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		badcontainers := []string{}
 		for _, cut := range env.Containers {
-			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " pre stop lifecycle ")
+			logrus.Debugln("check container ", cut.String(), " pre stop lifecycle ")
 
 			if cut.Data.Lifecycle == nil || (cut.Data.Lifecycle != nil && cut.Data.Lifecycle.PreStop == nil) {
 				badcontainers = append(badcontainers, cut.Data.Name)
@@ -111,10 +111,9 @@ func testContainersImagePolicy(env *provider.TestEnvironment) {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		badcontainers := []string{}
 		for _, cut := range env.Containers {
-			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " pull policy, should be ", v1.PullIfNotPresent)
+			logrus.Debugln("check container ", cut.String(), " pull policy, should be ", v1.PullIfNotPresent)
 			if cut.Data.ImagePullPolicy != v1.PullIfNotPresent {
-				s := cut.Namespace + ":" + cut.Podname + ":" + cut.Data.Name
-				badcontainers = append(badcontainers, s)
+				badcontainers = append(badcontainers, cut.String())
 				logrus.Errorln("container ", cut.Data.Name, " is using ", cut.Data.ImagePullPolicy, " as image policy")
 			}
 		}
@@ -132,10 +131,9 @@ func testContainersReadinessProbe(env *provider.TestEnvironment) {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		badcontainers := []string{}
 		for _, cut := range env.Containers {
-			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " readiness probe ")
+			logrus.Debugln("check container ", cut.String(), " readiness probe ")
 			if cut.Data.ReadinessProbe == nil {
-				s := cut.Namespace + ":" + cut.Podname + ":" + cut.Data.Name
-				badcontainers = append(badcontainers, s)
+				badcontainers = append(badcontainers, cut.String())
 				logrus.Errorln("container ", cut.Data.Name, " does not have ReadinessProbe defined")
 			}
 		}
@@ -153,10 +151,9 @@ func testContainersLivenessProbe(env *provider.TestEnvironment) {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		badcontainers := []string{}
 		for _, cut := range env.Containers {
-			logrus.Debugln("check container ", cut.Namespace, " ", cut.Podname, " ", cut.Data.Name, " liveness probe ")
+			logrus.Debugln("check container ", cut.String(), " liveness probe ")
 			if cut.Data.LivenessProbe == nil {
-				s := cut.Namespace + ":" + cut.Podname + ":" + cut.Data.Name
-				badcontainers = append(badcontainers, s)
+				badcontainers = append(badcontainers, cut.String())
 				logrus.Errorln("container ", cut.Data.Name, " does not have livenessProbe defined")
 			}
 		}
@@ -178,8 +175,7 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 			o := ownerreference.NewOwnerReference(put.Data)
 			o.RunTest()
 			if o.GetResults() != testhelper.SUCCESS {
-				s := put.Data.Namespace + ":" + put.Data.Name
-				badPods = append(badPods, s)
+				badPods = append(badPods, put.String())
 			}
 		}
 		if len(badPods) > 0 {
@@ -244,7 +240,7 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration) {
 	ginkgo.By("Testing statefulset scaling")
 	defer env.SetNeedsRefresh()
-	failedSatetfulSets := []string{}
+	failedStatetfulSets := []string{}
 	for i := range env.StatetfulSets {
 		// TeststatefulsetScaling test scaling of statefulset
 		// This is the entry point for statefulset scaling tests
@@ -256,21 +252,21 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 			// horizontal scaler, then test that scaler
 			// can scale the statefulset
 			if !scaling.TestScaleHpaStatefulSet(statefulset, hpa, timeout) {
-				failedSatetfulSets = append(failedSatetfulSets, provider.StatefulsetToString(statefulset))
+				failedStatetfulSets = append(failedStatetfulSets, provider.StatefulsetToString(statefulset))
 			}
 			continue
 		}
 		// if the statefulset is not controller by HPA
 		// scale it directly
 		if !scaling.TestScaleStatefulSet(statefulset, timeout) {
-			failedSatetfulSets = append(failedSatetfulSets, provider.StatefulsetToString(statefulset))
+			failedStatetfulSets = append(failedStatetfulSets, provider.StatefulsetToString(statefulset))
 		}
 	}
 
-	if len(failedSatetfulSets) > 0 {
-		tnf.ClaimFilePrintf(" failed statefulsets: %v", failedSatetfulSets)
+	if len(failedStatetfulSets) > 0 {
+		tnf.ClaimFilePrintf(" failed statefulsets: %v", failedStatetfulSets)
 	}
-	gomega.Expect(0).To(gomega.Equal(len(failedSatetfulSets)))
+	gomega.Expect(0).To(gomega.Equal(len(failedStatetfulSets)))
 }
 
 // testHighAvailability
