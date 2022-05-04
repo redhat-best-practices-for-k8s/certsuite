@@ -101,8 +101,7 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
 		operatorsToQuery := env.Subscriptions
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Operators)
-		certtool.CertAPIClient = api.NewHTTPClient()
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, operatorsToQuery)
 		ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsToQuery)))
 		testFailed := false
 		ocpMinorVersion := ""
