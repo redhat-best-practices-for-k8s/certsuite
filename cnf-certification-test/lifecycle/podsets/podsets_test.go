@@ -24,7 +24,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	v1app "k8s.io/api/apps/v1"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -92,7 +92,7 @@ func TestIsStatefulSetReady(t *testing.T) {
 
 func TestGetPodSetNodes(t *testing.T) { //nolint:funlen
 	type args struct {
-		pods    []*v1.Pod
+		pods    []*corev1.Pod
 		ssName  string
 		nodesIn map[string]bool
 	}
@@ -103,7 +103,7 @@ func TestGetPodSetNodes(t *testing.T) { //nolint:funlen
 	}{
 		{
 			name: "ok",
-			args: args{pods: []*v1.Pod{{
+			args: args{pods: []*corev1.Pod{{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "pod1",
 					Namespace: "tnf",
@@ -112,7 +112,7 @@ func TestGetPodSetNodes(t *testing.T) { //nolint:funlen
 						Name: "stateful1",
 					}},
 				},
-				Spec: v1.PodSpec{
+				Spec: corev1.PodSpec{
 					NodeName: "node1",
 				},
 			}, {
@@ -124,14 +124,14 @@ func TestGetPodSetNodes(t *testing.T) { //nolint:funlen
 						Name: "stateful1",
 					}},
 				},
-				Spec: v1.PodSpec{
+				Spec: corev1.PodSpec{
 					NodeName: "node2",
 				},
 			}}, ssName: "stateful1", nodesIn: map[string]bool{}}, want: map[string]bool{"node1": true, "node2": true},
 		},
 		{
 			name: "nok",
-			args: args{pods: []*v1.Pod{{
+			args: args{pods: []*corev1.Pod{{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "pod1",
 					Namespace: "tnf",
@@ -140,7 +140,7 @@ func TestGetPodSetNodes(t *testing.T) { //nolint:funlen
 						Name: "stateful1",
 					}},
 				},
-				Spec: v1.PodSpec{
+				Spec: corev1.PodSpec{
 					NodeName: "node1",
 				},
 			}, {
@@ -152,7 +152,7 @@ func TestGetPodSetNodes(t *testing.T) { //nolint:funlen
 						Name: "stateful1",
 					}},
 				},
-				Spec: v1.PodSpec{
+				Spec: corev1.PodSpec{
 					NodeName: "node2",
 				},
 			}}, ssName: "stateful1", nodesIn: map[string]bool{}}, want: map[string]bool{"node1": true},

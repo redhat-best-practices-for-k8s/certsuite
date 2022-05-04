@@ -23,7 +23,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -31,7 +31,7 @@ func TestFindTestCrdNames(t *testing.T) {
 	// Function to generate some runtime objects for the k8s mock client
 	generateObjects := func() []runtime.Object {
 		testCRD := apiextv1.CustomResourceDefinition{
-			ObjectMeta: v1.ObjectMeta{
+			ObjectMeta: metav1.ObjectMeta{
 				Name: "testCRD_testsuffix",
 			},
 		}
@@ -53,7 +53,7 @@ func TestFindTestCrdNames(t *testing.T) {
 			},
 			expectedTargetCRDs: []*apiextv1.CustomResourceDefinition{
 				{
-					ObjectMeta: v1.ObjectMeta{
+					ObjectMeta: metav1.ObjectMeta{
 						Name: "testCRD_testsuffix",
 					},
 				},

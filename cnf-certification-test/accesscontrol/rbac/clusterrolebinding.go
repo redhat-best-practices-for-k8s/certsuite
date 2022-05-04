@@ -21,13 +21,13 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func GetClusterRoleBindings(serviceAccountName, podNamespace string) ([]string, error) {
 	// Get all of the clusterrolebindings from all namespaces.
 	clientsHolder := clientsholder.GetClientsHolder()
-	crbList, crbErr := clientsHolder.K8sClient.RbacV1().ClusterRoles().List(context.TODO(), v1.ListOptions{})
+	crbList, crbErr := clientsHolder.K8sClient.RbacV1().ClusterRoles().List(context.TODO(), metav1.ListOptions{})
 	if crbErr != nil {
 		logrus.Errorf("executing clusterrolebinding command failed with error: %s", crbErr)
 		return nil, crbErr

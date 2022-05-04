@@ -20,15 +20,15 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	v1 "k8s.io/api/apps/v1"
-	v1scaling "k8s.io/api/autoscaling/v1"
+	appsv1 "k8s.io/api/apps/v1"
+	scalingv1 "k8s.io/api/autoscaling/v1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 )
 
-func FindDeploymentByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*v1.Deployment, error) {
+func FindDeploymentByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*appsv1.Deployment, error) {
 	dp, err := appClient.Deployments(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
 		logrus.Error("Can't retrieve deployment in ns=", namespace, " name=", name)
@@ -36,7 +36,7 @@ func FindDeploymentByNameByNamespace(appClient appv1client.AppsV1Interface, name
 	}
 	return dp, nil
 }
-func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*v1.StatefulSet, error) {
+func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*appsv1.StatefulSet, error) {
 	ss, err := appClient.StatefulSets(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
 		logrus.Error("Can't retrieve deployment in ns=", namespace, " name=", name)
@@ -50,8 +50,8 @@ func findDeploymentByLabel(
 	appClient appv1client.AppsV1Interface,
 	labels []configuration.Label,
 	namespaces []string,
-) []v1.Deployment {
-	deployments := []v1.Deployment{}
+) []appsv1.Deployment {
+	deployments := []appsv1.Deployment{}
 	for _, ns := range namespaces {
 		dps, err := appClient.Deployments(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
@@ -84,8 +84,8 @@ func findStatefulSetByLabel(
 	appClient appv1client.AppsV1Interface,
 	labels []configuration.Label,
 	namespaces []string,
-) []v1.StatefulSet {
-	statefulsets := []v1.StatefulSet{}
+) []appsv1.StatefulSet {
+	statefulsets := []appsv1.StatefulSet{}
 	for _, ns := range namespaces {
 		ss, err := appClient.StatefulSets(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
@@ -113,8 +113,8 @@ func findStatefulSetByLabel(
 	return statefulsets
 }
 
-func findHpaControllers(cs kubernetes.Interface, namespaces []string) map[string]*v1scaling.HorizontalPodAutoscaler {
-	m := make(map[string]*v1scaling.HorizontalPodAutoscaler)
+func findHpaControllers(cs kubernetes.Interface, namespaces []string) map[string]*scalingv1.HorizontalPodAutoscaler {
+	m := make(map[string]*scalingv1.HorizontalPodAutoscaler)
 	for _, ns := range namespaces {
 		hpas, err := cs.AutoscalingV1().HorizontalPodAutoscalers(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {

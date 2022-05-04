@@ -25,7 +25,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
@@ -65,7 +65,7 @@ func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces
 			Resource: aCrd.Spec.Names.Plural,
 		}
 		logrus.Debugf("Looking for CRs from CRD: %s api version:%s group:%s plural:%s", aCrd.Name, version.Name, aCrd.Spec.Group, aCrd.Spec.Names.Plural)
-		crs, err := oc.DynamicClient.Resource(gvr).List(context.Background(), v1.ListOptions{})
+		crs, err := oc.DynamicClient.Resource(gvr).List(context.Background(), metav1.ListOptions{})
 		if err != nil {
 			logrus.Errorf("error getting %s: %v\n", aCrd.Name, err)
 			return crdNamespaces, err

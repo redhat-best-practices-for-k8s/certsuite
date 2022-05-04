@@ -27,7 +27,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	apimachineryv1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -106,7 +106,7 @@ func GetHwInfoAllNodes() (out map[string]NodeHwInfo) {
 }
 
 // getHWJsonOutput performs a query via debug pod and returns the JSON blob
-func getHWJsonOutput(debugPod *v1.Pod, o clientsholder.Command, cmd string) (out interface{}, err error) {
+func getHWJsonOutput(debugPod *corev1.Pod, o clientsholder.Command, cmd string) (out interface{}, err error) {
 	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
 	outStr, errStr, err := o.ExecCommandContainer(ctx, cmd)
 	if err != nil || errStr != "" {
@@ -120,7 +120,7 @@ func getHWJsonOutput(debugPod *v1.Pod, o clientsholder.Command, cmd string) (out
 }
 
 // getHWTextOutput performs a query via debug and returns plaintext lines
-func getHWTextOutput(debugPod *v1.Pod, o clientsholder.Command, cmd string) (out []string, err error) {
+func getHWTextOutput(debugPod *corev1.Pod, o clientsholder.Command, cmd string) (out []string, err error) {
 	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
 	outStr, errStr, err := o.ExecCommandContainer(ctx, cmd)
 	if err != nil || errStr != "" {

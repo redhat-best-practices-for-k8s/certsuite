@@ -21,7 +21,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
@@ -29,8 +29,8 @@ import (
 // Filter out any pod that is not in a running state
 const filterStatusRunning = "status.phase=Running"
 
-func findPodsByLabel(oc corev1client.CoreV1Interface, labels []configuration.Label, namespaces []string) []v1.Pod {
-	Pods := []v1.Pod{}
+func findPodsByLabel(oc corev1client.CoreV1Interface, labels []configuration.Label, namespaces []string) []corev1.Pod {
+	Pods := []corev1.Pod{}
 	for _, ns := range namespaces {
 		for _, l := range labels {
 			label := buildLabelQuery(l)

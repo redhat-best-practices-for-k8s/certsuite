@@ -28,9 +28,9 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"helm.sh/helm/v3/pkg/release"
-	v1apps "k8s.io/api/apps/v1"
-	v1scaling "k8s.io/api/autoscaling/v1"
-	v1 "k8s.io/api/core/v1"
+	appsv1 "k8s.io/api/apps/v1"
+	scalingv1 "k8s.io/api/autoscaling/v1"
+	corev1 "k8s.io/api/core/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -48,19 +48,19 @@ const (
 type DiscoveredTestData struct {
 	Env               configuration.TestParameters
 	TestData          configuration.TestConfiguration
-	Pods              []v1.Pod
-	DebugPods         []v1.Pod
+	Pods              []corev1.Pod
+	DebugPods         []corev1.Pod
 	Crds              []*apiextv1.CustomResourceDefinition
 	Namespaces        []string
 	Csvs              []olmv1Alpha.ClusterServiceVersion
-	Deployments       []v1apps.Deployment
-	StatefulSet       []v1apps.StatefulSet
-	Hpas              map[string]*v1scaling.HorizontalPodAutoscaler
+	Deployments       []appsv1.Deployment
+	StatefulSet       []appsv1.StatefulSet
+	Hpas              map[string]*scalingv1.HorizontalPodAutoscaler
 	Subscriptions     []olmv1Alpha.Subscription
 	HelmChartReleases map[string][]*release.Release
 	K8sVersion        string
 	OpenshiftVersion  string
-	Nodes             *v1.NodeList
+	Nodes             *corev1.NodeList
 }
 
 var data = DiscoveredTestData{}

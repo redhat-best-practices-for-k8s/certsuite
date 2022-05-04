@@ -26,8 +26,8 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	v1 "k8s.io/api/core/v1"
-	v1meta "k8s.io/apimachinery/pkg/apis/meta/v1"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func Test_parsePingResult(t *testing.T) { //nolint:funlen
@@ -206,8 +206,8 @@ func TestProcessContainerIpsPerNet(t *testing.T) { //nolint:funlen
 			name: "ok",
 			args: args{
 				containerID: &provider.Container{
-					Data:      &v1.Container{},
-					Status:    v1.ContainerStatus{},
+					Data:      &corev1.Container{},
+					Status:    corev1.ContainerStatus{},
 					Namespace: "namespace1",
 					Podname:   "pod1",
 					NodeName:  "node1",
@@ -224,8 +224,8 @@ func TestProcessContainerIpsPerNet(t *testing.T) { //nolint:funlen
 						TesterSource: netcommons.ContainerIP{
 							IP: "1.1.1.1",
 							ContainerIdentifier: &provider.Container{
-								Data:      &v1.Container{},
-								Status:    v1.ContainerStatus{},
+								Data:      &corev1.Container{},
+								Status:    corev1.ContainerStatus{},
 								Namespace: "namespace1",
 								Podname:   "pod1",
 								NodeName:  "node1",
@@ -236,8 +236,8 @@ func TestProcessContainerIpsPerNet(t *testing.T) { //nolint:funlen
 						DestTargets: []netcommons.ContainerIP{{
 							IP: "2.2.2.2",
 							ContainerIdentifier: &provider.Container{
-								Data:      &v1.Container{},
-								Status:    v1.ContainerStatus{},
+								Data:      &corev1.Container{},
+								Status:    corev1.ContainerStatus{},
 								Namespace: "namespace1",
 								Podname:   "pod1",
 								NodeName:  "node1",
@@ -247,8 +247,8 @@ func TestProcessContainerIpsPerNet(t *testing.T) { //nolint:funlen
 						}, {
 							IP: "3.3.3.3",
 							ContainerIdentifier: &provider.Container{
-								Data:      &v1.Container{},
-								Status:    v1.ContainerStatus{},
+								Data:      &corev1.Container{},
+								Status:    corev1.ContainerStatus{},
 								Namespace: "namespace1",
 								Podname:   "pod1",
 								NodeName:  "node1",
@@ -296,7 +296,7 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 					TesterSource: netcommons.ContainerIP{
 						IP: "10.244.195.231",
 						ContainerIdentifier: &provider.Container{
-							Data: &v1.Container{
+							Data: &corev1.Container{
 								Name: "test1",
 							},
 							Namespace: "tnf",
@@ -309,7 +309,7 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 					DestTargets: []netcommons.ContainerIP{{
 						IP: "10.244.195.232",
 						ContainerIdentifier: &provider.Container{
-							Data: &v1.Container{
+							Data: &corev1.Container{
 								Name: "test2",
 							},
 							Namespace: "tnf",
@@ -337,7 +337,7 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 					TesterSource: netcommons.ContainerIP{
 						IP: "10.244.195.231",
 						ContainerIdentifier: &provider.Container{
-							Data: &v1.Container{
+							Data: &corev1.Container{
 								Name: "test1",
 							},
 							Namespace: "tnf",
@@ -365,7 +365,7 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 					TesterSource: netcommons.ContainerIP{
 						IP: "192.168.0.3",
 						ContainerIdentifier: &provider.Container{
-							Data: &v1.Container{
+							Data: &corev1.Container{
 								Name: "test1",
 							},
 							Namespace: "tnf",
@@ -379,7 +379,7 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 						{
 							IP: "192.168.0.4",
 							ContainerIdentifier: &provider.Container{
-								Data: &v1.Container{
+								Data: &corev1.Container{
 									Name: "test2",
 								},
 								Namespace: "tnf",
@@ -396,7 +396,7 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 					TesterSource: netcommons.ContainerIP{
 						IP: "192.168.1.3",
 						ContainerIdentifier: &provider.Container{
-							Data: &v1.Container{
+							Data: &corev1.Container{
 								Name: "test1",
 							},
 							Namespace: "tnf",
@@ -410,7 +410,7 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 						{
 							IP: "192.168.1.4",
 							ContainerIdentifier: &provider.Container{
-								Data: &v1.Container{
+								Data: &corev1.Container{
 									Name: "test2",
 								},
 								Namespace: "tnf",
@@ -437,7 +437,7 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 					TesterSource: netcommons.ContainerIP{
 						IP: "192.168.0.3",
 						ContainerIdentifier: &provider.Container{
-							Data: &v1.Container{
+							Data: &corev1.Container{
 								Name: "test1",
 							},
 							Namespace: "tnf",
@@ -454,7 +454,7 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 					TesterSource: netcommons.ContainerIP{
 						IP: "192.168.1.3",
 						ContainerIdentifier: &provider.Container{
-							Data: &v1.Container{
+							Data: &corev1.Container{
 								Name: "test1",
 							},
 							Namespace: "tnf",
@@ -498,16 +498,16 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 
 var (
 	pod1 = provider.Pod{ //nolint:dupl
-		Data: &v1.Pod{
-			ObjectMeta: v1meta.ObjectMeta{
+		Data: &corev1.Pod{
+			ObjectMeta: metav1.ObjectMeta{
 				Name:      "pod1",
 				Namespace: "ns1",
 				Annotations: map[string]string{
 					"k8s.v1.cni.cncf.io/networks-status": "[{\n    \"name\": \"k8s-pod-network\",\n    \"ips\": [\n        \"10.244.195.231\",\n        \"fd00:10:244:88:58fd:b191:5c13:9ce6\"\n    ],\n    \"default\": true,\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-0\",\n    \"interface\": \"net1\",\n    \"ips\": [\n        \"192.168.0.3\"\n    ],\n    \"mac\": \"96:e8:f5:33:9c:66\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-1\",\n    \"interface\": \"net2\",\n    \"ips\": [\n        \"192.168.1.3\"\n    ],\n    \"mac\": \"4e:c5:60:c2:1c:55\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-0\",\n    \"interface\": \"net3\",\n    \"ips\": [\n        \"3ffe:ffff::3\"\n    ],\n    \"mac\": \"ca:f5:77:b4:2f:49\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-1\",\n    \"interface\": \"net4\",\n    \"ips\": [\n        \"3ffe:ffff:0:1::3\"\n    ],\n    \"mac\": \"26:7b:69:1b:b0:5c\",\n    \"dns\": {}\n}]", //nolint:lll
 				},
 			},
-			Status: v1.PodStatus{
-				PodIPs: []v1.PodIP{
+			Status: corev1.PodStatus{
+				PodIPs: []corev1.PodIP{
 					{
 						IP: "10.244.195.231",
 					},
@@ -524,7 +524,7 @@ var (
 		SkipMultusNetTests: false,
 		Containers: []*provider.Container{
 			{
-				Data: &v1.Container{
+				Data: &corev1.Container{
 					Name: "test1",
 				},
 				Namespace: "tnf",
@@ -536,16 +536,16 @@ var (
 		},
 	}
 	pod2 = provider.Pod{ //nolint:dupl
-		Data: &v1.Pod{
-			ObjectMeta: v1meta.ObjectMeta{
+		Data: &corev1.Pod{
+			ObjectMeta: metav1.ObjectMeta{
 				Name:      "pod2",
 				Namespace: "ns1",
 				Annotations: map[string]string{
 					"k8s.v1.cni.cncf.io/networks-status": "[{\n    \"name\": \"k8s-pod-network\",\n    \"ips\": [\n        \"10.244.195.232\",\n        \"fd00:10:244:88:58fd:b191:5c13:9ce7\"\n    ],\n    \"default\": true,\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-0\",\n    \"interface\": \"net1\",\n    \"ips\": [\n        \"192.168.0.4\"\n    ],\n    \"mac\": \"96:e8:f5:33:9c:67\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-1\",\n    \"interface\": \"net2\",\n    \"ips\": [\n        \"192.168.1.4\"\n    ],\n    \"mac\": \"4e:c5:60:c2:1c:56\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-0\",\n    \"interface\": \"net3\",\n    \"ips\": [\n        \"3ffe:ffff::4\"\n    ],\n    \"mac\": \"ca:f5:77:b4:2f:50\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-1\",\n    \"interface\": \"net4\",\n    \"ips\": [\n        \"3ffe:ffff:0:1::4\"\n    ],\n    \"mac\": \"26:7b:69:1b:b0:5d\",\n    \"dns\": {}\n}]", //nolint:lll
 				},
 			},
-			Status: v1.PodStatus{
-				PodIPs: []v1.PodIP{
+			Status: corev1.PodStatus{
+				PodIPs: []corev1.PodIP{
 					{
 						IP: "10.244.195.232",
 					},
@@ -562,7 +562,7 @@ var (
 		SkipMultusNetTests: false,
 		Containers: []*provider.Container{
 			{
-				Data: &v1.Container{
+				Data: &corev1.Container{
 					Name: "test2",
 				},
 				Namespace: "tnf",
@@ -574,16 +574,16 @@ var (
 		},
 	}
 	pod3 = provider.Pod{ //nolint:dupl
-		Data: &v1.Pod{
-			ObjectMeta: v1meta.ObjectMeta{
+		Data: &corev1.Pod{
+			ObjectMeta: metav1.ObjectMeta{
 				Name:      "pod2",
 				Namespace: "ns1",
 				Annotations: map[string]string{
 					"k8s.v1.cni.cncf.io/networks-status": "[{\n    \"name\": \"k8s-pod-network\",\n    \"ips\": [\n        \"10.244.195.232\",\n        \"fd00:10:244:88:58fd:b191:5c13:9ce7\"\n    ],\n    \"default\": true,\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-0\",\n    \"interface\": \"net1\",\n    \"ips\": [\n        \"192.168.0.4\"\n    ],\n    \"mac\": \"96:e8:f5:33:9c:67\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-1\",\n    \"interface\": \"net2\",\n    \"ips\": [\n        \"192.168.1.4\"\n    ],\n    \"mac\": \"4e:c5:60:c2:1c:56\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-0\",\n    \"interface\": \"net3\",\n    \"ips\": [\n        \"3ffe:ffff::4\"\n    ],\n    \"mac\": \"ca:f5:77:b4:2f:50\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-1\",\n    \"interface\": \"net4\",\n    \"ips\": [\n        \"3ffe:ffff:0:1::4\"\n    ],\n    \"mac\": \"26:7b:69:1b:b0:5d\",\n    \"dns\": {}\n}]", //nolint:lll
 				},
 			},
-			Status: v1.PodStatus{
-				PodIPs: []v1.PodIP{
+			Status: corev1.PodStatus{
+				PodIPs: []corev1.PodIP{
 					{
 						IP: "10.244.195.232",
 					},
@@ -600,7 +600,7 @@ var (
 		SkipMultusNetTests: false,
 		Containers: []*provider.Container{
 			{
-				Data: &v1.Container{
+				Data: &corev1.Container{
 					Name: "test2",
 				},
 				Namespace: "tnf",
@@ -612,16 +612,16 @@ var (
 		},
 	}
 	pod4 = provider.Pod{ //nolint:dupl
-		Data: &v1.Pod{
-			ObjectMeta: v1meta.ObjectMeta{
+		Data: &corev1.Pod{
+			ObjectMeta: metav1.ObjectMeta{
 				Name:      "pod2",
 				Namespace: "ns1",
 				Annotations: map[string]string{
 					"k8s.v1.cni.cncf.io/networks-status": "[{\n    \"name\": \"k8s-pod-network\",\n    \"ips\": [\n        \"10.244.195.232\",\n        \"fd00:10:244:88:58fd:b191:5c13:9ce7\"\n    ],\n    \"default\": true,\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-0\",\n    \"interface\": \"net1\",\n    \"ips\": [\n        \"192.168.0.4\"\n    ],\n    \"mac\": \"96:e8:f5:33:9c:67\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv4-1\",\n    \"interface\": \"net2\",\n    \"ips\": [\n        \"192.168.1.4\"\n    ],\n    \"mac\": \"4e:c5:60:c2:1c:56\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-0\",\n    \"interface\": \"net3\",\n    \"ips\": [\n        \"3ffe:ffff::4\"\n    ],\n    \"mac\": \"ca:f5:77:b4:2f:50\",\n    \"dns\": {}\n},{\n    \"name\": \"tnf/mynet-ipv6-1\",\n    \"interface\": \"net4\",\n    \"ips\": [\n        \"3ffe:ffff:0:1::4\"\n    ],\n    \"mac\": \"26:7b:69:1b:b0:5d\",\n    \"dns\": {}\n}]", //nolint:lll
 				},
 			},
-			Status: v1.PodStatus{
-				PodIPs: []v1.PodIP{
+			Status: corev1.PodStatus{
+				PodIPs: []corev1.PodIP{
 					{
 						IP: "10.244.195.232",
 					},
@@ -638,7 +638,7 @@ var (
 		SkipMultusNetTests: true,
 		Containers: []*provider.Container{
 			{
-				Data: &v1.Container{
+				Data: &corev1.Container{
 					Name: "test2",
 				},
 				Namespace: "tnf",
@@ -670,7 +670,7 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 				TesterSource: netcommons.ContainerIP{
 					IP: "10.244.195.231",
 					ContainerIdentifier: &provider.Container{
-						Data: &v1.Container{
+						Data: &corev1.Container{
 							Name: "test1",
 						},
 						Namespace: "tnf",
@@ -683,7 +683,7 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 				DestTargets: []netcommons.ContainerIP{{
 					IP: "10.244.195.232",
 					ContainerIdentifier: &provider.Container{
-						Data: &v1.Container{
+						Data: &corev1.Container{
 							Name: "test2",
 						},
 						Namespace: "tnf",
@@ -715,7 +715,7 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 				TesterSource: netcommons.ContainerIP{
 					IP: "10.244.195.231",
 					ContainerIdentifier: &provider.Container{
-						Data: &v1.Container{
+						Data: &corev1.Container{
 							Name: "test1",
 						},
 						Namespace: "tnf",
@@ -739,7 +739,7 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 				TesterSource: netcommons.ContainerIP{
 					IP: "10.244.195.231",
 					ContainerIdentifier: &provider.Container{
-						Data: &v1.Container{
+						Data: &corev1.Container{
 							Name: "test1",
 						},
 						Namespace: "tnf",
@@ -752,7 +752,7 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 				DestTargets: []netcommons.ContainerIP{{
 					IP: "10.244.195.232",
 					ContainerIdentifier: &provider.Container{
-						Data: &v1.Container{
+						Data: &corev1.Container{
 							Name: "test2",
 						},
 						Namespace: "tnf",
@@ -765,7 +765,7 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 					{
 						IP: "10.244.195.233",
 						ContainerIdentifier: &provider.Container{
-							Data: &v1.Container{
+							Data: &corev1.Container{
 								Name: "test3",
 							},
 							Namespace: "tnf",

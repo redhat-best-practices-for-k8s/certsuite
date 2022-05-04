@@ -24,7 +24,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 )
 
 func TestGetVersionOcClient(t *testing.T) {
@@ -74,12 +74,12 @@ func TestGetHWJsonOutput(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		result, err := getHWJsonOutput(&v1.Pod{
-			Spec: v1.PodSpec{
+		result, err := getHWJsonOutput(&corev1.Pod{
+			Spec: corev1.PodSpec{
 				// Note: We don't actually care about the podname
 				// for this test, but the function uses it to build the
 				// context .
-				Containers: []v1.Container{
+				Containers: []corev1.Container{
 					{
 						Name: "podname",
 					},
@@ -137,12 +137,12 @@ func TestGetHWTextOutput(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		result, err := getHWTextOutput(&v1.Pod{
-			Spec: v1.PodSpec{
+		result, err := getHWTextOutput(&corev1.Pod{
+			Spec: corev1.PodSpec{
 				// Note: We don't actually care about the podname
 				// for this test, but the function uses it to build the
 				// context .
-				Containers: []v1.Container{
+				Containers: []corev1.Container{
 					{
 						Name: "podname",
 					},

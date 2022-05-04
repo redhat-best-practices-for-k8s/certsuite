@@ -22,7 +22,7 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/tools/remotecommand"
 )
@@ -51,7 +51,7 @@ func (clientsholder *ClientsHolder) ExecCommandContainer(
 		Resource("pods").
 		Name(ctx.Podname).
 		SubResource("exec").
-		VersionedParams(&v1.PodExecOptions{
+		VersionedParams(&corev1.PodExecOptions{
 			Container: ctx.Containername,
 			Command:   commandStr,
 			Stdin:     false,
