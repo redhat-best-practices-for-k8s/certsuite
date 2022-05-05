@@ -254,7 +254,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 
 func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
 	const (
-		getenforceCommand = "getenforce"
+		getenforceCommand = `chroot /host getenforce`
 		enforcingString   = "Enforcing\n"
 	)
 	o := clientsholder.GetClientsHolder()
