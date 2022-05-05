@@ -100,7 +100,7 @@ func testContainerCertificationStatus(env *provider.TestEnvironment) {
 func testAllOperatorCertified(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
-		operatorsToQuery := env.Subscriptions
+		operatorsToQuery := env.Operators
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, operatorsToQuery)
 		ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsToQuery)))
 		testFailed := false
@@ -112,7 +112,7 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 			ocpMinorVersion = splitVersion[0] + "." + splitVersion[1]
 		}
 		for _, op := range operatorsToQuery {
-			pack := op.Status.InstalledCSV
+			pack := op.Name
 			isCertified := registry.IsOperatorCertified(pack, ocpMinorVersion)
 			if !isCertified {
 				testFailed = true

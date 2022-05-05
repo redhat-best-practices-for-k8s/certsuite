@@ -38,4 +38,7 @@ func TestIsOperatorCertified(t *testing.T) {
 
 	ans = IsOperatorCertified("falcon-alpha", ocpversion)
 	assert.Equal(t, ans, false)
+
+	ans = IsOperatorCertified("falcon-alpha", "")
+	assert.Equal(t, ans, false)
 }
