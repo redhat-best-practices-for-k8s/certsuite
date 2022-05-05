@@ -269,7 +269,7 @@ func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
 			continue
 		}
 		if outStr != enforcingString {
-			tnf.ClaimFilePrintf(fmt.Sprintf("Node %s is not running selinux", debugPod.Spec.NodeName))
+			tnf.ClaimFilePrintf(fmt.Sprintf("Node %s is not running selinux, %s command returned: %s", debugPod.Spec.NodeName, getenforceCommand, outStr))
 			nodesFailed++
 		}
 	}
