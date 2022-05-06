@@ -51,14 +51,44 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		env = provider.GetTestEnvironment()
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
-	testContainersPreStop(&env)
-	testContainersImagePolicy(&env)
-	testContainersReadinessProbe(&env)
-	testContainersLivenessProbe(&env)
-	testPodsOwnerReference(&env)
-	testHighAvailability(&env)
 
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodNodeSelectorAndAffinityBestPractices)
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestShudtownIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testContainersPreStop(&env)
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestImagePullPolicyIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testContainersImagePolicy(&env)
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestReadinessProbeIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testContainersReadinessProbe(&env)
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestLivenessProbeIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testContainersLivenessProbe(&env)
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodDeploymentBestPracticesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Pods)
+		testPodsOwnerReference(&env)
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHighAvailabilityBestPractices)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatetfulSets)
+		testHighAvailability(&env)
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodNodeSelectorAndAffinityBestPractices)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		testPodNodeSelectorAndAffinityBestPractices(&env)
@@ -86,102 +116,82 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 })
 
 func testContainersPreStop(env *provider.TestEnvironment) {
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestShudtownIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		badcontainers := []string{}
-		for _, cut := range env.Containers {
-			logrus.Debugln("check container ", cut.String(), " pre stop lifecycle ")
+	badcontainers := []string{}
+	for _, cut := range env.Containers {
+		logrus.Debugln("check container ", cut.String(), " pre stop lifecycle ")
 
-			if cut.Data.Lifecycle == nil || (cut.Data.Lifecycle != nil && cut.Data.Lifecycle.PreStop == nil) {
-				badcontainers = append(badcontainers, cut.Data.Name)
-				tnf.ClaimFilePrintf("%s does not have preStop defined", cut)
-			}
+		if cut.Data.Lifecycle == nil || (cut.Data.Lifecycle != nil && cut.Data.Lifecycle.PreStop == nil) {
+			badcontainers = append(badcontainers, cut.Data.Name)
+			tnf.ClaimFilePrintf("%s does not have preStop defined", cut)
 		}
-		if len(badcontainers) > 0 {
-			tnf.ClaimFilePrintf("bad containers %v", badcontainers)
-		}
-		gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
-	})
+	}
+	if len(badcontainers) > 0 {
+		tnf.ClaimFilePrintf("bad containers %v", badcontainers)
+	}
+	gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
 }
 
 func testContainersImagePolicy(env *provider.TestEnvironment) {
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestImagePullPolicyIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
-		badcontainers := []string{}
-		for _, cut := range env.Containers {
-			logrus.Debugln("check container ", cut.String(), " pull policy, should be ", corev1.PullIfNotPresent)
-			if cut.Data.ImagePullPolicy != corev1.PullIfNotPresent {
-				badcontainers = append(badcontainers, "{"+cut.String()+": is using"+string(cut.Data.ImagePullPolicy)+"}")
-				logrus.Errorln("container ", cut.Data.Name, " is using ", cut.Data.ImagePullPolicy, " as image policy")
-			}
+	testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+	badcontainers := []string{}
+	for _, cut := range env.Containers {
+		logrus.Debugln("check container ", cut.String(), " pull policy, should be ", corev1.PullIfNotPresent)
+		if cut.Data.ImagePullPolicy != corev1.PullIfNotPresent {
+			badcontainers = append(badcontainers, "{"+cut.String()+": is using"+string(cut.Data.ImagePullPolicy)+"}")
+			logrus.Errorln("container ", cut.Data.Name, " is using ", cut.Data.ImagePullPolicy, " as image policy")
 		}
-		if len(badcontainers) > 0 {
-			tnf.ClaimFilePrintf("bad containers %v", badcontainers)
-		}
-		gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
-	})
+	}
+	if len(badcontainers) > 0 {
+		tnf.ClaimFilePrintf("bad containers %v", badcontainers)
+	}
+	gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
 }
 
-//nolint:dupl
 func testContainersReadinessProbe(env *provider.TestEnvironment) {
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestReadinessProbeIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
-		badcontainers := []string{}
-		for _, cut := range env.Containers {
-			logrus.Debugln("check container ", cut.String(), " readiness probe ")
-			if cut.Data.ReadinessProbe == nil {
-				badcontainers = append(badcontainers, cut.String())
-				logrus.Errorln("container ", cut.Data.Name, " does not have ReadinessProbe defined")
-			}
+	badcontainers := []string{}
+	for _, cut := range env.Containers {
+		logrus.Debugln("check container ", cut.String(), " readiness probe ")
+		if cut.Data.ReadinessProbe == nil {
+			badcontainers = append(badcontainers, cut.String())
+			logrus.Errorln("container ", cut.Data.Name, " does not have ReadinessProbe defined")
 		}
-		if len(badcontainers) > 0 {
-			tnf.ClaimFilePrintf("bad containers %v", badcontainers)
-		}
-		gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
-	})
+	}
+	if len(badcontainers) > 0 {
+		tnf.ClaimFilePrintf("bad containers %v", badcontainers)
+	}
+	gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
 }
 
-//nolint:dupl
 func testContainersLivenessProbe(env *provider.TestEnvironment) {
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestLivenessProbeIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
-		badcontainers := []string{}
-		for _, cut := range env.Containers {
-			logrus.Debugln("check container ", cut.String(), " liveness probe ")
-			if cut.Data.LivenessProbe == nil {
-				badcontainers = append(badcontainers, cut.String())
-				logrus.Errorln("container ", cut.Data.Name, " does not have livenessProbe defined")
-			}
+	badcontainers := []string{}
+	for _, cut := range env.Containers {
+		logrus.Debugln("check container ", cut.String(), " liveness probe ")
+		if cut.Data.LivenessProbe == nil {
+			badcontainers = append(badcontainers, cut.String())
+			logrus.Errorln("container ", cut.Data.Name, " does not have livenessProbe defined")
 		}
-		if len(badcontainers) > 0 {
-			tnf.ClaimFilePrintf("bad containers %v", badcontainers)
-		}
-		gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
-	})
+	}
+	if len(badcontainers) > 0 {
+		tnf.ClaimFilePrintf("bad containers %v", badcontainers)
+	}
+	gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
 }
 
 func testPodsOwnerReference(env *provider.TestEnvironment) {
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodDeploymentBestPracticesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Pods)
-		ginkgo.By("Testing owners of CNF pod, should be replicas Set")
-		badPods := []string{}
-		for _, put := range env.Pods {
-			logrus.Debugln("check pod ", put.Data.Namespace, " ", put.Data.Name, " owner reference")
-			o := ownerreference.NewOwnerReference(put.Data)
-			o.RunTest()
-			if o.GetResults() != testhelper.SUCCESS {
-				badPods = append(badPods, put.String())
-			}
+	ginkgo.By("Testing owners of CNF pod, should be replicas Set")
+	badPods := []string{}
+	for _, put := range env.Pods {
+		logrus.Debugln("check pod ", put.Data.Namespace, " ", put.Data.Name, " owner reference")
+		o := ownerreference.NewOwnerReference(put.Data)
+		o.RunTest()
+		if o.GetResults() != testhelper.SUCCESS {
+			badPods = append(badPods, put.String())
 		}
-		if len(badPods) > 0 {
-			tnf.ClaimFilePrintf("bad containers %v", badPods)
-		}
-		gomega.Expect(0).To(gomega.Equal(len(badPods)))
-	})
+	}
+	if len(badPods) > 0 {
+		tnf.ClaimFilePrintf("bad containers %v", badPods)
+	}
+	gomega.Expect(0).To(gomega.Equal(len(badPods)))
 }
 
 func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) {
@@ -270,45 +280,41 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 
 // testHighAvailability
 func testHighAvailability(env *provider.TestEnvironment) {
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHighAvailabilityBestPractices)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		ginkgo.By("Should set pod replica number greater than 1")
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatetfulSets)
+	ginkgo.By("Should set pod replica number greater than 1")
 
-		badDeployments := []string{}
-		badStatefulSet := []string{}
-		for _, dp := range env.Deployments {
-			if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) <= 1 {
-				badDeployments = append(badDeployments, provider.DeploymentToString(dp))
-				continue
-			}
-			if dp.Spec.Template.Spec.Affinity == nil ||
-				dp.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
-				badDeployments = append(badDeployments, provider.DeploymentToString(dp))
-			}
+	badDeployments := []string{}
+	badStatefulSet := []string{}
+	for _, dp := range env.Deployments {
+		if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) <= 1 {
+			badDeployments = append(badDeployments, provider.DeploymentToString(dp))
+			continue
 		}
-		for _, st := range env.StatetfulSets {
-			if st.Spec.Replicas == nil || *(st.Spec.Replicas) <= 1 {
-				badStatefulSet = append(badStatefulSet, provider.StatefulsetToString(st))
-				continue
-			}
-			if st.Spec.Template.Spec.Affinity == nil ||
-				st.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
-				badDeployments = append(badDeployments, provider.StatefulsetToString(st))
-			}
+		if dp.Spec.Template.Spec.Affinity == nil ||
+			dp.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
+			badDeployments = append(badDeployments, provider.DeploymentToString(dp))
 		}
+	}
+	for _, st := range env.StatetfulSets {
+		if st.Spec.Replicas == nil || *(st.Spec.Replicas) <= 1 {
+			badStatefulSet = append(badStatefulSet, provider.StatefulsetToString(st))
+			continue
+		}
+		if st.Spec.Template.Spec.Affinity == nil ||
+			st.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
+			badDeployments = append(badDeployments, provider.StatefulsetToString(st))
+		}
+	}
 
-		if n := len(badDeployments); n > 0 {
-			logrus.Errorf("Deployments without a valid high availability : %+v", badDeployments)
-			tnf.ClaimFilePrintf("Deployments without a valid high availability : %+v", badDeployments)
-		}
-		if n := len(badStatefulSet); n > 0 {
-			logrus.Errorf("Statefulset without a valid podAntiAffinity rule: %+v", badStatefulSet)
-			tnf.ClaimFilePrintf("Statefulset without a valid podAntiAffinity rule: %+v", badStatefulSet)
-		}
-		gomega.Expect(0).To(gomega.Equal(len(badDeployments)))
-		gomega.Expect(0).To(gomega.Equal(len(badStatefulSet)))
-	})
+	if n := len(badDeployments); n > 0 {
+		logrus.Errorf("Deployments without a valid high availability : %+v", badDeployments)
+		tnf.ClaimFilePrintf("Deployments without a valid high availability : %+v", badDeployments)
+	}
+	if n := len(badStatefulSet); n > 0 {
+		logrus.Errorf("Statefulset without a valid podAntiAffinity rule: %+v", badStatefulSet)
+		tnf.ClaimFilePrintf("Statefulset without a valid podAntiAffinity rule: %+v", badStatefulSet)
+	}
+	gomega.Expect(0).To(gomega.Equal(len(badDeployments)))
+	gomega.Expect(0).To(gomega.Equal(len(badStatefulSet)))
 }
 
 // testPodsRecreation tests that pods belonging to deployments and statefulsets are re-created and ready in case a node is lost

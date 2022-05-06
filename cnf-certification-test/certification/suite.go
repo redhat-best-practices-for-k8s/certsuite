@@ -49,9 +49,22 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
 
-	testContainerCertificationStatus(&env)
-	testAllOperatorCertified(&env)
-	testHelmCertified(&env)
+	// Query API for certification status of listed containers
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestContainerIsCertifiedIdentifier)
+	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
+		testContainerCertificationStatus(&env)
+	})
+
+	// Query API for certification status of listed operators
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorIsCertifiedIdentifier)
+	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
+		testAllOperatorCertified(&env)
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestHelmIsCertifiedIdentifier)
+	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
+		testHelmCertified(&env)
+	})
 })
 
 func testContainerCertification(c configuration.ContainerImageIdentifier) bool {
@@ -67,94 +80,83 @@ func testContainerCertification(c configuration.ContainerImageIdentifier) bool {
 }
 
 func testContainerCertificationStatus(env *provider.TestEnvironment) {
-	// Query API for certification status of listed containers
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestContainerIsCertifiedIdentifier)
-	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
-		containersToQuery := certtool.GetContainersToQuery(env)
-		if len(containersToQuery) == 0 {
-			ginkgo.Skip("No containers to check configured in tnf_config.yml")
+	containersToQuery := certtool.GetContainersToQuery(env)
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, containersToQuery)
+	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
+	failedContainers := []configuration.ContainerImageIdentifier{}
+	allContainersToQueryEmpty := true
+	for c := range containersToQuery {
+		if c.Name == "" || c.Repository == "" {
+			tnf.ClaimFilePrintf("Container name = \"%s\" or repository = \"%s\" is missing, skipping this container to query", c.Name, c.Repository)
+			continue
 		}
-		ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
-		failedContainers := []configuration.ContainerImageIdentifier{}
-		allContainersToQueryEmpty := true
-		for c := range containersToQuery {
-			if c.Name == "" || c.Repository == "" {
-				tnf.ClaimFilePrintf("Container name = \"%s\" or repository = \"%s\" is missing, skipping this container to query", c.Name, c.Repository)
-				continue
-			}
-			allContainersToQueryEmpty = false
-			if !testContainerCertification(c) {
-				failedContainers = append(failedContainers, c)
-			}
+		allContainersToQueryEmpty = false
+		if !testContainerCertification(c) {
+			failedContainers = append(failedContainers, c)
 		}
-		if allContainersToQueryEmpty {
-			ginkgo.Skip("No containers to check because either container name or repository is empty for all containers in tnf_config.yml")
-		}
-		if n := len(failedContainers); n > 0 {
-			logrus.Warnf("Containers that are not certified: %+v", failedContainers)
-			ginkgo.Fail(fmt.Sprintf("%d container images are not certified.", n))
-		}
-	})
+	}
+	if allContainersToQueryEmpty {
+		ginkgo.Skip("No containers to check because either container name or repository is empty for all containers in tnf_config.yml")
+	}
+	if n := len(failedContainers); n > 0 {
+		logrus.Warnf("Containers that are not certified: %+v", failedContainers)
+		ginkgo.Fail(fmt.Sprintf("%d container images are not certified.", n))
+	}
 }
 
 func testAllOperatorCertified(env *provider.TestEnvironment) {
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorIsCertifiedIdentifier)
-	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
-		operatorsUnderTest := env.Operators
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, operatorsUnderTest)
-		ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest)))
-		testFailed := false
-		ocpMinorVersion := ""
-		if env.OpenshiftVersion != "" {
-			// Converts	major.minor.patch version format to major.minor
-			const majorMinorPatchCount = 3
-			splitVersion := strings.SplitN(env.OpenshiftVersion, ".", majorMinorPatchCount)
-			ocpMinorVersion = splitVersion[0] + "." + splitVersion[1]
+	operatorsUnderTest := env.Operators
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, operatorsUnderTest)
+	ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest)))
+	testFailed := false
+	ocpMinorVersion := ""
+	if env.OpenshiftVersion != "" {
+		// Converts	major.minor.patch version format to major.minor
+		const majorMinorPatchCount = 3
+		splitVersion := strings.SplitN(env.OpenshiftVersion, ".", majorMinorPatchCount)
+		ocpMinorVersion = splitVersion[0] + "." + splitVersion[1]
+	}
+	for i := range operatorsUnderTest {
+		name := operatorsUnderTest[i].Name
+		isCertified := registry.IsOperatorCertified(name, ocpMinorVersion)
+		if !isCertified {
+			testFailed = true
+			logrus.Info(fmt.Sprintf("Operator %s not certified for OpenShift %s .", name, ocpMinorVersion))
+			tnf.ClaimFilePrintf("Operator %s  failed to be certified for OpenShift %s", name, ocpMinorVersion)
+		} else {
+			logrus.Info(fmt.Sprintf("Operator %s certified OK.", name))
 		}
-		for i := range operatorsUnderTest {
-			name := operatorsUnderTest[i].Name
-			isCertified := registry.IsOperatorCertified(name, ocpMinorVersion)
-			if !isCertified {
-				testFailed = true
-				logrus.Info(fmt.Sprintf("Operator %s not certified for OpenShift %s .", name, ocpMinorVersion))
-				tnf.ClaimFilePrintf("Operator %s  failed to be certified for OpenShift %s", name, ocpMinorVersion)
-			} else {
-				logrus.Info(fmt.Sprintf("Operator %s certified OK.", name))
-			}
-		}
-		if testFailed {
-			ginkgo.Fail("At least one operator was not certified to run on this version of OpenShift. Check Claim.json file for details.")
-		}
-	})
+	}
+	if testFailed {
+		ginkgo.Fail("At least one operator was not certified to run on this version of OpenShift. Check Claim.json file for details.")
+	}
 }
 
 func testHelmCertified(env *provider.TestEnvironment) {
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestHelmIsCertifiedIdentifier)
-	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
-		certtool.CertAPIClient = api.NewHTTPClient()
-		helmchartsReleases := env.HelmChartReleases
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, helmchartsReleases)
-		out, err := certtool.CertAPIClient.GetYamlFile()
-		if err != nil {
-			ginkgo.Fail(fmt.Sprintf("error while reading the helm yaml file from the api %s", err))
-		}
-		if out.Entries == nil {
-			ginkgo.Skip("No helm charts from the api")
-		}
+	helmchartsReleases := env.HelmChartReleases
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, helmchartsReleases)
+	certtool.CertAPIClient = api.NewHTTPClient()
 
-		// Collect all of the failed helm charts
-		failedHelmCharts := [][]string{}
-		for _, helm := range helmchartsReleases {
-			if !certtool.IsReleaseCertified(helm, env.K8sVersion, out) {
-				failedHelmCharts = append(failedHelmCharts, []string{helm.Chart.Metadata.Version, helm.Name})
-			} else {
-				logrus.Info(fmt.Sprintf("Helm %s with version %s is certified", helm.Name, helm.Chart.Metadata.Version))
-			}
+	out, err := certtool.CertAPIClient.GetYamlFile()
+	if err != nil {
+		ginkgo.Fail(fmt.Sprintf("error while reading the helm yaml file from the api %s", err))
+	}
+	if out.Entries == nil {
+		ginkgo.Skip("No helm charts from the api")
+	}
+
+	// Collect all of the failed helm charts
+	failedHelmCharts := [][]string{}
+	for _, helm := range helmchartsReleases {
+		if !certtool.IsReleaseCertified(helm, env.K8sVersion, out) {
+			failedHelmCharts = append(failedHelmCharts, []string{helm.Chart.Metadata.Version, helm.Name})
+		} else {
+			logrus.Info(fmt.Sprintf("Helm %s with version %s is certified", helm.Name, helm.Chart.Metadata.Version))
 		}
-		if len(failedHelmCharts) > 0 {
-			logrus.Errorf("Helms that are not certified: %+v", failedHelmCharts)
-			tnf.ClaimFilePrintf("Helms that are not certified: %+v", failedHelmCharts)
-			ginkgo.Fail(fmt.Sprintf("%d helms chart are not certified.", len(failedHelmCharts)))
-		}
-	})
+	}
+	if len(failedHelmCharts) > 0 {
+		logrus.Errorf("Helms that are not certified: %+v", failedHelmCharts)
+		tnf.ClaimFilePrintf("Helms that are not certified: %+v", failedHelmCharts)
+		ginkgo.Fail(fmt.Sprintf("%d helms chart are not certified.", len(failedHelmCharts)))
+	}
 }
