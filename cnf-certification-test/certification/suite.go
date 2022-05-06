@@ -100,9 +100,9 @@ func testContainerCertificationStatus(env *provider.TestEnvironment) {
 func testAllOperatorCertified(env *provider.TestEnvironment) {
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestOperatorIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(Online, testID), func() {
-		operatorsToQuery := env.Subscriptions
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, operatorsToQuery)
-		ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsToQuery)))
+		operatorsUnderTest := env.Operators
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, operatorsUnderTest)
+		ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest)))
 		testFailed := false
 		ocpMinorVersion := ""
 		if env.OpenshiftVersion != "" {
@@ -111,15 +111,15 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 			splitVersion := strings.SplitN(env.OpenshiftVersion, ".", majorMinorPatchCount)
 			ocpMinorVersion = splitVersion[0] + "." + splitVersion[1]
 		}
-		for _, op := range operatorsToQuery {
-			pack := op.Status.InstalledCSV
-			isCertified := registry.IsOperatorCertified(pack, ocpMinorVersion)
+		for i := range operatorsUnderTest {
+			name := operatorsUnderTest[i].Name
+			isCertified := registry.IsOperatorCertified(name, ocpMinorVersion)
 			if !isCertified {
 				testFailed = true
-				logrus.Info(fmt.Sprintf("Operator %s not certified for OpenShift %s .", pack, ocpMinorVersion))
-				tnf.ClaimFilePrintf("Operator %s  failed to be certified for OpenShift %s", pack, ocpMinorVersion)
+				logrus.Info(fmt.Sprintf("Operator %s not certified for OpenShift %s .", name, ocpMinorVersion))
+				tnf.ClaimFilePrintf("Operator %s  failed to be certified for OpenShift %s", name, ocpMinorVersion)
 			} else {
-				logrus.Info(fmt.Sprintf("Operator %s certified OK.", pack))
+				logrus.Info(fmt.Sprintf("Operator %s certified OK.", name))
 			}
 		}
 		if testFailed {

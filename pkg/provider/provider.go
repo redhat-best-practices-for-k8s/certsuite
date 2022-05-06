@@ -106,7 +106,6 @@ type TestEnvironment struct { // rename this with testTarget
 	StatetfulSets     []*appsv1.StatefulSet                         `json:"testStatetfulSets"`
 	HorizontalScaler  map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
 	Nodes             map[string]Node                               `json:"-"`
-	Subscriptions     []*olmv1Alpha.Subscription                    `json:"testSubscriptions"`
 	K8sVersion        string                                        `json:"-"`
 	OpenshiftVersion  string                                        `json:"-"`
 	HelmChartReleases []*release.Release                            `json:"testHelmChartReleases"`
@@ -232,14 +231,7 @@ func buildTestEnvironment() { //nolint:funlen
 		nodeName := data.DebugPods[i].Spec.NodeName
 		env.DebugPods[nodeName] = &data.DebugPods[i]
 	}
-	csvs := data.Csvs
-	subscriptions := data.Subscriptions
-	for i := range csvs {
-		isCsv, sub := IsinstalledCsv(&csvs[i], subscriptions)
-		if isCsv {
-			env.Subscriptions = append(env.Subscriptions, &sub)
-		}
-	}
+
 	env.OpenshiftVersion = data.OpenshiftVersion
 	env.K8sVersion = data.K8sVersion
 	for _, nsHelmChartReleases := range data.HelmChartReleases {
@@ -262,6 +254,7 @@ func buildTestEnvironment() { //nolint:funlen
 		logrus.Errorf("Failed to get cluster operators: %s", err)
 	}
 	env.Operators = operators
+	logrus.Infof("Operators found: %d", len(env.Operators))
 }
 
 func getPodContainers(aPod *corev1.Pod) (containerList []*Container) {
