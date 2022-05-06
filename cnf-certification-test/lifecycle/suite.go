@@ -112,7 +112,7 @@ func testContainersImagePolicy(env *provider.TestEnvironment) {
 		for _, cut := range env.Containers {
 			logrus.Debugln("check container ", cut.String(), " pull policy, should be ", corev1.PullIfNotPresent)
 			if cut.Data.ImagePullPolicy != corev1.PullIfNotPresent {
-				badcontainers = append(badcontainers, cut.String())
+				badcontainers = append(badcontainers, "{"+cut.String()+": is using"+string(cut.Data.ImagePullPolicy)+"}")
 				logrus.Errorln("container ", cut.Data.Name, " is using ", cut.Data.ImagePullPolicy, " as image policy")
 			}
 		}
