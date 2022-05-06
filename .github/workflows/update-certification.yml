@@ -3,7 +3,7 @@ name: Update Certification Files
 on:
   # Triggers the workflow every day
   schedule:
-    - cron: "* * * 1 *"
+    - cron: "0 0 * * *"
 jobs:
   update-certification:
     name: Run Smoke Tests
