@@ -22,12 +22,13 @@ var (
 	containersRelativePath   = "%s/cmd/tnf/fetch/data/containers/containers.db"
 	operatorsRelativePath    = "%s/cmd/tnf/fetch/data/operators/"
 	helmRelativePath         = "%s/cmd/tnf/fetch/data/helm/helm.db"
-	certifiedcatalogdata     = "%s/cmd/tnf/fetch/data/archive.db"
+	certifiedcatalogdata     = "%s/cmd/tnf/fetch/data/archive.json"
 	operatorFileFormat       = "operator_catalog_page_%d_%d.db"
 )
 
 const (
 	containerCatalogPageSize = 500
+	operatorCatalogPageSize  = 500
 )
 
 var (
@@ -156,7 +157,7 @@ func getOperatorCatalogSize() (size, pagesize uint) {
 	if err != nil {
 		log.Fatalf("Error in unmarshaling body: %v", err)
 	}
-	return aCatalog.Total, aCatalog.PageSize
+	return aCatalog.Total, operatorCatalogPageSize
 }
 
 func getOperatorCatalogPage(page, size uint) {

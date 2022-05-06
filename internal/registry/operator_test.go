@@ -24,8 +24,8 @@ import (
 )
 
 func TestIsOperatorCertified(t *testing.T) {
-	name := "zoperator.v0.3.6"
-	ocpversion := "4.6"
+	name := "instana-agent-operator.v0.3.6"
+	ocpversion := "4.5"
 	path, _ := os.Getwd()
 	log.Info(path)
 	path, err := os.Getwd()
