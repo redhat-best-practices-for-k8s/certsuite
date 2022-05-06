@@ -111,8 +111,8 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 			splitVersion := strings.SplitN(env.OpenshiftVersion, ".", majorMinorPatchCount)
 			ocpMinorVersion = splitVersion[0] + "." + splitVersion[1]
 		}
-		for _, op := range operatorsToQuery {
-			pack := op.Name
+		for i:=0;i<len(operatorsToQuery);i++{
+			pack := operatorsToQuery[i].Name
 			isCertified := registry.IsOperatorCertified(pack, ocpMinorVersion)
 			if !isCertified {
 				testFailed = true
