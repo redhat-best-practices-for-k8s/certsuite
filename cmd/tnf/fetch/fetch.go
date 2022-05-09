@@ -22,12 +22,13 @@ var (
 	containersRelativePath   = "%s/cmd/tnf/fetch/data/containers/containers.db"
 	operatorsRelativePath    = "%s/cmd/tnf/fetch/data/operators/"
 	helmRelativePath         = "%s/cmd/tnf/fetch/data/helm/helm.db"
-	certifiedcatalogdata     = "%s/cmd/tnf/fetch/data/archive.db"
+	certifiedcatalogdata     = "%s/cmd/tnf/fetch/data/archive.json"
 	operatorFileFormat       = "operator_catalog_page_%d_%d.db"
 )
 
 const (
 	containerCatalogPageSize = 500
+	operatorCatalogPageSize  = 500
 )
 
 var (
@@ -156,28 +157,39 @@ func getOperatorCatalogSize() (size, pagesize uint) {
 	if err != nil {
 		log.Fatalf("Error in unmarshaling body: %v", err)
 	}
-	return aCatalog.Total, aCatalog.PageSize
+	return aCatalog.Total, operatorCatalogPageSize
 }
 
-func getOperatorCatalogPage(page, size uint) {
+func getOperatorCatalogPage(pageNum, size uint) int {
 	path, err := os.Getwd()
 	if err != nil {
 		log.Error("can't get current working dir", err)
-		return
+		return 0
 	}
-	url := fmt.Sprintf("%spage=%d%s", operatorcatalogURL, page, filterCertifiedOperators)
+	url := fmt.Sprintf("%spage=%d&page_size=%d%s", operatorcatalogURL, pageNum, size, filterCertifiedOperators)
+	log.Infof("Getting operators page %d (size %d), url: %s", pageNum, size, url)
+
 	body := getHTTPBody(url)
-	filename := fmt.Sprintf(operatorsRelativePath+"/"+operatorFileFormat, path, page, size)
+	filename := fmt.Sprintf(operatorsRelativePath+"/"+operatorFileFormat, path, pageNum, size)
 
 	f, err := os.Create(filename)
 	if err != nil {
 		log.Fatal("couldn't open file ", err)
 	}
-	defer f.Close()
+
 	_, err = f.Write(body)
 	if err != nil {
 		log.Error("can't write to file ", filename, err)
 	}
+
+	page := registry.ContainerPageCatalog{}
+	err = json.Unmarshal(body, &page)
+	if err != nil {
+		log.Fatalf("couldn't parse page %d size %d", pageNum, size)
+	}
+
+	f.Close()
+	return len(page.Data)
 }
 
 func getOperatorCatalog(data *CertifiedCatalog) {
@@ -189,16 +201,19 @@ func getOperatorCatalog(data *CertifiedCatalog) {
 	}
 	removeOperatorsDB()
 	log.Info("we should fetch new data", total, data.Operators)
-	pages := total / pageSize
-	remaining := total - pages*pageSize
-	for page := uint(0); page < pages; page++ {
-		getOperatorCatalogPage(page, pageSize)
-	}
-	if remaining != 0 {
-		getOperatorCatalogPage(pages, remaining)
+	totalOperators := 0
+	page := uint(0)
+	for {
+		pageOperators := getOperatorCatalogPage(page, pageSize)
+		log.Infof("Page %d (size %d): received %d operators.", pageOperators, pageSize, pageOperators)
+		if pageOperators == 0 {
+			break
+		}
+		totalOperators += pageOperators
+		page++
 	}
 	data.Operators = int(total)
-	log.Info("time to process all the operators=", time.Since(start))
+	log.Infof("time to process %d operators=%s", totalOperators, time.Since(start))
 }
 
 func getContainerCatalogSize() (total, pagesize uint) {
