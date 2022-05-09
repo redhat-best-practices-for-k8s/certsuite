@@ -60,7 +60,7 @@ var _ = ginkgo.Describe(common.ChaosTesting, func() {
 func testPodDelete(env *provider.TestEnvironment) {
 	for _, dep := range env.Deployments {
 		namespace := dep.Namespace
-		label := "app=" + "test"
+		label := "app=" + dep.Spec.Template.Labels["app"]
 		if err := applyAndCreateFiles(label, Deployment, namespace); err != nil {
 			ginkgo.Fail(fmt.Sprintf("test failed while creating the files %s", err))
 		}
@@ -226,9 +226,9 @@ func waitForResult() bool {
 //nolint:funlen //
 func createResource(filepath string) error {
 	oc := clientsholder.GetClientsHolder()
-	b, err := os.ReadFile(filepath)
-	if err != nil {
-		return err
+	b, ferr := os.ReadFile(filepath)
+	if ferr != nil {
+		return ferr
 	}
 	c := oc.K8sClient
 	dd := oc.DynamicClient
@@ -236,10 +236,9 @@ func createResource(filepath string) error {
 	decoder := yamlutil.NewYAMLOrJSONDecoder(bytes.NewReader(b), oneh)
 	for {
 		var rawObj runtime.RawExtension
-		if err = decoder.Decode(&rawObj); err != nil {
+		if err := decoder.Decode(&rawObj); err != nil {
 			break
 		}
-
 		obj, gvk, err := yaml.NewDecodingSerializer(unstructured.UnstructuredJSONScheme).Decode(rawObj.Raw, nil, nil)
 		if err != nil {
 			return err
@@ -276,8 +275,8 @@ func createResource(filepath string) error {
 			return err
 		}
 	}
-	if err != io.EOF {
-		return err
+	if ferr != io.EOF {
+		return ferr
 	}
 	return nil
 }
