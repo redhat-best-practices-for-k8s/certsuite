@@ -32,13 +32,14 @@ import (
 
 const (
 	// timeout for eventually call
-	TestCaseTimeout    = 120 * time.Second
+	TestCaseTimeout    = 180 * time.Second
 	Deployment         = "deployment"
 	ServiceAccountFile = "chaostesting/service-account.yaml"
 	ExperimentFile     = "chaostesting/experiment-delete.yaml"
 	chaosEngineFile    = "chaostesting/chaos-engine.yaml"
 	chaosname          = "pod-delete"
 	completedResult    = "completed"
+	pass               = "Pass"
 )
 
 var _ = ginkgo.Describe(common.ChaosTesting, func() {
@@ -60,18 +61,17 @@ var _ = ginkgo.Describe(common.ChaosTesting, func() {
 func testPodDelete(env *provider.TestEnvironment) {
 	for _, dep := range env.Deployments {
 		namespace := dep.Namespace
-		label := "app=" + dep.Spec.Template.Labels["app"]
+		label := labelValue(env, dep.Spec.Template.Labels)
 		if err := applyAndCreateFiles(label, Deployment, namespace); err != nil {
 			ginkgo.Fail(fmt.Sprintf("test failed while creating the files %s", err))
 		}
-		time.Sleep(1 * time.Second)
 		completed := waitForTestFinish(TestCaseTimeout)
 		if !completed {
 			deleteAllResources(namespace)
 			logrus.Debug("test failed to be completed")
 			ginkgo.Fail("test failed to be completed")
 		}
-		if finalResult := returnResult(); !finalResult {
+		if Result := IsChaosResultVerdictPass(); !Result {
 			// delete the chaos engin crd
 			deleteAllResources(namespace)
 			ginkgo.Fail("test completed but it failed with reason ")
@@ -79,6 +79,23 @@ func testPodDelete(env *provider.TestEnvironment) {
 
 		deleteAllResources(namespace)
 	}
+}
+
+func labelValue(env *provider.TestEnvironment, labelsMap map[string]string) string {
+	var key string
+	for _, label := range env.Config.TargetPodLabels {
+		if label.Prefix != "" {
+			key = fmt.Sprintf("%s/%s", label.Prefix, label.Name)
+		} else {
+			key = label.Name
+		}
+		for k, v := range labelsMap {
+			if k == key && v == label.Value {
+				return fmt.Sprintf("%s=%s", key, label.Value)
+			}
+		}
+	}
+	return ""
 }
 
 func applyAndCreateFiles(appLabel, appKind, namespace string) error {
@@ -185,7 +202,7 @@ func waitForTestFinish(timeout time.Duration) bool {
 	return result
 }
 
-func returnResult() bool {
+func IsChaosResultVerdictPass() bool {
 	oc := clientsholder.GetClientsHolder()
 	gvr := schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosresults"}
 	crs, err := oc.DynamicClient.Resource(gvr).List(context.Background(), metav1.ListOptions{})
@@ -193,13 +210,14 @@ func returnResult() bool {
 		logrus.Errorf("error getting : %v\n", err)
 	}
 	for _, cr := range crs.Items {
-		result := cr.Object["status"].(map[string]interface{})["experimentStatus"].(map[string]interface{})["failStep"]
+		failResult := cr.Object["status"].(map[string]interface{})["experimentStatus"].(map[string]interface{})["failStep"]
+		verdictValue := cr.Object["status"].(map[string]interface{})["experimentStatus"].(map[string]interface{})["verdict"]
 		expKind := cr.Object["spec"].(map[string]interface{})["experiment"]
 		if expKind == chaosname {
-			if result == "N/A" {
+			if verdictValue == pass {
 				return true
 			}
-			logrus.Debugf("test completed but it failed with reason %s", result.(string))
+			logrus.Debugf("test completed but it failed with reason %s", failResult.(string))
 			return false
 		}
 	}
@@ -214,10 +232,14 @@ func waitForResult() bool {
 		logrus.Errorf("error getting : %v\n", err)
 	}
 	for _, cr := range crs.Items {
-		typ := cr.Object["status"].(map[string]interface{})["experiments"].([]interface{})
-		status := cr.Object["status"].(map[string]interface{})["engineStatus"]
-		if typ[0].(map[string]interface{})["name"] == chaosname {
-			return status == completedResult
+		if status := cr.Object["status"]; status != nil {
+			if exp := status.(map[string]interface{})["experiments"]; exp != nil {
+				typ := exp.([]interface{})
+				status := cr.Object["status"].(map[string]interface{})["engineStatus"]
+				if typ[0].(map[string]interface{})["name"] == chaosname {
+					return status == completedResult
+				}
+			}
 		}
 	}
 	return false
