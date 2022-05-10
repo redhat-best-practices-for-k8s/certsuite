@@ -31,7 +31,6 @@ import (
 	"k8s.io/client-go/kubernetes"
 
 	k8sFakeClient "k8s.io/client-go/kubernetes/fake"
-	rbac "k8s.io/client-go/kubernetes/typed/rbac/v1"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 )
@@ -43,7 +42,6 @@ type ClientsHolder struct {
 	OlmClient     olmClient.Interface
 	OcpClient     clientconfigv1.ConfigV1Interface
 	K8sClient     kubernetes.Interface
-	RbacClient    *rbac.RbacV1Client
 	MachineCfg    ocpMachine.Interface
 	ready         bool
 }
