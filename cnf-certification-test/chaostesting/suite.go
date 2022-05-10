@@ -32,15 +32,15 @@ import (
 
 const (
 	// timeout for eventually call
-	TestCaseTimeout = 180 * time.Second
-	Deployment      = "deployment"
+	testCaseTimeout = 180 * time.Second
+	deployment      = "deployment"
 	// costum rescources file to create them
-	ServiceAccountFile = "chaostesting/service-account.yaml"
-	ExperimentFile     = "chaostesting/experiment-delete.yaml"
-	ChaosEngineFile    = "chaostesting/chaos-engine.yaml"
-	ChaosTestName      = "pod-delete" // test name
-	CompletedResult    = "completed"
-	Pass               = "Pass"
+	serviceAccountFile = "chaostesting/service-account.yaml"
+	experimentFile     = "chaostesting/experiment-delete.yaml"
+	chaosEngineFile    = "chaostesting/chaos-engine.yaml"
+	chaosTestName      = "pod-delete" // test name
+	completedResult    = "completed"
+	pass               = "Pass"
 )
 
 var _ = ginkgo.Describe(common.ChaosTesting, func() {
@@ -66,10 +66,10 @@ func testPodDelete(env *provider.TestEnvironment) {
 			logrus.Errorf("didnt find a match label for the deployment %s ", dep.Name)
 			ginkgo.Fail(fmt.Sprintf("There is no label for the deployment%s ", dep.Name))
 		}
-		if err := applyAndCreateFiles(label, Deployment, namespace); err != nil {
+		if err := applyAndCreateFiles(label, deployment, namespace); err != nil {
 			ginkgo.Fail(fmt.Sprintf("test failed while creating the files %s", err))
 		}
-		if completed := waitForTestFinish(TestCaseTimeout); !completed {
+		if completed := waitForTestFinish(testCaseTimeout); !completed {
 			deleteAllResources(namespace)
 			logrus.Debug("test failed to be completed")
 			ginkgo.Fail("test failed to be completed")
@@ -101,7 +101,7 @@ func getLabelDeploymetValue(env *provider.TestEnvironment, labelsMap map[string]
 }
 
 func applyAndCreateFiles(appLabel, appKind, namespace string) error {
-	fileName, err := applyTemplate(appLabel, appKind, namespace, ExperimentFile)
+	fileName, err := applyTemplate(appLabel, appKind, namespace, experimentFile)
 	if err != nil {
 		logrus.Errorf("cant create the file of the test: %s", err)
 		return err
@@ -110,7 +110,7 @@ func applyAndCreateFiles(appLabel, appKind, namespace string) error {
 		logrus.Errorf("%s error create the chaos experment resources.", err)
 		return err
 	}
-	fileName, err = applyTemplate(appLabel, appKind, namespace, ServiceAccountFile)
+	fileName, err = applyTemplate(appLabel, appKind, namespace, serviceAccountFile)
 	if err != nil {
 		logrus.Errorf("cant create the file of the test: %s", err)
 		return err
@@ -119,7 +119,7 @@ func applyAndCreateFiles(appLabel, appKind, namespace string) error {
 		logrus.Errorf("error create the service account: %s .", err)
 		return err
 	}
-	fileName, err = applyTemplate(appLabel, appKind, namespace, ChaosEngineFile)
+	fileName, err = applyTemplate(appLabel, appKind, namespace, chaosEngineFile)
 	if err != nil {
 		logrus.Errorf("cant create the file of the test: %s", err)
 		return err
@@ -153,18 +153,18 @@ func deleteAllResources(namespace string) {
 		logrus.Errorf("error while removing the chaos engine resources %e", err)
 	}
 	gvr = schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosexperiments"}
-	if err := oc.DynamicClient.Resource(gvr).Namespace(namespace).Delete(context.TODO(), ChaosTestName, deleteOptions); err != nil {
+	if err := oc.DynamicClient.Resource(gvr).Namespace(namespace).Delete(context.TODO(), chaosTestName, deleteOptions); err != nil {
 		logrus.Errorf("error while removing the chaos engine resources %e", err)
 	}
-	e := os.Remove(ChaosEngineFile + ".tmp")
+	e := os.Remove(chaosEngineFile + ".tmp")
 	if e != nil {
 		logrus.Errorf("error while removing the temp file of the chaos engine %e", e)
 	}
-	e = os.Remove(ServiceAccountFile + ".tmp")
+	e = os.Remove(serviceAccountFile + ".tmp")
 	if e != nil {
 		logrus.Errorf("error while removing the temp file of the servicAccount %e", e)
 	}
-	e = os.Remove(ExperimentFile + ".tmp")
+	e = os.Remove(experimentFile + ".tmp")
 	if e != nil {
 		logrus.Errorf("error while removing the temp file of the deleteExperment %e", e)
 	}
@@ -217,8 +217,8 @@ func IsChaosResultVerdictPass() bool {
 		failResult := cr.Object["status"].(map[string]interface{})["experimentStatus"].(map[string]interface{})["failStep"]
 		verdictValue := cr.Object["status"].(map[string]interface{})["experimentStatus"].(map[string]interface{})["verdict"]
 		expKind := cr.Object["spec"].(map[string]interface{})["experiment"]
-		if expKind == ChaosTestName {
-			if verdictValue == Pass {
+		if expKind == chaosTestName {
+			if verdictValue == pass {
 				return true
 			}
 			logrus.Debugf("test completed but it failed with reason %s", failResult.(string))
@@ -240,8 +240,8 @@ func waitForResult() bool {
 			if exp := status.(map[string]interface{})["experiments"]; exp != nil {
 				typ := exp.([]interface{})
 				status := cr.Object["status"].(map[string]interface{})["engineStatus"]
-				if typ[0].(map[string]interface{})["name"] == ChaosTestName {
-					return status == CompletedResult
+				if typ[0].(map[string]interface{})["name"] == chaosTestName {
+					return status == completedResult
 				}
 			}
 		}
