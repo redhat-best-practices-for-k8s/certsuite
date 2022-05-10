@@ -126,9 +126,10 @@ type Operator struct {
 	Csv              *olmv1Alpha.ClusterServiceVersion `yaml:"csv" json:"csv"`
 	SubscriptionName string                            `yaml:"subscriptionName" json:"subscriptionName"`
 	InstallPlans     []CsvInstallPlan                  `yaml:"installPlans,omitempty" json:"installPlans,omitempty"`
-	Package          string                            `yaml:"packag" json:"packag"`
-	Org              string                            `yaml:"Org" json:"Org"`
-	Version          string                            `yaml:"Version" json:"Version"`
+	Package          string                            `yaml:"package" json:"package"`
+	Org              string                            `yaml:"org" json:"org"`
+	Version          string                            `yaml:"version" json:"version"`
+	Channel          string                            `yaml:"channel" json:"channel"`
 }
 type Container struct {
 	Data                     *corev1.Container
@@ -550,6 +551,7 @@ func getCatalogSourceImageIndexFromInstallPlan(installPlan *olmv1Alpha.InstallPl
 	return catalogSource.Spec.Image, nil
 }
 
+//nolint:funlen
 func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription) ([]Operator, error) {
 	installPlans := map[string][]olmv1Alpha.InstallPlan{} // Helper: maps a namespace name to all its installplans.
 	operators := []Operator{}
@@ -569,6 +571,7 @@ func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []ol
 			op.SubscriptionName = subscription.Name
 			op.Package = subscription.Spec.Package
 			op.Org = subscription.Spec.CatalogSource
+			op.Channel = subscription.Spec.Channel
 			break
 		}
 
