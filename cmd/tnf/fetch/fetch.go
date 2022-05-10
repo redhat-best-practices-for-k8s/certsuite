@@ -166,7 +166,7 @@ func getOperatorCatalogPage(page, size uint) {
 		log.Error("can't get current working dir", err)
 		return
 	}
-	url := fmt.Sprintf("%spage=%d%s", operatorcatalogURL, page, filterCertifiedOperators)
+	url := fmt.Sprintf("%spage=%d&page_size=%d%s", operatorcatalogURL, page, size, filterCertifiedOperators)
 	body := getHTTPBody(url)
 	filename := fmt.Sprintf(operatorsRelativePath+"/"+operatorFileFormat, path, page, size)
 
