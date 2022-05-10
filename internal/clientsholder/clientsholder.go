@@ -132,10 +132,6 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("can't instantiate ocClient: %s", err)
 	}
-	clientsHolder.RbacClient, err = rbac.NewForConfig(clientsHolder.RestConfig)
-	if err != nil {
-		return nil, fmt.Errorf("can't instantiate ocClient: %s", err)
-	}
 	clientsHolder.MachineCfg, err = ocpMachine.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("can't instantiate MachineCfg client: %s", err)

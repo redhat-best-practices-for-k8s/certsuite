@@ -60,7 +60,7 @@ var (
 	// TestIdToClaimId converts the testcase short ID to the claim identifier
 	TestIDToClaimID = map[string]claim.Identifier{}
 
-	// TestPodDeleteIdentifier tests for non compliant security context capabilities
+	// TestPodDeleteIdentifier tests for delete pod test
 	TestPodDeleteIdentifier = claim.Identifier{
 		Url:     formTestURL(common.ChaosTesting, "pod-delete"),
 		Version: versionOne,
@@ -368,7 +368,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	TestPodDeleteIdentifier: {
 		Identifier:  TestPodDeleteIdentifier,
 		Type:        normativeResult,
-		Remediation: `Change the pod and containers "runAsUser" uid to something other than root(0)`,
+		Remediation: `Make sure that the pods recreated successfully`,
 		Description: formDescription(TestPodDeleteIdentifier,
 			`Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0)`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
