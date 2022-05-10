@@ -6,7 +6,7 @@ on:
     - cron: "0 0 * * *"
 jobs:
   update-certification:
-    name: Run Smoke Tests
+    name: Update offline certified targets DB
     runs-on: ubuntu-20.04
     env:
       SHELL: /bin/bash        
@@ -23,7 +23,7 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.sha }}
+          ref: main
 
       - name: Install ginkgo
         run: go install github.com/onsi/ginkgo/v2/ginkgo@v2.1.4
