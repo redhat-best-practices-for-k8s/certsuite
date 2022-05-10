@@ -370,7 +370,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Type:        normativeResult,
 		Remediation: `Make sure that the pods recreated successfully`,
 		Description: formDescription(TestPodDeleteIdentifier,
-			`Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0)`),
+			`Pod delete test that is deleting the pods , (recreate them)`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
 	TestSecConNonRootUserIdentifier: {

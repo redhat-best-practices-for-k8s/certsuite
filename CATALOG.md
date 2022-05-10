@@ -164,7 +164,7 @@ Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/site
 Property|Description
 ---|---
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/chaostesting/pod-delete Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0)
+Description|http://test-network-function.com/testcases/chaostesting/pod-delete Pod delete test that is deleting the pods , (recreate them)
 Result Type|normative
 Suggested Remediation|Make sure that the pods recreated successfully
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
