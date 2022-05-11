@@ -68,33 +68,33 @@ func GetLabelDeploymetValue(env *provider.TestEnvironment, labelsMap map[string]
 	return "", errors.New("didnt find a key and value that matching the deployment")
 }
 
-func ApplyAndCreateFiles(appLabel, appKind, namespace string) error {
-	fileDecoder, err := applyTemplate(appLabel, appKind, namespace, experimentFile)
+func ApplyAndCreatePodDeleteRecources(appLabel, appKind, namespace string) error {
+	// create the chaos experiment recource
+	if err := ApplyAndCreateFile(appLabel, appKind, namespace, experimentFile); err != nil {
+		logrus.Errorf("cant create the experiment of the test: %s", err)
+		return err
+	}
+	// create the chaos serviceAccount recource
+	if err := ApplyAndCreateFile(appLabel, appKind, namespace, serviceAccountFile); err != nil {
+		logrus.Errorf("cant create the serviceAccount of the test: %s", err)
+		return err
+	}
+	// create the chaos chaosEngine recource
+	if err := ApplyAndCreateFile(appLabel, appKind, namespace, chaosEngineFile); err != nil {
+		logrus.Errorf("cant create the chaosEngine of the test: %s", err)
+		return err
+	}
+	return nil
+}
+
+func ApplyAndCreateFile(appLabel, appKind, namespace, filename string) error {
+	fileDecoder, err := applyTemplate(appLabel, appKind, namespace, filename)
 	if err != nil {
-		logrus.Errorf("cant create the file of the test: %s", err)
+		logrus.Errorf("cant create the decoderfile of the test: %s", err)
 		return err
 	}
 	if err = createResource(fileDecoder); err != nil {
-		logrus.Errorf("%s error create the chaos experment resources.", err)
-		return err
-	}
-	fileDecoder, err = applyTemplate(appLabel, appKind, namespace, serviceAccountFile)
-	if err != nil {
-		logrus.Errorf("can't create the file of the test: %s", err)
-		return err
-	}
-	if err = createResource(fileDecoder); err != nil {
-		logrus.Errorf("error create the service account: %s .", err)
-		return err
-	}
-	fileDecoder, err = applyTemplate(appLabel, appKind, namespace, chaosEngineFile)
-	if err != nil {
-		logrus.Errorf("can't create the file of the test: %s", err)
-		return err
-	}
-	// create the chaos engine for every deployment in the cluster
-	if err = createResource(fileDecoder); err != nil {
-		logrus.Errorf("%s error create the chaos engine.", err)
+		logrus.Errorf("%s error create the resources for the test.", err)
 		return err
 	}
 	return nil

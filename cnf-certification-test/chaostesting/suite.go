@@ -46,7 +46,7 @@ func testPodDelete(env *provider.TestEnvironment) {
 			logrus.Errorf("didnt find a match label for the deployment %s ", dep.Name)
 			ginkgo.Fail(fmt.Sprintf("There is no label for the deployment%s ", dep.Name))
 		}
-		if err := poddelete.ApplyAndCreateFiles(label, deployment, namespace); err != nil {
+		if err := poddelete.ApplyAndCreatePodDeleteRecources(label, deployment, namespace); err != nil {
 			ginkgo.Fail(fmt.Sprintf("test failed while creating the files %s", err))
 		}
 		if completed := poddelete.WaitForTestFinish(testCaseTimeout); !completed {
