@@ -26,6 +26,7 @@ import (
 func TestIsOperatorCertified(t *testing.T) {
 	name := "zoperator.v0.3.6"
 	ocpversion := "4.6"
+	channel := "alpha"
 	path, _ := os.Getwd()
 	log.Info(path)
 	path, err := os.Getwd()
@@ -33,9 +34,9 @@ func TestIsOperatorCertified(t *testing.T) {
 		log.Println(err)
 	}
 	loadOperatorsCatalog(path + "/../")
-	ans := IsOperatorCertified(name, ocpversion)
+	ans := IsOperatorCertified(name, ocpversion, channel)
 	assert.Equal(t, ans, true)
 
-	ans = IsOperatorCertified("falcon-alpha", ocpversion)
+	ans = IsOperatorCertified("falcon-alpha", ocpversion, channel)
 	assert.Equal(t, ans, false)
 }
