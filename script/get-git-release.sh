@@ -2,4 +2,4 @@
 #set -x
 
 GIT_RELEASE=$(comm -12 all-releases.txt release-tag.txt)
-echo $GIT_RELEASE 
+echo "$GIT_RELEASE"

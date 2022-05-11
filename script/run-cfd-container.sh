@@ -20,8 +20,8 @@ if [ "$TNF_RUN_CFD_TEST" == "true" ]; then
 	# For older verions of docker, dns server may need to be set explicitly, e.g.
 	#
 	# export DNS_ARG=172.0.0.53
-	./run-container.sh -ginkgo.v -ginkgo.skip=${TNF_CFD_SKIP} 
+	./run-container.sh -ginkgo.v -ginkgo.skip="${TNF_CFD_SKIP}" 
 else
 	# removing report if not running, so the final claim won't include stale reports
-	rm -f ${OUTPUT_LOC}/validation_junit.xml
+	rm -f "${OUTPUT_LOC}"/validation_junit.xml
 fi
