@@ -34,6 +34,8 @@ jobs:
         run: ./tnf fetch --operator --container --helm
       - name: create PR
         uses: peter-evans/create-pull-request@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.UPDATE_CERTIFIED_DB_TOKEN }}
         with:
           commit-message: Update certification files
           title: Update certification files
