@@ -47,20 +47,22 @@ type OperatorCatalog struct {
 type OperatorData struct {
 	CsvName    string `json:"csv_name"`
 	OcpVersion string `json:"ocp_version"`
+	Channel    string `json:"channel_name"`
 }
 
 type OperatorOcpVersionMatch struct {
 	ocpVersion      string
 	operatorVersion string
+	channel         string
 }
 
-func buildOperatorKey(op *OperatorData) (operatorName, operatorVersion, ocpVersion string, err error) {
+func buildOperatorKey(op *OperatorData) (operatorName, operatorVersion, ocpVersion, channel string, err error) {
 	if len(strings.Split(op.CsvName, ".")) < CSVNAMELENGTH {
-		return "", "", "", errors.New("non valid operator")
+		return "", "", "", "", errors.New("non valid operator")
 	}
 	operatorName = strings.Split(op.CsvName, ".")[0]
 	operatorVersion = strings.Split(op.CsvName, operatorName+".")[1]
-	return operatorName, operatorVersion, op.OcpVersion, nil
+	return operatorName, operatorVersion, op.OcpVersion, op.Channel, nil
 }
 
 func extractNameVersionFromName(operatorName string) (name, version string) {
@@ -107,8 +109,8 @@ func loadOperatorsCatalog(pathToRoot string) {
 		}
 
 		for i := 0; i < len(fullCatalog.Data); i++ {
-			if opName, opV, ocpV, err := buildOperatorKey(&fullCatalog.Data[i]); err == nil {
-				operatordb[opName] = append(operatordb[opName], OperatorOcpVersionMatch{ocpVersion: ocpV, operatorVersion: opV})
+			if opName, opV, ocpV, channel, err := buildOperatorKey(&fullCatalog.Data[i]); err == nil {
+				operatordb[opName] = append(operatordb[opName], OperatorOcpVersionMatch{ocpVersion: ocpV, operatorVersion: opV, channel: channel})
 			}
 		}
 		f.Close()
@@ -118,13 +120,15 @@ func loadOperatorsCatalog(pathToRoot string) {
 // isOperatorCertified check the presence of operator name in certified operators db
 // the operator name is the csv
 // ocpVersion is Major.Minor OCP version
-func IsOperatorCertified(operatorName, ocpVersion string) bool {
+func IsOperatorCertified(operatorName, ocpVersion, channel string) bool {
 	name, operatorVersion := extractNameVersionFromName(operatorName)
 	if v, ok := operatordb[name]; ok {
 		for _, version := range v {
-			if version.operatorVersion == operatorVersion && (ocpVersion == "" || version.ocpVersion == ocpVersion) {
-				log.Trace("operator ", name, " found in db")
-				return true
+			if version.operatorVersion == operatorVersion && version.channel == channel {
+				if ocpVersion == "" || version.ocpVersion == ocpVersion {
+					log.Trace("operator ", name, " found in db")
+					return true
+				}
 			}
 		}
 		log.Info("operator found on db, but not this particular version")

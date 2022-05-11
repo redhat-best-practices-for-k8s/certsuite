@@ -3,11 +3,11 @@ name: Update Certification Files
 on:
   # Triggers the workflow every day
   schedule:
-    - cron: "* * * 1 *"
+    - cron: "0 0 * * *"
 jobs:
   update-certification:
-    name: Run Smoke Tests
-    runs-on: ubuntu-20.04
+    name: Update offline certified targets DB
+    runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash        
 
@@ -23,7 +23,7 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.sha }}
+          ref: main
 
       - name: Install ginkgo
         run: go install github.com/onsi/ginkgo/v2/ginkgo@v2.1.4
@@ -34,6 +34,8 @@ jobs:
         run: ./tnf fetch --operator --container --helm
       - name: create PR
         uses: peter-evans/create-pull-request@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.UPDATE_CERTIFIED_DB_TOKEN }}
         with:
           commit-message: Update certification files
           title: Update certification files
