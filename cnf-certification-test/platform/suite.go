@@ -185,16 +185,24 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 		moduleTaintsFound := false
 		otherTaintsFound := false
 
+		otherTaints := []string{}
 		for _, it := range individualTaints {
 			if strings.Contains(it, `module was loaded`) {
 				moduleTaintsFound = true
 			} else {
 				otherTaintsFound = true
+				otherTaints = append(otherTaints, it)
 			}
 		}
 
 		if otherTaintsFound {
 			nodeTaintsAccepted = false
+
+			// Surface more information about tainted kernel failures that have nothing to do with modules.
+			tnf.ClaimFilePrintf("Please note that taints other than 'module was loaded' were found.")
+			for _, ot := range otherTaints {
+				tnf.ClaimFilePrintf("Taint causing failure: %s", ot)
+			}
 		} else if moduleTaintsFound {
 			// Retrieve the modules from the node (via the debug pod)
 			modules := testerFuncs.GetModulesFromNode(ocpContext)
