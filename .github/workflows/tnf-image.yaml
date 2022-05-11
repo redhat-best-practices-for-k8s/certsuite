@@ -50,7 +50,7 @@ jobs:
     steps:
 
       - name: Checkout generic working branch of the current version
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ env.CURRENT_VERSION_GENERIC_BRANCH }}
           fetch-depth: '0'
@@ -106,7 +106,7 @@ jobs:
         run: echo "Tag '$PARTNER_VERSION' does not exist on remote $PARTNER_SRC_URL"
 
       - name: Checkout the version tag
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ env.TNF_VERSION }}
 
@@ -125,7 +125,7 @@ jobs:
       # Create a minikube cluster for testing.
 
       - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
