@@ -40,7 +40,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.sha }}
 
@@ -61,7 +61,7 @@ jobs:
   yamllint:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: yaml-lint
         uses: ibiqlik/action-yamllint@v3
         with:
@@ -91,7 +91,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.sha }}
 
@@ -136,7 +136,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.sha }}
 
@@ -152,7 +152,7 @@ jobs:
       # Create a minikube cluster for testing.
 
       - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner

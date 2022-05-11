@@ -18,7 +18,7 @@ jobs:
           go-version: 1.18.1
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Rebuild mocks
         run: go install github.com/golang/mock/mockgen@v1.6.0 && make mocks
