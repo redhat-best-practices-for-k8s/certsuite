@@ -49,15 +49,17 @@ func testPodDelete(env *provider.TestEnvironment) {
 		if err := poddelete.ApplyAndCreatePodDeleteRecources(label, deployment, namespace); err != nil {
 			ginkgo.Fail(fmt.Sprintf("test failed while creating the resources err:%s", err))
 		}
-		defer poddelete.DeleteAllResources(namespace)
 		if completed := poddelete.WaitForTestFinish(testCaseTimeout); !completed {
-			logrus.Debugf("deployment %s timed-out the litmus test", provider.DeploymentToString(dep))
+			poddelete.DeleteAllResources(namespace)
+			logrus.Errorf("deployment %s timed-out the litmus test", provider.DeploymentToString(dep))
 			ginkgo.Fail(fmt.Sprintf("deployment %s timed-out the litmus test", provider.DeploymentToString(dep)))
 		}
 		if result := poddelete.IsChaosResultVerdictPass(); !result {
 			// delete the chaos engin crd
 			poddelete.DeleteAllResources(namespace)
+			logrus.Errorf("deployment %s failed the litmus test", provider.DeploymentToString(dep))
 			ginkgo.Fail(fmt.Sprintf("deployment %s failed the litmus test", provider.DeploymentToString(dep)))
 		}
+		poddelete.DeleteAllResources(namespace)
 	}
 }
