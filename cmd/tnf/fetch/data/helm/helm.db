@@ -84,6 +84,33 @@ entries:
     urls:
     - https://github.com/openshift-helm-charts/charts/releases/download/fiware-orion-ld-1.0.2/fiware-orion-ld-1.0.2.tgz
     version: 1.0.2
+  - annotations:
+      charts.openshift.io/digest: sha256:4fbe5370fcc2d45adf73d69320f2efb193c2946faf359b6436ac27dc06c8a359
+      charts.openshift.io/lastCertifiedTimestamp: '2022-05-05T12:16:10.065501+00:00'
+      charts.openshift.io/provider: FIWARE FOUNDATION E V
+      charts.openshift.io/providerType: partner
+      charts.openshift.io/submissionTimestamp: '2022-05-05T12:19:58.153684+00:00'
+      charts.openshift.io/supportedOpenShiftVersions: '>=4.6'
+      charts.openshift.io/testedOpenShiftVersion: '4.8'
+    apiVersion: v2
+    appVersion: 1.0.1
+    description: A Helm chart for running the fiware orion-ld context broker on kubernetes.
+    digest: 810e43a784a63a1cbaad8129c7772202961077528a6b1fd9fd5952dfd32dd75f
+    home: https://github.com/FIWARE/context.Orion-LD
+    icon: https://fiware.github.io/catalogue/img/fiware.png
+    keywords:
+    - fiware
+    - orion-ld
+    kubeVersion: '>= 1.19'
+    maintainers:
+    - email: stefan.wiedemann@fiware.org
+      name: wistefan
+    name: orion-ld
+    sources:
+    - https://github.com/FIWARE/context.Orion-LD
+    urls:
+    - https://github.com/openshift-helm-charts/charts/releases/download/fiware-orion-ld-1.0.3/fiware-orion-ld-1.0.3.tgz
+    version: 1.0.3
   fortanix-dsm-secrets-injector-chart:
   - annotations:
       charts.openshift.io/certifiedOpenShiftVersions: '4.7'
@@ -1443,6 +1470,85 @@ entries:
     urls:
     - https://github.com/openshift-helm-charts/charts/releases/download/nirmata-kyverno-v2.1.2/nirmata-kyverno-v2.1.2.tgz
     version: v2.1.2
+  redhat-cryostat:
+  - annotations:
+      charts.openshift.io/digest: sha256:16c798a6a148c3d5d7a95a1c25fa727f56cd065a2f412d0991781e5939472b64
+      charts.openshift.io/lastCertifiedTimestamp: '2022-05-10T16:51:05.300078+00:00'
+      charts.openshift.io/provider: Red Hat
+      charts.openshift.io/providerType: community
+      charts.openshift.io/submissionTimestamp: '2022-05-10T16:51:39.143839+00:00'
+      charts.openshift.io/supportedOpenShiftVersions: '>=4.6'
+      charts.openshift.io/testedOpenShiftVersion: '4.10'
+    apiVersion: v2
+    appVersion: 2.1.0.redhat
+    description: Securely manage JFR recordings for your containerized Java workloads
+    digest: 884829335c8482c5dd9a193e1715277e08286c4ab2d4784001ad1d64b73a808f
+    home: https://cryostat.io
+    icon: https://raw.githubusercontent.com/cryostatio/cryostat-helm/main/docs/images/cryostat-icon.svg
+    keywords:
+    - flightrecorder
+    - java
+    - jdk
+    - jfr
+    - jmc
+    - missioncontrol
+    - monitoring
+    - profiling
+    - diagnostic
+    kubeVersion: '>=1.19.0'
+    maintainers:
+    - name: The Cryostat Community
+      url: https://groups.google.com/g/cryostat-development
+    name: cryostat
+    sources:
+    - https://github.com/cryostatio/cryostat
+    - https://github.com/cryostatio/cryostat-core
+    - https://github.com/cryostatio/cryostat-web
+    - https://github.com/cryostatio/jfr-datasource
+    - https://github.com/cryostatio/cryostat-grafana-dashboard
+    type: application
+    urls:
+    - https://github.com/openshift-helm-charts/charts/releases/download/redhat-cryostat-0.1.0/redhat-cryostat-0.1.0.tgz
+    version: 0.1.0
+  - annotations:
+      charts.openshift.io/digest: sha256:c592cc60f4eedd78eccfa3d6f1799cb01b008be804ffe889938ecd7924473374
+      charts.openshift.io/lastCertifiedTimestamp: '2022-05-10T18:51:01.709906+00:00'
+      charts.openshift.io/provider: Red Hat
+      charts.openshift.io/providerType: community
+      charts.openshift.io/submissionTimestamp: '2022-05-10T18:51:35.217687+00:00'
+      charts.openshift.io/supportedOpenShiftVersions: '>=4.6'
+      charts.openshift.io/testedOpenShiftVersion: '4.10'
+    apiVersion: v2
+    appVersion: 2.1.0.redhat
+    description: Securely manage JFR recordings for your containerized Java workloads
+    digest: 2540697e64e362a3a752103268c9ea9551e350657ba970a47c5a6d34e47f8850
+    home: https://cryostat.io
+    icon: https://raw.githubusercontent.com/cryostatio/cryostat-helm/main/docs/images/cryostat-icon.svg
+    keywords:
+    - flightrecorder
+    - java
+    - jdk
+    - jfr
+    - jmc
+    - missioncontrol
+    - monitoring
+    - profiling
+    - diagnostic
+    kubeVersion: '>=1.19.0'
+    maintainers:
+    - name: The Cryostat Community
+      url: https://groups.google.com/g/cryostat-development
+    name: cryostat
+    sources:
+    - https://github.com/cryostatio/cryostat
+    - https://github.com/cryostatio/cryostat-core
+    - https://github.com/cryostatio/cryostat-web
+    - https://github.com/cryostatio/jfr-datasource
+    - https://github.com/cryostatio/cryostat-grafana-dashboard
+    type: application
+    urls:
+    - https://github.com/openshift-helm-charts/charts/releases/download/redhat-cryostat-0.1.1/redhat-cryostat-0.1.1.tgz
+    version: 0.1.1
   redhat-data-grid:
   - annotations:
       charts.openshift.io/digest: sha256:4a60f63bec9744cc6b6261ae1b81670a96c3e9d95c1bb259894b4b2220a42549
@@ -1739,6 +1845,25 @@ entries:
     urls:
     - https://github.com/openshift-helm-charts/charts/releases/download/redhat-quarkus-0.0.3/redhat-quarkus-0.0.3.tgz
     version: 0.0.3
+  redhat-redis-sed:
+  - annotations:
+      charts.openshift.io/digest: sha256:639de96ec12341cab72ca4aa1f539dcf475e3a5c82c0871e3798418004fd36c8
+      charts.openshift.io/lastCertifiedTimestamp: '2022-05-05T07:17:43.075639+00:00'
+      charts.openshift.io/provider: Red Hat
+      charts.openshift.io/providerType: redhat
+      charts.openshift.io/submissionTimestamp: '2022-05-05T08:07:34.175614+00:00'
+      charts.openshift.io/supportedOpenShiftVersions: '>=4.7'
+      charts.openshift.io/testedOpenShiftVersion: '4.9'
+    apiVersion: v2
+    appVersion: 1.0.1
+    description: A Helm chart for Redis Service Endpoint Definition (SED)
+    digest: 3115a6b272e34d7afe44bf2d25dc8eef34b10df9042fa858f597be3306ab1a25
+    kubeVersion: '>=1.20.0'
+    name: redis-sed
+    type: application
+    urls:
+    - https://github.com/openshift-helm-charts/charts/releases/download/redhat-redis-sed-1.0.1/redhat-redis-sed-1.0.1.tgz
+    version: 1.0.1
   redhat-spring-boot-rest-http:
   - annotations:
       charts.openshift.io/digest: sha256:5d312abe9fb8e5a3255036e0b9f4f53f480fc2c12ed0c0f36f03c72ab9af9038
@@ -1863,6 +1988,34 @@ entries:
     urls:
     - https://github.com/openshift-helm-charts/charts/releases/download/redhat-wildfly-1.5.4/redhat-wildfly-1.5.4.tgz
     version: 1.5.4
+  - annotations:
+      charts.openshift.io/digest: sha256:d5ae388e5c1f9e38d4aba75d35fa174a67b5a67037fbb7475bceabae53d96b87
+      charts.openshift.io/lastCertifiedTimestamp: '2022-05-02T16:50:21.509463+00:00'
+      charts.openshift.io/provider: WildFly
+      charts.openshift.io/providerType: community
+      charts.openshift.io/submissionTimestamp: '2022-05-02T16:50:52.751967+00:00'
+      charts.openshift.io/supportedOpenShiftVersions: '>=4.6'
+      charts.openshift.io/testedOpenShiftVersion: N/A
+    apiVersion: v2
+    appVersion: '26.1'
+    dependencies:
+    - name: wildfly-common
+      repository: file://../wildfly-common
+      version: 1.4.1
+    description: Build and Deploy WildFly applications on OpenShift
+    digest: d34c69f486dcdf35d6863180326dd89ccb89a31c3c7080188930c79769d24a6b
+    home: https://wildfly.org
+    icon: https://design.jboss.org/wildfly/logo/final/wildfly_logomark_256px.png
+    kubeVersion: '>= 1.19.0'
+    maintainers:
+    - email: wildfly-dev@lists.jboss.org
+      name: WildFly
+      url: https://wildfly.org
+    name: wildfly
+    type: application
+    urls:
+    - https://github.com/openshift-helm-charts/charts/releases/download/redhat-wildfly-1.5.5/redhat-wildfly-1.5.5.tgz
+    version: 1.5.5
   solace-pubsubplus-openshift:
   - annotations:
       charts.openshift.io/digest: sha256:088b96c259efc2e3338a491a23904533fe94c49334c3c305b54a44987bd3eb4d
@@ -2490,4 +2643,96 @@ entries:
     urls:
     - https://github.com/openshift-helm-charts/charts/releases/download/wavefronthq-wavefront-1.10.2/wavefronthq-wavefront-1.10.2.tgz
     version: 1.10.2
-generated: '2022-04-21T09:43:38.109702+00:00'
+  - annotations:
+      charts.openshift.io/digest: sha256:1c34d13550dd3d1679c8e8b7e478505447bdaf9a346b54301adc7975864be654
+      charts.openshift.io/lastCertifiedTimestamp: '2022-05-04T17:05:50.960603+00:00'
+      charts.openshift.io/provider: VMware
+      charts.openshift.io/providerType: partner
+      charts.openshift.io/submissionTimestamp: '2022-05-04T17:44:35.586961+00:00'
+      charts.openshift.io/supportedOpenShiftVersions: '>=4.6'
+      charts.openshift.io/testedOpenShiftVersion: '4.9'
+    apiVersion: v2
+    appVersion: 1.11.0
+    dependencies:
+    - condition: kubeStateMetrics.enabled
+      name: kube-state-metrics
+      repository: https://prometheus-community.github.io/helm-charts
+      version: ^4.7.0
+    description: Wavefront Collector for Kubernetes
+    digest: 5b4243216b9a3192bf65fc3a9ef2cb9c998b52ed2a3083bd80c2bab638a9c1f3
+    home: https://www.wavefront.com
+    keywords:
+    - metric
+    - monitoring
+    - observability
+    - alerting
+    kubeVersion: '>= 1.19'
+    maintainers:
+    - email: akodali@vmware.com
+      name: akodali18
+    - email: jcornish@vmware.com
+      name: johncornish
+    - email: jgee@vmware.com
+      name: josephgee
+    - email: shaoh@vmware.com
+      name: helen-shao
+    - email: matthewco@vmware.com
+      name: mceldeen
+    - email: mamichael@vmware.com
+      name: mmichael
+    - email: pselvaganesa@vmware.com
+      name: priyaselvaganesan
+    name: wavefront
+    sources:
+    - https://github.com/wavefrontHQ/wavefront-collector-for-kubernetes
+    - https://github.com/wavefrontHQ/wavefront-proxy
+    urls:
+    - https://github.com/openshift-helm-charts/charts/releases/download/wavefronthq-wavefront-1.11.0/wavefronthq-wavefront-1.11.0.tgz
+    version: 1.11.0
+  - annotations:
+      charts.openshift.io/digest: sha256:7b05498c4b84cdb7591e6f10e4120ba4a370f546656aadd8619a5b97dad33bb8
+      charts.openshift.io/lastCertifiedTimestamp: '2022-05-05T17:29:12.435116+00:00'
+      charts.openshift.io/provider: VMWare
+      charts.openshift.io/providerType: partner
+      charts.openshift.io/submissionTimestamp: '2022-05-05T17:32:00.475147+00:00'
+      charts.openshift.io/supportedOpenShiftVersions: '>=4.6'
+      charts.openshift.io/testedOpenShiftVersion: '4.9'
+    apiVersion: v2
+    appVersion: 1.11.0
+    dependencies:
+    - condition: kubeStateMetrics.enabled
+      name: kube-state-metrics
+      repository: https://prometheus-community.github.io/helm-charts
+      version: ^4.7.0
+    description: Wavefront Collector for Kubernetes
+    digest: fb5ff2fef7f5bc69ebaa934c7ad8dba0a955f504bf659616e12ca4ab2ad2c73f
+    home: https://www.wavefront.com
+    keywords:
+    - metric
+    - monitoring
+    - observability
+    - alerting
+    kubeVersion: '>= 1.19'
+    maintainers:
+    - email: akodali@vmware.com
+      name: akodali18
+    - email: jcornish@vmware.com
+      name: johncornish
+    - email: jgee@vmware.com
+      name: josephgee
+    - email: shaoh@vmware.com
+      name: helen-shao
+    - email: matthewco@vmware.com
+      name: mceldeen
+    - email: mamichael@vmware.com
+      name: mmichael
+    - email: pselvaganesa@vmware.com
+      name: priyaselvaganesan
+    name: wavefront
+    sources:
+    - https://github.com/wavefrontHQ/wavefront-collector-for-kubernetes
+    - https://github.com/wavefrontHQ/wavefront-proxy
+    urls:
+    - https://github.com/openshift-helm-charts/charts/releases/download/wavefronthq-wavefront-1.11.1/wavefronthq-wavefront-1.11.1.tgz
+    version: 1.11.1
+generated: '2022-05-10T18:51:35.217687+00:00'
