@@ -129,7 +129,6 @@ func DeleteAllResources(namespace string) {
 	if err := oc.DynamicClient.Resource(gvr).Namespace(namespace).Delete(context.TODO(), chaosresultName, deleteOptions); err != nil {
 		logrus.Errorf("error while removing the chaos results resources %e", err)
 	}
-
 }
 
 func applyTemplate(appLabel, appKind, namespace, filename string) (*yamlutil.YAMLOrJSONDecoder, error) {
