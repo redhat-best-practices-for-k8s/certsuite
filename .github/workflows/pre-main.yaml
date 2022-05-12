@@ -34,7 +34,7 @@ jobs:
       - name: Set up Go 1.18
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18.1
+          go-version: 1.18.2
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -97,7 +97,7 @@ jobs:
       - name: Set up Go 1.18
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18.1
+          go-version: 1.18.2
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -139,10 +139,10 @@ jobs:
       KUBECONFIG: '/home/runner/.kube/config'
 
     steps:
-      - name: Set up Go 1.18.1
+      - name: Set up Go 1.18.2
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18.1
+          go-version: 1.18.2
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
