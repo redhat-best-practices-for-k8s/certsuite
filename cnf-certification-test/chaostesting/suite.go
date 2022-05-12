@@ -43,23 +43,21 @@ func testPodDelete(env *provider.TestEnvironment) {
 		var label string
 		var err error
 		if label, err = poddelete.GetLabelDeploymetValue(env, dep.Spec.Template.Labels); err != nil {
-			logrus.Errorf("didnt find a match label for the deployment %s ", dep.Name)
-			ginkgo.Fail(fmt.Sprintf("There is no label for the deployment%s ", dep.Name))
+			logrus.Errorf("didn't find a match label for the deployment %s ", provider.DeploymentToString(dep))
+			ginkgo.Fail(fmt.Sprintf("There is no label for the deployment %s ", provider.DeploymentToString(dep)))
 		}
 		if err := poddelete.ApplyAndCreatePodDeleteRecources(label, deployment, namespace); err != nil {
-			ginkgo.Fail(fmt.Sprintf("test failed while creating the files %s", err))
+			ginkgo.Fail(fmt.Sprintf("test failed while creating the resources err:%s", err))
 		}
+		defer poddelete.DeleteAllResources(namespace)
 		if completed := poddelete.WaitForTestFinish(testCaseTimeout); !completed {
-			poddelete.DeleteAllResources(namespace)
-			logrus.Debug("test failed to be completed")
-			ginkgo.Fail("test failed to be completed")
+			logrus.Debugf("deployment %s timed-out the litmus test", provider.DeploymentToString(dep))
+			ginkgo.Fail(fmt.Sprintf("deployment %s timed-out the litmus test", provider.DeploymentToString(dep)))
 		}
 		if result := poddelete.IsChaosResultVerdictPass(); !result {
 			// delete the chaos engin crd
 			poddelete.DeleteAllResources(namespace)
-			ginkgo.Fail("test completed but it failed with reason ")
+			ginkgo.Fail(fmt.Sprintf("deployment %s failed the litmus test", provider.DeploymentToString(dep)))
 		}
-
-		poddelete.DeleteAllResources(namespace)
 	}
 }

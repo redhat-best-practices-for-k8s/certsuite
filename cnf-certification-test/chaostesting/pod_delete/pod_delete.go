@@ -50,6 +50,7 @@ const (
 	chaosTestName      = "pod-delete" // test name
 	completedResult    = "completed"
 	pass               = "Pass"
+	chaosresultName    = "engine-test-pod-delete"
 )
 
 // a function to search the right label for the deployment that we wanr to test pod delete on it
@@ -124,6 +125,11 @@ func DeleteAllResources(namespace string) {
 	if err := oc.DynamicClient.Resource(gvr).Namespace(namespace).Delete(context.TODO(), chaosTestName, deleteOptions); err != nil {
 		logrus.Errorf("error while removing the chaos engine resources %e", err)
 	}
+	gvr = schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosresults"}
+	if err := oc.DynamicClient.Resource(gvr).Namespace(namespace).Delete(context.TODO(), chaosresultName, deleteOptions); err != nil {
+		logrus.Errorf("error while removing the chaos results resources %e", err)
+	}
+
 }
 
 func applyTemplate(appLabel, appKind, namespace, filename string) (*yamlutil.YAMLOrJSONDecoder, error) {
@@ -163,18 +169,23 @@ func IsChaosResultVerdictPass() bool {
 	crs, err := oc.DynamicClient.Resource(gvr).List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		logrus.Errorf("error getting : %v\n", err)
+		return false
 	}
-	for _, cr := range crs.Items {
-		failResult := cr.Object["status"].(map[string]interface{})["experimentStatus"].(map[string]interface{})["failStep"]
-		verdictValue := cr.Object["status"].(map[string]interface{})["experimentStatus"].(map[string]interface{})["verdict"]
-		expKind := cr.Object["spec"].(map[string]interface{})["experiment"]
-		if expKind == chaosTestName {
-			if verdictValue == pass {
-				return true
-			}
-			logrus.Debugf("test completed but it failed with reason %s", failResult.(string))
-			return false
+	if len(crs.Items) > 1 {
+		logrus.Errorf("u have %d more than one chaosresults resource that is wrong bahavior \n", len(crs.Items))
+		return false
+	}
+	cr := crs.Items[0]
+	failResult := cr.Object["status"].(map[string]interface{})["experimentStatus"].(map[string]interface{})["failStep"]
+	verdictValue := cr.Object["status"].(map[string]interface{})["experimentStatus"].(map[string]interface{})["verdict"]
+	expKind := cr.Object["spec"].(map[string]interface{})["experiment"]
+	if expKind == chaosTestName {
+		if verdictValue == pass {
+			return true
 		}
+		logrus.Debugf("test completed but it failed with reason %s", failResult.(string))
+		tnf.ClaimFilePrintf("test completed but it failed with reason %s", failResult.(string))
+		return false
 	}
 	return false
 }
@@ -185,23 +196,27 @@ func waitForResult() bool {
 	crs, err := oc.DynamicClient.Resource(gvr).List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		logrus.Errorf("error getting : %v\n", err)
+		return false
 	}
-	for _, cr := range crs.Items {
-		if status := cr.Object["status"]; status != nil {
-			if exp := status.(map[string]interface{})["experiments"]; exp != nil {
-				typ := exp.([]interface{})
-				status := cr.Object["status"].(map[string]interface{})["engineStatus"]
-				if typ[0].(map[string]interface{})["name"] == chaosTestName {
-					return status == completedResult
-				}
+	if len(crs.Items) > 1 {
+		logrus.Errorf("u have %d more than one chaosenging resource that is wrong bahavior \n", len(crs.Items))
+		return false
+	}
+	cr := crs.Items[0]
+	if status := cr.Object["status"]; status != nil {
+		if exp := status.(map[string]interface{})["experiments"]; exp != nil {
+			typ := exp.([]interface{})
+			status := cr.Object["status"].(map[string]interface{})["engineStatus"]
+			if typ[0].(map[string]interface{})["name"] == chaosTestName {
+				return status == completedResult
 			}
 		}
 	}
 	return false
 }
 
-// function that giving a decoder yaml and its creating from it all the resorces on it
-// they will be a service account rolbiding etc,,,
+// createResource is a helper function that uses a yaml decoder to create in the cluster
+// all the resources defined in the underlying yaml file.
 //nolint:funlen //
 func createResource(decoder *yamlutil.YAMLOrJSONDecoder) error {
 	oc := clientsholder.GetClientsHolder()

@@ -368,9 +368,9 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	TestPodDeleteIdentifier: {
 		Identifier:  TestPodDeleteIdentifier,
 		Type:        normativeResult,
-		Remediation: `Make sure that the pods recreated successfully`,
+		Remediation: `Make sure that the pods can be recreated succesfully after deleting them`,
 		Description: formDescription(TestPodDeleteIdentifier,
-			`Pod delete test that is deleting the pods , (recreate them)`),
+			`Using the litmus chaos operator, this test checks that pods are recreated successfully after deleting them.`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
 	TestSecConNonRootUserIdentifier: {

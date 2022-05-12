@@ -164,9 +164,9 @@ Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/site
 Property|Description
 ---|---
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/chaostesting/pod-delete Pod delete test that is deleting the pods , (recreate them)
+Description|http://test-network-function.com/testcases/chaostesting/pod-delete Using the litmus chaos operator, this test checks that pods are recreated successfully after deleting them.
 Result Type|normative
-Suggested Remediation|Make sure that the pods recreated successfully
+Suggested Remediation|Make sure that the pods can be recreated succesfully after deleting them
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
 ### http://test-network-function.com/testcases/lifecycle/container-shutdown
 
