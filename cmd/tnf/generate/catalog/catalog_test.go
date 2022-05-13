@@ -82,7 +82,3 @@ func TestEmitTextFromFile(t *testing.T) {
 func TestRunGenerateMarkdownCmd(t *testing.T) {
 	assert.NotNil(t, runGenerateMarkdownCmd(nil, nil))
 }
-
-func TestRunGenerateJSONCmd(t *testing.T) {
-	assert.Nil(t, runGenerateJSONCmd(nil, nil))
-}

@@ -17,7 +17,6 @@
 package catalog
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"path"
@@ -28,7 +27,6 @@ import (
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf/identifier"
 )
 
 const (
@@ -40,10 +38,6 @@ const (
 
 	// tccFilename is the name of the file that contains the test case catalog section introductory text for CATALOG.md.
 	tccFilename = "TEST_CASE_CATALOG.md"
-
-	// tccbbFilename is the name of the file that contains the test case catalog building blocks section introductory
-	// text for CATALOG.md.
-	tccbbFilename = "TEST_CASE_BUILDING_BLOCKS_CATALOG.md"
 )
 
 var (
@@ -56,21 +50,10 @@ var (
 	// tccFile is the path to the file that contains the test case catalog section introductory text for CATALOG.md.
 	tccFile = path.Join(mdDirectory, tccFilename)
 
-	// tccbbFile is the path to the file that contains the test case catalog building blocks section introductory text
-	// for CATALOG.md
-	tccbbFile = path.Join(mdDirectory, tccbbFilename)
-
 	// generateCmd is the root of the "catalog generate" CLI program.
 	generateCmd = &cobra.Command{
 		Use:   "catalog",
 		Short: "Generates the test catalog",
-	}
-
-	// jsonGenerateCmd is used to generate a JSON formatted catalog to stdout.
-	jsonGenerateCmd = &cobra.Command{
-		Use:   "json",
-		Short: "Generates the test catalog in JSON format.",
-		RunE:  runGenerateJSONCmd,
 	}
 
 	// markdownGenerateCmd is used to generate a markdown formatted catalog to stdout.
@@ -224,37 +207,6 @@ func outputTestCases() {
 	fmt.Println()
 }
 
-// outputTestCaseBuildingBlocks outputs the Markdown representation for the test case building blocks from the catalog
-// to stdout.
-func outputTestCaseBuildingBlocks() {
-	// Building a separate data structure to store the key order for the map
-	keys := make([]string, 0, len(identifier.Catalog))
-	for k := range identifier.Catalog {
-		keys = append(keys, k)
-	}
-
-	// Sorting the map by identifier URL
-	sort.Strings(keys)
-
-	// Iterating the map by sorted identifier URL
-	for _, k := range keys {
-		testName := identifier.GetShortNameFromIdentifier(identifier.Catalog[k].Identifier)
-		fmt.Fprintf(os.Stdout, "### %s", testName)
-		fmt.Println()
-		fmt.Println("Property|Description")
-		fmt.Println("---|---")
-		fmt.Fprintf(os.Stdout, "Test Name|%s\n", testName)
-		fmt.Fprintf(os.Stdout, "Unique ID|%s\n", identifier.Catalog[k].Identifier.URL)
-		fmt.Fprintf(os.Stdout, "Version|%s\n", identifier.Catalog[k].Identifier.SemanticVersion)
-		fmt.Fprintf(os.Stdout, "Description|%s\n", identifier.Catalog[k].Description)
-		fmt.Fprintf(os.Stdout, "Result Type|%s\n", identifier.Catalog[k].Type)
-		fmt.Fprintf(os.Stdout, "Intrusive|%t\n", identifier.Catalog[k].IntrusionSettings.ModifiesSystem)
-		fmt.Fprintf(os.Stdout, "Modifications Persist After Test|%t\n", identifier.Catalog[k].IntrusionSettings.ModificationIsPersistent)
-		fmt.Fprintf(os.Stdout, "Runtime Binaries Required|%s\n", cmdJoin(identifier.Catalog[k].BinaryDependencies, ", "))
-		fmt.Println()
-	}
-}
-
 // runGenerateMarkdownCmd generates a markdown test catalog.
 func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error {
 	// static introductory generation
@@ -268,28 +220,11 @@ func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error {
 	// process the test cases
 	outputTestCases()
 
-	// static generation of test case building blocks section introduction.
-	if err := emitTextFromFile(tccbbFile); err != nil {
-		return err
-	}
-
-	// process the test case building blocks
-	outputTestCaseBuildingBlocks()
-	return nil
-}
-
-// runGenerateJSONCmd generates a JSON test catalog.
-func runGenerateJSONCmd(_ *cobra.Command, _ []string) error {
-	contents, err := json.MarshalIndent(identifier.Catalog, "", "  ")
-	if err != nil {
-		return err
-	}
-	fmt.Print(string(contents))
 	return nil
 }
 
 // Execute executes the "catalog" CLI.
 func NewCommand() *cobra.Command {
-	generateCmd.AddCommand(jsonGenerateCmd, markdownGenerateCmd)
+	generateCmd.AddCommand(markdownGenerateCmd)
 	return generateCmd
 }
