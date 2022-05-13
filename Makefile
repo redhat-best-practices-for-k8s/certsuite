@@ -50,6 +50,9 @@ GIT_COMMIT=$(shell script/create-version-files.sh)
 GIT_RELEASE=$(shell script/get-git-release.sh)
 GIT_PREVIOUS_RELEASE=$(shell script/get-git-previous-release.sh)
 GOLANGCI_VERSION=v1.45.2
+LINKER_TNF_RELEASE_FLAGS=-X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitCommit=${GIT_COMMIT}
+LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitRelease=${GIT_RELEASE}
+LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
 
 # Run the unit tests and build all binaries
 build:
@@ -107,11 +110,11 @@ update-certified-catalog:
 
 # build the CNF test binary
 build-cnf-tests:
-	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "-X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitCommit=${GIT_COMMIT} -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitRelease=${GIT_RELEASE} -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}" ./cnf-certification-test
+	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
 	make build-catalog-md
 
 build-cnf-tests-debug:
-	PATH=${PATH}:${GOBIN} ginkgo build -gcflags "all=-N -l" -ldflags "-X github.com/cnf-certification-test/cnf-certification-test/cnf-certification-test.GitCommit=${GIT_COMMIT} -X github.com/cnf-certification-test/cnf-certification-test/cnf-certification-test.GitRelease=${GIT_RELEASE} -X github.com/cnf-certification-test/cnf-certification-test/cnf-certification-test.GitPreviousRelease=${GIT_PREVIOUS_RELEASE} -extldflags '-z relro -z now'" ./cnf-certification-test
+	PATH=${PATH}:${GOBIN} ginkgo build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
 	make build-catalog-md
 
 # Update source dependencies and fix versions
