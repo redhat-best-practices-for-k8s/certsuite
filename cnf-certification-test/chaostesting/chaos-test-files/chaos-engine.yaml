@@ -7,9 +7,9 @@ spec:
   engineState: "active"
   annotationCheck: "false"
   appinfo:
-    appns: {{APP_NAMESPACE}} 
-    applabel: {{APP_LABEL}}
-    appkind: {{APP_KIND}} 
+    appns: {{.APP_NAMESPACE}} 
+    applabel: {{.APP_LABEL}}
+    appkind: {{.APP_KIND}} 
   chaosServiceAccount: test-sa
   experiments:
     - name: pod-delete

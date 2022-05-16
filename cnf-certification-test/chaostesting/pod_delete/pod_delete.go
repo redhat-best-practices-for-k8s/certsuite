@@ -16,12 +16,13 @@
 package poddelete
 
 import (
+	"bufio"
 	"bytes"
 	"context"
 	"errors"
 	"fmt"
 	"io"
-	"os"
+	"text/template"
 	"time"
 
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
@@ -132,18 +133,27 @@ func DeleteAllResources(namespace string) {
 }
 
 func applyTemplate(appLabel, appKind, namespace, filename string) (*yamlutil.YAMLOrJSONDecoder, error) {
-	input, err := os.ReadFile(filename)
-	if err != nil {
-		logrus.Errorf("error while reading the yaml file : %s ,%s", filename, err)
-		tnf.ClaimFilePrintf("error while reading the yaml file : %s ,%s", filename, err)
-		return nil, err
-	}
-	output := bytes.ReplaceAll(input, []byte("{{APP_NAMESPACE}}"), []byte(namespace))
-	output = bytes.ReplaceAll(output, []byte("{{APP_LABEL}}"), []byte(appLabel))
-	output = bytes.ReplaceAll(output, []byte("{{APP_KIND}}"), []byte(appKind))
+	// variables
+	vars := make(map[string]interface{})
+	vars["APP_NAMESPACE"] = namespace
+	vars["APP_LABEL"] = appLabel
+	vars["APP_KIND"] = appKind
+	output := fillTemplate(filename, vars)
+
 	const oneh = 100
 	fileDecoder := yamlutil.NewYAMLOrJSONDecoder(bytes.NewReader(output), oneh)
 	return fileDecoder, nil
+}
+
+func fillTemplate(file string, values map[string]interface{}) []byte {
+	// parse the template
+	tmpl, _ := template.ParseFiles(file)
+
+	var buffer bytes.Buffer
+	writer := bufio.NewWriter(&buffer)
+	tmpl.Execute(writer, values)
+	writer.Flush() // write to the buffer
+	return buffer.Bytes()
 }
 
 func WaitForTestFinish(timeout time.Duration) bool {
