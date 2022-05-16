@@ -138,22 +138,28 @@ func applyTemplate(appLabel, appKind, namespace, filename string) (*yamlutil.YAM
 	vars["APP_NAMESPACE"] = namespace
 	vars["APP_LABEL"] = appLabel
 	vars["APP_KIND"] = appKind
-	output := fillTemplate(filename, vars)
-
+	output, err := fillTemplate(filename, vars)
+	if err != nil {
+		logrus.Errorf("error while executing the template to the yaml file %e", err)
+		return nil, err
+	}
 	const oneh = 100
 	fileDecoder := yamlutil.NewYAMLOrJSONDecoder(bytes.NewReader(output), oneh)
 	return fileDecoder, nil
 }
 
-func fillTemplate(file string, values map[string]interface{}) []byte {
+func fillTemplate(file string, values map[string]interface{}) ([]byte, error) {
 	// parse the template
 	tmpl, _ := template.ParseFiles(file)
 
 	var buffer bytes.Buffer
 	writer := bufio.NewWriter(&buffer)
-	tmpl.Execute(writer, values)
+	if err := tmpl.Execute(writer, values); err != nil {
+		logrus.Errorf("error while executing the template to the yaml file %e", err)
+		return nil, err
+	}
 	writer.Flush() // write to the buffer
-	return buffer.Bytes()
+	return buffer.Bytes(), nil
 }
 
 func WaitForTestFinish(timeout time.Duration) bool {
