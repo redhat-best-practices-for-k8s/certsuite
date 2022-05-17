@@ -1575,6 +1575,31 @@ entries:
     urls:
     - https://github.com/openshift-helm-charts/charts/releases/download/redhat-data-grid-8.3.0/redhat-data-grid-8.3.0.tgz
     version: 8.3.0
+  - annotations:
+      charts.openshift.io/digest: sha256:42d8e3cb3e8258c927634d90ece3cc800aa70eb3f857c5cf3d5f0abd1933c960
+      charts.openshift.io/lastCertifiedTimestamp: '2022-05-13T07:21:22.483719+00:00'
+      charts.openshift.io/provider: Red Hat
+      charts.openshift.io/providerType: community
+      charts.openshift.io/submissionTimestamp: '2022-05-13T07:22:01.022722+00:00'
+      charts.openshift.io/supportedOpenShiftVersions: N/A
+      charts.openshift.io/testedOpenShiftVersion: '4.10'
+    apiVersion: v2
+    appVersion: '8.3'
+    description: A Helm chart that lets you build and deploy Red Hat Data Grid clusters.
+    digest: 22d9c129fdeb342d06dc71434f802dca8f599e82beaaaca8b3d14ce236b2f708
+    home: https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.3
+    icon: https://access.redhat.com/webassets/avalon/d/red-hat-data-grid/images/rhdg-icon.png
+    maintainers:
+    - name: Red Hat
+      url: https://access.redhat.com/documentation/en-us/red_hat_data_grid/8.3
+    name: data-grid
+    sources:
+    - https://github.com/infinispan/infinispan
+    - https://github.com/infinispan/infinispan-helm-charts
+    type: application
+    urls:
+    - https://github.com/openshift-helm-charts/charts/releases/download/redhat-data-grid-8.3.1/redhat-data-grid-8.3.1.tgz
+    version: 8.3.1
   redhat-dotnet:
   - annotations:
       charts.openshift.io/certifiedOpenShiftVersions: '4.7'
@@ -2214,6 +2239,45 @@ entries:
     urls:
     - https://github.com/openshift-helm-charts/charts/releases/download/solace-pubsubplus-openshift-ha-3.0.0/solace-pubsubplus-openshift-ha-3.0.0.tgz
     version: 3.0.0
+  - annotations:
+      charts.openshift.io/digest: sha256:cc470f47da74ba72916be7237d2afae0838787985bd60ad0e7f8b4463b962e4f
+      charts.openshift.io/lastCertifiedTimestamp: '2022-05-12T16:31:14.529756+00:00'
+      charts.openshift.io/provider: Solace Corporation
+      charts.openshift.io/providerType: partner
+      charts.openshift.io/submissionTimestamp: '2022-05-12T16:34:52.746764+00:00'
+      charts.openshift.io/supportedOpenShiftVersions: '>=4.1'
+      charts.openshift.io/testedOpenShiftVersion: '4.10'
+    apiVersion: v2
+    description: Deploy an HA redundancy group of Solace PubSub+ Event Broker Software
+      on OpenShift
+    digest: 3cd82925efcd7a7543dafe2cb5c83f63e51bb50462ab8b7268a268102c72a8f2
+    home: https://dev.solace.com
+    icon: https://solaceproducts.github.io/pubsubplus-kubernetes-quickstart/images/PubSubPlus.png
+    keywords:
+    - solace
+    - pubsubplus
+    - pubsub+
+    - pubsub
+    - messaging
+    - advanced event broker
+    - event broker
+    - event mesh
+    - event streaming
+    - data streaming
+    - event integration
+    - middleware
+    kubeVersion: '>= 1.10.0-0'
+    maintainers:
+    - name: Solace Community Forum
+      url: https://solace.community/
+    - name: Solace Support
+      url: https://solace.com/support/
+    name: pubsubplus-openshift-ha
+    sources:
+    - https://github.com/SolaceProducts/pubsubplus-kubernetes-quickstart
+    urls:
+    - https://github.com/openshift-helm-charts/charts/releases/download/solace-pubsubplus-openshift-ha-3.1.0/solace-pubsubplus-openshift-ha-3.1.0.tgz
+    version: 3.1.0
   wavefronthq-wavefront:
   - annotations:
       charts.openshift.io/digest: sha256:663b50a03cf0adac0485f8731a1e0c8cb729b216f75ce9e43d1f09ffbe2faa1a
@@ -2813,4 +2877,4 @@ entries:
     urls:
     - https://github.com/openshift-helm-charts/charts/releases/download/wavefronthq-wavefront-1.11.1/wavefronthq-wavefront-1.11.1.tgz
     version: 1.11.1
-generated: '2022-05-12T12:49:22.993288+00:00'
+generated: '2022-05-13T07:22:01.022722+00:00'

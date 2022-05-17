@@ -425,7 +425,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:22:03.924000+00:00",
+      "last_update_date": "2022-05-13T11:42:11.789000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -2438,7 +2438,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:29:35.182000+00:00",
+      "last_update_date": "2022-05-13T11:30:26.905000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -3387,7 +3387,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:09:31.037000+00:00",
+      "last_update_date": "2022-05-13T11:05:44.698000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4392,7 +4392,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:06:30.501000+00:00",
+      "last_update_date": "2022-05-13T11:43:20.702000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -4500,7 +4500,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:30:36.888000+00:00",
+      "last_update_date": "2022-05-13T11:13:09.880000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -4628,7 +4628,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:12:00.975000+00:00",
+      "last_update_date": "2022-05-13T11:17:53.386000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -4678,6 +4678,7 @@
       "_id": "62223771725948e0d3b119c4",
       "alm_examples": [
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDB",
           "metadata": {
             "name": "my-replica-set"
@@ -4696,6 +4697,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDB",
           "metadata": {
             "name": "sample-sharded-cluster"
@@ -4717,6 +4719,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDBMulti",
           "metadata": {
             "name": "multi-replica-set"
@@ -4751,6 +4754,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDBOpsManager",
           "metadata": {
             "name": "ops-manager"
@@ -4774,6 +4778,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDBUser",
           "metadata": {
             "name": "my-replica-set-x509-user"
@@ -4829,7 +4834,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:19:54.720000+00:00",
+      "last_update_date": "2022-05-13T11:28:03.730000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -4867,6 +4872,7 @@
           "name": "mongodb-enterprise-operator"
         }
       ],
+      "replaces": "",
       "skip_range": "<1.13.0",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
@@ -4935,7 +4941,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T01:56:23.861000+00:00",
+      "last_update_date": "2022-05-13T10:51:07.481000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -5063,7 +5069,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T01:59:23.427000+00:00",
+      "last_update_date": "2022-05-13T10:51:33.570000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -5113,6 +5119,7 @@
       "_id": "622237ee1c0e9f0268139da1",
       "alm_examples": [
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDB",
           "metadata": {
             "name": "my-replica-set"
@@ -5131,6 +5138,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDB",
           "metadata": {
             "name": "sample-sharded-cluster"
@@ -5152,6 +5160,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDBMulti",
           "metadata": {
             "name": "multi-replica-set"
@@ -5186,6 +5195,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDBOpsManager",
           "metadata": {
             "name": "ops-manager"
@@ -5209,6 +5219,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDBUser",
           "metadata": {
             "name": "my-replica-set-x509-user"
@@ -5264,7 +5275,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T10:59:31.773000+00:00",
+      "last_update_date": "2022-05-13T10:55:23.778000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -5302,6 +5313,7 @@
           "name": "mongodb-enterprise-operator"
         }
       ],
+      "replaces": "",
       "skip_range": "<1.13.0",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
@@ -5418,7 +5430,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:04:37.803000+00:00",
+      "last_update_date": "2022-05-13T10:52:29.168000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -5616,7 +5628,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:04:46.595000+00:00",
+      "last_update_date": "2022-05-13T10:52:30.750000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -5814,7 +5826,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:29:25.209000+00:00",
+      "last_update_date": "2022-05-13T11:43:20.328000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -5964,7 +5976,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:11:04.935000+00:00",
+      "last_update_date": "2022-05-13T11:10:50.256000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -6100,7 +6112,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:25:48.921000+00:00",
+      "last_update_date": "2022-05-13T11:07:51.734000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -6290,7 +6302,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:23:05.720000+00:00",
+      "last_update_date": "2022-05-13T11:39:54.002000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -6447,7 +6459,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:46:59.578000+00:00",
+      "last_update_date": "2022-05-13T11:17:40.539000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -6645,7 +6657,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:39:58.906000+00:00",
+      "last_update_date": "2022-05-13T11:05:34.493000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -6843,7 +6855,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:08:22.676000+00:00",
+      "last_update_date": "2022-05-13T11:26:34.203000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -7041,7 +7053,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T03:20:18.600000+00:00",
+      "last_update_date": "2022-05-13T11:18:55.910000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -7213,7 +7225,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:13:34.207000+00:00",
+      "last_update_date": "2022-05-13T11:48:32.377000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -7314,7 +7326,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:11:44.791000+00:00",
+      "last_update_date": "2022-05-13T11:47:00.613000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -7359,6 +7371,7 @@
       "_id": "6228ae04de47596f87b57ffa",
       "alm_examples": [
         {
+          "api_version": "ako.vmware.com/v1alpha1",
           "kind": "AKOConfig",
           "metadata": {
             "name": "ako-sample",
@@ -7477,7 +7490,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:15:55.059000+00:00",
+      "last_update_date": "2022-05-13T11:54:11.740000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -7501,6 +7514,8 @@
           "name": "ako-operator-ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.6.2-alpha",
@@ -7510,6 +7525,7 @@
       "_id": "6228aea0ffc00f8fab5195cb",
       "alm_examples": [
         {
+          "api_version": "ako.vmware.com/v1alpha1",
           "kind": "AKOConfig",
           "metadata": {
             "name": "ako-sample",
@@ -7628,7 +7644,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-04T14:26:14.148000+00:00",
+      "last_update_date": "2022-05-13T11:42:10.833000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -7652,6 +7668,8 @@
           "name": "ako-operator-ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "1.6.2-alpha",
@@ -7661,6 +7679,7 @@
       "_id": "622916da4e53c1dfe069ae44",
       "alm_examples": [
         {
+          "api_version": "ako.vmware.com/v1alpha1",
           "kind": "AKOConfig",
           "metadata": {
             "name": "ako-sample",
@@ -7779,7 +7798,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T10:54:54.250000+00:00",
+      "last_update_date": "2022-05-13T10:51:08.916000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -7804,6 +7823,8 @@
           "name": "ako-operator-ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.6.2-alpha",
@@ -7862,7 +7883,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:09:26.819000+00:00",
+      "last_update_date": "2022-05-13T10:53:32.832000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -7978,7 +7999,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:17:34.779000+00:00",
+      "last_update_date": "2022-05-13T11:52:32.950000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -8136,7 +8157,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:12:22.478000+00:00",
+      "last_update_date": "2022-05-13T11:19:39.232000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -8477,8 +8498,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:46:00.948000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-05-13T11:56:14.987000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
       "package": "elasticsearch-eck-operator-certified",
@@ -8662,7 +8683,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:29:49.493000+00:00",
+      "last_update_date": "2022-05-13T11:46:16.126000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -8749,6 +8770,7 @@
       "_id": "622a189ff19c93b02846c776",
       "alm_examples": [
         {
+          "api_version": "ako.vmware.com/v1alpha1",
           "kind": "AKOConfig",
           "metadata": {
             "name": "ako-sample",
@@ -8867,7 +8889,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-04T14:59:51.688000+00:00",
+      "last_update_date": "2022-05-13T11:29:05.471000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -8891,6 +8913,8 @@
           "name": "ako-operator-ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.6.2-alpha",
@@ -9154,8 +9178,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:23:33.211000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-05-13T11:44:09.413000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
       "package": "elasticsearch-eck-operator-certified",
@@ -9614,7 +9638,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:05:14.775000+00:00",
+      "last_update_date": "2022-05-13T10:52:37.423000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -9939,8 +9963,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:06:17.322000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-05-13T10:52:50.333000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
       "package": "elasticsearch-eck-operator-certified",
@@ -10124,7 +10148,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:17:39.039000+00:00",
+      "last_update_date": "2022-05-13T10:56:21.691000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -10291,7 +10315,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:11:49.932000+00:00",
+      "last_update_date": "2022-05-13T11:23:06.609000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -10412,7 +10436,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:21:37.827000+00:00",
+      "last_update_date": "2022-05-13T11:42:54.292000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -10753,8 +10777,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:07:46.828000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-05-13T11:50:29.315000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
       "package": "elasticsearch-eck-operator-certified",
@@ -10867,6 +10891,7 @@
       "_id": "622b53b7ae289285d6fcda3d",
       "alm_examples": [
         {
+          "api_version": "ako.vmware.com/v1alpha1",
           "kind": "AKOConfig",
           "metadata": {
             "name": "ako-sample",
@@ -10985,7 +11010,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:21:36.389000+00:00",
+      "last_update_date": "2022-05-13T11:21:34.072000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -11009,6 +11034,8 @@
           "name": "ako-operator-ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "1.6.2-alpha",
@@ -11093,7 +11120,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:14:49.543000+00:00",
+      "last_update_date": "2022-05-13T10:55:03.170000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -11215,7 +11242,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:18:36.876000+00:00",
+      "last_update_date": "2022-05-13T11:20:09.131000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -11337,7 +11364,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:15:27.227000+00:00",
+      "last_update_date": "2022-05-13T11:56:40.775000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -11384,6 +11411,7 @@
       "_id": "622f9556353810fe31bdf8d9",
       "alm_examples": [
         {
+          "api_version": "machinelearning.seldon.io/v1",
           "kind": "SeldonDeployment",
           "metadata": {
             "labels": {
@@ -11458,7 +11486,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:01:16.816000+00:00",
+      "last_update_date": "2022-05-13T10:58:20.236000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -11528,6 +11556,7 @@
           "name": "mock_classifier"
         }
       ],
+      "replaces": "",
       "skip_range": "<1.12.0",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
@@ -11538,6 +11567,7 @@
       "_id": "622f961ab957750b6932048d",
       "alm_examples": [
         {
+          "api_version": "machinelearning.seldon.io/v1",
           "kind": "SeldonDeployment",
           "metadata": {
             "labels": {
@@ -11612,7 +11642,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:21:47.821000+00:00",
+      "last_update_date": "2022-05-13T11:35:29.273000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -11682,6 +11712,7 @@
           "name": "mock_classifier"
         }
       ],
+      "replaces": "",
       "skip_range": "<1.12.0",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
@@ -11946,8 +11977,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:09:43.937000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-05-13T11:45:33.466000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
       "package": "elasticsearch-eck-operator-certified",
@@ -12121,7 +12152,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:18:52.567000+00:00",
+      "last_update_date": "2022-05-13T10:57:12.061000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -12272,7 +12303,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:28:37.743000+00:00",
+      "last_update_date": "2022-05-13T11:11:03.869000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -12423,7 +12454,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:24:06.023000+00:00",
+      "last_update_date": "2022-05-13T11:25:25.380000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12859,7 +12890,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:05:25.713000+00:00",
+      "last_update_date": "2022-05-13T10:52:39.402000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -13311,7 +13342,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:32:31.308000+00:00",
+      "last_update_date": "2022-05-13T11:12:07.386000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -13547,7 +13578,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:10:26.898000+00:00",
+      "last_update_date": "2022-05-13T10:53:44.920000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -13813,7 +13844,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:31:29.876000+00:00",
+      "last_update_date": "2022-05-13T11:23:08.580000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13994,7 +14025,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:28:55.529000+00:00",
+      "last_update_date": "2022-05-13T11:12:14.985000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -14196,7 +14227,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:16:38.478000+00:00",
+      "last_update_date": "2022-05-13T11:42:47.959000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -14309,7 +14340,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:17:37.278000+00:00",
+      "last_update_date": "2022-05-13T11:20:54.347000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -14422,7 +14453,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:05:44.275000+00:00",
+      "last_update_date": "2022-05-13T10:52:43.404000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -14516,7 +14547,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:17:03.024000+00:00",
+      "last_update_date": "2022-05-13T10:55:59.852000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -14643,7 +14674,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:26:13.284000+00:00",
+      "last_update_date": "2022-05-13T11:29:13.477000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -14785,7 +14816,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:47:39.629000+00:00",
+      "last_update_date": "2022-05-13T11:35:48.047000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -14922,7 +14953,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:01:36.115000+00:00",
+      "last_update_date": "2022-05-13T11:27:23.390000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -15049,7 +15080,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:07:13.299000+00:00",
+      "last_update_date": "2022-05-13T11:40:08.148000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -15190,7 +15221,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:12:10.506000+00:00",
+      "last_update_date": "2022-05-13T11:47:23.833000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -15379,7 +15410,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:16:57.352000+00:00",
+      "last_update_date": "2022-05-13T11:51:56.337000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -15597,7 +15628,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:12:27.804000+00:00",
+      "last_update_date": "2022-05-13T11:47:35.216000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -15770,7 +15801,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:10:45.444000+00:00",
+      "last_update_date": "2022-05-13T10:53:48.352000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -15942,7 +15973,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:24:20.885000+00:00",
+      "last_update_date": "2022-05-13T11:25:33.853000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -16030,7 +16061,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:12:29.443000+00:00",
+      "last_update_date": "2022-05-13T10:52:07.870000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -16128,7 +16159,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:12:32.872000+00:00",
+      "last_update_date": "2022-05-13T10:52:09.125000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -16228,7 +16259,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:13:43.008000+00:00",
+      "last_update_date": "2022-05-13T10:54:08.439000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -16317,7 +16348,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:13:46.473000+00:00",
+      "last_update_date": "2022-05-13T10:54:10.896000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -16410,7 +16441,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:13:50.784000+00:00",
+      "last_update_date": "2022-05-13T10:54:13.314000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -16508,7 +16539,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:13:54.420000+00:00",
+      "last_update_date": "2022-05-13T10:54:15.614000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -16716,7 +16747,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:16:21.652000+00:00",
+      "last_update_date": "2022-05-13T10:51:55.295000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -16844,7 +16875,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:14:26.254000+00:00",
+      "last_update_date": "2022-05-13T10:53:38.240000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -16932,7 +16963,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:14:11.692000+00:00",
+      "last_update_date": "2022-05-13T10:53:27.222000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -17020,7 +17051,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:14:15.441000+00:00",
+      "last_update_date": "2022-05-13T10:53:29.434000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -17108,7 +17139,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:14:19.282000+00:00",
+      "last_update_date": "2022-05-13T10:53:33.418000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -17196,7 +17227,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:14:23.307000+00:00",
+      "last_update_date": "2022-05-13T10:53:35.768000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -17297,7 +17328,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:11:28.648000+00:00",
+      "last_update_date": "2022-05-13T10:51:48.017000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -19087,7 +19118,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:10:07.707000+00:00",
+      "last_update_date": "2022-05-13T10:53:44.345000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -19327,7 +19358,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:13:29.412000+00:00",
+      "last_update_date": "2022-05-13T10:52:23.639000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -20167,7 +20198,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:09:26.532000+00:00",
+      "last_update_date": "2022-05-13T10:54:30.387000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -20227,6 +20258,7 @@
       "_id": "62345f615593ce895a7b534b",
       "alm_examples": [
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseCluster",
           "metadata": {
             "name": "cb-example"
@@ -20342,6 +20374,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBucket",
           "metadata": {
             "labels": {
@@ -20361,6 +20394,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseEphemeralBucket",
           "metadata": {
             "labels": {
@@ -20379,6 +20413,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseMemcachedBucket",
           "metadata": {
             "labels": {
@@ -20392,6 +20427,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseUser",
           "metadata": {
             "labels": {
@@ -20406,6 +20442,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseGroup",
           "metadata": {
             "labels": {
@@ -20423,6 +20460,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseRoleBinding",
           "metadata": {
             "name": "my-role-binding"
@@ -20441,6 +20479,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseReplication",
           "metadata": {
             "labels": {
@@ -20457,6 +20496,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBackup",
           "metadata": {
             "labels": {
@@ -20481,6 +20521,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBackupRestore",
           "metadata": {
             "labels": {
@@ -20502,6 +20543,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseAutoscaler",
           "metadata": {
             "name": "do.not.create.internal.only"
@@ -20550,7 +20592,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:39:51.322000+00:00",
+      "last_update_date": "2022-05-13T10:54:43.966000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -20654,6 +20696,8 @@
           "name": "server-c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "2.2.0-1",
@@ -20663,6 +20707,7 @@
       "_id": "62345f64314381d2b0756b2d",
       "alm_examples": [
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseCluster",
           "metadata": {
             "name": "cb-example"
@@ -20778,6 +20823,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBucket",
           "metadata": {
             "labels": {
@@ -20797,6 +20843,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseEphemeralBucket",
           "metadata": {
             "labels": {
@@ -20815,6 +20862,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseMemcachedBucket",
           "metadata": {
             "labels": {
@@ -20828,6 +20876,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseUser",
           "metadata": {
             "labels": {
@@ -20842,6 +20891,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseGroup",
           "metadata": {
             "labels": {
@@ -20859,6 +20909,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseRoleBinding",
           "metadata": {
             "name": "my-role-binding"
@@ -20877,6 +20928,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseReplication",
           "metadata": {
             "labels": {
@@ -20893,6 +20945,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBackup",
           "metadata": {
             "labels": {
@@ -20917,6 +20970,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBackupRestore",
           "metadata": {
             "labels": {
@@ -20938,6 +20992,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseAutoscaler",
           "metadata": {
             "name": "do.not.create.internal.only"
@@ -20986,7 +21041,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:39:53.453000+00:00",
+      "last_update_date": "2022-05-13T10:54:47.040000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -21090,6 +21145,8 @@
           "name": "server-c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "2.2.1-1",
@@ -21099,6 +21156,7 @@
       "_id": "62345f695593ce895a7b534c",
       "alm_examples": [
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseCluster",
           "metadata": {
             "name": "cb-example"
@@ -21214,6 +21272,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBucket",
           "metadata": {
             "labels": {
@@ -21233,6 +21292,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseEphemeralBucket",
           "metadata": {
             "labels": {
@@ -21251,6 +21311,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseMemcachedBucket",
           "metadata": {
             "labels": {
@@ -21264,6 +21325,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseUser",
           "metadata": {
             "labels": {
@@ -21278,6 +21340,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseGroup",
           "metadata": {
             "labels": {
@@ -21295,6 +21358,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseRoleBinding",
           "metadata": {
             "name": "my-role-binding"
@@ -21313,6 +21377,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseReplication",
           "metadata": {
             "labels": {
@@ -21329,6 +21394,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBackup",
           "metadata": {
             "labels": {
@@ -21353,6 +21419,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBackupRestore",
           "metadata": {
             "labels": {
@@ -21374,6 +21441,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseAutoscaler",
           "metadata": {
             "name": "do.not.create.internal.only"
@@ -21420,7 +21488,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:39:49.319000+00:00",
+      "last_update_date": "2022-05-13T10:54:42.343000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -21574,6 +21642,8 @@
           "name": "server-fd6d9c0ef033009e76d60dc36f55ce7f3aaa942a7be9c2b66c335eabc8f5b11e-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "2.1.0",
@@ -21645,7 +21715,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:13:15.178000+00:00",
+      "last_update_date": "2022-05-13T10:53:14.328000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -21726,7 +21796,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:11:03.108000+00:00",
+      "last_update_date": "2022-05-13T10:55:05.529000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -21812,7 +21882,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:11:14.830000+00:00",
+      "last_update_date": "2022-05-13T10:55:08.179000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -21898,7 +21968,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:11:05.727000+00:00",
+      "last_update_date": "2022-05-13T10:55:10.416000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -21984,7 +22054,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:11:08.902000+00:00",
+      "last_update_date": "2022-05-13T10:55:12.678000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -22070,7 +22140,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:11:11.811000+00:00",
+      "last_update_date": "2022-05-13T10:54:59.023000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -22156,7 +22226,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:11:17.872000+00:00",
+      "last_update_date": "2022-05-13T10:55:01.324000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -22247,7 +22317,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:13:32.765000+00:00",
+      "last_update_date": "2022-05-13T10:52:37.875000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -22328,7 +22398,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:10:13.541000+00:00",
+      "last_update_date": "2022-05-13T10:51:42.300000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -22494,7 +22564,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:10:15.954000+00:00",
+      "last_update_date": "2022-05-13T10:51:44.175000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -22660,7 +22730,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:10:18.273000+00:00",
+      "last_update_date": "2022-05-13T10:51:45.299000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -22826,7 +22896,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:10:10.284000+00:00",
+      "last_update_date": "2022-05-13T10:51:46.724000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -22992,7 +23062,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:10:23.419000+00:00",
+      "last_update_date": "2022-05-13T10:51:30.227000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -23173,7 +23243,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:10:26.285000+00:00",
+      "last_update_date": "2022-05-13T10:51:31.731000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -23354,7 +23424,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:10:28.399000+00:00",
+      "last_update_date": "2022-05-13T10:51:33.345000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -23535,7 +23605,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:10:31.137000+00:00",
+      "last_update_date": "2022-05-13T10:51:36.273000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -23716,7 +23786,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:10:20.784000+00:00",
+      "last_update_date": "2022-05-13T10:51:38.326000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -23882,7 +23952,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:10:33.931000+00:00",
+      "last_update_date": "2022-05-13T10:51:40.228000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -24126,7 +24196,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:13:36.107000+00:00",
+      "last_update_date": "2022-05-13T10:54:32.918000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -24237,7 +24307,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:10:54.991000+00:00",
+      "last_update_date": "2022-05-13T10:53:40.118000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -24333,7 +24403,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:10:57.589000+00:00",
+      "last_update_date": "2022-05-13T10:53:42.189000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -24553,7 +24623,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:14:01.577000+00:00",
+      "last_update_date": "2022-05-13T10:47:33.640000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -24613,6 +24683,7 @@
       "_id": "62345fb0314381d2b0756b34",
       "alm_examples": [
         {
+          "api_version": "anzounstructured.clusters.cambridgesemantics.com/v1",
           "kind": "AnzoUnstructured",
           "metadata": {
             "name": "au01"
@@ -24735,7 +24806,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:39:36.048000+00:00",
+      "last_update_date": "2022-05-13T10:54:54.826000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -24779,6 +24850,8 @@
           "name": "anzo-unstructured-worker-4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "2.0.0",
@@ -24931,7 +25004,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:12:14.875000+00:00",
+      "last_update_date": "2022-05-13T10:53:55.411000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -24981,6 +25054,7 @@
       "_id": "62345fb95593ce895a7b5357",
       "alm_examples": [
         {
+          "api_version": "machinelearning.seldon.io/v1",
           "kind": "SeldonDeployment",
           "metadata": {
             "labels": {
@@ -25055,7 +25129,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:42:43.054000+00:00",
+      "last_update_date": "2022-05-13T10:51:59.840000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -25129,6 +25203,7 @@
           "name": "mock_classifier"
         }
       ],
+      "replaces": "",
       "skip_range": "<1.12.0",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
@@ -25188,7 +25263,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:10:59.958000+00:00",
+      "last_update_date": "2022-05-13T10:54:35.286000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -25470,7 +25545,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:15:01.343000+00:00",
+      "last_update_date": "2022-05-13T10:55:35.020000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -25779,7 +25854,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:15:05.875000+00:00",
+      "last_update_date": "2022-05-13T10:55:37.071000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -26088,7 +26163,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:15:10.462000+00:00",
+      "last_update_date": "2022-05-13T10:55:39.600000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -26397,7 +26472,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:15:14.347000+00:00",
+      "last_update_date": "2022-05-13T10:55:24.862000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -26742,7 +26817,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:15:17.985000+00:00",
+      "last_update_date": "2022-05-13T10:55:26.857000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -27087,7 +27162,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:14:49.529000+00:00",
+      "last_update_date": "2022-05-13T10:55:29.116000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -27432,7 +27507,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:14:54.149000+00:00",
+      "last_update_date": "2022-05-13T10:55:31.059000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -27777,7 +27852,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:14:57.656000+00:00",
+      "last_update_date": "2022-05-13T10:55:32.825000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -27919,7 +27994,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:11:50.507000+00:00",
+      "last_update_date": "2022-05-13T10:47:52.053000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -28046,7 +28121,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:12:41.199000+00:00",
+      "last_update_date": "2022-05-13T10:54:18.588000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -28193,7 +28268,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:12:44.275000+00:00",
+      "last_update_date": "2022-05-13T10:54:20.971000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -28340,7 +28415,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:12:47.422000+00:00",
+      "last_update_date": "2022-05-13T10:54:23.715000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -28487,7 +28562,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:12:51.200000+00:00",
+      "last_update_date": "2022-05-13T10:54:28.345000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -28634,7 +28709,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:12:54.862000+00:00",
+      "last_update_date": "2022-05-13T10:54:25.919000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -28741,7 +28816,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:15:41.980000+00:00",
+      "last_update_date": "2022-05-13T10:53:00.673000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -28848,7 +28923,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:15:45.158000+00:00",
+      "last_update_date": "2022-05-13T10:53:01.816000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -28955,7 +29030,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:15:51.524000+00:00",
+      "last_update_date": "2022-05-13T10:53:06.166000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -29062,7 +29137,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:15:56.129000+00:00",
+      "last_update_date": "2022-05-13T10:53:07.655000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -29281,7 +29356,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:12:22.286000+00:00",
+      "last_update_date": "2022-05-13T10:54:38.060000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -29431,7 +29506,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:09:42.225000+00:00",
+      "last_update_date": "2022-05-13T10:52:35.427000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -29527,7 +29602,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:09:44.340000+00:00",
+      "last_update_date": "2022-05-13T10:53:20.405000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -29627,7 +29702,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:15:21.627000+00:00",
+      "last_update_date": "2022-05-13T10:51:56.745000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -29734,7 +29809,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:16:25.004000+00:00",
+      "last_update_date": "2022-05-13T10:51:52.522000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -29831,7 +29906,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:16:28.106000+00:00",
+      "last_update_date": "2022-05-13T10:51:53.736000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -29871,6 +29946,7 @@
       "_id": "62345ff95593ce895a7b535f",
       "alm_examples": [
         {
+          "api_version": "ako.vmware.com/v1alpha1",
           "kind": "AKOConfig",
           "metadata": {
             "name": "ako-sample",
@@ -29989,7 +30065,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:40:21.136000+00:00",
+      "last_update_date": "2022-05-13T10:53:09.350000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -30013,6 +30089,8 @@
           "name": "ako-operator-ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "1.6.2-alpha",
@@ -30022,6 +30100,7 @@
       "_id": "62345ffb670f4cadbafad2ab",
       "alm_examples": [
         {
+          "api_version": "ako.vmware.com/v1alpha1",
           "kind": "AKOConfig",
           "metadata": {
             "name": "ako-sample",
@@ -30140,7 +30219,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:40:17.255000+00:00",
+      "last_update_date": "2022-05-13T10:53:10.961000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -30164,6 +30243,8 @@
           "name": "ako-operator-ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "1.6.2-beta",
@@ -30713,7 +30794,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:13:08.074000+00:00",
+      "last_update_date": "2022-05-13T10:53:53.411000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -31067,8 +31148,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:13:11.707000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-05-13T10:53:48.975000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
       "package": "elasticsearch-eck-operator-certified",
@@ -31217,7 +31298,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:10:04.166000+00:00",
+      "last_update_date": "2022-05-13T10:52:22.095000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -31252,6 +31333,7 @@
       "_id": "623460095593ce895a7b5361",
       "alm_examples": [
         {
+          "api_version": "triliovault.trilio.io/v1",
           "kind": "License",
           "metadata": {
             "name": "tvk-license-one",
@@ -31262,6 +31344,7 @@
           }
         },
         {
+          "api_version": "triliovault.trilio.io/v1",
           "kind": "Target",
           "metadata": {
             "labels": {
@@ -31280,6 +31363,7 @@
           }
         },
         {
+          "api_version": "triliovault.trilio.io/v1",
           "kind": "BackupPlan",
           "metadata": {
             "name": "tvk-backupplan"
@@ -31389,7 +31473,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:39:22.581000+00:00",
+      "last_update_date": "2022-05-13T10:52:48.136000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -31558,6 +31642,7 @@
           "name": "tvk_init"
         }
       ],
+      "replaces": "",
       "skip_range": "<2.7.0",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
@@ -31744,7 +31829,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:14:29.109000+00:00",
+      "last_update_date": "2022-05-13T10:52:31.522000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -31906,7 +31991,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:14:32.580000+00:00",
+      "last_update_date": "2022-05-13T10:46:59.650000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -32009,7 +32094,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:11:53.194000+00:00",
+      "last_update_date": "2022-05-13T10:54:03.673000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -32182,7 +32267,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:09:30.995000+00:00",
+      "last_update_date": "2022-05-13T10:53:23.064000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -32266,7 +32351,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:09:28.972000+00:00",
+      "last_update_date": "2022-05-13T10:53:24.831000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -32366,7 +32451,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:16:04.226000+00:00",
+      "last_update_date": "2022-05-13T10:52:58.960000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -32411,6 +32496,7 @@
       "_id": "623460245593ce895a7b5366",
       "alm_examples": [
         {
+          "api_version": "anzo.cambridgesemantics.com/v1",
           "kind": "Anzo",
           "metadata": {
             "name": "agent01"
@@ -32493,7 +32579,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:41:05.622000+00:00",
+      "last_update_date": "2022-05-13T10:52:16.033000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -32527,6 +32613,8 @@
           "name": "anzo-d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "2.0.0",
@@ -32536,6 +32624,7 @@
       "_id": "623460265593ce895a7b5367",
       "alm_examples": [
         {
+          "api_version": "anzograph.clusters.cambridgesemantics.com/v2",
           "kind": "AnzoGraph",
           "metadata": {
             "name": "azg01"
@@ -32661,7 +32750,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:41:01.818000+00:00",
+      "last_update_date": "2022-05-13T10:54:52.975000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -32710,6 +32799,8 @@
           "name": "anzograph-db-8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "2.0.1",
@@ -32940,7 +33031,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:10:47.123000+00:00",
+      "last_update_date": "2022-05-13T10:52:02.085000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -33306,7 +33397,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:10:49.624000+00:00",
+      "last_update_date": "2022-05-13T10:52:04.433000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -33672,7 +33763,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:10:52.244000+00:00",
+      "last_update_date": "2022-05-13T10:52:06.358000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -33791,7 +33882,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:09:37.794000+00:00",
+      "last_update_date": "2022-05-13T10:52:20.804000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -33910,7 +34001,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:11:32.932000+00:00",
+      "last_update_date": "2022-05-13T10:51:28.799000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -33959,6 +34050,7 @@
       "_id": "62346036314381d2b0756b42",
       "alm_examples": [
         {
+          "api_version": "linstor.linbit.com/v1",
           "kind": "LinstorController",
           "metadata": {
             "name": "linstor"
@@ -33971,6 +34063,7 @@
           }
         },
         {
+          "api_version": "linstor.linbit.com/v1",
           "kind": "LinstorCSIDriver",
           "metadata": {
             "name": "linstor"
@@ -33985,6 +34078,7 @@
           }
         },
         {
+          "api_version": "linstor.linbit.com/v1",
           "kind": "LinstorSatelliteSet",
           "metadata": {
             "name": "linstor-satellites"
@@ -34035,7 +34129,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:42:52.753000+00:00",
+      "last_update_date": "2022-05-13T10:55:22.748000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -34058,6 +34152,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "1.5.1",
@@ -34067,6 +34163,7 @@
       "_id": "6234603806c5dada0193e08a",
       "alm_examples": [
         {
+          "api_version": "linstor.linbit.com/v1",
           "kind": "LinstorController",
           "metadata": {
             "name": "linstor"
@@ -34079,6 +34176,7 @@
           }
         },
         {
+          "api_version": "linstor.linbit.com/v1",
           "kind": "LinstorCSIDriver",
           "metadata": {
             "name": "linstor"
@@ -34093,6 +34191,7 @@
           }
         },
         {
+          "api_version": "linstor.linbit.com/v1",
           "kind": "LinstorSatelliteSet",
           "metadata": {
             "name": "linstor-satellites"
@@ -34143,7 +34242,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:42:54.745000+00:00",
+      "last_update_date": "2022-05-13T10:55:19.834000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -34166,6 +34265,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "1.5.1",
@@ -34371,7 +34472,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:12:25.683000+00:00",
+      "last_update_date": "2022-05-13T10:54:39.801000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -34502,7 +34603,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:15:30.205000+00:00",
+      "last_update_date": "2022-05-13T10:48:09.409000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -34725,7 +34826,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:15:34.571000+00:00",
+      "last_update_date": "2022-05-13T10:48:18.184000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -35100,7 +35201,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:10:44.410000+00:00",
+      "last_update_date": "2022-05-13T10:51:51.121000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -35211,7 +35312,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:11:25.831000+00:00",
+      "last_update_date": "2022-05-13T10:52:25.132000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -35371,7 +35472,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:16:10.878000+00:00",
+      "last_update_date": "2022-05-13T10:53:47.138000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -36519,7 +36620,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:10:36.656000+00:00",
+      "last_update_date": "2022-05-13T10:52:28.089000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -37702,7 +37803,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:10:40.023000+00:00",
+      "last_update_date": "2022-05-13T10:52:29.520000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -37802,7 +37903,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:14:23.969000+00:00",
+      "last_update_date": "2022-05-13T10:54:53.379000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -37811,11 +37912,13 @@
         {
           "group": "charts.helm.k8s.io",
           "kind": "Kubeturbo",
+          "plural": "kubeturbos",
           "version": "v1"
         },
         {
           "group": "charts.helm.k8s.io",
           "kind": "Kubeturbo",
+          "plural": "kubeturbos",
           "version": "v1alpha1"
         }
       ],
@@ -37898,7 +38001,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:30:51.254000+00:00",
+      "last_update_date": "2022-05-13T11:50:34.591000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -37907,11 +38010,13 @@
         {
           "group": "charts.helm.k8s.io",
           "kind": "Kubeturbo",
+          "plural": "kubeturbos",
           "version": "v1alpha1"
         },
         {
           "group": "charts.helm.k8s.io",
           "kind": "Kubeturbo",
+          "plural": "kubeturbos",
           "version": "v1"
         }
       ],
@@ -37994,7 +38099,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:52:37.791000+00:00",
+      "last_update_date": "2022-05-13T11:45:19.289000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -38003,11 +38108,13 @@
         {
           "group": "charts.helm.k8s.io",
           "kind": "Kubeturbo",
+          "plural": "kubeturbos",
           "version": "v1"
         },
         {
           "group": "charts.helm.k8s.io",
           "kind": "Kubeturbo",
+          "plural": "kubeturbos",
           "version": "v1alpha1"
         }
       ],
@@ -38090,7 +38197,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:27:37.534000+00:00",
+      "last_update_date": "2022-05-13T11:42:49.889000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -38099,11 +38206,13 @@
         {
           "group": "charts.helm.k8s.io",
           "kind": "Kubeturbo",
+          "plural": "kubeturbos",
           "version": "v1alpha1"
         },
         {
           "group": "charts.helm.k8s.io",
           "kind": "Kubeturbo",
+          "plural": "kubeturbos",
           "version": "v1"
         }
       ],
@@ -38185,7 +38294,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:20:32.432000+00:00",
+      "last_update_date": "2022-05-13T10:58:50.320000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -38275,7 +38384,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:13:26.381000+00:00",
+      "last_update_date": "2022-05-13T11:40:37.842000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -38365,7 +38474,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:58:34.929000+00:00",
+      "last_update_date": "2022-05-13T11:59:02.483000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -38455,7 +38564,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:26:51.229000+00:00",
+      "last_update_date": "2022-05-13T11:28:59.115000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -38575,7 +38684,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:12:17.134000+00:00",
+      "last_update_date": "2022-05-13T10:54:14.839000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -38705,7 +38814,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:22:35.221000+00:00",
+      "last_update_date": "2022-05-13T11:31:16.017000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -38835,7 +38944,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:06:51.445000+00:00",
+      "last_update_date": "2022-05-13T11:44:00.586000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -38990,7 +39099,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:11:16.012000+00:00",
+      "last_update_date": "2022-05-13T11:46:38.710000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -39186,7 +39295,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:11:23.796000+00:00",
+      "last_update_date": "2022-05-13T11:46:43.415000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -39382,7 +39491,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:08:07.533000+00:00",
+      "last_update_date": "2022-05-13T10:53:13.774000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -39578,7 +39687,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:08:15.831000+00:00",
+      "last_update_date": "2022-05-13T10:53:15.788000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -39895,7 +40004,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:14:37.427000+00:00",
+      "last_update_date": "2022-05-13T10:52:19.727000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -40246,7 +40355,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:10:45.873000+00:00",
+      "last_update_date": "2022-05-13T11:46:13.747000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -40597,7 +40706,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:07:32.217000+00:00",
+      "last_update_date": "2022-05-13T10:53:06.434000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -40948,7 +41057,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:18:55.807000+00:00",
+      "last_update_date": "2022-05-13T11:15:33.237000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -41309,7 +41418,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:17:47.880000+00:00",
+      "last_update_date": "2022-05-13T11:24:00.843000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -41670,7 +41779,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:50:11.386000+00:00",
+      "last_update_date": "2022-05-13T11:13:54.210000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -42062,7 +42171,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:10:53.675000+00:00",
+      "last_update_date": "2022-05-13T11:46:18.734000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -42464,7 +42573,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:07:43.418000+00:00",
+      "last_update_date": "2022-05-13T10:53:08.220000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -42866,7 +42975,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:13:34.981000+00:00",
+      "last_update_date": "2022-05-13T11:46:04.676000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -43280,7 +43389,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:15:38.140000+00:00",
+      "last_update_date": "2022-05-13T10:54:51.070000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -43682,7 +43791,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:31:47.319000+00:00",
+      "last_update_date": "2022-05-13T11:29:01.074000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -44096,7 +44205,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:12:38.860000+00:00",
+      "last_update_date": "2022-05-13T11:29:54.381000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -44482,7 +44591,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:21:17.897000+00:00",
+      "last_update_date": "2022-05-13T10:59:45.706000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -44752,7 +44861,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:21:21.712000+00:00",
+      "last_update_date": "2022-05-13T10:59:49.332000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -45022,7 +45131,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:21:25.148000+00:00",
+      "last_update_date": "2022-05-13T10:59:52.894000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -45292,7 +45401,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:20:21.527000+00:00",
+      "last_update_date": "2022-05-13T11:55:48.424000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -45562,7 +45671,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:20:24.865000+00:00",
+      "last_update_date": "2022-05-13T11:55:53.872000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -45832,7 +45941,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:20:27.810000+00:00",
+      "last_update_date": "2022-05-13T11:55:59.911000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -46102,7 +46211,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T03:16:31.440000+00:00",
+      "last_update_date": "2022-05-13T11:13:37.021000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -46371,7 +46480,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T03:28:59.147000+00:00",
+      "last_update_date": "2022-05-13T11:45:52.875000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -46640,7 +46749,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:26:57.911000+00:00",
+      "last_update_date": "2022-05-13T11:14:29.327000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -46909,7 +47018,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:16:28.056000+00:00",
+      "last_update_date": "2022-05-13T11:49:00.543000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -47178,7 +47287,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:27:29.222000+00:00",
+      "last_update_date": "2022-05-13T11:21:43.780000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -47447,7 +47556,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:16:22.639000+00:00",
+      "last_update_date": "2022-05-13T11:13:56.795000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -47716,7 +47825,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:51:44.101000+00:00",
+      "last_update_date": "2022-05-13T11:13:45.588000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -47985,7 +48094,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:41:23.636000+00:00",
+      "last_update_date": "2022-05-13T11:12:24.274000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -48254,7 +48363,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T03:11:08.616000+00:00",
+      "last_update_date": "2022-05-13T11:52:09.520000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -48294,6 +48403,7 @@
       "_id": "623d8a666d7cc84677b2e8b3",
       "alm_examples": [
         {
+          "api_version": "ako.vmware.com/v1alpha1",
           "kind": "AKOConfig",
           "metadata": {
             "name": "ako-sample",
@@ -48412,7 +48522,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:40:19.184000+00:00",
+      "last_update_date": "2022-05-13T10:53:12.503000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -48436,6 +48546,8 @@
           "name": "ako-operator-378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "1.6.3",
@@ -48445,6 +48557,7 @@
       "_id": "623d8c0cad5091e14e579f73",
       "alm_examples": [
         {
+          "api_version": "ako.vmware.com/v1alpha1",
           "kind": "AKOConfig",
           "metadata": {
             "name": "ako-sample",
@@ -48563,7 +48676,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-04T14:26:20.950000+00:00",
+      "last_update_date": "2022-05-13T11:42:19.632000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -48587,6 +48700,8 @@
           "name": "ako-operator-378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "1.6.3",
@@ -48596,6 +48711,7 @@
       "_id": "623d8eee6d7cc84677b2e8b4",
       "alm_examples": [
         {
+          "api_version": "ako.vmware.com/v1alpha1",
           "kind": "AKOConfig",
           "metadata": {
             "name": "ako-sample",
@@ -48714,7 +48830,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:20:03.011000+00:00",
+      "last_update_date": "2022-05-13T11:22:35.145000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -48738,6 +48854,8 @@
           "name": "ako-operator-378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "1.6.3",
@@ -48747,6 +48865,7 @@
       "_id": "623d8fcd37f345462469f62c",
       "alm_examples": [
         {
+          "api_version": "ako.vmware.com/v1alpha1",
           "kind": "AKOConfig",
           "metadata": {
             "name": "ako-sample",
@@ -48865,7 +48984,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-04T14:54:35.461000+00:00",
+      "last_update_date": "2022-05-13T11:30:55.776000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -48889,6 +49008,8 @@
           "name": "ako-operator-378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.6.3",
@@ -48898,6 +49019,7 @@
       "_id": "623d917f6d7cc84677b2e8b5",
       "alm_examples": [
         {
+          "api_version": "ako.vmware.com/v1alpha1",
           "kind": "AKOConfig",
           "metadata": {
             "name": "ako-sample",
@@ -49016,7 +49138,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:21:33.059000+00:00",
+      "last_update_date": "2022-05-13T11:05:51.604000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -49040,6 +49162,8 @@
           "name": "ako-operator-378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.6.3",
@@ -49049,6 +49173,7 @@
       "_id": "623d920f6d7cc84677b2e8b6",
       "alm_examples": [
         {
+          "api_version": "ako.vmware.com/v1alpha1",
           "kind": "AKOConfig",
           "metadata": {
             "name": "ako-sample",
@@ -49167,7 +49292,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T10:54:58.119000+00:00",
+      "last_update_date": "2022-05-13T10:51:12.467000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -49192,6 +49317,8 @@
           "name": "ako-operator-378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.6.3",
@@ -49275,7 +49402,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:13:40.129000+00:00",
+      "last_update_date": "2022-05-13T10:52:18.431000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -49394,7 +49521,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:11:52.397000+00:00",
+      "last_update_date": "2022-05-13T11:47:06.919000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -49516,7 +49643,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:09:38.035000+00:00",
+      "last_update_date": "2022-05-13T10:53:35.080000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -49638,7 +49765,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:20:36.400000+00:00",
+      "last_update_date": "2022-05-13T11:19:43.495000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -49760,7 +49887,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:22:02.492000+00:00",
+      "last_update_date": "2022-05-13T11:08:48.446000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -49882,7 +50009,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:58:44.418000+00:00",
+      "last_update_date": "2022-05-13T11:56:39.244000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -50005,7 +50132,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:14:55.530000+00:00",
+      "last_update_date": "2022-05-13T10:55:05.886000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -50127,7 +50254,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:21:42.809000+00:00",
+      "last_update_date": "2022-05-13T11:49:45.015000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -50249,7 +50376,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:05:24.523000+00:00",
+      "last_update_date": "2022-05-13T11:53:39.674000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -50361,7 +50488,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:16:07.631000+00:00",
+      "last_update_date": "2022-05-13T10:52:56.704000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -50471,7 +50598,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:18:59.179000+00:00",
+      "last_update_date": "2022-05-13T11:54:09.483000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -50583,7 +50710,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:19:58.412000+00:00",
+      "last_update_date": "2022-05-13T10:58:07.938000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -50695,7 +50822,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:33:08.675000+00:00",
+      "last_update_date": "2022-05-13T11:46:21.508000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -50807,7 +50934,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:04:56.620000+00:00",
+      "last_update_date": "2022-05-13T11:08:05.940000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -50919,7 +51046,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:13:54.145000+00:00",
+      "last_update_date": "2022-05-13T11:37:43.049000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -51041,7 +51168,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:17:20.146000+00:00",
+      "last_update_date": "2022-05-13T11:52:17.935000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -51169,7 +51296,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:17:28.900000+00:00",
+      "last_update_date": "2022-05-13T10:56:13.554000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -51297,7 +51424,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:12:18.743000+00:00",
+      "last_update_date": "2022-05-13T10:53:57.925000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -51422,7 +51549,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:11:07.251000+00:00",
+      "last_update_date": "2022-05-13T11:10:59.557000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -51550,7 +51677,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:21:25.584000+00:00",
+      "last_update_date": "2022-05-13T11:20:00.489000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -51678,7 +51805,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:52:47.609000+00:00",
+      "last_update_date": "2022-05-13T11:20:15.351000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -51731,6 +51858,7 @@
       "_id": "62419a07cc527bd81480b68c",
       "alm_examples": [
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDB",
           "metadata": {
             "name": "my-replica-set"
@@ -51749,6 +51877,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDB",
           "metadata": {
             "name": "sample-sharded-cluster"
@@ -51770,6 +51899,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDBMulti",
           "metadata": {
             "name": "multi-replica-set"
@@ -51804,6 +51934,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDBOpsManager",
           "metadata": {
             "name": "ops-manager"
@@ -51827,6 +51958,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDBUser",
           "metadata": {
             "name": "my-replica-set-x509-user"
@@ -51882,8 +52014,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T10:59:33.714000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-05-13T10:55:26.045000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
       "package": "mongodb-enterprise",
@@ -51920,6 +52052,8 @@
           "name": "mongodb-enterprise-operator"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.15.2",
@@ -51929,6 +52063,7 @@
       "_id": "62419a94ca2c1e0c9df286d2",
       "alm_examples": [
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDB",
           "metadata": {
             "name": "my-replica-set"
@@ -51947,6 +52082,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDB",
           "metadata": {
             "name": "sample-sharded-cluster"
@@ -51968,6 +52104,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDBMulti",
           "metadata": {
             "name": "multi-replica-set"
@@ -52002,6 +52139,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDBOpsManager",
           "metadata": {
             "name": "ops-manager"
@@ -52025,6 +52163,7 @@
           }
         },
         {
+          "api_version": "mongodb.com/v1",
           "kind": "MongoDBUser",
           "metadata": {
             "name": "my-replica-set-x509-user"
@@ -52080,8 +52219,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:17:13.421000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-05-13T11:10:09.011000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
       "package": "mongodb-enterprise",
@@ -52118,6 +52257,8 @@
           "name": "mongodb-enterprise-operator"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "1.15.2",
@@ -52857,6 +52998,7 @@
       "_id": "624249ae37f345462469f876",
       "alm_examples": [
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseCluster",
           "metadata": {
             "name": "cb-example"
@@ -52972,6 +53114,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBucket",
           "metadata": {
             "labels": {
@@ -52991,6 +53134,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseEphemeralBucket",
           "metadata": {
             "labels": {
@@ -53009,6 +53153,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseMemcachedBucket",
           "metadata": {
             "labels": {
@@ -53022,6 +53167,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseUser",
           "metadata": {
             "labels": {
@@ -53036,6 +53182,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseGroup",
           "metadata": {
             "labels": {
@@ -53053,6 +53200,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseRoleBinding",
           "metadata": {
             "name": "my-role-binding"
@@ -53071,6 +53219,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseReplication",
           "metadata": {
             "labels": {
@@ -53087,6 +53236,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBackup",
           "metadata": {
             "labels": {
@@ -53111,6 +53261,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBackupRestore",
           "metadata": {
             "labels": {
@@ -53132,6 +53283,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseAutoscaler",
           "metadata": {
             "name": "do.not.create.internal.only"
@@ -53180,7 +53332,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-21T05:34:46.762000+00:00",
+      "last_update_date": "2022-05-13T10:52:20.470000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -53305,6 +53457,8 @@
           "name": "server-187046a848f32233e7e92705c57fa864b1d373c2078a92b51c9706bec6e372e5-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "2.2.2-1",
@@ -53314,6 +53468,7 @@
       "_id": "62424b7c8dcbcc3f5ae16571",
       "alm_examples": [
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseCluster",
           "metadata": {
             "name": "cb-example"
@@ -53429,6 +53584,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBucket",
           "metadata": {
             "labels": {
@@ -53448,6 +53604,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseEphemeralBucket",
           "metadata": {
             "labels": {
@@ -53466,6 +53623,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseMemcachedBucket",
           "metadata": {
             "labels": {
@@ -53479,6 +53637,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseUser",
           "metadata": {
             "labels": {
@@ -53493,6 +53652,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseGroup",
           "metadata": {
             "labels": {
@@ -53510,6 +53670,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseRoleBinding",
           "metadata": {
             "name": "my-role-binding"
@@ -53528,6 +53689,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseReplication",
           "metadata": {
             "labels": {
@@ -53544,6 +53706,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBackup",
           "metadata": {
             "labels": {
@@ -53568,6 +53731,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseBackupRestore",
           "metadata": {
             "labels": {
@@ -53589,6 +53753,7 @@
           }
         },
         {
+          "api_version": "couchbase.com/v2",
           "kind": "CouchbaseAutoscaler",
           "metadata": {
             "name": "do.not.create.internal.only"
@@ -53637,7 +53802,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-04-21T05:53:04.232000+00:00",
+      "last_update_date": "2022-05-13T11:19:59.339000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -53762,6 +53927,8 @@
           "name": "server-187046a848f32233e7e92705c57fa864b1d373c2078a92b51c9706bec6e372e5-annotation"
         }
       ],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "2.2.2-1",
@@ -53894,7 +54061,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:10:36.522000+00:00",
+      "last_update_date": "2022-05-13T10:53:46.647000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -54014,7 +54181,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:15:01.743000+00:00",
+      "last_update_date": "2022-05-13T10:55:08.081000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -54184,7 +54351,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:22:54.421000+00:00",
+      "last_update_date": "2022-05-13T11:34:35.092000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -54304,7 +54471,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:14:33.002000+00:00",
+      "last_update_date": "2022-05-13T11:39:19.461000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -54474,7 +54641,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:16:12.328000+00:00",
+      "last_update_date": "2022-05-13T11:47:36.752000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -54594,7 +54761,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:01:26.628000+00:00",
+      "last_update_date": "2022-05-13T11:25:18.569000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -54764,7 +54931,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:12:18.923000+00:00",
+      "last_update_date": "2022-05-13T11:47:30.499000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -56197,7 +56364,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:09:40.373000+00:00",
+      "last_update_date": "2022-05-13T10:52:33.255000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -56638,7 +56805,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:10:00.770000+00:00",
+      "last_update_date": "2022-05-13T10:52:51.437000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -58373,7 +58540,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:02:57.932000+00:00",
+      "last_update_date": "2022-05-13T10:52:12.618000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -58534,7 +58701,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:03:09.036000+00:00",
+      "last_update_date": "2022-05-13T10:52:14.432000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -58695,7 +58862,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T03:16:22.143000+00:00",
+      "last_update_date": "2022-05-13T11:17:59.119000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -58856,7 +59023,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:17:16.018000+00:00",
+      "last_update_date": "2022-05-13T11:28:24.916000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -59017,7 +59184,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:27:03.871000+00:00",
+      "last_update_date": "2022-05-13T11:28:51.594000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -59178,7 +59345,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:21:16.853000+00:00",
+      "last_update_date": "2022-05-13T11:33:09.640000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -59339,7 +59506,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:48:58.973000+00:00",
+      "last_update_date": "2022-05-13T11:24:37.828000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -59500,7 +59667,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:47:25.264000+00:00",
+      "last_update_date": "2022-05-13T11:09:54.097000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -59636,7 +59803,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:21:47.379000+00:00",
+      "last_update_date": "2022-05-13T11:00:15.755000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -59817,7 +59984,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:17:13.769000+00:00",
+      "last_update_date": "2022-05-13T11:35:36.326000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -59997,7 +60164,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:19:59.678000+00:00",
+      "last_update_date": "2022-05-13T11:18:18.592000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -60291,7 +60458,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:20:39.201000+00:00",
+      "last_update_date": "2022-05-13T10:59:00.468000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -60520,7 +60687,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:30:16.631000+00:00",
+      "last_update_date": "2022-05-13T11:24:44.884000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -60749,7 +60916,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:42:47.948000+00:00",
+      "last_update_date": "2022-05-13T11:42:24.824000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -60978,7 +61145,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:27:04.527000+00:00",
+      "last_update_date": "2022-05-13T11:16:39.999000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -61140,7 +61307,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:09:49.060000+00:00",
+      "last_update_date": "2022-05-13T10:54:06.057000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -61210,7 +61377,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:13:18.228000+00:00",
+      "last_update_date": "2022-05-13T10:52:14.372000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -61269,7 +61436,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T05:13:21.793000+00:00",
+      "last_update_date": "2022-05-13T10:52:10.833000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -61328,7 +61495,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T05:13:25.976000+00:00",
+      "last_update_date": "2022-05-13T10:52:12.474000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -61387,7 +61554,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:13:08.697000+00:00",
+      "last_update_date": "2022-05-13T11:48:12.180000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -61446,7 +61613,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:13:16.129000+00:00",
+      "last_update_date": "2022-05-13T11:48:18.805000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -61505,7 +61672,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:13:24.053000+00:00",
+      "last_update_date": "2022-05-13T11:48:25.887000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -61564,7 +61731,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:13:44.573000+00:00",
+      "last_update_date": "2022-05-13T11:48:40.514000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -61635,7 +61802,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:11:49.242000+00:00",
+      "last_update_date": "2022-05-13T10:54:07.698000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -61694,7 +61861,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:11:58.381000+00:00",
+      "last_update_date": "2022-05-13T10:54:10.286000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -61753,7 +61920,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:12:07.933000+00:00",
+      "last_update_date": "2022-05-13T10:54:12.542000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -61795,7 +61962,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:52:45.077000+00:00",
+      "last_update_date": "2022-05-13T11:06:33.804000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -61809,6 +61976,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.3",
@@ -61853,7 +62022,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:12:26.544000+00:00",
+      "last_update_date": "2022-05-13T10:54:17.429000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -61907,7 +62076,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:52:53.337000+00:00",
+      "last_update_date": "2022-05-13T11:30:20.418000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -61921,6 +62090,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.9",
@@ -61948,13 +62119,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:53:00.723000+00:00",
+      "last_update_date": "2022-05-13T11:31:46.041000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "nxrm-operator-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "3.26.0-1",
@@ -61982,7 +62155,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:53:02.970000+00:00",
+      "last_update_date": "2022-05-13T11:27:58.721000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -62014,6 +62187,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.0",
@@ -62041,7 +62216,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:53:12.954000+00:00",
+      "last_update_date": "2022-05-13T11:13:36.415000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -62055,6 +62230,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.1",
@@ -62082,13 +62259,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-22T12:53:22.888000+00:00",
+      "last_update_date": "2022-05-13T11:42:11.050000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "6.0.6-6",
@@ -62116,7 +62295,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:53:29.183000+00:00",
+      "last_update_date": "2022-05-13T10:57:09.636000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -62130,6 +62309,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.2.2",
@@ -62157,13 +62338,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:53:31.764000+00:00",
+      "last_update_date": "2022-05-13T11:16:42.834000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "cortex-certifai-operator",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.3.3",
@@ -62191,7 +62374,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:53:46.520000+00:00",
+      "last_update_date": "2022-05-13T11:03:09.620000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -62205,6 +62388,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.90.0-1",
@@ -62232,7 +62417,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:53:49.463000+00:00",
+      "last_update_date": "2022-05-13T11:19:53.805000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -62246,6 +62431,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.98.0-1",
@@ -62273,13 +62460,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:53:51.823000+00:00",
+      "last_update_date": "2022-05-13T11:11:23.878000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "oneagent-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.9.4",
@@ -62307,7 +62496,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:53:56.908000+00:00",
+      "last_update_date": "2022-05-13T11:03:49.600000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -62321,6 +62510,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.2.1",
@@ -62348,7 +62539,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:53:59.698000+00:00",
+      "last_update_date": "2022-05-13T10:57:06.047000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -62362,6 +62553,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.3",
@@ -62389,7 +62582,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:54:10.800000+00:00",
+      "last_update_date": "2022-05-13T11:40:10.782000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -62403,6 +62596,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.2",
@@ -62430,13 +62625,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-22T12:54:17.815000+00:00",
+      "last_update_date": "2022-05-13T11:25:42.747000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "redhat-marketplace-operator",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.3",
@@ -62464,13 +62661,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:54:30.135000+00:00",
+      "last_update_date": "2022-05-13T10:59:37.800000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "mongodb-enterprise",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.2.3",
@@ -62498,13 +62697,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:54:33.183000+00:00",
+      "last_update_date": "2022-05-13T11:30:49.021000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "mongodb-enterprise",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.0",
@@ -62532,7 +62733,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:54:47.975000+00:00",
+      "last_update_date": "2022-05-13T11:18:33.246000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -62552,6 +62753,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "7.22.0",
@@ -62579,7 +62782,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:54:56.469000+00:00",
+      "last_update_date": "2022-05-13T10:56:02.871000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -62593,6 +62796,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.16",
@@ -62620,13 +62825,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:55:01.870000+00:00",
+      "last_update_date": "2022-05-13T11:16:30.672000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "6.0.6-6",
@@ -62654,7 +62861,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:55:05.732000+00:00",
+      "last_update_date": "2022-05-13T11:20:18.305000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -62674,6 +62881,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.16",
@@ -62701,7 +62910,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:22:31.329000+00:00",
+      "last_update_date": "2022-05-13T11:41:03.295000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -62744,13 +62953,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-22T12:55:10.113000+00:00",
+      "last_update_date": "2022-05-13T11:15:06.090000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "6.0.6-11",
@@ -62778,7 +62989,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:25:06.539000+00:00",
+      "last_update_date": "2022-05-13T11:50:36.310000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -62830,13 +63041,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:55:12.626000+00:00",
+      "last_update_date": "2022-05-13T11:17:34.684000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "mongodb-enterprise",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.2",
@@ -62864,7 +63077,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:55:14.869000+00:00",
+      "last_update_date": "2022-05-13T11:06:56.332000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -62878,6 +63091,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.1",
@@ -62905,13 +63120,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:55:18.206000+00:00",
+      "last_update_date": "2022-05-13T11:27:45.326000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "nginx-ingress-operator",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.6",
@@ -62939,7 +63156,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:23:21.890000+00:00",
+      "last_update_date": "2022-05-13T11:47:15.719000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -62982,7 +63199,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:55:37.031000+00:00",
+      "last_update_date": "2022-05-13T11:28:47.880000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -63008,6 +63225,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.0",
@@ -63052,7 +63271,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:28:59.927000+00:00",
+      "last_update_date": "2022-05-13T11:31:23.272000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -63191,7 +63410,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:56:01.553000+00:00",
+      "last_update_date": "2022-05-13T10:56:48.788000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -63205,6 +63424,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.1.2",
@@ -63232,7 +63453,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:19:33.993000+00:00",
+      "last_update_date": "2022-05-13T11:27:36.305000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -63280,13 +63501,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-22T12:56:08.552000+00:00",
+      "last_update_date": "2022-05-13T10:59:34.186000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "6.0.8-1",
@@ -63314,7 +63537,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:08:17.023000+00:00",
+      "last_update_date": "2022-05-13T11:17:03.221000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -63366,7 +63589,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:21:22.884000+00:00",
+      "last_update_date": "2022-05-13T11:32:43.735000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -63415,7 +63638,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:56:13.459000+00:00",
+      "last_update_date": "2022-05-13T11:32:40.160000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -63429,6 +63652,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.24",
@@ -63456,7 +63681,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:28:27.026000+00:00",
+      "last_update_date": "2022-05-13T11:19:05.926000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -63498,13 +63723,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:56:21.334000+00:00",
+      "last_update_date": "2022-05-13T11:04:29.574000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "uma-operator",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.0",
@@ -63532,7 +63759,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:56:30.897000+00:00",
+      "last_update_date": "2022-05-13T11:00:11.482000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -63546,6 +63773,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.1.5",
@@ -63573,7 +63802,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:20:17.271000+00:00",
+      "last_update_date": "2022-05-13T11:40:01.627000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -63659,13 +63888,14 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:56:39.822000+00:00",
+      "last_update_date": "2022-05-13T11:02:33.555000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "couchdb-operator-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
       "skip_range": ">=1.0.0 <1.4.1",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
@@ -63694,7 +63924,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:30:39.073000+00:00",
+      "last_update_date": "2022-05-13T11:34:37.908000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -63767,13 +63997,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:56:45.186000+00:00",
+      "last_update_date": "2022-05-13T11:25:37.099000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "nxrm-operator-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "3.24.0-7",
@@ -63801,7 +64033,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:56:53.802000+00:00",
+      "last_update_date": "2022-05-13T11:33:04.455000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -63815,6 +64047,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.18",
@@ -63842,7 +64076,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:26:34.288000+00:00",
+      "last_update_date": "2022-05-13T11:46:35.572000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -63889,7 +64123,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:03:17.503000+00:00",
+      "last_update_date": "2022-05-13T11:56:00.193000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -63941,7 +64175,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:19:56.849000+00:00",
+      "last_update_date": "2022-05-13T11:52:25.016000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -64020,7 +64254,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-22T12:57:25.543000+00:00",
+      "last_update_date": "2022-05-13T11:21:11.016000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -64052,6 +64286,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.1",
@@ -64079,7 +64315,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:57:32.363000+00:00",
+      "last_update_date": "2022-05-13T11:22:23.793000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -64093,6 +64329,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.4",
@@ -64120,7 +64358,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:57:41.144000+00:00",
+      "last_update_date": "2022-05-13T11:21:32.879000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -64134,6 +64372,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "130.36.29",
@@ -64161,13 +64401,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:57:47.620000+00:00",
+      "last_update_date": "2022-05-13T11:39:12.879000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "gpu-operator-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.3.0",
@@ -64195,7 +64437,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:31:51.459000+00:00",
+      "last_update_date": "2022-05-13T11:18:23.270000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -64244,13 +64486,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-22T12:57:54.647000+00:00",
+      "last_update_date": "2022-05-13T11:00:22.920000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "6.0.6-11",
@@ -64278,7 +64522,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:58:10.043000+00:00",
+      "last_update_date": "2022-05-13T11:08:13.338000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -64292,6 +64536,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.1.4",
@@ -64319,7 +64565,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:24:13.171000+00:00",
+      "last_update_date": "2022-05-13T11:12:53.018000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -64362,7 +64608,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:31:29.340000+00:00",
+      "last_update_date": "2022-05-13T11:38:08.543000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -64422,7 +64668,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:23:16.616000+00:00",
+      "last_update_date": "2022-05-13T11:36:45.574000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -64476,7 +64722,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:58:39.683000+00:00",
+      "last_update_date": "2022-05-13T11:23:23.137000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -64490,6 +64736,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.24",
@@ -64517,7 +64765,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:58:46.539000+00:00",
+      "last_update_date": "2022-05-13T11:35:22.790000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -64531,6 +64779,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "2.0.0",
@@ -64558,7 +64808,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:58:50.498000+00:00",
+      "last_update_date": "2022-05-13T11:40:47.132000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -64578,6 +64828,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.3.7",
@@ -64605,7 +64857,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:20:07.704000+00:00",
+      "last_update_date": "2022-05-13T12:01:47.669000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -64648,7 +64900,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:59:21.465000+00:00",
+      "last_update_date": "2022-05-13T11:12:10.481000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -64662,6 +64914,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.3.0",
@@ -64689,7 +64943,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:27:15.989000+00:00",
+      "last_update_date": "2022-05-13T11:29:42.456000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -64731,7 +64985,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:33:52.231000+00:00",
+      "last_update_date": "2022-05-13T11:19:18.344000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -64774,7 +65028,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:59:37.707000+00:00",
+      "last_update_date": "2022-05-13T11:28:16.783000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -64788,6 +65042,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.3",
@@ -64815,7 +65071,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:59:46.776000+00:00",
+      "last_update_date": "2022-05-13T10:56:35.148000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -64895,6 +65151,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "2.0.1",
@@ -64922,13 +65180,14 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:00:04.852000+00:00",
+      "last_update_date": "2022-05-13T11:04:10.016000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "couchdb-operator-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
       "skip_range": ">=1.0.0 <1.4.0",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
@@ -64957,7 +65216,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:20:33.622000+00:00",
+      "last_update_date": "2022-05-13T11:22:44.170000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -65012,13 +65271,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:00:09.746000+00:00",
+      "last_update_date": "2022-05-13T11:05:47.465000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "nxrm-operator-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "3.23.0-1",
@@ -65046,7 +65307,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:02:05.816000+00:00",
+      "last_update_date": "2022-05-13T11:14:58.103000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -65098,13 +65359,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-22T13:00:13.478000+00:00",
+      "last_update_date": "2022-05-13T11:31:52.173000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "tigera-operator",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.5.2",
@@ -65132,7 +65395,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:25:53.014000+00:00",
+      "last_update_date": "2022-05-13T11:44:03.419000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -65181,7 +65444,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:00:36.968000+00:00",
+      "last_update_date": "2022-05-13T11:31:59.369000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -65195,6 +65458,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.3",
@@ -65222,7 +65487,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:00:40.924000+00:00",
+      "last_update_date": "2022-05-13T11:15:25.733000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -65236,6 +65501,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.1",
@@ -65263,13 +65530,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:00:49.064000+00:00",
+      "last_update_date": "2022-05-13T10:57:54.356000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "mongodb-enterprise",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.1",
@@ -65297,7 +65566,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:00:57.611000+00:00",
+      "last_update_date": "2022-05-13T11:38:42.311000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -65311,6 +65580,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.2",
@@ -65338,13 +65609,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-22T13:01:15.684000+00:00",
+      "last_update_date": "2022-05-13T11:30:41.406000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "cortex-certifai-operator",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.3.3",
@@ -65372,7 +65645,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:07:04.193000+00:00",
+      "last_update_date": "2022-05-13T11:57:00.534000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -65415,7 +65688,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:01:19.111000+00:00",
+      "last_update_date": "2022-05-13T10:59:45.023000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -65429,6 +65702,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.4",
@@ -65503,13 +65778,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:01:26.376000+00:00",
+      "last_update_date": "2022-05-13T11:12:35.426000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "nxrm-operator-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "3.25.1-1",
@@ -65537,7 +65814,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:22:03.433000+00:00",
+      "last_update_date": "2022-05-13T11:18:12.941000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -65580,13 +65857,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:01:39.911000+00:00",
+      "last_update_date": "2022-05-13T11:21:37.605000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "mongodb-enterprise",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.4",
@@ -65614,13 +65893,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:01:56.061000+00:00",
+      "last_update_date": "2022-05-13T11:14:12.297000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "mongodb-enterprise",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.5.5",
@@ -65648,7 +65929,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:10:21.086000+00:00",
+      "last_update_date": "2022-05-13T11:15:36.074000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -65716,7 +65997,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:02:44.593000+00:00",
+      "last_update_date": "2022-05-13T11:09:32.341000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -65759,7 +66040,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:20:20.360000+00:00",
+      "last_update_date": "2022-05-13T11:38:44.164000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -65802,7 +66083,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:50:31.984000+00:00",
+      "last_update_date": "2022-05-13T11:52:29.814000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -65854,7 +66135,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:02:12.196000+00:00",
+      "last_update_date": "2022-05-13T11:09:27.654000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -65880,6 +66161,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.0",
@@ -65907,7 +66190,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:38:55.966000+00:00",
+      "last_update_date": "2022-05-13T11:33:16.707000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -65950,7 +66233,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:23:04.870000+00:00",
+      "last_update_date": "2022-05-13T11:13:48.887000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -65998,13 +66281,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:02:30.740000+00:00",
+      "last_update_date": "2022-05-13T11:31:40.099000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "kubeturbo-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "7.22.9",
@@ -66032,13 +66317,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:02:34.646000+00:00",
+      "last_update_date": "2022-05-13T11:03:26.607000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "kubeturbo-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "8.0.4",
@@ -66066,7 +66353,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:02:39.381000+00:00",
+      "last_update_date": "2022-05-13T11:06:30.724000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -66080,6 +66367,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.97.0-4",
@@ -66107,7 +66396,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:02:44.036000+00:00",
+      "last_update_date": "2022-05-13T10:59:22.352000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -66187,6 +66476,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "2.0.0",
@@ -66214,7 +66505,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:11:58.111000+00:00",
+      "last_update_date": "2022-05-13T11:20:50.126000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -66257,7 +66548,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:02:50.969000+00:00",
+      "last_update_date": "2022-05-13T11:06:24.029000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -66283,6 +66574,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.1",
@@ -66310,7 +66603,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:03:02.924000+00:00",
+      "last_update_date": "2022-05-13T11:03:31.524000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -66324,6 +66617,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.1",
@@ -66351,7 +66646,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:17:21.082000+00:00",
+      "last_update_date": "2022-05-13T11:15:04.458000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -66403,13 +66698,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:03:06.816000+00:00",
+      "last_update_date": "2022-05-13T11:22:38.999000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "nginx-ingress-operator",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.4",
@@ -66437,7 +66734,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:27:30.902000+00:00",
+      "last_update_date": "2022-05-13T11:54:49.138000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -66489,7 +66786,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:22:07.015000+00:00",
+      "last_update_date": "2022-05-13T11:36:02.254000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -66532,7 +66829,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:03:15.786000+00:00",
+      "last_update_date": "2022-05-13T10:58:31.334000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -66546,6 +66843,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.2.1",
@@ -66573,7 +66872,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:28:16.077000+00:00",
+      "last_update_date": "2022-05-13T11:35:16.272000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -66676,7 +66975,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:27:11.884000+00:00",
+      "last_update_date": "2022-05-13T11:22:35.370000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -66725,7 +67024,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:03:23.485000+00:00",
+      "last_update_date": "2022-05-13T11:10:40.443000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -66745,6 +67044,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.193",
@@ -66772,7 +67073,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:18:53.715000+00:00",
+      "last_update_date": "2022-05-13T11:40:45.836000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -66815,7 +67116,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:03:40.251000+00:00",
+      "last_update_date": "2022-05-13T11:03:24.398000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -66829,6 +67130,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.0",
@@ -66856,7 +67159,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:03:44.326000+00:00",
+      "last_update_date": "2022-05-13T11:00:18.990000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -66876,6 +67179,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.2.6",
@@ -66903,7 +67208,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:12:32.265000+00:00",
+      "last_update_date": "2022-05-13T11:56:25.928000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -66946,7 +67251,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:03:57.887000+00:00",
+      "last_update_date": "2022-05-13T11:23:46.453000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -66966,6 +67271,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.3.9",
@@ -66993,7 +67300,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T03:05:07.410000+00:00",
+      "last_update_date": "2022-05-13T11:07:31.649000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -67036,7 +67343,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:04:10.840000+00:00",
+      "last_update_date": "2022-05-13T10:57:32.980000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -67050,6 +67357,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.2.0",
@@ -67077,7 +67386,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:51:36.297000+00:00",
+      "last_update_date": "2022-05-13T11:38:00.284000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -67129,7 +67438,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:26:20.181000+00:00",
+      "last_update_date": "2022-05-13T11:21:10.497000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -67184,7 +67493,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:04:20.373000+00:00",
+      "last_update_date": "2022-05-13T11:00:14.807000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -67198,6 +67507,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.2.0",
@@ -67225,7 +67536,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:32:03.354000+00:00",
+      "last_update_date": "2022-05-13T11:54:34.592000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -67274,7 +67585,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:16:07.515000+00:00",
+      "last_update_date": "2022-05-13T11:16:16.586000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -67316,7 +67627,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:22:29.531000+00:00",
+      "last_update_date": "2022-05-13T11:49:13.969000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -67365,7 +67676,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:41:56.071000+00:00",
+      "last_update_date": "2022-05-13T11:46:52.651000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -67417,7 +67728,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:28:54.486000+00:00",
+      "last_update_date": "2022-05-13T11:24:12.682000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -67469,7 +67780,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:39:20.620000+00:00",
+      "last_update_date": "2022-05-13T11:36:59.839000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -67512,7 +67823,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:26:02.522000+00:00",
+      "last_update_date": "2022-05-13T11:19:51.511000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -67555,13 +67866,15 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:04:58.500000+00:00",
+      "last_update_date": "2022-05-13T11:40:00.068000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "mongodb-enterprise",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.5.2",
@@ -67589,7 +67902,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:37:14.943000+00:00",
+      "last_update_date": "2022-05-13T11:54:39.094000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -67736,7 +68049,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:07:56.051000+00:00",
+      "last_update_date": "2022-05-13T11:57:07.842000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -67778,7 +68091,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:36:41.412000+00:00",
+      "last_update_date": "2022-05-13T11:15:11.601000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -67821,7 +68134,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:05:16.929000+00:00",
+      "last_update_date": "2022-05-13T11:07:59.950000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -67835,6 +68148,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.1",
@@ -67862,7 +68177,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:16:16.751000+00:00",
+      "last_update_date": "2022-05-13T11:50:19.073000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -67910,7 +68225,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:50:03.023000+00:00",
+      "last_update_date": "2022-05-13T11:08:31.219000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -67953,7 +68268,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:05:29.754000+00:00",
+      "last_update_date": "2022-05-13T11:01:12.615000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -67967,6 +68282,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.3.0",
@@ -67994,7 +68311,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:05:49.410000+00:00",
+      "last_update_date": "2022-05-13T11:20:02.928000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -68008,6 +68325,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.5",
@@ -68035,7 +68354,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:38:02.927000+00:00",
+      "last_update_date": "2022-05-13T11:25:11.778000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -68078,7 +68397,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:38:43.329000+00:00",
+      "last_update_date": "2022-05-13T11:56:29.474000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -68127,7 +68446,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-22T13:06:35.113000+00:00",
+      "last_update_date": "2022-05-13T11:09:07.725000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -68147,6 +68466,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.3.4",
@@ -68215,7 +68536,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:08:10.024000+00:00",
+      "last_update_date": "2022-05-13T11:12:20.293000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -68267,7 +68588,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:06:47.617000+00:00",
+      "last_update_date": "2022-05-13T11:36:15.805000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -68281,6 +68602,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.1.3",
@@ -68308,7 +68631,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:50:54.235000+00:00",
+      "last_update_date": "2022-05-13T11:57:25.032000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -68360,7 +68683,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:31:25.357000+00:00",
+      "last_update_date": "2022-05-13T11:59:14.352000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -68449,7 +68772,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:50:26.639000+00:00",
+      "last_update_date": "2022-05-13T11:37:53.823000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -68496,7 +68819,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:13:53.182000+00:00",
+      "last_update_date": "2022-05-13T11:42:56.516000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -68635,7 +68958,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:55:38.248000+00:00",
+      "last_update_date": "2022-05-13T11:26:22.811000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -68719,7 +69042,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:07:07.525000+00:00",
+      "last_update_date": "2022-05-13T11:04:46.223000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -68739,6 +69062,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.3.10",
@@ -68766,7 +69091,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:52:45.108000+00:00",
+      "last_update_date": "2022-05-13T11:55:03.372000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -68809,7 +69134,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T03:01:04.013000+00:00",
+      "last_update_date": "2022-05-13T11:47:29.361000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -68852,7 +69177,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:57:05.683000+00:00",
+      "last_update_date": "2022-05-13T11:20:24.129000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -68894,7 +69219,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:20:55.485000+00:00",
+      "last_update_date": "2022-05-13T11:08:27.259000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -68943,7 +69268,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:40:39.787000+00:00",
+      "last_update_date": "2022-05-13T11:21:52.047000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -68991,7 +69316,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-22T13:07:43.797000+00:00",
+      "last_update_date": "2022-05-13T11:23:34.246000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -69023,6 +69348,8 @@
         }
       ],
       "related_images": [],
+      "replaces": "",
+      "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.1",
@@ -69050,7 +69377,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-05-12T02:24:20.814000+00:00",
+      "last_update_date": "2022-05-13T11:15:46.407000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -69093,7 +69420,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-05-12T02:40:43.948000+00:00",
+      "last_update_date": "2022-05-13T11:30:48.672000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -69224,13 +69551,14 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-22T13:07:50.587000+00:00",
+      "last_update_date": "2022-05-13T10:58:34.807000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "couchdb-operator-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": "",
       "skip_range": ">=1.0.0 <1.4.0",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
@@ -69240,5 +69568,5 @@
   ],
   "page": 5,
   "page_size": 500,
-  "total": 3715
+  "total": 3924
 }
