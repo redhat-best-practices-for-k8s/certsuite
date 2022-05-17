@@ -111,18 +111,18 @@ func WaitForAllPodSetReady(env *provider.TestEnvironment, timeoutPodSetReady tim
 	for _, dut := range env.Deployments {
 		isReady := WaitForDeploymentSetReady(dut.Namespace, dut.Name, timeoutPodSetReady)
 		if isReady {
-			claimsLog = claimsLog.AddLogLine("%s Status: OK", provider.DeploymentToString(dut))
+			claimsLog.AddLogLine("%s Status: OK", provider.DeploymentToString(dut))
 		} else {
-			claimsLog = claimsLog.AddLogLine("%s Status: NOK", provider.DeploymentToString(dut))
+			claimsLog.AddLogLine("%s Status: NOK", provider.DeploymentToString(dut))
 			atLeastOnePodsetNotReady = true
 		}
 	}
 	for _, sut := range env.StatetfulSets {
 		isReady := WaitForStatefulSetReady(sut.Namespace, sut.Name, timeoutPodSetReady)
 		if isReady {
-			claimsLog = claimsLog.AddLogLine("%s Status: OK", provider.StatefulsetToString(sut))
+			claimsLog.AddLogLine("%s Status: OK", provider.StatefulsetToString(sut))
 		} else {
-			claimsLog = claimsLog.AddLogLine("%s Status: NOK", provider.StatefulsetToString(sut))
+			claimsLog.AddLogLine("%s Status: NOK", provider.StatefulsetToString(sut))
 			atLeastOnePodsetNotReady = true
 		}
 	}

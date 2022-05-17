@@ -282,7 +282,7 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 		name              string
 		args              args
 		wantNetsUnderTest map[string]netcommons.NetTestContext
-		wantClaimsLog     loghelper.CuratedLogLines
+		wantClaimsLogStr  []string
 	}{
 		{
 			name: "ipv4ok",
@@ -322,8 +322,6 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 					},
 				},
 			},
-
-			wantClaimsLog: loghelper.CuratedLogLines{},
 		},
 		{
 			name: "skip net test",
@@ -351,7 +349,7 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 				},
 			},
 
-			wantClaimsLog: loghelper.CuratedLogLines{}.Init("Skipping pod: pod2 ns: ns1 because it is excluded from all connectivity tests\n"),
+			wantClaimsLogStr: []string{"Skipping pod: pod2 ns: ns1 because it is excluded from all connectivity tests\n"},
 		},
 		{
 			name: "ipv4ok multus",
@@ -423,8 +421,6 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 					},
 				},
 			},
-
-			wantClaimsLog: loghelper.CuratedLogLines{},
 		},
 		{
 			name: "skip multus net test",
@@ -468,7 +464,7 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 				},
 			},
 
-			wantClaimsLog: loghelper.CuratedLogLines{}.Init("Skipping pod pod2 because it is excluded from Multus connectivity tests only\n"),
+			wantClaimsLogStr: []string{"Skipping pod pod2 because it is excluded from Multus connectivity tests only\n"},
 		},
 	}
 	for _, tt := range tests {
@@ -489,8 +485,14 @@ func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
 			if !reflect.DeepEqual(gotNetsUnderTest, tt.wantNetsUnderTest) {
 				t.Errorf("BuildNetTestContext() gotNetsUnderTest = %v, want %v", gotNetsUnderTest, tt.wantNetsUnderTest)
 			}
-			if !reflect.DeepEqual(gotClaimsLog, tt.wantClaimsLog) {
-				t.Errorf("BuildNetTestContext() gotClaimsLog = %v, want %v", gotClaimsLog, tt.wantClaimsLog)
+
+			testClaimsLog := loghelper.CuratedLogLines{}
+			if len(tt.wantClaimsLogStr) > 0 {
+				testClaimsLog.Init(tt.wantClaimsLogStr...)
+			}
+
+			if !reflect.DeepEqual(gotClaimsLog, testClaimsLog) {
+				t.Errorf("BuildNetTestContext() gotClaimsLog = %v, want %v", gotClaimsLog, testClaimsLog)
 			}
 		})
 	}
@@ -658,11 +660,11 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 		aIPVersion    netcommons.IPVersion
 	}
 	tests := []struct {
-		name            string
-		args            args
-		wantBadNets     map[string][]string
-		wantClaimsLog   loghelper.CuratedLogLines
-		testPingSuccess bool
+		name             string
+		args             args
+		wantBadNets      map[string][]string
+		wantClaimsLogStr []string
+		testPingSuccess  bool
 	}{
 		{name: "ok",
 			args: args{netsUnderTest: map[string]netcommons.NetTestContext{"default": {
@@ -697,16 +699,15 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 			},
 			}, count: 10, aIPVersion: netcommons.IPv4,
 			},
-			wantBadNets:     map[string][]string{},
-			wantClaimsLog:   loghelper.CuratedLogLines{}.Init("IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: SUCCESS transmitted: 10 received: 10 errors: 0\n"), //nolint:lll
-			testPingSuccess: true,
+			wantBadNets:      map[string][]string{},
+			wantClaimsLogStr: []string{"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: SUCCESS transmitted: 10 received: 10 errors: 0\n"}, //nolint:lll
+			testPingSuccess:  true,
 		},
 		{name: "noNetToTest",
 			args: args{netsUnderTest: map[string]netcommons.NetTestContext{},
 				count: 10, aIPVersion: netcommons.IPv4,
 			},
 			wantBadNets:     nil,
-			wantClaimsLog:   loghelper.CuratedLogLines{},
 			testPingSuccess: true,
 		},
 		{name: "only one container",
@@ -730,7 +731,6 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 			}, count: 10, aIPVersion: netcommons.IPv4,
 			},
 			wantBadNets:     map[string][]string{},
-			wantClaimsLog:   loghelper.CuratedLogLines{},
 			testPingSuccess: true,
 		},
 		{name: "ping fails",
@@ -780,8 +780,8 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 			}, count: 10, aIPVersion: netcommons.IPv4,
 			},
 			wantBadNets: map[string][]string{"default": {"10.244.195.232", "10.244.195.233"}},
-			wantClaimsLog: loghelper.CuratedLogLines{}.Init("IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n", //nolint:lll
-				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test3 pod: test-1 ns: tnf dstip: 10.244.195.233 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n"), //nolint:lll
+			wantClaimsLogStr: []string{"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n", //nolint:lll
+				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test3 pod: test-1 ns: tnf dstip: 10.244.195.233 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n"}, //nolint:lll
 			testPingSuccess: false,
 		},
 	}
@@ -796,8 +796,8 @@ func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
 			if !reflect.DeepEqual(gotBadNets, tt.wantBadNets) {
 				t.Errorf("RunNetworkingTests() gotBadNets = %v, want %v", gotBadNets, tt.wantBadNets)
 			}
-			if !reflect.DeepEqual(gotClaimsLog, tt.wantClaimsLog) {
-				t.Errorf("RunNetworkingTests() gotClaimsLog = %v, want %v", gotClaimsLog, tt.wantClaimsLog)
+			if !reflect.DeepEqual(gotClaimsLog.GetLogLines(), tt.wantClaimsLogStr) {
+				t.Errorf("RunNetworkingTests() gotClaimsLog = %v, want %v", gotClaimsLog, tt.wantClaimsLogStr)
 			}
 		})
 	}

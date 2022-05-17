@@ -53,7 +53,7 @@ func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container
 	for key, mcVal := range mcKernelArgumentsMap {
 		if currentVal, ok := currentKernelArgsMap[key]; ok {
 			if currentVal != mcVal {
-				claimsLog = claimsLog.AddLogLine("%s KernelCmdLineArg %q does not match MachineConfig value: %q!=%q",
+				claimsLog.AddLogLine("%s KernelCmdLineArg %q does not match MachineConfig value: %q!=%q",
 					cut.NodeName, key, currentVal, mcVal)
 			} else {
 				logrus.Tracef("%s KernelCmdLineArg==mcVal %q: %q==%q", cut.NodeName, key, currentVal, mcVal)
@@ -61,7 +61,7 @@ func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container
 		}
 		if grubVal, ok := grubKernelConfigMap[key]; ok {
 			if grubVal != mcVal {
-				claimsLog = claimsLog.AddLogLine("%s NodeGrubKernelArgs %q does not match MachineConfig value: %q!=%q",
+				claimsLog.AddLogLine("%s NodeGrubKernelArgs %q does not match MachineConfig value: %q!=%q",
 					cut.NodeName, key, mcVal, grubVal)
 			} else {
 				logrus.Tracef("%s NodeGrubKernelArg==mcVal %q: %q==%q", cut.NodeName, key, grubVal, mcVal)

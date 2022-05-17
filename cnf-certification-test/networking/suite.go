@@ -167,10 +167,10 @@ func testNodePort(env *provider.TestEnvironment) {
 func testNetworkConnectivity(env *provider.TestEnvironment, count int, aIPVersion netcommons.IPVersion, aType netcommons.IFType) {
 	netsUnderTest, claimsLog := icmp.BuildNetTestContext(env.Pods, aIPVersion, aType)
 	// Saving  curated logs to claims file
-	tnf.ClaimFilePrintf("%s", claimsLog)
+	tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 	badNets, claimsLog, skip := icmp.RunNetworkingTests(netsUnderTest, count, aIPVersion)
 	// Saving curated logs to claims file
-	tnf.ClaimFilePrintf("%s", claimsLog)
+	tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 	if skip {
 		ginkgo.Skip(fmt.Sprintf("There are no %s networks to test, skipping test", aIPVersion))
 	}
