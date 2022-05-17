@@ -110,25 +110,25 @@ func DeleteAllResources(namespace string) {
 	}
 	gvr := schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosengines"}
 	if err := oc.DynamicClient.Resource(gvr).Namespace(namespace).Delete(context.TODO(), "engine-test", deleteOptions); err != nil {
-		logrus.Errorf("error while removing the chaos engine resources %e", err)
+		logrus.Errorf("error while removing the chaos engine resources %s", err)
 	}
 	err := oc.K8sClient.CoreV1().ServiceAccounts(namespace).Delete(context.TODO(), "test-sa", deleteOptions)
 	if err != nil {
-		logrus.Errorf("error while removing the ServiceAccountsresources %e", err)
+		logrus.Errorf("error while removing the ServiceAccountsresources %s", err)
 	}
 	if err = oc.K8sClient.RbacV1().Roles(namespace).Delete(context.TODO(), "test-sa", deleteOptions); err != nil {
-		logrus.Errorf("error while removing the chaos engine resources %e", err)
+		logrus.Errorf("error while removing the chaos engine resources %s", err)
 	}
 	if err = oc.K8sClient.RbacV1().RoleBindings(namespace).Delete(context.TODO(), "test-sa", deleteOptions); err != nil {
-		logrus.Errorf("error while removing the chaos engine resources %e", err)
+		logrus.Errorf("error while removing the chaos engine resources %s", err)
 	}
 	gvr = schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosexperiments"}
 	if err := oc.DynamicClient.Resource(gvr).Namespace(namespace).Delete(context.TODO(), chaosTestName, deleteOptions); err != nil {
-		logrus.Errorf("error while removing the chaos engine resources %e", err)
+		logrus.Errorf("error while removing the chaos engine resources %s", err)
 	}
 	gvr = schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosresults"}
 	if err := oc.DynamicClient.Resource(gvr).Namespace(namespace).Delete(context.TODO(), chaosresultName, deleteOptions); err != nil {
-		logrus.Errorf("error while removing the chaos results resources %e", err)
+		logrus.Errorf("error while removing the chaos results resources %s", err)
 	}
 }
 
@@ -150,12 +150,15 @@ func applyTemplate(appLabel, appKind, namespace, filename string) (*yamlutil.YAM
 
 func fillTemplate(file string, values map[string]interface{}) ([]byte, error) {
 	// parse the template
-	tmpl, _ := template.ParseFiles(file)
-
+	tmpl, err := template.ParseFiles(file)
+	if err != nil {
+		logrus.Errorf("error while parsing the yaml file: %s error: %s", file, err)
+		return nil, err
+	}
 	var buffer bytes.Buffer
 	writer := bufio.NewWriter(&buffer)
 	if err := tmpl.Execute(writer, values); err != nil {
-		logrus.Errorf("error while executing the template to the yaml file %e", err)
+		logrus.Errorf("error while executing the template to the yaml file: %s error: %s", file, err)
 		return nil, err
 	}
 	writer.Flush() // write to the buffer
