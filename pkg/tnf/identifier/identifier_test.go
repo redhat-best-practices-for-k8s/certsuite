@@ -83,3 +83,38 @@ func TestIdentifier_UnmarshalJSON(t *testing.T) {
 		}
 	}
 }
+
+func TestGetShortNameFromIdentifier(t *testing.T) {
+	type testURLTestName struct {
+		URL            string
+		testName       string
+		expectedResult string
+	}
+	testsURLs := []testURLTestName{
+		{
+			URL:            identifier.GetIdentifierURLBaseDomain() + "/command",
+			testName:       "command",
+			expectedResult: "command",
+		},
+		{
+			URL:            identifier.GetIdentifierURLBaseDomain() + "/whatever",
+			testName:       "whatever",
+			expectedResult: "whatever",
+		},
+		{
+			URL:            "http://test-network-function.org/tests" + "/command",
+			testName:       "command",
+			expectedResult: "",
+		},
+		{
+			URL:            "http://test-network-function.es/functional-tests" + "/whatever",
+			testName:       "whatever",
+			expectedResult: "",
+		},
+	}
+
+	for _, test := range testsURLs {
+		id := identifier.Identifier{URL: test.URL, SemanticVersion: ""}
+		assert.Equal(t, test.expectedResult, identifier.GetShortNameFromIdentifier(id))
+	}
+}
