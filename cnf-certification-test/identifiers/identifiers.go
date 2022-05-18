@@ -69,7 +69,6 @@ var (
 	// BaseDomain for the test cases
 	TestIDBaseDomain = url
 
-
 	// TestSecConCapabilitiesIdentifier tests for non compliant security context capabilities
 	TestSecConCapabilitiesIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AccessControlTestKey, "security-context-capabilities-check"),
