@@ -3,9 +3,6 @@ ARG TNF_PARTNER_DIR=/usr/tnf-partner
 
 ENV TNF_PARTNER_SRC_DIR=$TNF_PARTNER_DIR/src
 
-ARG OPENSHIFT_VERSION
-ENV OPENSHIFT_VERSION=${OPENSHIFT_VERSION}
-
 ENV TNF_DIR=/usr/tnf
 ENV TNF_SRC_DIR=${TNF_DIR}/tnf-src
 ENV TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test
@@ -13,7 +10,7 @@ ENV TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test
 ENV TEMP_DIR=/tmp
 
 # Install dependencies
-RUN yum install -y gcc git jq make wget
+RUN dnf update; dnf install -y gcc git jq make wget
 
 # Install Go binary
 ENV GO_DL_URL="https://golang.org/dl"
@@ -28,16 +25,7 @@ RUN if [[ "$(uname -m)" -eq "x86_64" ]] ; then \
          echo "CPU architecture not supported" && exit 1; \
      fi
 
-# Install oc binary
-ENV OC_BIN_TAR="openshift-client-linux.tar.gz"
-ENV OC_DL_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp"/${OPENSHIFT_VERSION}/${OC_BIN_TAR}
-ENV OC_BIN="/usr/local/oc/bin"
-RUN wget --directory-prefix=${TEMP_DIR} ${OC_DL_URL} && \
-    mkdir -p ${OC_BIN} && \
-    tar -C ${OC_BIN} -xzf ${TEMP_DIR}/${OC_BIN_TAR} && \
-    chmod a+x ${OC_BIN}/oc
-
-# Add go and oc binary directory to $PATH
+# Add go directory to $PATH
 ENV PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
 
 # Git identifier to checkout
@@ -88,8 +76,8 @@ WORKDIR ${TNF_DIR}
 RUN ln -s ${TNF_DIR}/config/testconfigure.yml ${TNF_DIR}/cnf-certification-test/testconfigure.yml
 
 # Remove most of the build artefacts
-RUN yum remove -y gcc git wget && \
-	yum clean all && \
+RUN dnf remove -y gcc git wget && \
+	dnf clean all && \
 	rm -rf ${TNF_SRC_DIR} && \
 	rm -rf ${TEMP_DIR} && \
 	rm -rf /root/.cache && \
@@ -106,7 +94,6 @@ COPY --from=build / /
 ENV TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml
 ENV KUBECONFIG=/usr/tnf/kubeconfig/config
 ENV TNF_PARTNER_SRC_DIR=$TNF_PARTNER_DIR/src
-ENV PATH="/usr/local/oc/bin:${PATH}"
 WORKDIR /usr/tnf
 ENV SHELL=/bin/bash
 CMD ["./run-cnf-suites.sh", "-o", "claim", "-f", "diagnostic"]
