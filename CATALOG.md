@@ -215,22 +215,24 @@ Result Type|normative
 Suggested Remediation|Ensure that your Operator has passed Red Hat's Operator Certification Program (OCP).
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2.12 and Section 6.3.3
 
-### http://test-network-function.com/testcases/chaostesting/pod-delete
+### chaostesting
+
+#### pod-delete
 
 Property|Description
 ---|---
+Test Case Name|pod-delete
+Test Case Label|chaostesting-pod-delete
+Unique ID|http://test-network-function.com/testcases/chaostesting/pod-delete
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/chaostesting/pod-delete Using the litmus chaos operator, this test checks that pods are recreated successfully after deleting them.
 Result Type|normative
-Suggested Remediation|Make sure that the pods can be recreated succesfully after deleting them
+Suggested Remediation|Make sure that the pods can be recreated successfully after deleting them
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
-### http://test-network-function.com/testcases/lifecycle/container-shutdown
-
 
 ### lifecycle
 
 #### container-shutdown
-
 
 Property|Description
 ---|---
