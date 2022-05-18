@@ -140,7 +140,7 @@ func applyTemplate(appLabel, appKind, namespace, filename string) (*yamlutil.YAM
 	vars["APP_KIND"] = appKind
 	output, err := fillTemplate(filename, vars)
 	if err != nil {
-		logrus.Errorf("error while executing the template to the yaml file %e", err)
+		logrus.Errorf("error while executing the template to the yaml file %s", err)
 		return nil, err
 	}
 	const oneh = 100
