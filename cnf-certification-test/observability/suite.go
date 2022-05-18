@@ -31,8 +31,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
-
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 )
 
 //
@@ -70,7 +69,7 @@ func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 	ocpClient := clientsholder.GetClientsHolder()
 
 	numLogLines := int64(1)
-	podLogOptions := v1.PodLogOptions{TailLines: &numLogLines, Container: cut.Data.Name}
+	podLogOptions := corev1.PodLogOptions{TailLines: &numLogLines, Container: cut.Data.Name}
 	req := ocpClient.K8sClient.CoreV1().Pods(cut.Namespace).GetLogs(cut.Podname, &podLogOptions)
 
 	podLogsReaderCloser, err := req.Stream(context.TODO())
@@ -138,7 +137,7 @@ func testTerminationMessagePolicy(env *provider.TestEnvironment) {
 	failedContainers := []string{}
 	for _, cut := range env.Containers {
 		ginkgo.By("Testing for terminationMessagePolicy: " + cut.String())
-		if cut.Data.TerminationMessagePolicy != v1.TerminationMessageFallbackToLogsOnError {
+		if cut.Data.TerminationMessagePolicy != corev1.TerminationMessageFallbackToLogsOnError {
 			tnf.ClaimFilePrintf("FAILURE: %s does not have a TerminationMessagePolicy: FallbackToLogsOnError", cut)
 			failedContainers = append(failedContainers, cut.Data.Name)
 		}

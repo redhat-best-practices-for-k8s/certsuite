@@ -19,7 +19,7 @@ package ownerreference
 import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 )
 
 const (
@@ -30,11 +30,11 @@ const (
 )
 
 type OwnerReference struct {
-	put    *v1.Pod
+	put    *corev1.Pod
 	result int
 }
 
-func NewOwnerReference(put *v1.Pod) *OwnerReference {
+func NewOwnerReference(put *corev1.Pod) *OwnerReference {
 	o := OwnerReference{
 		put:    put,
 		result: testhelper.ERROR,

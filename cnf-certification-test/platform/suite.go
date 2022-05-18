@@ -29,9 +29,11 @@ import (
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/bootparams"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/hugepages"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/isredhat"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/sysctlconfig"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 
@@ -88,6 +90,26 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if provider.IsOCPCluster() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
 			testHugepages(&env)
+		} else {
+			ginkgo.Skip(" non ocp cluster ")
+		}
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestUnalteredStartupBootParamsIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		if provider.IsOCPCluster() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+			testUnalteredBootParams(&env)
+		} else {
+			ginkgo.Skip(" non ocp cluster ")
+		}
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSysctlConfigsIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		if provider.IsOCPCluster() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+			testSysctlConfigs(&env)
 		} else {
 			ginkgo.Skip(" non ocp cluster ")
 		}
@@ -163,16 +185,26 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 		moduleTaintsFound := false
 		otherTaintsFound := false
 
+		otherTaints := []string{}
 		for _, it := range individualTaints {
 			if strings.Contains(it, `module was loaded`) {
 				moduleTaintsFound = true
 			} else {
 				otherTaintsFound = true
+				otherTaints = append(otherTaints, it)
 			}
 		}
 
 		if otherTaintsFound {
 			nodeTaintsAccepted = false
+
+			// Surface more information about tainted kernel failures that have nothing to do with modules.
+			tnf.ClaimFilePrintf("Please note that taints other than 'module was loaded' were found on node %s.", dp.Spec.NodeName)
+			logrus.Debugf("Please note that taints other than 'module was loaded' were found on node %s.", dp.Spec.NodeName)
+			for _, ot := range otherTaints {
+				tnf.ClaimFilePrintf("Taint causing failure: %s on node: %s", ot, dp.Spec.NodeName)
+				logrus.Debugf("Taint causing failure: %s on node: %s", ot, dp.Spec.NodeName)
+			}
 		} else if moduleTaintsFound {
 			// Retrieve the modules from the node (via the debug pod)
 			modules := testerFuncs.GetModulesFromNode(ocpContext)
@@ -232,7 +264,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 
 func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
 	const (
-		getenforceCommand = "getenforce"
+		getenforceCommand = `chroot /host getenforce`
 		enforcingString   = "Enforcing\n"
 	)
 	o := clientsholder.GetClientsHolder()
@@ -247,7 +279,7 @@ func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
 			continue
 		}
 		if outStr != enforcingString {
-			tnf.ClaimFilePrintf(fmt.Sprintf("Node %s is not running selinux", debugPod.Spec.NodeName))
+			tnf.ClaimFilePrintf(fmt.Sprintf("Node %s is not running selinux, %s command returned: %s", debugPod.Spec.NodeName, getenforceCommand, outStr))
 			nodesFailed++
 		}
 	}
@@ -281,5 +313,73 @@ func testHugepages(env *provider.TestEnvironment) {
 
 	if n := len(badNodes); n > 0 {
 		ginkgo.Fail(fmt.Sprintf("Found %d failing nodes: %v", n, badNodes))
+	}
+}
+
+func testUnalteredBootParams(env *provider.TestEnvironment) {
+	failedNodes := []string{}
+	alreadyCheckedNodes := map[string]bool{}
+	for _, cut := range env.Containers {
+		if alreadyCheckedNodes[cut.NodeName] {
+			logrus.Debugf("Skipping node %s: already checked.", cut.NodeName)
+			continue
+		}
+		alreadyCheckedNodes[cut.NodeName] = true
+
+		claimsLog, err := bootparams.TestBootParamsHelper(env, cut)
+
+		if err != nil || len(claimsLog.GetLogLines()) != 0 {
+			failedNodes = append(failedNodes, fmt.Sprintf("node %s (%s)", cut.NodeName, cut.String()))
+			tnf.ClaimFilePrintf("%s", claimsLog)
+		}
+	}
+	gomega.Expect(failedNodes).To(gomega.BeEmpty())
+}
+
+//nolint:funlen
+func testSysctlConfigs(env *provider.TestEnvironment) {
+	badContainers := []string{}
+
+	alreadyCheckedNodes := map[string]bool{}
+	for _, cut := range env.Containers {
+		if alreadyCheckedNodes[cut.NodeName] {
+			continue
+		}
+		alreadyCheckedNodes[cut.NodeName] = true
+
+		debugPod := env.DebugPods[cut.NodeName]
+		if debugPod == nil {
+			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
+		}
+
+		sysctlSettings, err := sysctlconfig.GetSysctlSettings(env, cut.NodeName)
+		if err != nil {
+			tnf.ClaimFilePrintf("Could not get sysctl settings for node %s, error: %s", cut.NodeName, err)
+			badContainers = append(badContainers, cut.String())
+			continue
+		}
+
+		mcKernelArgumentsMap, err := bootparams.GetMcKernelArguments(env, cut.NodeName)
+		if err != nil {
+			tnf.ClaimFilePrintf("Failed to get the machine config kernel arguments for node %s, error: %s", cut.NodeName, err)
+			badContainers = append(badContainers, cut.String())
+			continue
+		}
+
+		for key, sysctlConfigVal := range sysctlSettings {
+			if mcVal, ok := mcKernelArgumentsMap[key]; ok {
+				if mcVal != sysctlConfigVal {
+					tnf.ClaimFilePrintf(fmt.Sprintf("Kernel config mismatch in node %s for %s (sysctl value: %s, machine config value: %s)",
+						cut.NodeName, key, sysctlConfigVal, mcVal))
+					badContainers = append(badContainers, cut.String())
+				}
+			}
+		}
+	}
+
+	if n := len(badContainers); n > 0 {
+		errMsg := fmt.Sprintf("Number of containers running of faulty nodes: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
 	}
 }

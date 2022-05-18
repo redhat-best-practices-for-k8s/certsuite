@@ -1,5 +1,5 @@
 
-# Test Network Function ![build](https://github.com/test-network-function/cnf-certification-test/actions/workflows/merge.yaml/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/test-network-function/test-network-function)](https://goreportcard.com/report/github.com/test-network-function/cnf-certification-test)
+# CNF Certification Test ![build](https://github.com/test-network-function/cnf-certification-test/actions/workflows/merge.yaml/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/test-network-function/test-network-function)](https://goreportcard.com/report/github.com/test-network-function/cnf-certification-test) [![LICENSE](https://img.shields.io/github/license/test-network-function/cnf-certification-test.svg)](https://github.com/test-network-function/cnf-certification-test/blob/main/LICENSE) [![go-doc](https://godoc.org/github.com/test-network-function/cnf-certification-test?status.svg)](https://godoc.org/github.com/test-network-function/cnf-certification-test)
 
 
 This repository contains a set of Cloud-Native Network Functions (CNFs) test cases and the framework to build more. The tests and framework are intended 
@@ -22,11 +22,11 @@ In the diagram above:
 
 ## Test Configuration
 
-The Test Network Function support autodiscovery using labels and annotations. The following sections describe how to configure the TNF via labels/annotation and the corresponding settings in the config file. A sample config file can be found [here](test-network-function/tnf_config.yml).
+The Test Network Function support autodiscovery using labels and annotations. The following sections describe how to configure the TNF via labels/annotation and the corresponding settings in the config file. A sample config file can be found [here](cnf-certification-test/tnf_config.yml).
 
 ### targetNameSpaces
 
-Multiple namespaces can be specified in the [configuration file](test-network-function/tnf_config.yml). Namespaces will be used by autodiscovery to find the Pods under test.
+Multiple namespaces can be specified in the [configuration file](cnf-certification-test/tnf_config.yml). Namespaces will be used by autodiscovery to find the Pods under test.
 ``` shell script
 targetNameSpaces:
   - name: firstnamespace
@@ -72,19 +72,20 @@ For Network Interfaces:
 * The annotation test-network-function.com/defaultnetworkinterface is the highest priority, and must contain a JSON-encoded string of the primary network interface for the pod. This must be explicitly set if needed. Examples can be seen in cnf-certification-test-partner
 * If the above is not present, the k8s.v1.cni.cncf.io/networks-status annotation is checked and the "interface" from the first entry found with "default"=true is used. This annotation is automatically managed in OpenShift but may not be present in K8s.
 
-The label test-network-function.com/skip_connectivity_tests excludes pods from connectivity tests. The label value is not important, only its presence.
+The label test-network-function.com/skip_connectivity_tests excludes pods from all connectivity tests. The label value is not important, only its presence.
+The label test-network-function.com/skip_multus_connectivity_tests excludes pods from multus connectivity tests. Tests on default interface are still done. The label value is not important, only its presence.
 
-#### operators
 
-The section can be configured as well as auto discovered. For manual configuration, see the commented part of the [sample config](test-network-function/tnf_config.yml). For autodiscovery:
 
-* CSVs to be tested by the `operator` spec are identified with the `test-network-function.com/operator=target`
-label. Any value is permitted but `target` is used here for consistency with the other specs.
+### certifiedcontainerinfo
 
-### certifiedcontainerinfo and certifiedoperatorinfo
-
-The `certifiedcontainerinfo` and `certifiedoperatorinfo` sections contain information about CNFs and Operators that are
+The `certifiedcontainerinfo` section contains information about CNFs containers that are
 to be checked for certification status on Red Hat catalogs.
+
+## Operators
+
+CSVs to be tested by the `operator` and `affiliated-certification` specs are identified with the `test-network-function.com/operator=target`
+label. Any value is permitted but `target` is used here for consistency with the other specs.
 
 ## Runtime environement variables
 ### Disable intrusive tests
@@ -133,10 +134,10 @@ By default, the image with release tag `4.6` is used and the ginkgo skip argumen
 ## Running the tests with in a prebuild container
 
 ### Pulling test image
-An image is built and is available at this repository: [quay.io](https://quay.io/repository/testnetworkfunction/test-network-function)
+An image is built and is available at this repository: [quay.io](https://quay.io/repository/testnetworkfunction/cnf-certification-test)
 The image can be pulled using :
 ```shell script
-docker pull quay.io/testnetworkfunction/test-network-function
+docker pull quay.io/testnetworkfunction/cnf-certification-test
 ```
 ### Cluster requirement
 * OCP cluster should allow interactive shell sessions to pods/containers to stay alive when being idle for more than a few minutes. If it is not the case, consult the maintainer of the cluster infrastructure on how it can be enabled. Also, make sure the firewalls/load balancers on the path do not timeout idle connections too quickly.
@@ -191,15 +192,15 @@ export TNF_CONTAINER_CLIENT="docker"
 You can build an image locally by using the command below. Use the value of `TNF_VERSION` to set a branch, a tag, or a hash of a commit that will be installed into the image.
 
 ```shell script
-docker build -t test-network-function:v1.0.5 --build-arg TNF_VERSION=v1.0.5 .
+docker build -t cnf-certification-test:v1.0.5 --build-arg TNF_VERSION=v1.0.5 .
 ```
 
 To build an image that installs TNF from an unofficial source (e.g. a fork of the TNF repository), use the `TNF_SRC_URL` build argument to override the URL to a source repository.
 
 ```shell script
-docker build -t test-network-function:v1.0.5 \
+docker build -t cnf-certification-test:v1.0.5 \
   --build-arg TNF_VERSION=v1.0.5 \
-  --build-arg TNF_SRC_URL=https://github.com/test-network-function/test-network-function .
+  --build-arg TNF_SRC_URL=https://github.com/test-network-function/cnf-certification-test .
 ```
 
 To make `run-tnf-container.sh` use the newly built image, specify the custom TNF image using the `-i` parameter.
@@ -213,7 +214,7 @@ To make `run-tnf-container.sh` use the newly built image, specify the custom TNF
 ## Building and running the standalone test executable
 
 Currently, all available tests are part of the "CNF Certification Test Suite" test suite, which serves as the entrypoint to run all test specs.
-By default, `test-network-function` emits results to `test-network-function/cnf-certification-tests_junit.xml`.
+By default, `cnf-certification-test` emits results to `cnf-certification-test/cnf-certification-tests_junit.xml`.
 ### Dependencies
 
 At a minimum, the following dependencies must be installed *prior* to running `make install-tools`.
@@ -250,8 +251,8 @@ In order to pull the code, issue the following command:
 ```shell script
 mkdir ~/workspace
 cd ~/workspace
-git clone git@github.com:test-network-function/test-network-function.git
-cd test-network-function
+git clone git@github.com:test-network-function/cnf-certification-test.git
+cd cnf-certification-test
 ```
 
 ### Building the Tests
@@ -282,10 +283,10 @@ As with "run-tnf-container.sh", if `-f` is not specified here, the tnf will run 
 
 By default the claim file will be output into the same location as the test executable. The `-o` argument for
 `run-cnf-suites.sh` can be used to provide a new location that the output files will be saved to. For more detailed
-control over the outputs, see the output of `test-network-function.test --help`.
+control over the outputs, see the output of `cnf-certification-test.test --help`.
 
 ```shell script
-cd test-network-function && ./test-network-function.test --help
+cd cnf-certification-test && ./cnf-certification-test.test --help
 ```
 
 *Gotcha:* check that OCP cluster has resources to deploy [debug image](#check-cluster-resources)
@@ -335,7 +336,7 @@ appropriate for the CNF(s) under test. Test suites group tests by topic area:
 Suite|Test Spec Description|Minimum OpenShift Version
 ---|---|---
 `access-control`|The access-control test suite is used to test  service account, namespace and cluster/pod role binding for the pods under test. It also tests the pods/containers configuration.|4.6.0
-`affiliated-certification`|The affiliated-certification test suite verifies that the containers and operators listed in the configuration file are certified by Redhat|4.6.0
+`affiliated-certification`|The affiliated-certification test suite verifies that the containers and operators discovered or listed in the configuration file are certified by Redhat|4.6.0
 `lifecycle`| The lifecycle test suite verifies the pods deployment, creation, shutdown and  survivability. |4.6.0
 `networking`|The networking test suite contains tests that check connectivity and networking config related best practices.|4.6.0
 `operator`|The operator test suite is designed to test basic Kubernetes Operator functionality.|4.6.0

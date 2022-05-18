@@ -21,27 +21,35 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
-func findPodsByLabel(oc corev1client.CoreV1Interface,
-	labels []configuration.Label,
-	namespaces []string) []v1.Pod {
-	Pods := []v1.Pod{}
+// Filter out any pod that is not in a running state
+const filterStatusRunning = "status.phase=Running"
+
+func findPodsByLabel(oc corev1client.CoreV1Interface, labels []configuration.Label, namespaces []string) []corev1.Pod {
+	Pods := []corev1.Pod{}
 	for _, ns := range namespaces {
 		for _, l := range labels {
-			options := metav1.ListOptions{}
 			label := buildLabelQuery(l)
 			logrus.Trace("find pods in ", ns, " using label= ", label)
-			options.LabelSelector = label
-			pods, err := oc.Pods(ns).List(context.TODO(), options)
+			pods, err := oc.Pods(ns).List(context.TODO(), metav1.ListOptions{
+				LabelSelector: label,
+				FieldSelector: filterStatusRunning,
+			})
 			if err != nil {
-				logrus.Errorln("error when listing pods in ns=", ns, " label=", label, " try to proceed")
+				logrus.Errorln("error when listing pods in ns=", ns, " label=", label, "err: ", err)
 				continue
 			}
-			Pods = append(Pods, pods.Items...)
+
+			// Filter out any pod set to be deleted
+			for i := 0; i < len(pods.Items); i++ {
+				if pods.Items[i].ObjectMeta.DeletionTimestamp == nil {
+					Pods = append(Pods, pods.Items[i])
+				}
+			}
 		}
 	}
 	return Pods

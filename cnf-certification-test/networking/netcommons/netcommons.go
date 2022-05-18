@@ -21,7 +21,7 @@ import (
 	"net"
 
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 )
 
 type IPVersion string
@@ -87,8 +87,8 @@ func PrintNetTestContextMap(netsUnderTest map[string]NetTestContext) string {
 	return output
 }
 
-// PodIPsToStringList converts a list of v1.PodIP objects into a list of strings
-func PodIPsToStringList(ips []v1.PodIP) (ipList []string) {
+// PodIPsToStringList converts a list of corev1.PodIP objects into a list of strings
+func PodIPsToStringList(ips []corev1.PodIP) (ipList []string) {
 	for _, ip := range ips {
 		ipList = append(ipList, ip.IP)
 	}

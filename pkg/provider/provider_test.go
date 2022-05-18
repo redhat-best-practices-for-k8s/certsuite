@@ -23,7 +23,7 @@ import (
 	"errors"
 
 	appsv1 "k8s.io/api/apps/v1"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	olmFakeClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned/fake"
@@ -68,7 +68,7 @@ var (
 		Spec: olmv1Alpha.InstallPlanSpec{CatalogSource: "catalogSource1", CatalogSourceNamespace: "ns1",
 			ClusterServiceVersionNames: []string{"op1.v1.0.1"}, Approval: olmv1Alpha.ApprovalAutomatic, Approved: true},
 		Status: olmv1Alpha.InstallPlanStatus{BundleLookups: []olmv1Alpha.BundleLookup{{Path: "lookuppath1",
-			CatalogSourceRef: &v1.ObjectReference{Name: "catalogSource1", Namespace: "ns1"}}}},
+			CatalogSourceRef: &corev1.ObjectReference{Name: "catalogSource1", Namespace: "ns1"}}}},
 	}
 
 	ns2InstallPlan1 = olmv1Alpha.InstallPlan{
@@ -76,7 +76,7 @@ var (
 		Spec: olmv1Alpha.InstallPlanSpec{CatalogSource: "catalogSource2", CatalogSourceNamespace: "ns2",
 			ClusterServiceVersionNames: []string{"op1.v1.0.1"}, Approval: olmv1Alpha.ApprovalAutomatic, Approved: true},
 		Status: olmv1Alpha.InstallPlanStatus{BundleLookups: []olmv1Alpha.BundleLookup{{Path: "lookuppath2",
-			CatalogSourceRef: &v1.ObjectReference{Name: "catalogSource2", Namespace: "ns2"}}}},
+			CatalogSourceRef: &corev1.ObjectReference{Name: "catalogSource2", Namespace: "ns2"}}}},
 	}
 
 	ns2InstallPlan2 = olmv1Alpha.InstallPlan{
@@ -84,7 +84,7 @@ var (
 		Spec: olmv1Alpha.InstallPlanSpec{CatalogSource: "catalogSource3", CatalogSourceNamespace: "ns2",
 			ClusterServiceVersionNames: []string{"op2.v2.0.2"}, Approval: olmv1Alpha.ApprovalAutomatic, Approved: true},
 		Status: olmv1Alpha.InstallPlanStatus{BundleLookups: []olmv1Alpha.BundleLookup{{Path: "lookuppath3",
-			CatalogSourceRef: &v1.ObjectReference{Name: "catalogSource3", Namespace: "ns2"}}}},
+			CatalogSourceRef: &corev1.ObjectReference{Name: "catalogSource3", Namespace: "ns2"}}}},
 	}
 )
 
@@ -159,7 +159,7 @@ func TestGetUID(t *testing.T) {
 
 	for _, tc := range testCases {
 		c := GetContainer()
-		c.Data = &v1.Container{}
+		c.Data = &corev1.Container{}
 		c.Status.ContainerID = tc.testCID
 		uid, err := c.GetUID()
 		assert.Equal(t, tc.expectedErr, err)
@@ -248,7 +248,7 @@ func TestGetCsvInstallPlans(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{Name: "installPlan1", Namespace: "ns4"},
 		Spec:       olmv1Alpha.InstallPlanSpec{ClusterServiceVersionNames: []string{"op4.v4.0.4"}},
 		Status: olmv1Alpha.InstallPlanStatus{BundleLookups: []olmv1Alpha.BundleLookup{{Path: "lookuppath1",
-			CatalogSourceRef: &v1.ObjectReference{Name: "catalogSource1", Namespace: "ns4"}}}},
+			CatalogSourceRef: &corev1.ObjectReference{Name: "catalogSource1", Namespace: "ns4"}}}},
 	}
 	op4InstallPlan2 := op4InstallPlan1
 	op4InstallPlan2.ObjectMeta.Name = "installPlan2"
@@ -350,7 +350,7 @@ func TestGetCatalogSourceImageIndexFromInstallPlan(t *testing.T) {
 			installPlan: &olmv1Alpha.InstallPlan{
 				Status: olmv1Alpha.InstallPlanStatus{
 					BundleLookups: []olmv1Alpha.BundleLookup{
-						{Path: "path", CatalogSourceRef: &v1.ObjectReference{Name: "catalogName", Namespace: "notExistingNamespace"}}}},
+						{Path: "path", CatalogSourceRef: &corev1.ObjectReference{Name: "catalogName", Namespace: "notExistingNamespace"}}}},
 			},
 			expectedImageIndex: "",
 			expectedErrorStr:   "failed to get catalogsource: catalogsources.operators.coreos.com \"catalogName\" not found",
@@ -618,11 +618,11 @@ func TestCreateOperators(t *testing.T) {
 //nolint:funlen
 func TestConvertArrayPods(t *testing.T) {
 	testCases := []struct {
-		testPods     []*v1.Pod
+		testPods     []*corev1.Pod
 		expectedPods []*Pod
 	}{
 		{ // Test Case 1 - No containers
-			testPods: []*v1.Pod{
+			testPods: []*corev1.Pod{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "testpod1",
@@ -632,7 +632,7 @@ func TestConvertArrayPods(t *testing.T) {
 			},
 			expectedPods: []*Pod{
 				{
-					Data: &v1.Pod{
+					Data: &corev1.Pod{
 						ObjectMeta: metav1.ObjectMeta{
 							Name:      "testpod1",
 							Namespace: "testnamespace1",
@@ -642,14 +642,14 @@ func TestConvertArrayPods(t *testing.T) {
 			},
 		},
 		{ // Test Case 2 - Containers
-			testPods: []*v1.Pod{
+			testPods: []*corev1.Pod{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "testpod1",
 						Namespace: "testnamespace1",
 					},
-					Spec: v1.PodSpec{
-						Containers: []v1.Container{
+					Spec: corev1.PodSpec{
+						Containers: []corev1.Container{
 							{
 								Name: "testcontainer1",
 							},
@@ -659,7 +659,7 @@ func TestConvertArrayPods(t *testing.T) {
 			},
 			expectedPods: []*Pod{
 				{
-					Data: &v1.Pod{
+					Data: &corev1.Pod{
 						ObjectMeta: metav1.ObjectMeta{
 							Name:      "testpod1",
 							Namespace: "testnamespace1",
@@ -667,7 +667,7 @@ func TestConvertArrayPods(t *testing.T) {
 					},
 					Containers: []*Container{
 						{
-							Data: &v1.Container{
+							Data: &corev1.Container{
 								Name: "testcontainer1",
 							},
 							Namespace: "testnamespace1",
@@ -776,10 +776,10 @@ func TestContainerStringFuncs(t *testing.T) {
 			NodeName:  tc.nodename,
 			Namespace: tc.namespace,
 			Podname:   tc.podname,
-			Data: &v1.Container{
+			Data: &corev1.Container{
 				Name: tc.name,
 			},
-			Status: v1.ContainerStatus{
+			Status: corev1.ContainerStatus{
 				ContainerID: tc.containerID,
 			},
 			Runtime: tc.runtime,
@@ -818,7 +818,7 @@ func TestCsvToString(t *testing.T) {
 
 func TestPodString(t *testing.T) {
 	p := Pod{
-		Data: &v1.Pod{
+		Data: &corev1.Pod{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "test1",
 				Namespace: "testNS",
@@ -840,47 +840,47 @@ func TestOperatorString(t *testing.T) {
 //nolint:funlen
 func TestIsWorkerNode(t *testing.T) {
 	testCases := []struct {
-		node           *v1.Node
+		node           *corev1.Node
 		expectedResult bool
 	}{
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{}},
 			},
 			expectedResult: false,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1"}},
 			},
 			expectedResult: false,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/master": ""}},
 			},
 			expectedResult: false,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/worker": ""}},
 			},
 			expectedResult: true,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/worker": "blahblah"}},
 			},
 			expectedResult: true,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/worker": ""}},
 			},
 			expectedResult: true,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/worker": ""}},
 			},
 			expectedResult: true,
@@ -896,65 +896,65 @@ func TestIsWorkerNode(t *testing.T) {
 //nolint:funlen
 func TestIsMasterNode(t *testing.T) {
 	testCases := []struct {
-		node           *v1.Node
+		node           *corev1.Node
 		expectedResult bool
 	}{
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{}},
 			},
 			expectedResult: false,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1"}},
 			},
 			expectedResult: false,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/worker": ""}},
 			},
 			expectedResult: false,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/master": ""}},
 			},
 			expectedResult: true,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/master": "blahblah"}},
 			},
 			expectedResult: true,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/control-plane": ""}},
 			},
 			expectedResult: true,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/control-plane": "blablah"}},
 			},
 			expectedResult: true,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/master": ""}},
 			},
 			expectedResult: true,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/control-plane": ""}},
 			},
 			expectedResult: true,
 		},
 		{
-			node: &v1.Node{
+			node: &corev1.Node{
 				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/master": "", "node-role.kubernetes.io/control-plane": ""}},
 			},
 			expectedResult: true,

@@ -21,15 +21,21 @@ import (
 	"time"
 
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
-	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
 	olmClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	olmFakeClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned/fake"
 	"github.com/sirupsen/logrus"
-	apiextv1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/typed/apiextensions/v1"
+
+	apiextv1c "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	apiextv1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 
+	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
+	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
+	rbacv1 "k8s.io/api/rbac/v1"
+	apiextv1fake "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/fake"
 	k8sFakeClient "k8s.io/client-go/kubernetes/fake"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -38,7 +44,7 @@ import (
 type ClientsHolder struct {
 	RestConfig    *rest.Config
 	DynamicClient dynamic.Interface
-	APIExtClient  apiextv1.ApiextensionsV1Interface
+	APIExtClient  apiextv1.Interface
 	OlmClient     olmClient.Interface
 	OcpClient     clientconfigv1.ConfigV1Interface
 	K8sClient     kubernetes.Interface
@@ -58,8 +64,45 @@ func SetupFakeOlmClient(olmMockObjects []runtime.Object) {
 // Only pure k8s interfaces will be available. The runtime objects must be pure k8s ones.
 // For other (OLM, )
 // runtime mocking objects loading, use the proper clientset mocking function.
+//nolint:funlen
 func GetTestClientsHolder(k8sMockObjects []runtime.Object, filenames ...string) *ClientsHolder {
-	clientsHolder.K8sClient = k8sFakeClient.NewSimpleClientset(k8sMockObjects...)
+	// Build slices of different objects depending on what client
+	// is supposed to expect them.
+	var k8sClientObjects []runtime.Object
+	var k8sExtClientObjects []runtime.Object
+
+	for _, v := range k8sMockObjects {
+		// Based on what type of object is, populate certain object slices
+		// with what is supported by a certain client.
+		// Add more items below if/when needed.
+		switch v.(type) {
+		// K8s Client Objects
+		case *corev1.ServiceAccount:
+			k8sClientObjects = append(k8sClientObjects, v)
+		case *rbacv1.ClusterRole:
+			k8sClientObjects = append(k8sClientObjects, v)
+		case *rbacv1.ClusterRoleBinding:
+			k8sClientObjects = append(k8sClientObjects, v)
+		case *rbacv1.Role:
+			k8sClientObjects = append(k8sClientObjects, v)
+		case *rbacv1.RoleBinding:
+			k8sClientObjects = append(k8sClientObjects, v)
+		case *corev1.Pod:
+			k8sClientObjects = append(k8sClientObjects, v)
+		case *corev1.Node:
+			k8sClientObjects = append(k8sClientObjects, v)
+		case *appsv1.Deployment:
+			k8sClientObjects = append(k8sClientObjects, v)
+
+		// K8s Extension Client Objects
+		case *apiextv1c.CustomResourceDefinition:
+			k8sExtClientObjects = append(k8sExtClientObjects, v)
+		}
+	}
+
+	// Add the objects to their corresponding API Clients
+	clientsHolder.K8sClient = k8sFakeClient.NewSimpleClientset(k8sClientObjects...)
+	clientsHolder.APIExtClient = apiextv1fake.NewSimpleClientset(k8sExtClientObjects...)
 
 	clientsHolder.ready = true
 	return &clientsHolder

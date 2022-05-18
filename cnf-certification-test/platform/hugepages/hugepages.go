@@ -11,7 +11,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 )
 
 const (
@@ -76,7 +76,7 @@ func hugepageSizeToInt(s string) int {
 	return num
 }
 
-func NewTester(node *provider.Node, debugPod *v1.Pod) (*Tester, error) {
+func NewTester(node *provider.Node, debugPod *corev1.Pod) (*Tester, error) {
 	tester := &Tester{
 		node: node,
 		context: clientsholder.Context{

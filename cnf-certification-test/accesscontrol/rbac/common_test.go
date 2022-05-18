@@ -4,48 +4,48 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	v1core "k8s.io/api/core/v1"
-	v1rbac "k8s.io/api/rbac/v1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	corev1 "k8s.io/api/core/v1"
+	rbacv1 "k8s.io/api/rbac/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
 func buildTestObjects() []runtime.Object {
 	// ClusterRoleBinding Objects
-	testCRB1 := v1rbac.ClusterRoleBinding{
-		ObjectMeta: v1.ObjectMeta{
+	testCRB1 := rbacv1.ClusterRoleBinding{
+		ObjectMeta: metav1.ObjectMeta{
 			Namespace: "testNS",
 			Name:      "testCRB",
 		},
 	}
-	testSA1 := v1core.ServiceAccount{
-		ObjectMeta: v1.ObjectMeta{
+	testSA1 := corev1.ServiceAccount{
+		ObjectMeta: metav1.ObjectMeta{
 			Namespace: "testNS",
 			Name:      "testCR1",
 		},
 	}
-	testCR1 := v1rbac.ClusterRole{
-		ObjectMeta: v1.ObjectMeta{
+	testCR1 := rbacv1.ClusterRole{
+		ObjectMeta: metav1.ObjectMeta{
 			Namespace: "testNS",
 			Name:      "testCR",
 		},
 	}
 
 	// RoleBinding Objects
-	testRB2 := v1rbac.RoleBinding{
-		ObjectMeta: v1.ObjectMeta{
+	testRB2 := rbacv1.RoleBinding{
+		ObjectMeta: metav1.ObjectMeta{
 			Name:      "testRB",
 			Namespace: "testNS",
 		},
 	}
-	testSA2 := v1core.ServiceAccount{
-		ObjectMeta: v1.ObjectMeta{
+	testSA2 := corev1.ServiceAccount{
+		ObjectMeta: metav1.ObjectMeta{
 			Namespace: "testNS",
 			Name:      "testCR2",
 		},
 	}
-	testCR2 := v1rbac.Role{
-		ObjectMeta: v1.ObjectMeta{
+	testCR2 := rbacv1.Role{
+		ObjectMeta: metav1.ObjectMeta{
 			Namespace: "testNS",
 			Name:      "testRole",
 		},

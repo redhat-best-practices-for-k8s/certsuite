@@ -65,6 +65,11 @@ var (
 		Url:     formTestURL(common.ChaosTesting, "pod-delete"),
 		Version: versionOne,
 	}
+
+	// BaseDomain for the test cases
+	TestIDBaseDomain = url
+
+
 	// TestSecConCapabilitiesIdentifier tests for non compliant security context capabilities
 	TestSecConCapabilitiesIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AccessControlTestKey, "security-context-capabilities-check"),
@@ -323,6 +328,23 @@ func XformToGinkgoItIdentifierExtended(identifier claim.Identifier, extra string
 	}
 	TestIDToClaimID[key] = identifier
 	return key
+}
+
+// It extracts the suite name and test name from a claim.Identifier based
+// on the const url which contains a base domain
+// From a claim.Identifier.url:
+//   http://test-network-function.com/tests-case/SuitName/TestName
+// It extracts SuitNAme and TestName
+
+func GetSuiteAndTestFromIdentifier(identifier claim.Identifier) []string {
+	result := strings.Split(identifier.Url, url+"/")
+	const SPLITN = 2
+	// len 2, the baseDomain can appear only once in the url
+	// so it returns what you have previous and before basedomain
+	if len(result) != SPLITN {
+		return nil
+	}
+	return strings.Split(result[1], "/")
 }
 
 // Catalog is the JUnit testcase catalog of tests.
@@ -588,9 +610,9 @@ instantiation on any underlying Node.`),
 	TestPodHighAvailabilityBestPractices: {
 		Identifier:  TestPodHighAvailabilityBestPractices,
 		Type:        informativeResult,
-		Remediation: `In high availability cases, Pod replicas value should be set to more than 1 .`,
+		Remediation: `In high availability cases, Pod podAntiAffinity rule should be specified for pod scheduling and pod replica value is set to more than 1 .`,
 		Description: formDescription(TestPodHighAvailabilityBestPractices,
-			`ensures that CNF Pods replicas value is set to more than 1.`),
+			`ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
 

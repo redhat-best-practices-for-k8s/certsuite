@@ -54,25 +54,19 @@ func findOperatorsByLabel(olmClient clientOlm.Interface, labels []configuration.
 
 	return csvs
 }
-func findSubscriptions(olmClient clientOlm.Interface, labels []configuration.Label, namespaces []string) []olmv1Alpha.Subscription {
+func findSubscriptions(olmClient clientOlm.Interface, namespaces []string) []olmv1Alpha.Subscription {
 	subscriptions := []olmv1Alpha.Subscription{}
 	for _, ns := range namespaces {
 		logrus.Debugf("Searching subscriptions in namespace %s", ns)
-		for _, label := range labels {
-			logrus.Debugf("Searching subscriptions with label %+v", label)
-			label := buildLabelQuery(label)
-			subscription, err := olmClient.OperatorsV1alpha1().Subscriptions(ns).List(context.TODO(), metav1.ListOptions{
-				LabelSelector: label,
-			})
-			if err != nil {
-				logrus.Errorln("error when listing subscriptions in ns=", ns, " label=", label)
-				continue
-			}
-			subscriptions = append(subscriptions, subscription.Items...)
+		subscription, err := olmClient.OperatorsV1alpha1().Subscriptions(ns).List(context.TODO(), metav1.ListOptions{})
+		if err != nil {
+			logrus.Errorln("error when listing subscriptions in ns=", ns)
+			continue
 		}
+		subscriptions = append(subscriptions, subscription.Items...)
 	}
 
-	logrus.Infof("Found %d Subscriptions:", len(subscriptions))
+	logrus.Infof("Found %d subscriptions in the target namespaces:", len(subscriptions))
 	for i := range subscriptions {
 		logrus.Infof(" Subscriptions name: %s (ns: %s)", subscriptions[i].Name, subscriptions[i].Namespace)
 	}

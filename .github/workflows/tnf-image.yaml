@@ -18,6 +18,7 @@ defaults:
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
+  RELEASE_LEVEL: '4.10'
   IMAGE_NAME: testnetworkfunction/cnf-certification-test
   IMAGE_TAG: latest
   TNF_CONTAINER_CLIENT: docker
@@ -35,7 +36,7 @@ env:
 jobs:
   test-and-push-tnf-image:
     name: 'Test and push the `cnf-certification-test` image'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       max-parallel: 1
       matrix:
@@ -49,7 +50,7 @@ jobs:
     steps:
 
       - name: Checkout generic working branch of the current version
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ env.CURRENT_VERSION_GENERIC_BRANCH }}
           fetch-depth: '0'
@@ -105,23 +106,26 @@ jobs:
         run: echo "Tag '$PARTNER_VERSION' does not exist on remote $PARTNER_SRC_URL"
 
       - name: Checkout the version tag
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ env.TNF_VERSION }}
 
       - name: Build the `cnf-certification-test` image
         run: |
+          VERSIONS=($(sudo curl -sH 'Accept: application/json' "https://api.openshift.com/api/upgrades_info/v1/graph?channel=stable-${RELEASE_LEVEL}&arch=amd64" | jq -r '.nodes[].version' | sort -t "." -k1,1n -k2,2n -k3,3n))
+          OPENSHIFT_VERSION=${VERSIONS[${#VERSIONS[@]} - 1]}
           docker build --no-cache \
             -t ${REGISTRY_LOCAL}/${IMAGE_NAME}:${IMAGE_TAG} \
             -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} \
             -t ${REGISTRY}/${IMAGE_NAME}:${TNF_VERSION} \
             --build-arg TNF_VERSION=${TNF_VERSION} \
-            --build-arg TNF_SRC_URL=${TNF_SRC_URL} .
+            --build-arg TNF_SRC_URL=${TNF_SRC_URL} \
+            --build-arg OPENSHIFT_VERSION=${OPENSHIFT_VERSION} .
 
       # Create a minikube cluster for testing.
 
       - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner

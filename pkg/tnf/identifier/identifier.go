@@ -20,6 +20,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"strings"
 
 	"github.com/Masterminds/semver/v3"
 )
@@ -29,6 +30,8 @@ const (
 	semanticVersionKey = "version"
 	// urlKey is the JSON key representing a URL payload.
 	urlKey = "url"
+
+	urlTests = "http://test-network-function.com/tests"
 )
 
 // Identifier is a per tnf.Test unique identifier.
@@ -84,4 +87,20 @@ func (i *Identifier) UnmarshalJSON(b []byte) error {
 	}
 
 	return i.unmarshalSemanticVersion(objMap)
+}
+
+// GetShortNameFromIdentifier transform an Identifier into a just test name
+// returns empty string if Identifier.URL was not correct about the base domain
+// for the url
+func GetShortNameFromIdentifier(identifier Identifier) string {
+	if !strings.HasPrefix(identifier.URL, urlTests+"/") {
+		return ""
+	}
+	itID := strings.ReplaceAll(strings.TrimPrefix(identifier.URL, urlTests+"/"), "/", "-")
+
+	return itID
+}
+
+func GetIdentifierURLBaseDomain() string {
+	return urlTests
 }

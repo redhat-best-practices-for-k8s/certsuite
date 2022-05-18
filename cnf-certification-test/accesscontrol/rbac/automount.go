@@ -22,13 +22,13 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	v1core "k8s.io/api/core/v1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func AutomountServiceAccountSetOnSA(serviceAccountName, podNamespace string) (*bool, error) {
 	clientsHolder := clientsholder.GetClientsHolder()
-	sa, err := clientsHolder.K8sClient.CoreV1().ServiceAccounts(podNamespace).Get(context.TODO(), serviceAccountName, v1.GetOptions{})
+	sa, err := clientsHolder.K8sClient.CoreV1().ServiceAccounts(podNamespace).Get(context.TODO(), serviceAccountName, metav1.GetOptions{})
 	if err != nil {
 		logrus.Errorf("executing serviceaccount command failed with error: %s", err)
 		return nil, err
@@ -37,7 +37,7 @@ func AutomountServiceAccountSetOnSA(serviceAccountName, podNamespace string) (*b
 }
 
 //nolint:gocritic
-func EvaluateAutomountTokens(put *v1core.Pod) (bool, string) {
+func EvaluateAutomountTokens(put *corev1.Pod) (bool, string) {
 	// The token can be specified in the pod directly
 	// or it can be specified in the service account of the pod
 	// if no service account is configured, then the pod will use the configuration

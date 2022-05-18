@@ -83,7 +83,7 @@ func TestCountPodsWithDelete(t *testing.T) {
 		clientsholder.ClearTestClientsHolder()
 		_ = clientsholder.GetTestClientsHolder(testRuntimeObjects)
 
-		result, err := CountPodsWithDelete("node1", true)
+		result, err := CountPodsWithDelete("node1", DeleteBackground)
 		assert.Nil(t, err)
 		assert.Equal(t, tc.expectedCount, result)
 	}
@@ -92,7 +92,7 @@ func TestCountPodsWithDelete(t *testing.T) {
 func generateNode(name string) corev1.Node {
 	return corev1.Node{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "node1",
+			Name: name,
 		},
 		Spec: corev1.NodeSpec{
 			Unschedulable: false,

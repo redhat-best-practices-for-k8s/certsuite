@@ -3,7 +3,8 @@ ARG TNF_PARTNER_DIR=/usr/tnf-partner
 
 ENV TNF_PARTNER_SRC_DIR=$TNF_PARTNER_DIR/src
 
-ENV OPENSHIFT_VERSION=4.9.9
+ARG OPENSHIFT_VERSION
+ENV OPENSHIFT_VERSION=${OPENSHIFT_VERSION}
 
 ENV TNF_DIR=/usr/tnf
 ENV TNF_SRC_DIR=${TNF_DIR}/tnf-src
@@ -16,7 +17,7 @@ RUN yum install -y gcc git jq make wget
 
 # Install Go binary
 ENV GO_DL_URL="https://golang.org/dl"
-ENV GO_BIN_TAR="go1.18.1.linux-amd64.tar.gz"
+ENV GO_BIN_TAR="go1.18.2.linux-amd64.tar.gz"
 ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
 ENV GOPATH="/root/go"
 RUN if [[ "$(uname -m)" -eq "x86_64" ]] ; then \
@@ -76,6 +77,8 @@ RUN mkdir ${TNF_BIN_DIR} && \
 	cp run-cnf-suites.sh ${TNF_DIR} && \
     mkdir ${TNF_DIR}/script && \
     cp script/results.html ${TNF_DIR}/script && \
+    # copy helm/operator/container certification db
+    cp --parents `find -name \*.db*` ${TNF_DIR} && \
 	# copy all JSON files to allow tests to run
 	cp --parents `find -name \*.json*` ${TNF_DIR} && \
 	cp cnf-certification-test/cnf-certification-test.test ${TNF_BIN_DIR}

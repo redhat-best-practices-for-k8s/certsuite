@@ -34,9 +34,9 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"helm.sh/helm/v3/pkg/release"
-	v1apps "k8s.io/api/apps/v1"
-	v1scaling "k8s.io/api/autoscaling/v1"
-	v1 "k8s.io/api/core/v1"
+	appsv1 "k8s.io/api/apps/v1"
+	scalingv1 "k8s.io/api/autoscaling/v1"
+	corev1 "k8s.io/api/core/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
@@ -59,14 +59,14 @@ var (
 )
 
 type Pod struct {
-	Data               *v1.Pod
+	Data               *corev1.Pod
 	Containers         []*Container
 	MultusIPs          map[string][]string
 	SkipNetTests       bool
 	SkipMultusNetTests bool
 }
 
-func NewPod(aPod *v1.Pod) (out Pod) {
+func NewPod(aPod *corev1.Pod) (out Pod) {
 	var err error
 	out.Data = aPod
 	out.MultusIPs = make(map[string][]string)
@@ -74,17 +74,18 @@ func NewPod(aPod *v1.Pod) (out Pod) {
 	if err != nil {
 		logrus.Errorf("Could not decode networks-status annotation")
 	}
-	if aPod.GetLabels()[skipConnectivityTestsLabel] != "" {
+
+	if _, ok := aPod.GetLabels()[skipConnectivityTestsLabel]; ok {
 		out.SkipNetTests = true
 	}
-	if aPod.GetLabels()[skipMultusConnectivityTestsLabel] != "" {
+	if _, ok := aPod.GetLabels()[skipMultusConnectivityTestsLabel]; ok {
 		out.SkipMultusNetTests = true
 	}
 	out.Containers = append(out.Containers, getPodContainers(aPod)...)
 	return out
 }
 
-func ConvertArrayPods(pods []*v1.Pod) (out []*Pod) {
+func ConvertArrayPods(pods []*corev1.Pod) (out []*Pod) {
 	for i := range pods {
 		aPodWrapper := NewPod(pods[i])
 		out = append(out, &aPodWrapper)
@@ -93,19 +94,18 @@ func ConvertArrayPods(pods []*v1.Pod) (out []*Pod) {
 }
 
 type TestEnvironment struct { // rename this with testTarget
-	Namespaces        []string           `json:"testNamespaces"`
-	Pods              []*Pod             `json:"testPods"`
-	Containers        []*Container       `json:"testContainers"`
-	Operators         []Operator         `json:"testOperators"`
-	DebugPods         map[string]*v1.Pod // map from nodename to debugPod
+	Namespaces        []string               `json:"testNamespaces"`
+	Pods              []*Pod                 `json:"testPods"`
+	Containers        []*Container           `json:"testContainers"`
+	Operators         []Operator             `json:"testOperators"`
+	DebugPods         map[string]*corev1.Pod // map from nodename to debugPod
 	Config            configuration.TestConfiguration
 	variables         configuration.TestParameters
 	Crds              []*apiextv1.CustomResourceDefinition          `json:"testCrds"`
-	Deployments       []*v1apps.Deployment                          `json:"testDeployments"`
-	StatetfulSets     []*v1apps.StatefulSet                         `json:"testStatetfulSets"`
-	HorizontalScaler  map[string]*v1scaling.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
+	Deployments       []*appsv1.Deployment                          `json:"testDeployments"`
+	StatetfulSets     []*appsv1.StatefulSet                         `json:"testStatetfulSets"`
+	HorizontalScaler  map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
 	Nodes             map[string]Node                               `json:"-"`
-	Subscriptions     []*olmv1Alpha.Subscription                    `json:"testSubscriptions"`
 	K8sVersion        string                                        `json:"-"`
 	OpenshiftVersion  string                                        `json:"-"`
 	HelmChartReleases []*release.Release                            `json:"testHelmChartReleases"`
@@ -126,13 +126,14 @@ type Operator struct {
 	Csv              *olmv1Alpha.ClusterServiceVersion `yaml:"csv" json:"csv"`
 	SubscriptionName string                            `yaml:"subscriptionName" json:"subscriptionName"`
 	InstallPlans     []CsvInstallPlan                  `yaml:"installPlans,omitempty" json:"installPlans,omitempty"`
-	Package          string                            `yaml:"packag" json:"packag"`
-	Org              string                            `yaml:"Org" json:"Org"`
-	Version          string                            `yaml:"Version" json:"Version"`
+	Package          string                            `yaml:"package" json:"package"`
+	Org              string                            `yaml:"org" json:"org"`
+	Version          string                            `yaml:"version" json:"version"`
+	Channel          string                            `yaml:"channel" json:"channel"`
 }
 type Container struct {
-	Data                     *v1.Container
-	Status                   v1.ContainerStatus
+	Data                     *corev1.Container
+	Status                   corev1.ContainerStatus
 	Namespace                string
 	Podname                  string
 	NodeName                 string
@@ -154,7 +155,7 @@ type MachineConfig struct {
 }
 
 type Node struct {
-	Data *v1.Node
+	Data *corev1.Node
 	Mc   MachineConfig `json:"-"`
 }
 
@@ -197,10 +198,10 @@ func GetContainer() *Container {
 	return &Container{}
 }
 
-func GetUpdatedDeployment(ac appv1client.AppsV1Interface, namespace, podName string) (*v1apps.Deployment, error) {
+func GetUpdatedDeployment(ac appv1client.AppsV1Interface, namespace, podName string) (*appsv1.Deployment, error) {
 	return autodiscover.FindDeploymentByNameByNamespace(ac, namespace, podName)
 }
-func GetUpdatedStatefulset(ac appv1client.AppsV1Interface, namespace, podName string) (*v1apps.StatefulSet, error) {
+func GetUpdatedStatefulset(ac appv1client.AppsV1Interface, namespace, podName string) (*appsv1.StatefulSet, error) {
 	return autodiscover.FindStatefulsetByNameByNamespace(ac, namespace, podName)
 }
 
@@ -226,19 +227,12 @@ func buildTestEnvironment() { //nolint:funlen
 		env.Pods = append(env.Pods, &aNewPod)
 		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
-	env.DebugPods = make(map[string]*v1.Pod)
+	env.DebugPods = make(map[string]*corev1.Pod)
 	for i := 0; i < len(data.DebugPods); i++ {
 		nodeName := data.DebugPods[i].Spec.NodeName
 		env.DebugPods[nodeName] = &data.DebugPods[i]
 	}
-	csvs := data.Csvs
-	subscriptions := data.Subscriptions
-	for i := range csvs {
-		isCsv, sub := IsinstalledCsv(&csvs[i], subscriptions)
-		if isCsv {
-			env.Subscriptions = append(env.Subscriptions, &sub)
-		}
-	}
+
 	env.OpenshiftVersion = data.OpenshiftVersion
 	env.K8sVersion = data.K8sVersion
 	for _, nsHelmChartReleases := range data.HelmChartReleases {
@@ -261,12 +255,13 @@ func buildTestEnvironment() { //nolint:funlen
 		logrus.Errorf("Failed to get cluster operators: %s", err)
 	}
 	env.Operators = operators
+	logrus.Infof("Operators found: %d", len(env.Operators))
 }
 
-func getPodContainers(aPod *v1.Pod) (containerList []*Container) {
+func getPodContainers(aPod *corev1.Pod) (containerList []*Container) {
 	for j := 0; j < len(aPod.Spec.Containers); j++ {
 		cut := &(aPod.Spec.Containers[j])
-		var state v1.ContainerStatus
+		var state corev1.ContainerStatus
 		if len(aPod.Status.ContainerStatuses) > 0 {
 			state = aPod.Status.ContainerStatuses[j]
 		} else {
@@ -352,7 +347,7 @@ func WaitDebugPodsReady() error {
 	return nil
 }
 
-func isDaemonSetReady(status *v1apps.DaemonSetStatus) bool {
+func isDaemonSetReady(status *appsv1.DaemonSetStatus) bool {
 	//nolint:gocritic
 	return status.DesiredNumberScheduled == status.CurrentNumberScheduled &&
 		status.DesiredNumberScheduled == status.NumberAvailable &&
@@ -396,7 +391,7 @@ func buildContainerImageSource(url string) configuration.ContainerImageIdentifie
 	}
 	return source
 }
-func GetRuntimeUID(cs *v1.ContainerStatus) (runtime, uid string) {
+func GetRuntimeUID(cs *corev1.ContainerStatus) (runtime, uid string) {
 	split := strings.Split(cs.ContainerID, "://")
 	if len(split) > 0 {
 		uid = split[len(split)-1]
@@ -430,14 +425,14 @@ func (p *Pod) String() string {
 	)
 }
 
-func DeploymentToString(d *v1apps.Deployment) string {
+func DeploymentToString(d *appsv1.Deployment) string {
 	return fmt.Sprintf("deployment: %s ns: %s",
 		d.Name,
 		d.Namespace,
 	)
 }
 
-func StatefulsetToString(s *v1apps.StatefulSet) string {
+func StatefulsetToString(s *appsv1.StatefulSet) string {
 	return fmt.Sprintf("statefulset: %s ns: %s",
 		s.Name,
 		s.Namespace,
@@ -556,6 +551,7 @@ func getCatalogSourceImageIndexFromInstallPlan(installPlan *olmv1Alpha.InstallPl
 	return catalogSource.Spec.Image, nil
 }
 
+//nolint:funlen
 func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription) ([]Operator, error) {
 	installPlans := map[string][]olmv1Alpha.InstallPlan{} // Helper: maps a namespace name to all its installplans.
 	operators := []Operator{}
@@ -575,6 +571,7 @@ func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []ol
 			op.SubscriptionName = subscription.Name
 			op.Package = subscription.Spec.Package
 			op.Org = subscription.Spec.CatalogSource
+			op.Channel = subscription.Spec.Channel
 			break
 		}
 
@@ -627,7 +624,7 @@ func getMachineConfig(mcName string, machineConfigs map[string]MachineConfig) (M
 	return mc, nil
 }
 
-func createNodes(nodes []v1.Node) map[string]Node {
+func createNodes(nodes []corev1.Node) map[string]Node {
 	wrapperNodes := map[string]Node{}
 
 	// machineConfigs is a helper map to avoid download & process the same mc twice.
