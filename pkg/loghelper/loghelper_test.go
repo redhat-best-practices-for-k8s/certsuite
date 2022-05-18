@@ -25,8 +25,8 @@ import (
 func TestLogLines(t *testing.T) {
 	SetLogFormat()
 	ll := CuratedLogLines{}
-	ll = ll.Init("one", "two", "three")
+	ll.Init("one", "two", "three")
 	assert.Equal(t, []string{"one", "two", "three"}, ll.GetLogLines())
-	ll = ll.AddLogLine("four") // adds a newline
+	ll.AddLogLine("four") // adds a newline
 	assert.Equal(t, []string{"one", "two", "three", "four\n"}, ll.GetLogLines())
 }

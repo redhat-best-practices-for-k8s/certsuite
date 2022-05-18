@@ -330,7 +330,7 @@ func testUnalteredBootParams(env *provider.TestEnvironment) {
 
 		if err != nil || len(claimsLog.GetLogLines()) != 0 {
 			failedNodes = append(failedNodes, fmt.Sprintf("node %s (%s)", cut.NodeName, cut.String()))
-			tnf.ClaimFilePrintf("%s", claimsLog)
+			tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 		}
 	}
 	gomega.Expect(failedNodes).To(gomega.BeEmpty())

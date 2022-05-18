@@ -32,20 +32,19 @@ type CuratedLogLines struct {
 }
 
 // AddLogLine checks a slice for a given string.
-func (list CuratedLogLines) AddLogLine(format string, args ...interface{}) CuratedLogLines {
+//nolint:goprintffuncname
+func (list *CuratedLogLines) AddLogLine(format string, args ...interface{}) {
 	message := fmt.Sprintf(format+"\n", args...)
 	list.lines = append(list.lines, message)
 	logrus.Debug(message)
-	return list
 }
 
 // Init checks a slice for a given string.
-func (list CuratedLogLines) Init(lines ...string) CuratedLogLines {
+func (list *CuratedLogLines) Init(lines ...string) {
 	list.lines = append(list.lines, lines...)
-	return list
 }
 
-func (list CuratedLogLines) GetLogLines() []string {
+func (list *CuratedLogLines) GetLogLines() []string {
 	return list.lines
 }
 

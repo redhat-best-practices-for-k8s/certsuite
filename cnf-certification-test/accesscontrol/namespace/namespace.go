@@ -96,7 +96,7 @@ func GetInvalidCRsNum(invalidCrs map[string]map[string][]string) (invalidCrsNum 
 	for crdName, namespaces := range invalidCrs {
 		for namespace, crNames := range namespaces {
 			for _, crName := range crNames {
-				claimsLog = claimsLog.AddLogLine("crName=%s namespace=%s is invalid (crd=%s)", crName, namespace, crdName)
+				claimsLog.AddLogLine("crName=%s namespace=%s is invalid (crd=%s)", crName, namespace, crdName)
 				invalidCrsNum++
 			}
 		}

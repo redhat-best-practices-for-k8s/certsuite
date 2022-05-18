@@ -324,7 +324,7 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 	defer env.SetNeedsRefresh()
 	claimsLog, atLeastOnePodsetNotReady := podsets.WaitForAllPodSetReady(env, timeoutPodSetReady)
 	if atLeastOnePodsetNotReady {
-		tnf.ClaimFilePrintf("%s", claimsLog)
+		tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 		ginkgo.Fail("Some deployments or stateful sets are not in a good initial state. Cannot perform test.")
 	}
 	for n := range podsets.GetAllNodesForAllPodSets(env.Pods) {
@@ -349,7 +349,7 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 
 		claimsLog, podsNotReady := podsets.WaitForAllPodSetReady(env, nodeTimeout)
 		if podsNotReady {
-			tnf.ClaimFilePrintf("%s", claimsLog)
+			tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 			ginkgo.Fail(fmt.Sprintf("Some pods are not ready after draining the node %s", n))
 		}
 

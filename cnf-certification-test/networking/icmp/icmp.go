@@ -52,13 +52,13 @@ func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, 
 	netsUnderTest = make(map[string]netcommons.NetTestContext)
 	for _, put := range pods {
 		if put.SkipNetTests {
-			claimsLog = claimsLog.AddLogLine("Skipping %s because it is excluded from all connectivity tests", put)
+			claimsLog.AddLogLine("Skipping %s because it is excluded from all connectivity tests", put)
 			continue
 		}
 
 		if aType == netcommons.MULTUS {
 			if put.SkipMultusNetTests {
-				claimsLog = claimsLog.AddLogLine("Skipping pod %s because it is excluded from %s connectivity tests only", put.Data.Name, aType)
+				claimsLog.AddLogLine("Skipping pod %s because it is excluded from %s connectivity tests only", put.Data.Name, aType)
 				continue
 			}
 			for netKey, multusIPAddress := range put.MultusIPs {
@@ -149,7 +149,7 @@ func RunNetworkingTests( //nolint:funlen
 				aDestIP.ContainerIdentifier, aDestIP.IP)
 			result, err := TestPing(netUnderTest.TesterSource.ContainerIdentifier, aDestIP, count)
 			logrus.Debugf("Ping results: %s", result.String())
-			claimsLog = claimsLog.AddLogLine("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s ) result: %s",
+			claimsLog.AddLogLine("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s ) result: %s",
 				aIPVersion, netName,
 				netUnderTest.TesterSource.ContainerIdentifier, netUnderTest.TesterSource.IP,
 				aDestIP.ContainerIdentifier, aDestIP.IP, result.String())
