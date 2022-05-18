@@ -26880,7 +26880,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-17T01:13:54.958000+00:00",
+      "last_update_date": "2022-05-18T01:05:59.761000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -32577,171 +32577,6 @@
       "version_original": "8.0.31"
     },
     {
-      "_id": "627c6d18228d5769c56928b4",
-      "alm_examples": [
-        {
-          "api_version": "apps.ibmz.com/v1alpha1",
-          "kind": "MongoDB",
-          "metadata": {
-            "name": "mongodb-sample"
-          },
-          "spec": {
-            "affinity": {},
-            "autoscaling": {
-              "enabled": false,
-              "maxReplicas": 100,
-              "minReplicas": 1,
-              "targetCPUUtilizationPercentage": 80
-            },
-            "database": {
-              "adminpassword": "snowball123",
-              "adminuser": "adminuser",
-              "name_database": "mydb"
-            },
-            "fullnameOverride": "",
-            "global": {
-              "license": true,
-              "persistence": {
-                "claims": {
-                  "accessMode": "ReadWriteMany",
-                  "capacity": 10,
-                  "capacityUnit": "Gi",
-                  "mountPath": "/data/db/",
-                  "name": "mongo-pv-claim",
-                  "storageClassName": "managed-nfs-storage"
-                },
-                "securityContext": {
-                  "fsGroup": 0,
-                  "supplementalGroup": 0
-                }
-              }
-            },
-            "image": {
-              "pullPolicy": "Always",
-              "repository": "us.icr.io/tonyfieit/mongo-enterprise@sha256:6fe671252e036d3c46c6e9380919a354b9800d9f9330de3b9483d3f5bae13cf5"
-            },
-            "imagePullSecretRef": "registry-pull-secret",
-            "imagePullSecrets": [
-              {
-                "name": "registry-pull-secret"
-              }
-            ],
-            "ingress": {
-              "annotations": {},
-              "controller": "nginx",
-              "tls": []
-            },
-            "name": "mongodb",
-            "nameOverride": "",
-            "namespaceList": [],
-            "namespaced": true,
-            "nodeSelector": {},
-            "podSecurity": {
-              "enabled": true,
-              "securityContext": {
-                "fsGroup": 1000650000,
-                "runAsNonRoot": true,
-                "runAsUser": 1000650000
-              }
-            },
-            "replicaCount": 1,
-            "resources": {
-              "limits": {
-                "cpu": "200m",
-                "memory": "1Gi"
-              },
-              "requests": {
-                "cpu": "200m",
-                "memory": "1Gi"
-              }
-            },
-            "service": {
-              "port": 27017,
-              "type": "ClusterIP"
-            },
-            "serviceAccount": {
-              "annotations": {},
-              "create": true,
-              "name": "mongod"
-            },
-            "tolerations": []
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tonyfieit/quai@sha256:9282d87a50384e00c896a587b4b38ce3561e841c99836884f7122aebdf602814",
-      "bundle_path_digest": "sha256:9282d87a50384e00c896a587b4b38ce3561e841c99836884f7122aebdf602814",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-05-12T02:12:40.667000+00:00",
-      "csv_description": "IBM Operator to deploy MongoDB Enterprise on OpenShift Container",
-      "csv_display_name": "IBMz MongoDB Operator",
-      "csv_metadata_description": "",
-      "csv_name": "ibmz-mongodb-enterprise-operator.4.4.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:47:47.097000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "ibmz-mongodb-enterprise-operator",
-      "provided_apis": [
-        {
-          "group": "apps.ibmz.com",
-          "kind": "MongoDB",
-          "plural": "mongodbs",
-          "version": "v1alpha1"
-        }
-      ],
-      "related_images": [
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:dabd2b800efc1eb546fb77774d7968ec3745062b3b0f0f8903c9f7658b1c03b0",
-          "image": "us.icr.io/tonyfieit/bmz-mongodb-enterprise-operator@sha256:dabd2b800efc1eb546fb77774d7968ec3745062b3b0f0f8903c9f7658b1c03b0",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:6fe671252e036d3c46c6e9380919a354b9800d9f9330de3b9483d3f5bae13cf5",
-          "image": "us.icr.io/tonyfieit/mongo-enterprise@sha256:6fe671252e036d3c46c6e9380919a354b9800d9f9330de3b9483d3f5bae13cf5",
-          "name": "mongo-enterprise-6fe671252e036d3c46c6e9380919a354b9800d9f9330de3b9483d3f5bae13cf5-annotation"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "4.4.0",
-      "version_original": "4.4.0"
-    },
-    {
       "_id": "627c6d2c4be4723d90ee6c98",
       "alm_examples": [
         {
@@ -33598,8 +33433,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:49:34.370000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-05-17T07:41:06.919000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
       "package": "joget-dx-operator",
@@ -45475,9 +45310,362 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.1.0",
       "version_original": "1.1.0"
+    },
+    {
+      "_id": "627c6edf9b28cbab99bd1140",
+      "alm_examples": [
+        {
+          "api_version": "enterprise.splunk.com/v3",
+          "kind": "ClusterMaster",
+          "metadata": {
+            "finalizers": [
+              "enterprise.splunk.com/delete-pvc"
+            ],
+            "name": "clustermaster-sample"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "enterprise.splunk.com/v3",
+          "kind": "IndexerCluster",
+          "metadata": {
+            "finalizers": [
+              "enterprise.splunk.com/delete-pvc"
+            ],
+            "name": "indexercluster-sample"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "enterprise.splunk.com/v3",
+          "kind": "LicenseMaster",
+          "metadata": {
+            "finalizers": [
+              "enterprise.splunk.com/delete-pvc"
+            ],
+            "name": "licensemaster-sample"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "enterprise.splunk.com/v3",
+          "kind": "MonitoringConsole",
+          "metadata": {
+            "finalizers": [
+              "enterprise.splunk.com/delete-pvc"
+            ],
+            "name": "monitoringconsole-sample"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "enterprise.splunk.com/v3",
+          "kind": "SearchHeadCluster",
+          "metadata": {
+            "finalizers": [
+              "enterprise.splunk.com/delete-pvc"
+            ],
+            "name": "searchheadcluster-sample"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "enterprise.splunk.com/v3",
+          "kind": "Standalone",
+          "metadata": {
+            "finalizers": [
+              "enterprise.splunk.com/delete-pvc"
+            ],
+            "name": "standalone-sample"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/61b0dd9a4841f1221d73cdba/splunk-operator@sha256:72a0d007e387c1b8c6506ef6500f59014100c0f0fb53c6c710ebea917dd89da0",
+      "bundle_path_digest": "sha256:72a0d007e387c1b8c6506ef6500f59014100c0f0fb53c6c710ebea917dd89da0",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:20:15.786000+00:00",
+      "csv_description": "K8 Operator for Splunk Enterprise Deployments",
+      "csv_display_name": "Splunk Operator",
+      "csv_metadata_description": "",
+      "csv_name": "splunk-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T10:58:32.144000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "splunk-operator",
+      "provided_apis": [
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "LicenseMaster",
+          "plural": "licensemasters",
+          "version": "v3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "ClusterMaster",
+          "plural": "clustermasters",
+          "version": "v1beta2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "LicenseMaster",
+          "plural": "licensemasters",
+          "version": "v1beta3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "IndexerCluster",
+          "plural": "indexerclusters",
+          "version": "v1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "SearchHeadCluster",
+          "plural": "searchheadclusters",
+          "version": "v3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "ClusterMaster",
+          "plural": "clustermasters",
+          "version": "v2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "IndexerCluster",
+          "plural": "indexerclusters",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "SearchHeadCluster",
+          "plural": "searchheadclusters",
+          "version": "v1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "LicenseMaster",
+          "plural": "licensemasters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "LicenseMaster",
+          "plural": "licensemasters",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "ClusterMaster",
+          "plural": "clustermasters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "SearchHeadCluster",
+          "plural": "searchheadclusters",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "LicenseMaster",
+          "plural": "licensemasters",
+          "version": "v1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "Standalone",
+          "plural": "standalones",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "SearchHeadCluster",
+          "plural": "searchheadclusters",
+          "version": "v2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "Standalone",
+          "plural": "standalones",
+          "version": "v1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "SearchHeadCluster",
+          "plural": "searchheadclusters",
+          "version": "v1beta3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "ClusterMaster",
+          "plural": "clustermasters",
+          "version": "v1beta3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "LicenseMaster",
+          "plural": "licensemasters",
+          "version": "v1beta2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "IndexerCluster",
+          "plural": "indexerclusters",
+          "version": "v2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "ClusterMaster",
+          "plural": "clustermasters",
+          "version": "v3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "ClusterMaster",
+          "plural": "clustermasters",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "Standalone",
+          "plural": "standalones",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "Standalone",
+          "plural": "standalones",
+          "version": "v1beta2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "LicenseMaster",
+          "plural": "licensemasters",
+          "version": "v2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "IndexerCluster",
+          "plural": "indexerclusters",
+          "version": "v1beta3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "Standalone",
+          "plural": "standalones",
+          "version": "v3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "IndexerCluster",
+          "plural": "indexerclusters",
+          "version": "v1beta2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "ClusterMaster",
+          "plural": "clustermasters",
+          "version": "v1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "IndexerCluster",
+          "plural": "indexerclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "IndexerCluster",
+          "plural": "indexerclusters",
+          "version": "v3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "SearchHeadCluster",
+          "plural": "searchheadclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "SearchHeadCluster",
+          "plural": "searchheadclusters",
+          "version": "v1beta2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "MonitoringConsole",
+          "plural": "monitoringconsoles",
+          "version": "v3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "Standalone",
+          "plural": "standalones",
+          "version": "v1beta3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "Standalone",
+          "plural": "standalones",
+          "version": "v2"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:caf3bb58d7e8b0e17ccf3a580a368f9321fbdbf748d8e1ad05aef8720c1a168e",
+          "image": "splunk/splunk-operator@sha256:caf3bb58d7e8b0e17ccf3a580a368f9321fbdbf748d8e1ad05aef8720c1a168e",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e343936f31820045a773b9b5373c2105ee559481ad1d1a18bad45c706b48ea3c",
+          "image": "docker.io/splunk/splunk@sha256:e343936f31820045a773b9b5373c2105ee559481ad1d1a18bad45c706b48ea3c",
+          "name": "splunk_enterprise"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
     }
   ],
   "page": 6,
   "page_size": 500,
-  "total": 3924
+  "total": 3938
 }
