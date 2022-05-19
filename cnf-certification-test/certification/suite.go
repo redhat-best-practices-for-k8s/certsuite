@@ -31,6 +31,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/releasehelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
@@ -149,7 +150,7 @@ func testHelmCertified(env *provider.TestEnvironment) {
 	// Collect all of the failed helm charts
 	failedHelmCharts := [][]string{}
 	for _, helm := range helmchartsReleases {
-		if !certtool.IsReleaseCertified(helm, env.K8sVersion, out) {
+		if !releasehelper.IsReleaseCertified(helm, env.K8sVersion, out, chartsdb) {
 			failedHelmCharts = append(failedHelmCharts, []string{helm.Chart.Metadata.Version, helm.Name})
 		} else {
 			logrus.Info(fmt.Sprintf("Helm %s with version %s is certified", helm.Name, helm.Chart.Metadata.Version))

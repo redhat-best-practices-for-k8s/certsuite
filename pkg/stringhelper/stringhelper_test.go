@@ -76,3 +76,33 @@ func TestStringInSlice(t *testing.T) {
 		assert.Equal(t, tc.expected, StringInSlice(tc.testSlice, tc.testString, tc.containsFeature))
 	}
 }
+
+func TestCompareVersion(t *testing.T) {
+	// Note: These values pertain to 'kubeVersion' fields found:
+	// https://charts.openshift.io/index.yaml
+	testCases := []struct {
+		ver1           string
+		ver2           string
+		expectedOutput bool
+	}{
+		{
+			ver1:           "1.18.1",
+			ver2:           ">= 1.19",
+			expectedOutput: false,
+		},
+		{
+			ver1:           "1.19.1",
+			ver2:           ">= 1.19",
+			expectedOutput: true,
+		},
+		{
+			ver1:           "1.19",
+			ver2:           ">= 1.16.0 < 1.22.0",
+			expectedOutput: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, CompareVersion(tc.ver1, tc.ver2))
+	}
+}

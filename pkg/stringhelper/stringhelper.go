@@ -18,6 +18,8 @@ package stringhelper
 
 import (
 	"strings"
+
+	"github.com/hashicorp/go-version"
 )
 
 // StringInSlice checks a slice for a given string.
@@ -47,4 +49,25 @@ func RemoveDuplicates(str []string) []string {
 		}
 	}
 	return list
+}
+
+// CompareVersion compare between versions
+func CompareVersion(ver1, ver2 string) bool {
+	ourKubeVersion, _ := version.NewVersion(ver1)
+	kubeVersion := strings.ReplaceAll(ver2, " ", "")[2:]
+	if strings.Contains(kubeVersion, "<") {
+		kubever := strings.Split(kubeVersion, "<")
+		minVersion, _ := version.NewVersion(kubever[0])
+		maxVersion, _ := version.NewVersion(kubever[1])
+		if ourKubeVersion.GreaterThanOrEqual(minVersion) && ourKubeVersion.LessThan(maxVersion) {
+			return true
+		}
+	} else {
+		kubever := strings.Split(kubeVersion, "-")
+		minVersion, _ := version.NewVersion(kubever[0])
+		if ourKubeVersion.GreaterThanOrEqual(minVersion) {
+			return true
+		}
+	}
+	return false
 }
