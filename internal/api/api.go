@@ -126,12 +126,14 @@ type ContainerCatalogEntry struct {
 		TopLayerID             string `json:"top_layer_id"`
 		UncompressedTopLayerID string `json:"uncompressed_top_layer_id"`*/
 }
+
+type ChartEntry struct {
+	Name        string `yaml:"name"`
+	Version     string `yaml:"version"`
+	KubeVersion string `yaml:"kubeVersion"`
+}
 type ChartStruct struct {
-	Entries map[string][]struct {
-		Name        string `yaml:"name"`
-		Version     string `yaml:"version"`
-		KubeVersion string `yaml:"kubeVersion"`
-	} `yaml:"entries"`
+	Entries map[string][]ChartEntry `yaml:"entries"`
 }
 
 type catalogQueryResponse struct {

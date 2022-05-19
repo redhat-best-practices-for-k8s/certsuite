@@ -6,6 +6,7 @@ import (
 	"os"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/api"
 	"gopkg.in/yaml.v2"
 )
 
@@ -13,16 +14,7 @@ const (
 	helmRelativePath = "%s/../cmd/tnf/fetch/data/helm/helm.db"
 )
 
-type ChartEntry struct {
-	Name        string `yaml:"name"`
-	Version     string `yaml:"version"`
-	KubeVersion string `yaml:"kubeVersion"`
-}
-type ChartStruct struct {
-	Entries map[string][]ChartEntry `yaml:"entries"`
-}
-
-var chartsdb = make(map[string][]ChartEntry)
+var chartsdb = make(map[string][]api.ChartEntry)
 var loaded = false
 
 func loadHelmCatalog(pathToRoot string) {
@@ -41,7 +33,7 @@ func loadHelmCatalog(pathToRoot string) {
 	if err != nil {
 		log.Error("can't process file", f.Name(), err, " trying to proceed")
 	}
-	var charts ChartStruct
+	var charts api.ChartStruct
 	if err = yaml.Unmarshal(bytes, &charts); err != nil {
 		log.Error("error while parsing the yaml file of the helm certification list ", err)
 	}

@@ -150,7 +150,7 @@ func testHelmCertified(env *provider.TestEnvironment) {
 	// Collect all of the failed helm charts
 	failedHelmCharts := [][]string{}
 	for _, helm := range helmchartsReleases {
-		if !releasehelper.IsReleaseCertified(helm, env.K8sVersion, out, chartsdb) {
+		if !releasehelper.IsReleaseCertified(helm, env.K8sVersion, out.Entries) {
 			failedHelmCharts = append(failedHelmCharts, []string{helm.Chart.Metadata.Version, helm.Name})
 		} else {
 			logrus.Info(fmt.Sprintf("Helm %s with version %s is certified", helm.Name, helm.Chart.Metadata.Version))
