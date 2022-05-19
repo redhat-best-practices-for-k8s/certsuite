@@ -60,6 +60,12 @@ var (
 	// TestIdToClaimId converts the testcase short ID to the claim identifier
 	TestIDToClaimID = map[string]claim.Identifier{}
 
+	// TestPodDeleteIdentifier tests for delete pod test
+	TestPodDeleteIdentifier = claim.Identifier{
+		Url:     formTestURL(common.ChaosTesting, "pod-delete"),
+		Version: versionOne,
+	}
+
 	// BaseDomain for the test cases
 	TestIDBaseDomain = url
 
@@ -378,6 +384,14 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			- NET_RAW
 			- IPC_LOCK
 `),
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+	},
+	TestPodDeleteIdentifier: {
+		Identifier:  TestPodDeleteIdentifier,
+		Type:        normativeResult,
+		Remediation: `Make sure that the pods can be recreated successfully after deleting them`,
+		Description: formDescription(TestPodDeleteIdentifier,
+			`Using the litmus chaos operator, this test checks that pods are recreated successfully after deleting them.`),
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
 	TestSecConNonRootUserIdentifier: {

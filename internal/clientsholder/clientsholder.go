@@ -177,7 +177,6 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("can't instantiate MachineCfg client: %s", err)
 	}
-
 	clientsHolder.ready = true
 	return &clientsHolder, nil
 }
