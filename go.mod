@@ -161,7 +161,7 @@ require (
 
 require (
 	github.com/go-yaml/yaml v2.1.0+incompatible
-	github.com/hashicorp/go-version v1.4.0
+	github.com/hashicorp/go-version v1.5.0
 	k8s.io/apiextensions-apiserver v0.24.0
 )
 
