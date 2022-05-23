@@ -68,7 +68,10 @@ var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 	ocpClient := clientsholder.GetClientsHolder()
 
-	numLogLines := int64(1)
+	// K8s' API won't return lines that don't have the newline termination char, so
+	// We need to ask for the last two lines.
+	const tailLogLines = 2
+	numLogLines := int64(tailLogLines)
 	podLogOptions := corev1.PodLogOptions{TailLines: &numLogLines, Container: cut.Data.Name}
 	req := ocpClient.K8sClient.CoreV1().Pods(cut.Namespace).GetLogs(cut.Podname, &podLogOptions)
 
