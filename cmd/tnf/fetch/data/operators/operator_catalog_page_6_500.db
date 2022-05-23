@@ -26880,7 +26880,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-18T12:55:52.788000+00:00",
+      "last_update_date": "2022-05-23T01:01:35.422000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -29918,8 +29918,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:45:11.018000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-05-19T21:12:15.584000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
       "package": "dell-csi-operator-certified",
@@ -33860,247 +33860,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "0.0.10",
       "version_original": "0.0.10"
-    },
-    {
-      "_id": "627c6dd69b28cbab99bd0efd",
-      "alm_examples": [
-        {
-          "api_version": "minio.min.io/v2",
-          "kind": "Tenant",
-          "metadata": {
-            "annotations": {
-              "prometheus.io/path": "/minio/v2/metrics/cluster",
-              "prometheus.io/port": "9000",
-              "prometheus.io/scrape": "true"
-            },
-            "labels": {
-              "app": "minio"
-            },
-            "name": "storage-lite",
-            "namespace": "tenant-lite"
-          },
-          "spec": {
-            "certConfig": {},
-            "configuration": {
-              "name": "storage-configuration"
-            },
-            "credsSecret": {
-              "name": "storage-creds-secret"
-            },
-            "env": [],
-            "externalCaCertSecret": [],
-            "externalCertSecret": [],
-            "image": "quay.io/minio/minio@sha256:8047c2fcd3ed725fc6ed260cd7d36ffdd352408e464296e85d6402f75677181f",
-            "imagePullSecret": {},
-            "log": {
-              "affinity": {
-                "nodeAffinity": {},
-                "podAffinity": {},
-                "podAntiAffinity": {}
-              },
-              "annotations": {},
-              "audit": {
-                "diskCapacityGB": 1
-              },
-              "db": {
-                "affinity": {
-                  "nodeAffinity": {},
-                  "podAffinity": {},
-                  "podAntiAffinity": {}
-                },
-                "annotations": {},
-                "image": "",
-                "initimage": "",
-                "labels": {},
-                "nodeSelector": {},
-                "resources": {},
-                "securityContext": {
-                  "fsGroup": 999,
-                  "runAsGroup": 999,
-                  "runAsNonRoot": true,
-                  "runAsUser": 999
-                },
-                "serviceAccountName": "",
-                "tolerations": [],
-                "volumeClaimTemplate": {
-                  "metadata": {},
-                  "spec": {
-                    "accessModes": [
-                      "ReadWriteOnce"
-                    ],
-                    "resources": {
-                      "requests": {
-                        "storage": "1Gi"
-                      }
-                    },
-                    "storageClassName": "standard"
-                  }
-                }
-              },
-              "image": "",
-              "labels": {},
-              "nodeSelector": {},
-              "resources": {},
-              "securityContext": {
-                "fsGroup": 1000,
-                "runAsGroup": 1000,
-                "runAsNonRoot": true,
-                "runAsUser": 1000
-              },
-              "serviceAccountName": "",
-              "tolerations": []
-            },
-            "mountPath": "/export",
-            "podManagementPolicy": "Parallel",
-            "pools": [
-              {
-                "name": "pool-0",
-                "servers": 4,
-                "volumeClaimTemplate": {
-                  "metadata": {
-                    "name": "data"
-                  },
-                  "spec": {
-                    "accessModes": [
-                      "ReadWriteOnce"
-                    ],
-                    "resources": {
-                      "requests": {
-                        "storage": "2Gi"
-                      }
-                    }
-                  }
-                },
-                "volumesPerServer": 2
-              }
-            ],
-            "priorityClassName": "",
-            "prometheus": {
-              "affinity": {
-                "nodeAffinity": {},
-                "podAffinity": {},
-                "podAntiAffinity": {}
-              },
-              "annotations": {},
-              "diskCapacityGB": 1,
-              "image": "",
-              "initimage": "",
-              "labels": {},
-              "nodeSelector": {},
-              "resources": {},
-              "securityContext": {
-                "fsGroup": 1000,
-                "runAsGroup": 1000,
-                "runAsNonRoot": true,
-                "runAsUser": 1000
-              },
-              "serviceAccountName": "",
-              "sidecarimage": "",
-              "storageClassName": "standard"
-            },
-            "requestAutoCert": true,
-            "s3": {
-              "bucketDNS": false
-            },
-            "serviceAccountName": "",
-            "serviceMetadata": {
-              "consoleServiceAnnotations": {},
-              "consoleServiceLabels": {},
-              "minioServiceAnnotations": {},
-              "minioServiceLabels": {}
-            },
-            "subPath": "",
-            "users": [
-              {
-                "name": "storage-user"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/minio/minio-operator1@sha256:4d755d03af219c0820b32df355ba2e8c551cf0696b62df1fb5fca0079da52c0a",
-      "bundle_path_digest": "sha256:4d755d03af219c0820b32df355ba2e8c551cf0696b62df1fb5fca0079da52c0a",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-12T02:15:50.758000+00:00",
-      "csv_description": "## Overview\n\n\nThe MinIO Operator brings native support for deploying and managing MinIO\ndeployments (\u201cMinIO Tenants\u201d) on a Kubernetes cluster.\n\n\nMinIO is a high performance, Kubernetes native object storage suite. With an\nextensive list of enterprise features, it is scalable, secure and resilient\nwhile remaining remarkably simple to deploy and operate at scale.\nSoftware-defined, MinIO can run on any infrastructure and in any cloud -\npublic, private or edge. MinIO is the world's fastest object storage and can\nrun the broadest set of workloads in the industry. It is widely considered\nto be the leader in compatibility with Amazon's S3 API.\n\n## Features\n\n\nThe MinIO Operator takes care of the deployment of MinIO Tenant along with:\n\n* TLS Certificate Management\n\n* Configuration of the encryption at rest\n\n* Cluster expansion\n\n* Hot Updates\n\n* Users and Buckets bootstrapping\n\n## Prerequisites for enabling this Operator\n\n* At least Kubernetes 1.18\n\n* [CSR\nCapability](https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/)\nmust be enabled\n\n* Locally attached volumes for performance or some CSI to provision block\nstorage to the MinIO pods.",
-      "csv_display_name": "Minio Operator",
-      "csv_metadata_description": "MinIO is a Kubernetes-native high performance object store with an\nS3-compatible API. The MinIO Operator supports deploying MinIO Tenants\nonto any Kubernetes.",
-      "csv_name": "minio-operator.v4.4.17",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:50:45.240000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "minio-operator",
-      "provided_apis": [
-        {
-          "group": "minio.min.io",
-          "kind": "Tenant",
-          "plural": "tenants",
-          "version": "v1"
-        },
-        {
-          "group": "minio.min.io",
-          "kind": "Tenant",
-          "plural": "tenants",
-          "version": "v2"
-        }
-      ],
-      "related_images": [
-        {
-          "digest": "sha256:72dbd0aec2b1db26353a4e0518a4ab3cfe5b35628a90a6c449353ca6c7c1eb9a",
-          "image": "quay.io/minio/operator@sha256:72dbd0aec2b1db26353a4e0518a4ab3cfe5b35628a90a6c449353ca6c7c1eb9a",
-          "name": "operator-72dbd0aec2b1db26353a4e0518a4ab3cfe5b35628a90a6c449353ca6c7c1eb9a-annotation"
-        },
-        {
-          "digest": "sha256:867db56a60384550953f765b9756aa709849291a2aac601c45a2d6d7463aa8f7",
-          "image": "quay.io/minio/console@sha256:867db56a60384550953f765b9756aa709849291a2aac601c45a2d6d7463aa8f7",
-          "name": "console"
-        },
-        {
-          "digest": "sha256:72dbd0aec2b1db26353a4e0518a4ab3cfe5b35628a90a6c449353ca6c7c1eb9a",
-          "image": "quay.io/minio/operator@sha256:72dbd0aec2b1db26353a4e0518a4ab3cfe5b35628a90a6c449353ca6c7c1eb9a",
-          "name": "minio-operator"
-        },
-        {
-          "digest": "sha256:8047c2fcd3ed725fc6ed260cd7d36ffdd352408e464296e85d6402f75677181f",
-          "image": "quay.io/minio/minio@sha256:8047c2fcd3ed725fc6ed260cd7d36ffdd352408e464296e85d6402f75677181f",
-          "name": "minio-8047c2fcd3ed725fc6ed260cd7d36ffdd352408e464296e85d6402f75677181f-annotation"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "4.4.17",
-      "version_original": "4.4.17"
     },
     {
       "_id": "627c6e1e228d5769c56929e5",
@@ -45152,9 +44911,338 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "1.0.12",
       "version_original": "1.0.12"
+    },
+    {
+      "_id": "627c6ee34be4723d90ee6f99",
+      "alm_examples": [
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecClusterConfig",
+          "metadata": {
+            "name": "acc100SampleConfig",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "acceleratorSelector": {
+              "deviceID": "someDevice",
+              "driver": "someDriver",
+              "maxVirtualFunctions": 2,
+              "pciAddress": "somePciAddress",
+              "vendorID": "someVendor"
+            },
+            "drainSkip": false,
+            "nodeSelector": {
+              "expectedLabel1": "valueOfExpectedLabel1",
+              "expectedLabelN": "valueOfExpectedLabelN"
+            },
+            "physicalFunction": {
+              "bbDevConfig": {
+                "acc100": {
+                  "downlink4G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 0
+                  },
+                  "downlink5G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 4
+                  },
+                  "maxQueueSize": 1024,
+                  "numVfBundles": 16,
+                  "pfMode": true,
+                  "uplink4G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 0
+                  },
+                  "uplink5G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 4
+                  }
+                }
+              },
+              "pfDriver": "pci-pf-stub",
+              "vfAmount": 2,
+              "vfDriver": "vfio-pci"
+            },
+            "priority": 100
+          }
+        },
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecClusterConfig",
+          "metadata": {
+            "name": "n3000SampleConfig",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "acceleratorSelector": {
+              "deviceID": "someDevice",
+              "driver": "someDriver",
+              "maxVirtualFunctions": 2,
+              "pciAddress": "somePciAddress",
+              "vendorID": "someVendor"
+            },
+            "drainSkip": false,
+            "nodeSelector": {
+              "expectedLabel1": "valueOfExpectedLabel1",
+              "expectedLabelN": "valueOfExpectedLabelN"
+            },
+            "physicalFunction": {
+              "bbDevConfig": {
+                "n3000": {
+                  "downlink": {
+                    "bandwidth": 3,
+                    "loadBalance": 128,
+                    "queues": {
+                      "vf0": 16,
+                      "vf1": 16,
+                      "vf2": 0,
+                      "vf3": 0,
+                      "vf4": 0,
+                      "vf5": 0,
+                      "vf6": 0,
+                      "vf7": 0
+                    }
+                  },
+                  "flrTimeout": 610,
+                  "networkType": "FPGA_5GNR",
+                  "pfMode": true,
+                  "uplink": {
+                    "bandwidth": 3,
+                    "loadBalance": 128,
+                    "queues": {
+                      "vf0": 16,
+                      "vf1": 16,
+                      "vf2": 0,
+                      "vf3": 0,
+                      "vf4": 0,
+                      "vf5": 0,
+                      "vf6": 0,
+                      "vf7": 0
+                    }
+                  }
+                }
+              },
+              "pfDriver": "pci-pf-stub",
+              "vfAmount": 2,
+              "vfDriver": "vfio-pci"
+            },
+            "priority": 100
+          }
+        },
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecNodeConfig",
+          "metadata": {
+            "name": "acc100-worker",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "drainSkip": false,
+            "physicalFunctions": [
+              {
+                "bbDevConfig": {
+                  "acc100": {
+                    "downlink4G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 0
+                    },
+                    "downlink5G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 4
+                    },
+                    "maxQueueSize": 1024,
+                    "numVfBundles": 16,
+                    "pfMode": true,
+                    "uplink4G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 0
+                    },
+                    "uplink5G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 4
+                    }
+                  }
+                },
+                "pci_addr": "somePciAddress",
+                "pf_driver": "pci-pf-stub",
+                "vf_amount": 2,
+                "vf_driver": "vfio-pci"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecNodeConfig",
+          "metadata": {
+            "name": "n3000-worker",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "drainSkip": false,
+            "physicalFunctions": [
+              {
+                "bbDevConfig": {
+                  "n3000": {
+                    "downlink": {
+                      "bandwidth": 3,
+                      "loadBalance": 128,
+                      "queues": {
+                        "vf0": 16,
+                        "vf1": 16,
+                        "vf2": 0,
+                        "vf3": 0,
+                        "vf4": 0,
+                        "vf5": 0,
+                        "vf6": 0,
+                        "vf7": 0
+                      }
+                    },
+                    "flrTimeout": 610,
+                    "networkType": "FPGA_5GNR",
+                    "pfMode": true,
+                    "uplink": {
+                      "bandwidth": 3,
+                      "loadBalance": 128,
+                      "queues": {
+                        "vf0": 16,
+                        "vf1": 16,
+                        "vf2": 0,
+                        "vf3": 0,
+                        "vf4": 0,
+                        "vf5": 0,
+                        "vf6": 0,
+                        "vf7": 0
+                      }
+                    }
+                  }
+                },
+                "pci_addr": "somePciAddress",
+                "pf_driver": "pci-pf-stub",
+                "vf_amount": 2,
+                "vf_driver": "vfio-pci"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/sriov-fec-operator-bundle@sha256:3427eb10344d1e197d8d2d22957a51902db065490534883285ea2f383d00e364",
+      "bundle_path_digest": "sha256:3427eb10344d1e197d8d2d22957a51902db065490534883285ea2f383d00e364",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:20:19.898000+00:00",
+      "csv_description": "The Intel\u00ae FPGA Programmable Acceleration Card N3000 (Intel\u00ae FPGA PAC N3000) is a highly customizable FPGA SmartNIC which enables high-throughput, low latency and high-bandwith applications.  It allows the optimization of data plane performance to reduce total cost of ownership while maintaining a high degree of flexibility.  The Intel FPGA PAC N3000 plays a key role in accelerating 5G and network functions virtualization (NFV) adoption for ecosystem partners such as telecommunications equipment manufacturers (TEMs) virtual network functions (VNF) vendors, system integrators and telcos, to bring scalable and high-performance solutions to market. The Intel FPGA PAC N3000 includes a variant that is design to be Network Equipment Building System (NEBS)-friendly, and features a Root-of-Trust device that helps protect systems from FPGA host security exploits. This document explains how the FPGA resource can be used on the Smart Edge Open (SEO) platform for accelerating network functions and edge application workloads. We use the Intel\u00ae FPGA PAC N3000 as a reference FPGA PAC and use LTE/5G Forward Error Correction (FEC) as an example workload that accelerates the 5G or 4G L1 base station network function. The same concept and mechanism is applicable for application acceleration workloads like AI and ML on FPGA for Inference applications. The Intel\u00ae FPGA PAC N3000 is a full-duplex, 100 Gbps in-system, re-programmable acceleration card for multi-workload networking application acceleration. It has an optimal memory mixture designed for network functions, with an integrated network interface card (NIC) in a small form factor that enables high throughput, low latency, and low power per bit for a custom networking pipeline. The ACC100 supports the O-RAN adopted DPDK BBDev API - an API which Intel contributed to the opensource community to enable choice and TTM for FEC acceleration solutions. The FlexRAN software reference architecture supports the ACC100 which enables users to quickly evaluate and build platforms for the wide range of vRAN networks. Reduces platform power, E2E latency and Intel\u00ae CPU core count requirements as well as increases cell capacity than existing programmable accelerator. Accelerates both 4G and 5G data concurrently.\tLowers development cost using commercial off the shelf (COTS) servers. Accommodates space-constrained implementations via a low-profile PCIe card form factor. Enables a variety of flexible FlexRAN deployments from small cell to macro to Massive MIMO networks. Supports extended temperature for the most challenging of RAN deployment scenario\u2019s.",
+      "csv_display_name": "SEO SR-IOV Operator for Wireless FEC Accelerators",
+      "csv_metadata_description": "An operator for Intel Wireless FEC Accelerator to orchestrate and manage the resources/devices exposed by a range of Intel's vRAN FEC acceleration devices/hardware within the OpenShift cluster.",
+      "csv_name": "sriov-fec.v2.2.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-12T02:20:19.898000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "sriov-fec",
+      "provided_apis": [
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecNodeConfig",
+          "version": "v2"
+        },
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecClusterConfig",
+          "version": "v1"
+        },
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecClusterConfig",
+          "version": "v2"
+        },
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecNodeConfig",
+          "version": "v1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:12e9101ac85babaa033f577b585e7aa2604b40095fcdc6172359f81d8be05cf4",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-daemon@sha256:12e9101ac85babaa033f577b585e7aa2604b40095fcdc6172359f81d8be05cf4",
+          "name": "sriov-fec-daemon"
+        },
+        {
+          "digest": "sha256:5fd8ac9d05661cb4a75ff2a6792a78a66c74c341caf472bd0948351b88f47daa",
+          "image": "registry.connect.redhat.com/intel/n3000-labeler@sha256:5fd8ac9d05661cb4a75ff2a6792a78a66c74c341caf472bd0948351b88f47daa",
+          "name": "sriov-fec-labeler"
+        },
+        {
+          "digest": "sha256:5ad615f1256d1d23b159a5a331a31103692dd0293b6f128b9095d0b34c0f6586",
+          "image": "registry.redhat.io/openshift4/ose-sriov-network-device-plugin@sha256:5ad615f1256d1d23b159a5a331a31103692dd0293b6f128b9095d0b34c0f6586",
+          "name": "sriov-network-device-plugin"
+        },
+        {
+          "digest": "sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-operator@sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "name": "sriov-fec-operator"
+        },
+        {
+          "digest": "sha256:86e5fa1fa294987114be200890c2e516501e424aee0fb98ece25c95e7716295b",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:86e5fa1fa294987114be200890c2e516501e424aee0fb98ece25c95e7716295b",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-operator@sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "name": "sriov-fec-operator-f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89-annotation"
+        },
+        {
+          "digest": "sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-operator@sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=2.0.2 <=2.2.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.2.1",
+      "version_original": "2.2.1"
     }
   ],
   "page": 6,
   "page_size": 500,
-  "total": 3958
+  "total": 3972
 }
