@@ -32,8 +32,8 @@ func TestIsCertified(t *testing.T) {
 	}
 	loadContainersCatalog(path + "/../")
 	ans := IsCertified("registry.connect.redhat.com", "bitnami/nodejs", "11.14.0-rhel-7-r5-5", "")
-	assert.Equal(t, ans, true)
+	assert.Equal(t, true, ans)
 
 	ans = IsCertified("registry.connect.redhat.com", "nearform/nearform-s2i-nodejs10", "10.1.0", "")
-	assert.Equal(t, ans, true)
+	assert.Equal(t, true, ans)
 }
