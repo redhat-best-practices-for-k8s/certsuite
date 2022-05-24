@@ -271,6 +271,11 @@ var (
 		Url:     formTestURL(common.PlatformAlterationTestKey, "sysctl-config"),
 		Version: versionOne,
 	}
+	// TestServiceMesh
+	TestServiceMeshIdentifier = claim.Identifier{
+		Url:     formTestURL(common.PlatformAlterationTestKey, "service-mesh"),
+		Version: versionOne,
+	}
 	// TestScalingIdentifier ensures deployment scale in/out operations work correctly.
 	TestScalingIdentifier = claim.Identifier{
 		Url:     formTestURL(common.LifecycleTestKey, "scaling"),
@@ -749,6 +754,14 @@ the changes for you.`,
 			`tests that no one has changed the node's sysctl configs after the node
 			was created, the tests works by checking if the sysctl configs are consistent with the
 			MachineConfig CR which defines how the node should be configured`),
+		Remediation:           `You should recreate the node or change the sysctls, recreating is recommended because there might be other unknown changes`,
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+	},
+	TestServiceMeshIdentifier: {
+		Identifier: TestServiceMeshIdentifier,
+		Type:       normativeResult,
+		Description: formDescription(TestPodRecreationIdentifier,
+			``),
 		Remediation:           `You should recreate the node or change the sysctls, recreating is recommended because there might be other unknown changes`,
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},
