@@ -127,7 +127,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 })
 
 func TestServiceMesh(env *provider.TestEnvironment) {
-	var badPods []string
+	var badContainersOfPods []string
 	for _, put := range env.Pods {
 		data := put.Containers
 		for _, d := range data {
@@ -135,10 +135,10 @@ func TestServiceMesh(env *provider.TestEnvironment) {
 				tnf.ClaimFilePrintf("For pods %s ,ns %s, continer %d we have service mesh", d.Podname, d.Namespace, d.UID)
 				continue
 			}
-			badPods = append(badPods, put.Data.Name)
+			badContainersOfPods = append(badContainersOfPods, "pods %s ,ns %s, continer %d do not have service mesh", d.Podname, d.Namespace, d.UID)
 		}
 	}
-	logrus.Println("bad pods ", badPods)
+	logrus.Println("bad pods ", badContainersOfPods)
 }
 
 // testContainersFsDiff test that all CUT didn't install new packages are starting
