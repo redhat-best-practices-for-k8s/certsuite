@@ -130,10 +130,9 @@ func TestServiceMesh(env *provider.TestEnvironment) {
 	var badPods []string
 	for _, put := range env.Pods {
 		data := put.Containers
-		fmt.Println(data)
 		for _, d := range data {
 			if d.Status.Name == istio {
-				tnf.ClaimFilePrintf("For pods %s ,ns %s we have service mesh", put.Data.Name, put.Data.Namespace)
+				tnf.ClaimFilePrintf("For pods %s ,ns %s, continer %d we have service mesh", d.Podname, d.Namespace, d.UID)
 				continue
 			}
 			badPods = append(badPods, put.Data.Name)
