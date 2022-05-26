@@ -20,11 +20,6 @@ cnf-certification-test/results.html
 test-network-function
 cnf-certification-test/claimjson.js
 
-# Explicitly don't track mocks.  mocks should be built on request.
-pkg/tnf/mocks/mock_tester.go
-pkg/tnf/reel/mocks/mock_reel.go
-# NOTE: mock_expect.go is tracked, as it is generated from source externally.
-pkg/tnf/interactive/mocks/mock_spawner.go
 temp/
 /tnf
 /all-releases.txt

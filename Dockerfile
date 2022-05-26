@@ -56,7 +56,6 @@ RUN make install-lint
 
 # TODO: RUN make install-tools
 RUN make install-tools && \
-	make mocks && \
 	make update-deps && \
 	make build-cnf-tests-debug
 

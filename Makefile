@@ -17,7 +17,6 @@
 GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 
 .PHONY:	build \
-	mocks \
 	clean \
 	lint \
 	test \
@@ -30,7 +29,6 @@ GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 	run-generic-cnf-tests \
 	run-operator-tests \
 	run-container-tests \
-	clean-mocks \
 	update-deps \
 	install-tools \
 	vet \
@@ -66,7 +64,6 @@ build-tnf-tool:
 # Cleans up auto-generated and report files
 clean:
 	go clean
-	make clean-mocks
 	rm -f ./cnf-certification-test/cnf-certification-test.test
 	rm -f ./cnf-certification-test/cnf-certification-tests_junit.xml
 	rm -f ./cnf-certification-test/claim.json
@@ -88,7 +85,7 @@ lint:
 	golangci-lint run --timeout 5m0s
 
 # Build and run unit tests
-test: mocks
+test:
 	./script/create-missing-test-files.sh
 	go build ${COMMON_GO_ARGS} ./...
 	UNIT_TEST="true" go test -coverprofile=cover.out.tmp ./...
@@ -119,14 +116,12 @@ build-cnf-tests-debug:
 
 # Update source dependencies and fix versions
 update-deps:
-	go mod tidy && \
-	go mod vendor
+	go mod tidy
 
 # Install build tools and other required software.
 install-tools:
 	go install github.com/onsi/ginkgo/v2/ginkgo@v2.1.4
 	go install github.com/onsi/gomega
-	go install github.com/golang/mock/mockgen@v1.6.0
 
 # Install golangci-lint	
 install-lint:
