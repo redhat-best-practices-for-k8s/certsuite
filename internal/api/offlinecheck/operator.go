@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License along
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-package registry
+package offlinecheck
 
 import (
 	"encoding/json"
@@ -65,7 +65,7 @@ func buildOperatorKey(op *OperatorData) (operatorName, operatorVersion, ocpVersi
 	return operatorName, operatorVersion, op.OcpVersion, op.Channel, nil
 }
 
-func extractNameVersionFromName(operatorName string) (name, version string) {
+func ExtractNameVersionFromName(operatorName string) (name, version string) {
 	if len(strings.Split(operatorName, ".")) < CSVNAMELENGTH {
 		return operatorName, ""
 	}
@@ -120,8 +120,8 @@ func loadOperatorsCatalog(pathToRoot string) {
 // isOperatorCertified check the presence of operator name in certified operators db
 // the operator name is the csv
 // ocpVersion is Major.Minor OCP version
-func IsOperatorCertified(operatorName, ocpVersion, channel string) bool {
-	name, operatorVersion := extractNameVersionFromName(operatorName)
+func (checker OfflineChecker) IsOperatorCertified(operatorName, ocpVersion, channel string) bool {
+	name, operatorVersion := ExtractNameVersionFromName(operatorName)
 	if v, ok := operatordb[name]; ok {
 		for _, version := range v {
 			if version.operatorVersion == operatorVersion && version.channel == channel {

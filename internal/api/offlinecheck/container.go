@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License along
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-package registry
+package offlinecheck
 
 import (
 	"encoding/json"
@@ -89,7 +89,7 @@ func LoadBinary(bytes []byte, db map[string]*ContainerCatalogEntry) {
 	}
 }
 
-func IsCertified(registry, repository, tag, digest string) bool {
+func (checker OfflineChecker) IsContainerCertified(registry, repository, tag, digest string) bool {
 	if digest != "" {
 		if _, ok := containerdb[digest]; ok {
 			logrus.Trace("container is certified based on digest", digest)
@@ -107,13 +107,13 @@ func IsCertified(registry, repository, tag, digest string) bool {
 			if repo.Registry == registry && repo.Repository == repository {
 				for _, t := range repo.Tags {
 					if t.Name == tag {
-						logrus.Trace("container is certified :", repo.Registry, repo.Repository, tag)
+						logrus.Trace(fmt.Sprintf("container is not certified %s/%s:%s %s", registry, repository, tag, digest))
 						return true
 					}
 				}
 			}
 		}
 	}
-	logrus.Error("container is not certified ", registry, repository, tag, digest)
+	logrus.Error(fmt.Sprintf("container is not certified %s/%s:%s %s", registry, repository, tag, digest))
 	return false
 }

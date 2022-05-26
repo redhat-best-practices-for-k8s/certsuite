@@ -13,27 +13,26 @@
 // You should have received a copy of the GNU General Public License along
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-package registry
+package offlinecheck
 
 import (
 	"os"
-	"testing"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/stretchr/testify/assert"
 )
 
-func TestIsCertified(t *testing.T) {
-	path, _ := os.Getwd()
-	log.Info(path)
+type OfflineChecker struct{}
+
+func LoadCatalogs() {
 	path, err := os.Getwd()
 	if err != nil {
 		log.Println(err)
 	}
-	loadContainersCatalog(path + "/../")
-	ans := IsCertified("registry.connect.redhat.com", "bitnami/nodejs", "11.14.0-rhel-7-r5-5", "")
-	assert.Equal(t, true, ans)
+	loadContainersCatalog(path)
+	loadHelmCatalog(path)
+	loadOperatorsCatalog(path)
+}
 
-	ans = IsCertified("registry.connect.redhat.com", "nearform/nearform-s2i-nodejs10", "10.1.0", "")
-	assert.Equal(t, true, ans)
+func (checker OfflineChecker) IsServiceReachable() bool {
+	return true
 }
