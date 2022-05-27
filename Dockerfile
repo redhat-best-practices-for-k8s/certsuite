@@ -51,12 +51,8 @@ RUN git -C ${TNF_PARTNER_SRC_DIR} checkout ${GIT_PARTNER_CHECKOUT_TARGET}
 # Build TNF binary
 WORKDIR ${TNF_SRC_DIR}
 
-# golangci-lint
-RUN make install-lint 
-
 # TODO: RUN make install-tools
 RUN make install-tools && \
-	make update-deps && \
 	make build-cnf-tests-debug
 
 #  Extract what's needed to run at a seperate location
@@ -71,8 +67,6 @@ RUN mkdir ${TNF_BIN_DIR} && \
 	cp cnf-certification-test/cnf-certification-test.test ${TNF_BIN_DIR}
 
 WORKDIR ${TNF_DIR}
-
-RUN ln -s ${TNF_DIR}/config/testconfigure.yml ${TNF_DIR}/cnf-certification-test/testconfigure.yml
 
 # Remove most of the build artefacts
 RUN dnf remove -y gcc git wget && \
