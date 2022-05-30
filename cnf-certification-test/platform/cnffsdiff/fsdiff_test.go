@@ -36,6 +36,8 @@ func (o ClientHoldersMock) ExecCommandContainer(ctx clientsholder.Context, comma
 	stdout, stderr, err = o.stdout, o.stderr, o.err
 	return stdout, stderr, err
 }
+
+//nolint:funlen
 func TestRunTest(t *testing.T) {
 	testCases := []struct {
 		clientErr      error
@@ -57,18 +59,34 @@ func TestRunTest(t *testing.T) {
 			clientErr:      nil,
 			clientStdErr:   "container id not found",
 		},
-		{ // test when a package was installed
+		{ // test when folder /usr/lib has been removed
 			expectedResult: testhelper.FAILURE,
 			clientErr:      nil,
 			clientStdErr:   "",
 			clientStdOut: `{
-				changed: [
-					/usr/bin/lp,
-					/usr/local,
-					/usr/local/bin
+				"changed": [
+					"/usr"
 				],
-				added: [
-					/usr/local/bin/docker-entrypoint.sh
+				"deleted": [
+					"/usr/lib"
+				]
+			}`,
+		},
+		{ // test when a package "lp" was installed in /usr/bin and a file docker-entrypoint.sh
+			// is created under /usr/local/bin
+			expectedResult: testhelper.FAILURE,
+			clientErr:      nil,
+			clientStdErr:   "",
+			clientStdOut: `{
+				"changed": [
+					"/usr",
+					"/usr/bin",
+					"/usr/local",
+					"/usr/local/bin"
+				],
+				"added": [
+					"/usr/bin/lp",
+					"/usr/local/bin/docker-entrypoint.sh"
 				]
 			}`,
 		},
