@@ -17,28 +17,48 @@
 package cnffsdiff
 
 import (
+	"encoding/json"
 	"fmt"
-	"regexp"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
 
-const (
-	varlibrpm  = `(?m)[\t|\s]\/var\/lib\/rpm[.]*`
-	varlibdpkg = `(?m)[\t|\s]\/var\/lib\/dpkg[.]*`
-	bin        = `(?m)[\t|\s]\/bin[.]*`
-	sbin       = `(?m)[\t|\s]\/sbin[.]*`
-	lib        = `(?m)[\t|\s]\/lib[.]*`
-	usrbin     = `(?m)[\t|\s]\/usr\/bin[.]*`
-	usrsbin    = `(?m)[\t|\s]\/usr\/sbin[.]*`
-	usrlib     = `(?m)[\t|\s]\/usr\/lib[.]*`
+var (
+	// targetFolders stores all the targetFolders that shouldn't have been modified in the container.
+	// All of them exist on UBI. It's a map just for convenience.
+	targetFolders = map[string]bool{
+		"/var/lib/rpm":  true,
+		"/var/lib/dpkg": true,
+		"/bin":          true,
+		"/sbin":         true,
+		"/lib":          true,
+		"/lib64":        true,
+		"/usr/bin":      true,
+		"/usr/sbin":     true,
+		"/usr/lib":      true,
+		"/usr/lib64":    true,
+	}
 )
 
+// fsDiffJSON is a helper struct to unmarshall the "podman diff --format json" output: a slice of
+// folders/filepaths (strings) for each event type changed/added/deleted:
+//  {"changed": ["folder1, folder2"], added": ["folder5", "folder6"], "deleted": ["folder3", "folder4"]"}
+// We'll only care about deleted and changed types, though, as in case a folder/file is created to any of them,
+// there will be two entries, one for the "added" and another for the "changed".
+type fsDiffJSON struct {
+	Changed []string `json:"changed"`
+	Deleted []string `json:"deleted"`
+	Added   []string `json:"added"` // Will not be checked, but let's keep it just in case.
+}
+
 type FsDiff struct {
-	result       int
-	ClientHolder clientsholder.Command
+	result         int
+	ClientHolder   clientsholder.Command
+	DeletedFolders []string
+	ChangedFolders []string
+	Error          error
 }
 
 type FsDiffFuncs interface {
@@ -53,32 +73,52 @@ func NewFsDiffTester(client clientsholder.Command) *FsDiff {
 	}
 }
 
+//nolint:funlen
 func (f *FsDiff) RunTest(ctx clientsholder.Context, containerUID string) {
-	expected := []string{varlibrpm, varlibdpkg, bin, sbin, lib, usrbin, usrsbin, usrlib}
 	output, outerr, err := f.ClientHolder.ExecCommandContainer(ctx, fmt.Sprintf("chroot /host podman diff --format json %s", containerUID))
 	if err != nil {
-		logrus.Errorln("can't execute command on container ", err)
+		f.Error = fmt.Errorf("can't execute command on container: %w", err)
 		f.result = testhelper.ERROR
 		return
 	}
 	if outerr != "" {
+		f.Error = fmt.Errorf("stderr log received when running fsdiff test: %s", outerr)
 		f.result = testhelper.ERROR
-		logrus.Errorln("error when running fsdiff test ", outerr)
 		return
 	}
 
-	for _, exp := range expected {
-		// panic if the expression is wrong
-		r := regexp.MustCompile(exp)
-		if r.MatchString(output) {
-			logrus.Error("an installed package found on ", exp)
-			f.result = testhelper.FAILURE
-			return
-		}
-	}
 	// see if there's a match in the output
 	logrus.Traceln("the output is ", output)
-	f.result = testhelper.SUCCESS
+
+	diff := fsDiffJSON{}
+	err = json.Unmarshal([]byte(output), &diff)
+	if err != nil {
+		f.Error = fmt.Errorf("failed to unmarshall podman diff's json output: %s, err: %w", output, err)
+		f.result = testhelper.ERROR
+		return
+	}
+
+	// Check for deleted folders.
+	for _, deletedFolder := range diff.Deleted {
+		if _, exist := targetFolders[deletedFolder]; exist {
+			logrus.Tracef("Container's folder %s has been deleted.", deletedFolder)
+			f.DeletedFolders = append(f.DeletedFolders, deletedFolder)
+		}
+	}
+
+	// Check for changed folders.
+	for _, changedFolder := range diff.Changed {
+		if _, exist := targetFolders[changedFolder]; exist {
+			logrus.Tracef("Container's folder %s is changed.", changedFolder)
+			f.ChangedFolders = append(f.ChangedFolders, changedFolder)
+		}
+	}
+
+	if len(f.ChangedFolders) != 0 || len(f.DeletedFolders) != 0 {
+		f.result = testhelper.FAILURE
+	} else {
+		f.result = testhelper.SUCCESS
+	}
 }
 
 func (f *FsDiff) GetResults() int {
