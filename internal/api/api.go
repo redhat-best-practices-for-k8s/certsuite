@@ -7,9 +7,9 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/go-yaml/yaml"
 	log "github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"gopkg.in/yaml.v3"
 )
 
 // Endpoints document can be found here
