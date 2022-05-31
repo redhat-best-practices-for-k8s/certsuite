@@ -68,7 +68,7 @@ var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 	ocpClient := clientsholder.GetClientsHolder()
 
-	// K8s' API won't return lines that don't have the newline termination char, so
+	// K8s' API won't return lines that do not have the newline termination char, so
 	// We need to ask for the last two lines.
 	const tailLogLines = 2
 	numLogLines := int64(tailLogLines)
@@ -111,7 +111,7 @@ func testContainersLogging(env *provider.TestEnvironment) {
 
 	if n := len(badContainers); n > 0 {
 		logrus.Debugf("Containers without logging: %+v", badContainers)
-		ginkgo.Fail(fmt.Sprintf("%d containers don't have any log to stdout/stderr.", n))
+		ginkgo.Fail(fmt.Sprintf("%d containers do not have any log to stdout/stderr.", n))
 	}
 }
 
@@ -131,7 +131,7 @@ func testCrds(env *provider.TestEnvironment) {
 
 	if n := len(failedCrds); n > 0 {
 		logrus.Debugf("CRD.version without status subresource: %+v", failedCrds)
-		ginkgo.Fail(fmt.Sprintf("%d CRDs don't have status subresource", n))
+		ginkgo.Fail(fmt.Sprintf("%d CRDs do not have status subresource", n))
 	}
 }
 

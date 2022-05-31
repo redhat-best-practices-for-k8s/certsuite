@@ -289,7 +289,7 @@ func getMcHugepagesFromMcKernelArguments(mc *provider.MachineConfig) (hugepagesP
 	for _, arg := range mc.Spec.KernelArguments {
 		keyValueSlice := strings.Split(arg, "=")
 		if len(keyValueSlice) != KernArgsKeyValueSplitLen {
-			// Some kernel arguments don't come in name=value
+			// Some kernel arguments do not come in name=value
 			continue
 		}
 
