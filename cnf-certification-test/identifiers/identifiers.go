@@ -364,7 +364,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		    In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the 
 			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the deployment/s`),
 		Remediation:           `Make sure CNF deployments/replica sets can scale in/out successfully.`,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 	TestStateFulSetScalingIdentifier: {
 		Identifier: TestStateFulSetScalingIdentifier,
@@ -376,7 +376,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the 
 			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the statefulset/s`),
 		Remediation:           `Make sure CNF statefulsets/replica sets can scale in/out successfully.`,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 	TestSecConCapabilitiesIdentifier: {
 		Identifier:  TestSecConCapabilitiesIdentifier,
@@ -389,7 +389,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			- NET_RAW
 			- IPC_LOCK
 `),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 	TestPodDeleteIdentifier: {
 		Identifier:  TestPodDeleteIdentifier,
@@ -397,7 +397,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation: `Make sure that the pods can be recreated successfully after deleting them`,
 		Description: formDescription(TestPodDeleteIdentifier,
 			`Using the litmus chaos operator, this test checks that pods are recreated successfully after deleting them.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 	TestSecConNonRootUserIdentifier: {
 		Identifier:  TestSecConNonRootUserIdentifier,
@@ -405,7 +405,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation: `Change the pod and containers "runAsUser" uid to something other than root(0)`,
 		Description: formDescription(TestSecConNonRootUserIdentifier,
 			`Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0)`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 	TestSecConPrivilegeEscalation: {
 		Identifier:  TestSecConPrivilegeEscalation,
@@ -413,7 +413,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation: `Configure privilege escalation to false`,
 		Description: formDescription(TestSecConPrivilegeEscalation,
 			`Checks if privileged escalation is enabled (AllowPrivilegeEscalation=true)`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 	TestContainerIsCertifiedIdentifier: {
 		Identifier:  TestContainerIsCertifiedIdentifier,
@@ -421,7 +421,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation: `Ensure that your container has passed the Red Hat Container Certification Program (CCP).`,
 		Description: formDescription(TestContainerIsCertifiedIdentifier,
 			`tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.7",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.3.7",
 	},
 	TestContainerHostPort: {
 		Identifier:  TestContainerHostPort,
@@ -429,7 +429,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation: `Remove hostPort configuration from the container`,
 		Description: formDescription(TestContainerHostPort,
 			`Verifies if containers define a hostPort.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.3.6",
 	},
 	TestPodHostNetwork: {
 		Identifier:  TestPodHostNetwork,
@@ -437,7 +437,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation: `Set the spec.HostNetwork parameter to false in the pod configuration`,
 		Description: formDescription(TestPodHostNetwork,
 			`Verifies that the spec.HostNetwork parameter is set to false`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.3.6",
 	},
 	TestPodHostPath: {
 		Identifier:  TestPodHostPath,
@@ -445,7 +445,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation: `Set the spec.HostPath parameter to false in the pod configuration`,
 		Description: formDescription(TestPodHostPath,
 			`Verifies that the spec.HostPath parameter is not set (not present)`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.3.6",
 	},
 	TestPodHostIPC: {
 		Identifier:  TestPodHostIPC,
@@ -453,7 +453,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation: `Set the spec.HostIpc parameter to false in the pod configuration`,
 		Description: formDescription(TestPodHostIPC,
 			`Verifies that the spec.HostIpc parameter is set to false`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.3.6",
 	},
 	TestPodHostPID: {
 		Identifier:  TestPodHostPID,
@@ -461,7 +461,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation: `Set the spec.HostPid parameter to false in the pod configuration`,
 		Description: formDescription(TestPodHostPID,
 			`Verifies that the spec.HostPid parameter is set to false`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.6",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.3.6",
 	},
 	TestHugepagesNotManuallyManipulated: {
 		Identifier: TestHugepagesNotManuallyManipulated,
@@ -476,7 +476,7 @@ underlying Node.  This test case applies only to Nodes that are configured with 
 the "worker" MachineConfig is polled, and the Hugepage settings are extracted.  Next, the underlying Nodes are polled
 for configured HugePages through inspection of /proc/meminfo.  The results are compared, and the test passes only if
 they are the same.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 
 	TestICMPv4ConnectivityIdentifier: {
@@ -488,7 +488,7 @@ from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectiv
 		Description: formDescription(TestICMPv4ConnectivityIdentifier,
 			`checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network.  This
 test case requires the Deployment of the debug daemonset.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 
 	TestICMPv6ConnectivityIdentifier: {
@@ -500,7 +500,7 @@ from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectiv
 		Description: formDescription(TestICMPv6ConnectivityIdentifier,
 			`checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network.  This
 test case requires the Deployment of the debug daemonset.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 
 	TestICMPv4ConnectivityMultusIdentifier: {
@@ -512,7 +512,7 @@ from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectiv
 		Description: formDescription(TestICMPv4ConnectivityMultusIdentifier,
 			`checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s).  This
 test case requires the Deployment of the debug daemonset.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 
 	TestICMPv6ConnectivityMultusIdentifier: {
@@ -525,7 +525,7 @@ from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectiv
 		Description: formDescription(TestICMPv6ConnectivityMultusIdentifier,
 			`checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s).  This
 test case requires the Deployment of the debug daemonset.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 
 	TestNamespaceBestPracticesIdentifier: {
@@ -537,7 +537,7 @@ the namespaces should not start with "default, openshift-, istio- or aspenmesh-"
 			`tests that all CNF's resources (PUTs and CRs) belong to valid namespaces. A valid namespace meets
 the following conditions: (1) It was declared in the yaml config file under the targetNameSpaces
 tag. (2) It doesn't have any of the following prefixes: default, openshift-, istio- and aspenmesh-`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2, 16.3.8 & 16.3.9",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2, 16.3.8 and 16.3.9",
 	},
 
 	TestNonTaintedNodeKernelsIdentifier: {
@@ -549,7 +549,7 @@ Node(s) kernels in order to run the CNF.`,
 			`ensures that the Node(s) hosting CNFs do not utilize tainted kernels. This test case is especially important
 to support Highly Available CNFs, since when a CNF is re-instantiated on a backup Node, that Node's kernel may not have
 the same hacks.'`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.14",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2.14",
 	},
 
 	TestOperatorInstallStatusSucceededIdentifier: {
@@ -558,7 +558,7 @@ the same hacks.'`),
 		Remediation: `Make sure all the CNF operators have been successfully installed by OLM.`,
 		Description: formDescription(TestOperatorInstallStatusSucceededIdentifier,
 			`Ensures that the target CNF operators report "Succeeded" as their installation status.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.12 and Section 6.3.3",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2.12 and 5.3.3",
 	},
 
 	TestOperatorNoPrivileges: {
@@ -568,7 +568,7 @@ the same hacks.'`),
 		Description: formDescription(TestOperatorNoPrivileges,
 			`The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present 
 with no resourceNames under its rules.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.12 and Section 6.3.3",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2.12 and 5.3.3",
 	},
 
 	TestOperatorIsCertifiedIdentifier: {
@@ -577,7 +577,7 @@ with no resourceNames under its rules.`),
 		Remediation: `Ensure that your Operator has passed Red Hat's Operator Certification Program (OCP).`,
 		Description: formDescription(TestOperatorIsCertifiedIdentifier,
 			`tests whether CNF Operators listed in the configuration file have passed the Red Hat Operator Certification Program (OCP).`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.12 and Section 6.3.3",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2.12 and 5.3.3",
 	},
 
 	TestHelmIsCertifiedIdentifier: {
@@ -586,7 +586,7 @@ with no resourceNames under its rules.`),
 		Remediation: `Ensure that the helm charts under test passed the Red Hat's helm Certification Program (e.g. listed in https://charts.openshift.io/index.yaml).`,
 		Description: formDescription(TestHelmIsCertifiedIdentifier,
 			`tests whether helm charts listed in the cluster passed the Red Hat Helm Certification Program.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.12 and Section 6.3.3",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2.12 and 5.3.3",
 	},
 
 	TestOperatorIsInstalledViaOLMIdentifier: {
@@ -595,7 +595,7 @@ with no resourceNames under its rules.`),
 		Remediation: `Ensure that your Operator is installed via OLM.`,
 		Description: formDescription(TestOperatorIsInstalledViaOLMIdentifier,
 			`tests whether a CNF Operator is installed via OLM.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.12 and Section 6.3.3",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2.12 and 5.3.3",
 	},
 
 	TestPodNodeSelectorAndAffinityBestPractices: {
@@ -608,7 +608,7 @@ to why nodeSelector and/or nodeAffinity is utilized by a CNF.`,
 		Description: formDescription(TestPodNodeSelectorAndAffinityBestPractices,
 			`ensures that CNF Pods do not specify nodeSelector or nodeAffinity.  In most cases, Pods should allow for
 instantiation on any underlying Node.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 
 	TestPodHighAvailabilityBestPractices: {
@@ -617,7 +617,7 @@ instantiation on any underlying Node.`),
 		Remediation: `In high availability cases, Pod podAntiAffinity rule should be specified for pod scheduling and pod replica value is set to more than 1 .`,
 		Description: formDescription(TestPodHighAvailabilityBestPractices,
 			`ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 
 	TestPodClusterRoleBindingsBestPracticesIdentifier: {
@@ -627,7 +627,7 @@ instantiation on any underlying Node.`),
 ClusterRoleBindings, if possible.`,
 		Description: formDescription(TestPodClusterRoleBindingsBestPracticesIdentifier,
 			`tests that a Pod does not specify ClusterRoleBindings.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.10 and 6.3.6",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2.10 and 5.3.6",
 	},
 
 	TestPodDeploymentBestPracticesIdentifier: {
@@ -636,7 +636,7 @@ ClusterRoleBindings, if possible.`,
 		Remediation: `Deploy the CNF using ReplicaSet/StatefulSet.`,
 		Description: formDescription(TestPodDeploymentBestPracticesIdentifier,
 			`tests that CNF Pod(s) are deployed as part of a ReplicaSet(s)/StatefulSet(s).`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.3 and 6.3.8",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.3.3 and 5.3.8",
 	},
 	TestImagePullPolicyIdentifier: {
 		Identifier:  TestImagePullPolicyIdentifier,
@@ -644,7 +644,7 @@ ClusterRoleBindings, if possible.`,
 		Remediation: `Ensure that the containers under test are using IfNotPresent as Image Pull Policy.`,
 		Description: formDescription(TestImagePullPolicyIdentifier,
 			`Ensure that the containers under test are using IfNotPresent as Image Pull Policy..`),
-		BestPracticeReference: bestPracticeDocV1dot3URL + "  Section 15.6",
+		BestPracticeReference: bestPracticeDocV1dot3URL + "  Section 12.6",
 	},
 
 	TestPodRoleBindingsBestPracticesIdentifier: {
@@ -653,7 +653,7 @@ ClusterRoleBindings, if possible.`,
 		Remediation: `Ensure the CNF is not configured to use RoleBinding(s) in a non-CNF Namespace.`,
 		Description: formDescription(TestPodRoleBindingsBestPracticesIdentifier,
 			`ensures that a CNF does not utilize RoleBinding(s) in a non-CNF Namespace.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.3 and 6.3.5",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.3.3 and 5.3.5",
 	},
 
 	TestPodServiceAccountBestPracticesIdentifier: {
@@ -662,7 +662,7 @@ ClusterRoleBindings, if possible.`,
 		Remediation: `Ensure that the each CNF Pod is configured to use a valid Service Account`,
 		Description: formDescription(TestPodServiceAccountBestPracticesIdentifier,
 			`tests that each CNF Pod utilizes a valid Service Account.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.3 and 6.2.7",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2.3 and 5.2.7",
 	},
 
 	TestServicesDoNotUseNodeportsIdentifier: {
@@ -671,7 +671,7 @@ ClusterRoleBindings, if possible.`,
 		Remediation: `Ensure Services are not configured to use NodePort(s).`,
 		Description: formDescription(TestServicesDoNotUseNodeportsIdentifier,
 			`tests that each CNF Service does not utilize NodePort(s).`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.3.1",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.3.1",
 	},
 
 	TestUnalteredBaseImageIdentifier: {
@@ -703,7 +703,7 @@ that there are no changes to the following directories:
 8) /usr/sbin
 9) /usr/lib
 10) /usr/lib64`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2.2",
 	},
 
 	TestUnalteredStartupBootParamsIdentifier: {
@@ -713,7 +713,7 @@ that there are no changes to the following directories:
 the changes for you.`,
 		Description: formDescription(TestUnalteredStartupBootParamsIdentifier,
 			`tests that boot parameters are set through the MachineConfigOperator, and not set manually on the Node.`),
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2.13 and 6.2.14",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2.13 and 5.2.14",
 	},
 	TestShudtownIdentifier: {
 		Identifier: TestShudtownIdentifier,
@@ -733,7 +733,7 @@ the changes for you.`,
 		2) K8s will wait for a grace period.
 		3) K8s will clean the remaining processes using KILL signal.		
 			`,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2, 12.2 and 12.5",
 	},
 	TestPodRecreationIdentifier: {
 		Identifier: TestPodRecreationIdentifier,
@@ -745,7 +745,7 @@ the changes for you.`,
 			and that the actual replica count matches the desired replica count.`),
 		Remediation: `Ensure that CNF Pod(s) utilize a configuration that supports High Availability.  
 			Additionally, ensure that there are available Nodes in the OpenShift cluster that can be utilized in the event that a host Node fails.`,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 	TestSysctlConfigsIdentifier: {
 		Identifier: TestSysctlConfigsIdentifier,
@@ -755,7 +755,7 @@ the changes for you.`,
 			was created, the tests works by checking if the sysctl configs are consistent with the
 			MachineConfig CR which defines how the node should be configured`),
 		Remediation:           `You should recreate the node or change the sysctls, recreating is recommended because there might be other unknown changes`,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 	TestServiceMeshIdentifier: {
 		Identifier: TestServiceMeshIdentifier,
@@ -763,7 +763,7 @@ the changes for you.`,
 		Description: formDescription(TestPodRecreationIdentifier,
 			`verifies if have service mesh.`),
 		Remediation:           ``,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2.4, 5.2.5, 5.2.15, 10.8.3 and 16",
 	},
 	TestScalingIdentifier: {
 		Identifier: TestScalingIdentifier,
@@ -773,7 +773,7 @@ the changes for you.`,
 			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the 
 			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.`),
 		Remediation:           `Make sure CNF deployments/replica sets can scale in/out successfully.`,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.1 and 5.2",
 	},
 	TestIsRedHatReleaseIdentifier: {
 		Identifier: TestIsRedHatReleaseIdentifier,
@@ -781,7 +781,7 @@ the changes for you.`,
 		Description: formDescription(TestIsRedHatReleaseIdentifier,
 			`verifies if the container base image is redhat.`),
 		Remediation:           `build a new docker image that's based on UBI (redhat universal base image).`,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 	TestIsSELinuxEnforcingIdentifier: {
 		Identifier: TestIsSELinuxEnforcingIdentifier,
@@ -789,7 +789,7 @@ the changes for you.`,
 		Description: formDescription(TestIsSELinuxEnforcingIdentifier,
 			`verifies that all openshift platform/cluster nodes have selinux in "Enforcing" mode.`),
 		Remediation:           `configure selinux and enable enforcing mode.`,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 11.3 Pod Security",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 10.3 Pod Security",
 	},
 	TestUndeclaredContainerPortsUsage: {
 		Identifier: TestUndeclaredContainerPortsUsage,
@@ -805,7 +805,7 @@ the changes for you.`,
 		Description: formDescription(TestCrdsStatusSubresourceIdentifier,
 			`checks that all CRDs have a status subresource specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties["status"]).`),
 		Remediation:           `make sure that all the CRDs have a meaningful status specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties["status"]).`,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2",
 	},
 	TestLoggingIdentifier: {
 		Identifier: TestLoggingIdentifier,
@@ -813,7 +813,7 @@ the changes for you.`,
 		Description: formDescription(TestLoggingIdentifier,
 			`check that all containers under test use standard input output and standard error when logging`),
 		Remediation:           `make sure containers are not redirecting stdout/stderr`,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 11.1",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 10.1",
 	},
 	TestTerminationMessagePolicyIdentifier: {
 		Identifier: TestTerminationMessagePolicyIdentifier,
@@ -821,28 +821,31 @@ the changes for you.`,
 		Description: formDescription(TestTerminationMessagePolicyIdentifier,
 			`check that all containers are using terminationMessagePolicy: FallbackToLogsOnError`),
 		Remediation:           `make sure containers are all using FallbackToLogsOnError in terminationMessagePolicy`,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 15.1",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 12.1",
 	},
 	TestPodAutomountServiceAccountIdentifier: {
 		Identifier: TestPodAutomountServiceAccountIdentifier,
 		Type:       normativeResult,
 		Description: formDescription(TestPodAutomountServiceAccountIdentifier,
 			`check that all pods under test have automountServiceAccountToken set to false`),
-		Remediation: `check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false`,
+		Remediation:           `check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false`,
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 12.7",
 	},
 	TestLivenessProbeIdentifier: {
 		Identifier: TestLivenessProbeIdentifier,
 		Type:       normativeResult,
 		Description: formDescription(TestLivenessProbeIdentifier, `check that all containers under test
 		have liveness probe defined`),
-		Remediation: `add liveness probe to deployed containers`,
+		Remediation:           `add liveness probe to deployed containers`,
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2.16, 12.1 and 12.5",
 	},
 	TestReadinessProbeIdentifier: {
 		Identifier: TestReadinessProbeIdentifier,
 		Type:       normativeResult,
 		Description: formDescription(TestReadinessProbeIdentifier, `check that all containers under test
 		have readiness probe defined`),
-		Remediation: `add readiness probe to deployed containers`,
+		Remediation:           `add readiness probe to deployed containers`,
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 5.2.16, 12.1 and 12.5",
 	},
 	TestOneProcessPerContainerIdentifier: {
 		Identifier: TestOneProcessPerContainerIdentifier,
@@ -850,6 +853,6 @@ the changes for you.`,
 		Description: formDescription(TestOneProcessPerContainerIdentifier, `check that all containers under test
 		have only one process running`),
 		Remediation:           `launch only one process per container`,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 11.8.3",
+		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 10.8.3",
 	},
 }
