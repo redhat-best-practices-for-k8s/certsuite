@@ -42,6 +42,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.3.6",
@@ -88,6 +90,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.3.6",
@@ -122,6 +126,8 @@
       "package": "uma-operator",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.0",
@@ -156,6 +162,7 @@
       "package": "redhat-marketplace-operator",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
       "skip_range": ">=1.0.0 <1.0.4",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
@@ -191,6 +198,8 @@
       "package": "kubeturbo-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "7.22.9",
@@ -225,51 +234,12 @@
       "package": "oneagent-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.8.2",
       "version_original": "0.8.2"
-    },
-    {
-      "_id": "5f6d0cef49dbe0cdd0373f25",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:1c09b241712469ae34e4017e9481e3124cb6ce7037b61a44b62f2f7e0c10df46",
-      "bundle_path_digest": "sha256:1c09b241712469ae34e4017e9481e3124cb6ce7037b61a44b62f2f7e0c10df46",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2020-09-24T21:17:35.271000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "kubeturbo-operator.v7.22.9",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:10:44.855000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        }
-      ],
-      "related_images": [],
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "7.22.9",
-      "version_original": "7.22.9"
     },
     {
       "_id": "5f6d0cf34fcb1bc3f0425fd2",
@@ -311,6 +281,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.8.2",
@@ -352,6 +324,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.1",
@@ -411,6 +385,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.0",
@@ -470,6 +446,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.0",
@@ -517,6 +495,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.16",
@@ -564,6 +544,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.0.16",
@@ -605,6 +587,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.2.0",
@@ -646,6 +630,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.2.0",
@@ -915,6 +901,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.0.0",
@@ -956,6 +944,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.0",
@@ -2207,6 +2197,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.0",
@@ -2248,6 +2240,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.15.2",
@@ -2289,6 +2283,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.15.2",
@@ -3580,6 +3576,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.2.2",
@@ -3744,6 +3742,7 @@
       "package": "couchdb-operator-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
       "skip_range": ">=1.0.0 <1.4.0",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
@@ -4708,6 +4707,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.0",
@@ -5164,6 +5165,8 @@
       "package": "gpu-operator-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.3.1",
@@ -5527,6 +5530,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.3.0",
@@ -5568,6 +5573,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "2.0.0",
@@ -5931,6 +5938,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.3.8",
@@ -6423,6 +6432,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.0",
@@ -6457,6 +6468,8 @@
       "package": "kubeturbo-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "8.0.0",
@@ -6682,6 +6695,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.0",
@@ -8086,6 +8101,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.0.0",
@@ -8127,6 +8144,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.15.2",
@@ -8168,6 +8187,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.15.2",
@@ -9189,6 +9210,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.2.2",
@@ -11795,6 +11818,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.3.1",
@@ -12352,6 +12377,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "2.0.0",
@@ -12584,6 +12611,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.3.8",
@@ -12913,53 +12942,6 @@
       "version_original": "1.0.1"
     },
     {
-      "_id": "5f8f29e43a93dc782c77a0df",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:dd364c7a85d6a97629074293a481534226353a1614b61fb2f1ff0972a4016dce",
-      "bundle_path_digest": "sha256:dd364c7a85d6a97629074293a481534226353a1614b61fb2f1ff0972a4016dce",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2020-10-20T18:18:12.595000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "kubeturbo-operator.v8.0.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:35:28.752000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "related_images": [],
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "8.0.0",
-      "version_original": "8.0.0"
-    },
-    {
       "_id": "5f8f29e73a93dc782c77a0e1",
       "alm_examples": [
         {
@@ -13096,6 +13078,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.0.1",
@@ -13137,6 +13121,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.0.4",
@@ -13264,6 +13250,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.9.0",
@@ -13769,6 +13757,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.0.20",
@@ -14108,6 +14098,8 @@
           "name": "redis-enterprise-operator"
         }
       ],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "5.4.14-7",
@@ -14263,6 +14255,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "6.0.8-1",
@@ -15453,93 +15447,6 @@
       "version_original": "2019.8.4"
     },
     {
-      "_id": "5f9038d279b4f8d046342f72",
-      "alm_examples": [
-        {
-          "kind": "Xl",
-          "metadata": {
-            "name": "xl-release"
-          },
-          "spec": {
-            "global": {
-              "tag": "7.22.9"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:8890c8329b9968a041860d9eea7685a103b6643882dc569eb634d467442c79c2",
-      "bundle_path_digest": "sha256:8890c8329b9968a041860d9eea7685a103b6643882dc569eb634d467442c79c2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2020-10-21T13:34:10.520000+00:00",
-      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
-      "csv_display_name": "Turbonomic Platform Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "t8c-operator.v7.22.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:19:25.991000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1"
-        }
-      ],
-      "related_images": [
-        {
-          "digest": "sha256:b8f6fa73da944ddb7db366792b3c1b264032e267b20f3e00099b1e244e452605",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:b8f6fa73da944ddb7db366792b3c1b264032e267b20f3e00099b1e244e452605",
-          "name": "t8c-operator-b8f6fa73da944ddb7db366792b3c1b264032e267b20f3e00099b1e244e452605-annotation"
-        },
-        {
-          "digest": "sha256:b8f6fa73da944ddb7db366792b3c1b264032e267b20f3e00099b1e244e452605",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:b8f6fa73da944ddb7db366792b3c1b264032e267b20f3e00099b1e244e452605",
-          "name": "t8c-operator"
-        }
-      ],
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "7.22.9",
-      "version_original": "7.22.9"
-    },
-    {
       "_id": "5f9038d44649c8502ac6aa2a",
       "alm_examples": [
         {
@@ -15848,6 +15755,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.1",
@@ -15882,6 +15791,8 @@
       "package": "nginx-ingress-operator",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.4",
@@ -16288,6 +16199,8 @@
       "package": "nxrm-operator-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "3.26.1-1",
@@ -16322,6 +16235,8 @@
       "package": "oneagent-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.9.0",
@@ -16489,6 +16404,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.2",
@@ -16868,6 +16785,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.20",
@@ -16909,6 +16828,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.0.1",
@@ -19037,6 +18958,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.1",
@@ -19096,6 +19019,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.1",
@@ -19256,6 +19181,7 @@
       "package": "redhat-marketplace-operator",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
       "skip_range": ">=1.0.0 <1.0.5",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
@@ -19349,6 +19275,8 @@
           "name": "redis-enterprise-operator"
         }
       ],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "5.4.14-7",
@@ -19478,6 +19406,8 @@
       "package": "redis-enterprise-operator-cert",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "6.0.8-1",
@@ -21426,6 +21356,7 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
       "skip_range": ">=2.3.0 <2.3.1",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
@@ -21461,6 +21392,8 @@
       "package": "uma-operator",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "2.0.0",
@@ -21502,6 +21435,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.1",
@@ -29074,6 +29009,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.2.2",
@@ -30016,6 +29953,7 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
       "skip_range": ">=1.0.0 <1.4.1",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
@@ -31931,6 +31869,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.3.1",
@@ -32488,6 +32428,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "2.0.0",
@@ -32720,6 +32662,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.3.8",
@@ -33049,53 +32993,6 @@
       "version_original": "1.0.1"
     },
     {
-      "_id": "5fcf5d9e8c8643c889cb6f10",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:dd364c7a85d6a97629074293a481534226353a1614b61fb2f1ff0972a4016dce",
-      "bundle_path_digest": "sha256:dd364c7a85d6a97629074293a481534226353a1614b61fb2f1ff0972a4016dce",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2020-12-08T11:03:58.391000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "kubeturbo-operator.v8.0.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:11:31.547000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "related_images": [],
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "8.0.0",
-      "version_original": "8.0.0"
-    },
-    {
       "_id": "5fcf5da26667346792627cd0",
       "alm_examples": [
         {
@@ -33232,6 +33129,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.0.1",
@@ -33273,6 +33172,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.0.4",
@@ -33402,6 +33303,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.9.0",
@@ -34188,6 +34091,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.0.20",
@@ -34527,6 +34432,8 @@
           "name": "redis-enterprise-operator"
         }
       ],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "5.4.14-7",
@@ -34682,6 +34589,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "6.0.8-1",
@@ -34729,6 +34638,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "6.0.8-1",
@@ -35630,93 +35541,6 @@
       "version_original": "2019.8.4"
     },
     {
-      "_id": "5fcf5dd78c8643c889cb6f18",
-      "alm_examples": [
-        {
-          "kind": "Xl",
-          "metadata": {
-            "name": "xl-release"
-          },
-          "spec": {
-            "global": {
-              "tag": "7.22.9"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:8890c8329b9968a041860d9eea7685a103b6643882dc569eb634d467442c79c2",
-      "bundle_path_digest": "sha256:8890c8329b9968a041860d9eea7685a103b6643882dc569eb634d467442c79c2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2020-12-08T11:04:55.348000+00:00",
-      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
-      "csv_display_name": "Turbonomic Platform Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "t8c-operator.v7.22.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-04T14:48:55.584000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1"
-        }
-      ],
-      "related_images": [
-        {
-          "digest": "sha256:b8f6fa73da944ddb7db366792b3c1b264032e267b20f3e00099b1e244e452605",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:b8f6fa73da944ddb7db366792b3c1b264032e267b20f3e00099b1e244e452605",
-          "name": "t8c-operator-b8f6fa73da944ddb7db366792b3c1b264032e267b20f3e00099b1e244e452605-annotation"
-        },
-        {
-          "digest": "sha256:b8f6fa73da944ddb7db366792b3c1b264032e267b20f3e00099b1e244e452605",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:b8f6fa73da944ddb7db366792b3c1b264032e267b20f3e00099b1e244e452605",
-          "name": "t8c-operator"
-        }
-      ],
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "7.22.9",
-      "version_original": "7.22.9"
-    },
-    {
       "_id": "5fcf5dd8c838eab12d2cec80",
       "alm_examples": [
         {
@@ -36025,6 +35849,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.0.1",
@@ -38027,6 +37853,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.1.2",
@@ -38067,6 +37895,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.1.2",
@@ -38623,6 +38453,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.4.1",
@@ -38664,6 +38496,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.1",
@@ -40259,6 +40093,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.3.9",
@@ -40515,6 +40351,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.3.9",
@@ -40973,6 +40811,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.2.6",
@@ -41191,6 +41031,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.2.1",
@@ -41325,6 +41167,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.2.1",
@@ -41456,6 +41300,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.9.2",
@@ -41490,6 +41336,8 @@
       "package": "oneagent-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.9.2",
@@ -41531,6 +41379,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.4",
@@ -42849,6 +42699,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.3.10",
@@ -42896,6 +42748,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.3.10",
@@ -42937,6 +42791,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.1.3",
@@ -42977,6 +42833,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.1.3",
@@ -43018,6 +42876,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.0",
@@ -43059,6 +42919,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.4.0",
@@ -43814,6 +43676,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.3.5",
@@ -43981,57 +43845,12 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.1.4",
       "version_original": "0.1.4"
-    },
-    {
-      "_id": "60083ba93925c7b07a75f2d6",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:770c0b5a41cc3103582daeb44a0d897d578e03fdd8597a3a385f8ef78d5b6f38",
-      "bundle_path_digest": "sha256:770c0b5a41cc3103582daeb44a0d897d578e03fdd8597a3a385f8ef78d5b6f38",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-01-20T14:18:17.487000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "kubeturbo-operator.v8.0.4",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-16T16:58:29.896000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        }
-      ],
-      "related_images": [],
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "8.0.4",
-      "version_original": "8.0.4"
     },
     {
       "_id": "60083f273925c7b07a75f2dc",
@@ -44062,6 +43881,8 @@
       "package": "kubeturbo-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "8.0.4",
@@ -44103,6 +43924,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.1.4",
@@ -44821,101 +44644,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.0",
       "version_original": "1.0.0"
-    },
-    {
-      "_id": "60137e8aa44e72527c4b1211",
-      "alm_examples": [
-        {
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:dd05b33ddb1ff5fb9e31d24ab0f568974d6592d50e02908c7a2e9f0d680e27b9",
-      "bundle_path_digest": "sha256:dd05b33ddb1ff5fb9e31d24ab0f568974d6592d50e02908c7a2e9f0d680e27b9",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-01-29T03:18:34.604000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.0.6",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:12:03.027000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "related_images": [
-        {
-          "digest": "sha256:204ad91c434c7179b316c1a190329c59dc41a0993f5f99d5f52d7f9e414373e0",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:204ad91c434c7179b316c1a190329c59dc41a0993f5f99d5f52d7f9e414373e0",
-          "name": "kubeturbo-operator-204ad91c434c7179b316c1a190329c59dc41a0993f5f99d5f52d7f9e414373e0-annotation"
-        },
-        {
-          "digest": "sha256:204ad91c434c7179b316c1a190329c59dc41a0993f5f99d5f52d7f9e414373e0",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:204ad91c434c7179b316c1a190329c59dc41a0993f5f99d5f52d7f9e414373e0",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:7894d08300b13a19290ae5262c8a8224663246f55de7dc9d163965af9c2e9a08",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:7894d08300b13a19290ae5262c8a8224663246f55de7dc9d163965af9c2e9a08",
-          "name": "kubeturbo"
-        }
-      ],
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "8.0.6",
-      "version_original": "8.0.6"
     },
     {
       "_id": "601388ddf94465a34f4eff0b",
@@ -45992,6 +45720,8 @@
       "package": "oneagent-certified",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.9.4",
@@ -46037,6 +45767,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.9.4",
@@ -47219,6 +46951,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.5.1",
@@ -47260,6 +46994,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.5.1",
@@ -48225,6 +47961,8 @@
         }
       ],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.5",
@@ -49009,6 +48747,8 @@
       "package": "mongodb-enterprise",
       "provided_apis": [],
       "related_images": [],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.9.1",
@@ -49654,93 +49394,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.32",
       "version_original": "0.0.32"
-    },
-    {
-      "_id": "60240baf8bfc4fdc81324599",
-      "alm_examples": [
-        {
-          "kind": "Xl",
-          "metadata": {
-            "name": "xl-release"
-          },
-          "spec": {
-            "global": {
-              "tag": "8.0.7"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:54455b83daafad874a99acd5da452c19b0f492ed9781b50cc76940059d7673c4",
-      "bundle_path_digest": "sha256:54455b83daafad874a99acd5da452c19b0f492ed9781b50cc76940059d7673c4",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-02-10T16:37:03.614000+00:00",
-      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
-      "csv_display_name": "Turbonomic Platform Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "t8c-operator.v8.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-05T11:18:21.261000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1alpha1"
-        }
-      ],
-      "related_images": [
-        {
-          "digest": "sha256:7a9e008f52d6cf55cacc9ffee78a133c1c86ea04b4e84bf6a5bb75c24d153d61",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:7a9e008f52d6cf55cacc9ffee78a133c1c86ea04b4e84bf6a5bb75c24d153d61",
-          "name": "t8c-operator-7a9e008f52d6cf55cacc9ffee78a133c1c86ea04b4e84bf6a5bb75c24d153d61-annotation"
-        },
-        {
-          "digest": "sha256:7a9e008f52d6cf55cacc9ffee78a133c1c86ea04b4e84bf6a5bb75c24d153d61",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:7a9e008f52d6cf55cacc9ffee78a133c1c86ea04b4e84bf6a5bb75c24d153d61",
-          "name": "t8c-operator"
-        }
-      ],
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "8.0.0",
-      "version_original": "8.0.0"
     },
     {
       "_id": "602411baf022ee49c9ad5523",
@@ -50575,6 +50228,8 @@
           "name": "kube_enforcer"
         }
       ],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "5.3.0",
@@ -50959,6 +50614,8 @@
           "name": "kube_enforcer"
         }
       ],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "5.3.0",
@@ -53972,6 +53629,8 @@
           "name": "kube_enforcer"
         }
       ],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "5.3.0",
@@ -57437,101 +57096,6 @@
       "version_original": "2.0.0"
     },
     {
-      "_id": "6034c168a791d50a09cc6bad",
-      "alm_examples": [
-        {
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:dd05b33ddb1ff5fb9e31d24ab0f568974d6592d50e02908c7a2e9f0d680e27b9",
-      "bundle_path_digest": "sha256:dd05b33ddb1ff5fb9e31d24ab0f568974d6592d50e02908c7a2e9f0d680e27b9",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-02-23T08:48:40.197000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.0.6",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-04T15:05:52.683000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "related_images": [
-        {
-          "digest": "sha256:204ad91c434c7179b316c1a190329c59dc41a0993f5f99d5f52d7f9e414373e0",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:204ad91c434c7179b316c1a190329c59dc41a0993f5f99d5f52d7f9e414373e0",
-          "name": "kubeturbo-operator-204ad91c434c7179b316c1a190329c59dc41a0993f5f99d5f52d7f9e414373e0-annotation"
-        },
-        {
-          "digest": "sha256:204ad91c434c7179b316c1a190329c59dc41a0993f5f99d5f52d7f9e414373e0",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:204ad91c434c7179b316c1a190329c59dc41a0993f5f99d5f52d7f9e414373e0",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:7894d08300b13a19290ae5262c8a8224663246f55de7dc9d163965af9c2e9a08",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:7894d08300b13a19290ae5262c8a8224663246f55de7dc9d163965af9c2e9a08",
-          "name": "kubeturbo"
-        }
-      ],
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "8.0.6",
-      "version_original": "8.0.6"
-    },
-    {
       "_id": "6034c16f08f2098193f9119d",
       "alm_examples": [
         {
@@ -59075,93 +58639,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.0.32",
       "version_original": "0.0.32"
-    },
-    {
-      "_id": "6034c1ad422aa04d75802425",
-      "alm_examples": [
-        {
-          "kind": "Xl",
-          "metadata": {
-            "name": "xl-release"
-          },
-          "spec": {
-            "global": {
-              "tag": "8.0.7"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:54455b83daafad874a99acd5da452c19b0f492ed9781b50cc76940059d7673c4",
-      "bundle_path_digest": "sha256:54455b83daafad874a99acd5da452c19b0f492ed9781b50cc76940059d7673c4",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-02-23T08:49:49.584000+00:00",
-      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
-      "csv_display_name": "Turbonomic Platform Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "t8c-operator.v8.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-04T14:58:43.780000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1alpha1"
-        }
-      ],
-      "related_images": [
-        {
-          "digest": "sha256:7a9e008f52d6cf55cacc9ffee78a133c1c86ea04b4e84bf6a5bb75c24d153d61",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:7a9e008f52d6cf55cacc9ffee78a133c1c86ea04b4e84bf6a5bb75c24d153d61",
-          "name": "t8c-operator-7a9e008f52d6cf55cacc9ffee78a133c1c86ea04b4e84bf6a5bb75c24d153d61-annotation"
-        },
-        {
-          "digest": "sha256:7a9e008f52d6cf55cacc9ffee78a133c1c86ea04b4e84bf6a5bb75c24d153d61",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:7a9e008f52d6cf55cacc9ffee78a133c1c86ea04b4e84bf6a5bb75c24d153d61",
-          "name": "t8c-operator"
-        }
-      ],
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "8.0.0",
-      "version_original": "8.0.0"
     },
     {
       "_id": "6034c1afaedf82a5c34e0ff7",
@@ -66563,6 +66040,8 @@
           "name": "kube_enforcer"
         }
       ],
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "5.3.0",
@@ -71526,9 +71005,1319 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "0.3.0",
       "version_original": "0.3.0"
+    },
+    {
+      "_id": "60470872122bd89307e0106b",
+      "alm_examples": [
+        {
+          "api_version": "densify.com/v1",
+          "kind": "Densify",
+          "metadata": {
+            "name": "example-densify"
+          },
+          "spec": {
+            "affinity": {},
+            "config": {
+              "cronJob": {
+                "schedule": "0 * * * *"
+              },
+              "debug": false,
+              "densify": {
+                "epassword": "<encrypted densify user password>",
+                "hostname": "<instance>.densify.com",
+                "port": 443,
+                "protocol": "https",
+                "user": "<densify user>"
+              },
+              "prometheus": {
+                "hostname": "<prometheus hostname>",
+                "port": "<prometheus port>",
+                "protocol": "http"
+              },
+              "zipEnabled": true,
+              "zipname": "data/<zip name>"
+            },
+            "image": "densify/container-optimization-data-forwarder:release-2.2.1-beta",
+            "nodeSelector": {},
+            "pullPolicy": "Always",
+            "replicaCount": 1,
+            "resources": {}
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/densify/densify-operator-bundle@sha256:b369e48b59bcbd9710be712f601dfe00b09e2be24047f32c91b025a9336c88b0",
+      "bundle_path_digest": "sha256:b369e48b59bcbd9710be712f601dfe00b09e2be24047f32c91b025a9336c88b0",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-03-09T05:32:34.528000+00:00",
+      "csv_description": "Densify Container Resource Management works to identify better supply (resource) allocations for your underlying containers based on key technical, business and cost criteria.  Any infrastructure changes recommended by Densify can be moderated through your existing ITSM framework / processes.",
+      "csv_display_name": "Densify Operator",
+      "csv_metadata_description": "Densify Container Resource Management works to identify better supply (resource) allocations for your underlying containers based on key technical, business and cost criteria.  Any infrastructure changes recommended by Densify can be moderated through your existing ITSM framework / processes.",
+      "csv_name": "densify-operator.v0.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-05-13T11:11:08.261000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "densify-operator",
+      "provided_apis": [
+        {
+          "group": "densify.com",
+          "kind": "Densify",
+          "plural": "densifies",
+          "version": "v1"
+        },
+        {
+          "group": "densify.com",
+          "kind": "Densify",
+          "plural": "densifies",
+          "version": "v1alpha1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:bd81b1d8ff3e67a2619104aaf7960ec0c0cd90b8661874aa9377f5177d4d0a58",
+          "image": "registry.connect.redhat.com/densify/densify-operator@sha256:bd81b1d8ff3e67a2619104aaf7960ec0c0cd90b8661874aa9377f5177d4d0a58",
+          "name": "densify-operator-bd81b1d8ff3e67a2619104aaf7960ec0c0cd90b8661874aa9377f5177d4d0a58-annotation"
+        },
+        {
+          "digest": "sha256:0bf4526525244c0b2fbace318fe70ba9fce3b32fc9e1fcd85bac903bc6a95cf3",
+          "image": "registry.connect.redhat.com/densify/densify-operator@sha256:0bf4526525244c0b2fbace318fe70ba9fce3b32fc9e1fcd85bac903bc6a95cf3",
+          "name": "densify-operator"
+        },
+        {
+          "digest": "sha256:c549f1f01933f6c1f95deac4c92c95c34eb9617d228f211b192490f3f7bede20",
+          "image": "registry.connect.redhat.com/densify/container-data-collection-forwarder@sha256:c549f1f01933f6c1f95deac4c92c95c34eb9617d228f211b192490f3f7bede20",
+          "name": "densify"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.0.2",
+      "version_original": "0.0.2"
+    },
+    {
+      "_id": "60470873dbb14c0b8248bacc",
+      "alm_examples": [
+        {
+          "api_version": "densify.com/v1",
+          "kind": "Densify",
+          "metadata": {
+            "name": "densify"
+          },
+          "spec": {
+            "affinity": {},
+            "config": {
+              "cronJob": {
+                "schedule": "0 * * * *"
+              },
+              "debug": false,
+              "densify": {
+                "epassword": "<encrypted densify user password>",
+                "hostname": "<instance>.densify.com",
+                "port": 443,
+                "protocol": "https",
+                "user": "<densify user>"
+              },
+              "prometheus": {
+                "hostname": "<prometheus hostname>",
+                "port": "<prometheus port>",
+                "protocol": "http"
+              },
+              "zipEnabled": true,
+              "zipname": "data/<zip name>"
+            },
+            "image": "registry.connect.redhat.com/densify/container-data-collection-forwarder@sha256:d99a1bc9213554cdf70202fa73e135c68fdd77a4b4972f591997dd2b94fde50a",
+            "nodeSelector": {},
+            "pullPolicy": "Always",
+            "replicaCount": 1,
+            "resources": {}
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64"
+      ],
+      "bundle_path": "registry.connect.redhat.com/densify/densify-operator-bundle@sha256:6c37c211385ffad721637ea1a6bcda46e4aa9aa46efdbeec6f75e9b9bd7ff75d",
+      "bundle_path_digest": "sha256:6c37c211385ffad721637ea1a6bcda46e4aa9aa46efdbeec6f75e9b9bd7ff75d",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "v1.0",
+      "creation_date": "2021-03-09T05:32:35.743000+00:00",
+      "csv_description": "The Densify-Operator deploys the Densify Container Data Collection utility, which collects data from a Prometheus server and sends it to a Densify instance for analysis. \n\n# Prerequisites\n\n- Densify account, which is provided with a Densify subscription or through a free trial (https://www.densify.com/service/signup)\n- Prometheus (https://prometheus.io/)\n- Kube-state-metrics (https://github.com/kubernetes/kube-state-metrics)\n\n# Installing\n\n## Basic Install\nThe instruction below deploys the basic Densify Container Data Collection with minimal configuration.\n1. update the Densify hostname, user and encrypted password, Prometheus hostname and port, and zip filename:\n```\napiVersion: densify.com/v1\nkind: Densify\nmetadata:\n  name: densify\nspec:\n  config:\n    densify:\n      hostname: <instance>.densify.com\n      port: 443\n      protocol: https\n      user: <densify user>\n      epassword: <encrypted densify user password>\n    prometheus:\n      hostname: <prometheus hostname>\n      port: <prometheus port>\n      protocol: http\n    zipname: data/<zip name>\n```\n\n## Install Using a Secret for User and Password\nThe instructions below deploy the Densify Container Data Collection using a secret to store the username and encrypted password.\n1. Create a secret that contains the username and epassword keys.\n```\noc -n \"<namespace deploying operator into>\" create secret generic densify-secret \\\n  --from-literal=username=\"<densify username>\" \\\n  --from-literal=epassword=\"<encrypted password>\" \\\n```\n2. Update the Densify hostname, Prometheus hostname and port, and zip filename:\n```\napiVersion: densify.com/v1\nkind: Densify\nmetadata:\n  name: densify\nspec:\n  config:\n    densify:\n      hostname: <instance>.densify.com\n      port: 443\n      protocol: https\n      UserSecretName: densify-secret\n    prometheus:\n      hostname: <prometheus hostname>\n      port: <prometheus port>\n      protocol: http\n    zipname: data/<zip name>\n```\n# Configuration\n \nThe configuration parameters are the same set as the [Densify Forwarder](https://github.com/densify-dev/helm-charts/tree/master/charts/container-optimization-data-forwarder#configuration) helm chart:\n\n| Parameter        | Description           | Default |\n| ------------- |-------------|--------|\n| `config.densify.hostname` | Specify the Densify instance hostname. You may need to specify a fully qualified domain name. | `<instance>.densify.com` |\n| `config.densify.protocol` | Specify the Densify connection protocol: http or https. | `<http/https>` |\n| `config.densify.port` | Specify the Densify connection port number. | `443` |\n| `config.densify.user` | Specify the Densify user account. You must specify either a password or an epassword along with this parameter. This user must already exist in your Densify instance and have API access privileges. Alternatively, you can use config.densify.UserSecretName for authentication instead of user/(e)password combination (see UserSecretName below). | `nil` |\n| `config.densify.password` | Specify the password for the Densify user. Only specify a password or an encrypted password (not both). | `nil` |\n| `config.densify.epassword` | Specify the encrypted password for the Densify User. If you specify an encrypted password, then disable the config.densify.password paramter. | `nil` |\n| `config.densify.UserSecretName` | Specify the secret name used to store the Densify user and epassword (keys must contain username and epassword). If this parameter is used, then config.densify.username\\password\\epassword parameters must be disabled. | `nil` |\n| `config.prometheus.hostname` | Specify the Prometheus address. Using the internal service name is recommended (i.e. `<service name>.<namespace>.svc`). | `nil` |\n| `config.prometheus.protocol` | Specify the Prometheus connection protocol: http or https. | `<http/https>` |\n| `config.prometheus.port` | Specify the Prometheus service connection port. | `9090` |\n| `config.prometheus.clustername` | Specify the name to identify the cluster in the Densify UI. If this parameter is disabled, then the specified Prometheus hostname is used to identify the cluster in the Densify UI. | `nil` |\n| `config.zipname` | Specify the name of the zipfile to send to Densify. | `data/nil` |\n| `rbac.create` | This flag indicates if RBAC resources are created and used. This flag must be \"true\" for API access to Prometheus in a secured cluster. | `true` |\n| `serviceAccount.create` | Specify \"true\" to create a Service Account with the name specified by the serviceAccount.name parameter (see below). | `true` |\n| `serviceAccount.name` | Specify the name of the Service Account. If this parameter is disabled, then the Helm chart name is used as the Service Account name. You can specify an existing Service Account name to use, if serviceAccount.create == \"false\". | `nil` |\n\nRefer to the [Densify Forwarder](https://github.com/densify-dev/helm-charts/tree/master/charts/container-optimization-data-forwarder#configuration) helm chart for the full list of parameters.\n\n# Limitation\n* OS Support: Linux\n* Architecture: AMD64\n\n# Documentation\n* [Densify Feature Description and Reference Guide](https://www.densify.com/docs/Content/Welcome.htm)\n\n# License\nApache 2 Licensed. See [LICENSE](LICENSE) for full details.",
+      "csv_display_name": "Densify Operator",
+      "csv_metadata_description": "Densify Container Resource Management works to identify better supply (resource) allocations for your underlying containers based on key technical, business and cost criteria.  Any infrastructure changes recommended by Densify can be moderated through your existing ITSM framework / processes.",
+      "csv_name": "densify-operator.v1.0.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:14:54.123000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "densify-operator",
+      "provided_apis": [
+        {
+          "group": "densify.com",
+          "kind": "Densify",
+          "plural": "densifies",
+          "version": "v1"
+        },
+        {
+          "group": "densify.com",
+          "kind": "Densify",
+          "plural": "densifies",
+          "version": "v1alpha1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:47582660364156ea36279dd9fdcc43bdad7092f07ab8d79101fd6eca7da73ada",
+          "image": "registry.connect.redhat.com/densify/densify-operator@sha256:47582660364156ea36279dd9fdcc43bdad7092f07ab8d79101fd6eca7da73ada",
+          "name": "densify-operator-47582660364156ea36279dd9fdcc43bdad7092f07ab8d79101fd6eca7da73ada-annotation"
+        },
+        {
+          "digest": "sha256:47582660364156ea36279dd9fdcc43bdad7092f07ab8d79101fd6eca7da73ada",
+          "image": "registry.connect.redhat.com/densify/densify-operator@sha256:47582660364156ea36279dd9fdcc43bdad7092f07ab8d79101fd6eca7da73ada",
+          "name": "densify-operator"
+        },
+        {
+          "digest": "sha256:d99a1bc9213554cdf70202fa73e135c68fdd77a4b4972f591997dd2b94fde50a",
+          "image": "registry.connect.redhat.com/densify/container-data-collection-forwarder@sha256:d99a1bc9213554cdf70202fa73e135c68fdd77a4b4972f591997dd2b94fde50a",
+          "name": "densify"
+        },
+        {
+          "digest": "sha256:d99a1bc9213554cdf70202fa73e135c68fdd77a4b4972f591997dd2b94fde50a",
+          "image": "registry.connect.redhat.com/densify/container-data-collection-forwarder@sha256:d99a1bc9213554cdf70202fa73e135c68fdd77a4b4972f591997dd2b94fde50a",
+          "name": "container-data-collection-forwarder-d99a1bc9213554cdf70202fa73e135c68fdd77a4b4972f591997dd2b94fde50a-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=0.0.2 <1.0.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.0.0",
+      "version_original": "1.0.0"
+    },
+    {
+      "_id": "60470876dbb14c0b8248bacd",
+      "alm_examples": [
+        {
+          "api_version": "labs.ai/v1alpha1",
+          "kind": "Eddi",
+          "metadata": {
+            "name": "eddi"
+          },
+          "spec": {
+            "size": 1
+          }
+        },
+        {
+          "api_version": "labs.ai/v1alpha1",
+          "kind": "Eddioperator",
+          "metadata": {
+            "name": "eddioperator"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/labsai/eddi-operator-bundle@sha256:c848665b6cddace5bb008c642a90df95ef75febe83fd01d3aa66c6d3eb78ed90",
+      "bundle_path_digest": "sha256:c848665b6cddace5bb008c642a90df95ef75febe83fd01d3aa66c6d3eb78ed90",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-03-09T05:32:38.801000+00:00",
+      "csv_description": "## About the managed application\n**Enterprise-Ready Open Source Chatbot Platform**\ncreate, run and maintain customizable chatbots\n**Scale Horizontally**\nscale out horizontally due to resource-oriented design & RESTful\narchitecture\n**NLP Parser**\nmatch user inputs as words and phrases even in case of spelling mistakes or\nmissing spaces between words\n**Behavior Rules**\nmake decisions with predefined and custom conditions\n**Conversation Memory**\nstore context information between user interactions in order to make better\nconversation decisions\n**Extension Oriented**\nbuild loosely coupled plugins that allows the integration of new algorithms\nand communication to other systems\n**Modular Bot Configurations**\nshare bot knowledge across bots in order to reuse components and thus speed\nup further developments\n**Versioned Configurations**\ntrack changes of all of your configurations. Use different versions of your\nconfigurations in different bots, to allow multiple bots with shared\nknowledge\n**Developed as Microservices, Restful by Design**\nwe don't need to comment on that, do we...? ;-) \n## About this Operator\n\nLaunch and update EDDI instances\n### Usage\nDeploy an EDDI instance by creating a new EDDI resource in the desired Namespace.\n```Yaml\napiVersion: labs.ai/v1alpha1\nkind: Eddi\nmetadata:\n  name: eddi\nspec:\n  size: 1\n```\nThe operator will deploy a MongoDB pod, an EDDI Instance and create a route to access the EDDI WebUI. The route is automatically created. \nExample route based on the resource above deployed to a namespace called test: `eddi-route-test.apps.ocp.example.com`",
+      "csv_display_name": "EDDI Operator",
+      "csv_metadata_description": "Basic Installation of EDDI, upgrade to new versions",
+      "csv_name": "eddi-operator.v1.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:44:37.637000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "eddi-operator-certified",
+      "provided_apis": [
+        {
+          "group": "labs.ai",
+          "kind": "Eddioperator",
+          "plural": "eddioperators",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "labs.ai",
+          "kind": "Eddi",
+          "plural": "eddis",
+          "version": "v1alpha1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:b36cb46542809218e871e23c5b71cd6dd23fb1b57218ef7df3d04c7277e19545",
+          "image": "registry.connect.redhat.com/labsai/eddi-operator@sha256:b36cb46542809218e871e23c5b71cd6dd23fb1b57218ef7df3d04c7277e19545",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:2978e84d97639bc616e557ce52fc677df54acbc965ee9a32825f0e565a3f94b3",
+          "image": "registry.connect.redhat.com/labsai/eddi@sha256:2978e84d97639bc616e557ce52fc677df54acbc965ee9a32825f0e565a3f94b3",
+          "name": "db"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.0.2",
+      "version_original": "1.0.2"
+    },
+    {
+      "_id": "6047087b5a00810ecaf7c41a",
+      "alm_examples": [
+        {
+          "api_version": "falco.org/v1",
+          "kind": "Falco",
+          "metadata": {
+            "name": "example-falco"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sysdig/falco-operator-bundle@sha256:ed6d3b83f8ef2c7b2f97ab24a442f211d225f93d516ff6acba55d0566ec3cd2e",
+      "bundle_path_digest": "sha256:ed6d3b83f8ef2c7b2f97ab24a442f211d225f93d516ff6acba55d0566ec3cd2e",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-03-09T05:32:43.608000+00:00",
+      "csv_description": "[Falco](https://falco.org) is a behavioral activity monitor designed to\ndetect anomalous activity in your applications. You can use Falco to\nmonitor run-time security of your Kubernetes applications and internal\ncomponents.\n\nThis operator installs Falco in all nodes in your cluster via a DaemonSet.\n\n## Settings\n\nThis operator, uses the same options than the Helm Chart please take a look\nto all the options in the following table:\n\n| Parameter                                       | Description                                                                                                                                                                                                | Default                                                                                                                                   |\n| ---                                             | ---                                                                                                                                                                                                        | ---                                                                                                                                       |\n| `image.registry`                                | The image registry to pull from                                                                                                                                                                            | `docker.io`                                                                                                                               |\n| `image.repository`                              | The image repository to pull from                                                                                                                                                                          | `falcosecurity/falco`                                                                                                                     |\n| `image.tag`                                     | The image tag to pull                                                                                                                                                                                      | `0.24.0`                                                                                                                                  |\n| `image.pullPolicy`                              | The image pull policy                                                                                                                                                                                      | `IfNotPresent`                                                                                                                            |\n| `containerd.enabled`                            | Enable ContainerD support                                                                                                                                                                                  | `true`                                                                                                                                    |\n| `containerd.socket`                             | The path of the ContainerD socket                                                                                                                                                                          | `/run/containerd/containerd.sock`                                                                                                         |\n| `docker.enabled`                                | Enable Docker support                                                                                                                                                                                      | `true`                                                                                                                                    |\n| `docker.socket`                                 | The path of the Docker daemon socket                                                                                                                                                                       | `/var/run/docker.sock`                                                                                                                    |\n| `resources.requests.cpu`                        | CPU requested for being run in a node                                                                                                                                                                      | `100m`                                                                                                                                    |\n| `resources.requests.memory`                     | Memory requested for being run in a node                                                                                                                                                                   | `512Mi`                                                                                                                                   |\n| `resources.limits.cpu`                          | CPU limit                                                                                                                                                                                                  | `200m`                                                                                                                                    |\n| `resources.limits.memory`                       | Memory limit                                                                                                                                                                                               | `1024Mi`                                                                                                                                  |\n| `extraArgs`                                     | Specify additional container args                                                                                                                                                                          | `[]`                                                                                                                                      |\n| `rbac.create`                                   | If true, create & use RBAC resources                                                                                                                                                                       | `true`                                                                                                                                    |\n| `serviceAccount.create`                         | Create serviceAccount                                                                                                                                                                                      | `true`                                                                                                                                    |\n| `serviceAccount.name`                           | Use this value as serviceAccountName                                                                                                                                                                       | ` `                                                                                                                                       |\n| `fakeEventGenerator.enabled`                    | Run falco-event-generator for sample events                                                                                                                                                                | `false`                                                                                                                                   |\n| `fakeEventGenerator.replicas`                   | How many replicas of falco-event-generator to run                                                                                                                                                          | `1`                                                                                                                                       |\n| `daemonset.updateStrategy.type`                 | The updateStrategy for updating the daemonset                                                                                                                                                              | `RollingUpdate`                                                                                                                           |\n| `daemonset.env`                                 | Extra environment variables passed to daemonset pods                                                                                                                                                       | `{}`                                                                                                                                      |\n| `daemonset.podAnnotations`                      | Extra pod annotations to be added to pods created by the daemonset                                                                                                                                         | `{}`                                                                                                                                      |\n| `podSecurityPolicy.create`                      | If true, create & use podSecurityPolicy                                                                                                                                                                    | `false`                                                                                                                                   |\n| `proxy.httpProxy`                               | Set the Proxy server if is behind a firewall                                                                                                                                                               | ` `                                                                                                                                       |\n| `proxy.httpsProxy`                              | Set the Proxy server if is behind a firewall                                                                                                                                                               | ` `                                                                                                                                       |\n| `proxy.noProxy`                                 | Set the Proxy server if is behind a firewall                                                                                                                                                               | ` `                                                                                                                                       |\n| `timezone`                                      | Set the daemonset's timezone                                                                                                                                                                               | ` `                                                                                                                                       |\n| `priorityClassName`                             | Set the daemonset's priorityClassName                                                                                                                                                                      | ` `                                                                                                                                       |\n| `ebpf.enabled`                                  | Enable eBPF support for Falco instead of `falco-probe` kernel module                                                                                                                                       | `false`                                                                                                                                   |\n| `ebpf.settings.hostNetwork`                     | Needed to enable eBPF JIT at runtime for performance reasons                                                                                                                                               | `true`                                                                                                                                    |\n| `auditLog.enabled`                              | Enable K8s audit log support for Falco                                                                                                                                                                     | `false`                                                                                                                                   |\n| `auditLog.dynamicBackend.enabled`               | Deploy the Audit Sink where Falco listens for K8s audit log events                                                                                                                                         | `false`                                                                                                                                   |\n| `auditLog.dynamicBackend.url`                   | Define if Audit Sink client config should point to a fixed [url](https://kubernetes.io/docs/tasks/debug-application-cluster/audit/#url) (useful for development) instead of the default webserver service. | ``                                                                                                                                        |\n| `falco.rulesFile`                               | The location of the rules files                                                                                                                                                                            | `[/etc/falco/falco_rules.yaml, /etc/falco/falco_rules.local.yaml, /etc/falco/rules.available/application_rules.yaml, /etc/falco/rules.d]` |\n| `falco.timeFormatISO8601`                       | Display times using ISO 8601 instead of local time zone                                                                                                                                                    | `false`                                                                                                                                   |\n| `falco.jsonOutput`                              | Output events in json or text                                                                                                                                                                              | `false`                                                                                                                                   |\n| `falco.jsonIncludeOutputProperty`               | Include output property in json output                                                                                                                                                                     | `true`                                                                                                                                    |\n| `falco.logStderr`                               | Send Falco debugging information logs to stderr                                                                                                                                                            | `true`                                                                                                                                    |\n| `falco.logSyslog`                               | Send Falco debugging information logs to syslog                                                                                                                                                            | `true`                                                                                                                                    |\n| `falco.logLevel`                                | The minimum level of Falco debugging information to include in logs                                                                                                                                        | `info`                                                                                                                                    |\n| `falco.priority`                                | The minimum rule priority level to load and run                                                                                                                                                            | `debug`                                                                                                                                   |\n| `falco.bufferedOutputs`                         | Use buffered outputs to channels                                                                                                                                                                           | `false`                                                                                                                                   |\n| `falco.syscallEventDrops.actions`               | Actions to be taken when system calls were dropped from the circular buffer                                                                                                                                | `[log, alert]`                                                                                                                            |\n| `falco.syscallEventDrops.rate`                  | Rate at which log/alert messages are emitted                                                                                                                                                               | `.03333`                                                                                                                                  |\n| `falco.syscallEventDrops.maxBurst`              | Max burst of messages emitted                                                                                                                                                                              | `10`                                                                                                                                      |\n| `falco.outputs.rate`                            | Number of tokens gained per second                                                                                                                                                                         | `1`                                                                                                                                       |\n| `falco.outputs.maxBurst`                        | Maximum number of tokens outstanding                                                                                                                                                                       | `1000`                                                                                                                                    |\n| `falco.syslogOutput.enabled`                    | Enable syslog output for security notifications                                                                                                                                                            | `true`                                                                                                                                    |\n| `falco.fileOutput.enabled`                      | Enable file output for security notifications                                                                                                                                                              | `false`                                                                                                                                   |\n| `falco.fileOutput.keepAlive`                    | Open file once or every time a new notification arrives                                                                                                                                                    | `false`                                                                                                                                   |\n| `falco.fileOutput.filename`                     | The filename for logging notifications                                                                                                                                                                     | `./events.txt`                                                                                                                            |\n| `falco.stdoutOutput.enabled`                    | Enable stdout output for security notifications                                                                                                                                                            | `true`                                                                                                                                    |\n| `falco.webserver.enabled`                       | Enable Falco embedded webserver to accept K8s audit events                                                                                                                                                 | `true`                                                                                                                                    |\n| `falco.webserver.listenPort`                    | Port where Falco embedded webserver listen to connections                                                                                                                                                  | `8765`                                                                                                                                    |\n| `falco.webserver.k8sAuditEndpoint`              | Endpoint where Falco embedded webserver accepts K8s audit events                                                                                                                                           | `/k8s-audit`                                                                                                                              |\n| `falco.programOutput.enabled`                   | Enable program output for security notifications                                                                                                                                                           | `false`                                                                                                                                   |\n| `falco.programOutput.keepAlive`                 | Start the program once or re-spawn when a notification arrives                                                                                                                                             | `false`                                                                                                                                   |\n| `falco.programOutput.program`                   | Command to execute for program output                                                                                                                                                                      | `mail -s \"Falco Notification\" someone@example.com`                                                                                        |\n| `falco.httpOutput.enabled`                      | Enable http output for security notifications                                                                                                                                                              | `false`                                                                                                                                   |\n| `falco.httpOutput.url`                          | Url to notify using the http output when a notification arrives                                                                                                                                            | `http://some.url`                                                                                                                         |\n| `falco.grpc.enabled`                            | Enable the Falco gRPC server                                                                                                                                                                               | `false`\n| `falco.grpc.listenPort`                         | Port where Falco gRPC server listen to connections                                                                                                                                                         | `5060`\n| `falco.grpc.threadiness`                        | Number of threads (and context) the gRPC server will use                                                                                                                                                   | `8`\n| `falco.grpc.privateKey`                         | Key file path for the Falco gRPC server                                                                                                                                                                    | `/etc/falco/certs/server.key`\n| `falco.grpc.certChain`                          | Cert file path for the Falco gRPC server                                                                                                                                                                   | `/etc/falco/certs/server.crt`\n| `falco.grpc.rootCerts`                          | CA root file path for the Falco gRPC server                                                                                                                                                                | `/etc/falco/certs/ca.crt`\n| `falco.grpcOutput.enabled`                      | Enable the gRPC output and events will be kept in memory until you read them with a gRPC client.                                                                                                           | `false`                                                                                                                                   |\n| `customRules`                                   | Third party rules enabled for Falco                                                                                                                                                                        | `{}`                                                                                                                                      |\n| `integrations.gcscc.enabled`                    | Enable Google Cloud Security Command Center integration                                                                                                                                                    | `false`                                                                                                                                   |\n| `integrations.gcscc.webhookUrl`                 | The URL where sysdig-gcscc-connector webhook is listening                                                                                                                                                  | `http://sysdig-gcscc-connector.default.svc.cluster.local:8080/events`                                                                     |\n| `integrations.gcscc.webhookAuthenticationToken` | Token used for authentication and webhook                                                                                                                                                                  | `b27511f86e911f20b9e0f9c8104b4ec4`                                                                                                        |\n| `integrations.natsOutput.enabled`               | Enable NATS Output integration                                                                                                                                                                             | `false`                                                                                                                                   |\n| `integrations.natsOutput.natsUrl`               | The NATS' URL where Falco is going to publish security alerts                                                                                                                                              | `nats://nats.nats-io.svc.cluster.local:4222`                                                                                              |\n| `integrations.pubsubOutput.credentialsData`     | Contents retrieved from `cat $HOME/.config/gcloud/legacy_credentials/<email>/adc.json                                                                                                                      | ` `                                                                                                                                       |\n| `integrations.pubsubOutput.enabled`             | Enable GCloud PubSub Output Integration                                                                                                                                                                    | `false`                                                                                                                                   |\n| `integrations.pubsubOutput.projectID`           | GCloud Project ID where the Pub/Sub will be created                                                                                                                                                        | ` `                                                                                                                                       |\n| `integrations.snsOutput.enabled`                | Enable Amazon SNS Output integration                                                                                                                                                                       | `false`                                                                                                                                   |\n| `integrations.snsOutput.topic`                  | The SNS topic where Falco is going to publish security alerts                                                                                                                                              | ` `                                                                                                                                       |\n| `integrations.snsOutput.aws_access_key_id`      | The AWS Access Key Id credentials for access to SNS n                                                                                                                                                      | ` `                                                                                                                                       |\n| `integrations.snsOutput.aws_secret_access_key`  | The AWS Secret Access Key credential to access to SNS                                                                                                                                                      | ` `                                                                                                                                       |\n| `integrations.snsOutput.aws_default_region`     | The AWS region where SNS is deployed                                                                                                                                                                       | ` `                                                                                                                                       |\n| `nodeSelector`                                  | The node selection constraint                                                                                                                                                                              | `{}`                                                                                                                                      |\n| `affinity`                                      | The affinity constraint                                                                                                                                                                                    | `{}`                                                                                                                                      |\n| `tolerations`                                   | The tolerations for scheduling                                                                                                                                                                             | `node-role.kubernetes.io/master:NoSchedule`                                                                                               |\n\nFor example, if you want to deploy a DaemonSet with eBPF enabled:\n\n```yaml\napiVersion: falco.org/v1\nkind: Falco\nmetadata:\n  name: falco-with-ebpf\nspec:\n  ebpf:\n    enabled: true\n```",
+      "csv_display_name": "Falco Operator",
+      "csv_metadata_description": "The Falco Project is an open source runtime security tool.",
+      "csv_name": "falco-operator.v1.2.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:47:52.736000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "falco-certified",
+      "provided_apis": [
+        {
+          "group": "falco.org",
+          "kind": "Falco",
+          "plural": "falcos",
+          "version": "v1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:579918d457254f917a2c94efbe34b838f883c1ed327ad0be5b4fea19ef3b7c19",
+          "image": "registry.connect.redhat.com/sysdig/falco-operator@sha256:579918d457254f917a2c94efbe34b838f883c1ed327ad0be5b4fea19ef3b7c19",
+          "name": "falco-operator-579918d457254f917a2c94efbe34b838f883c1ed327ad0be5b4fea19ef3b7c19-annotation"
+        },
+        {
+          "digest": "sha256:579918d457254f917a2c94efbe34b838f883c1ed327ad0be5b4fea19ef3b7c19",
+          "image": "registry.connect.redhat.com/sysdig/falco-operator@sha256:579918d457254f917a2c94efbe34b838f883c1ed327ad0be5b4fea19ef3b7c19",
+          "name": "falco-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.2.0",
+      "version_original": "1.2.0"
+    },
+    {
+      "_id": "60470880122bd89307e0106f",
+      "alm_examples": [
+        {
+          "api_version": "apm.fp-predict-plus.findabilityplatform.com/v1",
+          "kind": "FPpredictplus",
+          "metadata": {
+            "name": "fppredictplus-deployment"
+          },
+          "spec": {
+            "deploymentConfig": {
+              "appSelector": "fp-predict-plus-app",
+              "container": {
+                "env": {
+                  "dtvEngineUrl": "http://169.61.73.205/predictionv9"
+                },
+                "name": "fp-predict-plus",
+                "repoURL": "registry.connect.redhat.com/findability-sciences/fp-predict-plus"
+              },
+              "name": "platform-deployment",
+              "replicaCount": 1
+            },
+            "imagePullConfig": {
+              "secretName": "fp-predict-plus-key"
+            },
+            "pvcConfig": {
+              "fsGroup": 0,
+              "name": "fp-predict-plus-pvc",
+              "pvcSpec": {
+                "accessMode": "ReadWriteMany",
+                "storage": "50Gi"
+              },
+              "storageClassName": "",
+              "useExisting": false,
+              "volumeName": "fp-predict-plus-pv"
+            },
+            "routeConfig": {
+              "enabled": true,
+              "host": "",
+              "name": "fp-predict-plus-route",
+              "routerCanonicalHostname": "openshift-platform-5fc468809245cf1363c9989f10ab9bfc-0000.us-east.containers.appdomain.cloud",
+              "tlsEnabled": true
+            },
+            "serviceConfig": {
+              "name": "fp-predict-plus-service",
+              "portName": "http",
+              "sourcePort": 8080,
+              "targetPort": 8080,
+              "type": "ClusterIP"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/findability-sciences/fp-predict-plus-operator-bundle@sha256:e4bb2a292033e4eb6de2eee46395465a20f8b067b59fde597eed009be5e93161",
+      "bundle_path_digest": "sha256:e4bb2a292033e4eb6de2eee46395465a20f8b067b59fde597eed009be5e93161",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-03-09T05:32:48.982000+00:00",
+      "csv_description": "This operator will deploy FP-Predict-Plus in the cluster.For details on Usage refer to \n* [Configuration Guide](https://docs.findabilityplatform.com/Configuration-Guide.pdf)\n* [User Manual](https://docs.findabilityplatform.com/FPPredict-User-Manual.pdf)\n* [API Document](https://docs.findabilityplatform.com/FPPredict-API-Document.pdf)",
+      "csv_display_name": "Fp Predict Plus Operator",
+      "csv_metadata_description": "This operator will deploy FP-Predict-Plus in the cluster.",
+      "csv_name": "fp-predict-plus-operator.v0.0.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:37:32.094000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "fp-predict-plus-operator-certified",
+      "provided_apis": [
+        {
+          "group": "apm.fp-predict-plus.findabilityplatform.com",
+          "kind": "FPpredictplus",
+          "plural": "fppredictplus",
+          "version": "v1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:962cfd0d70de0ef7ea26546e65d28975134780406339c4000953540d41564b49",
+          "image": "registry.connect.redhat.com/findability-sciences/fp-predict-plus-operator@sha256:962cfd0d70de0ef7ea26546e65d28975134780406339c4000953540d41564b49",
+          "name": "fp-predict-plus-operator-962cfd0d70de0ef7ea26546e65d28975134780406339c4000953540d41564b49-annotation"
+        },
+        {
+          "digest": "sha256:962cfd0d70de0ef7ea26546e65d28975134780406339c4000953540d41564b49",
+          "image": "registry.connect.redhat.com/findability-sciences/fp-predict-plus-operator@sha256:962cfd0d70de0ef7ea26546e65d28975134780406339c4000953540d41564b49",
+          "name": "fp-predict-plus-operator"
+        },
+        {
+          "digest": "sha256:c7b1520a8e85d676e546c8da5ddd4debd66de6d4ec1f984447a986e4f11c02b6",
+          "image": "registry.connect.redhat.com/findability-sciences/fp-predict-plus@sha256:c7b1520a8e85d676e546c8da5ddd4debd66de6d4ec1f984447a986e4f11c02b6",
+          "name": "fppredictplus"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.0.4",
+      "version_original": "0.0.4"
+    },
+    {
+      "_id": "60470886122bd89307e01070",
+      "alm_examples": [
+        {
+          "api_version": "growth-stack.operator.com/v1alpha1",
+          "kind": "AirgappedDeployment",
+          "metadata": {
+            "name": "airgappeddeployment"
+          },
+          "spec": {
+            "airgapped": {
+              "persistent_storage": {
+                "backup_deletion_frequency": "@daily",
+                "backup_retention_period": 7,
+                "storage#": "10G",
+                "storage_class": "ibmc-file-bronze-gid"
+              }
+            },
+            "event_scheduler_frequency": "@hourly",
+            "image_pull_secret": "growthstack-pull-secret",
+            "postgres": {
+              "storage#": "10G",
+              "storage_class": "ibmc-block-bronze"
+            }
+          }
+        },
+        {
+          "api_version": "growth-stack.operator.com/v1alpha1",
+          "kind": "AnalyticsProxy",
+          "metadata": {
+            "name": "analyticsproxy"
+          },
+          "spec": {
+            "airgapped": {
+              "enabled": false,
+              "persistent_storage": {
+                "backup_deletion_frequency": "@daily",
+                "backup_retention_period": 7,
+                "storage#": "10G",
+                "storage_class": "ibmc-file-bronze-gid"
+              }
+            },
+            "event_scheduler_frequency": "@hourly",
+            "ibmproxyurl": "https://iaps.ibm.com",
+            "image_pull_secret": "growthstack-pull-secret",
+            "postgres": {
+              "storage#": "10G",
+              "storage_class": "ibmc-block-bronze"
+            },
+            "segment_key": "set_segment_key_value"
+          }
+        },
+        {
+          "api_version": "growth-stack.operator.com/v1alpha1",
+          "kind": "DeleteCluster",
+          "metadata": {
+            "name": "deletecluster"
+          },
+          "spec": {
+            "image_pull_secret": "growthstack-pull-secret"
+          }
+        },
+        {
+          "api_version": "growth-stack.operator.com/v1alpha1",
+          "kind": "FullDeployment",
+          "metadata": {
+            "name": "fulldeployment"
+          },
+          "spec": {
+            "airgapped": {
+              "enabled": false,
+              "persistent_storage": {
+                "backup_deletion_frequency": "@daily",
+                "backup_retention_period": 7,
+                "storage#": "10G",
+                "storage_class": "ibmc-file-bronze-gid"
+              }
+            },
+            "event_scheduler_frequency": "@hourly",
+            "ibmproxyurl": "https://iaps.ibm.com",
+            "image_pull_secret": "growthstack-pull-secret",
+            "postgres": {
+              "storage#": "10G",
+              "storage_class": "ibmc-block-bronze"
+            },
+            "prometheus_scheduler_frequency": "@hourly",
+            "segment_key": "set_segment_key_value"
+          }
+        },
+        {
+          "api_version": "growth-stack.operator.com/v1alpha1",
+          "kind": "GenerateKey",
+          "metadata": {
+            "name": "generatekey"
+          },
+          "spec": {
+            "image_pull_secret": "growthstack-pull-secret"
+          }
+        },
+        {
+          "api_version": "growth-stack.operator.com/v1alpha1",
+          "kind": "StoreForwardMetric",
+          "metadata": {
+            "name": "storeforwardmetric"
+          },
+          "spec": {
+            "event_scheduler_frequency": "@hourly",
+            "ibmproxyurl": "https://iaps.ibm.com",
+            "image_pull_secret": "growthstack-pull-secret",
+            "postgres": {
+              "storage#": "10G",
+              "storage_class": "ibmc-block-bronze"
+            },
+            "prometheus_scheduler_frequency": "@hourly",
+            "segment_key": "set_segment_key_value",
+            "version": "alpha"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/growth-stack-operator-bundle@sha256:328b7978ab51e7019e118ec1777278e5d5c2f74040a292f650f7bb8b3f1917cf",
+      "bundle_path_digest": "sha256:328b7978ab51e7019e118ec1777278e5d5c2f74040a292f650f7bb8b3f1917cf",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-03-09T05:32:54.336000+00:00",
+      "csv_description": "Growth Stack Operator is a service that collects, transforms and transits product usage data\n\n**Pre-requisites**\n----\nStep 1: Create a new Project\n```sh\noc new-project <project-name>\n```\n\nStep 2: Create a secret named \"database-credentials\" for PostgreSQL DB \n```sh\n oc create secret generic database-credentials --from-literal=db_username=<DB Username> --from-literal=db_password=<DB Password> -n <project-name>\n```\n \nStep 3: [Optional] If the images require a secret to pull the container images, create a secret of type dockerconfigjson. Pass this secret name in the CR spec image\\_pull\\_secret \n```sh\noc create secret generic growthstack-pull-secret --from-file=.dockerconfigjson=<path/to/.docker/config.json>  --type=kubernetes.io/dockerconfigjson\n```\n\nStep 4: Create a secret named \"grafana-credentials\" to setup Grafana login credentials\n```sh\n oc create secret generic grafana-credentials --from-literal=grafana_username=<username> --from-literal=grafana_password=<password> -n <project-name>\n```\n\n**Installing the Growth Stack**\n----\n\nSelect any one of the deployments to setup the Growth Stack\n1. Full Deployment\n2. Analytics Proxy Deployment\n3. Store and Forward metrics Deployment\n4. Airgapped Analytics Proxy Deployment\n\n    \n     Spec                                                 |            Details\n----------------------------------------------------------|-----------------------------\nibmproxyurl                                               | URL of IBM Proxy Service\npostgres.storage_class                                    | Storage class of type ReadWriteOnce \npostgres.size                                             | Size (in Mi or G) of the storage to be attached to the Database\nairgapped.enabled                                         | true/false if airgapped setup is to be enabled. *Requires additional storage\nairgapped.persistent\\_storage.storage\\_size               | Size (in Mi or G) of the storage to be attached for saving airgapped files\nairgapped.persistent\\_storage.storage\\_class              | Storage class to be used for the persistent storage\nairgapped.persistent\\_storage.backup\\_retention\\_period   | Number of days to keep the backup files in the storage\nairgapped.persistent\\_storage.backup\\_deletion\\_frequency | Frequency of Cronjob to execute which will delete files from the storage\nevent\\_scheduler\\_frequency                               | Scheduler frequency in Cronjob format to forward events to proxy ( https://en.wikipedia.org/wiki/Cron )\nprometheus\\_scheduler\\_frequency                          | Prometheus Scheduler Frequency in Cronjob format to pull metrics from Prometheus\nimage\\_pull\\_secret                                       | Secret to pull container images from registry\nsegment\\_key                                              | Segment key to be used to send events to Segment\n\n**Generating the API Key**\n----\nOnce the deployment is complete, to use the Growth Stack Endpoints, generate an API key using the CR GenerateKey.\n\nNote- Key can be retrieved from the secret with same name used while creating Generate Key CR's instance. \nOnce you get key from the secret, decode it using below command: \n```sh\necho -n <secret key> | base64 -d \n```\nPass it as the Header- X-API-KEY and the key while using the Growth Stack Endpoints.\n\n**Deleting the API Key**\n----\nTo revoke the Key, delete the corresponding GenerateKey instance.  \n",
+      "csv_display_name": "Growth Stack Operator",
+      "csv_metadata_description": "Growth Stack Operator is a service that collects, transforms and transits product usage data.",
+      "csv_name": "growth-stack-operator.v2.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:13:46.755000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "growth-stack-operator-certified",
+      "provided_apis": [
+        {
+          "group": "growth-stack.operator.com",
+          "kind": "DeleteCluster",
+          "plural": "deleteclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "growth-stack.operator.com",
+          "kind": "FullDeployment",
+          "plural": "fulldeployments",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "growth-stack.operator.com",
+          "kind": "GenerateKey",
+          "plural": "generatekeys",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "growth-stack.operator.com",
+          "kind": "StoreForwardMetric",
+          "plural": "storeforwardmetrics",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "growth-stack.operator.com",
+          "kind": "AirgappedDeployment",
+          "plural": "airgappeddeployments",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "growth-stack.operator.com",
+          "kind": "AnalyticsProxy",
+          "plural": "analyticsproxies",
+          "version": "v1alpha1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:6ea0e70b0443b3a368285ebae4c19a554fdf368d854fd35815cb03b313ca2df4",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:6ea0e70b0443b3a368285ebae4c19a554fdf368d854fd35815cb03b313ca2df4",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:f85a2869f2c60baa63c359017216f92dd49d2f2410bb8f9cfff9f00ab09abc9d",
+          "image": "registry.connect.redhat.com/ibm-edge/growth-stack-operator@sha256:f85a2869f2c60baa63c359017216f92dd49d2f2410bb8f9cfff9f00ab09abc9d",
+          "name": "growth-stack-operator"
+        },
+        {
+          "digest": "sha256:e03edf631f1291ce16dc1525623bac60f9859fe2293e94f0981336c005b0c643",
+          "image": "registry.connect.redhat.com/ibm-edge/event-api@sha256:e03edf631f1291ce16dc1525623bac60f9859fe2293e94f0981336c005b0c643",
+          "name": "event_api"
+        },
+        {
+          "digest": "sha256:afb1387bed461a286148540456542ee95e5776cc7132ab01f514b3e272190335",
+          "image": "registry.connect.redhat.com/ibm-edge/store-api@sha256:afb1387bed461a286148540456542ee95e5776cc7132ab01f514b3e272190335",
+          "name": "store_api"
+        },
+        {
+          "digest": "sha256:299e793cedb20d19aa884746ee75ec2cacdc01525526680daee34658b76c5af3",
+          "image": "registry.connect.redhat.com/ibm-edge/event-reader@sha256:299e793cedb20d19aa884746ee75ec2cacdc01525526680daee34658b76c5af3",
+          "name": "reader"
+        },
+        {
+          "digest": "sha256:45beee1ad43d6b26a6498c764dd4907e773a3763e381897d80d19b9fcb4d0381",
+          "image": "registry.connect.redhat.com/ibm-edge/event-scheduler@sha256:45beee1ad43d6b26a6498c764dd4907e773a3763e381897d80d19b9fcb4d0381",
+          "name": "event_scheduler"
+        },
+        {
+          "digest": "sha256:e1c3181b99a8b9693826e23261d6f70c7ee3e123b88fed127e03d8e863587687",
+          "image": "registry.connect.redhat.com/ibm-edge/prometheus-scheduler@sha256:e1c3181b99a8b9693826e23261d6f70c7ee3e123b88fed127e03d8e863587687",
+          "name": "prometheus_scheduler"
+        },
+        {
+          "digest": "sha256:02a55a4d8e21d3cedf3856b3638c83a3a1c382680ed751c00371dad33653c016",
+          "image": "registry.connect.redhat.com/ibm-edge/pgo-client@sha256:02a55a4d8e21d3cedf3856b3638c83a3a1c382680ed751c00371dad33653c016",
+          "name": "pgo_client"
+        },
+        {
+          "digest": "sha256:f19243b617f3a492b4b9fed67e4f9836284ec49db6c5befd76ef6fa24d817ceb",
+          "image": "registry.connect.redhat.com/ibm-edge/reverse-proxy@sha256:f19243b617f3a492b4b9fed67e4f9836284ec49db6c5befd76ef6fa24d817ceb",
+          "name": "nginx"
+        },
+        {
+          "digest": "sha256:77bd19539c6e82aea1dfdfa1f390466dd68bcedf666846787bee3c97d6ca8c2a",
+          "image": "registry.redhat.io/openshift4/ose-grafana@sha256:77bd19539c6e82aea1dfdfa1f390466dd68bcedf666846787bee3c97d6ca8c2a",
+          "name": "grafana"
+        },
+        {
+          "digest": "sha256:4fc96dc7a835c37dd3441a2c78e094cbfff8ea7fc8432e99f979c00965184260",
+          "image": "registry.redhat.io/openshift3/ose-kube-state-metrics@sha256:4fc96dc7a835c37dd3441a2c78e094cbfff8ea7fc8432e99f979c00965184260",
+          "name": "ksm"
+        },
+        {
+          "digest": "sha256:0e2481cb31684ca60cee2eab0df13b213f5f4ab303c3ec81eb2d9727949ddc7e",
+          "image": "registry.access.redhat.com/redhat-sso-7/sso71-openshift@sha256:0e2481cb31684ca60cee2eab0df13b213f5f4ab303c3ec81eb2d9727949ddc7e",
+          "name": "init_container"
+        },
+        {
+          "digest": "sha256:d748c21a55796827da82c61f162b505c59451cba24f1874e5185f21275b6bddc",
+          "image": "registry.access.redhat.com/ubi8/ubi@sha256:d748c21a55796827da82c61f162b505c59451cba24f1874e5185f21275b6bddc",
+          "name": "ubi"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "2.0.1",
+      "version_original": "2.0.1"
+    },
+    {
+      "_id": "604708876280a414853ec51c",
+      "alm_examples": [
+        {
+          "api_version": "h2o.ai/v1beta",
+          "kind": "H2O",
+          "metadata": {
+            "name": "h2o-test"
+          },
+          "spec": {
+            "customImage": {
+              "image": "registry.connect.redhat.com/h2oai/h2o@sha256:62500ca14adacd1164d7ef4f64ccc96c3d0ad90ddf29c3e02d1aa82bd42aa1a4"
+            },
+            "nodes": 1,
+            "resources": {
+              "cpu": 1,
+              "memory": "256Mi",
+              "memoryPercentage": 90
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/h2oai/h2o-operator-bundle@sha256:a31c191ab992b727ade63d560c284fe953ad8363a5387a88e3989c29b21e4b61",
+      "bundle_path_digest": "sha256:a31c191ab992b727ade63d560c284fe953ad8363a5387a88e3989c29b21e4b61",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2021-03-09T05:32:55.424000+00:00",
+      "csv_description": "## About the managed application\n[H2O](https://github.com/h2oai/h2o-3) is an in-memory platform for distributed, scalable machine learning. H2O uses familiar interfaces like R, Python, Scala, Java, JSON and the Flow notebook/web interface, and works seamlessly with big data technologies like Hadoop and Spark. H2O provides implementations of many popular algorithms such as Generalized Linear Models (GLM), Gradient Boosting Machines (including XGBoost), Random Forests, Deep Neural Networks, Stacked Ensembles, Naive Bayes, Generalized Additive Models (GAM), Cox Proportional Hazards, K-Means, PCA, Word2Vec, as well as a fully automatic machine learning algorithm (H2O AutoML).\n\nH2O is extensible so that developers can add data transformations and custom algorithms of their choice and access them through all of those clients. H2O models can be downloaded and loaded into H2O memory for scoring, or exported into POJO or MOJO format for extemely fast scoring in production. More information can be found in the H2O User Guide.\n## About this Operator\nOnce deployed to a Kubernetes cluster, a new custom resource named H2O is recognized by Kubernetes, making it easy to create H2O clusters inside Kubernetes cluster.\n## Prerequisites for enabling this Operator\nThere are no requirements. The Operator will attempt to create a proper version of H2O CustomResourceDefinition, if not found on the Kubernetes cluster.\n",
+      "csv_display_name": "H2O Open Source Machine Learning Operator",
+      "csv_metadata_description": "A Kubernetes operator for H2O  Open Source, Distributed, Fast & Scalable Machine Learning Platform.",
+      "csv_name": "h2o-operator.v0.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:13:25.100000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "h2o-operator",
+      "provided_apis": [
+        {
+          "group": "h2o.ai",
+          "kind": "H2O",
+          "plural": "h2os",
+          "version": "v1beta"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:5dca5476c060b49cfc3e1e13b2c3c92920ae8789a092169a2c8457211895298d",
+          "image": "registry.connect.redhat.com/h2oai/h2o-operator@sha256:5dca5476c060b49cfc3e1e13b2c3c92920ae8789a092169a2c8457211895298d",
+          "name": "h2o-operator-5dca5476c060b49cfc3e1e13b2c3c92920ae8789a092169a2c8457211895298d-annotation"
+        },
+        {
+          "digest": "sha256:5dca5476c060b49cfc3e1e13b2c3c92920ae8789a092169a2c8457211895298d",
+          "image": "registry.connect.redhat.com/h2oai/h2o-operator@sha256:5dca5476c060b49cfc3e1e13b2c3c92920ae8789a092169a2c8457211895298d",
+          "name": "h2o-operator"
+        },
+        {
+          "digest": "sha256:62500ca14adacd1164d7ef4f64ccc96c3d0ad90ddf29c3e02d1aa82bd42aa1a4",
+          "image": "registry.connect.redhat.com/h2oai/h2o@sha256:62500ca14adacd1164d7ef4f64ccc96c3d0ad90ddf29c3e02d1aa82bd42aa1a4",
+          "name": "h2o-62500ca14adacd1164d7ef4f64ccc96c3d0ad90ddf29c3e02d1aa82bd42aa1a4-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.1.0",
+      "version_original": "0.1.0"
+    },
+    {
+      "_id": "6047088b5a00810ecaf7c41f",
+      "alm_examples": [
+        {
+          "api_version": "here.com/v1alpha1",
+          "kind": "HLSService",
+          "metadata": {
+            "name": "example-hlsservice"
+          },
+          "spec": {
+            "apikey": "Get APIKey from https://here.dev/ref/service_operator?create=Freemium-Basic"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/heremaps/here-service-operator-bundle@sha256:5a48a5194566573c5010a2e3ebc79f834652a777253856b2bc1e2e6c5c0f26e3",
+      "bundle_path_digest": "sha256:5a48a5194566573c5010a2e3ebc79f834652a777253856b2bc1e2e6c5c0f26e3",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-03-09T05:32:59.942000+00:00",
+      "csv_description": "HERE Location Services are key in use cases such as Fleet Utilization, Supply Chain Optimization, Urban Mobility, etc. They open up new location intelligence opportunities in diverse enterprise and technology areas, including the Internet of Things, Automotive, Insurance, Advertising, Mobile Payments, Public Sector, Smart Cities, Telecom, Utilities, and Transportation and Logistics. HERE Location Services cover Geocoder, Search, Navigation, Routing, Fleet Telematics, Positioning and other services, providing solutions for map visualization, navigation, routing, geocoding, time zone lookups, geofencing, custom locations, routing, route matching GPS traces, geospatial, sequencing multiple waypoints, truck routing, positioning, etc.\n",
+      "csv_display_name": "HERE Maps and Location Services Operator",
+      "csv_metadata_description": "HERE Maps and Location Services Operator will provide containerised applications and Kubernetes users access to HERE Location Services APIs by enabling discovery of HERE Location Services and provisioning HERE authentication to access these services.\n",
+      "csv_name": "hls-service-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:29:08.114000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "here-service-operator-certified",
+      "provided_apis": [
+        {
+          "group": "here.com",
+          "kind": "HLSService",
+          "plural": "hlsservices",
+          "version": "v1alpha1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:4969c8fe8087ea2a09c2f802e30166b12368d57d48ff11c3982d483e3ceba770",
+          "image": "registry.connect.redhat.com/heremaps/here-service-operator@sha256:4969c8fe8087ea2a09c2f802e30166b12368d57d48ff11c3982d483e3ceba770",
+          "name": "here-service-operator-4969c8fe8087ea2a09c2f802e30166b12368d57d48ff11c3982d483e3ceba770-annotation"
+        },
+        {
+          "digest": "sha256:4969c8fe8087ea2a09c2f802e30166b12368d57d48ff11c3982d483e3ceba770",
+          "image": "registry.connect.redhat.com/heremaps/here-service-operator@sha256:4969c8fe8087ea2a09c2f802e30166b12368d57d48ff11c3982d483e3ceba770",
+          "name": "hls-service-operator"
+        },
+        {
+          "digest": "sha256:4969c8fe8087ea2a09c2f802e30166b12368d57d48ff11c3982d483e3ceba770",
+          "image": "registry.connect.redhat.com/heremaps/here-service-operator@sha256:4969c8fe8087ea2a09c2f802e30166b12368d57d48ff11c3982d483e3ceba770",
+          "name": "statefulset"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "60470f9b5a00810ecaf7c437",
+      "alm_examples": [
+        {
+          "api_version": "csi.ibm.com/v1",
+          "kind": "CSIScaleOperator",
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/instance": "ibm-spectrum-scale-csi-operator",
+              "app.kubernetes.io/managed-by": "ibm-spectrum-scale-csi-operator",
+              "app.kubernetes.io/name": "ibm-spectrum-scale-csi-operator",
+              "release": "ibm-spectrum-scale-csi-operator"
+            },
+            "name": "ibm-spectrum-scale-csi"
+          },
+          "spec": {
+            "attacherNodeSelector": [
+              {
+                "key": "scale",
+                "value": "true"
+              }
+            ],
+            "clusters": [
+              {
+                "id": "< Primary Cluster ID - WARNING - THIS IS A STRING NEEDS YAML QUOTES! >",
+                "primary": {
+                  "primaryFs": "< Primary Filesystem >"
+                },
+                "restApi": [
+                  {
+                    "guiHost": "< Primary cluster GUI IP/Hostname>"
+                  }
+                ],
+                "secrets": "secret1",
+                "secureSslMode": false
+              }
+            ],
+            "pluginNodeSelector": [
+              {
+                "key": "scale",
+                "value": "true"
+              }
+            ],
+            "provisionerNodeSelector": [
+              {
+                "key": "scale",
+                "value": "true"
+              }
+            ],
+            "scaleHostpath": "< GPFS FileSystem Path >"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64"
+      ],
+      "bundle_path": "registry.connect.redhat.com/ibm/ibm-spectrum-scale-csi-operator-bundle@sha256:26e507a96b0473964ab18c84ec899a51c05301e956c3968dae8a0243842f9b5f",
+      "bundle_path_digest": "sha256:26e507a96b0473964ab18c84ec899a51c05301e956c3968dae8a0243842f9b5f",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-03-09T06:03:07.180000+00:00",
+      "csv_description": "\nThe IBM Spectrum Scale CSI Operator runs within a Kubernetes cluster providing a means to \ndeploy and manage the CSI plugin for spectrum scale. For more in depth documentation please refer\nto the [knowledge center](https://www.ibm.com/support/knowledgecenter/STXKQY_CSI_SHR).\n\nThis operator should be used to deploy the CSI plugin.\n\nThe configuration process is as follows:\n\n1. [Spectrum Scale GUI Setup](#spectrum-scale-gui-setup)\n2. [Custom Resource Configuration](#custom-resource-configuration)\n\nSpectrum Scale GUI Setup \n------------------------\n> **NOTE:** This step only needs to be preformed once per GUI.\n\n> **WARNING:** If your daemonset pods (driver pods) do not come up, generally this means you have a  secret that  has not been defined in the correct namespace.\n\n1. Ensure the Spectrum Scale GUI is running by pointing your browser to the IP hosting the GUI:\n\n \n    > If you do not see a login follow on screen instructions, or review the [GUI Documentation](https://www.ibm.com/support/knowledgecenter/en/STXKQY_5.0.5/com.ibm.spectrum.scale.v5r05.doc/bl1ins_quickrefforgui.htm)\n\n\n3. Create a CsiAdmin group account on in the GUI (currently requires a CLI call):\n\n   ```\n\n   export USERNAME=\"SomeUser\"\n   export PASSWORD=\"SomePassword\"\n   /usr/lpp/mmfs/gui/cli/mkuser ${USERNAME} -p ${PASSWORD} -g CsiAdmin\n\n   ```\n\n3. Create a Kubernetes secret for the `CsiAdmin` user:\n\n  ```\n\n  export USERNAME_B64=$(echo $USERNAME | base64)\n  export PASSWORD_B64=$(echo $PASSWORD | base64)\n  export OPERATOR_NAMESPACE=\"ibm-spectrum-scale-csi-driver\"  # Set this to the namespace you deploy the operator in.\n  \n\n  cat << EOF > /tmp/csisecret.yaml\n  apiVersion: v1\n  data:\n    password: ${PASSWORD_B64}\n    username: ${USERNAME_B64}\n  kind: Secret\n  type: Opaque\n  metadata:\n    name: csisecret    # This should be in your CSIScaleOperator definition\n    namespace: ${OPERATOR_NAMESPACE} \n    labels:\n      app.kubernetes.io/name: ibm-spectrum-scale-csi-operator # Used by the operator to detect changes, set on load of CR change if secret matches name in CR and namespace.\n  EOF\n  \n\n  kubectl create -f /tmp/csisecret.yaml\n  rm -f /tmp/csisecret.yaml\n  \n  ```\n\nCustom Resource Configuration\n-----------------------------\n\nThe bundled Custom Resource example represents the minimum settings needed to run the operator.\nIf your environment needs more advanced settings (e.g. remote clusters, node mapping, etc.) please\nrefer to the sample [Custom Resource](https://raw.githubusercontent.com/IBM/ibm-spectrum-scale-csi/v2.1.0/operator/deploy/crds/csiscaleoperators.csi.ibm.com_cr.yaml).\n\n\n",
+      "csv_display_name": "IBM Spectrum Scale CSI Plugin Operator",
+      "csv_metadata_description": "An operator for deploying and managing the IBM Spectrum Scale CSI Driver.",
+      "csv_name": "ibm-spectrum-scale-csi-operator.v2.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:45:37.124000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "ibm-spectrum-scale-csi",
+      "provided_apis": [
+        {
+          "group": "csi.ibm.com",
+          "kind": "CSIScaleOperator",
+          "plural": "csiscaleoperators",
+          "version": "v1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:46a8ce82a1c68e44432136aa3f55dc52ca6201e1920dfa53de4c62d740ea62dc",
+          "image": "registry.connect.redhat.com/ibm/ibm-spectrum-scale-csi-operator@sha256:46a8ce82a1c68e44432136aa3f55dc52ca6201e1920dfa53de4c62d740ea62dc",
+          "name": "ibm-spectrum-scale-csi-operator-46a8ce82a1c68e44432136aa3f55dc52ca6201e1920dfa53de4c62d740ea62dc-annotation"
+        },
+        {
+          "digest": "sha256:46a8ce82a1c68e44432136aa3f55dc52ca6201e1920dfa53de4c62d740ea62dc",
+          "image": "registry.connect.redhat.com/ibm/ibm-spectrum-scale-csi-operator@sha256:46a8ce82a1c68e44432136aa3f55dc52ca6201e1920dfa53de4c62d740ea62dc",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "2.1.0",
+      "version_original": "2.1.0"
+    },
+    {
+      "_id": "60470fa06280a414853ec527",
+      "alm_examples": [
+        {
+          "api_version": "insightedge.gigaspaces.com/v1alpha1",
+          "kind": "Insightedge",
+          "metadata": {
+            "name": "example-insightedge"
+          },
+          "spec": {
+            "manager": {
+              "antiAffinity": {
+                "enabled": false
+              },
+              "ha": false,
+              "hs": {
+                "lus": 4174,
+                "zkClient": 2181,
+                "zkLeaderElection": 3888,
+                "zkServer": 2888
+              },
+              "java": {
+                "heap": "limit-150Mi",
+                "options": "-Duser.home=/opt/gigaspaces"
+              },
+              "nameOverride": "insightedge-manager",
+              "resources": {
+                "limits": {
+                  "memory": "300Mi"
+                }
+              },
+              "service": {
+                "api": {
+                  "enabled": true,
+                  "port": 8090
+                },
+                "lrmi": {
+                  "enabled": false,
+                  "port": 8200
+                },
+                "lus": {
+                  "enabled": true,
+                  "port": 4174
+                },
+                "type": "LoadBalancer"
+              },
+              "terminationGracePeriodSeconds": 30
+            },
+            "pu": {
+              "antiAffinity": {
+                "enabled": false
+              },
+              "java": {
+                "heap": "limit-150Mi",
+                "options": "-Duser.home=/opt/gigaspaces"
+              },
+              "license": "tryme",
+              "livenessProbe": {
+                "enabled": false,
+                "failureThreshold": 3,
+                "initialDelaySeconds": 30,
+                "periodSeconds": 5
+              },
+              "manager": {
+                "discoveryTimeoutSeconds": 60,
+                "ports": {
+                  "api": 8090
+                }
+              },
+              "memoryXtendVolume": {
+                "enabled": false,
+                "volumeClaimTemplate": {
+                  "accessModes": "ReadWriteOnce",
+                  "persistentVolumeReclaimPolicy": "Delete"
+                },
+                "volumeMount": {
+                  "mountPath": "/opt/gigaspaces/work/memoryxtend",
+                  "name": "mx-volume"
+                }
+              },
+              "nameOverride": "insightedge-pu",
+              "readinessProbe": {
+                "enabled": false,
+                "failureThreshold": 3,
+                "initialDelaySeconds": 30,
+                "periodSeconds": 5
+              },
+              "resources": {
+                "limits": {
+                  "memory": "400Mi"
+                }
+              },
+              "service": {
+                "lrmi": {
+                  "enabled": false,
+                  "port": 8200
+                },
+                "type": "LoadBalancer"
+              },
+              "terminationGracePeriodSeconds": 30
+            },
+            "zeppelin": {
+              "nameOverride": "insightedge-zeppelin",
+              "service": {
+                "api": {
+                  "port": 9090
+                },
+                "type": "LoadBalancer"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gigaspaces/insightedge-operator-bundle@sha256:f4cd0ec77bc5f19409242c4e5990447281b6bd60b8d0eff848744a431c73cd22",
+      "bundle_path_digest": "sha256:f4cd0ec77bc5f19409242c4e5990447281b6bd60b8d0eff848744a431c73cd22",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-03-09T06:03:12.184000+00:00",
+      "csv_description": "InsightEdge is an in-memory real-time analytics platform for instant insights to action. It's an always-on platform for mission-critical applications across cloud, on-premise or hybrid. InsightEdge operationalizes machine learning and transactional processing, at scale; analyzing data as it's born, enriching it with historical context, for instant insights.\n",
+      "csv_display_name": "Insightedge Enterprise Operator",
+      "csv_metadata_description": "InsightEdge is an in-memory real-time analytics platform for instant insights to action. It's an always-on platform for mission-critical applications across cloud, on-premise or hybrid. InsightEdge operationalizes machine learning and transactional processing, at scale; analyzing data as it's born, enriching it with historical context, for instant insights.\n",
+      "csv_name": "insightedge-enterprise-operator.v15.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:23:22.516000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "insightedge-enterprise-operator2",
+      "provided_apis": [
+        {
+          "group": "insightedge.gigaspaces.com",
+          "kind": "Insightedge",
+          "plural": "insightedges",
+          "version": "v1alpha1"
+        }
+      ],
+      "related_images": [
+        {
+          "digest": "sha256:d7d9b079a93b715d7ca94d64b08e73798f1b036c118c742b2bd031030bd1d17d",
+          "image": "registry.connect.redhat.com/gigaspaces/insightedge-operator@sha256:d7d9b079a93b715d7ca94d64b08e73798f1b036c118c742b2bd031030bd1d17d",
+          "name": "insightedge-operator-d7d9b079a93b715d7ca94d64b08e73798f1b036c118c742b2bd031030bd1d17d-annotation"
+        },
+        {
+          "digest": "sha256:d7d9b079a93b715d7ca94d64b08e73798f1b036c118c742b2bd031030bd1d17d",
+          "image": "registry.connect.redhat.com/gigaspaces/insightedge-operator@sha256:d7d9b079a93b715d7ca94d64b08e73798f1b036c118c742b2bd031030bd1d17d",
+          "name": "insightedge-enterprise-operator"
+        },
+        {
+          "digest": "sha256:5cbd8ca9553a7a3e8cd4b99d1231d92201146745c8531e159cccfc4cd3a74ceb",
+          "image": "registry.connect.redhat.com/gigaspaces/insightedge@sha256:5cbd8ca9553a7a3e8cd4b99d1231d92201146745c8531e159cccfc4cd3a74ceb",
+          "name": "insightedge"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "15.0.1",
+      "version_original": "15.0.1"
     }
   ],
   "page": 0,
   "page_size": 500,
-  "total": 3991
+  "total": 3611
 }
