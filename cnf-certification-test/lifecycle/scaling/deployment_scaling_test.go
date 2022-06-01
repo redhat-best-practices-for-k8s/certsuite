@@ -68,8 +68,7 @@ func TestScaleDeploymentFunc(t *testing.T) {
 
 	for _, tc := range testCases {
 		var runtimeObjects []runtime.Object
-		var intVar *int32
-		intVar = new(int32)
+		intVar := new(int32)
 		*intVar = int32(tc.replicaCount)
 		tempDP := generateDeployment(tc.deploymentName, intVar)
 		runtimeObjects = append(runtimeObjects, tempDP)
