@@ -26,7 +26,6 @@ import (
 )
 
 const (
-	bestPracticeDocV1dot2URL = "[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf)"
 	informativeResult        = "informative"
 	normativeResult          = "normative"
 	url                      = "http://test-network-function.com/testcases"
