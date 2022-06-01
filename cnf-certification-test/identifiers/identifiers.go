@@ -30,7 +30,7 @@ const (
 	normativeResult          = "normative"
 	url                      = "http://test-network-function.com/testcases"
 	versionOne               = "v1.0.0"
-	bestPracticeDocV1dot3URL = "https://docs.google.com/document/d/1wRHMk1ZYUSVmgp_4kxvqjVOKwolsZ5hDXjr5MLy-wbg/edit#"
+	bestPracticeDocV1dot3URL = "https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf"
 )
 
 // TestCaseDescription describes a JUnit test case.
