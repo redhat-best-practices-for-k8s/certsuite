@@ -232,12 +232,6 @@ Other binary dependencies required to run tests can be installed using the follo
 make install-tools
 ```
 
-Finally the source dependencies can be installed with
-
-```shell script
-make update-deps
-```
-
 *Note*: You must also make sure that `$GOBIN` (default `$GOPATH/bin`) is on your `$PATH`.
 
 *Note*:  Efforts to containerize this offering are considered a work in progress.

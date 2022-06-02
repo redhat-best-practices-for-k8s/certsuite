@@ -22,14 +22,7 @@ GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 	test \
 	coverage-html \
 	build-cnf-tests \
-	run-cnf-tests \
-	run-generic-cnf-tests \
-	run-container-tests \
-	run-operator-tests \
-	run-generic-cnf-tests \
-	run-operator-tests \
-	run-container-tests \
-	update-deps \
+	build-cnf-tests-debug \
 	install-tools \
 	vet \
 	generate \
@@ -113,10 +106,6 @@ build-cnf-tests:
 build-cnf-tests-debug:
 	PATH=${PATH}:${GOBIN} ginkgo build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
 	make build-catalog-md
-
-# Update source dependencies and fix versions
-update-deps:
-	go mod tidy
 
 # Install build tools and other required software.
 install-tools:
