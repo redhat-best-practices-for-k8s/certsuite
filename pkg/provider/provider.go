@@ -329,7 +329,8 @@ func WaitDebugPodsReady() error {
 		logrus.Infof("Waiting for (%d) debug pods to be ready: %+v", nodesCount, daemonSet.Status)
 
 		if daemonSet.Status.DesiredNumberScheduled != nodesCount {
-			logrus.Warnf("daemonset DesiredNumberScheduled not equal to number of nodes:%d, please instantiate debug pods on all nodes", nodesCount)
+			logrus.Warnf("daemonset DesiredNumberScheduled (%d) not equal to number of nodes:%d, please instantiate debug pods on all nodes",
+				daemonSet.Status.DesiredNumberScheduled, nodesCount)
 		} else if isDaemonSetReady(&daemonSet.Status) {
 			isReady = true
 			break
