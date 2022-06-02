@@ -79,7 +79,7 @@ func TestRoleOutOfNamespace(t *testing.T) {
 
 			expectedOutOfNS: true,
 		},
-		{ // Test Case #3 - Pod, Role names don't match and are in different namespaces.
+		{ // Test Case #3 - Pod, Role names do not match and are in different namespaces.
 			testRoleNS:             "ns1",
 			testPodNS:              "ns2",
 			testRoleName:           "sa1",

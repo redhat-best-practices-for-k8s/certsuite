@@ -223,7 +223,7 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 			logrus.Debug("Modules allowed via configuration: ", env.Config.AcceptedKernelTaints)
 
 			// Looks through the accepted taints listed in the tnf-config file.
-			// If all of the tainted modules show up in the configuration file, don't fail the test.
+			// If all of the tainted modules show up in the configuration file, do not fail the test.
 			nodeTaintsAccepted = nodetainted.TaintsAccepted(env.Config.AcceptedKernelTaints, taintedModules)
 		}
 

@@ -93,17 +93,17 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "pod-host-network"),
 		Version: versionOne,
 	}
-	// TestPodHostPath tests that pods do not configure an hostpath volume
+	// TestPodHostPath tests that pods do not configure a hostpath volume
 	TestPodHostPath = claim.Identifier{
 		Url:     formTestURL(common.AccessControlTestKey, "pod-host-path"),
 		Version: versionOne,
 	}
-	// TestPodHostPath tests that pods do not configure an hostpath volume
+	// TestPodHostPath tests that pods do not configure a hostpath volume
 	TestPodHostIPC = claim.Identifier{
 		Url:     formTestURL(common.AccessControlTestKey, "pod-host-ipc"),
 		Version: versionOne,
 	}
-	// TestPodHostPath tests that pods do not configure an hostpath volume
+	// TestPodHostPath tests that pods do not configure a hostpath volume
 	TestPodHostPID = claim.Identifier{
 		Url:     formTestURL(common.AccessControlTestKey, "pod-host-pid"),
 		Version: versionOne,
@@ -230,7 +230,7 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "pod-automount-service-account-token"),
 		Version: versionOne,
 	}
-	// TestServicesDoNotUseNodeportsIdentifier ensures Services don't utilize NodePorts.
+	// TestServicesDoNotUseNodeportsIdentifier ensures Services do not utilize NodePorts.
 	TestServicesDoNotUseNodeportsIdentifier = claim.Identifier{
 		Url:     formTestURL(common.NetworkingTestKey, "service-type"),
 		Version: versionOne,
@@ -537,7 +537,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestNonTaintedNodeKernelsIdentifier: {
 		Identifier: TestNonTaintedNodeKernelsIdentifier,
 		Type:       normativeResult,
-		Remediation: `Test failure indicates that the underlying Node's' kernel is tainted.  Ensure that you have not altered underlying
+		Remediation: `Test failure indicates that the underlying Node's kernel is tainted.  Ensure that you have not altered underlying
 Node(s) kernels in order to run the CNF.`,
 		Description: formDescription(TestNonTaintedNodeKernelsIdentifier,
 			`ensures that the Node(s) hosting CNFs do not utilize tainted kernels. This test case is especially important
@@ -781,7 +781,7 @@ the changes for you.`,
 		Identifier: TestUndeclaredContainerPortsUsage,
 		Type:       normativeResult,
 		Description: formDescription(TestUndeclaredContainerPortsUsage,
-			`check that containers don't listen on ports that weren't declared in their specification`),
+			`check that containers do not listen on ports that weren't declared in their specification`),
 		Remediation:           `ensure the CNF apps don't listen on undeclared containers' ports`,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 16.3.1.1",
 	},

@@ -76,7 +76,7 @@ func TestGetHWJsonOutput(t *testing.T) {
 	for _, tc := range testCases {
 		result, err := getHWJsonOutput(&corev1.Pod{
 			Spec: corev1.PodSpec{
-				// Note: We don't actually care about the podname
+				// Note: We do not actually care about the podname
 				// for this test, but the function uses it to build the
 				// context .
 				Containers: []corev1.Container{
@@ -139,7 +139,7 @@ func TestGetHWTextOutput(t *testing.T) {
 	for _, tc := range testCases {
 		result, err := getHWTextOutput(&corev1.Pod{
 			Spec: corev1.PodSpec{
-				// Note: We don't actually care about the podname
+				// Note: We do not actually care about the podname
 				// for this test, but the function uses it to build the
 				// context .
 				Containers: []corev1.Container{

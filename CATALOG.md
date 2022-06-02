@@ -435,9 +435,9 @@ Test Case Name|undeclared-container-ports-usage
 Test Case Label|networking-undeclared-container-ports-usage
 Unique ID|http://test-network-function.com/testcases/networking/undeclared-container-ports-usage
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/networking/undeclared-container-ports-usage check that containers don't listen on ports that weren't declared in their specification
+Description|http://test-network-function.com/testcases/networking/undeclared-container-ports-usage check that containers do not listen on ports that weren't declared in their specification
 Result Type|normative
-Suggested Remediation|ensure the CNF apps don't listen on undeclared containers' ports
+Suggested Remediation|ensure the CNF apps do not listen on undeclared containers' ports
 Best Practice Reference|[CNF Best Practice V1.3](https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf) Section 16.3.1.1
 
 ### observability
