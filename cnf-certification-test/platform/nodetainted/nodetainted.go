@@ -122,17 +122,17 @@ func GetTaintedBitValues() []string {
 //nolint:gocritic
 func DecodeKernelTaints(bitmap uint64) (string, []string) {
 	values := GetTaintedBitValues()
-	var out string
+	var sb strings.Builder
 	individualTaints := []string{}
 	for i := 0; i < 32; i++ {
 		bit := (bitmap >> i) & 1
 		if bit == 1 {
-			out += fmt.Sprintf("%s, ", values[i])
+			sb.WriteString(fmt.Sprintf("%s, ", values[i]))
 			// Storing the individual taint messages for extra parsing.
 			individualTaints = append(individualTaints, values[i])
 		}
 	}
-	return out, individualTaints
+	return sb.String(), individualTaints
 }
 
 func (nt *NodeTainted) GetOutOfTreeModules(modules []string, ctx clientsholder.Context) []string {
