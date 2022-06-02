@@ -123,6 +123,10 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		logrus.Debug(fmt.Sprintf("%s(%s) should not install new packages after starting", cut.Podname, cut.Data.Name))
 		debugPod := env.DebugPods[cut.NodeName]
+		if debugPod == nil {
+			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
+		}
+
 		fsDiffTester := cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder())
 		fsDiffTester.RunTest(clientsholder.Context{
 			Namespace:     debugPod.Namespace,
