@@ -23,6 +23,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/compatibility"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -122,6 +123,13 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
 		TestServiceMesh(&env)
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestOCPLifecycleIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		if provider.IsOCPCluster() {
+			testOCPStatus(&env)
+		}
 	})
 })
 
@@ -438,5 +446,28 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 		errMsg := fmt.Sprintf("Number of containers running of faulty nodes: %d", n)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
+	}
+}
+
+func testOCPStatus(env *provider.TestEnvironment) {
+	ginkgo.By("Testing the OCP Version for lifecycle status")
+
+	switch env.OCPStatus {
+	case compatibility.OCPStatusEOL:
+		msg := fmt.Sprintf("OCP Version %s has been found to be in end of life", env.OpenshiftVersion)
+		tnf.ClaimFilePrintf(msg)
+		ginkgo.Fail(msg)
+	case compatibility.OCPStatusMS:
+		msg := fmt.Sprintf("OCP Version %s has been found to be in maintenance support", env.OpenshiftVersion)
+		tnf.ClaimFilePrintf(msg)
+	case compatibility.OCPStatusGA:
+		msg := fmt.Sprintf("OCP Version %s has been found to be in general availability", env.OpenshiftVersion)
+		tnf.ClaimFilePrintf(msg)
+	case compatibility.OCPStatusPreGA:
+		msg := fmt.Sprintf("OCP Version %s has been found to be in pre-general availability", env.OpenshiftVersion)
+		tnf.ClaimFilePrintf(msg)
+	default:
+		msg := fmt.Sprintf("OCP Version %s was unable to be found in the lifecycle compatibility matrix", env.OpenshiftVersion)
+		tnf.ClaimFilePrintf(msg)
 	}
 }

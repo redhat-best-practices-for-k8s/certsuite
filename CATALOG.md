@@ -580,6 +580,18 @@ Description|http://test-network-function.com/testcases/platform-alteration/isred
 Result Type|normative
 Suggested Remediation|build a new docker image that's based on UBI (redhat universal base image).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+#### ocp-lifecycle
+
+Property|Description
+---|---
+Test Case Name|ocp-lifecycle
+Test Case Label|platform-alteration-ocp-lifecycle
+Unique ID|http://test-network-function.com/testcases/platform-alteration/ocp-lifecycle
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/platform-alteration/ocp-lifecycle Tests that the running OCP version is not end of life.
+Result Type|normative
+Suggested Remediation|Please update your cluster to a version that is generally available.
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section x.x
 #### service-mesh
 
 Property|Description

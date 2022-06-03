@@ -108,6 +108,7 @@ type TestEnvironment struct { // rename this with testTarget
 	Nodes             map[string]Node                               `json:"-"`
 	K8sVersion        string                                        `json:"-"`
 	OpenshiftVersion  string                                        `json:"-"`
+	OCPStatus         string                                        `json:"-"`
 	HelmChartReleases []*release.Release                            `json:"testHelmChartReleases"`
 	IstioServiceMesh  bool
 }
@@ -236,6 +237,7 @@ func buildTestEnvironment() { //nolint:funlen
 	}
 
 	env.OpenshiftVersion = data.OpenshiftVersion
+	env.OCPStatus = data.OCPStatus
 	env.K8sVersion = data.K8sVersion
 	for _, nsHelmChartReleases := range data.HelmChartReleases {
 		for _, helmChartRelease := range nsHelmChartReleases {
