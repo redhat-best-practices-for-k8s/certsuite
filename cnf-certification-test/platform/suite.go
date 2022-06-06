@@ -127,20 +127,22 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 })
 
 func TestServiceMesh(env *provider.TestEnvironment) {
+	// check if istio is installed
+	ifIstioInstalled := env.IstioServiceMesh
+	if ifIstioInstalled == false {
+		tnf.ClaimFilePrintf("Istio is not installed")
+		return
+	}
+	tnf.ClaimFilePrintf("Istio is installed")
+
 	var badPods []string
 	for _, put := range env.Pods {
-		flag := 0
-		data := put.Containers
-		for _, d := range data {
-			if d.Status.Name == istio {
-				flag = 1
-				break
+		for _, cut := range put.Containers {
+			if cut.Status.Name == istio {
+				tnf.ClaimFilePrintf("For pods %s ,ns %s have service mesh", cut.Podname, cut.Namespace)
+			} else {
+				badPods = append(badPods, "pod "+cut.Podname+" ,ns "+cut.Namespace+" do not have service mesh")
 			}
-		}
-		if flag == 1 {
-			tnf.ClaimFilePrintf("For pods %s ,ns %s have service mesh", put.Data.Name, put.Data.Namespace)
-		} else {
-			badPods = append(badPods, "pods %s ,ns %s do not have service mesh", put.Data.Name, put.Data.Namespace)
 		}
 	}
 	logrus.Println("bad pods ", badPods)

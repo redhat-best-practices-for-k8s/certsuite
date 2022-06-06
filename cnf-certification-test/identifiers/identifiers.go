@@ -271,7 +271,7 @@ var (
 		Url:     formTestURL(common.PlatformAlterationTestKey, "sysctl-config"),
 		Version: versionOne,
 	}
-	// TestServiceMesh
+	// TestServiceMesh checks if service mesh is exist.
 	TestServiceMeshIdentifier = claim.Identifier{
 		Url:     formTestURL(common.PlatformAlterationTestKey, "service-mesh"),
 		Version: versionOne,
@@ -761,7 +761,7 @@ the changes for you.`,
 		Identifier: TestServiceMeshIdentifier,
 		Type:       normativeResult,
 		Description: formDescription(TestPodRecreationIdentifier,
-			`verifies if have service mesh.`),
+			`verifies if service mesh is exist.`),
 		Remediation:           ``,
 		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
 	},

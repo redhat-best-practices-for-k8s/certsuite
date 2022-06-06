@@ -588,7 +588,7 @@ Test Case Name|service-mesh
 Test Case Label|platform-alteration-service-mesh
 Unique ID|http://test-network-function.com/testcases/platform-alteration/service-mesh
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/pod-recreation verifies if have service mesh.
+Description|http://test-network-function.com/testcases/lifecycle/pod-recreation verifies if service mesh is exist.
 Result Type|normative
 Suggested Remediation|
 Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
