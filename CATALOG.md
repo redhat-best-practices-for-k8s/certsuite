@@ -579,7 +579,7 @@ Version|v1.0.0
 Description|http://test-network-function.com/testcases/platform-alteration/isredhat-release verifies if the container base image is redhat.
 Result Type|normative
 Suggested Remediation|build a new docker image that's based on UBI (redhat universal base image).
-Best Practice Reference|[CNF Best Practice V1.2](https://connect.redhat.com/sites/default/files/2021-03/Cloud%20Native%20Network%20Function%20Requirements.pdf) Section 6.2
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 #### service-mesh
 
 Property|Description
@@ -591,7 +591,7 @@ Version|v1.0.0
 Description|http://test-network-function.com/testcases/lifecycle/pod-recreation verifies if service mesh is exist.
 Result Type|normative
 Suggested Remediation|
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 6.2
 #### sysctl-config
 
 Property|Description

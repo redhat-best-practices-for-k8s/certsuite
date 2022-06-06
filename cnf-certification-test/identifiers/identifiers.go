@@ -762,7 +762,7 @@ the changes for you.`,
 		Description: formDescription(TestPodRecreationIdentifier,
 			`verifies if service mesh is exist.`),
 		Remediation:           ``,
-		BestPracticeReference: bestPracticeDocV1dot2URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 6.2",
 	},
 	TestScalingIdentifier: {
 		Identifier: TestScalingIdentifier,
