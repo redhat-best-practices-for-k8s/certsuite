@@ -1,15 +1,10 @@
 package api
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"io"
-	"net/http"
-
-	log "github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	"gopkg.in/yaml.v3"
+	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/api/offlinecheck"
+	"github.com/test-network-function/cnf-certification-test/internal/api/onlinecheck"
+	"helm.sh/helm/v3/pkg/release"
 )
 
 //go:generate moq -out api_moq.go . CertAPIClientFuncs

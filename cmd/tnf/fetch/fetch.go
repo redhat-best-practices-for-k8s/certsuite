@@ -10,7 +10,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/internal/registry"
+	"github.com/test-network-function/cnf-certification-test/internal/api/offlinecheck"
 	"gopkg.in/yaml.v3"
 )
 
