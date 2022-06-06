@@ -30,13 +30,17 @@ import (
 	"k8s.io/client-go/rest"
 )
 
+const (
+	istio = "istio-system"
+)
+
 func findnamespace(oc corev1client.CoreV1Interface) bool {
 	nsList, err := oc.Namespaces().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		logrus.Errorln("Error when listing", "err: ", err)
 	}
-	for _, item := range nsList.Items {
-		if item.ObjectMeta.Name == "istio-system" {
+	for index := range nsList.Items {
+		if nsList.Items[index].ObjectMeta.Name == istio {
 			return true
 		}
 	}
