@@ -44,15 +44,15 @@ func (numaHugepages numaHugePagesPerSize) String() string {
 	}
 	sort.Ints(numaIndexes)
 
-	str := ""
+	var sb strings.Builder
 	for _, numaIdx := range numaIndexes {
 		hugepagesPerSize := numaHugepages[numaIdx]
-		str += fmt.Sprintf("Numa=%d ", numaIdx)
+		sb.WriteString(fmt.Sprintf("Numa=%d ", numaIdx))
 		for _, hugepages := range hugepagesPerSize {
-			str += fmt.Sprintf("[Size=%dkB Count=%d] ", hugepages.hugepagesSize, hugepages.hugepagesCount)
+			sb.WriteString(fmt.Sprintf("[Size=%dkB Count=%d] ", hugepages.hugepagesSize, hugepages.hugepagesCount))
 		}
 	}
-	return str
+	return sb.String()
 }
 
 type Tester struct {
@@ -273,11 +273,12 @@ func getMcSystemdUnitsHugepagesConfig(mc *provider.MachineConfig) (hugepages num
 }
 
 func logMcKernelArgumentsHugepages(hugepagesPerSize map[int]int, defhugepagesz int) {
-	logStr := fmt.Sprintf("MC KernelArguments hugepages config: default_hugepagesz=%d-kB", defhugepagesz)
+	var sb strings.Builder
+	sb.WriteString(fmt.Sprintf("MC KernelArguments hugepages config: default_hugepagesz=%d-kB", defhugepagesz))
 	for size, count := range hugepagesPerSize {
-		logStr += fmt.Sprintf(", size=%dkB - count=%d", size, count)
+		sb.WriteString(fmt.Sprintf(", size=%dkB - count=%d", size, count))
 	}
-	logrus.Info(logStr)
+	logrus.Info(sb.String())
 }
 
 // getMcHugepagesFromMcKernelArguments gets the hugepages params from machineconfig's kernelArguments
@@ -289,7 +290,7 @@ func getMcHugepagesFromMcKernelArguments(mc *provider.MachineConfig) (hugepagesP
 	for _, arg := range mc.Spec.KernelArguments {
 		keyValueSlice := strings.Split(arg, "=")
 		if len(keyValueSlice) != KernArgsKeyValueSplitLen {
-			// Some kernel arguments don't come in name=value
+			// Some kernel arguments do not come in name=value
 			continue
 		}
 

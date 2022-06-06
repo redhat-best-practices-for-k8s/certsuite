@@ -235,7 +235,7 @@ func TestPodHostPath(env *provider.TestEnvironment) {
 		for idx := range put.Data.Spec.Volumes {
 			vol := &put.Data.Spec.Volumes[idx]
 			if vol.HostPath != nil && vol.HostPath.Path != "" {
-				tnf.ClaimFilePrintf("An Hostpath path: %s is set in pod %s.", vol.HostPath.Path, put.Data.Namespace+"."+put.Data.Name)
+				tnf.ClaimFilePrintf("Hostpath path: %s is set in pod %s.", vol.HostPath.Path, put.Data.Namespace+"."+put.Data.Name)
 				badPods = append(badPods, put.Data.Namespace+"."+put.Data.Name)
 			}
 		}
@@ -286,7 +286,7 @@ func TestNamespace(env *provider.TestEnvironment) {
 	if failedNamespacesNum := len(failedNamespaces); failedNamespacesNum > 0 {
 		ginkgo.Fail(fmt.Sprintf("Found %d Namespaces with an invalid prefix.", failedNamespacesNum))
 	}
-	ginkgo.By(fmt.Sprintf("CNF pods' should belong to any of the configured Namespaces: %v", env.Namespaces))
+	ginkgo.By(fmt.Sprintf("CNF pods should belong to any of the configured Namespaces: %v", env.Namespaces))
 	ginkgo.By(fmt.Sprintf("CRs from autodiscovered CRDs should belong only to the configured Namespaces: %v", env.Namespaces))
 	invalidCrs, err := namespace.TestCrsNamespaces(env.Crds, env.Namespaces)
 	if err != nil {
@@ -294,7 +294,7 @@ func TestNamespace(env *provider.TestEnvironment) {
 	}
 
 	invalidCrsNum, claimsLog := namespace.GetInvalidCRsNum(invalidCrs)
-	if invalidCrsNum > 0 {
+	if invalidCrsNum > 0 && len(claimsLog.GetLogLines()) > 0 {
 		ginkgo.Fail(fmt.Sprintf("Found %d CRs belonging to invalid namespaces.", invalidCrsNum))
 		tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 	}
@@ -313,7 +313,7 @@ func TestPodServiceAccount(env *provider.TestEnvironment) {
 	}
 	if n := len(failedPods); n > 0 {
 		logrus.Debugf("Pods without service account: %+v", failedPods)
-		ginkgo.Fail(fmt.Sprintf("%d pods don't have a service account name.", n))
+		ginkgo.Fail(fmt.Sprintf("%d pods do not have a service account name.", n))
 	}
 }
 
@@ -412,7 +412,6 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 		debugPod := env.DebugPods[cut.NodeName]
 		if debugPod == nil {
 			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
-			continue
 		}
 
 		ocpContext := clientsholder.Context{

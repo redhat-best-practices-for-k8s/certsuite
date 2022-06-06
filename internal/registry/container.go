@@ -99,7 +99,7 @@ func IsCertified(registry, repository, tag, digest string) bool {
 	}
 	// This is a non optimized code to process
 	// the certified containers
-	// The reason behind it is users don't necessarily use image digest
+	// The reason behind it is users do not necessarily use image digest
 	// in deployment file.
 	// The code runs under 100 us. Not an issue in our case
 	for _, c := range containerdb {

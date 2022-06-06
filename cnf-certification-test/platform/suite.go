@@ -61,7 +61,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		if provider.IsOCPCluster() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
-			testContainersFsDiff(&env, cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder()))
+			testContainersFsDiff(&env)
 		} else {
 			ginkgo.Skip(" non ocp cluster ")
 		}
@@ -149,23 +149,30 @@ func TestServiceMesh(env *provider.TestEnvironment) {
 }
 
 // testContainersFsDiff test that all CUT didn't install new packages are starting
-func testContainersFsDiff(env *provider.TestEnvironment, testerFuncs cnffsdiff.FsDiffFuncs) {
+func testContainersFsDiff(env *provider.TestEnvironment) {
 	var badContainers []string
 	var errContainers []string
 	for _, cut := range env.Containers {
 		logrus.Debug(fmt.Sprintf("%s(%s) should not install new packages after starting", cut.Podname, cut.Data.Name))
 		debugPod := env.DebugPods[cut.NodeName]
-		testerFuncs.RunTest(clientsholder.Context{
+		if debugPod == nil {
+			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
+		}
+
+		fsDiffTester := cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder())
+		fsDiffTester.RunTest(clientsholder.Context{
 			Namespace:     debugPod.Namespace,
 			Podname:       debugPod.Name,
 			Containername: debugPod.Spec.Containers[0].Name,
 		}, cut.UID)
-		switch testerFuncs.GetResults() {
+		switch fsDiffTester.GetResults() {
 		case testhelper.SUCCESS:
 			continue
 		case testhelper.FAILURE:
+			tnf.ClaimFilePrintf("%s - changed folders: %v, deleted folders: %v", cut, fsDiffTester.ChangedFolders, fsDiffTester.DeletedFolders)
 			badContainers = append(badContainers, cut.Data.Name)
 		case testhelper.ERROR:
+			tnf.ClaimFilePrintf("%s - error while running fs-diff: %v: ", cut, fsDiffTester.Error)
 			errContainers = append(errContainers, cut.Data.Name)
 		}
 	}
@@ -248,7 +255,7 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 			logrus.Debug("Modules allowed via configuration: ", env.Config.AcceptedKernelTaints)
 
 			// Looks through the accepted taints listed in the tnf-config file.
-			// If all of the tainted modules show up in the configuration file, don't fail the test.
+			// If all of the tainted modules show up in the configuration file, do not fail the test.
 			nodeTaintsAccepted = nodetainted.TaintsAccepted(env.Config.AcceptedKernelTaints, taintedModules)
 		}
 

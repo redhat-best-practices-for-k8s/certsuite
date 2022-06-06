@@ -19,6 +19,7 @@ package netcommons
 import (
 	"fmt"
 	"net"
+	"strings"
 
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	corev1 "k8s.io/api/core/v1"
@@ -56,14 +57,15 @@ type ContainerIP struct {
 
 // String displays the NetTestContext data structure
 func (testContext NetTestContext) String() string {
-	output := fmt.Sprintf("From initiating container: %s\n", testContext.TesterSource.String())
+	var sb strings.Builder
+	sb.WriteString(fmt.Sprintf("From initiating container: %s\n", testContext.TesterSource.String()))
 	if len(testContext.DestTargets) == 0 {
-		output = "--> No target containers to test for this network" //nolint:goconst // this is only one time
+		sb.WriteString("--> No target containers to test for this network")
 	}
 	for _, target := range testContext.DestTargets {
-		output += fmt.Sprintf("--> To target container: %s\n", target.String())
+		sb.WriteString(fmt.Sprintf("--> To target container: %s\n", target.String()))
 	}
-	return output
+	return sb.String()
 }
 
 // String Displays the ContainerIP data structure
@@ -76,15 +78,15 @@ func (cip *ContainerIP) String() string {
 
 // PrintNetTestContextMap displays the NetTestContext full map
 func PrintNetTestContextMap(netsUnderTest map[string]NetTestContext) string {
-	var output string
+	var sb strings.Builder
 	if len(netsUnderTest) == 0 {
-		output = "No networks to test.\n" //nolint:goconst // this is only one time
+		sb.WriteString("No networks to test.\n")
 	}
 	for netName, netUnderTest := range netsUnderTest {
-		output += fmt.Sprintf("***Test for Network attachment: %s\n", netName)
-		output += fmt.Sprintf("%s\n", netUnderTest.String())
+		sb.WriteString(fmt.Sprintf("***Test for Network attachment: %s\n", netName))
+		sb.WriteString(fmt.Sprintf("%s\n", netUnderTest.String()))
 	}
-	return output
+	return sb.String()
 }
 
 // PodIPsToStringList converts a list of corev1.PodIP objects into a list of strings
