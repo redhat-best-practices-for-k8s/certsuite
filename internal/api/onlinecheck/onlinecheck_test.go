@@ -14,3 +14,17 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 package onlinecheck
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestGetRequest(t *testing.T) {
+	checker := NewOnlineValidator()
+	_, err := checker.GetRequest("http://non-existingurl.com")
+	assert.NotNil(t, err)
+	_, err = checker.GetRequest(redhatCatalogPingURL)
+	assert.Nil(t, err)
+}
