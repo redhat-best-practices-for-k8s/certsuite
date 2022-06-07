@@ -295,8 +295,8 @@ func TestNamespace(env *provider.TestEnvironment) {
 
 	invalidCrsNum, claimsLog := namespace.GetInvalidCRsNum(invalidCrs)
 	if invalidCrsNum > 0 && len(claimsLog.GetLogLines()) > 0 {
-		ginkgo.Fail(fmt.Sprintf("Found %d CRs belonging to invalid namespaces.", invalidCrsNum))
 		tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
+		ginkgo.Fail(fmt.Sprintf("Found %d CRs belonging to invalid namespaces.", invalidCrsNum))
 	}
 }
 

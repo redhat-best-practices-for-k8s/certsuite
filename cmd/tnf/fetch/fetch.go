@@ -10,7 +10,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/internal/registry"
+	"github.com/test-network-function/cnf-certification-test/internal/api/offlinecheck"
 	"gopkg.in/yaml.v3"
 )
 
@@ -152,7 +152,7 @@ func serializeData(data CertifiedCatalog) {
 }
 func getOperatorCatalogSize() (size, pagesize uint) {
 	body := getHTTPBody(fmt.Sprintf("%spage=%d%s", operatorcatalogURL, 0, filterCertifiedOperators))
-	var aCatalog registry.OperatorCatalog
+	var aCatalog offlinecheck.OperatorCatalog
 	err := json.Unmarshal(body, &aCatalog)
 	if err != nil {
 		log.Fatalf("Error in unmarshaling body: %v", err)
@@ -205,7 +205,7 @@ func getOperatorCatalog(data *CertifiedCatalog) {
 func getContainerCatalogSize() (total, pagesize uint) {
 	url := fmt.Sprintf(containercatalogURL, 1, 1)
 	body := getHTTPBody(url)
-	var aCatalog registry.ContainerPageCatalog
+	var aCatalog offlinecheck.ContainerPageCatalog
 	err := json.Unmarshal(body, &aCatalog)
 	if err != nil {
 		log.Fatalf("Error in unmarshaling body: %v", err)
@@ -213,18 +213,18 @@ func getContainerCatalogSize() (total, pagesize uint) {
 	return aCatalog.Total, uint(containerCatalogPageSize)
 }
 
-func getContainerCatalogPage(page, size uint, db map[string]*registry.ContainerCatalogEntry) {
+func getContainerCatalogPage(page, size uint, db map[string]*offlinecheck.ContainerCatalogEntry) {
 	start := time.Now()
 	log.Info("start fetching data of page ", page)
 	url := fmt.Sprintf(containercatalogURL, size, page)
 	body := getHTTPBody(url)
 	log.Info("time to fetch binary data ", time.Since(start))
 	start = time.Now()
-	registry.LoadBinary(body, db)
+	offlinecheck.LoadBinary(body, db)
 	log.Info("time to load the data", time.Since(start))
 }
 
-func serializeContainersDB(db map[string]*registry.ContainerCatalogEntry) {
+func serializeContainersDB(db map[string]*offlinecheck.ContainerCatalogEntry) {
 	start := time.Now()
 	log.Info("start serializing container catalog")
 	path, err := os.Getwd()
@@ -249,7 +249,7 @@ func serializeContainersDB(db map[string]*registry.ContainerCatalogEntry) {
 
 func getContainerCatalog(data *CertifiedCatalog) {
 	start := time.Now()
-	db := make(map[string]*registry.ContainerCatalogEntry)
+	db := make(map[string]*offlinecheck.ContainerCatalogEntry)
 	total, pageSize := getContainerCatalogSize()
 	if total == uint(data.Containers) {
 		log.Info("no new certified container found")

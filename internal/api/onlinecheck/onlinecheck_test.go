@@ -13,30 +13,18 @@
 // You should have received a copy of the GNU General Public License along
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-package registry
+package onlinecheck
 
 import (
-	"os"
 	"testing"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestIsOperatorCertified(t *testing.T) {
-	name := "zoperator.v0.3.6"
-	ocpversion := "4.6"
-	channel := "alpha"
-	path, _ := os.Getwd()
-	log.Info(path)
-	path, err := os.Getwd()
-	if err != nil {
-		log.Println(err)
-	}
-	loadOperatorsCatalog(path + "/../")
-	ans := IsOperatorCertified(name, ocpversion, channel)
-	assert.Equal(t, ans, true)
-
-	ans = IsOperatorCertified("falcon-alpha", ocpversion, channel)
-	assert.Equal(t, ans, false)
+func TestGetRequest(t *testing.T) {
+	checker := NewOnlineValidator()
+	_, err := checker.GetRequest("http://non-existingurl.com")
+	assert.NotNil(t, err)
+	_, err = checker.GetRequest(redhatCatalogPingURL)
+	assert.Nil(t, err)
 }

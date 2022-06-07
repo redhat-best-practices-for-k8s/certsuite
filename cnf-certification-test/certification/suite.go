@@ -24,11 +24,10 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
-	"github.com/test-network-function/cnf-certification-test/internal/api"
-	"github.com/test-network-function/cnf-certification-test/internal/registry"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification/certtool"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	api "github.com/test-network-function/cnf-certification-test/internal/api"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -45,7 +44,7 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
-		registry.LoadCatalogs()
+		api.LoadCatalog()
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
 
@@ -72,7 +71,7 @@ func testContainerCertification(c configuration.ContainerImageIdentifier) bool {
 	digest := c.Digest
 	registryName := c.Repository
 	name := c.Name
-	ans := registry.IsCertified(registryName, name, tag, digest)
+	ans := api.IsContainerCertified(registryName, name, tag, digest)
 	if !ans {
 		tnf.ClaimFilePrintf("%s/%s:%s is not listed in certified containers", registryName, name, tag)
 	}
@@ -119,7 +118,7 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 	for i := range operatorsUnderTest {
 		name := operatorsUnderTest[i].Name
 		channel := operatorsUnderTest[i].Channel
-		isCertified := registry.IsOperatorCertified(name, ocpMinorVersion, channel)
+		isCertified := api.IsOperatorCertified(name, ocpMinorVersion, channel)
 		if !isCertified {
 			testFailed = true
 			logrus.Info(fmt.Sprintf("Operator %s (channel %s) not certified for OpenShift %s .", name, channel, ocpMinorVersion))
@@ -136,20 +135,10 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 func testHelmCertified(env *provider.TestEnvironment) {
 	helmchartsReleases := env.HelmChartReleases
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, helmchartsReleases)
-	certtool.CertAPIClient = api.NewHTTPClient()
-
-	out, err := certtool.CertAPIClient.GetYamlFile()
-	if err != nil {
-		ginkgo.Fail(fmt.Sprintf("error while reading the helm yaml file from the api %s", err))
-	}
-	if out.Entries == nil {
-		ginkgo.Skip("No helm charts from the api")
-	}
-
 	// Collect all of the failed helm charts
 	failedHelmCharts := [][]string{}
 	for _, helm := range helmchartsReleases {
-		if !certtool.IsReleaseCertified(helm, env.K8sVersion, out) {
+		if !api.IsReleaseCertified(helm, env.K8sVersion) {
 			failedHelmCharts = append(failedHelmCharts, []string{helm.Chart.Metadata.Version, helm.Name})
 		} else {
 			logrus.Info(fmt.Sprintf("Helm %s with version %s is certified", helm.Name, helm.Chart.Metadata.Version))
