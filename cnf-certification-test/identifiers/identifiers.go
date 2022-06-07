@@ -759,7 +759,7 @@ the changes for you.`,
 	TestServiceMeshIdentifier: {
 		Identifier: TestServiceMeshIdentifier,
 		Type:       normativeResult,
-		Description: formDescription(TestPodRecreationIdentifier,
+		Description: formDescription(TestServiceMeshIdentifier,
 			`verifies if service mesh is exist.`),
 		Remediation:           ``,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 6.2",
