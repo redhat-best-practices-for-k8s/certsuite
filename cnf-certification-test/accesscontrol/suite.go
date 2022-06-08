@@ -21,7 +21,6 @@ import (
 	"strings"
 
 	"github.com/onsi/ginkgo/v2"
-	"github.com/onsi/gomega"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/namespace"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/rbac"
@@ -153,8 +152,11 @@ func TestSecConCapabilities(env *provider.TestEnvironment) {
 			}
 		}
 	}
-	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
-	gomega.Expect(badContainers).To(gomega.BeNil())
+
+	if len(badContainers) > 0 {
+		tnf.ClaimFilePrintf("Containers found with incorrect security context capabilities: %v", badContainers)
+		ginkgo.Fail("Containers were found with incorrect security context capabilities.")
+	}
 }
 
 // TestSecConRootUser verifies that the container is not running as root
@@ -179,10 +181,16 @@ func TestSecConRootUser(env *provider.TestEnvironment) {
 			}
 		}
 	}
-	tnf.ClaimFilePrintf("bad pods: %v", badPods)
-	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
-	gomega.Expect(badContainers).To(gomega.BeNil())
-	gomega.Expect(badPods).To(gomega.BeNil())
+
+	if len(badPods) > 0 {
+		tnf.ClaimFilePrintf("Non compliant root user pods found: %v", badPods)
+		ginkgo.Fail("Non compliant root user pods found")
+	}
+
+	if len(badContainers) > 0 {
+		tnf.ClaimFilePrintf("Non compliant root user containers found: %v", badContainers)
+		ginkgo.Fail("Non compliant root user containers found")
+	}
 }
 
 // TestSecConPrivilegeEscalation verifies that the container is not allowed privilege escalation
@@ -196,8 +204,11 @@ func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 			}
 		}
 	}
-	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
-	gomega.Expect(badContainers).To(gomega.BeNil())
+
+	if len(badContainers) > 0 {
+		tnf.ClaimFilePrintf("Containers found with incorrect security context privilege escalation settings: %v", badContainers)
+		ginkgo.Fail("Containers found with incorrect security context privilege escalation settings.")
+	}
 }
 
 // TestContainerHostPort tests that containers are not configured with host port privileges
@@ -211,8 +222,11 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 			}
 		}
 	}
-	tnf.ClaimFilePrintf("bad containers: %v", badContainers)
-	gomega.Expect(badContainers).To(gomega.BeNil())
+
+	if len(badContainers) > 0 {
+		tnf.ClaimFilePrintf("Containers were found with configured host ports: %v", badContainers)
+		ginkgo.Fail("Containers were found with configured host ports.")
+	}
 }
 
 // TestPodHostNetwork verifies that the pod hostNetwork parameter is not set to true
@@ -224,8 +238,11 @@ func TestPodHostNetwork(env *provider.TestEnvironment) {
 			badPods = append(badPods, put.Data.Namespace+"."+put.Data.Name)
 		}
 	}
-	tnf.ClaimFilePrintf("bad pods: %v", badPods)
-	gomega.Expect(badPods).To(gomega.BeNil())
+
+	if len(badPods) > 0 {
+		tnf.ClaimFilePrintf("Pods have been found with host network set to true: %v", badPods)
+		ginkgo.Fail("Pods have been found with host network set to true.")
+	}
 }
 
 // TestPodHostPath verifies that the pod hostpath parameter is not set to true
@@ -240,8 +257,11 @@ func TestPodHostPath(env *provider.TestEnvironment) {
 			}
 		}
 	}
-	tnf.ClaimFilePrintf("bad pods: %v", badPods)
-	gomega.Expect(badPods).To(gomega.BeNil())
+
+	if len(badPods) > 0 {
+		tnf.ClaimFilePrintf("Pods have been found with hostpath set: %v", badPods)
+		ginkgo.Fail("Pods have been found with hostpath set.")
+	}
 }
 
 // TestPodHostIPC verifies that the pod hostIpc parameter is not set to true
@@ -253,8 +273,11 @@ func TestPodHostIPC(env *provider.TestEnvironment) {
 			badPods = append(badPods, put.Data.Namespace+"."+put.Data.Name)
 		}
 	}
-	tnf.ClaimFilePrintf("bad pods: %v", badPods)
-	gomega.Expect(badPods).To(gomega.BeNil())
+
+	if len(badPods) > 0 {
+		tnf.ClaimFilePrintf("Pods have been found with HostIpc set: %v", badPods)
+		ginkgo.Fail("Pods have been found with HostIpc set.")
+	}
 }
 
 // TestPodHostPID verifies that the pod hostPid parameter is not set to true
@@ -266,8 +289,11 @@ func TestPodHostPID(env *provider.TestEnvironment) {
 			badPods = append(badPods, put.Data.Namespace+"."+put.Data.Name)
 		}
 	}
-	tnf.ClaimFilePrintf("bad pods: %v", badPods)
-	gomega.Expect(badPods).To(gomega.BeNil())
+
+	if len(badPods) > 0 {
+		tnf.ClaimFilePrintf("Pods have been found with HostPid set: %v", badPods)
+		ginkgo.Fail("Pods have been found with HostPid set.")
+	}
 }
 
 // Tests namespaces for invalid prefixed and CRs are not defined in namespaces not under test with CRDs under test
@@ -384,7 +410,9 @@ func TestAutomountServiceToken(env *provider.TestEnvironment) {
 	failedPods := []string{}
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Data.Namespace, put.Data.Name))
-		gomega.Expect(put.Data.Spec.ServiceAccountName).ToNot(gomega.BeEmpty())
+		if put.Data.Spec.ServiceAccountName == "" {
+			ginkgo.Fail("Pod has been found with an empty service account name.")
+		}
 
 		// Evaluate the pod's automount service tokens and any attached service accounts
 		podPassed, newMsg := rbac.EvaluateAutomountTokens(put.Data)

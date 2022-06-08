@@ -21,7 +21,6 @@ import (
 	"time"
 
 	"github.com/onsi/ginkgo/v2"
-	"github.com/onsi/gomega"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
@@ -126,9 +125,9 @@ func testContainersPreStop(env *provider.TestEnvironment) {
 		}
 	}
 	if len(badcontainers) > 0 {
-		tnf.ClaimFilePrintf("bad containers %v", badcontainers)
+		tnf.ClaimFilePrintf("Containers have been found missing lifecycle preStop definitions: %v", badcontainers)
+		ginkgo.Fail("Containers have been found missing lifecycle preStop definitions.")
 	}
-	gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
 }
 
 func testContainersImagePolicy(env *provider.TestEnvironment) {
@@ -142,9 +141,9 @@ func testContainersImagePolicy(env *provider.TestEnvironment) {
 		}
 	}
 	if len(badcontainers) > 0 {
-		tnf.ClaimFilePrintf("bad containers %v", badcontainers)
+		tnf.ClaimFilePrintf("Containers have been found with IfNotPresent missing from image pull policy: %v", badcontainers)
+		ginkgo.Fail("Containers have been found with IfNotPresent missing from image pull policy.")
 	}
-	gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
 }
 
 func testContainersReadinessProbe(env *provider.TestEnvironment) {
@@ -157,9 +156,9 @@ func testContainersReadinessProbe(env *provider.TestEnvironment) {
 		}
 	}
 	if len(badcontainers) > 0 {
-		tnf.ClaimFilePrintf("bad containers %v", badcontainers)
+		tnf.ClaimFilePrintf("Containers have been found without readiness probes defined: %v", badcontainers)
+		ginkgo.Fail("Containers have been found without readiness probes defined.")
 	}
-	gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
 }
 
 func testContainersLivenessProbe(env *provider.TestEnvironment) {
@@ -172,9 +171,9 @@ func testContainersLivenessProbe(env *provider.TestEnvironment) {
 		}
 	}
 	if len(badcontainers) > 0 {
-		tnf.ClaimFilePrintf("bad containers %v", badcontainers)
+		tnf.ClaimFilePrintf("Containers have been found without livenessProbe defined: %v", badcontainers)
+		ginkgo.Fail("Containers have been found without livenessProbe defined.")
 	}
-	gomega.Expect(0).To(gomega.Equal(len(badcontainers)))
 }
 
 func testPodsOwnerReference(env *provider.TestEnvironment) {
@@ -189,9 +188,9 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 		}
 	}
 	if len(badPods) > 0 {
-		tnf.ClaimFilePrintf("bad containers %v", badPods)
+		tnf.ClaimFilePrintf("Containers were found with incorrect owner reference: %v", badPods)
+		ginkgo.Fail("Containers were found with incorrect owner reference.")
 	}
-	gomega.Expect(0).To(gomega.Equal(len(badPods)))
 }
 
 func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) {
@@ -240,9 +239,9 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 	}
 
 	if len(failedDeployments) > 0 {
-		tnf.ClaimFilePrintf("failed deployments: %v", failedDeployments)
+		tnf.ClaimFilePrintf("Deployments were found to have failed the scaling test: %v", failedDeployments)
+		ginkgo.Fail("Deployments were found to have failed the scaling test.")
 	}
-	gomega.Expect(0).To(gomega.Equal(len(failedDeployments)))
 }
 
 //nolint:dupl
@@ -273,9 +272,9 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 	}
 
 	if len(failedStatetfulSets) > 0 {
-		tnf.ClaimFilePrintf(" failed statefulsets: %v", failedStatetfulSets)
+		tnf.ClaimFilePrintf("Statefulsets were found to have failed the scaling test: %v", failedStatetfulSets)
+		ginkgo.Fail("Statefulsets were found to have failed the scaling test.")
 	}
-	gomega.Expect(0).To(gomega.Equal(len(failedStatetfulSets)))
 }
 
 // testHighAvailability
@@ -308,13 +307,13 @@ func testHighAvailability(env *provider.TestEnvironment) {
 	if n := len(badDeployments); n > 0 {
 		logrus.Errorf("Deployments without a valid high availability : %+v", badDeployments)
 		tnf.ClaimFilePrintf("Deployments without a valid high availability : %+v", badDeployments)
+		ginkgo.Fail("Deployments were found without a valid high availability.")
 	}
 	if n := len(badStatefulSet); n > 0 {
 		logrus.Errorf("Statefulset without a valid podAntiAffinity rule: %+v", badStatefulSet)
 		tnf.ClaimFilePrintf("Statefulset without a valid podAntiAffinity rule: %+v", badStatefulSet)
+		ginkgo.Fail("Statefulsets were found without a valid high availability.")
 	}
-	gomega.Expect(0).To(gomega.Equal(len(badDeployments)))
-	gomega.Expect(0).To(gomega.Equal(len(badStatefulSet)))
 }
 
 // testPodsRecreation tests that pods belonging to deployments and statefulsets are re-created and ready in case a node is lost

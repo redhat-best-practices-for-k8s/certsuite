@@ -38,7 +38,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 
 	"github.com/onsi/ginkgo/v2"
-	"github.com/onsi/gomega"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/nodetainted"
 )
 
@@ -144,10 +143,16 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 			errContainers = append(errContainers, cut.Data.Name)
 		}
 	}
-	logrus.Println("bad containers ", badContainers)
-	logrus.Println("err containers ", errContainers)
-	gomega.Expect(badContainers).To(gomega.BeNil())
-	gomega.Expect(errContainers).To(gomega.BeNil())
+
+	if len(badContainers) > 0 {
+		tnf.ClaimFilePrintf("Containers were found with changed or deleted folders: %v", badContainers)
+		ginkgo.Fail("Containers were found with changed or deleted folders.")
+	}
+
+	if len(errContainers) > 0 {
+		tnf.ClaimFilePrintf("Containers were unable to run fs-diff: %v", errContainers)
+		ginkgo.Fail("Containers were unable to run fs-diff.")
+	}
 }
 
 //nolint:funlen
@@ -241,8 +246,15 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 	// We are expecting tainted nodes to be Nil, but only if:
 	// 1) The reason for the tainted node is contains(`module was loaded`)
 	// 2) The modules loaded are all whitelisted.
-	gomega.Expect(taintedNodes).To(gomega.BeNil())
-	gomega.Expect(errNodes).To(gomega.BeNil())
+	if len(taintedNodes) > 0 {
+		tnf.ClaimFilePrintf("Nodes have been found to be tainted: %v", taintedNodes)
+		ginkgo.Fail("Nodes have been found to be tainted.")
+	}
+
+	if len(errNodes) > 0 {
+		tnf.ClaimFilePrintf("Nodes have been found to be tainted: %v", taintedNodes)
+		ginkgo.Fail("Nodes have been found to be tainted.")
+	}
 }
 
 func testIsRedHatRelease(env *provider.TestEnvironment) {
@@ -266,7 +278,10 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 		}
 	}
 
-	gomega.Expect(failedContainers).To(gomega.BeEmpty())
+	if len(failedContainers) > 0 {
+		tnf.ClaimFilePrintf("Containers have been found without a proper Red Hat version: %v", failedContainers)
+		ginkgo.Fail("Containers have been found without a proper Red Hat version.")
+	}
 }
 
 func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
@@ -340,7 +355,11 @@ func testUnalteredBootParams(env *provider.TestEnvironment) {
 			tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 		}
 	}
-	gomega.Expect(failedNodes).To(gomega.BeEmpty())
+
+	if len(failedNodes) > 0 {
+		tnf.ClaimFilePrintf("Nodes have been found with altered boot params: %v", failedNodes)
+		ginkgo.Fail("Nodes have been found with altered boot params.")
+	}
 }
 
 //nolint:funlen

@@ -110,7 +110,6 @@ build-cnf-tests-debug:
 # Install build tools and other required software.
 install-tools:
 	go install github.com/onsi/ginkgo/v2/ginkgo@v2.1.4
-	go install github.com/onsi/gomega
 
 # Install golangci-lint	
 install-lint:
