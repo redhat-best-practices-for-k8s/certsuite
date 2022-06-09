@@ -411,6 +411,7 @@ func TestAutomountServiceToken(env *provider.TestEnvironment) {
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Data.Namespace, put.Data.Name))
 		if put.Data.Spec.ServiceAccountName == "" {
+			tnf.ClaimFilePrintf("Pod %s has been found with an empty service account name.", put.Data.Name)
 			ginkgo.Fail("Pod has been found with an empty service account name.")
 		}
 
