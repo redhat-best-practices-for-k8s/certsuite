@@ -24,7 +24,6 @@ import (
 	"time"
 
 	"github.com/onsi/ginkgo/v2"
-	"github.com/onsi/gomega"
 	log "github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
@@ -139,8 +138,6 @@ func TestTest(t *testing.T) {
 
 	// Diagnostic functions will run also when no focus test suites were provided.
 	diagnosticMode := len(ginkgoConfig.FocusStrings) == 0
-
-	gomega.RegisterFailHandler(ginkgo.Fail)
 
 	// Set clientsholder singleton with the filenames from the env vars.
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)

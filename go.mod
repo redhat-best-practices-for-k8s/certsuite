@@ -5,7 +5,6 @@ go 1.18
 require (
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/basgys/goxml2json v1.1.0
-	github.com/onsi/gomega v1.19.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.4.0
 	github.com/stretchr/testify v1.7.2
@@ -67,7 +66,6 @@ require (
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.19.5 // indirect
 	github.com/go-openapi/swag v0.19.14 // indirect
-	github.com/go-yaml/yaml v2.1.0+incompatible // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
@@ -165,6 +163,7 @@ require (
 )
 
 require (
+	github.com/go-yaml/yaml v2.1.0+incompatible
 	github.com/openshift/api v0.0.0-20220124143425-d74727069f6f
 	github.com/openshift/machine-config-operator v0.0.0-00010101000000-000000000000
 	gopkg.in/yaml.v3 v3.0.1
