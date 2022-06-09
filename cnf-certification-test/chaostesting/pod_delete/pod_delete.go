@@ -70,18 +70,18 @@ func GetLabelDeploymetValue(env *provider.TestEnvironment, labelsMap map[string]
 	return "", errors.New("didnt find a key and value that matching the deployment")
 }
 
-func ApplyAndCreatePodDeleteRecources(appLabel, appKind, namespace string) error {
-	// create the chaos experiment recource
+func ApplyAndCreatePodDeleteResources(appLabel, appKind, namespace string) error {
+	// create the chaos experiment resource
 	if err := ApplyAndCreateFile(appLabel, appKind, namespace, experimentFile); err != nil {
 		logrus.Errorf("cant create the experiment of the test: %s", err)
 		return err
 	}
-	// create the chaos serviceAccount recource
+	// create the chaos serviceAccount resource
 	if err := ApplyAndCreateFile(appLabel, appKind, namespace, serviceAccountFile); err != nil {
 		logrus.Errorf("cant create the serviceAccount of the test: %s", err)
 		return err
 	}
-	// create the chaos chaosEngine recource
+	// create the chaos chaosEngine resource
 	if err := ApplyAndCreateFile(appLabel, appKind, namespace, chaosEngineFile); err != nil {
 		logrus.Errorf("cant create the chaosEngine of the test: %s", err)
 		return err
