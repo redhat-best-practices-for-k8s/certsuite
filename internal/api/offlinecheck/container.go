@@ -62,15 +62,15 @@ func loadContainersCatalog(pathToRoot string) {
 	filename := fmt.Sprintf(containersRelativePath, pathToRoot)
 	f, err := os.Open(filename)
 	if err != nil {
-		logrus.Errorln("can't open file", filename, err)
+		logrus.Errorln("Cannot open file", filename, err)
 	}
 	bytes, err := io.ReadAll(f)
 	if err != nil {
-		logrus.Error("can't process file", f.Name(), err, " trying to proceed")
+		logrus.Error("Cannot process file", f.Name(), err, " trying to proceed")
 	}
 	err = json.Unmarshal(bytes, &containerdb)
 	if err != nil {
-		logrus.Error("can't marshall file", filename, err, " trying to proceed")
+		logrus.Error("Cannot marshall file", filename, err, " trying to proceed")
 	}
 }
 
@@ -78,7 +78,7 @@ func LoadBinary(bytes []byte, db map[string]*ContainerCatalogEntry) {
 	aCatalog := ContainerPageCatalog{}
 	err := json.Unmarshal(bytes, &aCatalog)
 	if err != nil {
-		logrus.Error("can't marshall binary data", err)
+		logrus.Error("Cannot marshall binary data", err)
 		return
 	}
 	for i := 0; i < len(aCatalog.Data); i++ {

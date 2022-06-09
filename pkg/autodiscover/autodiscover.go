@@ -93,7 +93,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	var err error
 	data.TestData, err = configuration.LoadConfiguration(data.Env.ConfigurationPath)
 	if err != nil {
-		logrus.Fatalln("can't load configuration")
+		logrus.Fatalln("Cannot load configuration")
 	}
 	oc := clientsholder.GetClientsHolder()
 	data.Namespaces = namespacesListToStringList(data.TestData.TargetNameSpaces)
@@ -111,7 +111,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.OpenshiftVersion = openshiftVersion
 	k8sVersion, err := oc.K8sClient.Discovery().ServerVersion()
 	if err != nil {
-		logrus.Fatalln("can't get the K8s version")
+		logrus.Fatalln("Cannot get the K8s version")
 	}
 	data.K8sVersion = k8sVersion.GitVersion
 	data.Deployments = findDeploymentByLabel(oc.K8sClient.AppsV1(), data.TestData.TargetPodLabels, data.Namespaces)
@@ -119,7 +119,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.Hpas = findHpaControllers(oc.K8sClient, data.Namespaces)
 	data.Nodes, err = oc.K8sClient.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		logrus.Fatalln("can't get list of nodes")
+		logrus.Fatalln("Cannot get list of nodes")
 	}
 	return data
 }

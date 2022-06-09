@@ -31,7 +31,7 @@ import (
 func FindDeploymentByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*appsv1.Deployment, error) {
 	dp, err := appClient.Deployments(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		logrus.Error("Can't retrieve deployment in ns=", namespace, " name=", name)
+		logrus.Error("Cannot retrieve deployment in ns=", namespace, " name=", name)
 		return nil, err
 	}
 	return dp, nil
@@ -39,7 +39,7 @@ func FindDeploymentByNameByNamespace(appClient appv1client.AppsV1Interface, name
 func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*appsv1.StatefulSet, error) {
 	ss, err := appClient.StatefulSets(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
-		logrus.Error("Can't retrieve deployment in ns=", namespace, " name=", name)
+		logrus.Error("Cannot retrieve deployment in ns=", namespace, " name=", name)
 		return nil, err
 	}
 	return ss, nil
@@ -118,7 +118,7 @@ func findHpaControllers(cs kubernetes.Interface, namespaces []string) map[string
 	for _, ns := range namespaces {
 		hpas, err := cs.AutoscalingV1().HorizontalPodAutoscalers(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			logrus.Error("can't list HorizontalPodAutoscalers on namespace ", ns, " err ", err)
+			logrus.Error("Cannot list HorizontalPodAutoscalers on namespace ", ns, " err ", err)
 			return m
 		}
 		for i := 0; i < len(hpas.Items); i++ {
@@ -127,7 +127,7 @@ func findHpaControllers(cs kubernetes.Interface, namespaces []string) map[string
 		}
 	}
 	if len(m) == 0 {
-		logrus.Info("can't find any deployed HorizontalPodAutoscaler")
+		logrus.Info("Cannot find any deployed HorizontalPodAutoscaler")
 	}
 	return m
 }

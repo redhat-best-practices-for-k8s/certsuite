@@ -91,7 +91,7 @@ func loadOperatorsCatalog(pathToRoot string) {
 		filePath := fmt.Sprintf("%s/%s", path, file.Name())
 		f, err := os.Open(filePath)
 		if err != nil {
-			log.Error("can't process file", file.Name(), err, " trying to proceed")
+			log.Error("Cannot process file", file.Name(), err, " trying to proceed")
 			f.Close()
 			continue
 		}
@@ -99,11 +99,11 @@ func loadOperatorsCatalog(pathToRoot string) {
 		bytes, err := io.ReadAll(f)
 		if err != nil {
 			f.Close()
-			log.Error("can't process file", file.Name(), err, " trying to proceed")
+			log.Error("Cannot process file", file.Name(), err, " trying to proceed")
 		}
 		err = json.Unmarshal(bytes, &fullCatalog)
 		if err != nil {
-			log.Error("can't unmarshal file", file.Name(), err, " trying to proceed")
+			log.Error("Cannot unmarshal file", file.Name(), err, " trying to proceed")
 			f.Close()
 			continue
 		}

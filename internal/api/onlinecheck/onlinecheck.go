@@ -94,7 +94,7 @@ func (checker OnlineValidator) getImageByDigest(registry, repository, digest str
 	containerEntry := offlinecheck.ContainerCatalogEntry{}
 	err = json.Unmarshal(responseData, &containerEntry)
 	if err != nil {
-		log.Error("can't marshall binary data", err)
+		log.Error("Cannot marshall binary data", err)
 		return
 	}
 	if containerEntry.Certified {
@@ -186,7 +186,7 @@ func (checker OnlineValidator) IsOperatorCertified(operatorName, ocpVersion, cha
 	operatorEntries := offlinecheck.OperatorCatalog{}
 	err = json.Unmarshal(responseData, &operatorEntries)
 	if err != nil {
-		log.Error("can't marshall binary data", err)
+		log.Error("Cannot marshall binary data", err)
 		return false
 	}
 	for _, operator := range operatorEntries.Data {

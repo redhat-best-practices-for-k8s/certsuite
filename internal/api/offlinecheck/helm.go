@@ -51,13 +51,13 @@ func loadHelmCatalog(pathToRoot string) {
 	filePath := fmt.Sprintf(helmRelativePath, pathToRoot)
 	f, err := os.Open(filePath)
 	if err != nil {
-		log.Error("can't process file", f.Name(), err, " trying to proceed")
+		log.Error("Cannot process file", f.Name(), err, " trying to proceed")
 		return
 	}
 	defer f.Close()
 	bytes, err := io.ReadAll(f)
 	if err != nil {
-		log.Error("can't process file", f.Name(), err, " trying to proceed")
+		log.Error("Cannot process file", f.Name(), err, " trying to proceed")
 	}
 	var charts ChartStruct
 	if err = yaml.Unmarshal(bytes, &charts); err != nil {
