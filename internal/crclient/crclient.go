@@ -44,7 +44,7 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 	ch := clientsholder.GetClientsHolder()
 	outStr, errStr, err := ch.ExecCommandContainer(ctx, pidCmd)
 	if err != nil {
-		return 0, fmt.Errorf("can't execute command: \" %s \"  on %s err:%s", pidCmd, cut, err)
+		return 0, fmt.Errorf("cannot execute command: \" %s \"  on %s err:%s", pidCmd, cut, err)
 	}
 	if errStr != "" {
 		return 0, fmt.Errorf("cmd: \" %s \" on %s returned %s", pidCmd, cut, errStr)
@@ -79,7 +79,7 @@ func ExecCommandContainerNSEnter(command string,
 	// Run the nsenter command on the debug pod
 	outStr, errStr, err = o.ExecCommandContainer(ctx, nsenterCommand)
 	if err != nil {
-		return "", "", fmt.Errorf("can't execute command: \" %s \"  on %s err:%s", command, aContainer, err)
+		return "", "", fmt.Errorf("cannot execute command: \" %s \"  on %s err:%s", command, aContainer, err)
 	}
 	return outStr, errStr, err
 }

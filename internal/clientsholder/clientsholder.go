@@ -147,35 +147,35 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	var err error
 	clientsHolder.RestConfig, err = kubeconfig.ClientConfig()
 	if err != nil {
-		return nil, fmt.Errorf("can't instantiate rest config: %s", err)
+		return nil, fmt.Errorf("cannot instantiate rest config: %s", err)
 	}
 	DefaultTimeout := 10 * time.Second
 	clientsHolder.RestConfig.Timeout = DefaultTimeout
 
 	clientsHolder.DynamicClient, err = dynamic.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("can't instantiate dynamic client (unstructured/dynamic): %s", err)
+		return nil, fmt.Errorf("cannot instantiate dynamic client (unstructured/dynamic): %s", err)
 	}
 	clientsHolder.APIExtClient, err = apiextv1.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("can't instantiate apiextv1: %s", err)
+		return nil, fmt.Errorf("cannot instantiate apiextv1: %s", err)
 	}
 	clientsHolder.OlmClient, err = olmClient.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("can't instantiate olm clientset: %s", err)
+		return nil, fmt.Errorf("cannot instantiate olm clientset: %s", err)
 	}
 	clientsHolder.K8sClient, err = kubernetes.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("can't instantiate k8sclient: %s", err)
+		return nil, fmt.Errorf("cannot instantiate k8sclient: %s", err)
 	}
 	// create the oc client
 	clientsHolder.OcpClient, err = clientconfigv1.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("can't instantiate ocClient: %s", err)
+		return nil, fmt.Errorf("cannot instantiate ocClient: %s", err)
 	}
 	clientsHolder.MachineCfg, err = ocpMachine.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("can't instantiate MachineCfg client: %s", err)
+		return nil, fmt.Errorf("cannot instantiate MachineCfg client: %s", err)
 	}
 	clientsHolder.ready = true
 	return &clientsHolder, nil

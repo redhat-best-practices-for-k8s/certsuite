@@ -290,7 +290,7 @@ func TestGetCsvInstallPlans(t *testing.T) {
 					TypeMeta:   metav1.TypeMeta{Kind: "InstallPlan"},
 					ObjectMeta: metav1.ObjectMeta{Name: "badInstallPlan", Namespace: "ns3"},
 					Spec:       olmv1Alpha.InstallPlanSpec{ClusterServiceVersionNames: []string{"op3.v3.0.3"}},
-					// This installPlan won't be retrieved as it lacks of the bundle lookups info in the status field.
+					// This installPlan will not be retrieved as it lacks of the bundle lookups info in the status field.
 					Status: olmv1Alpha.InstallPlanStatus{},
 				},
 			},
