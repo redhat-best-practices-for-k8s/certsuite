@@ -20,7 +20,6 @@ package common
 const (
 	defaultTimeoutSeconds     = 10
 	AccessControlTestKey      = "access-control"
-	DiagnosticTestKey         = "diagnostic"
 	LifecycleTestKey          = "lifecycle"
 	ChaosTesting              = "chaostesting"
 	AffiliatedCertTestKey     = "affiliated-certification"
@@ -28,5 +27,4 @@ const (
 	ObservabilityTestKey      = "observability"
 	OperatorTestKey           = "operator"
 	PlatformAlterationTestKey = "platform-alteration"
-	CommonTestKey             = "common"
 )
