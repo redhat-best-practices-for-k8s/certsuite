@@ -260,8 +260,8 @@ var (
 		Url:     formTestURL(common.ObservabilityTestKey, "crd-status"),
 		Version: versionOne,
 	}
-	// TestShudtownIdentifier ensures pre-stop lifecycle is defined
-	TestShudtownIdentifier = claim.Identifier{
+	// TestShutdownIdentifier ensures pre-stop lifecycle is defined
+	TestShutdownIdentifier = claim.Identifier{
 		Url:     formTestURL(common.LifecycleTestKey, "container-shutdown"),
 		Version: versionOne,
 	}
@@ -709,10 +709,10 @@ the changes for you.`,
 			`tests that boot parameters are set through the MachineConfigOperator, and not set manually on the Node.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.13 and 5.2.14",
 	},
-	TestShudtownIdentifier: {
-		Identifier: TestShudtownIdentifier,
+	TestShutdownIdentifier: {
+		Identifier: TestShutdownIdentifier,
 		Type:       normativeResult,
-		Description: formDescription(TestShudtownIdentifier,
+		Description: formDescription(TestShutdownIdentifier,
 			`Ensure that the containers lifecycle pre-stop management feature is configured.`),
 		Remediation: `
 		It's considered best-practices to define prestop for proper management of container lifecycle.

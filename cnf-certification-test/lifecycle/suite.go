@@ -51,7 +51,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
 
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestShudtownIdentifier)
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestShutdownIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		testContainersPreStop(&env)
