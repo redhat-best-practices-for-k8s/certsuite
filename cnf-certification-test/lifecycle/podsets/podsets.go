@@ -40,6 +40,8 @@ var WaitForDeploymentSetReady = func(ns, name string, timeout time.Duration) boo
 		if err == nil && IsDeploymentReady(dp) {
 			logrus.Tracef("%s is ready", provider.DeploymentToString(dp))
 			return true
+		} else if dp == nil {
+			logrus.Error("error: deployment object found to be nil")
 		} else if err != nil {
 			logrus.Errorf("Error while getting the %s, err: %s", provider.DeploymentToString(dp), err)
 		}
