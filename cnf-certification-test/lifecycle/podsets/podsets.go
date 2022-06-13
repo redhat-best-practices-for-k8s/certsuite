@@ -37,14 +37,15 @@ var WaitForDeploymentSetReady = func(ns, name string, timeout time.Duration) boo
 	start := time.Now()
 	for time.Since(start) < timeout {
 		dp, err := provider.GetUpdatedDeployment(clients.K8sClient.AppsV1(), ns, name)
-		if err == nil && IsDeploymentReady(dp) {
-			logrus.Tracef("%s is ready", provider.DeploymentToString(dp))
+		if err != nil {
+			logrus.Errorf("Error while getting deployment %s (ns: %s), err: %s", name, ns, err)
+		} else if !IsDeploymentReady(dp) {
+			logrus.Errorf("%s is not ready yet", provider.DeploymentToString(dp))
+		} else {
+			logrus.Tracef("%s is ready!", provider.DeploymentToString(dp))
 			return true
-		} else if dp == nil {
-			logrus.Error("error: deployment object found to be nil")
-		} else if err != nil {
-			logrus.Errorf("Error while getting the %s, err: %s", provider.DeploymentToString(dp), err)
 		}
+
 		time.Sleep(time.Second)
 	}
 	logrus.Error("deployment ", ns, ":", name, " is not ready ")
