@@ -36,8 +36,8 @@ import (
 // Here we are using only External endpoint to collect published containers and operator information
 
 const apiCatalogByRepositoriesBaseEndPoint = "https://catalog.redhat.com/api/containers/v1/repositories/registry/registry.access.redhat.com/repository"
-
-const certifiedCatalogURL = "https://catalog.redhat.com/api/containers/v1/operators/bundles?page_size=100&page=0&package=%s"
+const filterCertifiedOperators = "&filter=organization==certified-operators"
+const certifiedCatalogURL = "https://catalog.redhat.com/api/containers/v1/operators/bundles?page_size=100&page=0&package=%s%s"
 const certifiedContainerCatalogURL = "https://catalog.redhat.com/api/containers/v1/repositories/registry/%s/repository/%s/images?"
 const certifiedContainerCatalogDigestURL = "https://catalog.redhat.com/api/containers/v1/images/registry/%s/repository/%s/manifest_digest/%s"
 const certifiedContainerCatalogTagURL = "https://catalog.redhat.com/api/containers/v1/repositories/registry/%s/repository/%s/tag/%s"
@@ -178,7 +178,7 @@ func (checker OnlineValidator) IsOperatorCertified(operatorName, ocpVersion, cha
 	name, operatorVersion := offlinecheck.ExtractNameVersionFromName(operatorName)
 	var responseData []byte
 	var err error
-	url := fmt.Sprintf(certifiedCatalogURL, name)
+	url := fmt.Sprintf(certifiedCatalogURL, name, filterCertifiedOperators)
 	log.Trace(url)
 	if responseData, err = checker.GetRequest(url); err != nil || len(responseData) == 0 {
 		return false
