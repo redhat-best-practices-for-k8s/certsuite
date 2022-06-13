@@ -96,6 +96,7 @@ RUN yum remove -y gcc git wget && \
 FROM scratch
 ARG TNF_PARTNER_DIR=/usr/tnf-partner
 COPY --from=build / /
+COPY /cnf-certification-test/chaostesting/chaos-test-files/ /usr/tnf/chaostesting/chaos-test-files/
 ENV TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml
 ENV KUBECONFIG=/usr/tnf/kubeconfig/config
 ENV TNF_PARTNER_SRC_DIR=$TNF_PARTNER_DIR/src
