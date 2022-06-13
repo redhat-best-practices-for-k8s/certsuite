@@ -966,3 +966,48 @@ func TestIsMasterNode(t *testing.T) {
 		assert.Equal(t, tc.expectedResult, node.IsMasterNode())
 	}
 }
+
+func TestGetNodeCount(t *testing.T) {
+	generateEnv := func(isMaster bool) *TestEnvironment {
+		key := "node-role.kubernetes.io/worker"
+		if isMaster {
+			key = "node-role.kubernetes.io/master"
+		}
+
+		return &TestEnvironment{
+			Nodes: map[string]Node{
+				"node1": {
+					Data: &corev1.Node{
+						ObjectMeta: metav1.ObjectMeta{
+							Name:   "node1",
+							Labels: map[string]string{key: ""},
+						},
+					},
+				},
+			},
+		}
+	}
+
+	testCases := []struct {
+		testIsMaster bool
+	}{
+		{
+			testIsMaster: true,
+		},
+		{
+			testIsMaster: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		tEnv := generateEnv(tc.testIsMaster)
+
+		if tc.testIsMaster {
+			assert.Equal(t, 1, tEnv.GetMasterCount())
+			assert.Equal(t, 0, tEnv.GetWorkerCount())
+		} else {
+			assert.Equal(t, 1, tEnv.GetWorkerCount())
+			assert.Equal(t, 0, tEnv.GetMasterCount())
+		}
+	}
+}

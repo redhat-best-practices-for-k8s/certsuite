@@ -482,6 +482,26 @@ func (env *TestEnvironment) IsIntrusive() bool {
 	return !env.variables.NonIntrusiveOnly
 }
 
+func (env *TestEnvironment) GetWorkerCount() int {
+	workerCount := 0
+	for _, e := range env.Nodes {
+		if e.IsWorkerNode() {
+			workerCount++
+		}
+	}
+	return workerCount
+}
+
+func (env *TestEnvironment) GetMasterCount() int {
+	masterCount := 0
+	for _, e := range env.Nodes {
+		if e.IsMasterNode() {
+			masterCount++
+		}
+	}
+	return masterCount
+}
+
 // getInstallPlansInNamespace is a helper function to get the installPlans in a namespace. The
 // map installPlans is used to store them in order to avoid repeating http requests for a namespace
 // whose installPlans were already obtained.

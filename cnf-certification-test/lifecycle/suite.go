@@ -39,6 +39,7 @@ const (
 	timeout                    = 60 * time.Second
 	timeoutPodRecreationPerPod = time.Minute
 	timeoutPodSetReady         = 7 * time.Minute
+	minWorkerNodesForLifecycle = 2
 )
 
 //
@@ -96,6 +97,9 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodRecreationIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatetfulSets)
+		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
+			ginkgo.Skip("Skipping pod recreation scaling test because invalid number of available workers.")
+		}
 		// Testing pod re-creation for deployments
 		testPodsRecreation(&env)
 	})
@@ -104,11 +108,21 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestDeploymentScalingIdentifier)
 		ginkgo.It(testID, ginkgo.Label(testID), func() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Deployments)
+			if env.GetWorkerCount() < minWorkerNodesForLifecycle {
+				// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
+				// testing the replicas and antiaffinity rules that should already be in place for deployments.
+				ginkgo.Skip("Skipping deployment scaling test because invalid number of available workers.")
+			}
 			testDeploymentScaling(&env, timeout)
 		})
 		testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestStateFulSetScalingIdentifier)
 		ginkgo.It(testID, ginkgo.Label(testID), func() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.StatetfulSets)
+			if env.GetWorkerCount() < minWorkerNodesForLifecycle {
+				// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
+				// testing the replicas and antiaffinity rules that should already be in place for statefulset.
+				ginkgo.Skip("Skipping statefulset scaling test because invalid number of available workers.")
+			}
 			testStatefulSetScaling(&env, timeout)
 		})
 	}
