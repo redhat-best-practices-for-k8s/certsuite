@@ -44,7 +44,7 @@ import (
 )
 
 const (
-	// costum rescources file to create them
+	// custom resources file to create them
 	serviceAccountFile = "chaostesting/chaos-test-files/service-account.yaml"
 	experimentFile     = "chaostesting/chaos-test-files/experiment-delete.yaml"
 	chaosEngineFile    = "chaostesting/chaos-test-files/chaos-engine.yaml"
@@ -54,7 +54,7 @@ const (
 	chaosresultName    = "engine-test-pod-delete"
 )
 
-// a function to search the right label for the deployment that we wanr to test pod delete on it
+// a function to search the right label for the deployment that we want to test pod delete on it
 func GetLabelDeploymetValue(env *provider.TestEnvironment, labelsMap map[string]string) (string, error) {
 	var key string
 	for _, label := range env.Config.TargetPodLabels {
@@ -67,7 +67,7 @@ func GetLabelDeploymetValue(env *provider.TestEnvironment, labelsMap map[string]
 			return fmt.Sprintf("%s=%s", key, label.Value), nil
 		}
 	}
-	return "", errors.New("didnt find a key and value that matching the deployment")
+	return "", errors.New("did not find a key and value that matching the deployment")
 }
 
 func ApplyAndCreatePodDeleteResources(appLabel, appKind, namespace string) error {
@@ -114,7 +114,7 @@ func DeleteAllResources(namespace string) {
 	}
 	err := oc.K8sClient.CoreV1().ServiceAccounts(namespace).Delete(context.TODO(), "test-sa", deleteOptions)
 	if err != nil {
-		logrus.Errorf("error while removing the ServiceAccountsresources %s", err)
+		logrus.Errorf("error while removing the ServiceAccounts resources %s", err)
 	}
 	if err = oc.K8sClient.RbacV1().Roles(namespace).Delete(context.TODO(), "test-sa", deleteOptions); err != nil {
 		logrus.Errorf("error while removing the chaos engine resources %s", err)
