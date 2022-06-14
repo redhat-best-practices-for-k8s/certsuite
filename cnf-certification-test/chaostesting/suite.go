@@ -29,6 +29,12 @@ var _ = ginkgo.Describe(common.ChaosTesting, func() {
 		env = provider.GetTestEnvironment()
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
+	ginkgo.AfterEach(func() {
+		// Note: Reloading test environment here because it is possible
+		// that some of the resources that are gathered prior to the chaos test
+		// have been deleted and need another record created.
+		provider.ReloadTestEnvironment()
+	})
 
 	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestPodDeleteIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {

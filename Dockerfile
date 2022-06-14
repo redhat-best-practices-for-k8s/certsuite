@@ -76,7 +76,10 @@ RUN mkdir ${TNF_BIN_DIR} && \
     cp --parents `find -name \*.db*` ${TNF_DIR} && \
 	# copy all JSON files to allow tests to run
 	cp --parents `find -name \*.json*` ${TNF_DIR} && \
-	cp cnf-certification-test/cnf-certification-test.test ${TNF_BIN_DIR}
+	cp cnf-certification-test/cnf-certification-test.test ${TNF_BIN_DIR} && \
+    # copy all of the chaos-test-files
+    mkdir -p ${TNF_DIR}/chaostesting/chaos-test-files && \
+    cp /cnf-certification-test/chaostesting/chaos-test-files/ ${TNF_DIR}/chaostesting/chaos-test-files/
 
 WORKDIR ${TNF_DIR}
 
@@ -96,7 +99,6 @@ RUN yum remove -y gcc git wget && \
 FROM scratch
 ARG TNF_PARTNER_DIR=/usr/tnf-partner
 COPY --from=build / /
-COPY /cnf-certification-test/chaostesting/chaos-test-files/ /usr/tnf/chaostesting/chaos-test-files/
 ENV TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml
 ENV KUBECONFIG=/usr/tnf/kubeconfig/config
 ENV TNF_PARTNER_SRC_DIR=$TNF_PARTNER_DIR/src

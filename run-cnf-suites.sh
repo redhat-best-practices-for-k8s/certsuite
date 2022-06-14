@@ -104,6 +104,7 @@ if [[ -z "${TNF_PARTNER_SRC_DIR}" ]]; then
 	echo "env var \"TNF_PARTNER_SRC_DIR\" not set, running the script without updating infra"
 else
 	make -C $TNF_PARTNER_SRC_DIR install-partner-pods
+	make -C $TNF_PARTNER_SRC_DIR install-litmus
 fi
 
 echo "Running with focus '$FOCUS'"
