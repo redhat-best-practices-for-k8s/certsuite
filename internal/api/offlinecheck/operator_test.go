@@ -38,4 +38,6 @@ func TestIsOperatorCertified(t *testing.T) {
 	assert.True(t, checker.IsOperatorCertified(name, ocpversion, channel))
 	name = "falcon-alpha"
 	assert.False(t, checker.IsOperatorCertified(name, ocpversion, channel))
+
+	assert.True(t, checker.IsOperatorCertified("artifactory-ha-operator.v1.2.0", "4.9", "alpha"))
 }
