@@ -1,748 +1,6 @@
 {
   "data": [
     {
-      "_id": "60470fa56280a414853ec528",
-      "alm_examples": [
-        {
-          "api_version": "dynatrace.com/v1alpha1",
-          "kind": "OneAgent",
-          "metadata": {
-            "name": "oneagent",
-            "namespace": "dynatrace"
-          },
-          "spec": {
-            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api",
-            "args": [
-              "--set-app-log-content-access=true"
-            ],
-            "tolerations": [
-              {
-                "effect": "NoSchedule",
-                "key": "node-role.kubernetes.io/master",
-                "operator": "Exists"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "dynatrace.com/v1alpha1",
-          "kind": "OneAgentAPM",
-          "metadata": {
-            "name": "oneagentapm",
-            "namespace": "dynatrace"
-          },
-          "spec": {
-            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator-bundle@sha256:fc750e6590bf2336144268bb09688a94e0baca2d5ebfb45b9f734b5cb5f68606",
-      "bundle_path_digest": "sha256:fc750e6590bf2336144268bb09688a94e0baca2d5ebfb45b9f734b5cb5f68606",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-03-09T06:03:17.290000+00:00",
-      "csv_description": "The Dynatrace OneAgent Operator allows users to easily deploy full-stack monitoring for [OpenShift clusters](https://www.dynatrace.com/technologies/openshift-monitoring/). The Dynatrace OneAgent automatically monitors the workload running in containers down to the code and request level.\n\n### Installing the OneAgent\nOnce you've installed the Operator, you can create OneAgent custom resources to monitor your environment.\n\nFirst, please add a Secret within the Project you've deployed the Dynatrace Operator to, which would contain your API and PaaS tokens. Create tokens of type *Dynatrace API* (`API_TOKEN`) and *Platform as a Service* (`PAAS_TOKEN`) and use their values in the following commands respectively.\n\nFor assistance please refer to [Create user-generated access tokens](https://www.dynatrace.com/support/help/shortlink/token#create-user-generated-access-tokens).\n\n``` $ oc -n <project> create secret generic oneagent --from-literal=\"apiToken=API_TOKEN\" --from-literal=\"paasToken=PAAS_TOKEN\" ```\n\nYou may update this Secret at any time to rotate the tokens.\n\nThen please add an OneAgent object in the Project where the Operator has been deployed, configured to your needs.\n\n### Required Parameters\n* `apiUrl` - provide the URL to the API of your Dynatrace environment. In Dynatrace SaaS it will look like `https://<ENVIRONMENTID>.live.dynatrace.com/api` . In Dynatrace Managed like `https://<YourDynatraceServerURL>/e/<ENVIRONMENTID>/api` .\n\n### Advanced Options\n* **Image Override** - use a copy of the OneAgent container image from a registry other than Docker's or Red Hat's\n* **NodeSelectors** - select a subset of your cluster's nodes to run the Dynatrace OneAgent on, based on labels\n* **Tolerations** - add specific tolerations to the agent so that it can monitor all of the nodes in your cluster; we include the default toleration so that Dynatrace OneAgent also monitors the master nodes\n* **Priority Class Name** - define the priorityClassName for OneAgent pods\n* **Environment variables** - define environment variables for the OneAgent container\n* **Disable Certificate Checking** - disable any certificate validation that may interact poorly with proxies with in your cluster\n* **Disable OneAgent Update** - disable the Operator's auto-update feature for OneAgent pods\n* **Enable Istio Auto-config** - automatically create Istio objects for egress communication to the Dynatrace environment from the OneAgent\n\nFor a complete list of supported parameters please consult the [Operator Deploy Guide](https://www.dynatrace.com/support/help/shortlink/openshift-deploy).\n\n### Help\nYou can find more about our instructions in our [documentation](https://www.dynatrace.com/support/help/shortlink/openshift-deploy#install-oneagent-operator).\n",
-      "csv_display_name": "Dynatrace OneAgent",
-      "csv_metadata_description": "Install full-stack monitoring of OpenShift clusters with the Dynatrace OneAgent.",
-      "csv_name": "dynatrace-monitoring.v0.9.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:30:17.371000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "oneagent-certified",
-      "provided_apis": [
-        {
-          "group": "dynatrace.com",
-          "kind": "OneAgentAPM",
-          "plural": "oneagentapms",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "dynatrace.com",
-          "kind": "OneAgent",
-          "plural": "oneagents",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:4f626c6f83d93c7c6b6279fa48003ea5cf4ef972cc7831f1d2367f20f0c4afed",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator@sha256:4f626c6f83d93c7c6b6279fa48003ea5cf4ef972cc7831f1d2367f20f0c4afed",
-          "name": "dynatrace-oneagent-operator-4f626c6f83d93c7c6b6279fa48003ea5cf4ef972cc7831f1d2367f20f0c4afed-annotation"
-        },
-        {
-          "digest": "sha256:4f626c6f83d93c7c6b6279fa48003ea5cf4ef972cc7831f1d2367f20f0c4afed",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator@sha256:4f626c6f83d93c7c6b6279fa48003ea5cf4ef972cc7831f1d2367f20f0c4afed",
-          "name": "dynatrace-oneagent-operator"
-        },
-        {
-          "digest": "sha256:4f626c6f83d93c7c6b6279fa48003ea5cf4ef972cc7831f1d2367f20f0c4afed",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator@sha256:4f626c6f83d93c7c6b6279fa48003ea5cf4ef972cc7831f1d2367f20f0c4afed",
-          "name": "webhook"
-        },
-        {
-          "digest": "sha256:4f626c6f83d93c7c6b6279fa48003ea5cf4ef972cc7831f1d2367f20f0c4afed",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator@sha256:4f626c6f83d93c7c6b6279fa48003ea5cf4ef972cc7831f1d2367f20f0c4afed",
-          "name": "bootstrapper"
-        },
-        {
-          "digest": "sha256:7610615cb9b0855aa8dde0bff9a1ec2464e586f5bff13f607c5fd643abd890e0",
-          "image": "registry.connect.redhat.com/dynatrace/oneagent@sha256:7610615cb9b0855aa8dde0bff9a1ec2464e586f5bff13f607c5fd643abd890e0",
-          "name": "dynatrace_oneagent"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.9.5",
-      "version_original": "0.9.5"
-    },
-    {
-      "_id": "60470fa66280a414853ec529",
-      "alm_examples": [
-        {
-          "api_version": "openliberty.io/v1beta1",
-          "kind": "OpenLibertyApplication",
-          "metadata": {
-            "name": "demo-app"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1
-          }
-        },
-        {
-          "api_version": "openliberty.io/v1beta1",
-          "kind": "OpenLibertyDump",
-          "metadata": {
-            "name": "example-dump"
-          },
-          "spec": {
-            "include": [
-              "heap",
-              "thread"
-            ],
-            "podName": "Specify_Pod_Name_Here"
-          }
-        },
-        {
-          "api_version": "openliberty.io/v1beta1",
-          "kind": "OpenLibertyTrace",
-          "metadata": {
-            "name": "example-trace"
-          },
-          "spec": {
-            "podName": "Specify_Pod_Name_Here",
-            "traceSpecification": "*=info:com.ibm.ws.webcontainer*=all"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/open-liberty-operator-bundle@sha256:66987dd9d568c2b004a358c9fbbb5c89a74a7512bd43599b2463b08cf44724a4",
-      "bundle_path_digest": "sha256:66987dd9d568c2b004a358c9fbbb5c89a74a7512bd43599b2463b08cf44724a4",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2021-03-09T06:03:18.711000+00:00",
-      "csv_description": "This advanced Operator can be used to deploy and manage Open Liberty applications with consistent, production-grade QoS. This operator is based on the [Runtime Component Operator](https://github.com/application-stacks/runtime-component-operator) and provides all of its capabilities in addition to Open Liberty specific features such as gathering traces and dumps (Day-2 operations) and easily configuring and managing the single sign-on information for your Open Liberty applications.\nOpen Liberty Operator enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\nHere are some key features:\n#### Application Lifecyle\nYou can deploy your Open Liberty application container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configured a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.  Expiring Route certificates are re-issued.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and We will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where the user specifies a built-in PersistentVolumeClaim, allowing them to configure many details of the persistent volume, such as its storage class and access mode.\nYou can also easily configure and use a single storage for serviceability related Day-2 operations, such as gatherig server traces and dumps.\n\n#### Service Binding\nEasily bind to available services in your cluster.  Your runtime components can expose and consume other services by simply specifying the target endpoinds: we take care of the heavy lifting such as creating k8s Secrets, injecting them into your container and watching for any changes in configuration!  This way your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Single Sign-On (SSO)\nOpen Liberty provides capabilities to delegate authentication to external providers. Your application users can log in using their existing social media credentials from providers such as Google, Facebook, LinkedIn, Twitter, GitHub, and any OpenID Connect (OIDC) or OAuth 2.0 clients.\nOpen Liberty Operator allows to easily configure and manage the single sign-on information for your applications.\n#### Exposing metrics to Prometheus\nThe Open Liberty Operator exposes the runtime container's metrics via the [Prometheus Operator](https://operatorhub.io/operator/prometheus).\nUsers can pick between a basic mode, where they simply specify the label that Prometheus is watching to scrape the metrics from the container, or they can specify the full `ServiceMonitor` spec embedded into the OpenLibertyApplication's `spec.monitoring` key controlling things like the poll internal and security credentials.\n#### Easily mount logs and transaction directories\nIf you need to mount the logs and transaction data from your application to an external volume such as NFS (or any storage supported in your cluster), simply add the following (customizing the folder location and size) to your OpenLibertyApplication CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift's Certificate Manager\nThe Open Liberty Operator takes advantage of the [cert-manager tool](https://cert-manager.io/), if it is installed on the cluster. This allows the operator to automatically provision TLS certificates for pods as well as routes.\nWhen creating certificates via the OpenLibertyApplication CR the user can specify a particular issuer name and toggle the scopes between ClusterIssuer (cluster scoped) and Issuer (namespace scoped). If not specified, these values are retrieved from a ConfigMap, with a default value of `self-signed` and `ClusterIssuer`.\nThe certificate is mounted into the container via a Secret so that it is automatically refreshed once the certificate is updated.\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with Kubernetes Application Navigator (kAppNav) and OpenShift's Topology UI\nAutomatically configures the Kubernetes resources for integration with [kAppNav](https://kappnav.io/), allowing your runtime component to compose an umbrella [Application](https://github.com/kubernetes-sigs/application).  This integration allows users to monitor all constituents resources of the application and receive alerts when the health status of a component changes.  From an integrated panel users can also launch day-2-operations, such as viewing the Kibana / Grafana dashboards, and enabling trace for a component.\nDuring this integration we also set the corresponding labels to support OpenShift's Developer Topology UI,which allows you to visualize your entire set of deployments and how they are connected.\nSee our [**documentation**](https://github.com/OpenLiberty/open-liberty-operator/tree/master/doc/) for more information.",
-      "csv_display_name": "Open Liberty Operator",
-      "csv_metadata_description": "Deploy and manage applications running on Open Liberty",
-      "csv_name": "open-liberty-operator.v0.7.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-05-13T11:37:37.197000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "open-liberty-certified",
-      "provided_apis": [
-        {
-          "group": "openliberty.io",
-          "kind": "OpenLibertyApplication",
-          "plural": "openlibertyapplications",
-          "version": "v1beta1"
-        },
-        {
-          "group": "openliberty.io",
-          "kind": "OpenLibertyDump",
-          "plural": "openlibertydumps",
-          "version": "v1beta1"
-        },
-        {
-          "group": "openliberty.io",
-          "kind": "OpenLibertyTrace",
-          "plural": "openlibertytraces",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:7e439b96d0ab5cbf38bdbd39feffd80370fed748430807a7fd1c1ba7d1e17d38",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator@sha256:7e439b96d0ab5cbf38bdbd39feffd80370fed748430807a7fd1c1ba7d1e17d38",
-          "name": "open-liberty-operator-7e439b96d0ab5cbf38bdbd39feffd80370fed748430807a7fd1c1ba7d1e17d38-annotation"
-        },
-        {
-          "digest": "sha256:7e439b96d0ab5cbf38bdbd39feffd80370fed748430807a7fd1c1ba7d1e17d38",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator@sha256:7e439b96d0ab5cbf38bdbd39feffd80370fed748430807a7fd1c1ba7d1e17d38",
-          "name": "open-liberty-operator"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.7.0",
-      "version_original": "0.7.0"
-    },
-    {
-      "_id": "60470fa9122bd89307e01082",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1alpha1",
-          "kind": "OpenshiftPipeline",
-          "metadata": {
-            "name": "openshiftpipeline"
-          },
-          "spec": {
-            "pipelines": {
-              "global": {
-                "postgresql": {
-                  "database": "OVERRIDE",
-                  "host": "OVERRIDE",
-                  "password": "OVERRIDE",
-                  "port": "OVERRIDE",
-                  "ssl": "false",
-                  "user": "OVERRIDE"
-                }
-              },
-              "imageRegistry": "registry.connect.redhat.com",
-              "initContainer": {
-                "image": "registry.connect.redhat.com/jfrog/pipelines-init@sha256:9c54e5ed032653b6d70ca0fe293ca4a23d082f5790f7dbbfac499a08573a663b",
-                "pullPolicy": "Always"
-              },
-              "pipelines": {
-                "accessControlAllowOrigins_0": "OVERRIDE",
-                "accessControlAllowOrigins_1": "OVERRIDE",
-                "api": {
-                  "externalUrl": "OVERRIDE",
-                  "image": {
-                    "pullPolicy": "Always",
-                    "repository": "jfrog/pipelines-api"
-                  }
-                },
-                "cron": {
-                  "image": {
-                    "pullPolicy": "Always",
-                    "repository": "jfrog/pipelines-micro"
-                  }
-                },
-                "extensionSync": {
-                  "image": {
-                    "pullPolicy": "Always",
-                    "repository": "jfrog/pipelines-micro"
-                  }
-                },
-                "hookHandler": {
-                  "image": {
-                    "pullPolicy": "Always",
-                    "repository": "jfrog/pipelines-micro"
-                  }
-                },
-                "jfrogUrl": "OVERRIDE",
-                "jfrogUrlUI": "OVERRIDE",
-                "joinKey": "OVERRIDE",
-                "logup": {
-                  "image": {
-                    "pullPolicy": "Always",
-                    "repository": "jfrog/pipelines-micro"
-                  }
-                },
-                "marshaller": {
-                  "image": {
-                    "pullPolicy": "Always",
-                    "repository": "jfrog/pipelines-micro"
-                  }
-                },
-                "masterKey": "OVERRIDE",
-                "msg": {
-                  "uiUser": "OVERRIDE",
-                  "uiUserPassword": "OVERRIDE"
-                },
-                "nexec": {
-                  "image": {
-                    "pullPolicy": "Always",
-                    "repository": "jfrog/pipelines-micro"
-                  }
-                },
-                "pipelineSync": {
-                  "image": {
-                    "pullPolicy": "Always",
-                    "repository": "jfrog/pipelines-micro"
-                  }
-                },
-                "pipelinesInit": {
-                  "image": {
-                    "pullPolicy": "Always",
-                    "repository": "jfrog/pipelines-installer"
-                  }
-                },
-                "router": {
-                  "image": {
-                    "pullPolicy": "Always",
-                    "repository": "jfrog/pipelines-router"
-                  }
-                },
-                "runTrigger": {
-                  "image": {
-                    "pullPolicy": "Always",
-                    "repository": "jfrog/pipelines-micro"
-                  }
-                },
-                "stepTrigger": {
-                  "image": {
-                    "pullPolicy": "Always",
-                    "repository": "jfrog/pipelines-micro"
-                  }
-                },
-                "version": "1.8.0",
-                "www": {
-                  "externalUrl": "OVERRIDE",
-                  "image": {
-                    "pullPolicy": "Always",
-                    "repository": "jfrog/pipelines-www"
-                  }
-                }
-              },
-              "postgresql": {
-                "enabled": false
-              },
-              "rabbitmq": {
-                "enabled": true,
-                "externalUrl": "OVERRIDE",
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/pipelines-rabbitmq",
-                  "tag": "3.8.9"
-                }
-              },
-              "redis": {
-                "enabled": true,
-                "image": {
-                  "registry": "registry.redhat.io",
-                  "repository": "rhel8/redis-5",
-                  "tag": "1-98"
-                },
-                "master": {
-                  "command": "container-entrypoint run-redis"
-                }
-              },
-              "securityContext": {
-                "enabled": true,
-                "gid": "1000721117",
-                "uid": "1000721117"
-              },
-              "vault": {
-                "disablemlock": false,
-                "enabled": true,
-                "image": {
-                  "repository": "registry.connect.redhat.com/jfrog/pipelines-vault",
-                  "tag": "1.8.0"
-                },
-                "init": {
-                  "pullPolicy": "Always",
-                  "repository": "jfrog/pipelines-vault-init"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/jfrog/pipelines-operator-bundle@sha256:319b188f70a139c3f5e1a64533280a60388365a5585465d55c6a4e1db98fca28",
-      "bundle_path_digest": "sha256:319b188f70a139c3f5e1a64533280a60388365a5585465d55c6a4e1db98fca28",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-03-09T06:03:21.217000+00:00",
-      "csv_description": "## Overview\n\nOpenshift Operator to deploy JFrog Pipelines into your Openshift cluster.\n## Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Pipeline Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Pipeline Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Xray\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\npipelines.global.postgresql.host=<postgresql_host> pipelines.global.postgresql.port=<postgresql_port> pipelines.global.postgresql.database=<postgresql_dbname> pipelines.global.postgresql.user=<postgresql_user> pipelines.global.postgresql.password=<postgresql_password>\n```\n\nJFROG_URL is the external ip or DNS of your Artifactory to connect Pipelines to. Artifactory is required to use this operator.\nYou will need to specify your JFROG_URL in the follow locations:\nUse the cluster DNS name of the service for most operator deployments this will be: http://openshiftartifactoryha-nginx\n``` pipelines.pipelines.jfrogUrl=<JFROG_URL> pipelines.pipelines.jfrogUrlUI=<JFROG_URL> pipelines.pipelines.accessControlAllowOrigins_0=<JFROG_URL> pipelines.pipelines.accessControlAllowOrigins_1=<JFROG_URL> ```\nSetup a unique master key and use the same join key you used when creating Artifactory:\n``` pipelines.pipelines.masterKey=$MASTER_KEY pipelines.pipelines.joinKey=$JOIN_KEY ```\nSetup a unique username and password for Rabbitmq user:\n``` pipelines.pipelines.msg.uiUser=monitor pipelines.pipelines.msg.uiUserPassword=monitor ```\nSpecify external urls that will be your Openshift routes if desired:\n``` pipelines.rabbitmq.externalUrl=amqps://pipelines-rabbit.example.com pipelines.pipelines.api.externalUrl=http://pipelines-api.example.com pipelines.pipelines.www.externalUrl=http://pipelines-www.example.com ```\nDeploy JFrog Pipelines into your cluster.\n## Build Plane Usage\nTo use the pipelines build plane you can either use your Openshift cluster or a 3rd party cloud provider like AWS.\nSetup the Pipelines build plane.\n## Sync issue fix\nTo resolve the known host issue when syncing from a new site for now users can rsh into the pod or open the terminal into the pod in the Openshift web console.\nOnce inside the container `pipelinesync` run the follow command:\n``` /pipelineSync/clone.sh ```\nType yes to accept the host verification and then re-sync your pipeline. ",
-      "csv_display_name": "JFrog Pipeline Operator",
-      "csv_metadata_description": "JFrog Pipeline Enterprise deploys Pipeline CI/CD Openshift (Requires Jfrog Artifactory)",
-      "csv_name": "pipeline-operator.v1.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:29:28.899000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "openshiftpipeline-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "OpenshiftPipeline",
-          "plural": "openshiftpipelines",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:2acce47191cd20b2a73fb01f97976ee030a091ed57bbd57f3fa5a316a71614a4",
-          "image": "registry.connect.redhat.com/jfrog/pipelines-operator@sha256:2acce47191cd20b2a73fb01f97976ee030a091ed57bbd57f3fa5a316a71614a4",
-          "name": "pipelines-operator-2acce47191cd20b2a73fb01f97976ee030a091ed57bbd57f3fa5a316a71614a4-annotation"
-        },
-        {
-          "digest": "sha256:2acce47191cd20b2a73fb01f97976ee030a091ed57bbd57f3fa5a316a71614a4",
-          "image": "registry.connect.redhat.com/jfrog/pipelines-operator@sha256:2acce47191cd20b2a73fb01f97976ee030a091ed57bbd57f3fa5a316a71614a4",
-          "name": "pipeline-operator"
-        },
-        {
-          "digest": "sha256:27baf3f2d50482984f7550d856c51c02bdad013facc53165d246305ab4ba11d2",
-          "image": "registry.connect.redhat.com/jfrog/pipelines-api@sha256:27baf3f2d50482984f7550d856c51c02bdad013facc53165d246305ab4ba11d2",
-          "name": "pipeline_api_image_repository"
-        },
-        {
-          "digest": "sha256:30898def831fec6a779a3f809e2098a2421ac56a7d383fae26f972749b4d585c",
-          "image": "registry.connect.redhat.com/jfrog/pipelines-router@sha256:30898def831fec6a779a3f809e2098a2421ac56a7d383fae26f972749b4d585c",
-          "name": "pipeline_router_image_repository"
-        },
-        {
-          "digest": "sha256:bd0857fb811972c412eca139104e754e095f5beb53fe88bdcc7ea683ece5b4e0",
-          "image": "registry.connect.redhat.com/jfrog/pipelines-www@sha256:bd0857fb811972c412eca139104e754e095f5beb53fe88bdcc7ea683ece5b4e0",
-          "name": "pipeline_www_image_repository"
-        },
-        {
-          "digest": "sha256:0587b685cc7abeb73e4529a9885a2bd56c4d63fa3801dd5ea61d8495f9b260cd",
-          "image": "registry.connect.redhat.com/jfrog/pipelines-micro@sha256:0587b685cc7abeb73e4529a9885a2bd56c4d63fa3801dd5ea61d8495f9b260cd",
-          "name": "pipeline_micro_image_repository"
-        },
-        {
-          "digest": "sha256:16c1cb3729dc52851d7af512f8d7d7151b3231f2445c10c04784a69bcf027c3c",
-          "image": "registry.connect.redhat.com/jfrog/pipelines-installer@sha256:16c1cb3729dc52851d7af512f8d7d7151b3231f2445c10c04784a69bcf027c3c",
-          "name": "pipeline_installer_image_repository"
-        },
-        {
-          "digest": "sha256:54dce2f3707794a16bcb9a385035454f3ae0a7861551b4c54f682a9894772f79",
-          "image": "registry.connect.redhat.com/jfrog/pipelines-rabbitmq@sha256:54dce2f3707794a16bcb9a385035454f3ae0a7861551b4c54f682a9894772f79",
-          "name": "pipeline_rabbitmq_image_repository"
-        },
-        {
-          "digest": "sha256:c4302979defaaa396e1df57ad2adb7949f06d7c4c7c2904c445d4bb9111e9b1e",
-          "image": "registry.redhat.io/rhel8/redis-5@sha256:c4302979defaaa396e1df57ad2adb7949f06d7c4c7c2904c445d4bb9111e9b1e",
-          "name": "pipeline_redis_image_repository"
-        },
-        {
-          "digest": "sha256:fefea387baefffaf3c3636e61f39fb5ea1fb09119af34a944f522341d50c6a1f",
-          "image": "registry.connect.redhat.com/jfrog/pipelines-vault-init@sha256:fefea387baefffaf3c3636e61f39fb5ea1fb09119af34a944f522341d50c6a1f",
-          "name": "pipeline_vault_init_image_repository"
-        },
-        {
-          "digest": "sha256:acdaab7820f42244cc83ef31091d57f349488619fbf37a08c90700f88a7ba98c",
-          "image": "registry.connect.redhat.com/jfrog/pipelines-vault@sha256:acdaab7820f42244cc83ef31091d57f349488619fbf37a08c90700f88a7ba98c",
-          "name": "pipeline_vault_image_repository"
-        },
-        {
-          "digest": "sha256:9c54e5ed032653b6d70ca0fe293ca4a23d082f5790f7dbbfac499a08573a663b",
-          "image": "registry.connect.redhat.com/jfrog/pipelines-init@sha256:9c54e5ed032653b6d70ca0fe293ca4a23d082f5790f7dbbfac499a08573a663b",
-          "name": "pipelines-init-9c54e5ed032653b6d70ca0fe293ca4a23d082f5790f7dbbfac499a08573a663b-annotation"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.0.1",
-      "version_original": "1.0.1"
-    },
-    {
-      "_id": "6047168d3937aa922df5dc5e",
-      "alm_examples": [
-        {
-          "api_version": "openunison.tremolo.io/v1",
-          "kind": "OpenUnison",
-          "metadata": {
-            "name": "test-openunison"
-          },
-          "spec": {
-            "dest_secret": "openunison",
-            "enable_activemq": false,
-            "hosts": [
-              {
-                "ingress_name": "openunison",
-                "names": [
-                  {
-                    "env_var": "OU_HOST",
-                    "name": "test.apps.mydomain.com"
-                  }
-                ]
-              }
-            ],
-            "key_store": {
-              "key_pairs": {
-                "create_keypair_template": [
-                  {
-                    "name": "ou",
-                    "value": "k8s"
-                  },
-                  {
-                    "name": "o",
-                    "value": "Tremolo Security"
-                  },
-                  {
-                    "name": "l",
-                    "value": "Alexandria"
-                  },
-                  {
-                    "name": "st",
-                    "value": "Virginia"
-                  },
-                  {
-                    "name": "c",
-                    "value": "US"
-                  }
-                ],
-                "keys": [
-                  {
-                    "create_data": {
-                      "ca_cert": true,
-                      "key#": 2048,
-                      "server_name": "test-openunison.openunison.svc.cluster.local",
-                      "sign_by_k8s_ca": false,
-                      "subject_alternative_names": []
-                    },
-                    "import_into_ks": "keypair",
-                    "name": "unison-tls",
-                    "tls_secret_name": "unison-tls-secret"
-                  }
-                ]
-              },
-              "static_keys": [
-                {
-                  "name": "session-unison",
-                  "version": 1
-                }
-              ],
-              "trusted_certificates": []
-            },
-            "non_secret_data": [
-              {
-                "name": "REG_CRED_USER",
-                "value": "rh_user"
-              },
-              {
-                "name": "TEST_USER_NAME",
-                "value": "testuser"
-              },
-              {
-                "name": "MYVD_CONFIG_PATH",
-                "value": "WEB-INF/myvd.conf"
-              },
-              {
-                "name": "unisonKeystorePath",
-                "value": "/etc/openunison/unisonKeyStore.p12"
-              }
-            ],
-            "openshift": {
-              "builder_image": "registry.connect.redhat.com/tremolosecurity/openunison-s2i-10",
-              "git": {
-                "branch": "master",
-                "dir": "/",
-                "repo": "https://github.com/TremoloSecurity/openunison-qs-simple.git"
-              }
-            },
-            "openunison_network_configuration": {
-              "activemq_dir": "/tmp/amq",
-              "allowed_client_names": [],
-              "ciphers": [
-                "TLS_RSA_WITH_RC4_128_SHA",
-                "TLS_RSA_WITH_AES_128_CBC_SHA",
-                "TLS_RSA_WITH_AES_256_CBC_SHA",
-                "TLS_RSA_WITH_3DES_EDE_CBC_SHA",
-                "TLS_RSA_WITH_AES_128_CBC_SHA256",
-                "TLS_RSA_WITH_AES_256_CBC_SHA256"
-              ],
-              "client_auth": "none",
-              "force_to_secure": true,
-              "open_external_port": 80,
-              "open_port": 8080,
-              "path_to_deployment": "/usr/local/openunison/work",
-              "path_to_env_file": "/etc/openunison/ou.env",
-              "quartz_dir": "/tmp/quartz",
-              "secure_external_port": 443,
-              "secure_key_alias": "unison-tls",
-              "secure_port": 8443
-            },
-            "replicas": 1,
-            "secret_data": [
-              "unisonKeystorePassword",
-              "TEST_USER_PASSWORD",
-              "REG_CRED_PASSWORD"
-            ],
-            "source_secret": "openunison-secrets-source"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tremolosecurity/openunison-operator-bundle@sha256:bf50b128eefd6fb80e48f08aa8f6e6f3f384ca3d76641e7d2f5df73b055f6fbf",
-      "bundle_path_digest": "sha256:bf50b128eefd6fb80e48f08aa8f6e6f3f384ca3d76641e7d2f5df73b055f6fbf",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-03-09T06:32:45.732000+00:00",
-      "csv_description": "The OpenUnison operator automates the deployment of OpenUnison in OpenShift and OKD.  This operator will generate all the objects needed to run OpenUnison and keep them up-to-date.  On OpenShift OpenUnison is built and deployed via a Red Hat certified Source-to-Image (s2i) builder that generates a container based on your configuration.  The default example provided by the operator is a simple login page.  Tremolo Security offers [Orchestra for OpenShift](https://www.tremolosecurity.com/openshift/) to manage authentication, authorization and project onboarding for your OpenShift clusters.  \n\n## Before You Start\n\nBefore deploying, obtain an account for Red Hat Connect to be able to access certified images. Next create a source secret with information that shouldn't be stored in the `OpenUnison` custom resource, referenced by the `source_secret` attribute.  The minimal data in this secret should be at least:\n\n* `unisonKeystorePassword` - The password to use for the generated keystore\n* `REG_CRED_PASSWORD` - Your password for Red Hat Connect\n* `TEST_USER_PASSWORD` - The password for your test user \n\n An example of creating a secret used by the example configuration is:\n  \n```\n$ mkdir secret\n$ cd secret\n$ echo 'my_secret_password'  > unisonKeystorePassword\n$ echo 'my_rh_connect_password'  > REG_CRED_PASSWORD\n$ echo 'my_test_user_password'  > TEST_USER_PASSWORD\n$ oc create secret generic openunison-secrets-source --from-file=.\n```\n  \nYou should edit the `hosts` \\ `names` \\ `name` variable from `test.apps.mydomain.com` to whatever you want the host of your OpenUnison instance to be.  The operator will generate a `Route` based on this hostname with `reencrypt` enabled.  Also, update `key_store` \\ 'key_pairs' \\ `keys` for the `server_name` to reflect the correct `Service` name for your OpenUnison.  For instance if your `OpenUnison` CR has the name `test-openunison` and is being deployed in the `openunison` namespace this value should be `test-openunison.openunison.svc.cluster.local`.\n\n## Testing\n\nOnce deployed, point your browser to the host name you created via TLS (ie https://myapp.apps.domain.com)\n\n## Updating Keys\n\nThe operator builds a keystore for OpenUnison based on secrets referenced in the `OpenUnison` custom resource.  To regenerate self signed certificates (such as the default `unison-tls` certificate), simple delete the secret and update the custom resource.  To use certificates signed by a third party CA, create the secret and reference it in your `OpenUnison` custom resource.\n\n## New Images and Configuration\n\nThe OpenUnison Operator generates an OpenShift `BuildConfig` object and `ImageStream` objects.  The certified s2i builder image is rebuilt auotmaticlly by Red Hat as new packages are made available.  To update your deployment's container, simply tag it to your image stream.  To point to a new git repository for the configuration of OpenUnison, update the CR.",
-      "csv_display_name": "OpenUnison",
-      "csv_metadata_description": "OpenUnison Operator provides identity management and automation services including Single Sign-On (SSO), workflow based user provisioning, self service access management, auditing and reporting",
-      "csv_name": "openunison.1.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:19:19.020000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "openunison-ocp-certified",
-      "provided_apis": [
-        {
-          "group": "openunison.tremolo.io",
-          "kind": "OpenUnison",
-          "plural": "openunisons",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:1fc3e5d2f54c0cf3668bc070450e0f0f7c5917ca36c0934ea639dbb249ac97db",
-          "image": "registry.connect.redhat.com/tremolosecurity/openunison-operator@sha256:1fc3e5d2f54c0cf3668bc070450e0f0f7c5917ca36c0934ea639dbb249ac97db",
-          "name": "openunison-operator-1fc3e5d2f54c0cf3668bc070450e0f0f7c5917ca36c0934ea639dbb249ac97db-annotation"
-        },
-        {
-          "digest": "sha256:1fc3e5d2f54c0cf3668bc070450e0f0f7c5917ca36c0934ea639dbb249ac97db",
-          "image": "registry.connect.redhat.com/tremolosecurity/openunison-operator@sha256:1fc3e5d2f54c0cf3668bc070450e0f0f7c5917ca36c0934ea639dbb249ac97db",
-          "name": "openunison-operator"
-        },
-        {
-          "digest": "sha256:185b4e9fae41900ccc07ce90622c9e128c832bcfe180ae1362c7b033747dcebf",
-          "image": "registry.connect.redhat.com/tremolosecurity/activemq@sha256:185b4e9fae41900ccc07ce90622c9e128c832bcfe180ae1362c7b033747dcebf",
-          "name": "amq"
-        },
-        {
-          "digest": "sha256:5a91e1de68f3ce1d2fb837e09c6090da609882c42840859650e62b218904486c",
-          "image": "registry.connect.redhat.com/tremolosecurity/openunison-s2i-10@sha256:5a91e1de68f3ce1d2fb837e09c6090da609882c42840859650e62b218904486c",
-          "name": "s2i"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.0.0",
-      "version_original": "1.0.0"
-    },
-    {
       "_id": "6047168edbb14c0b8248bae5",
       "alm_examples": [
         {
@@ -6920,100 +6178,6 @@
       "version_original": "1.2.2"
     },
     {
-      "_id": "6047aa92dbb14c0b8248bbdd",
-      "alm_examples": [
-        {
-          "api_version": "k8s.nginx.org/v1alpha1",
-          "kind": "NginxIngressController",
-          "metadata": {
-            "name": "my-nginx-ingress-controller",
-            "namespace": "my-nginx-ingress"
-          },
-          "spec": {
-            "enableCRDs": true,
-            "image": {
-              "pullPolicy": "Always",
-              "repository": "docker.io/nginx/nginx-ingress",
-              "tag": "1.9.1-ubi"
-            },
-            "ingressClass": "nginx",
-            "nginxPlus": false,
-            "replicas": 1,
-            "serviceType": "NodePort",
-            "type": "deployment"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nginx/nginx-ingress-operator-bundle@sha256:3dc0dc8f785195dc30977d96d038b8101ddb79e4e7ea9375c94bdbb533d4969b",
-      "bundle_path_digest": "sha256:3dc0dc8f785195dc30977d96d038b8101ddb79e4e7ea9375c94bdbb533d4969b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-03-09T17:04:18.233000+00:00",
-      "csv_description": "The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers",
-      "csv_display_name": "Nginx Ingress Operator",
-      "csv_metadata_description": "The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers",
-      "csv_name": "nginx-ingress-operator.v0.0.7",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:45:55.421000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "nginx-ingress-operator",
-      "provided_apis": [
-        {
-          "group": "k8s.nginx.org",
-          "kind": "NginxIngressController",
-          "plural": "nginxingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:51d291591f4e4f6bb306564a2112fb39a2ae3edbb81b7299d73023a2ba070542",
-          "image": "registry.connect.redhat.com/nginx/nginx-ingress-operator@sha256:51d291591f4e4f6bb306564a2112fb39a2ae3edbb81b7299d73023a2ba070542",
-          "name": "nginx-ingress-operator-51d291591f4e4f6bb306564a2112fb39a2ae3edbb81b7299d73023a2ba070542-annotation"
-        },
-        {
-          "digest": "sha256:51d291591f4e4f6bb306564a2112fb39a2ae3edbb81b7299d73023a2ba070542",
-          "image": "registry.connect.redhat.com/nginx/nginx-ingress-operator@sha256:51d291591f4e4f6bb306564a2112fb39a2ae3edbb81b7299d73023a2ba070542",
-          "name": "nginx-ingress-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.0.7",
-      "version_original": "0.0.7"
-    },
-    {
       "_id": "6047aa945a00810ecaf7c565",
       "alm_examples": [
         {
@@ -7669,98 +6833,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.5.0",
       "version_original": "1.5.0"
-    },
-    {
-      "_id": "6049577b5a00810ecaf7c86d",
-      "alm_examples": [
-        {
-          "api_version": "k8s.nginx.org/v1alpha1",
-          "kind": "NginxIngressController",
-          "metadata": {
-            "name": "my-nginx-ingress-controller",
-            "namespace": "my-nginx-ingress"
-          },
-          "spec": {
-            "image": {
-              "pullPolicy": "Always",
-              "repository": "docker.io/nginx/nginx-ingress",
-              "tag": "1.10.0-ubi"
-            },
-            "ingressClass": "nginx",
-            "nginxPlus": false,
-            "serviceType": "NodePort",
-            "type": "deployment"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nginx/nginx-ingress-operator-bundle@sha256:bb5088b3310edf490b5b72e89077326cb92ce6ad543330953c8fab92dfb6637d",
-      "bundle_path_digest": "sha256:bb5088b3310edf490b5b72e89077326cb92ce6ad543330953c8fab92dfb6637d",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-03-10T23:34:19.174000+00:00",
-      "csv_description": "The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers",
-      "csv_display_name": "Nginx Ingress Operator",
-      "csv_metadata_description": "The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers",
-      "csv_name": "nginx-ingress-operator.v0.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:09:42.830000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "nginx-ingress-operator",
-      "provided_apis": [
-        {
-          "group": "k8s.nginx.org",
-          "kind": "NginxIngressController",
-          "plural": "nginxingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88",
-          "image": "registry.connect.redhat.com/nginx/nginx-ingress-operator@sha256:712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88",
-          "name": "nginx-ingress-operator-712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88-annotation"
-        },
-        {
-          "digest": "sha256:712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88",
-          "image": "registry.connect.redhat.com/nginx/nginx-ingress-operator@sha256:712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88",
-          "name": "nginx-ingress-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.1.0",
-      "version_original": "0.1.0"
     },
     {
       "_id": "604a462f122bd89307e01601",
@@ -26214,98 +25286,6 @@
       "version_original": "1.323.4"
     },
     {
-      "_id": "6077db1dfffaf65c3e0b82c7",
-      "alm_examples": [
-        {
-          "api_version": "k8s.nginx.org/v1alpha1",
-          "kind": "NginxIngressController",
-          "metadata": {
-            "name": "my-nginx-ingress-controller",
-            "namespace": "my-nginx-ingress"
-          },
-          "spec": {
-            "image": {
-              "pullPolicy": "Always",
-              "repository": "docker.io/nginx/nginx-ingress",
-              "tag": "1.10.0-ubi"
-            },
-            "ingressClass": "nginx",
-            "nginxPlus": false,
-            "serviceType": "NodePort",
-            "type": "deployment"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nginx/nginx-ingress-operator-bundle@sha256:bb5088b3310edf490b5b72e89077326cb92ce6ad543330953c8fab92dfb6637d",
-      "bundle_path_digest": "sha256:bb5088b3310edf490b5b72e89077326cb92ce6ad543330953c8fab92dfb6637d",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-04-15T06:20:13.481000+00:00",
-      "csv_description": "The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers",
-      "csv_display_name": "Nginx Ingress Operator",
-      "csv_metadata_description": "The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers",
-      "csv_name": "nginx-ingress-operator.v0.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:19:23.053000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "nginx-ingress-operator",
-      "provided_apis": [
-        {
-          "group": "k8s.nginx.org",
-          "kind": "NginxIngressController",
-          "plural": "nginxingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88",
-          "image": "registry.connect.redhat.com/nginx/nginx-ingress-operator@sha256:712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88",
-          "name": "nginx-ingress-operator-712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88-annotation"
-        },
-        {
-          "digest": "sha256:712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88",
-          "image": "registry.connect.redhat.com/nginx/nginx-ingress-operator@sha256:712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88",
-          "name": "nginx-ingress-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.1.0",
-      "version_original": "0.1.0"
-    },
-    {
       "_id": "6077db4e30f0495ab169ac83",
       "alm_examples": [
         {
@@ -26933,98 +25913,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "1.323.4",
       "version_original": "1.323.4"
-    },
-    {
-      "_id": "60780fa330f0495ab169ac8d",
-      "alm_examples": [
-        {
-          "api_version": "k8s.nginx.org/v1alpha1",
-          "kind": "NginxIngressController",
-          "metadata": {
-            "name": "my-nginx-ingress-controller",
-            "namespace": "my-nginx-ingress"
-          },
-          "spec": {
-            "image": {
-              "pullPolicy": "Always",
-              "repository": "docker.io/nginx/nginx-ingress",
-              "tag": "1.10.0-ubi"
-            },
-            "ingressClass": "nginx",
-            "nginxPlus": false,
-            "serviceType": "NodePort",
-            "type": "deployment"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nginx/nginx-ingress-operator-bundle@sha256:bb5088b3310edf490b5b72e89077326cb92ce6ad543330953c8fab92dfb6637d",
-      "bundle_path_digest": "sha256:bb5088b3310edf490b5b72e89077326cb92ce6ad543330953c8fab92dfb6637d",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-04-15T10:04:19.420000+00:00",
-      "csv_description": "The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers",
-      "csv_display_name": "Nginx Ingress Operator",
-      "csv_metadata_description": "The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers",
-      "csv_name": "nginx-ingress-operator.v0.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:17:03.965000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "nginx-ingress-operator",
-      "provided_apis": [
-        {
-          "group": "k8s.nginx.org",
-          "kind": "NginxIngressController",
-          "plural": "nginxingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88",
-          "image": "registry.connect.redhat.com/nginx/nginx-ingress-operator@sha256:712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88",
-          "name": "nginx-ingress-operator-712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88-annotation"
-        },
-        {
-          "digest": "sha256:712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88",
-          "image": "registry.connect.redhat.com/nginx/nginx-ingress-operator@sha256:712ea56e736100cecdda69d61923935fc3c7a46a60436f2ac8fccb0a2edd2c88",
-          "name": "nginx-ingress-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.1.0",
-      "version_original": "0.1.0"
     },
     {
       "_id": "607812e858a07d4112800b95",
@@ -30672,98 +29560,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.1",
       "version_original": "1.0.1"
-    },
-    {
-      "_id": "6080b70aebd9cca472b093c4",
-      "alm_examples": [
-        {
-          "api_version": "k8s.nginx.org/v1alpha1",
-          "kind": "NginxIngressController",
-          "metadata": {
-            "name": "my-nginx-ingress-controller",
-            "namespace": "my-nginx-ingress"
-          },
-          "spec": {
-            "image": {
-              "pullPolicy": "Always",
-              "repository": "docker.io/nginx/nginx-ingress",
-              "tag": "1.11.1-ubi"
-            },
-            "ingressClass": "nginx",
-            "nginxPlus": false,
-            "serviceType": "NodePort",
-            "type": "deployment"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nginx/nginx-ingress-operator-bundle@sha256:39e36214aae291f6724a9e688b16d702bbe57dfcb06e81de6d0d5efb0a5864d6",
-      "bundle_path_digest": "sha256:39e36214aae291f6724a9e688b16d702bbe57dfcb06e81de6d0d5efb0a5864d6",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-04-21T23:36:42.601000+00:00",
-      "csv_description": "The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers",
-      "csv_display_name": "Nginx Ingress Operator",
-      "csv_metadata_description": "The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers",
-      "csv_name": "nginx-ingress-operator.v0.2.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:42:17.691000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "nginx-ingress-operator",
-      "provided_apis": [
-        {
-          "group": "k8s.nginx.org",
-          "kind": "NginxIngressController",
-          "plural": "nginxingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:5e49760b52a497f9e8a9ef7e0fa0437766d3dfef69a007c8567de7d2f3c49284",
-          "image": "registry.connect.redhat.com/nginx/nginx-ingress-operator@sha256:5e49760b52a497f9e8a9ef7e0fa0437766d3dfef69a007c8567de7d2f3c49284",
-          "name": "nginx-ingress-operator-5e49760b52a497f9e8a9ef7e0fa0437766d3dfef69a007c8567de7d2f3c49284-annotation"
-        },
-        {
-          "digest": "sha256:5e49760b52a497f9e8a9ef7e0fa0437766d3dfef69a007c8567de7d2f3c49284",
-          "image": "registry.connect.redhat.com/nginx/nginx-ingress-operator@sha256:5e49760b52a497f9e8a9ef7e0fa0437766d3dfef69a007c8567de7d2f3c49284",
-          "name": "nginx-ingress-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.2.0",
-      "version_original": "0.2.0"
     },
     {
       "_id": "6080f944ebd9cca472b093c7",
@@ -45160,50 +43956,6 @@
       "version_original": "1.5.3"
     },
     {
-      "_id": "609aaeb956933b164fe211da",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nginx/nginx-ingress-operator-bundle@sha256:d53eea0345b2e18fb84d1208f5ca6c2e74c425403ba1611b5b1ee525315da0ae",
-      "bundle_path_digest": "sha256:d53eea0345b2e18fb84d1208f5ca6c2e74c425403ba1611b5b1ee525315da0ae",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-05-11T16:20:09.807000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "nginx-ingress-operator.v0.0.6",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:03:16.560000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "nginx-ingress-operator",
-      "provided_apis": [
-        {
-          "group": "k8s.nginx.org",
-          "kind": "NginxIngressController",
-          "plural": "nginxingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.0.6",
-      "version_original": "0.0.6"
-    },
-    {
       "_id": "609aaec1e2b160d361d250ae",
       "alm_examples": [
         {
@@ -49288,99 +48040,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.7.0",
       "version_original": "1.7.0"
-    },
-    {
-      "_id": "609aaf4b56933b164fe21209",
-      "alm_examples": [
-        {
-          "api_version": "k8s.nginx.org/v1alpha1",
-          "kind": "NginxIngressController",
-          "metadata": {
-            "name": "my-nginx-ingress-controller",
-            "namespace": "my-nginx-ingress"
-          },
-          "spec": {
-            "enableCRDs": true,
-            "image": {
-              "pullPolicy": "Always",
-              "repository": "docker.io/nginx/nginx-ingress",
-              "tag": "1.6.3-ubi"
-            },
-            "nginxPlus": false,
-            "replicas": 1,
-            "serviceType": "NodePort",
-            "type": "deployment"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nginx/nginx-ingress-operator-bundle@sha256:5825614ced508b2d168fca5dc0d53e169c0c598bf9008dd3ee0d6bf75781d3f6",
-      "bundle_path_digest": "sha256:5825614ced508b2d168fca5dc0d53e169c0c598bf9008dd3ee0d6bf75781d3f6",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-05-11T16:22:35.137000+00:00",
-      "csv_description": "The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers",
-      "csv_display_name": "Nginx Ingress Operator",
-      "csv_metadata_description": "The NGINX Ingress Operator is a Kubernetes/OpenShift component which deploys and manages one or more NGINX/NGINX Plus Ingress Controllers",
-      "csv_name": "nginx-ingress-operator.v0.0.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:24:38.331000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "nginx-ingress-operator",
-      "provided_apis": [
-        {
-          "group": "k8s.nginx.org",
-          "kind": "NginxIngressController",
-          "plural": "nginxingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:8541419eb17689de07865c3166864d0bc130b7fc42e19d9850d8586ad4eaebbd",
-          "image": "registry.connect.redhat.com/nginx/nginx-ingress-operator@sha256:8541419eb17689de07865c3166864d0bc130b7fc42e19d9850d8586ad4eaebbd",
-          "name": "nginx-ingress-operator-8541419eb17689de07865c3166864d0bc130b7fc42e19d9850d8586ad4eaebbd-annotation"
-        },
-        {
-          "digest": "sha256:8541419eb17689de07865c3166864d0bc130b7fc42e19d9850d8586ad4eaebbd",
-          "image": "registry.connect.redhat.com/nginx/nginx-ingress-operator@sha256:8541419eb17689de07865c3166864d0bc130b7fc42e19d9850d8586ad4eaebbd",
-          "name": "nginx-ingress-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.0.4",
-      "version_original": "0.0.4"
     },
     {
       "_id": "609aaf4b3048c1ac9a6fea99",
@@ -54465,50 +53124,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.1.0",
       "version_original": "1.1.0"
-    },
-    {
-      "_id": "609aafa9d04af0e74bb05857",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nginx/nginx-ingress-operator-bundle@sha256:d53eea0345b2e18fb84d1208f5ca6c2e74c425403ba1611b5b1ee525315da0ae",
-      "bundle_path_digest": "sha256:d53eea0345b2e18fb84d1208f5ca6c2e74c425403ba1611b5b1ee525315da0ae",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-05-11T16:24:09.289000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "nginx-ingress-operator.v0.0.6",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:10:15.261000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "nginx-ingress-operator",
-      "provided_apis": [
-        {
-          "group": "k8s.nginx.org",
-          "kind": "NginxIngressController",
-          "plural": "nginxingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.0.6",
-      "version_original": "0.0.6"
     },
     {
       "_id": "609aafaa3048c1ac9a6fead0",
@@ -66071,9 +64686,997 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "6.0.6-24",
       "version_original": "6.0.6-24"
+    },
+    {
+      "_id": "609ab08d56933b164fe2127a",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:cb77b47b96bbdc309b17468b8f644bac7206be94125d43a1609f20637937876f",
+      "bundle_path_digest": "sha256:cb77b47b96bbdc309b17468b8f644bac7206be94125d43a1609f20637937876f",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:27:57.642000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "seldon-operator.v1.2.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-04-16T16:58:33.922000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "seldon-operator-certified",
+      "provided_apis": [
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha3"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.2.0",
+      "version_original": "1.2.0"
+    },
+    {
+      "_id": "609ab09056933b164fe2127b",
+      "alm_examples": [
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "CouchDBCluster",
+          "metadata": {
+            "name": "example-couchdbcluster"
+          },
+          "spec": {
+            "cpu": "1",
+            "disk": "1Gi",
+            "environment": {
+              "adminPassword": "changeme"
+            },
+            "memory": "1Gi",
+            "size": 3,
+            "storageClass": ""
+          }
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "FormationLock",
+          "metadata": {
+            "name": "example-formationlock"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Recipe",
+          "metadata": {
+            "name": "example-recipe"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "RecipeTemplate",
+          "metadata": {
+            "name": "example-recipetemplate"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "example-backup"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Bucket",
+          "metadata": {
+            "name": "example-bucket"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Formation",
+          "metadata": {
+            "name": "example-formation"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:a065ec9f129f79e21881ee4644c1e34c3f13b90bdc76d72cb76bf8216d45ee44",
+      "bundle_path_digest": "sha256:a065ec9f129f79e21881ee4644c1e34c3f13b90bdc76d72cb76bf8216d45ee44",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "v1.3",
+      "creation_date": "2021-05-11T16:28:00.080000+00:00",
+      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://cloud.ibm.com/docs/services/Cloudant?topic=cloudant-apache-couchdb-operator)\n",
+      "csv_display_name": "Operator for Apache CouchDB",
+      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
+      "csv_name": "couchdb-operator.v1.3.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-05-13T11:45:22.284000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "couchdb-operator-certified",
+      "provided_apis": [
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "CouchDBCluster",
+          "plural": "couchdbclusters",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "FormationLock",
+          "plural": "formationlocks",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Formation",
+          "plural": "formations",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Recipe",
+          "plural": "recipes",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "RecipeTemplate",
+          "plural": "recipetemplates",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Bucket",
+          "plural": "buckets",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:488be91257da4dd2a911f47df47f24daaaaac750c2135695d670b4d69214196d",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:488be91257da4dd2a911f47df47f24daaaaac750c2135695d670b4d69214196d",
+          "name": "couchdb-operator-488be91257da4dd2a911f47df47f24daaaaac750c2135695d670b4d69214196d-annotation"
+        },
+        {
+          "digest": "sha256:488be91257da4dd2a911f47df47f24daaaaac750c2135695d670b4d69214196d",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:488be91257da4dd2a911f47df47f24daaaaac750c2135695d670b4d69214196d",
+          "name": "couchdb-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=1.0.0 <1.3.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.3.0",
+      "version_original": "1.3.0"
+    },
+    {
+      "_id": "609ab0903048c1ac9a6feb49",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sonatype/nxiq-operator-bundle@sha256:96e43fdd8e19f0f339c518cd01cab0eadc2cf9a02fc4177d64cf437415d687d9",
+      "bundle_path_digest": "sha256:96e43fdd8e19f0f339c518cd01cab0eadc2cf9a02fc4177d64cf437415d687d9",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:28:00.511000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nxiq-operator-certified.v1.96.0-1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-16T16:38:23.392000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nxiq-operator-certified",
+      "provided_apis": [
+        {
+          "group": "sonatype.com",
+          "kind": "NexusIQ",
+          "plural": "nexusiqs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.96.0-1",
+      "version_original": "1.96.0-1"
+    },
+    {
+      "_id": "609ab091d04af0e74bb058c9",
+      "alm_examples": [
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "License",
+          "metadata": {
+            "name": "triliovault-license"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:3d08fbc3203b68e953d71cf21d2311e2fc6e4529870274535cf1bab1e6bb609f",
+      "bundle_path_digest": "sha256:3d08fbc3203b68e953d71cf21d2311e2fc6e4529870274535cf1bab1e6bb609f",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "cluster",
+      "creation_date": "2021-05-11T16:28:01.355000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\n\nNote: The upgrade of TrilioVault for Kubernetes from version v1.1.1 to v2.0.0 is not supported due to the CRD scope change in operator. All the users of TrilioVault for Kubernetes v1.1.1 Cluster installation have to uninstall the TrilioVault for Kubernetes, delete the CRDs and reinstall the TrilioVault for Kubernetes v2.0.0\n\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-cluster.v2.0.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-05-13T11:46:56.267000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:d93508d9c7b516e1dadc0098422dbdebc66b377e81d7cbc7c0d9afcf86324b7a",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:d93508d9c7b516e1dadc0098422dbdebc66b377e81d7cbc7c0d9afcf86324b7a",
+          "name": "control-plane-d93508d9c7b516e1dadc0098422dbdebc66b377e81d7cbc7c0d9afcf86324b7a-annotation"
+        },
+        {
+          "digest": "sha256:d93508d9c7b516e1dadc0098422dbdebc66b377e81d7cbc7c0d9afcf86324b7a",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:d93508d9c7b516e1dadc0098422dbdebc66b377e81d7cbc7c0d9afcf86324b7a",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:6c47a09c1ddc6a6f8fb79a6026603385a4fed7b5e62b501b14928fbe05b4faf6",
+          "image": "registry.connect.redhat.com/trilio/trilio-admission-webhook@sha256:6c47a09c1ddc6a6f8fb79a6026603385a4fed7b5e62b501b14928fbe05b4faf6",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:d4c343b387e4a1316a6fca6cfafebfa2a877c402b13898ddb3980cd85e858b01",
+          "image": "registry.connect.redhat.com/trilio/exporter@sha256:d4c343b387e4a1316a6fca6cfafebfa2a877c402b13898ddb3980cd85e858b01",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:68753694b2ed6613ec6a4bf41258c54c0748d098e43ef09b366b89adb0784941",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:68753694b2ed6613ec6a4bf41258c54c0748d098e43ef09b366b89adb0784941",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:ca4dfd19e5e4c4e3e206ed1d8cd5f654f09a084531394d3c8262bfb40efdaf1b",
+          "image": "registry.connect.redhat.com/trilio/web-backend@sha256:ca4dfd19e5e4c4e3e206ed1d8cd5f654f09a084531394d3c8262bfb40efdaf1b",
+          "name": "triliovault-backend"
+        },
+        {
+          "digest": "sha256:9d2aec99c0b9a79125ac9d8b20d92fed11c7efd37e77b4333679a4ffa158ed52",
+          "image": "registry.connect.redhat.com/trilio/control-plane-init@sha256:9d2aec99c0b9a79125ac9d8b20d92fed11c7efd37e77b4333679a4ffa158ed52",
+          "name": "control-plane-init"
+        },
+        {
+          "digest": "sha256:9eb8416a7f708fcf46735c319a3a3644ac844b1ff22e898c821935eccef39444",
+          "image": "registry.connect.redhat.com/trilio/trilio-webhook-init@sha256:9eb8416a7f708fcf46735c319a3a3644ac844b1ff22e898c821935eccef39444",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:e47f100b857c9aaba14fc3eed50d61550a421a775b32ccb9a76d82e6c32d991e",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:e47f100b857c9aaba14fc3eed50d61550a421a775b32ccb9a76d82e6c32d991e",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:d9397b598a8ea5a2901e32773bbdb2cb52f8fc106ed7d5dacb3239d7aeeae05d",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:d9397b598a8ea5a2901e32773bbdb2cb52f8fc106ed7d5dacb3239d7aeeae05d",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:f5e113dd3097e69807f7fda898b527de31292eb4df08ec14b4c8df7a870ad414",
+          "image": "registry.connect.redhat.com/trilio/datastore-attacher@sha256:f5e113dd3097e69807f7fda898b527de31292eb4df08ec14b4c8df7a870ad414",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:702c9b18a998a59179d154efd4e36cf1e32fcc284fc7adc24c6f1b0fa069b449",
+          "image": "registry.connect.redhat.com/trilio/backup-scheduler@sha256:702c9b18a998a59179d154efd4e36cf1e32fcc284fc7adc24c6f1b0fa069b449",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:a4b077e0cae39b81b425157f57001605ff00a8ccdc029a56742dc1e2053d2058",
+          "image": "registry.connect.redhat.com/trilio/backup-cleaner@sha256:a4b077e0cae39b81b425157f57001605ff00a8ccdc029a56742dc1e2053d2058",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:31465a20a9237c661253009cbd9d22cec291fb7f73332039fcd0f6a7b065e75f",
+          "image": "registry.connect.redhat.com/trilio/backup-retention@sha256:31465a20a9237c661253009cbd9d22cec291fb7f73332039fcd0f6a7b065e75f",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:4d6d0568c70fe1a39f90391a23b19780b5586b053a3566d4223a238408d6888b",
+          "image": "registry.connect.redhat.com/trilio/target-browser@sha256:4d6d0568c70fe1a39f90391a23b19780b5586b053a3566d4223a238408d6888b",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:b9c572e7e651f37b663222f5e8b376669b65bd18c41b17c32b6ef249ca031dbf",
+          "image": "registry.connect.redhat.com/trilio/hook-executor@sha256:b9c572e7e651f37b663222f5e8b376669b65bd18c41b17c32b6ef249ca031dbf",
+          "name": "hook"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "2.0.0",
+      "version_original": "2.0.0"
+    },
+    {
+      "_id": "609ab09156933b164fe2127d",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:20211956d089d8958f08e103304eae586144cddddb5cf17f71fc749cbe6a4da7",
+      "bundle_path_digest": "sha256:20211956d089d8958f08e103304eae586144cddddb5cf17f71fc749cbe6a4da7",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:28:01.885000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.0.9",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-16T17:02:24.793000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.9",
+      "version_original": "0.0.9"
+    },
+    {
+      "_id": "609ab094e2b160d361d251c2",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sonatype/nxrm-operator-bundle@sha256:69cec4ebc1b4638bc289891c7493e71df23cabb301dcaf7ee503347a36bcd8de",
+      "bundle_path_digest": "sha256:69cec4ebc1b4638bc289891c7493e71df23cabb301dcaf7ee503347a36bcd8de",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:28:04.624000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nxrm-operator-certified.v3.24.0-7",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-16T17:17:44.975000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nxrm-operator-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "3.24.0-7",
+      "version_original": "3.24.0-7"
+    },
+    {
+      "_id": "609ab095d04af0e74bb058cc",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.8",
+      "creation_date": "2021-05-11T16:28:05.745000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-04-16T16:37:57.105000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.8-1",
+      "version_original": "6.0.8-1"
+    },
+    {
+      "_id": "609ab0953048c1ac9a6feb4c",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.6-35.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "production",
+      "creation_date": "2021-05-11T16:28:05.908000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:49:16.892000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67",
+          "image": "redislabs/operator@sha256:6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67",
+          "name": "operator-6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67-annotation"
+        },
+        {
+          "digest": "sha256:6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "609ab0993048c1ac9a6feb4f",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.8",
+      "creation_date": "2021-05-11T16:28:09.246000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-04-16T17:28:48.029000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "609ab09a56933b164fe21281",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:53569fdf8eecee215755dcd02d56cb906330f84e3bc1015652d9b7a1ddc01edd",
+      "bundle_path_digest": "sha256:53569fdf8eecee215755dcd02d56cb906330f84e3bc1015652d9b7a1ddc01edd",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:28:10.577000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "seldonoperator.v0.1.5",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-16T17:08:52.087000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "seldon-operator-certified",
+      "provided_apis": [
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha2"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.1.5",
+      "version_original": "0.1.5"
+    },
+    {
+      "_id": "609ab09b3048c1ac9a6feb52",
+      "alm_examples": [
+        {
+          "api_version": "perceptilabs.com/v1",
+          "kind": "PerceptiLabs",
+          "metadata": {
+            "name": "example-perceptilabs"
+          },
+          "spec": {
+            "coreGpus": 0,
+            "corePvc": "perceptilabs-pvc",
+            "license_name": "demo",
+            "license_value": "demo"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/perceptilabs/perceptilabs-operator-bundle@sha256:90b5771978da944a76d790e3609d4523b82c1c4b75f86da3960fbf682a697fb3",
+      "bundle_path_digest": "sha256:90b5771978da944a76d790e3609d4523b82c1c4b75f86da3960fbf682a697fb3",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:28:11.793000+00:00",
+      "csv_description": "The PerceptiLabs operator creates and maintains PerceptiLabs, a visual tool modeling for machine learning at warp speed.\n\nPerceptiLabs visual modeling tool provides a GUI for building,\ntraining, and assessing your models, while also enabling deeper\ndevelopment with code. You get faster iterations and better\nexplainability of your results.\n\nFor more information visit [http://perceptilabs.com](http://perceptilabs.com).\n\n# Features\n\n**Fast modeling**  \nMake changes, debug, and tune your model through the GUI of custom code\neditor where every component/layer is reprogrammable. Choose from\nmultiple neural network models as well as classical AI methods.\n\n\n**Transparency of Model Performance and Results**  \nGet instant feedback about your model's performance through the\nvisualization of the architecture, to better review and understand the\nresults. See real-time analytics in every operation and variable, and\ngranular previews of output from each model component.\n\n\n**Flexibility**  \nCustomize your environment and statistics dashboard. Use high-level\nabstractions or low-level code. Execute any custom Python code or export\na fully trained TensorFlow model to perform inference in your projects.\n\n\n\n# Installation Instructions  \nFor your convenience, we've included an example quickstart for running PerceptiLabs in demo mode.\n\n## Prepare your namespace  \nChoose or create the namespace into which you'd like install PerceptiLabs. For example:  \n```\noc create namespace REPLACE_NAMESPACE\n```\n\n## Prepare storage for your data\n\nYou'll need to have a place on your cluster for storing training data and models.\n\nHere's an example configuration for creating storage on a cluster hosted on AWS that you can tailor to your needs:\n\n```\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n  name: perceptilabs-example-sc\n  annotations:\n    description: Example Storage for PerceptiLabs\nprovisioner: kubernetes.io/aws-ebs\nparameters:\n  fsType: ext4\n  type: gp2\nreclaimPolicy: Delete\nvolumeBindingMode: Immediate\n---\nkind: PersistentVolumeClaim\napiVersion: v1\nmetadata:\n  name: REPLACE_PVC_NAME\n  namespace: REPLACE_NAMESPACE\nspec:\n  storageClassName: perceptilabs-example-sc\n  volumeMode: Filesystem\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 50Gi\n```\n\n## Subscribe to the PerceptiLabs operator in your namespace\n\nIf you're using the OpenShift console webpage, just click the Install button on this operator. If not, you can customize and apply this configuration:\n\n```\napiVersion: operators.coreos.com/v1\nkind: OperatorGroup\nmetadata:\n  name: REPLACE_NAMESPACE-operatorgroup\n  namespace: REPLACE_NAMESPACE\nspec:\n  targetNamespaces:\n  - REPLACE_NAMESPACE\n---\napiVersion: operators.coreos.com/v1alpha1\nkind: Subscription\nmetadata:\n  name: perceptilabs-operator\n  namespace: REPLACE_NAMESPACE\nspec:\n  channel: stable\n  name: perceptilabs-operator-package\n  source: perceptilabs-operators\n  sourceNamespace: openshift-marketplace\n  namespace: REPLACE_NAMESPACE\n```\n\nAfter this, you should see a `perceptilabs-operator` pod start up in your namespace. In that pod, the log for the `operator` container should eventually say \"starting to serve\".\n\n## Start a copy of PerceptiLabs\n\nThis is where you connect your storage and service account to a PerceptiLabs instance and run it. You can customize and apply the following configuration:\n\n```\napiVersion: perceptilabs.com/v1\nkind: PerceptiLabs\nmetadata:\n  name: example-perceptilabs\n  namespace: REPLACE_NAMESPACE\nspec:\n  corePvc: REPLACE_PVC_NAME\n```\n\nAt this point two pods named 'perceptilabs-core-...' and 'perceptilabs-frontend-...` will start up in your namespace.\n\n## Copy data files to your cluster\n\nIf you've used the persistent storage configuration from above, then you have a read-write volume mounted in the pod at `/mnt/plabs`. Copy your files there:\n\n```\noc cp REPLACE_FILENAME --namespace=REPLACE_NAMESPACE REPLACE_CORE_POD_NAME:/mnt/plabs --container=core\n```\n\n## Get the URL of your PerceptiLabs\n\nOnce everything is up and running, you'll have two new routes in your namespace. Go to the routes for your namespace and follow the link named `perceptilabs-frontend`. Your browser will be connected to your instance of PerceptiLabs! Alternatively, you can get the URL from the command line:\n\n```\noc get routes --namespace REPLACE_NAMESPACE perceptilabs-frontend\n```",
+      "csv_display_name": "PerceptiLabs Operator",
+      "csv_metadata_description": "AI platform which lets you Build, Train and Analyze",
+      "csv_name": "perceptilabs-operator.v1.0.16",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:43:37.407000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "perceptilabs-operator-package",
+      "provided_apis": [
+        {
+          "group": "perceptilabs.com",
+          "kind": "PerceptiLabs",
+          "plural": "perceptilabs",
+          "version": "v1"
+        },
+        {
+          "group": "perceptilabs.com",
+          "kind": "PerceptiLabs",
+          "plural": "perceptilabs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:30384d8858bc032e6c147f43f8dc650ba7f22fca821ad4d653178d1652a6efbb",
+          "image": "registry.connect.redhat.com/perceptilabs/perceptilabs-operator@sha256:30384d8858bc032e6c147f43f8dc650ba7f22fca821ad4d653178d1652a6efbb",
+          "name": "perceptilabs-operator-30384d8858bc032e6c147f43f8dc650ba7f22fca821ad4d653178d1652a6efbb-annotation"
+        },
+        {
+          "digest": "sha256:30384d8858bc032e6c147f43f8dc650ba7f22fca821ad4d653178d1652a6efbb",
+          "image": "registry.connect.redhat.com/perceptilabs/perceptilabs-operator@sha256:30384d8858bc032e6c147f43f8dc650ba7f22fca821ad4d653178d1652a6efbb",
+          "name": "ansible"
+        },
+        {
+          "digest": "sha256:30384d8858bc032e6c147f43f8dc650ba7f22fca821ad4d653178d1652a6efbb",
+          "image": "registry.connect.redhat.com/perceptilabs/perceptilabs-operator@sha256:30384d8858bc032e6c147f43f8dc650ba7f22fca821ad4d653178d1652a6efbb",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:02bd2e02e14f3031a428e09391390116741cad1812674b7d2b7d05331048695f",
+          "image": "registry.connect.redhat.com/perceptilabs/perceptilabs-frontend-1@sha256:02bd2e02e14f3031a428e09391390116741cad1812674b7d2b7d05331048695f",
+          "name": "frontend_image"
+        },
+        {
+          "digest": "sha256:2aac9ddfcb7a1341792dac703353d4a06bdfc8341b4e18e6b43b372629ebb4f0",
+          "image": "registry.connect.redhat.com/perceptilabs/perceptilabs-core-1@sha256:2aac9ddfcb7a1341792dac703353d4a06bdfc8341b4e18e6b43b372629ebb4f0",
+          "name": "core_image"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.0.16",
+      "version_original": "1.0.16"
+    },
+    {
+      "_id": "609ab09d56933b164fe21282",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:61317c2c85660fe4291b3945c928df375890ad00b3168b72bd71b787ef4077dc",
+      "bundle_path_digest": "sha256:61317c2c85660fe4291b3945c928df375890ad00b3168b72bd71b787ef4077dc",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:28:13.010000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.0.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-16T17:19:52.547000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "plural": "dashboardwithjupyterhubs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.2",
+      "version_original": "0.0.2"
     }
   ],
   "page": 1,
   "page_size": 500,
-  "total": 3640
+  "total": 3607
 }
