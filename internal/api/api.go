@@ -10,7 +10,7 @@ import (
 //go:generate moq -out api_moq.go . CertAPIClientFuncs
 type CertificationValidator interface {
 	IsContainerCertified(registry, repository, tag, digest string) bool
-	IsOperatorCertified(operatorName, ocpVersion, channel string) bool
+	IsOperatorCertified(csvName, ocpVersion, channel string) bool
 	IsReleaseCertified(helm *release.Release, ourKubeVersion string) bool
 	IsServiceReachable() bool
 }
@@ -31,17 +31,20 @@ func IsContainerCertified(registry, repository, tag, digest string) bool {
 	if onlineClient.IsServiceReachable() {
 		return onlineClient.IsContainerCertified(registry, repository, tag, digest)
 	}
+	logrus.Warnf("Online Catalog not available. Testing with offline db.")
 	return offlineClient.IsContainerCertified(registry, repository, tag, digest)
 }
 func IsOperatorCertified(operatorName, ocpVersion, channel string) bool {
 	if onlineClient.IsServiceReachable() {
 		return onlineClient.IsOperatorCertified(operatorName, ocpVersion, channel)
 	}
+	logrus.Warnf("Online Catalog not available. Testing with offline db.")
 	return offlineClient.IsOperatorCertified(operatorName, ocpVersion, channel)
 }
 func IsReleaseCertified(helm *release.Release, ourKubeVersion string) bool {
 	if onlineClient.IsServiceReachable() {
 		return onlineClient.IsReleaseCertified(helm, ourKubeVersion)
 	}
+	logrus.Warnf("Online Catalog not available. Testing with offline db.")
 	return offlineClient.IsReleaseCertified(helm, ourKubeVersion)
 }

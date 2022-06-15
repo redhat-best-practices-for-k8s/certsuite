@@ -36,8 +36,8 @@ import (
 // Here we are using only External endpoint to collect published containers and operator information
 
 const apiCatalogByRepositoriesBaseEndPoint = "https://catalog.redhat.com/api/containers/v1/repositories/registry/registry.access.redhat.com/repository"
-const filterCertifiedOperators = "&filter=organization==certified-operators"
-const certifiedCatalogURL = "https://catalog.redhat.com/api/containers/v1/operators/bundles?page_size=100&page=0&package=%s%s"
+const filterCertifiedOperatorsOrg = "organization==certified-operators"
+const certifiedOperatorsCatalogURL = "https://catalog.redhat.com/api/containers/v1/operators/bundles?page_size=100&page=0&filter=csv_name==%s;%s"
 const certifiedContainerCatalogURL = "https://catalog.redhat.com/api/containers/v1/repositories/registry/%s/repository/%s/images?"
 const certifiedContainerCatalogDigestURL = "https://catalog.redhat.com/api/containers/v1/images/registry/%s/repository/%s/manifest_digest/%s"
 const certifiedContainerCatalogTagURL = "https://catalog.redhat.com/api/containers/v1/repositories/registry/%s/repository/%s/tag/%s"
@@ -172,13 +172,14 @@ func (checker OnlineValidator) IsContainerCertified(registry, repository, tag, d
 	return true
 }
 
-// IsOperatorCertified get operator bundle by package name and check if package details is present
-// If present then returns `true` as certified operators.
-func (checker OnlineValidator) IsOperatorCertified(operatorName, ocpVersion, channel string) bool {
-	name, operatorVersion := offlinecheck.ExtractNameVersionFromName(operatorName)
+// IsOperatorCertified get operator bundle by csv name from the certified-operators org
+// If present then returns `true` if channel and ocp version match.
+func (checker OnlineValidator) IsOperatorCertified(csvName, ocpVersion, channel string) bool {
+	log.Tracef("Searching csv %s (channel %s) for ocp %q", csvName, channel, ocpVersion)
+	_, operatorVersion := offlinecheck.ExtractNameVersionFromName(csvName)
 	var responseData []byte
 	var err error
-	url := fmt.Sprintf(certifiedCatalogURL, name, filterCertifiedOperators)
+	url := fmt.Sprintf(certifiedOperatorsCatalogURL, csvName, filterCertifiedOperatorsOrg)
 	log.Trace(url)
 	if responseData, err = checker.GetRequest(url); err != nil || len(responseData) == 0 {
 		return false
