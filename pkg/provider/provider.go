@@ -294,11 +294,6 @@ func isSkipHelmChart(helmName string, skipHelmChartList []configuration.SkipHelm
 	return false
 }
 
-func ReloadTestEnvironment() TestEnvironment {
-	buildTestEnvironment()
-	return env
-}
-
 func GetTestEnvironment() TestEnvironment {
 	if !loaded {
 		buildTestEnvironment()
