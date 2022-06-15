@@ -41,6 +41,10 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/nodetainted"
 )
 
+const (
+	istio = "istio-proxy"
+)
+
 //
 // All actual test code belongs below here.  Utilities belong above.
 //
@@ -113,7 +117,34 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 			ginkgo.Skip(" non ocp cluster ")
 		}
 	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestServiceMeshIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		TestServiceMesh(&env)
+	})
 })
+
+func TestServiceMesh(env *provider.TestEnvironment) {
+	// check if istio is installed
+	if !env.IstioServiceMesh {
+		tnf.ClaimFilePrintf("Istio is not installed")
+		return
+	}
+	tnf.ClaimFilePrintf("Istio is installed")
+
+	var badPods []string
+	for _, put := range env.Pods {
+		for _, cut := range put.Containers {
+			if cut.Status.Name == istio {
+				tnf.ClaimFilePrintf("For pods %s ,ns %s have service mesh", cut.Podname, cut.Namespace)
+			} else {
+				badPods = append(badPods, "pod "+cut.Podname+" ,ns "+cut.Namespace+" do not have service mesh")
+			}
+		}
+	}
+	logrus.Println("bad pods ", badPods)
+}
 
 // testContainersFsDiff test that all CUT didn't install new packages are starting
 func testContainersFsDiff(env *provider.TestEnvironment) {

@@ -61,6 +61,7 @@ type DiscoveredTestData struct {
 	K8sVersion        string
 	OpenshiftVersion  string
 	Nodes             *corev1.NodeList
+	Istio             bool
 }
 
 var data = DiscoveredTestData{}
@@ -113,6 +114,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	if err != nil {
 		logrus.Fatalln("Cannot get the K8s version")
 	}
+	data.Istio = findnamespace(oc.K8sClient.CoreV1())
 	data.K8sVersion = k8sVersion.GitVersion
 	data.Deployments = findDeploymentByLabel(oc.K8sClient.AppsV1(), data.TestData.TargetPodLabels, data.Namespaces)
 	data.StatefulSet = findStatefulSetByLabel(oc.K8sClient.AppsV1(), data.TestData.TargetPodLabels, data.Namespaces)

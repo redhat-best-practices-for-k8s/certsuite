@@ -270,6 +270,11 @@ var (
 		Url:     formTestURL(common.PlatformAlterationTestKey, "sysctl-config"),
 		Version: versionOne,
 	}
+	// TestServiceMesh checks if service mesh is exist.
+	TestServiceMeshIdentifier = claim.Identifier{
+		Url:     formTestURL(common.PlatformAlterationTestKey, "service-mesh"),
+		Version: versionOne,
+	}
 	// TestScalingIdentifier ensures deployment scale in/out operations work correctly.
 	TestScalingIdentifier = claim.Identifier{
 		Url:     formTestURL(common.LifecycleTestKey, "scaling"),
@@ -750,6 +755,14 @@ the changes for you.`,
 			MachineConfig CR which defines how the node should be configured`),
 		Remediation:           `You should recreate the node or change the sysctls, recreating is recommended because there might be other unknown changes`,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
+	},
+	TestServiceMeshIdentifier: {
+		Identifier: TestServiceMeshIdentifier,
+		Type:       normativeResult,
+		Description: formDescription(TestServiceMeshIdentifier,
+			`verifies if service mesh is exist.`),
+		Remediation:           ``,
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 6.2",
 	},
 	TestScalingIdentifier: {
 		Identifier: TestScalingIdentifier,

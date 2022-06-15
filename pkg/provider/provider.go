@@ -109,6 +109,7 @@ type TestEnvironment struct { // rename this with testTarget
 	K8sVersion        string                                        `json:"-"`
 	OpenshiftVersion  string                                        `json:"-"`
 	HelmChartReleases []*release.Release                            `json:"testHelmChartReleases"`
+	IstioServiceMesh  bool
 }
 
 type CsvInstallPlan struct {
@@ -220,6 +221,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.Namespaces = data.Namespaces
 	env.variables = data.Env
 	env.Nodes = createNodes(data.Nodes.Items)
+	env.IstioServiceMesh = data.Istio
 	pods := data.Pods
 
 	for i := 0; i < len(pods); i++ {

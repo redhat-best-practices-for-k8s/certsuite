@@ -26,9 +26,26 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"helm.sh/helm/v3/pkg/release"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/rest"
 )
 
+const (
+	istio = "istio-system"
+)
+
+func findnamespace(oc corev1client.CoreV1Interface) bool {
+	nsList, err := oc.Namespaces().List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		logrus.Errorln("Error when listing", "err: ", err)
+	}
+	for index := range nsList.Items {
+		if nsList.Items[index].ObjectMeta.Name == istio {
+			return true
+		}
+	}
+	return false
+}
 func findOperatorsByLabel(olmClient clientOlm.Interface, labels []configuration.Label, namespaces []configuration.Namespace) []olmv1Alpha.ClusterServiceVersion {
 	csvs := []olmv1Alpha.ClusterServiceVersion{}
 	for _, ns := range namespaces {
