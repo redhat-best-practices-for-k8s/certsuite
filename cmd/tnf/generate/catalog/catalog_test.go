@@ -18,9 +18,12 @@ package catalog
 
 import (
 	"errors"
+	"reflect"
+	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
 func TestNewCommand(t *testing.T) {
@@ -81,4 +84,68 @@ func TestEmitTextFromFile(t *testing.T) {
 
 func TestRunGenerateMarkdownCmd(t *testing.T) {
 	assert.NotNil(t, runGenerateMarkdownCmd(nil, nil))
+}
+
+func TestUnique(t *testing.T) {
+	testCases := []struct {
+		testSlice     []string
+		expectedSlice []string
+	}{
+		{
+			testSlice:     []string{"one", "two", "three"},
+			expectedSlice: []string{"one", "two", "three"},
+		},
+		{
+			testSlice:     []string{"one", "two", "three", "three"},
+			expectedSlice: []string{"one", "two", "three"},
+		},
+		{
+			testSlice:     []string{},
+			expectedSlice: []string{},
+		},
+	}
+
+	for _, tc := range testCases {
+		sort.Strings(tc.expectedSlice)
+		results := Unique(tc.testSlice)
+		sort.Strings(results)
+		assert.True(t, reflect.DeepEqual(tc.expectedSlice, results))
+	}
+}
+
+func TestGetSuitesFromIdentifiers(t *testing.T) {
+	testCases := []struct {
+		testKeys       []claim.Identifier
+		expectedSuites []string
+	}{
+		{
+			testKeys: []claim.Identifier{
+				{
+					Url: "http://test-network-function.com/testcases/helloworld",
+				},
+				{
+					Url: "http://test-network-function.com/testcases/helloworld2",
+				},
+			},
+			expectedSuites: []string{"helloworld", "helloworld2"},
+		},
+		{
+			testKeys: []claim.Identifier{
+				{
+					Url: "http://test-network-function.com/testcases/",
+				},
+				{
+					Url: "http://test-network-function.com/testcases/",
+				},
+			},
+			expectedSuites: []string{""},
+		},
+	}
+
+	for _, tc := range testCases {
+		sort.Strings(tc.expectedSuites)
+		results := getSuitesFromIdentifiers(tc.testKeys)
+		sort.Strings(results)
+		assert.True(t, reflect.DeepEqual(tc.expectedSuites, results))
+	}
 }
