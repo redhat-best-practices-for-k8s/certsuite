@@ -1,623 +1,6 @@
 {
   "data": [
     {
-      "_id": "6262a542173a0d36cf5d693c",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "6.0.8",
-      "creation_date": "2022-04-22T12:53:22.888000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-6",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-05-13T11:42:11.050000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "6.0.6-6",
-      "version_original": "6.0.6-6"
-    },
-    {
-      "_id": "6262a549834f257293b60f5f",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/triggermesh/aws-event-sources-operator-bundle@sha256:b9d8f05aa217db6847aed2b06cff677777bbdd5606191b832ff53000dea489cd",
-      "bundle_path_digest": "sha256:b9d8f05aa217db6847aed2b06cff677777bbdd5606191b832ff53000dea489cd",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T12:53:29.183000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "aws-sources-operator.v0.2.2",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T10:57:09.636000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "aws-event-sources-operator-certified",
-      "provided_apis": [
-        {
-          "group": "sources.triggermesh.com",
-          "kind": "AwsEventSources",
-          "plural": "awseventsources",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.2.2",
-      "version_original": "0.2.2"
-    },
-    {
-      "_id": "6262a54b173a0d36cf5d693e",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/c12e/cortex-certifai-operator-bundle@sha256:26199886640c352804df4a634f5ea3e45c3c4d4e41f241e9ef36cd4b3536be57",
-      "bundle_path_digest": "sha256:26199886640c352804df4a634f5ea3e45c3c4d4e41f241e9ef36cd4b3536be57",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:53:31.764000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "cortex-certifai-operator.v1.3.3",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:16:42.834000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "cortex-certifai-operator",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.3.3",
-      "version_original": "1.3.3"
-    },
-    {
-      "_id": "6262a55a834f257293b60f60",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/sonatype/nxiq-operator-bundle@sha256:4f49f111d6ac40466fb7f88be3a82bd8b52b8c9567d0a19cd4d21c4c51d06bed",
-      "bundle_path_digest": "sha256:4f49f111d6ac40466fb7f88be3a82bd8b52b8c9567d0a19cd4d21c4c51d06bed",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:53:46.520000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "nxiq-operator-certified.v1.90.0-1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:03:09.620000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "nxiq-operator-certified",
-      "provided_apis": [
-        {
-          "group": "sonatype.com",
-          "kind": "NexusIQ",
-          "plural": "nexusiqs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.90.0-1",
-      "version_original": "1.90.0-1"
-    },
-    {
-      "_id": "6262a55dcde83e2b177c20a3",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/sonatype/nxiq-operator-bundle@sha256:a148f6b5251f07de56e593477154200ac9a2993910c93e03455fc2587de2a844",
-      "bundle_path_digest": "sha256:a148f6b5251f07de56e593477154200ac9a2993910c93e03455fc2587de2a844",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:53:49.463000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "nxiq-operator-certified.v1.98.0-1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:19:53.805000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "nxiq-operator-certified",
-      "provided_apis": [
-        {
-          "group": "sonatype.com",
-          "kind": "NexusIQ",
-          "plural": "nexusiqs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.98.0-1",
-      "version_original": "1.98.0-1"
-    },
-    {
-      "_id": "6262a55f84481d5f52299928",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator-bundle@sha256:57038e95b66d81649cb412066c70a20f94c35b6e95453baeac3dbc43b001f374",
-      "bundle_path_digest": "sha256:57038e95b66d81649cb412066c70a20f94c35b6e95453baeac3dbc43b001f374",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T12:53:51.823000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "dynatrace-monitoring.v0.9.4",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:11:23.878000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "oneagent-certified",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.9.4",
-      "version_original": "0.9.4"
-    },
-    {
-      "_id": "6262a564cde83e2b177c20a4",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:cf4a0448fa22963d711bb2d3af8b56e3c356073b76233f33421121403893a859",
-      "bundle_path_digest": "sha256:cf4a0448fa22963d711bb2d3af8b56e3c356073b76233f33421121403893a859",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:53:56.908000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "couchbase-operator.v1.2.1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:03:49.600000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "plural": "couchbaseclusters",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.2.1",
-      "version_original": "1.2.1"
-    },
-    {
-      "_id": "6262a567cde83e2b177c20a5",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:cdd24dd021bb730168eb11b796872975d84fdb471456b745d03a30392dc38d2d",
-      "bundle_path_digest": "sha256:cdd24dd021bb730168eb11b796872975d84fdb471456b745d03a30392dc38d2d",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T12:53:59.698000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "data-explorer-operator.v0.0.3",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T10:57:06.047000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "data-explorer-operator-certified",
-      "provided_apis": [
-        {
-          "group": "data-explorer.com",
-          "kind": "DashboardWithJupyterHub",
-          "plural": "dashboardwithjupyterhubs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.0.3",
-      "version_original": "0.0.3"
-    },
-    {
-      "_id": "6262a572cde83e2b177c20a6",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:61317c2c85660fe4291b3945c928df375890ad00b3168b72bd71b787ef4077dc",
-      "bundle_path_digest": "sha256:61317c2c85660fe4291b3945c928df375890ad00b3168b72bd71b787ef4077dc",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T12:54:10.800000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "data-explorer-operator.v0.0.2",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:40:10.782000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "data-explorer-operator-certified",
-      "provided_apis": [
-        {
-          "group": "data-explorer.com",
-          "kind": "DashboardWithJupyterHub",
-          "plural": "dashboardwithjupyterhubs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.0.2",
-      "version_original": "0.0.2"
-    },
-    {
-      "_id": "6262a579173a0d36cf5d6947",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/rh-marketplace/rh-marketplace-bundle@sha256:f4e205936e8fba2fef8e6294c492c7d3c289c9a5e071615abec373d7c5566b85",
-      "bundle_path_digest": "sha256:f4e205936e8fba2fef8e6294c492c7d3c289c9a5e071615abec373d7c5566b85",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-04-22T12:54:17.815000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redhat-marketplace-operator.v1.0.3",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-05-13T11:25:42.747000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "redhat-marketplace-operator",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.0.3",
-      "version_original": "1.0.3"
-    },
-    {
-      "_id": "6262a58684481d5f5229992b",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:b77778d5cf77fc1ab9a72814118af5dc43d44c7d0d802c16a7862c09370b0e13",
-      "bundle_path_digest": "sha256:b77778d5cf77fc1ab9a72814118af5dc43d44c7d0d802c16a7862c09370b0e13",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:54:30.135000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "mongodb-enterprise.v1.2.3",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T10:59:37.800000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "mongodb-enterprise",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.2.3",
-      "version_original": "1.2.3"
-    },
-    {
-      "_id": "6262a589173a0d36cf5d694a",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:ade7cee1cfce9d5a5badbcca507fdda3baa842c80f36458a2d6c3ecd5876e25d",
-      "bundle_path_digest": "sha256:ade7cee1cfce9d5a5badbcca507fdda3baa842c80f36458a2d6c3ecd5876e25d",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:54:33.183000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "mongodb-enterprise.v1.4.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:30:49.021000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "mongodb-enterprise",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.4.0",
-      "version_original": "1.4.0"
-    },
-    {
-      "_id": "6262a597173a0d36cf5d694e",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:e1c153bcadefa513dcb4df736084dcd6885ef014e7ff34dbbbeba8158839c59c",
-      "bundle_path_digest": "sha256:e1c153bcadefa513dcb4df736084dcd6885ef014e7ff34dbbbeba8158839c59c",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:54:47.975000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "t8c-operator.v7.22.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:18:33.246000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "7.22.0",
-      "version_original": "7.22.0"
-    },
-    {
-      "_id": "6262a5a084481d5f5229992d",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:2d8738da44e668d4b04958e371120e20dddfcb5cfd2be2e3a988b6c3111e88f5",
-      "bundle_path_digest": "sha256:2d8738da44e668d4b04958e371120e20dddfcb5cfd2be2e3a988b6c3111e88f5",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T12:54:56.469000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "nastel-navigator-operator.v0.0.16",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T10:56:02.871000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "nastel-navigator-operator-certified",
-      "provided_apis": [
-        {
-          "group": "navigator.nastel.com",
-          "kind": "NastelNavigator",
-          "plural": "nastelnavigators",
-          "version": "v1alpha6"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.0.16",
-      "version_original": "0.0.16"
-    },
-    {
-      "_id": "6262a5a5834f257293b60f68",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "production",
-      "creation_date": "2022-04-22T12:55:01.870000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-6",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:16:30.672000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "6.0.6-6",
-      "version_original": "6.0.6-6"
-    },
-    {
       "_id": "6262a5a9173a0d36cf5d6951",
       "alm_examples": [],
       "annotations": {
@@ -5919,50 +5302,6 @@
       "version_original": "1.5.3"
     },
     {
-      "_id": "6262a877173a0d36cf5d69b1",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nginx/nginx-ingress-operator-bundle@sha256:5825614ced508b2d168fca5dc0d53e169c0c598bf9008dd3ee0d6bf75781d3f6",
-      "bundle_path_digest": "sha256:5825614ced508b2d168fca5dc0d53e169c0c598bf9008dd3ee0d6bf75781d3f6",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T13:07:03.121000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "nginx-ingress-operator.v0.0.4",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:26:22.811000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "nginx-ingress-operator",
-      "provided_apis": [
-        {
-          "group": "k8s.nginx.org",
-          "kind": "NginxIngressController",
-          "plural": "nginxingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.0.4",
-      "version_original": "0.0.4"
-    },
-    {
       "_id": "6262a87bcde83e2b177c2111",
       "alm_examples": [],
       "annotations": {
@@ -7866,50 +7205,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.9.0",
       "version_original": "0.9.0"
-    },
-    {
-      "_id": "6262a95a84481d5f522999a6",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nginx/nginx-ingress-operator-bundle@sha256:d53eea0345b2e18fb84d1208f5ca6c2e74c425403ba1611b5b1ee525315da0ae",
-      "bundle_path_digest": "sha256:d53eea0345b2e18fb84d1208f5ca6c2e74c425403ba1611b5b1ee525315da0ae",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T13:10:50.062000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "nginx-ingress-operator.v0.0.6",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:44:06.996000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "nginx-ingress-operator",
-      "provided_apis": [
-        {
-          "group": "k8s.nginx.org",
-          "kind": "NginxIngressController",
-          "plural": "nginxingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.0.6",
-      "version_original": "0.0.6"
     },
     {
       "_id": "6262a96b173a0d36cf5d69d2",
@@ -28331,7 +27626,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-13T23:19:22.683000+00:00",
+      "last_update_date": "2022-06-14T18:53:52.053000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -31462,7 +30757,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-13T23:21:31.567000+00:00",
+      "last_update_date": "2022-06-14T07:22:28.510000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -33737,9 +33032,3085 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "1.6.0",
       "version_original": "1.6.0"
+    },
+    {
+      "_id": "627c6c4c228d5769c5692854",
+      "alm_examples": [
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIIsilon",
+          "metadata": {
+            "name": "isilon",
+            "namespace": "test-isilon"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VERBOSE",
+                    "value": "1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ENDPOINT",
+                    "value": "1.1.1.1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PORT",
+                    "value": "8080"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PATH",
+                    "value": "/ifs/data/csi"
+                  },
+                  {
+                    "name": "X_CSI_ISILON_NO_PROBE_ON_START",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_ISI_AUTOPROBE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_INSECURE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-isilon:v1.3.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v3",
+              "controller": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISI_QUOTA_ENABLED",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ACCESS_ZONE",
+                    "value": "System"
+                  }
+                ]
+              },
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISILON_NFS_V3",
+                    "value": "false"
+                  }
+                ]
+              },
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csipscale"
+                  ],
+                  "name": "provisioner"
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "default": true,
+                  "name": "storageclass",
+                  "parameters": {
+                    "AccessZone": "System",
+                    "AzServiceIP": "1.1.1.1",
+                    "IsiPath": "/ifs/data/csi",
+                    "RootClientEnabled": "false"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIIsilon",
+          "metadata": {
+            "name": "isilon",
+            "namespace": "test-isilon"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VERBOSE",
+                    "value": "1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ENDPOINT",
+                    "value": "1.1.1.1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PORT",
+                    "value": "8080"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PATH",
+                    "value": "/ifs/data/csi"
+                  },
+                  {
+                    "name": "X_CSI_ISILON_NO_PROBE_ON_START",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_ISI_AUTOPROBE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_INSECURE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "false"
+                  }
+                ],
+                "image": "dellemc/csi-isilon:v1.3.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v3",
+              "controller": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISI_QUOTA_ENABLED",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ACCESS_ZONE",
+                    "value": "System"
+                  }
+                ]
+              },
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISILON_NFS_V3",
+                    "value": "false"
+                  }
+                ]
+              },
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csipscale"
+                  ],
+                  "name": "provisioner"
+                }
+              ],
+              "snapshotClass": [
+                {
+                  "name": "volumesnapshotclass",
+                  "parameters": {
+                    "IsiPath": "/ifs/data/csi"
+                  }
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "default": true,
+                  "name": "storageclass",
+                  "parameters": {
+                    "AccessZone": "System",
+                    "AzServiceIP": "1.1.1.1",
+                    "IsiPath": "/ifs/data/csi",
+                    "RootClientEnabled": "false"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerMaxRevProxy",
+          "metadata": {
+            "name": "powermax-reverseproxy",
+            "namespace": "test-powermax"
+          },
+          "spec": {
+            "config": {
+              "linkConfig": {
+                "backup": {
+                  "skipCertificateValidation": true,
+                  "url": "https://0.0.0.0:8443"
+                },
+                "primary": {
+                  "certSecret": "",
+                  "skipCertificateValidation": true,
+                  "url": "https://0.0.0.0:8443"
+                }
+              },
+              "mode": "Linked"
+            },
+            "image": "dellemc/csipowermax-reverseproxy:v1.0.0.000R",
+            "imagePullPolicy": "Always",
+            "tlsSecret": "csirevproxy-tls-secret"
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerMax",
+          "metadata": {
+            "name": "test-powermax",
+            "namespace": "test-powermax"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERMAX_ENDPOINT",
+                    "value": "https://0.0.0.0:8443/"
+                  },
+                  {
+                    "name": "X_CSI_K8S_CLUSTER_PREFIX",
+                    "value": "XYZ"
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_PORTGROUPS",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_ARRAYS",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_TRANSPORT_PROTOCOL",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_PROXY_SERVICE_NAME",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_GRPC_MAX_THREADS",
+                    "value": "4"
+                  }
+                ],
+                "image": "dellemc/csi-powermax:v1.4.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v3",
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP",
+                    "value": "false"
+                  }
+                ]
+              },
+              "replicas": 1,
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": false,
+                  "default": true,
+                  "name": "bronze",
+                  "parameters": {
+                    "SRP": "DEFAULT_SRP",
+                    "SYMID": "000000000001",
+                    "ServiceLevel": "Bronze"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "name": "bronze-resize",
+                  "parameters": {
+                    "SRP": "DEFAULT_SRP",
+                    "SYMID": "000000000001",
+                    "ServiceLevel": "Bronze"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerMax",
+          "metadata": {
+            "name": "test-powermax",
+            "namespace": "test-powermax"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERMAX_ENDPOINT",
+                    "value": "https://0.0.0.0:8443/"
+                  },
+                  {
+                    "name": "X_CSI_K8S_CLUSTER_PREFIX",
+                    "value": "XYZ"
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_PORTGROUPS",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_ARRAYS",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_TRANSPORT_PROTOCOL",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_PROXY_SERVICE_NAME",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_GRPC_MAX_THREADS",
+                    "value": "4"
+                  }
+                ],
+                "image": "dellemc/csi-powermax:v1.4.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v3",
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP",
+                    "value": "false"
+                  }
+                ]
+              },
+              "replicas": 1,
+              "snapshotClass": [
+                {
+                  "name": "powermax-snapclass"
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": false,
+                  "default": true,
+                  "name": "bronze",
+                  "parameters": {
+                    "SRP": "DEFAULT_SRP",
+                    "SYMID": "000000000001",
+                    "ServiceLevel": "Bronze"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "name": "bronze-resize",
+                  "parameters": {
+                    "SRP": "DEFAULT_SRP",
+                    "SYMID": "000000000001",
+                    "ServiceLevel": "Bronze"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerStore",
+          "metadata": {
+            "name": "test-powerstore",
+            "namespace": "test-powerstore"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERSTORE_ENDPOINT",
+                    "value": "https://127.0.0.1/api/rest"
+                  },
+                  {
+                    "name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
+                    "value": "csi"
+                  },
+                  {
+                    "name": "X_CSI_TRANSPORT_PROTOCOL",
+                    "value": "ISCSI"
+                  },
+                  {
+                    "name": "X_CSI_FC_PORTS_FILTER_FILE_PATH",
+                    "value": "/etc/fc-ports-filter"
+                  }
+                ],
+                "image": "dellemc/csi-powerstore:v1.1.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v1",
+              "forceUpdate": false,
+              "replicas": 1,
+              "storageClass": [
+                {
+                  "default": true,
+                  "name": "powerstore",
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "name": "powerstore-xfs",
+                  "parameters": {
+                    "FsType": "xfs"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "name": "powerstore-nfs",
+                  "parameters": {
+                    "FsType": "nfs",
+                    "nasName": "nas-server"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerStore",
+          "metadata": {
+            "name": "test-powerstore",
+            "namespace": "test-powerstore"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERSTORE_ENDPOINT",
+                    "value": "https://127.0.0.1/api/rest"
+                  },
+                  {
+                    "name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
+                    "value": "csi"
+                  },
+                  {
+                    "name": "X_CSI_TRANSPORT_PROTOCOL",
+                    "value": "ISCSI"
+                  },
+                  {
+                    "name": "X_CSI_FC_PORTS_FILTER_FILE_PATH",
+                    "value": "/etc/fc-ports-filter"
+                  }
+                ],
+                "image": "dellemc/csi-powerstore:v1.1.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v1",
+              "forceUpdate": false,
+              "replicas": 1,
+              "snapshotClass": [
+                {
+                  "name": "powerstore-snapshot"
+                }
+              ],
+              "storageClass": [
+                {
+                  "default": true,
+                  "name": "powerstore",
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "name": "powerstore-xfs",
+                  "parameters": {
+                    "FsType": "xfs"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "name": "powerstore-nfs",
+                  "parameters": {
+                    "FsType": "nfs",
+                    "nasName": "nas-server"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIUnity",
+          "metadata": {
+            "name": "test-unity",
+            "namespace": "test-unity"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_UNITY_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-unity:v1.3.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2",
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csiunity"
+                  ],
+                  "name": "provisioner"
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "default": true,
+                  "name": "virt2016****-fc",
+                  "parameters": {
+                    "arrayId": "VIRT2016****",
+                    "protocol": "FC",
+                    "storagePool": "pool_1"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "name": "virt2017****-iscsi",
+                  "parameters": {
+                    "arrayId": "VIRT2017****",
+                    "protocol": "iSCSI",
+                    "storagePool": "pool_1"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIUnity",
+          "metadata": {
+            "name": "test-unity",
+            "namespace": "test-unity"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_UNITY_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-unity:v1.3.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2",
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csiunity"
+                  ],
+                  "name": "provisioner"
+                }
+              ],
+              "snapshotClass": [
+                {
+                  "name": "test-snap",
+                  "parameters": {
+                    "retentionDuration": ""
+                  }
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "default": true,
+                  "name": "virt2016****-fc",
+                  "parameters": {
+                    "arrayId": "VIRT2016****",
+                    "protocol": "FC",
+                    "storagePool": "pool_1"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "name": "virt2017****-iscsi",
+                  "parameters": {
+                    "arrayId": "VIRT2017****",
+                    "protocol": "iSCSI",
+                    "storagePool": "pool_1"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIVXFlexOS",
+          "metadata": {
+            "name": "test-vxflexos",
+            "namespace": "test-vxflexos"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VXFLEXOS_SYSTEMNAME",
+                    "value": "systemname"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENDPOINT",
+                    "value": "https://127.0.0.0"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-vxflexos:v1.2.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2",
+              "forceUpdate": false,
+              "replicas": 1,
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "allowedTopologies": [
+                    {
+                      "matchLabelExpressions": [
+                        {
+                          "key": "csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME",
+                          "values": [
+                            "csi-vxflexos.dellemc.com"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "default": true,
+                  "name": "vxflexos",
+                  "parameters": {
+                    "storagepool": "pool1"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "allowedTopologies": [
+                    {
+                      "matchLabelExpressions": [
+                        {
+                          "key": "csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME",
+                          "values": [
+                            "csi-vxflexos.dellemc.com"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "default": false,
+                  "name": "vxflexos-xfs",
+                  "parameters": {
+                    "FsType": "xfs",
+                    "storagepool": "pool2"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIVXFlexOS",
+          "metadata": {
+            "name": "test-vxflexos",
+            "namespace": "test-vxflexos"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VXFLEXOS_SYSTEMNAME",
+                    "value": "systemname"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENDPOINT",
+                    "value": "https://127.0.0.0"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-vxflexos:v1.2.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2",
+              "forceUpdate": false,
+              "replicas": 1,
+              "snapshotClass": [
+                {
+                  "name": "vxflexos-snapclass"
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "allowedTopologies": [
+                    {
+                      "matchLabelExpressions": [
+                        {
+                          "key": "csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME",
+                          "values": [
+                            "csi-vxflexos.dellemc.com"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "default": true,
+                  "name": "vxflexos",
+                  "parameters": {
+                    "storagepool": "pool1"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "allowedTopologies": [
+                    {
+                      "matchLabelExpressions": [
+                        {
+                          "key": "csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME",
+                          "values": [
+                            "csi-vxflexos.dellemc.com"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "default": false,
+                  "name": "vxflexos-xfs",
+                  "parameters": {
+                    "FsType": "xfs",
+                    "storagepool": "pool2"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIIsilon",
+          "metadata": {
+            "name": "isilon",
+            "namespace": "test-isilon"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VERBOSE",
+                    "value": "1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ENDPOINT",
+                    "value": "1.1.1.1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PORT",
+                    "value": "8080"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PATH",
+                    "value": "/ifs/data/csi"
+                  },
+                  {
+                    "name": "X_CSI_ISILON_NO_PROBE_ON_START",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_ISI_AUTOPROBE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_INSECURE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-isilon:v1.3.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v3",
+              "controller": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISI_QUOTA_ENABLED",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ACCESS_ZONE",
+                    "value": "System"
+                  }
+                ]
+              },
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISILON_NFS_V3",
+                    "value": "false"
+                  }
+                ]
+              },
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csipscale"
+                  ],
+                  "name": "provisioner"
+                }
+              ],
+              "snapshotClass": [
+                {
+                  "name": "volumesnapshotclass",
+                  "parameters": {
+                    "IsiPath": "/ifs/data/csi"
+                  }
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "default": true,
+                  "name": "storageclass",
+                  "parameters": {
+                    "AccessZone": "System",
+                    "AzServiceIP": "1.1.1.1",
+                    "IsiPath": "/ifs/data/csi",
+                    "RootClientEnabled": "false"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIUnity",
+          "metadata": {
+            "name": "test-unity",
+            "namespace": "test-unity"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_UNITY_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-unity:v1.3.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2",
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csiunity"
+                  ],
+                  "name": "provisioner"
+                }
+              ],
+              "snapshotClass": [
+                {
+                  "name": "test-snap",
+                  "parameters": {
+                    "retentionDuration": ""
+                  }
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "default": true,
+                  "name": "virt2016****-fc",
+                  "parameters": {
+                    "arrayId": "VIRT2016****",
+                    "protocol": "FC",
+                    "storagePool": "pool_1"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "name": "virt2017****-iscsi",
+                  "parameters": {
+                    "arrayId": "VIRT2017****",
+                    "protocol": "iSCSI",
+                    "storagePool": "pool_1"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "name": "virt2017****-nfs",
+                  "parameters": {
+                    "arrayId": "VIRT2017****",
+                    "hostIoSize": "8192",
+                    "nasServer": "nas_1",
+                    "protocol": "NFS",
+                    "storagePool": "pool_1"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIVXFlexOS",
+          "metadata": {
+            "name": "test-vxflexos",
+            "namespace": "test-vxflexos"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VXFLEXOS_SYSTEMNAME",
+                    "value": "systemname"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENDPOINT",
+                    "value": "https://127.0.0.1"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-vxflexos:v1.2.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2",
+              "forceUpdate": false,
+              "replicas": 1,
+              "snapshotClass": [
+                {
+                  "name": "vxflexos-snapclass"
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "allowedTopologies": [
+                    {
+                      "matchLabelExpressions": [
+                        {
+                          "key": "csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME",
+                          "values": [
+                            "csi-vxflexos.dellemc.com"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "default": true,
+                  "name": "vxflexos",
+                  "parameters": {
+                    "storagepool": "pool1"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "allowedTopologies": [
+                    {
+                      "matchLabelExpressions": [
+                        {
+                          "key": "csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME",
+                          "values": [
+                            "csi-vxflexos.dellemc.com"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "default": false,
+                  "name": "vxflexos-xfs",
+                  "parameters": {
+                    "FsType": "xfs",
+                    "storagepool": "pool2"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/dell-emc/dell-csiop-bundle-110@sha256:0fe8dd27ddc36df73517195b9d4983a4c54e3036683c83952a9514f335ac557d",
+      "bundle_path_digest": "sha256:0fe8dd27ddc36df73517195b9d4983a4c54e3036683c83952a9514f335ac557d",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:09:16.174000+00:00",
+      "csv_description": "Dell CSI Operator for Dell EMC CSI Drivers\nDell CSI Operator is an operator which can be used to install and manage various CSI Drivers provided by Dell EMC for different storage arrays.",
+      "csv_display_name": "Dell CSI Operator",
+      "csv_metadata_description": "An operator for installing and managing CSI Drivers provided by Dell EMC",
+      "csv_name": "dell-csi-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:45:15.116000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "dell-csi-operator-certified",
+      "provided_apis": [
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerMaxRevProxy",
+          "plural": "csipowermaxrevproxies",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerStore",
+          "plural": "csipowerstores",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIUnity",
+          "plural": "csiunities",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIVXFlexOS",
+          "plural": "csivxflexoses",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIIsilon",
+          "plural": "csiisilons",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerMax",
+          "plural": "csipowermaxes",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:113435c9d0d805a2d7f4e6b5bdd6d21a3e489cb0278a9e81b2bc142c0fd5eb0f",
+          "image": "dellemc/dell-csi-operator@sha256:113435c9d0d805a2d7f4e6b5bdd6d21a3e489cb0278a9e81b2bc142c0fd5eb0f",
+          "name": "dell-csi-operator-113435c9d0d805a2d7f4e6b5bdd6d21a3e489cb0278a9e81b2bc142c0fd5eb0f-annotation"
+        },
+        {
+          "digest": "sha256:113435c9d0d805a2d7f4e6b5bdd6d21a3e489cb0278a9e81b2bc142c0fd5eb0f",
+          "image": "dellemc/dell-csi-operator@sha256:113435c9d0d805a2d7f4e6b5bdd6d21a3e489cb0278a9e81b2bc142c0fd5eb0f",
+          "name": "dell-csi-operator"
+        },
+        {
+          "digest": "sha256:a9286defaba7b3a519d585ba0e37d0b2cbee74ebfe590960b0b1d6a5e97d1e1d",
+          "image": "busybox@sha256:a9286defaba7b3a519d585ba0e37d0b2cbee74ebfe590960b0b1d6a5e97d1e1d",
+          "name": "config-copy"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "627c6cd3228d5769c569288d",
+      "alm_examples": [
+        {
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
+          "metadata": {
+            "name": "gpu-cluster-policy"
+          },
+          "spec": {
+            "daemonsets": {},
+            "dcgm": {
+              "enabled": true
+            },
+            "dcgmExporter": {
+              "config": {
+                "name": ""
+              }
+            },
+            "devicePlugin": {},
+            "driver": {
+              "certConfig": {
+                "name": ""
+              },
+              "enabled": true,
+              "kernelModuleConfig": {
+                "name": ""
+              },
+              "licensingConfig": {
+                "configMapName": "",
+                "nlsEnabled": false
+              },
+              "repoConfig": {
+                "configMapName": ""
+              },
+              "use_ocp_driver_toolkit": true,
+              "virtualTopology": {
+                "config": ""
+              }
+            },
+            "gfd": {},
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "enabled": true
+            },
+            "nodeStatusExporter": {
+              "enabled": true
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "deployGFD": true,
+              "initContainer": {}
+            },
+            "toolkit": {
+              "enabled": true
+            },
+            "validator": {
+              "plugin": {
+                "env": [
+                  {
+                    "name": "WITH_WORKLOAD",
+                    "value": "true"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:60b1d25ebb3aada94985e359bb059d4491bf0148ac75d51b68a461670659e429",
+      "bundle_path_digest": "sha256:60b1d25ebb3aada94985e359bb059d4491bf0148ac75d51b68a461670659e429",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:11:31.065000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.10.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-05-13T11:46:49.132000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "plural": "clusterpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "name": "dcgm-image"
+        },
+        {
+          "digest": "sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:f99b66855e92451a59a722355dd52bf97eb985cc8a647172273de8178aeaa93c",
+          "image": "nvcr.io/nvidia/driver@sha256:f99b66855e92451a59a722355dd52bf97eb985cc8a647172273de8178aeaa93c",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:7f0f7dc8c993a86865d4d9f9b0e36d113ea15603d5d5279d2879fa2bc21c8236",
+          "image": "nvcr.io/nvidia/cuda@sha256:7f0f7dc8c993a86865d4d9f9b0e36d113ea15603d5d5279d2879fa2bc21c8236",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:24d804e8f005d7aeca8343aa13e5f92295d8642a4c47cb24e3ac86a22543bc37",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:24d804e8f005d7aeca8343aa13e5f92295d8642a4c47cb24e3ac86a22543bc37",
+          "name": "gpu-operator-validator-image"
+        },
+        {
+          "digest": "sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "name": "k8s-driver-manager-image"
+        },
+        {
+          "digest": "sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "name": "gpu-operator-c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a-annotation"
+        },
+        {
+          "digest": "sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "name": "gpu-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=v1.9.0 <v1.10.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.10.1",
+      "version_original": "1.10.1"
+    },
+    {
+      "_id": "627c6cd93e0ff4d601b6f974",
+      "alm_examples": [
+        {
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
+          "metadata": {
+            "name": "gpu-cluster-policy"
+          },
+          "spec": {
+            "daemonsets": {},
+            "dcgm": {
+              "enabled": true
+            },
+            "dcgmExporter": {
+              "config": {
+                "name": ""
+              }
+            },
+            "devicePlugin": {},
+            "driver": {
+              "certConfig": {
+                "name": ""
+              },
+              "enabled": true,
+              "kernelModuleConfig": {
+                "name": ""
+              },
+              "licensingConfig": {
+                "configMapName": "",
+                "nlsEnabled": false
+              },
+              "repoConfig": {
+                "configMapName": ""
+              },
+              "use_ocp_driver_toolkit": true,
+              "virtualTopology": {
+                "config": ""
+              }
+            },
+            "gfd": {},
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "enabled": true
+            },
+            "nodeStatusExporter": {
+              "enabled": true
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "deployGFD": true,
+              "initContainer": {}
+            },
+            "toolkit": {
+              "enabled": true
+            },
+            "validator": {
+              "plugin": {
+                "env": [
+                  {
+                    "name": "WITH_WORKLOAD",
+                    "value": "true"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:60b1d25ebb3aada94985e359bb059d4491bf0148ac75d51b68a461670659e429",
+      "bundle_path_digest": "sha256:60b1d25ebb3aada94985e359bb059d4491bf0148ac75d51b68a461670659e429",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "v1.10",
+      "creation_date": "2022-05-12T02:11:37.141000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.10.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:46:55.667000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "plural": "clusterpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "name": "dcgm-image"
+        },
+        {
+          "digest": "sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:f99b66855e92451a59a722355dd52bf97eb985cc8a647172273de8178aeaa93c",
+          "image": "nvcr.io/nvidia/driver@sha256:f99b66855e92451a59a722355dd52bf97eb985cc8a647172273de8178aeaa93c",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:7f0f7dc8c993a86865d4d9f9b0e36d113ea15603d5d5279d2879fa2bc21c8236",
+          "image": "nvcr.io/nvidia/cuda@sha256:7f0f7dc8c993a86865d4d9f9b0e36d113ea15603d5d5279d2879fa2bc21c8236",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:24d804e8f005d7aeca8343aa13e5f92295d8642a4c47cb24e3ac86a22543bc37",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:24d804e8f005d7aeca8343aa13e5f92295d8642a4c47cb24e3ac86a22543bc37",
+          "name": "gpu-operator-validator-image"
+        },
+        {
+          "digest": "sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "name": "k8s-driver-manager-image"
+        },
+        {
+          "digest": "sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "name": "gpu-operator-c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a-annotation"
+        },
+        {
+          "digest": "sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "name": "gpu-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=v1.9.0 <v1.10.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.10.1",
+      "version_original": "1.10.1"
+    },
+    {
+      "_id": "627c6d45228d5769c56928d9",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:e95e296f6633c6154f21dfabd0caf27fd0db871fe4ed987b5415f6f9b62ac230",
+      "bundle_path_digest": "sha256:e95e296f6633c6154f21dfabd0caf27fd0db871fe4ed987b5415f6f9b62ac230",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:13:25.123000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.26",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T10:54:36.334000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:46a5da986ccec2377cf27b6d7220dade459b534c69030162dbbd544a560a2c5e",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:46a5da986ccec2377cf27b6d7220dade459b534c69030162dbbd544a560a2c5e",
+          "name": "joget"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.0.26",
+      "version_original": "0.0.26"
+    },
+    {
+      "_id": "627c6d4c3e0ff4d601b6f9bd",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:1a7445f65072dc48009b174bc8bd66de5c2d18d98c235c1fa9b3af2dda6de6ce",
+      "bundle_path_digest": "sha256:1a7445f65072dc48009b174bc8bd66de5c2d18d98c235c1fa9b3af2dda6de6ce",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:13:32.365000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.27",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T10:54:38.396000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:73f7a5500e2af1c40506fb43d7150988c665fab8f1d0df8cc75b5d7c0b325007",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:73f7a5500e2af1c40506fb43d7150988c665fab8f1d0df8cc75b5d7c0b325007",
+          "name": "joget"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.0.27",
+      "version_original": "0.0.27"
+    },
+    {
+      "_id": "627c6d52228d5769c56928e2",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:96ff4c7c501f2d937bb1e95f19e3145ed60f2b41c2224e678f3389b6144c3466",
+      "bundle_path_digest": "sha256:96ff4c7c501f2d937bb1e95f19e3145ed60f2b41c2224e678f3389b6144c3466",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:13:38.117000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.28",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-14T18:53:53.433000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:5a28e178e7d69c05b1f4bec354c940b4467214a16a2b7cafc2709304fddc9fcf",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:5a28e178e7d69c05b1f4bec354c940b4467214a16a2b7cafc2709304fddc9fcf",
+          "name": "joget"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.0.28",
+      "version_original": "0.0.28"
+    },
+    {
+      "_id": "627c6d533e0ff4d601b6f9c4",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:96ff4c7c501f2d937bb1e95f19e3145ed60f2b41c2224e678f3389b6144c3466",
+      "bundle_path_digest": "sha256:96ff4c7c501f2d937bb1e95f19e3145ed60f2b41c2224e678f3389b6144c3466",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:13:39.482000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.28",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T10:54:40.327000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:5a28e178e7d69c05b1f4bec354c940b4467214a16a2b7cafc2709304fddc9fcf",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:5a28e178e7d69c05b1f4bec354c940b4467214a16a2b7cafc2709304fddc9fcf",
+          "name": "joget"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.0.28",
+      "version_original": "0.0.28"
+    },
+    {
+      "_id": "627c6d82228d5769c569290c",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
+      "bundle_path_digest": "sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:14:26.963000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-31T08:45:00.173000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "8.5.1",
+      "version_original": "8.5.1"
+    },
+    {
+      "_id": "627c6d844be4723d90ee6ced",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
+      "bundle_path_digest": "sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:14:28.427000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T10:54:55.247000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "8.5.1",
+      "version_original": "8.5.1"
+    },
+    {
+      "_id": "627c6d924be4723d90ee6cfd",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:e95e296f6633c6154f21dfabd0caf27fd0db871fe4ed987b5415f6f9b62ac230",
+      "bundle_path_digest": "sha256:e95e296f6633c6154f21dfabd0caf27fd0db871fe4ed987b5415f6f9b62ac230",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:14:42.051000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.26",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:49:21.914000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:46a5da986ccec2377cf27b6d7220dade459b534c69030162dbbd544a560a2c5e",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:46a5da986ccec2377cf27b6d7220dade459b534c69030162dbbd544a560a2c5e",
+          "name": "joget"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.0.26",
+      "version_original": "0.0.26"
+    },
+    {
+      "_id": "627c6d973e0ff4d601b6f9ff",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:1a7445f65072dc48009b174bc8bd66de5c2d18d98c235c1fa9b3af2dda6de6ce",
+      "bundle_path_digest": "sha256:1a7445f65072dc48009b174bc8bd66de5c2d18d98c235c1fa9b3af2dda6de6ce",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:14:47.622000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.27",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:49:28.060000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:73f7a5500e2af1c40506fb43d7150988c665fab8f1d0df8cc75b5d7c0b325007",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:73f7a5500e2af1c40506fb43d7150988c665fab8f1d0df8cc75b5d7c0b325007",
+          "name": "joget"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.0.27",
+      "version_original": "0.0.27"
+    },
+    {
+      "_id": "627c6d9c9b28cbab99bd0e9a",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:96ff4c7c501f2d937bb1e95f19e3145ed60f2b41c2224e678f3389b6144c3466",
+      "bundle_path_digest": "sha256:96ff4c7c501f2d937bb1e95f19e3145ed60f2b41c2224e678f3389b6144c3466",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:14:52.145000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.28",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-17T07:41:06.919000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:5a28e178e7d69c05b1f4bec354c940b4467214a16a2b7cafc2709304fddc9fcf",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:5a28e178e7d69c05b1f4bec354c940b4467214a16a2b7cafc2709304fddc9fcf",
+          "name": "joget"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.0.28",
+      "version_original": "0.0.28"
+    },
+    {
+      "_id": "627c6da53e0ff4d601b6fa15",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "bootstrapperImageSpec": {
+              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise-operator"
+            },
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise",
+              "versionTag": "6.2.10-90.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "redisEnterpriseServicesRiggerImageSpec": {
+              "repository": "registry.connect.redhat.com/redislabs/services-manager"
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:95644b2ccc560118c16350bcd4380db7c08d97258bf1034387e96a9b1814fef5",
+      "bundle_path_digest": "sha256:95644b2ccc560118c16350bcd4380db7c08d97258bf1034387e96a9b1814fef5",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.10",
+      "creation_date": "2022-05-12T02:15:01.689000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.10-4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-05-12T02:15:01.689000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
+          "name": "redis-enterprise-operator-97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31-annotation"
+        },
+        {
+          "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
+          "name": "admission"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.2.10-4",
+      "version_original": "6.2.10-4"
+    },
+    {
+      "_id": "627c6db39b28cbab99bd0ec1",
+      "alm_examples": [
+        {
+          "api_version": "mm.memverge.com/v1alpha1",
+          "kind": "MemoryMachine",
+          "metadata": {
+            "name": "memorymachine-sample",
+            "namespace": "test"
+          },
+          "spec": {
+            "controlVersion": "latest",
+            "enableSnapshot": true,
+            "imageRepository": "ghcr.io/memverge",
+            "mmVersion": "latest",
+            "mvsvcdConfig": {
+              "LogTrace": false
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/memverge/memory-machine-operator@sha256:273d253c08d375eab4622e6d2d4937e571bd5cdf4368b08a85ff52ad85b042c1",
+      "bundle_path_digest": "sha256:273d253c08d375eab4622e6d2d4937e571bd5cdf4368b08a85ff52ad85b042c1",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:15:15.536000+00:00",
+      "csv_description": "## Overview\n\n**Memory Machine Operator** will Deploy and configure **Memory Machine\u2122**, which works together with Intel\u00ae Optane\u2122 Persistent Memory to form Big Memory solutions delivering lower server memory cost and higher performance, productivity, and availability.\n\n## Installation\nPlease follow the installation guide by clicking on the **install** button at top right of the page.\n\n## Documents\nDetails about installation and configuration of Memory Machine Operator can be found in our [github repository](https://github.com/MemVerge/memory-machine-operator)\n",
+      "csv_display_name": "Memory Machine Operator",
+      "csv_metadata_description": "Deploy and Configure Memory Machine\u2122",
+      "csv_name": "memory-machine-operator.v0.0.10",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T10:55:15.625000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "memory-machine-operator",
+      "provided_apis": [
+        {
+          "group": "mm.memverge.com",
+          "kind": "MemoryMachine",
+          "plural": "memorymachines",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:f6efb63e434ec33a5f76fb9ba89041deeb6e52edc46550515a609eca5b27bcc8",
+          "image": "registry.connect.redhat.com/memverge/memory-machine-operator-image@sha256:f6efb63e434ec33a5f76fb9ba89041deeb6e52edc46550515a609eca5b27bcc8",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.0.10",
+      "version_original": "0.0.10"
+    },
+    {
+      "_id": "627c6db44be4723d90ee6d25",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
+      "bundle_path_digest": "sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:15:16.406000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-13T11:50:08.386000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "8.5.1",
+      "version_original": "8.5.1"
+    },
+    {
+      "_id": "627c6dba3e0ff4d601b6fa2f",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-05-12T02:15:22.538000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-05-12T02:15:22.538000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.8-1",
+      "version_original": "6.0.8-1"
+    },
+    {
+      "_id": "627c6dbf9b28cbab99bd0ed2",
+      "alm_examples": [
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaCsp",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "db-password",
+                "name": "aqua-database-password"
+              },
+              "dbDiskSize": 10
+            },
+            "database": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "gateway": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "infra": {
+              "namespace": "aqua",
+              "requirements": true,
+              "serviceAccount": "aqua-sa",
+              "version": "5.3"
+            },
+            "route": true,
+            "server": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaDatabase",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "diskSize": 10,
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "5.3"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "gateway": {
+              "host": "aqua-gateway",
+              "port": 8443
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "5.3"
+            },
+            "token": "<<your-token>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaKubeEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "config": {
+              "cluster_name": "aqua-secure",
+              "gateway_address": "aqua-gateway.aqua:8443"
+            },
+            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaGateway",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "5.3"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaScanner",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "deploy": {
+              "replicas": 1
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "5.3"
+            },
+            "login": {
+              "host": "http://aqua-server:8080",
+              "password": "<<YOUR AQUA USER PASSWORD>>",
+              "username": "<<YOUR AQUA USER NAME>>"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaServer",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "5.3"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:c367a6e2000ff5eb18363b3008930e86623a1ef74d0236cdb9423b63468fdfc2",
+      "bundle_path_digest": "sha256:c367a6e2000ff5eb18363b3008930e86623a1ef74d0236cdb9423b63468fdfc2",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "5.3",
+      "creation_date": "2022-05-12T02:15:27.176000+00:00",
+      "csv_description": "The Aqua Security Operator is used to deploy and manage the Aqua Cloud Native Security Platform (CSP) and its components:\n* Server (aka \"console\")\n* Database (optional; you can map an external database as well)\n* Gateway\n* Enforcer\n* KubeEnforcer\n* Scanner\n\nUse the Aqua Operator to:\n* Deploy Aqua CSP on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua CSP components\n* Automatically scale the number of Aqua scanners based on the number of images in the scan queue\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n3. Create the secret for Aqua Database password\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password>```\n    \nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* latest: This maps to the Aqua version 4.6.0\n* alpha: This maps to the Aqua version 5.0.0\n* 5.3: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
+      "csv_display_name": "Aqua Security Operator",
+      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
+      "csv_name": "aqua-operator.v5.3.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-05-12T02:15:27.176000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "aqua-operator-certified",
+      "provided_apis": [
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaKubeEnforcer",
+          "plural": "aquakubeenforcers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaScanner",
+          "plural": "aquascanners",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaServer",
+          "plural": "aquaservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaCsp",
+          "plural": "aquacsps",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaDatabase",
+          "plural": "aquadatabases",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaEnforcer",
+          "plural": "aquaenforcers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaGateway",
+          "plural": "aquagateways",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17",
+          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17",
+          "name": "aquasec-5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17-annotation"
+        },
+        {
+          "digest": "sha256:5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17",
+          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17",
+          "name": "aqua-operator"
+        },
+        {
+          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
+          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
+          "name": "database"
+        },
+        {
+          "digest": "sha256:5e3f0ceb3805eb556a270ff6dd24f38b7363af635be67a07537537fdcea91a59",
+          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:5e3f0ceb3805eb556a270ff6dd24f38b7363af635be67a07537537fdcea91a59",
+          "name": "gateway"
+        },
+        {
+          "digest": "sha256:736ebc8d15add4f82999d0d4cd95f0d7ddf4d4459496718c1482716841750dd9",
+          "image": "registry.connect.redhat.com/aquasec/console@sha256:736ebc8d15add4f82999d0d4cd95f0d7ddf4d4459496718c1482716841750dd9",
+          "name": "server"
+        },
+        {
+          "digest": "sha256:03669814dfa811b54116ce9c7481c6594f44058593ab50f8549beeef9ed0e54c",
+          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:03669814dfa811b54116ce9c7481c6594f44058593ab50f8549beeef9ed0e54c",
+          "name": "scanner"
+        },
+        {
+          "digest": "sha256:6617cc185815d883ef25d40d0ba02e00bd39224c9431d36ecbf2254690206230",
+          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:6617cc185815d883ef25d40d0ba02e00bd39224c9431d36ecbf2254690206230",
+          "name": "enforcer"
+        },
+        {
+          "digest": "sha256:a132492d9678275c250aaddcdf9af4fea551e79d6aaf95682f457edf8f92af50",
+          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:a132492d9678275c250aaddcdf9af4fea551e79d6aaf95682f457edf8f92af50",
+          "name": "kube_enforcer"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "5.3.0",
+      "version_original": "5.3.0"
     }
   ],
   "page": 5,
   "page_size": 500,
-  "total": 3607
+  "total": 3605
 }
