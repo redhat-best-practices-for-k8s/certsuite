@@ -45,7 +45,8 @@ import (
 const (
 	daemonSetNamespace               = "default"
 	daemonSetName                    = "debug"
-	debugPodsTimeout                 = 60 * time.Second
+	debugPodsTimeout                 = 5 * time.Minute
+	debugPodsRetryInterval           = 5 * time.Second
 	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/networks-status"
 	skipConnectivityTestsLabel       = "test-network-function.com/skip_connectivity_tests"
 	skipMultusConnectivityTestsLabel = "test-network-function.com/skip_multus_connectivity_tests"
@@ -338,7 +339,7 @@ func WaitDebugPodsReady() error {
 			break
 		}
 
-		time.Sleep(time.Second)
+		time.Sleep(debugPodsRetryInterval)
 	}
 
 	if !isReady {
