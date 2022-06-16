@@ -20,12 +20,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	configv1 "github.com/openshift/api/config/v1"
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/compatibility"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"helm.sh/helm/v3/pkg/release"
 	appsv1 "k8s.io/api/apps/v1"
@@ -60,6 +62,7 @@ type DiscoveredTestData struct {
 	HelmChartReleases map[string][]*release.Release
 	K8sVersion        string
 	OpenshiftVersion  string
+	OCPStatus         string
 	Nodes             *corev1.NodeList
 	Istio             bool
 }
@@ -115,6 +118,10 @@ func DoAutoDiscover() DiscoveredTestData {
 		logrus.Fatalln("Cannot get the K8s version")
 	}
 	data.Istio = findnamespace(oc.K8sClient.CoreV1())
+
+	// Find the status of the OCP version (pre-ga, end-of-life, maintenance, or generally available)
+	data.OCPStatus = compatibility.DetermineOCPStatus(openshiftVersion, time.Now())
+
 	data.K8sVersion = k8sVersion.GitVersion
 	data.Deployments = findDeploymentByLabel(oc.K8sClient.AppsV1(), data.TestData.TargetPodLabels, data.Namespaces)
 	data.StatefulSet = findStatefulSetByLabel(oc.K8sClient.AppsV1(), data.TestData.TargetPodLabels, data.Namespaces)
@@ -132,6 +139,7 @@ func namespacesListToStringList(namespaceList []configuration.Namespace) (string
 	}
 	return stringList
 }
+
 func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, err error) {
 	var clusterOperator *configv1.ClusterOperator
 	clusterOperator, err = oClient.ClusterOperators().Get(context.TODO(), "openshift-apiserver", metav1.GetOptions{})

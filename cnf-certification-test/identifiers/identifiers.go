@@ -275,6 +275,11 @@ var (
 		Url:     formTestURL(common.PlatformAlterationTestKey, "service-mesh"),
 		Version: versionOne,
 	}
+	// TestOCPLifecycleIdentifier ensures the OCP version of the cluster is within the valid lifecycle status
+	TestOCPLifecycleIdentifier = claim.Identifier{
+		Url:     formTestURL(common.PlatformAlterationTestKey, "ocp-lifecycle"),
+		Version: versionOne,
+	}
 	// TestScalingIdentifier ensures deployment scale in/out operations work correctly.
 	TestScalingIdentifier = claim.Identifier{
 		Url:     formTestURL(common.LifecycleTestKey, "scaling"),
@@ -352,6 +357,14 @@ func GetSuiteAndTestFromIdentifier(identifier claim.Identifier) []string {
 
 // Catalog is the JUnit testcase catalog of tests.
 var Catalog = map[claim.Identifier]TestCaseDescription{
+
+	TestOCPLifecycleIdentifier: {
+		Identifier:            TestOCPLifecycleIdentifier,
+		Type:                  normativeResult,
+		Description:           formDescription(TestOCPLifecycleIdentifier, `Tests that the running OCP version is not end of life.`),
+		Remediation:           `Please update your cluster to a version that is generally available.`,
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section x.x", // TODO: Update this with correct section of requirements doc.
+	},
 
 	TestDeploymentScalingIdentifier: {
 		Identifier: TestDeploymentScalingIdentifier,
