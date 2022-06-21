@@ -592,18 +592,18 @@ Description|http://test-network-function.com/testcases/platform-alteration/ocp-l
 Result Type|normative
 Suggested Remediation|Please update your cluster to a version that is generally available.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section x.x
-#### service-mesh
+#### service-mesh-usage
 
 Property|Description
 ---|---
-Test Case Name|service-mesh
-Test Case Label|platform-alteration-service-mesh
-Unique ID|http://test-network-function.com/testcases/platform-alteration/service-mesh
+Test Case Name|service-mesh-usage
+Test Case Label|platform-alteration-service-mesh-usage
+Unique ID|http://test-network-function.com/testcases/platform-alteration/service-mesh-usage
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/platform-alteration/service-mesh verifies if service mesh is exist.
+Description|http://test-network-function.com/testcases/platform-alteration/service-mesh-usage verifies whether, if available, service mesh is actually being used by the CNF pods
 Result Type|normative
-Suggested Remediation|
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 6.2
+Suggested Remediation|Make sure all the CNF pods are using service mesh if the cluster provides it.
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 #### sysctl-config
 
 Property|Description
