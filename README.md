@@ -482,21 +482,6 @@ operator
 ## Log level 
 The optional TNF_LOG_LEVEL environment variable sets the log level. Defaults to "info" if not set. Valid values are: trace, debug, info, warn, error, fatal, panic.
 
-## Grading Tool
-### Overview
-A tool for processing the claim file and producing a quality grade for the CNF.
-The user supplies a policy conforming to [policy schema](schemas/gradetool-policy-schema.json).
-A grade is considered `passed` if all its direct tests passed and its base grade passed.
-In the output we use the field `propose` to indicate grade passed or failed.
-See [policy example](pkg/gradetool/testdata/policy-good.json) for understanding the output of the grading tool.
-### How to build and execute
-```
-make build
-or
-make build-gradetool
-```
-Executable name is `gradetool`.
-
 ## CNF Developers
 
 Developers of CNFs, particularly those targeting 
@@ -507,32 +492,7 @@ please contact [Red Hat](https://redhat-connect.gitbook.io/red-hat-partner-conne
 Refer to the rest of the documentation in this file to see how to install and run the tests as well as how to
 interpret the results.
 
-You will need an [OpenShift 4.4 installation](https://docs.openshift.com/container-platform/4.4/welcome/index.html)
+You will need an [OpenShift 4.10 installation](https://docs.openshift.com/container-platform/4.10/welcome/index.html)
 running your CNF, and at least one other machine available to host the test suite.  The
 [cnf-certification-test-partner](https://github.com/test-network-function/cnf-certification-test-partner) repository has a very
 simple example of this you can model your setup on.
-
-# Known Issues
-
-## Issue #146:  Shell Output larger than 16KB requires specification of the TNF_DEFAULT_BUFFER_SIZE environment variable
-
-When dealing with large output, you may occasionally overrun the default buffer size. The manifestation of this issue is
-a `json.SyntaxError`, and may look similar to the following:
-
-```shell script
-    Expected
-        <*json.SyntaxError | 0xc0002bc020>: {
-            msg: "unexpected end of JSON input",
-            Offset: 660,
-        }
-    to be nil
-```
-
-In such cases, you will need to set the TNF_DEFAULT_BUFFER_SIZE to a sufficient size (in bytes) to handle the expected
-output.
-
-For example:
-
-```shell script
-TNF_DEFAULT_BUFFER_SIZE=32768 ./run-cnf-suites.sh -f networking
-```
