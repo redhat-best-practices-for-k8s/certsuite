@@ -32,111 +32,119 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
+type Test struct {
+	id  claim.Identifier
+	run func(*provider.TestEnvironment)
+}
+
 var (
-	nonCompliantCapabilities = []string{"NET_ADMIN", "SYS_ADMIN", "NET_RAW", "IPC_LOCK"}
+	nonCompliantCapabilities = []string{
+		"NET_ADMIN",
+		"SYS_ADMIN",
+		"NET_RAW",
+		"IPC_LOCK",
+	}
 	invalidNamespacePrefixes = []string{
 		"default",
 		"openshift-",
 		"istio-",
 		"aspenmesh-",
 	}
+	containerTests = []Test{
+		{
+			id:  identifiers.TestSecConCapabilitiesIdentifier,
+			run: TestSecConCapabilities,
+		},
+		{
+			id:  identifiers.TestSecConNonRootUserIdentifier,
+			run: TestSecConRootUser,
+		},
+		{
+			id:  identifiers.TestSecConPrivilegeEscalation,
+			run: TestSecConPrivilegeEscalation,
+		},
+		{
+			id:  identifiers.TestContainerHostPort,
+			run: TestContainerHostPort,
+		},
+		{
+			id:  identifiers.TestOneProcessPerContainerIdentifier,
+			run: TestOneProcessPerContainer,
+		},
+	}
+	podTests = []Test{
+		{
+			id:  identifiers.TestPodHostNetwork,
+			run: TestPodHostNetwork,
+		},
+		{
+			id:  identifiers.TestPodHostPath,
+			run: TestPodHostPath,
+		},
+		{
+			id:  identifiers.TestPodHostIPC,
+			run: TestPodHostIPC,
+		},
+		{
+			id:  identifiers.TestPodHostPID,
+			run: TestPodHostPID,
+		},
+		{
+			id:  identifiers.TestPodServiceAccountBestPracticesIdentifier,
+			run: TestPodServiceAccount,
+		},
+		{
+			id:  identifiers.TestPodRoleBindingsBestPracticesIdentifier,
+			run: TestPodRoleBindings,
+		},
+		{
+			id:  identifiers.TestPodClusterRoleBindingsBestPracticesIdentifier,
+			run: TestPodClusterRoleBindings,
+		},
+		{
+			id:  identifiers.TestPodAutomountServiceAccountIdentifier,
+			run: TestAutomountServiceToken,
+		},
+	}
+	namespaceTests = []Test{
+		{
+			id:  identifiers.TestNamespaceBestPracticesIdentifier,
+			run: TestNamespace,
+		},
+	}
 )
 
 var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
-
 	logrus.Debugf("Entering %s suite", common.AccessControlTestKey)
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
-
-	// Security Context: non-compliant capabilities
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConCapabilitiesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
-		TestSecConCapabilities(&env)
-	})
-	// container security context: non-root user
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConNonRootUserIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
-		TestSecConRootUser(&env)
-	})
-	// container security context: privileged escalation
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConPrivilegeEscalation)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
-		TestSecConPrivilegeEscalation(&env)
-	})
-	// container security context: host port
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestContainerHostPort)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
-		TestContainerHostPort(&env)
-	})
-	// container security context: host network
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostNetwork)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		TestPodHostNetwork(&env)
-	})
-	// pod host path
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostPath)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		TestPodHostPath(&env)
-	})
-	// pod host ipc
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostIPC)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		TestPodHostIPC(&env)
-	})
-	// pod host pid
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostPID)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		TestPodHostPID(&env)
-	})
-	// Namespace
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNamespaceBestPracticesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Namespaces)
-		TestNamespace(&env)
-	})
-	// pod service account
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodServiceAccountBestPracticesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		TestPodServiceAccount(&env)
-	})
-	// pod role bindings
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodRoleBindingsBestPracticesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		TestPodRoleBindings(&env)
-	})
-	// pod cluster role bindings
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodClusterRoleBindingsBestPracticesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		TestPodClusterRoleBindings(&env)
-	})
-	// automount service token
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodAutomountServiceAccountIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		TestAutomountServiceToken(&env)
-	})
-	// one process per container
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestOneProcessPerContainerIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
-		TestOneProcessPerContainer(&env)
-	})
+	for _, test := range containerTests {
+		tid := identifiers.XformToGinkgoItIdentifier(test.id)
+		ginkgo.It(tid, ginkgo.Label(tid), func() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+			test.run(&env)
+		})
+	}
+	for _, test := range podTests {
+		tid := identifiers.XformToGinkgoItIdentifier(test.id)
+		ginkgo.It(tid, ginkgo.Label(tid), func() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+			test.run(&env)
+		})
+	}
+	for _, test := range namespaceTests {
+		tid := identifiers.XformToGinkgoItIdentifier(test.id)
+		ginkgo.It(tid, ginkgo.Label(tid), func() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Namespaces)
+			test.run(&env)
+		})
+	}
 })
 
 // TestSecConCapabilities verifies that non compliant capabilities are not present
