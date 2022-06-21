@@ -117,7 +117,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	if err != nil {
 		logrus.Fatalln("Cannot get the K8s version")
 	}
-	data.Istio = findnamespace(oc.K8sClient.CoreV1())
+	data.Istio = findIstioNamespace(oc.K8sClient.CoreV1())
 
 	// Find the status of the OCP version (pre-ga, end-of-life, maintenance, or generally available)
 	data.OCPStatus = compatibility.DetermineOCPStatus(openshiftVersion, time.Now())
