@@ -272,7 +272,7 @@ var (
 	}
 	// TestServiceMesh checks if service mesh is exist.
 	TestServiceMeshIdentifier = claim.Identifier{
-		Url:     formTestURL(common.PlatformAlterationTestKey, "service-mesh"),
+		Url:     formTestURL(common.PlatformAlterationTestKey, "service-mesh-usage"),
 		Version: versionOne,
 	}
 	// TestOCPLifecycleIdentifier ensures the OCP version of the cluster is within the valid lifecycle status
@@ -773,8 +773,8 @@ the changes for you.`,
 		Identifier: TestServiceMeshIdentifier,
 		Type:       normativeResult,
 		Description: formDescription(TestServiceMeshIdentifier,
-			`verifies if service mesh is exist.`),
-		Remediation:           ``,
+			`verifies whether, if available, service mesh is actually being used by the CNF pods`),
+		Remediation:           `Make sure all the CNF pods are using service mesh if the cluster provides it.`,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 6.2",
 	},
 	TestScalingIdentifier: {

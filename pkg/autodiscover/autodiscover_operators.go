@@ -31,16 +31,17 @@ import (
 )
 
 const (
-	istio = "istio-system"
+	istioNamespace = "istio-system"
 )
 
 func findnamespace(oc corev1client.CoreV1Interface) bool {
 	nsList, err := oc.Namespaces().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		logrus.Errorln("Error when listing", "err: ", err)
+		return false
 	}
 	for index := range nsList.Items {
-		if nsList.Items[index].ObjectMeta.Name == istio {
+		if nsList.Items[index].ObjectMeta.Name == istioNamespace {
 			return true
 		}
 	}

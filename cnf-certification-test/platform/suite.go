@@ -43,7 +43,7 @@ import (
 )
 
 const (
-	istio = "istio-proxy"
+	istioContainerName = "istio-proxy"
 )
 
 //
@@ -121,7 +121,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestServiceMeshIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestServiceMesh(&env)
 	})
 
@@ -137,21 +137,28 @@ func TestServiceMesh(env *provider.TestEnvironment) {
 	// check if istio is installed
 	if !env.IstioServiceMesh {
 		tnf.ClaimFilePrintf("Istio is not installed")
-		return
+		ginkgo.Skip("No service mesh detected.")
 	}
 	tnf.ClaimFilePrintf("Istio is installed")
 
 	var badPods []string
 	for _, put := range env.Pods {
+		istioProxyFound := false
 		for _, cut := range put.Containers {
-			if cut.Status.Name == istio {
-				tnf.ClaimFilePrintf("For pods %s ,ns %s have service mesh", cut.Podname, cut.Namespace)
-			} else {
-				badPods = append(badPods, "pod "+cut.Podname+" ,ns "+cut.Namespace+" do not have service mesh")
+			if cut.Status.Name == istioContainerName {
+				tnf.ClaimFilePrintf("Istio proxy container found on %s", put)
+				istioProxyFound = true
+				break
 			}
 		}
+		if !istioProxyFound {
+			badPods = append(badPods, put.String())
+		}
 	}
-	logrus.Println("bad pods ", badPods)
+	if n := len(badPods); n > 0 {
+		tnf.ClaimFilePrintf("Pods not using service mesh: %v", badPods)
+		ginkgo.Fail(fmt.Sprintf("Found %d pods that do not use service mesh.", n))
+	}
 }
 
 // testContainersFsDiff test that all CUT didn't install new packages are starting
