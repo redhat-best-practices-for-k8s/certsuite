@@ -603,7 +603,7 @@ Version|v1.0.0
 Description|http://test-network-function.com/testcases/platform-alteration/service-mesh-usage verifies whether, if available, service mesh is actually being used by the CNF pods
 Result Type|normative
 Suggested Remediation|Make sure all the CNF pods are using service mesh if the cluster provides it.
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 6.2
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 #### sysctl-config
 
 Property|Description

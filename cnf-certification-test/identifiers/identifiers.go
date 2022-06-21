@@ -775,7 +775,7 @@ the changes for you.`,
 		Description: formDescription(TestServiceMeshIdentifier,
 			`verifies whether, if available, service mesh is actually being used by the CNF pods`),
 		Remediation:           `Make sure all the CNF pods are using service mesh if the cluster provides it.`,
-		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 6.2",
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 	},
 	TestScalingIdentifier: {
 		Identifier: TestScalingIdentifier,
