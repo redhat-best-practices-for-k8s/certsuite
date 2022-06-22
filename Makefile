@@ -66,7 +66,6 @@ clean:
 	rm -f ./tnf
 	rm -f latest-release-tag.txt
 	rm -f release-tag.txt
-	rm -f gradetool
 	rm -f jsontest-cli
 	rm -f test-out.json
 	rm -f cover.out
