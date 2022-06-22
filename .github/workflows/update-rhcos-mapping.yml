@@ -1,0 +1,26 @@
+name: Update RHCOS version mapping
+
+on:
+  # Triggers the workflow every day
+  schedule:
+    - cron: "0 0 * * *"
+jobs:
+  update-certification:
+    name: Update offline mapping of RHCOS to OCP version
+    runs-on: ubuntu-20.04
+    env:
+      SHELL: /bin/bash        
+
+    steps:
+      - name: Execute `make update-rhcos-versions`
+        run: make update-rhcos-versions
+      - name: create PR
+        uses: peter-evans/create-pull-request@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.UPDATE_CERTIFIED_DB_TOKEN }}
+        with:
+          commit-message: Update RHCOS to OCP version map
+          title: Update RHCOS to OCP version map
+          body: |
+            - RHCOS version map update
+          branch: update-rhcos-map

@@ -19,6 +19,8 @@ package compatibility
 import (
 	"strings"
 	"time"
+
+	gv "github.com/hashicorp/go-version"
 )
 
 /* Notes for this package
@@ -40,6 +42,9 @@ type VersionInfo struct {
 	GADate  time.Time // General Availability Date
 	FSEDate time.Time // Full Support Ends Date
 	MSEDate time.Time // Maintenance Support Ends Date
+
+	MinRHCOSVersion      string   // Minimum RHCOS Version supported
+	RHELVersionsAccepted []string // Contains either specific versions or a minimum version eg. "7.9 or later" or "7.9 and 8.4"
 }
 
 var (
@@ -53,12 +58,20 @@ var (
 			FSEDate: time.Date(2022, 9, 10, 0, 0, 0, 0, time.UTC), // September 10, 2022
 			MSEDate: time.Date(2023, 9, 10, 0, 0, 0, 0, time.UTC), // September 10, 2023
 			// Note: FSEDate (Release of 4.11 + 3 months) is currently a "guess".  Update when available.
+
+			// OS Compatibility
+			MinRHCOSVersion:      "4.10",
+			RHELVersionsAccepted: []string{"8.4", "8.5"},
 		},
 		"4.9": {
 			GADate:  time.Date(2021, 10, 18, 0, 0, 0, 0, time.UTC), // October 18, 2021
 			FSEDate: time.Date(2022, 6, 8, 0, 0, 0, 0, time.UTC),   // June 8, 2022
 			MSEDate: time.Date(2023, 4, 18, 0, 0, 0, 0, time.UTC),  // April 18, 2023
 			// Note: FSEDate (Release of 4.10 + 3 months) is currently a "guess".  Update when available.
+
+			// OS Compatibility
+			MinRHCOSVersion:      "4.9",
+			RHELVersionsAccepted: []string{"7.9", "8.4"},
 		},
 
 		// Maintenance Support
@@ -66,11 +79,19 @@ var (
 			GADate:  time.Date(2021, 7, 27, 0, 0, 0, 0, time.UTC), // July 27, 2021
 			FSEDate: time.Date(2022, 1, 27, 0, 0, 0, 0, time.UTC), // January 27, 2022
 			MSEDate: time.Date(2023, 1, 27, 0, 0, 0, 0, time.UTC), // January 27, 2023
+
+			// OS Compatibility
+			MinRHCOSVersion:      "4.8",
+			RHELVersionsAccepted: []string{"7.9"},
 		},
 		"4.7": {
 			GADate:  time.Date(2021, 2, 24, 0, 0, 0, 0, time.UTC),  // February 24, 2021
 			FSEDate: time.Date(2021, 10, 27, 0, 0, 0, 0, time.UTC), // October 27, 2021
 			MSEDate: time.Date(2022, 8, 24, 0, 0, 0, 0, time.UTC),  // August 24, 2022
+
+			// OS Compatibility
+			MinRHCOSVersion:      "4.7",
+			RHELVersionsAccepted: []string{"7.9"},
 		},
 
 		// End of life
@@ -78,37 +99,110 @@ var (
 			GADate:  time.Date(2020, 10, 27, 0, 0, 0, 0, time.UTC), // October 27, 2020
 			FSEDate: time.Date(2021, 3, 24, 0, 0, 0, 0, time.UTC),  // March 24, 2021
 			MSEDate: time.Date(2021, 10, 18, 0, 0, 0, 0, time.UTC), // October 18, 2022
+
+			// OS Compatibility
+			MinRHCOSVersion:      "4.6",
+			RHELVersionsAccepted: []string{"7.9"},
 		},
 		"4.5": {
 			GADate:  time.Date(2020, 7, 13, 0, 0, 0, 0, time.UTC),  // July 13, 2020
 			FSEDate: time.Date(2020, 11, 27, 0, 0, 0, 0, time.UTC), // November 27, 2020
 			MSEDate: time.Date(2021, 7, 27, 0, 0, 0, 0, time.UTC),  // July 27, 2021
+
+			// OS Compatibility
+			MinRHCOSVersion:      "4.5",
+			RHELVersionsAccepted: []string{"7.8", "7.9"},
 		},
 		"4.4": {
 			GADate:  time.Date(2020, 5, 5, 0, 0, 0, 0, time.UTC),  // May 5, 2020
 			FSEDate: time.Date(2020, 8, 13, 0, 0, 0, 0, time.UTC), // August 13, 2020
 			MSEDate: time.Date(2021, 2, 24, 0, 0, 0, 0, time.UTC), // February 24, 2021
+
+			// OS Compatibility
+			MinRHCOSVersion:      "4.4",
+			RHELVersionsAccepted: []string{"7.6"},
 		},
 		"4.3": {
 			GADate:  time.Date(2020, 1, 23, 0, 0, 0, 0, time.UTC),  // January 23, 2020
 			FSEDate: time.Date(2020, 6, 5, 0, 0, 0, 0, time.UTC),   // June 5, 2020
 			MSEDate: time.Date(2020, 10, 27, 0, 0, 0, 0, time.UTC), // October 27, 2020
+
+			// OS Compatibility
+			MinRHCOSVersion:      "4.3",
+			RHELVersionsAccepted: []string{"7.6"},
 		},
 		"4.2": {
 			GADate:  time.Date(2019, 10, 16, 0, 0, 0, 0, time.UTC), // October 16, 2019
 			FSEDate: time.Date(2020, 2, 23, 0, 0, 0, 0, time.UTC),  // February 23, 2020
 			MSEDate: time.Date(2020, 7, 13, 0, 0, 0, 0, time.UTC),  // July 13, 2020
+
+			// OS Compatibility
+			MinRHCOSVersion:      "4.2",
+			RHELVersionsAccepted: []string{"7.6"},
 		},
 		"4.1": {
 			GADate:  time.Date(2019, 6, 4, 0, 0, 0, 0, time.UTC),   // June 4, 2019
 			FSEDate: time.Date(2019, 11, 16, 0, 0, 0, 0, time.UTC), // November 16, 2019
 			MSEDate: time.Date(2020, 5, 5, 0, 0, 0, 0, time.UTC),   // May 5, 2020
+
+			// OS Compatibility
+			MinRHCOSVersion:      "4.1",
+			RHELVersionsAccepted: []string{"7.6"},
 		},
 	}
 )
 
 func GetLifeCycleDates() map[string]VersionInfo {
 	return ocpLifeCycleDates
+}
+
+func IsRHELCompatible(machineVersion, ocpVersion string) bool {
+	if machineVersion == "" || ocpVersion == "" {
+		return false
+	}
+
+	lifecycleInfo := GetLifeCycleDates()
+	if entry, ok := lifecycleInfo[ocpVersion]; ok {
+		if len(entry.RHELVersionsAccepted) >= 2 { //nolint:gomnd
+			// Need to be a specific major.minor version
+			for _, v := range entry.RHELVersionsAccepted {
+				if v == machineVersion {
+					return true
+				}
+			}
+		} else {
+			// Collect the machine version and the entry version
+			mv, _ := gv.NewVersion(machineVersion)
+			ev, _ := gv.NewVersion(entry.RHELVersionsAccepted[0])
+
+			// If the machine version >= the entry version
+			return mv.GreaterThanOrEqual(ev)
+		}
+	}
+
+	return false
+}
+
+func IsRHCOSCompatible(machineVersion, ocpVersion string) bool {
+	if machineVersion == "" || ocpVersion == "" {
+		return false
+	}
+
+	// Split the incoming version on the "." and make sure we are only looking at major.minor.
+	splitVersion := strings.Split(ocpVersion, ".")
+	ocpVersion = splitVersion[0] + "." + splitVersion[1]
+
+	lifecycleInfo := GetLifeCycleDates()
+	if entry, ok := lifecycleInfo[ocpVersion]; ok {
+		// Collect the machine version and the entry version
+		mv, _ := gv.NewVersion(machineVersion)
+		ev, _ := gv.NewVersion(entry.MinRHCOSVersion)
+
+		// If the machine version >= the entry version
+		return mv.GreaterThanOrEqual(ev)
+	}
+
+	return false
 }
 
 func DetermineOCPStatus(version string, date time.Time) string {
@@ -150,3 +244,52 @@ func DetermineOCPStatus(version string, date time.Time) string {
 
 	return OCPStatusUnknown
 }
+
+/*
+
+Note:
+You must use RHCOS machines for the control plane, and you can use either RHCOS or RHEL for compute machines.
+
+Compatibility information gathered from the release note pages of each release:
+
+4.10
+https://docs.openshift.com/container-platform/4.10/release_notes/ocp-4-10-release-notes.html
+OpenShift Container Platform 4.10 is supported on Red Hat Enterprise Linux (RHEL) 8.4 and 8.5, as well as on Red Hat Enterprise Linux CoreOS (RHCOS) 4.10.
+
+4.9
+https://docs.openshift.com/container-platform/4.9/release_notes/ocp-4-9-release-notes.html
+OpenShift Container Platform 4.9 is supported on Red Hat Enterprise Linux (RHEL) 7.9 and 8.4, as well as on Red Hat Enterprise Linux CoreOS (RHCOS) 4.9.
+
+4.8
+https://docs.openshift.com/container-platform/4.8/release_notes/ocp-4-8-release-notes.html
+OpenShift Container Platform 4.8 is supported on Red Hat Enterprise Linux (RHEL) 7.9 or later, as well as on Red Hat Enterprise Linux CoreOS (RHCOS) 4.8.
+
+4.7
+https://docs.openshift.com/container-platform/4.7/release_notes/ocp-4-7-release-notes.html
+OpenShift Container Platform 4.7 is supported on Red Hat Enterprise Linux (RHEL) 7.9 or later, as well as Red Hat Enterprise Linux CoreOS (RHCOS) 4.7.
+
+4.6
+https://docs.openshift.com/container-platform/4.6/release_notes/ocp-4-6-release-notes.html
+OpenShift Container Platform 4.6 is supported on Red Hat Enterprise Linux 7.9 or later, as well as Red Hat Enterprise Linux CoreOS (RHCOS) 4.6.
+
+4.5
+https://docs.openshift.com/container-platform/4.5/release_notes/ocp-4-5-release-notes.html
+OpenShift Container Platform 4.5 is supported on RHEL 7, version 7.7 or 7.8, as well as Red Hat Enterprise Linux CoreOS (RHCOS) 4.5.
+
+4.4
+https://docs.openshift.com/container-platform/4.4/release_notes/ocp-4-4-release-notes.html
+OpenShift Container Platform 4.4 is supported on Red Hat Enterprise Linux 7.6 or later, as well as Red Hat Enterprise Linux CoreOS (RHCOS) 4.4.
+
+4.3
+https://docs.openshift.com/container-platform/4.3/release_notes/ocp-4-3-release-notes.html
+OpenShift Container Platform 4.3 is supported on Red Hat Enterprise Linux 7.6 or later, as well as Red Hat Enterprise Linux CoreOS 4.3.
+
+4.2
+https://docs.openshift.com/container-platform/4.2/release_notes/ocp-4-2-release-notes.html
+OpenShift Container Platform 4.2 is supported on Red Hat Enterprise Linux 7.6 and later, as well as Red Hat Enterprise Linux CoreOS 4.2.
+
+4.1
+https://docs.openshift.com/container-platform/4.1/release_notes/ocp-4-1-release-notes.html
+OpenShift Container Platform 4.1 is supported on Red Hat Enterprise Linux 7.6 and later, as well as Red Hat Enterprise Linux CoreOS 4.1.
+
+*/
