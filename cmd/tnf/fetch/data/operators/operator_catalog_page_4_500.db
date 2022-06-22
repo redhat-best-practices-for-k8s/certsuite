@@ -1,221 +1,6 @@
 {
   "data": [
     {
-      "_id": "61d44a368093b97ef52e1ff7",
-      "alm_examples": [
-        {
-          "api_version": "apps.cloudcasa.io/v1",
-          "kind": "Cloudcasa",
-          "metadata": {
-            "name": "cloudcasa"
-          },
-          "spec": {
-            "cluster_id": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/catalogicsoftware/cloudcasa-bundle@sha256:c66f5091446dc889a29da265c8c17c21181fe0fb5409eccd71fc4349c3bf0131",
-      "bundle_path_digest": "sha256:c66f5091446dc889a29da265c8c17c21181fe0fb5409eccd71fc4349c3bf0131",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-01-04T13:23:02.040000+00:00",
-      "csv_description": "CloudCasa is a powerful and easy-to-use data protection service for Kubernetes and cloud databases.  Configuration is quick and easy, and basic service is free. \n\n\n### How to Install \n* Create Namespace cloudcasa-operator. \n* Install the CloudCasa Operator by following the instructions presented when you click the Install button. Select **cloudcasa-operator** namespace. \n* After installing the operator, you will need to create an instance of the CloudCasa resource to configure the agent. \n* In order to create the CloudCasa resource you will need to generate a Cluster ID in CloudCasa.\n* Login to https://home.cloudcasa.io and add your OCP cluster under the Protection tab. Note the returned **Cluster ID**.\n* See the CloudCasa [Getting Started Guide](https://cloudcasa.io/get-started) for more information.\n* Navigate to the installed CloudCasa Operator and Click on the CloudCasa tab.\n* Create the CloudCasa resource and provide the **Cluster ID** noted in the previous step.\n\n\n### Supported Features\n\n* **AWS RDS Backup**\n\n* **Kubernetes cluster Backup** \n\n* **Kubernetes cluster restore**\n\n### Installation Checkpoints\n\n* **cloudcasa-io** namespace should be created.\n\n* **kubagent** pod should be created under **cloudcasa-io** namespace and should be in **running state.** \n\n* State of the OCP cluster on CloudCasa web UI should be **Active**.",
-      "csv_display_name": "CloudCasa",
-      "csv_metadata_description": "CloudCasa is a powerful and easy-to-use data protection service for Kubernetes and cloud databases.",
-      "csv_name": "cloudcasa-operator.v2.2.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:07:30.244000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "cloudcasa-operator",
-      "provided_apis": [
-        {
-          "group": "apps.cloudcasa.io",
-          "kind": "Cloudcasa",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:86e5fa1fa294987114be200890c2e516501e424aee0fb98ece25c95e7716295b",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:86e5fa1fa294987114be200890c2e516501e424aee0fb98ece25c95e7716295b",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:31a6966d48485c58b6d136ac9a31c670b273b6f95ed6b3b96a11dbd34570a9cf",
-          "image": "registry.connect.redhat.com/catalogicsoftware/cloudcasa-operator@sha256:31a6966d48485c58b6d136ac9a31c670b273b6f95ed6b3b96a11dbd34570a9cf",
-          "name": "cloudcasa-operator"
-        },
-        {
-          "digest": "sha256:86e5fa1fa294987114be200890c2e516501e424aee0fb98ece25c95e7716295b",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:86e5fa1fa294987114be200890c2e516501e424aee0fb98ece25c95e7716295b",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:31a6966d48485c58b6d136ac9a31c670b273b6f95ed6b3b96a11dbd34570a9cf",
-          "image": "registry.connect.redhat.com/catalogicsoftware/cloudcasa-operator@sha256:31a6966d48485c58b6d136ac9a31c670b273b6f95ed6b3b96a11dbd34570a9cf",
-          "name": "cloudcasa-operator-31a6966d48485c58b6d136ac9a31c670b273b6f95ed6b3b96a11dbd34570a9cf-annotation"
-        },
-        {
-          "digest": "sha256:31a6966d48485c58b6d136ac9a31c670b273b6f95ed6b3b96a11dbd34570a9cf",
-          "image": "registry.connect.redhat.com/catalogicsoftware/cloudcasa-operator@sha256:31a6966d48485c58b6d136ac9a31c670b273b6f95ed6b3b96a11dbd34570a9cf",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.2.0",
-      "version_original": "2.2.0"
-    },
-    {
-      "_id": "61d44a82d467cd4ec03ef98a",
-      "alm_examples": [
-        {
-          "api_version": "ezmeral.hpe.com/v1",
-          "kind": "HPEEzmeralCSIDriver",
-          "metadata": {
-            "name": "hpeezmeralcsidriver"
-          },
-          "spec": {
-            "controllerImage": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
-            "nodeImage": "registry.connect.redhat.com/maprtech/csi-kdfplugin@sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
-            "pullPolicy": "Always"
-          }
-        },
-        {
-          "api_version": "ezmeral.hpe.com/v1",
-          "kind": "HPEEzmeralNFSCSIDriver",
-          "metadata": {
-            "name": "hpeezmeralnfscsidriver"
-          },
-          "spec": {
-            "controllerImage": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
-            "nodeImage": "registry.connect.redhat.com/maprtech/csi-nfsplugin@sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
-            "pullPolicy": "Always"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator-bundle@sha256:78c606d805d196915a282b66ac05258c6205515498887f3d02c3e1b67e459bae",
-      "bundle_path_digest": "sha256:78c606d805d196915a282b66ac05258c6205515498887f3d02c3e1b67e459bae",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-01-04T13:24:18.531000+00:00",
-      "csv_description": "The HPE Ezmeral CSI Operator for Kubernetes packages, deploys, manages, upgrades the HPE Ezmeral CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on HPE Ezmeral Data Fabric platform.\nThe HPE Ezmeral CSI Driver for Kubernetes leverages HPE Ezmeral Data Fabric platform to provide scalable and persistent storage for stateful applications. Please refer to our CSI driver [documentation](https://docs.datafabric.hpe.com/home/CSIdriver/csi_overview.html) for full list of supported CSI features.\n## Installation\nRefer to the HPE Ezmeral CSI Operator for Kubernetes [documentation](https://docs.datafabric.hpe.com/home/CSIdriver/csi_installing_operator.html)\n",
-      "csv_display_name": "HPE Ezmeral Data Fabric CSI Operator for Kubernetes",
-      "csv_metadata_description": "A Container Storage Interface (CSI) driver for HPE Ezmeral Data Fabric platform. The CSI driver allows you to use HPE Ezmeral Data Fabric with your preferred container orchestrator.",
-      "csv_name": "hpe-ezmeral-csi-operator.v1.0.8",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:11:04.132000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "hpe-ezmeral-csi-operator",
-      "provided_apis": [
-        {
-          "group": "ezmeral.hpe.com",
-          "kind": "HPEEzmeralCSIDriver",
-          "plural": "hpeezmeralcsidrivers",
-          "version": "v1"
-        },
-        {
-          "group": "ezmeral.hpe.com",
-          "kind": "HPEEzmeralNFSCSIDriver",
-          "plural": "hpeezmeralnfscsidrivers",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
-          "image": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator@sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
-          "name": "hpe-ezmeral-csi-operator-82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f-annotation"
-        },
-        {
-          "digest": "sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
-          "image": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator@sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
-          "name": "hpe-ezmeral-csi-operator"
-        },
-        {
-          "digest": "sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
-          "image": "registry.connect.redhat.com/maprtech/csi-nfsplugin@sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
-          "name": "csi-nfsplugin-35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822-annotation"
-        },
-        {
-          "digest": "sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
-          "image": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
-          "name": "csi-kdfprovisioner-89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42-annotation"
-        },
-        {
-          "digest": "sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
-          "image": "registry.connect.redhat.com/maprtech/csi-kdfplugin@sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
-          "name": "csi-kdfplugin-480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef-annotation"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.0.8",
-      "version_original": "1.0.8"
-    },
-    {
       "_id": "61d478d517f914cd7233120c",
       "alm_examples": [
         {
@@ -55996,104 +55781,6 @@
       "version_original": "2.1.0"
     },
     {
-      "_id": "62345f6c5593ce895a7b534d",
-      "alm_examples": [
-        {
-          "api_version": "storage.hpe.com/v1",
-          "kind": "HPECSIDriver",
-          "metadata": {
-            "name": "csi-driver"
-          },
-          "spec": {
-            "cspClientTimeout": 60,
-            "disable": {
-              "alletra6000": false,
-              "alletra9000": false,
-              "nimble": false,
-              "primera": false
-            },
-            "disableNodeConformance": false,
-            "disableNodeGetVolumeStats": false,
-            "imagePullPolicy": "IfNotPresent",
-            "iscsi": {
-              "chapPassword": "",
-              "chapUser": ""
-            },
-            "kubeletRootDir": "/var/lib/kubelet/",
-            "logLevel": "info",
-            "registry": "quay.io"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hpestorage/csi-driver-operator-bundle@sha256:24d8008a3b72f61d720a20f0f12eecc5b13fdc0916edcb7cb0ae99498c012c9b",
-      "bundle_path_digest": "sha256:24d8008a3b72f61d720a20f0f12eecc5b13fdc0916edcb7cb0ae99498c012c9b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:31:08.813000+00:00",
-      "csv_description": "The HPE CSI Operator for Kubernetes packages, deploys, manages, upgrades the HPE CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on HPE storage systems.\nThe HPE CSI Driver for Kubernetes leverages HPE storage platforms to provide scalable and persistent storage for stateful applications. Please refer to our CSI driver [documentation](https://scod.hpedev.io/csi_driver/index.html) for supported HPE platforms and full list of supported CSI features.\n## Installation\nRefer to the HPE CSI Operator for Kubernetes [documentation](https://scod.hpedev.io/csi_driver/deployment.html#operator).\n",
-      "csv_display_name": "HPE CSI Operator for Kubernetes",
-      "csv_metadata_description": "A Container Storage Interface (CSI) driver for HPE storage platforms. The CSI driver allows you to use HPE storage with your preferred container orchestrator.",
-      "csv_name": "hpe-csi-operator.v2.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:41:36.927000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "hpe-csi-operator",
-      "provided_apis": [
-        {
-          "group": "storage.hpe.com",
-          "kind": "HPECSIDriver",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "name": "csi-driver-operator-e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771-annotation"
-        },
-        {
-          "digest": "sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "name": "hpe-csi-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2.0.0",
-      "version_original": "2.0.0"
-    },
-    {
       "_id": "62345f70670f4cadbafad2a2",
       "alm_examples": [
         {
@@ -82760,9 +82447,140 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.2.3",
       "version_original": "1.2.3"
+    },
+    {
+      "_id": "6262a589173a0d36cf5d694a",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:ade7cee1cfce9d5a5badbcca507fdda3baa842c80f36458a2d6c3ecd5876e25d",
+      "bundle_path_digest": "sha256:ade7cee1cfce9d5a5badbcca507fdda3baa842c80f36458a2d6c3ecd5876e25d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:54:33.183000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "mongodb-enterprise.v1.4.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:27:00.318000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.4.0",
+      "version_original": "1.4.0"
+    },
+    {
+      "_id": "6262a597173a0d36cf5d694e",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:e1c153bcadefa513dcb4df736084dcd6885ef014e7ff34dbbbeba8158839c59c",
+      "bundle_path_digest": "sha256:e1c153bcadefa513dcb4df736084dcd6885ef014e7ff34dbbbeba8158839c59c",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:54:47.975000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "t8c-operator.v7.22.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:22:32.039000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "t8c-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "7.22.0",
+      "version_original": "7.22.0"
+    },
+    {
+      "_id": "6262a5a084481d5f5229992d",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:2d8738da44e668d4b04958e371120e20dddfcb5cfd2be2e3a988b6c3111e88f5",
+      "bundle_path_digest": "sha256:2d8738da44e668d4b04958e371120e20dddfcb5cfd2be2e3a988b6c3111e88f5",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:54:56.469000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nastel-navigator-operator.v0.0.16",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:20:58.142000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nastel-navigator-operator-certified",
+      "provided_apis": [
+        {
+          "group": "navigator.nastel.com",
+          "kind": "NastelNavigator",
+          "plural": "nastelnavigators",
+          "version": "v1alpha6"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.16",
+      "version_original": "0.0.16"
     }
   ],
   "page": 4,
   "page_size": 500,
-  "total": 3813
+  "total": 3811
 }

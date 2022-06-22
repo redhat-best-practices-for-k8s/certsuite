@@ -61751,104 +61751,6 @@
       "version_original": "2.1.0"
     },
     {
-      "_id": "611fbd319f14588c41ebe8eb",
-      "alm_examples": [
-        {
-          "api_version": "storage.hpe.com/v1",
-          "kind": "HPECSIDriver",
-          "metadata": {
-            "name": "csi-driver"
-          },
-          "spec": {
-            "cspClientTimeout": 60,
-            "disable": {
-              "alletra6000": false,
-              "alletra9000": false,
-              "nimble": false,
-              "primera": false
-            },
-            "disableNodeConformance": false,
-            "disableNodeGetVolumeStats": false,
-            "imagePullPolicy": "IfNotPresent",
-            "iscsi": {
-              "chapPassword": "",
-              "chapUser": ""
-            },
-            "kubeletRootDir": "/var/lib/kubelet/",
-            "logLevel": "info",
-            "registry": "quay.io"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hpestorage/csi-driver-operator-bundle@sha256:24d8008a3b72f61d720a20f0f12eecc5b13fdc0916edcb7cb0ae99498c012c9b",
-      "bundle_path_digest": "sha256:24d8008a3b72f61d720a20f0f12eecc5b13fdc0916edcb7cb0ae99498c012c9b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-08-20T14:33:21.047000+00:00",
-      "csv_description": "The HPE CSI Operator for Kubernetes packages, deploys, manages, upgrades the HPE CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on HPE storage systems.\nThe HPE CSI Driver for Kubernetes leverages HPE storage platforms to provide scalable and persistent storage for stateful applications. Please refer to our CSI driver [documentation](https://scod.hpedev.io/csi_driver/index.html) for supported HPE platforms and full list of supported CSI features.\n## Installation\nRefer to the HPE CSI Operator for Kubernetes [documentation](https://scod.hpedev.io/csi_driver/deployment.html#operator).\n",
-      "csv_display_name": "HPE CSI Operator for Kubernetes",
-      "csv_metadata_description": "A Container Storage Interface (CSI) driver for HPE storage platforms. The CSI driver allows you to use HPE storage with your preferred container orchestrator.",
-      "csv_name": "hpe-csi-operator.v2.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:51:21.217000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "hpe-csi-operator",
-      "provided_apis": [
-        {
-          "group": "storage.hpe.com",
-          "kind": "HPECSIDriver",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "name": "csi-driver-operator-e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771-annotation"
-        },
-        {
-          "digest": "sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "name": "hpe-csi-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "2.0.0",
-      "version_original": "2.0.0"
-    },
-    {
       "_id": "611fbd46bd674341b5c5f0fb",
       "alm_examples": [
         {
@@ -78931,9 +78833,135 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "3.0.0",
       "version_original": "3.0.0"
+    },
+    {
+      "_id": "61456f841ea8a4ec32b3791c",
+      "alm_examples": [
+        {
+          "api_version": "hxcsi.cisco.com/v1",
+          "kind": "HXCSIDriver",
+          "metadata": {
+            "name": "cisco-hyperflex-csi-driver"
+          },
+          "spec": {
+            "affinity": {},
+            "autoscaling": {},
+            "fullnameOverride": "",
+            "hx": {
+              "clientId": "INPUT_VALUE_HERE",
+              "dockerRegistryName": "INPUT_VALUE_HERE",
+              "iscsiUrl": "INPUT_VALUE_HERE",
+              "token": "INPUT_VALUE_HERE",
+              "url": "INPUT_VALUE_HERE"
+            },
+            "image": {
+              "attacher": "hxcsi-csi-attacher:3.2.0-cisco1",
+              "hxcsi": "hxcsi-ubi8:hxcsi-1.2.2-latest",
+              "provisioner": "hxcsi-csi-provisioner:2.1.2-cisco1",
+              "pullPolicy": "Always",
+              "registrar": "hxcsi-csi-node-driver-registrar:2.1.0-cisco1",
+              "resizer": "hxcsi-csi-resizer:1.1.0-cisco1",
+              "tag": ""
+            },
+            "imagePullSecrets": [],
+            "ingress": {},
+            "nameOverride": "",
+            "nodeSelector": {},
+            "podAnnotations": {},
+            "podSecurityContext": {},
+            "replicaCount": 2,
+            "resources": {},
+            "securityContext": {},
+            "service": {},
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": ""
+            },
+            "storageClass": {
+              "isDefault": "false",
+              "name": "hyperflex"
+            },
+            "tolerations": []
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/hxcsiadmin/hxcsi-helm-bundle@sha256:1537b6e2a05383eacad38c4606d4328e25bebb0e088c96fd6db10f86dcdbd10a",
+      "bundle_path_digest": "sha256:1537b6e2a05383eacad38c4606d4328e25bebb0e088c96fd6db10f86dcdbd10a",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-09-18T04:48:04.331000+00:00",
+      "csv_description": "\nCisco HyperFlex Data Platform (HX Data Platform) is a hyperconverged software appliance that transforms Cisco servers into a single pool of compute and storage resources. It eliminates the need for network storage and enables seamless interoperability between computing and storage in virtual environments. The Cisco HX Data Platform provides a highly fault-tolerant distributed storage system that preserves data integrity and optimizes performance for virtual machine (VM) storage workloads. In addition, native compression and deduplication reduce storage space occupied by the VMs and VM workloads.\n### HyperFlex CSI Driver\nThe Cisco HyperFlex Kubernetes CSI Integration allows Cisco HyperFlex to dynamically provide persistent storage to stateful Kubernetes workloads running on Cisco HyperFlex. The integration enables orchestration of the entire Persistent Volume object lifecycle to be offloaded and managed by Cisco HyperFlex, while being driven (initiated) by developers and users through standard Kubernetes Persistent Volume Claim objects. Developers and users get the benefit of leveraging Cisco HyperFlex for their Kubernetes persistent storage needs with zero additional administration overhead from their perspective.\n### Features Support\n- Support for CSI Spec 1.2 APIs\n- Kubernetes 1.18, 1.19, 1.20 support\n- Kubernetes Cluster multi tenancy target masking using dedicated initiator group\n- Dynamic creation and deletion of volumes\n- Dynamic volume attach and detach * Block access support\n- Clone volume (when source volume is from the same Datastore)\n- PV support with different filesystems (Ext4, Ext3, XFS)\n- Volume space statistics reporting per CSI specs\n- Multi-writer support (ReadWriteMany) for Block Mode only\n- Volume resize support for block mode volumes and ext3, ext4 filesystem volumes (expansion)\n",
+      "csv_display_name": "Cisco Hyperflex CSI Operator",
+      "csv_metadata_description": "Cisco HXCSI Plugin for RedHat OpenShift Platform",
+      "csv_name": "cisco-hxcsi-operator.v1.2.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:09:11.970000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "cisco-hxcsi-operator",
+      "provided_apis": [
+        {
+          "group": "hxcsi.cisco.com",
+          "kind": "HXCSIDriver",
+          "plural": "hxcsidrivers",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:0daadef5d80ec8c170f8ac04553c2f3296f17ced72507ccad77592c4323b3ef1",
+          "image": "quay.io/hxcsiadmin/hxcsi-helm-bundle@sha256:0daadef5d80ec8c170f8ac04553c2f3296f17ced72507ccad77592c4323b3ef1",
+          "name": "hxcsi-helm-bundle-0daadef5d80ec8c170f8ac04553c2f3296f17ced72507ccad77592c4323b3ef1-annotation"
+        },
+        {
+          "digest": "sha256:deb80f8e208b0133a91fb62909eec014d6245ea7fa8f0040411d019a545bd43a",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:deb80f8e208b0133a91fb62909eec014d6245ea7fa8f0040411d019a545bd43a",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:200954bc7d4c13673e1461bff2031687a10b20f8f9ae6c1271f447bb1afd1a44",
+          "image": "quay.io/hxcsiadmin/hxcsi-helm-operator@sha256:200954bc7d4c13673e1461bff2031687a10b20f8f9ae6c1271f447bb1afd1a44",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.2.2",
+      "version_original": "1.2.2"
     }
   ],
   "page": 2,
   "page_size": 500,
-  "total": 3813
+  "total": 3811
 }
