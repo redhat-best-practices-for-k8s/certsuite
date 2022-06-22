@@ -24,6 +24,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 )
 
 // NodeTainted holds information about tainted nodes.
@@ -70,16 +71,6 @@ func (nt *NodeTainted) GetKernelTaintInfo(ctx clientsholder.Context) (string, er
 	return output, nil
 }
 
-func removeEmptyStrings(s []string) []string {
-	var r []string
-	for _, str := range s {
-		if str != "" {
-			r = append(r, str)
-		}
-	}
-	return r
-}
-
 func (nt *NodeTainted) GetModulesFromNode(ctx clientsholder.Context) []string {
 	// Get the 1st column list of the modules running on the node.
 	// Split on the return/newline and get the list of the modules back.
@@ -88,7 +79,7 @@ func (nt *NodeTainted) GetModulesFromNode(ctx clientsholder.Context) []string {
 	output, _ := nt.runCommand(ctx, command)
 	output = strings.ReplaceAll(output, "\t", "")
 	moduleList := strings.Split(strings.ReplaceAll(output, "\r\n", "\n"), "\n")
-	return removeEmptyStrings(moduleList)
+	return stringhelper.RemoveEmptyStrings(moduleList)
 }
 
 func (nt *NodeTainted) ModuleInTree(moduleName string, ctx clientsholder.Context) bool {
