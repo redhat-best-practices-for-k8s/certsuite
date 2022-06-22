@@ -1,6 +1,1726 @@
 {
   "data": [
     {
+      "_id": "621e1ca283933ad10b40bb08",
+      "alm_examples": [
+        {
+          "api_version": "pmem-csi.intel.com/v1beta1",
+          "kind": "PmemCSIDeployment",
+          "metadata": {
+            "name": "pmem-csi.intel.com"
+          },
+          "spec": {
+            "deviceMode": "lvm",
+            "nodeSelector": {
+              "feature.node.kubernetes.io/memory-nv.dax": "true"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
+      "bundle_path_digest": "sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-01T13:16:18.749000+00:00",
+      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
+      "csv_display_name": "Operator for PMEM-CSI driver",
+      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
+      "csv_name": "pmem-csi-operator-os.v1.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:58:11.909000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "pmem-csi-operator-os",
+      "provided_apis": [
+        {
+          "group": "pmem-csi.intel.com",
+          "kind": "PmemCSIDeployment",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "name": "pmem-csi-driver-os-6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576-annotation"
+        },
+        {
+          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "name": "pmem-csi-operator-os"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.0.2",
+      "version_original": "1.0.2"
+    },
+    {
+      "_id": "621e2075207e0eb39180835f",
+      "alm_examples": [
+        {
+          "api_version": "pmem-csi.intel.com/v1beta1",
+          "kind": "PmemCSIDeployment",
+          "metadata": {
+            "name": "pmem-csi.intel.com"
+          },
+          "spec": {
+            "deviceMode": "lvm",
+            "nodeSelector": {
+              "feature.node.kubernetes.io/memory-nv.dax": "true"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
+      "bundle_path_digest": "sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-01T13:32:37.657000+00:00",
+      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
+      "csv_display_name": "Operator for PMEM-CSI driver",
+      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
+      "csv_name": "pmem-csi-operator-os.v1.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:16:19.020000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "pmem-csi-operator-os",
+      "provided_apis": [
+        {
+          "group": "pmem-csi.intel.com",
+          "kind": "PmemCSIDeployment",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "name": "pmem-csi-driver-os-6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576-annotation"
+        },
+        {
+          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "name": "pmem-csi-operator-os"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.0.2",
+      "version_original": "1.0.2"
+    },
+    {
+      "_id": "621e20765c4460caf3124560",
+      "alm_examples": [
+        {
+          "api_version": "pmem-csi.intel.com/v1beta1",
+          "kind": "PmemCSIDeployment",
+          "metadata": {
+            "name": "pmem-csi.intel.com"
+          },
+          "spec": {
+            "deviceMode": "lvm",
+            "nodeSelector": {
+              "feature.node.kubernetes.io/memory-nv.dax": "true"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
+      "bundle_path_digest": "sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-01T13:32:38.195000+00:00",
+      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
+      "csv_display_name": "Operator for PMEM-CSI driver",
+      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
+      "csv_name": "pmem-csi-operator-os.v1.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:08:14.854000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "pmem-csi-operator-os",
+      "provided_apis": [
+        {
+          "group": "pmem-csi.intel.com",
+          "kind": "PmemCSIDeployment",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "name": "pmem-csi-driver-os-6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576-annotation"
+        },
+        {
+          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "name": "pmem-csi-operator-os"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.0.2",
+      "version_original": "1.0.2"
+    },
+    {
+      "_id": "621e221f207e0eb391808369",
+      "alm_examples": [
+        {
+          "api_version": "pmem-csi.intel.com/v1beta1",
+          "kind": "PmemCSIDeployment",
+          "metadata": {
+            "name": "pmem-csi.intel.com"
+          },
+          "spec": {
+            "deviceMode": "lvm",
+            "nodeSelector": {
+              "feature.node.kubernetes.io/memory-nv.dax": "true"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
+      "bundle_path_digest": "sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-01T13:39:43.109000+00:00",
+      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
+      "csv_display_name": "Operator for PMEM-CSI driver",
+      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
+      "csv_name": "pmem-csi-operator-os.v1.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:10:59.646000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "pmem-csi-operator-os",
+      "provided_apis": [
+        {
+          "group": "pmem-csi.intel.com",
+          "kind": "PmemCSIDeployment",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "name": "pmem-csi-driver-os-6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576-annotation"
+        },
+        {
+          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "name": "pmem-csi-operator-os"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.0.2",
+      "version_original": "1.0.2"
+    },
+    {
+      "_id": "621e221f207e0eb39180836a",
+      "alm_examples": [
+        {
+          "api_version": "pmem-csi.intel.com/v1beta1",
+          "kind": "PmemCSIDeployment",
+          "metadata": {
+            "name": "pmem-csi.intel.com"
+          },
+          "spec": {
+            "deviceMode": "lvm",
+            "nodeSelector": {
+              "feature.node.kubernetes.io/memory-nv.dax": "true"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
+      "bundle_path_digest": "sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-01T13:39:43.724000+00:00",
+      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
+      "csv_display_name": "Operator for PMEM-CSI driver",
+      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
+      "csv_name": "pmem-csi-operator-os.v1.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:58:11.782000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "pmem-csi-operator-os",
+      "provided_apis": [
+        {
+          "group": "pmem-csi.intel.com",
+          "kind": "PmemCSIDeployment",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "name": "pmem-csi-driver-os-6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576-annotation"
+        },
+        {
+          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "name": "pmem-csi-operator-os"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.0.2",
+      "version_original": "1.0.2"
+    },
+    {
+      "_id": "621e22955c4460caf312456e",
+      "alm_examples": [
+        {
+          "api_version": "pmem-csi.intel.com/v1beta1",
+          "kind": "PmemCSIDeployment",
+          "metadata": {
+            "name": "pmem-csi.intel.com"
+          },
+          "spec": {
+            "deviceMode": "lvm",
+            "nodeSelector": {
+              "feature.node.kubernetes.io/memory-nv.dax": "true"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
+      "bundle_path_digest": "sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-01T13:41:41.694000+00:00",
+      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
+      "csv_display_name": "Operator for PMEM-CSI driver",
+      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
+      "csv_name": "pmem-csi-operator-os.v1.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:59:13.481000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "pmem-csi-operator-os",
+      "provided_apis": [
+        {
+          "group": "pmem-csi.intel.com",
+          "kind": "PmemCSIDeployment",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "name": "pmem-csi-driver-os-6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576-annotation"
+        },
+        {
+          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "name": "pmem-csi-operator-os"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.0.2",
+      "version_original": "1.0.2"
+    },
+    {
+      "_id": "621e22955c4460caf312456f",
+      "alm_examples": [
+        {
+          "api_version": "pmem-csi.intel.com/v1beta1",
+          "kind": "PmemCSIDeployment",
+          "metadata": {
+            "name": "pmem-csi.intel.com"
+          },
+          "spec": {
+            "deviceMode": "lvm",
+            "nodeSelector": {
+              "feature.node.kubernetes.io/memory-nv.dax": "true"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
+      "bundle_path_digest": "sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-01T13:41:41.944000+00:00",
+      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
+      "csv_display_name": "Operator for PMEM-CSI driver",
+      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
+      "csv_name": "pmem-csi-operator-os.v1.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:13:49.220000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "pmem-csi-operator-os",
+      "provided_apis": [
+        {
+          "group": "pmem-csi.intel.com",
+          "kind": "PmemCSIDeployment",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "name": "pmem-csi-driver-os-6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576-annotation"
+        },
+        {
+          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
+          "name": "pmem-csi-operator-os"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.0.2",
+      "version_original": "1.0.2"
+    },
+    {
+      "_id": "621e6337bf15cd3a565ef917",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "OpenshiftXray",
+          "metadata": {
+            "name": "openshiftxray"
+          },
+          "spec": {
+            "xray": {
+              "analysis": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-analysis"
+                },
+                "name": "xray-analysis",
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "common": {
+                "xrayGroupId": "1000721035",
+                "xrayUserId": "1000721035"
+              },
+              "database": {
+                "password": "OVERRIDE",
+                "url": "OVERRIDE",
+                "user": "OVERRIDE"
+              },
+              "global": {},
+              "indexer": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-indexer"
+                },
+                "name": "xray-indexer",
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "persist": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-persist"
+                },
+                "name": "xray-persist",
+                "persistence": {
+                  "size": "10Gi"
+                },
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "postgresql": {
+                "enabled": false
+              },
+              "rabbitmq": {
+                "auth": {
+                  "erlangCookie": "XRAYRABBITMQCLUSTER",
+                  "password": "xray",
+                  "tls": {
+                    "caCertificate": "",
+                    "enabled": false,
+                    "failIfNoPeerCert": true,
+                    "serverCertificate": "",
+                    "serverKey": "",
+                    "sslOptionsVerify": "verify_peer"
+                  },
+                  "username": "xray"
+                },
+                "enabled": true,
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-rabbitmq"
+                },
+                "podSecurityContext": {
+                  "fsGroup": 1000721001,
+                  "runAsUser": 1000721001
+                },
+                "rbac": {
+                  "create": true
+                },
+                "replicaCount": 1
+              },
+              "rabbitmq-ha": {
+                "enabled": false,
+                "image": {
+                  "repository": "registry.connect.redhat.com/jfrog/xray-rabbitmq"
+                },
+                "initContainer": {
+                  "enabled": false
+                },
+                "managementPassword": "guest",
+                "managementUsername": "guest",
+                "rabbitmqPassword": "guest",
+                "rabbitmqUsername": "guest",
+                "replicaCount": 1,
+                "securityContext": {
+                  "fsGroup": 1000721035,
+                  "runAsGroup": 1000721035,
+                  "runAsUser": 1000721035
+                }
+              },
+              "replicaCount": 1,
+              "router": {
+                "image": {
+                  "imagePullPolicy": "IfNotPresent",
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-router"
+                },
+                "name": "router"
+              },
+              "server": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-server"
+                },
+                "name": "xray-server",
+                "podManagementPolicy": "Parallel",
+                "replicaCount": 1,
+                "updateStrategy": "RollingUpdate"
+              },
+              "unifiedUpgradeAllowed": "true",
+              "xray": {
+                "consoleLog": false,
+                "jfrogUrl": "OVERRIDE",
+                "joinKey": "OVERRIDE",
+                "masterKey": "OVERRIDE"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/xray-operator-bundle@sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
+      "bundle_path_digest": "sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-01T18:17:27.313000+00:00",
+      "csv_description": "## Overview Openshift Operator to deploy JFrog Xray Continuous Security scanner into your Openshift cluster. NOTE: Artifactory is required for JFrog Xray to connect with and scan artifacts against.\n### Major version v2.0.4 Breaking change notification!!\nThis release has major bug fix for Rabbitmq Pod. Please update to version 2.0.4 of the operator.\n### Major version v2.0.0 Breaking change notification!! Xray is dependent upon Rabbitmq. The version of Rabbitmq that this chart uses has significantly changed from version 1.1.8 of the operator. For full details on how to migrate please visit: `https://github.com/jfrog/charts/blob/master/stable/xray/RABBITMQ_MIGRATION_NOTES.md`\nIf you are using operator version < 2.1.0 there is a issue with upgrade where xray version is not updated if you update operator version.As workaround you can update the Custom Resource OpenshiftXray which has hardcored image tag value.After upgrading to version 2.1.0 you can remove the image tags parameters from your CR so that future upgrade works without workaround.\n### Security Context Constraints To deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc. ``` oc adm policy add-scc-to-user anyuid -z xray-operator ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray-rabbitmq-ha ``` ## Usage An external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it. Search for JFrog and click JFrog Xray Operator to install. Go to the Installed Operators. Wait for the JFrog Xray Operator to complete the installation. Open the Operator and click on the provided API: Xray Click Create New Instance and provide the following parameters for your DB configuration: ``` JFROG_URL DATABASE_URL DATABASE_USER DATABASE_PASSWORD ``` JFROG_URL is the external ip or DNS of your Artifactory to connect Xray to. Artifactory is required to use this operator. You can set your JFROG_URL to the service name of your Artifactory Nginx: ``` oc get svc -n my_namespace | grep nginx ``` DATABASE_URL must be a Postgresql URL in the format: `` postgres://postgres-postgresql:5432/xraydb?sslmode=disable `` DATABASE_USER and DATABASE_PASSWORD must supply a valid user on Postgresql. Click Create for Xray to deploy into OpenShift. Open Artifactory in a web browser to complete the onboarding wizard for Xray! ### Air gap environments To use Xray Operator in an air gap environment you will need to download the images as image streams into your Openshift air gap cluster manually. Use the image overrides to then specify the image stream locations that are local to your cluster. Next you will need to setup the database of index data for xray to use when scanning artifacts. Follow the link below for instructions on setup: https://www.jfrog.com/confluence/display/JFROG/Configuring+Xray#ConfiguringXray-SynchronizingtheDatabase ",
+      "csv_display_name": "JFrog Xray Continuous Security Operator",
+      "csv_metadata_description": "JFrog Xray Enterprise deploys Xray continuous security scanner into Openshift (Requires Jfrog Artifactory)",
+      "csv_name": "xray-operator.v2.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:02:35.769000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "openshiftxray-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftXray",
+          "plural": "openshiftxrays",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
+          "image": "registry.connect.redhat.com/jfrog/xray-server@sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
+          "name": "xray-server"
+        },
+        {
+          "digest": "sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
+          "image": "registry.connect.redhat.com/jfrog/xray-analysis@sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
+          "name": "xray-analysis"
+        },
+        {
+          "digest": "sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
+          "image": "registry.connect.redhat.com/jfrog/xray-persist@sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
+          "name": "xray-persist"
+        },
+        {
+          "digest": "sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
+          "image": "registry.connect.redhat.com/jfrog/xray-indexer@sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
+          "name": "xray-indexer"
+        },
+        {
+          "digest": "sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
+          "image": "registry.connect.redhat.com/jfrog/xray-router@sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
+          "name": "xray-router"
+        },
+        {
+          "digest": "sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
+          "image": "registry.connect.redhat.com/jfrog/xray-rabbitmq@sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
+          "name": "xray-rabbitmq"
+        },
+        {
+          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "name": "xray-operator"
+        },
+        {
+          "digest": "sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
+          "image": "registry.connect.redhat.com/jfrog/init@sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
+          "name": "init-container"
+        },
+        {
+          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "name": "xray-operator-a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.1.0",
+      "version_original": "2.1.0"
+    },
+    {
+      "_id": "621e63b883933ad10b40bc76",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "OpenshiftXray",
+          "metadata": {
+            "name": "openshiftxray"
+          },
+          "spec": {
+            "xray": {
+              "analysis": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-analysis"
+                },
+                "name": "xray-analysis",
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "common": {
+                "xrayGroupId": "1000721035",
+                "xrayUserId": "1000721035"
+              },
+              "database": {
+                "password": "OVERRIDE",
+                "url": "OVERRIDE",
+                "user": "OVERRIDE"
+              },
+              "global": {},
+              "indexer": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-indexer"
+                },
+                "name": "xray-indexer",
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "persist": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-persist"
+                },
+                "name": "xray-persist",
+                "persistence": {
+                  "size": "10Gi"
+                },
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "postgresql": {
+                "enabled": false
+              },
+              "rabbitmq": {
+                "auth": {
+                  "erlangCookie": "XRAYRABBITMQCLUSTER",
+                  "password": "xray",
+                  "tls": {
+                    "caCertificate": "",
+                    "enabled": false,
+                    "failIfNoPeerCert": true,
+                    "serverCertificate": "",
+                    "serverKey": "",
+                    "sslOptionsVerify": "verify_peer"
+                  },
+                  "username": "xray"
+                },
+                "enabled": true,
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-rabbitmq"
+                },
+                "podSecurityContext": {
+                  "fsGroup": 1000721001,
+                  "runAsUser": 1000721001
+                },
+                "rbac": {
+                  "create": true
+                },
+                "replicaCount": 1
+              },
+              "rabbitmq-ha": {
+                "enabled": false,
+                "image": {
+                  "repository": "registry.connect.redhat.com/jfrog/xray-rabbitmq"
+                },
+                "initContainer": {
+                  "enabled": false
+                },
+                "managementPassword": "guest",
+                "managementUsername": "guest",
+                "rabbitmqPassword": "guest",
+                "rabbitmqUsername": "guest",
+                "replicaCount": 1,
+                "securityContext": {
+                  "fsGroup": 1000721035,
+                  "runAsGroup": 1000721035,
+                  "runAsUser": 1000721035
+                }
+              },
+              "replicaCount": 1,
+              "router": {
+                "image": {
+                  "imagePullPolicy": "IfNotPresent",
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-router"
+                },
+                "name": "router"
+              },
+              "server": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-server"
+                },
+                "name": "xray-server",
+                "podManagementPolicy": "Parallel",
+                "replicaCount": 1,
+                "updateStrategy": "RollingUpdate"
+              },
+              "unifiedUpgradeAllowed": "true",
+              "xray": {
+                "consoleLog": false,
+                "jfrogUrl": "OVERRIDE",
+                "joinKey": "OVERRIDE",
+                "masterKey": "OVERRIDE"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/xray-operator-bundle@sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
+      "bundle_path_digest": "sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-01T18:19:36.563000+00:00",
+      "csv_description": "## Overview Openshift Operator to deploy JFrog Xray Continuous Security scanner into your Openshift cluster. NOTE: Artifactory is required for JFrog Xray to connect with and scan artifacts against.\n### Major version v2.0.4 Breaking change notification!!\nThis release has major bug fix for Rabbitmq Pod. Please update to version 2.0.4 of the operator.\n### Major version v2.0.0 Breaking change notification!! Xray is dependent upon Rabbitmq. The version of Rabbitmq that this chart uses has significantly changed from version 1.1.8 of the operator. For full details on how to migrate please visit: `https://github.com/jfrog/charts/blob/master/stable/xray/RABBITMQ_MIGRATION_NOTES.md`\nIf you are using operator version < 2.1.0 there is a issue with upgrade where xray version is not updated if you update operator version.As workaround you can update the Custom Resource OpenshiftXray which has hardcored image tag value.After upgrading to version 2.1.0 you can remove the image tags parameters from your CR so that future upgrade works without workaround.\n### Security Context Constraints To deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc. ``` oc adm policy add-scc-to-user anyuid -z xray-operator ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray-rabbitmq-ha ``` ## Usage An external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it. Search for JFrog and click JFrog Xray Operator to install. Go to the Installed Operators. Wait for the JFrog Xray Operator to complete the installation. Open the Operator and click on the provided API: Xray Click Create New Instance and provide the following parameters for your DB configuration: ``` JFROG_URL DATABASE_URL DATABASE_USER DATABASE_PASSWORD ``` JFROG_URL is the external ip or DNS of your Artifactory to connect Xray to. Artifactory is required to use this operator. You can set your JFROG_URL to the service name of your Artifactory Nginx: ``` oc get svc -n my_namespace | grep nginx ``` DATABASE_URL must be a Postgresql URL in the format: `` postgres://postgres-postgresql:5432/xraydb?sslmode=disable `` DATABASE_USER and DATABASE_PASSWORD must supply a valid user on Postgresql. Click Create for Xray to deploy into OpenShift. Open Artifactory in a web browser to complete the onboarding wizard for Xray! ### Air gap environments To use Xray Operator in an air gap environment you will need to download the images as image streams into your Openshift air gap cluster manually. Use the image overrides to then specify the image stream locations that are local to your cluster. Next you will need to setup the database of index data for xray to use when scanning artifacts. Follow the link below for instructions on setup: https://www.jfrog.com/confluence/display/JFROG/Configuring+Xray#ConfiguringXray-SynchronizingtheDatabase ",
+      "csv_display_name": "JFrog Xray Continuous Security Operator",
+      "csv_metadata_description": "JFrog Xray Enterprise deploys Xray continuous security scanner into Openshift (Requires Jfrog Artifactory)",
+      "csv_name": "xray-operator.v2.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:56:15.865000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "openshiftxray-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftXray",
+          "plural": "openshiftxrays",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
+          "image": "registry.connect.redhat.com/jfrog/xray-server@sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
+          "name": "xray-server"
+        },
+        {
+          "digest": "sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
+          "image": "registry.connect.redhat.com/jfrog/xray-analysis@sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
+          "name": "xray-analysis"
+        },
+        {
+          "digest": "sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
+          "image": "registry.connect.redhat.com/jfrog/xray-persist@sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
+          "name": "xray-persist"
+        },
+        {
+          "digest": "sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
+          "image": "registry.connect.redhat.com/jfrog/xray-indexer@sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
+          "name": "xray-indexer"
+        },
+        {
+          "digest": "sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
+          "image": "registry.connect.redhat.com/jfrog/xray-router@sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
+          "name": "xray-router"
+        },
+        {
+          "digest": "sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
+          "image": "registry.connect.redhat.com/jfrog/xray-rabbitmq@sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
+          "name": "xray-rabbitmq"
+        },
+        {
+          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "name": "xray-operator"
+        },
+        {
+          "digest": "sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
+          "image": "registry.connect.redhat.com/jfrog/init@sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
+          "name": "init-container"
+        },
+        {
+          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "name": "xray-operator-a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "2.1.0",
+      "version_original": "2.1.0"
+    },
+    {
+      "_id": "621e64f483933ad10b40bc77",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "OpenshiftXray",
+          "metadata": {
+            "name": "openshiftxray"
+          },
+          "spec": {
+            "xray": {
+              "analysis": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-analysis"
+                },
+                "name": "xray-analysis",
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "common": {
+                "xrayGroupId": "1000721035",
+                "xrayUserId": "1000721035"
+              },
+              "database": {
+                "password": "OVERRIDE",
+                "url": "OVERRIDE",
+                "user": "OVERRIDE"
+              },
+              "global": {},
+              "indexer": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-indexer"
+                },
+                "name": "xray-indexer",
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "persist": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-persist"
+                },
+                "name": "xray-persist",
+                "persistence": {
+                  "size": "10Gi"
+                },
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "postgresql": {
+                "enabled": false
+              },
+              "rabbitmq": {
+                "auth": {
+                  "erlangCookie": "XRAYRABBITMQCLUSTER",
+                  "password": "xray",
+                  "tls": {
+                    "caCertificate": "",
+                    "enabled": false,
+                    "failIfNoPeerCert": true,
+                    "serverCertificate": "",
+                    "serverKey": "",
+                    "sslOptionsVerify": "verify_peer"
+                  },
+                  "username": "xray"
+                },
+                "enabled": true,
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-rabbitmq"
+                },
+                "podSecurityContext": {
+                  "fsGroup": 1000721001,
+                  "runAsUser": 1000721001
+                },
+                "rbac": {
+                  "create": true
+                },
+                "replicaCount": 1
+              },
+              "rabbitmq-ha": {
+                "enabled": false,
+                "image": {
+                  "repository": "registry.connect.redhat.com/jfrog/xray-rabbitmq"
+                },
+                "initContainer": {
+                  "enabled": false
+                },
+                "managementPassword": "guest",
+                "managementUsername": "guest",
+                "rabbitmqPassword": "guest",
+                "rabbitmqUsername": "guest",
+                "replicaCount": 1,
+                "securityContext": {
+                  "fsGroup": 1000721035,
+                  "runAsGroup": 1000721035,
+                  "runAsUser": 1000721035
+                }
+              },
+              "replicaCount": 1,
+              "router": {
+                "image": {
+                  "imagePullPolicy": "IfNotPresent",
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-router"
+                },
+                "name": "router"
+              },
+              "server": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-server"
+                },
+                "name": "xray-server",
+                "podManagementPolicy": "Parallel",
+                "replicaCount": 1,
+                "updateStrategy": "RollingUpdate"
+              },
+              "unifiedUpgradeAllowed": "true",
+              "xray": {
+                "consoleLog": false,
+                "jfrogUrl": "OVERRIDE",
+                "joinKey": "OVERRIDE",
+                "masterKey": "OVERRIDE"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/xray-operator-bundle@sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
+      "bundle_path_digest": "sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-01T18:24:52.756000+00:00",
+      "csv_description": "## Overview Openshift Operator to deploy JFrog Xray Continuous Security scanner into your Openshift cluster. NOTE: Artifactory is required for JFrog Xray to connect with and scan artifacts against.\n### Major version v2.0.4 Breaking change notification!!\nThis release has major bug fix for Rabbitmq Pod. Please update to version 2.0.4 of the operator.\n### Major version v2.0.0 Breaking change notification!! Xray is dependent upon Rabbitmq. The version of Rabbitmq that this chart uses has significantly changed from version 1.1.8 of the operator. For full details on how to migrate please visit: `https://github.com/jfrog/charts/blob/master/stable/xray/RABBITMQ_MIGRATION_NOTES.md`\nIf you are using operator version < 2.1.0 there is a issue with upgrade where xray version is not updated if you update operator version.As workaround you can update the Custom Resource OpenshiftXray which has hardcored image tag value.After upgrading to version 2.1.0 you can remove the image tags parameters from your CR so that future upgrade works without workaround.\n### Security Context Constraints To deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc. ``` oc adm policy add-scc-to-user anyuid -z xray-operator ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray-rabbitmq-ha ``` ## Usage An external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it. Search for JFrog and click JFrog Xray Operator to install. Go to the Installed Operators. Wait for the JFrog Xray Operator to complete the installation. Open the Operator and click on the provided API: Xray Click Create New Instance and provide the following parameters for your DB configuration: ``` JFROG_URL DATABASE_URL DATABASE_USER DATABASE_PASSWORD ``` JFROG_URL is the external ip or DNS of your Artifactory to connect Xray to. Artifactory is required to use this operator. You can set your JFROG_URL to the service name of your Artifactory Nginx: ``` oc get svc -n my_namespace | grep nginx ``` DATABASE_URL must be a Postgresql URL in the format: `` postgres://postgres-postgresql:5432/xraydb?sslmode=disable `` DATABASE_USER and DATABASE_PASSWORD must supply a valid user on Postgresql. Click Create for Xray to deploy into OpenShift. Open Artifactory in a web browser to complete the onboarding wizard for Xray! ### Air gap environments To use Xray Operator in an air gap environment you will need to download the images as image streams into your Openshift air gap cluster manually. Use the image overrides to then specify the image stream locations that are local to your cluster. Next you will need to setup the database of index data for xray to use when scanning artifacts. Follow the link below for instructions on setup: https://www.jfrog.com/confluence/display/JFROG/Configuring+Xray#ConfiguringXray-SynchronizingtheDatabase ",
+      "csv_display_name": "JFrog Xray Continuous Security Operator",
+      "csv_metadata_description": "JFrog Xray Enterprise deploys Xray continuous security scanner into Openshift (Requires Jfrog Artifactory)",
+      "csv_name": "xray-operator.v2.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:57:53.311000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "openshiftxray-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftXray",
+          "plural": "openshiftxrays",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
+          "image": "registry.connect.redhat.com/jfrog/xray-server@sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
+          "name": "xray-server"
+        },
+        {
+          "digest": "sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
+          "image": "registry.connect.redhat.com/jfrog/xray-analysis@sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
+          "name": "xray-analysis"
+        },
+        {
+          "digest": "sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
+          "image": "registry.connect.redhat.com/jfrog/xray-persist@sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
+          "name": "xray-persist"
+        },
+        {
+          "digest": "sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
+          "image": "registry.connect.redhat.com/jfrog/xray-indexer@sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
+          "name": "xray-indexer"
+        },
+        {
+          "digest": "sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
+          "image": "registry.connect.redhat.com/jfrog/xray-router@sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
+          "name": "xray-router"
+        },
+        {
+          "digest": "sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
+          "image": "registry.connect.redhat.com/jfrog/xray-rabbitmq@sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
+          "name": "xray-rabbitmq"
+        },
+        {
+          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "name": "xray-operator"
+        },
+        {
+          "digest": "sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
+          "image": "registry.connect.redhat.com/jfrog/init@sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
+          "name": "init-container"
+        },
+        {
+          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "name": "xray-operator-a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.1.0",
+      "version_original": "2.1.0"
+    },
+    {
+      "_id": "621e656983933ad10b40bc78",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "OpenshiftXray",
+          "metadata": {
+            "name": "openshiftxray"
+          },
+          "spec": {
+            "xray": {
+              "analysis": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-analysis"
+                },
+                "name": "xray-analysis",
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "common": {
+                "xrayGroupId": "1000721035",
+                "xrayUserId": "1000721035"
+              },
+              "database": {
+                "password": "OVERRIDE",
+                "url": "OVERRIDE",
+                "user": "OVERRIDE"
+              },
+              "global": {},
+              "indexer": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-indexer"
+                },
+                "name": "xray-indexer",
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "persist": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-persist"
+                },
+                "name": "xray-persist",
+                "persistence": {
+                  "size": "10Gi"
+                },
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "postgresql": {
+                "enabled": false
+              },
+              "rabbitmq": {
+                "auth": {
+                  "erlangCookie": "XRAYRABBITMQCLUSTER",
+                  "password": "xray",
+                  "tls": {
+                    "caCertificate": "",
+                    "enabled": false,
+                    "failIfNoPeerCert": true,
+                    "serverCertificate": "",
+                    "serverKey": "",
+                    "sslOptionsVerify": "verify_peer"
+                  },
+                  "username": "xray"
+                },
+                "enabled": true,
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-rabbitmq"
+                },
+                "podSecurityContext": {
+                  "fsGroup": 1000721001,
+                  "runAsUser": 1000721001
+                },
+                "rbac": {
+                  "create": true
+                },
+                "replicaCount": 1
+              },
+              "rabbitmq-ha": {
+                "enabled": false,
+                "image": {
+                  "repository": "registry.connect.redhat.com/jfrog/xray-rabbitmq"
+                },
+                "initContainer": {
+                  "enabled": false
+                },
+                "managementPassword": "guest",
+                "managementUsername": "guest",
+                "rabbitmqPassword": "guest",
+                "rabbitmqUsername": "guest",
+                "replicaCount": 1,
+                "securityContext": {
+                  "fsGroup": 1000721035,
+                  "runAsGroup": 1000721035,
+                  "runAsUser": 1000721035
+                }
+              },
+              "replicaCount": 1,
+              "router": {
+                "image": {
+                  "imagePullPolicy": "IfNotPresent",
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-router"
+                },
+                "name": "router"
+              },
+              "server": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-server"
+                },
+                "name": "xray-server",
+                "podManagementPolicy": "Parallel",
+                "replicaCount": 1,
+                "updateStrategy": "RollingUpdate"
+              },
+              "unifiedUpgradeAllowed": "true",
+              "xray": {
+                "consoleLog": false,
+                "jfrogUrl": "OVERRIDE",
+                "joinKey": "OVERRIDE",
+                "masterKey": "OVERRIDE"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/xray-operator-bundle@sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
+      "bundle_path_digest": "sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-01T18:26:49.062000+00:00",
+      "csv_description": "## Overview Openshift Operator to deploy JFrog Xray Continuous Security scanner into your Openshift cluster. NOTE: Artifactory is required for JFrog Xray to connect with and scan artifacts against.\n### Major version v2.0.4 Breaking change notification!!\nThis release has major bug fix for Rabbitmq Pod. Please update to version 2.0.4 of the operator.\n### Major version v2.0.0 Breaking change notification!! Xray is dependent upon Rabbitmq. The version of Rabbitmq that this chart uses has significantly changed from version 1.1.8 of the operator. For full details on how to migrate please visit: `https://github.com/jfrog/charts/blob/master/stable/xray/RABBITMQ_MIGRATION_NOTES.md`\nIf you are using operator version < 2.1.0 there is a issue with upgrade where xray version is not updated if you update operator version.As workaround you can update the Custom Resource OpenshiftXray which has hardcored image tag value.After upgrading to version 2.1.0 you can remove the image tags parameters from your CR so that future upgrade works without workaround.\n### Security Context Constraints To deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc. ``` oc adm policy add-scc-to-user anyuid -z xray-operator ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray-rabbitmq-ha ``` ## Usage An external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it. Search for JFrog and click JFrog Xray Operator to install. Go to the Installed Operators. Wait for the JFrog Xray Operator to complete the installation. Open the Operator and click on the provided API: Xray Click Create New Instance and provide the following parameters for your DB configuration: ``` JFROG_URL DATABASE_URL DATABASE_USER DATABASE_PASSWORD ``` JFROG_URL is the external ip or DNS of your Artifactory to connect Xray to. Artifactory is required to use this operator. You can set your JFROG_URL to the service name of your Artifactory Nginx: ``` oc get svc -n my_namespace | grep nginx ``` DATABASE_URL must be a Postgresql URL in the format: `` postgres://postgres-postgresql:5432/xraydb?sslmode=disable `` DATABASE_USER and DATABASE_PASSWORD must supply a valid user on Postgresql. Click Create for Xray to deploy into OpenShift. Open Artifactory in a web browser to complete the onboarding wizard for Xray! ### Air gap environments To use Xray Operator in an air gap environment you will need to download the images as image streams into your Openshift air gap cluster manually. Use the image overrides to then specify the image stream locations that are local to your cluster. Next you will need to setup the database of index data for xray to use when scanning artifacts. Follow the link below for instructions on setup: https://www.jfrog.com/confluence/display/JFROG/Configuring+Xray#ConfiguringXray-SynchronizingtheDatabase ",
+      "csv_display_name": "JFrog Xray Continuous Security Operator",
+      "csv_metadata_description": "JFrog Xray Enterprise deploys Xray continuous security scanner into Openshift (Requires Jfrog Artifactory)",
+      "csv_name": "xray-operator.v2.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:59:20.677000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "openshiftxray-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftXray",
+          "plural": "openshiftxrays",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
+          "image": "registry.connect.redhat.com/jfrog/xray-server@sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
+          "name": "xray-server"
+        },
+        {
+          "digest": "sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
+          "image": "registry.connect.redhat.com/jfrog/xray-analysis@sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
+          "name": "xray-analysis"
+        },
+        {
+          "digest": "sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
+          "image": "registry.connect.redhat.com/jfrog/xray-persist@sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
+          "name": "xray-persist"
+        },
+        {
+          "digest": "sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
+          "image": "registry.connect.redhat.com/jfrog/xray-indexer@sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
+          "name": "xray-indexer"
+        },
+        {
+          "digest": "sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
+          "image": "registry.connect.redhat.com/jfrog/xray-router@sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
+          "name": "xray-router"
+        },
+        {
+          "digest": "sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
+          "image": "registry.connect.redhat.com/jfrog/xray-rabbitmq@sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
+          "name": "xray-rabbitmq"
+        },
+        {
+          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "name": "xray-operator"
+        },
+        {
+          "digest": "sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
+          "image": "registry.connect.redhat.com/jfrog/init@sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
+          "name": "init-container"
+        },
+        {
+          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
+          "name": "xray-operator-a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.1.0",
+      "version_original": "2.1.0"
+    },
+    {
+      "_id": "621eace4207e0eb391808546",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:b1a8b56ff5e1bb5326e1bde4931303358410da9768f0ebf9c08e2c2d8661d742",
+      "bundle_path_digest": "sha256:b1a8b56ff5e1bb5326e1bde4931303358410da9768f0ebf9c08e2c2d8661d742",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.23",
+      "creation_date": "2022-03-01T23:31:48.914000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.23.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:01:52.551000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "ImageSet",
+          "plural": "imagesets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
+          "image": "quay.io/tigera/operator@sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
+          "name": "tigera-operator"
+        },
+        {
+          "digest": "sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
+          "image": "quay.io/tigera/operator@sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
+          "name": "operator-f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "<1.23.4",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.23.4",
+      "version_original": "1.23.4"
+    },
+    {
       "_id": "621eadc4bf15cd3a565ef935",
       "alm_examples": [
         {
@@ -22812,104 +24532,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "2.1.0",
       "version_original": "2.1.0"
-    },
-    {
-      "_id": "62345f6c5593ce895a7b534d",
-      "alm_examples": [
-        {
-          "api_version": "storage.hpe.com/v1",
-          "kind": "HPECSIDriver",
-          "metadata": {
-            "name": "csi-driver"
-          },
-          "spec": {
-            "cspClientTimeout": 60,
-            "disable": {
-              "alletra6000": false,
-              "alletra9000": false,
-              "nimble": false,
-              "primera": false
-            },
-            "disableNodeConformance": false,
-            "disableNodeGetVolumeStats": false,
-            "imagePullPolicy": "IfNotPresent",
-            "iscsi": {
-              "chapPassword": "",
-              "chapUser": ""
-            },
-            "kubeletRootDir": "/var/lib/kubelet/",
-            "logLevel": "info",
-            "registry": "quay.io"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hpestorage/csi-driver-operator-bundle@sha256:24d8008a3b72f61d720a20f0f12eecc5b13fdc0916edcb7cb0ae99498c012c9b",
-      "bundle_path_digest": "sha256:24d8008a3b72f61d720a20f0f12eecc5b13fdc0916edcb7cb0ae99498c012c9b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:31:08.813000+00:00",
-      "csv_description": "The HPE CSI Operator for Kubernetes packages, deploys, manages, upgrades the HPE CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on HPE storage systems.\nThe HPE CSI Driver for Kubernetes leverages HPE storage platforms to provide scalable and persistent storage for stateful applications. Please refer to our CSI driver [documentation](https://scod.hpedev.io/csi_driver/index.html) for supported HPE platforms and full list of supported CSI features.\n## Installation\nRefer to the HPE CSI Operator for Kubernetes [documentation](https://scod.hpedev.io/csi_driver/deployment.html#operator).\n",
-      "csv_display_name": "HPE CSI Operator for Kubernetes",
-      "csv_metadata_description": "A Container Storage Interface (CSI) driver for HPE storage platforms. The CSI driver allows you to use HPE storage with your preferred container orchestrator.",
-      "csv_name": "hpe-csi-operator.v2.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:41:36.927000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "hpe-csi-operator",
-      "provided_apis": [
-        {
-          "group": "storage.hpe.com",
-          "kind": "HPECSIDriver",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "name": "csi-driver-operator-e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771-annotation"
-        },
-        {
-          "digest": "sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "name": "hpe-csi-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2.0.0",
-      "version_original": "2.0.0"
     },
     {
       "_id": "62345f70670f4cadbafad2a2",
@@ -49210,545 +50832,9 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.2.2",
       "version_original": "0.2.2"
-    },
-    {
-      "_id": "6262a54b173a0d36cf5d693e",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/c12e/cortex-certifai-operator-bundle@sha256:26199886640c352804df4a634f5ea3e45c3c4d4e41f241e9ef36cd4b3536be57",
-      "bundle_path_digest": "sha256:26199886640c352804df4a634f5ea3e45c3c4d4e41f241e9ef36cd4b3536be57",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:53:31.764000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "cortex-certifai-operator.v1.3.3",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:02:56.349000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "cortex-certifai-operator",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.3.3",
-      "version_original": "1.3.3"
-    },
-    {
-      "_id": "6262a55a834f257293b60f60",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/sonatype/nxiq-operator-bundle@sha256:4f49f111d6ac40466fb7f88be3a82bd8b52b8c9567d0a19cd4d21c4c51d06bed",
-      "bundle_path_digest": "sha256:4f49f111d6ac40466fb7f88be3a82bd8b52b8c9567d0a19cd4d21c4c51d06bed",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:53:46.520000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "nxiq-operator-certified.v1.90.0-1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:12:35.016000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "nxiq-operator-certified",
-      "provided_apis": [
-        {
-          "group": "sonatype.com",
-          "kind": "NexusIQ",
-          "plural": "nexusiqs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.90.0-1",
-      "version_original": "1.90.0-1"
-    },
-    {
-      "_id": "6262a55dcde83e2b177c20a3",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/sonatype/nxiq-operator-bundle@sha256:a148f6b5251f07de56e593477154200ac9a2993910c93e03455fc2587de2a844",
-      "bundle_path_digest": "sha256:a148f6b5251f07de56e593477154200ac9a2993910c93e03455fc2587de2a844",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:53:49.463000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "nxiq-operator-certified.v1.98.0-1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:55:38.233000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "nxiq-operator-certified",
-      "provided_apis": [
-        {
-          "group": "sonatype.com",
-          "kind": "NexusIQ",
-          "plural": "nexusiqs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.98.0-1",
-      "version_original": "1.98.0-1"
-    },
-    {
-      "_id": "6262a55f84481d5f52299928",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator-bundle@sha256:57038e95b66d81649cb412066c70a20f94c35b6e95453baeac3dbc43b001f374",
-      "bundle_path_digest": "sha256:57038e95b66d81649cb412066c70a20f94c35b6e95453baeac3dbc43b001f374",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T12:53:51.823000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "dynatrace-monitoring.v0.9.4",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:25:07.007000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "oneagent-certified",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.9.4",
-      "version_original": "0.9.4"
-    },
-    {
-      "_id": "6262a564cde83e2b177c20a4",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:cf4a0448fa22963d711bb2d3af8b56e3c356073b76233f33421121403893a859",
-      "bundle_path_digest": "sha256:cf4a0448fa22963d711bb2d3af8b56e3c356073b76233f33421121403893a859",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:53:56.908000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "couchbase-operator.v1.2.1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:10:39.800000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "plural": "couchbaseclusters",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.2.1",
-      "version_original": "1.2.1"
-    },
-    {
-      "_id": "6262a567cde83e2b177c20a5",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:cdd24dd021bb730168eb11b796872975d84fdb471456b745d03a30392dc38d2d",
-      "bundle_path_digest": "sha256:cdd24dd021bb730168eb11b796872975d84fdb471456b745d03a30392dc38d2d",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T12:53:59.698000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "data-explorer-operator.v0.0.3",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:52:35.295000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "data-explorer-operator-certified",
-      "provided_apis": [
-        {
-          "group": "data-explorer.com",
-          "kind": "DashboardWithJupyterHub",
-          "plural": "dashboardwithjupyterhubs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.0.3",
-      "version_original": "0.0.3"
-    },
-    {
-      "_id": "6262a572cde83e2b177c20a6",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:61317c2c85660fe4291b3945c928df375890ad00b3168b72bd71b787ef4077dc",
-      "bundle_path_digest": "sha256:61317c2c85660fe4291b3945c928df375890ad00b3168b72bd71b787ef4077dc",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T12:54:10.800000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "data-explorer-operator.v0.0.2",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:21:23.667000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "data-explorer-operator-certified",
-      "provided_apis": [
-        {
-          "group": "data-explorer.com",
-          "kind": "DashboardWithJupyterHub",
-          "plural": "dashboardwithjupyterhubs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.0.2",
-      "version_original": "0.0.2"
-    },
-    {
-      "_id": "6262a579173a0d36cf5d6947",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/rh-marketplace/rh-marketplace-bundle@sha256:f4e205936e8fba2fef8e6294c492c7d3c289c9a5e071615abec373d7c5566b85",
-      "bundle_path_digest": "sha256:f4e205936e8fba2fef8e6294c492c7d3c289c9a5e071615abec373d7c5566b85",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-04-22T12:54:17.815000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redhat-marketplace-operator.v1.0.3",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:50:58.547000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "redhat-marketplace-operator",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.0.3",
-      "version_original": "1.0.3"
-    },
-    {
-      "_id": "6262a58684481d5f5229992b",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:b77778d5cf77fc1ab9a72814118af5dc43d44c7d0d802c16a7862c09370b0e13",
-      "bundle_path_digest": "sha256:b77778d5cf77fc1ab9a72814118af5dc43d44c7d0d802c16a7862c09370b0e13",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:54:30.135000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "mongodb-enterprise.v1.2.3",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:57:59.032000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "mongodb-enterprise",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.2.3",
-      "version_original": "1.2.3"
-    },
-    {
-      "_id": "6262a589173a0d36cf5d694a",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:ade7cee1cfce9d5a5badbcca507fdda3baa842c80f36458a2d6c3ecd5876e25d",
-      "bundle_path_digest": "sha256:ade7cee1cfce9d5a5badbcca507fdda3baa842c80f36458a2d6c3ecd5876e25d",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:54:33.183000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "mongodb-enterprise.v1.4.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:27:00.318000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "mongodb-enterprise",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.4.0",
-      "version_original": "1.4.0"
-    },
-    {
-      "_id": "6262a597173a0d36cf5d694e",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:e1c153bcadefa513dcb4df736084dcd6885ef014e7ff34dbbbeba8158839c59c",
-      "bundle_path_digest": "sha256:e1c153bcadefa513dcb4df736084dcd6885ef014e7ff34dbbbeba8158839c59c",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:54:47.975000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "t8c-operator.v7.22.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:22:32.039000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "7.22.0",
-      "version_original": "7.22.0"
-    },
-    {
-      "_id": "6262a5a084481d5f5229992d",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:2d8738da44e668d4b04958e371120e20dddfcb5cfd2be2e3a988b6c3111e88f5",
-      "bundle_path_digest": "sha256:2d8738da44e668d4b04958e371120e20dddfcb5cfd2be2e3a988b6c3111e88f5",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T12:54:56.469000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "nastel-navigator-operator.v0.0.16",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:20:58.142000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "nastel-navigator-operator-certified",
-      "provided_apis": [
-        {
-          "group": "navigator.nastel.com",
-          "kind": "NastelNavigator",
-          "plural": "nastelnavigators",
-          "version": "v1alpha6"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.0.16",
-      "version_original": "0.0.16"
-    },
-    {
-      "_id": "6262a5a5834f257293b60f68",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "production",
-      "creation_date": "2022-04-22T12:55:01.870000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-6",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:50:26.764000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "6.0.6-6",
-      "version_original": "6.0.6-6"
     }
   ],
   "page": 7,
-  "page_size": 313,
-  "total": 3813
+  "page_size": 311,
+  "total": 3811
 }
