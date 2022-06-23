@@ -100,7 +100,7 @@ if [[ ! -f "/proc/1/cgroup" ]] || grep -q init\.scope /proc/1/cgroup; then
 	cd ..
 fi
 
-if [ -d ${TNF_PARTNER_DIR}/src ] && [[ ! -z "${TNF_PARTNER_SRC_DIR}" ]]; then
+if [[ ! -z "${TNF_PARTNER_SRC_DIR}" ]]; then
 	echo "attempting to install partner pods"
 	make -C $TNF_PARTNER_SRC_DIR install-partner-pods
 	echo "attempting to install litmus"
@@ -128,7 +128,7 @@ fi
 
 cd ./cnf-certification-test && ./cnf-certification-test.test $FOCUS_STRING $SKIP_STRING $LABEL_STRING ${GINKGO_ARGS}
 
-if [ -d ${TNF_PARTNER_DIR}/src ] &&  [[ ! -z "${TNF_PARTNER_SRC_DIR}" ]]; then
+if [[ ! -z "${TNF_PARTNER_SRC_DIR}" ]]; then
 	echo "attempting to delete litmus"
 	make -C $TNF_PARTNER_SRC_DIR delete-litmus
 fi

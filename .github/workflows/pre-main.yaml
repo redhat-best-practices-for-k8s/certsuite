@@ -20,8 +20,6 @@ env:
   TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
   TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${IMAGE_NAME}:${IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
   TNF_SMOKE_TESTS_LOG_LEVEL: trace
-  TNF_PARTNER_DIR: '/usr/tnf-partner'
-  TNF_PARTNER_SRC_DIR: '${TNF_PARTNER_DIR}/src'
   ON_DEMAND_DEBUG_PODS: false
   TERM: xterm-color
 
