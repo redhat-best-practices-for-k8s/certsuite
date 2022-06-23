@@ -176,7 +176,7 @@ jobs:
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh --focus access-control lifecycle platform observability networking affiliated-certification operator
 
       - name: Upload smoke test results as an artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: smoke-tests
@@ -214,7 +214,7 @@ jobs:
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -f access-control lifecycle platform observability networking affiliated-certification operator
 
       - name: Upload container test results as an artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: smoke-tests-container
