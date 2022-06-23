@@ -76,3 +76,23 @@ func TestStringInSlice(t *testing.T) {
 		assert.Equal(t, tc.expected, StringInSlice(tc.testSlice, tc.testString, tc.containsFeature))
 	}
 }
+
+func TestRemoveEmptyStrings(t *testing.T) {
+	testCases := []struct {
+		testSlice     []string
+		expectedSlice []string
+	}{
+		{
+			testSlice:     []string{"one", "two", "three", "", ""},
+			expectedSlice: []string{"one", "two", "three"},
+		},
+		{ // returns a nil slice if the contents of the incoming slice are empty
+			testSlice:     []string{"", ""},
+			expectedSlice: nil,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedSlice, RemoveEmptyStrings(tc.testSlice))
+	}
+}
