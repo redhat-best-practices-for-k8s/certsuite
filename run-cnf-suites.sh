@@ -100,10 +100,11 @@ if [[ ! -f "/proc/1/cgroup" ]] || grep -q init\.scope /proc/1/cgroup; then
 	cd ..
 fi
 
-if [[ -z "${TNF_PARTNER_SRC_DIR}" ]]; then
-	echo "env var \"TNF_PARTNER_SRC_DIR\" not set, running the script without updating infra"
-else
+if [[ ! -z "${TNF_PARTNER_SRC_DIR}" ]]; then
+	echo "attempting to install partner pods"
 	make -C $TNF_PARTNER_SRC_DIR install-partner-pods
+	echo "attempting to install litmus"
+	make -C $TNF_PARTNER_SRC_DIR install-litmus
 fi
 
 echo "Running with focus '$FOCUS'"
@@ -126,3 +127,8 @@ else
 fi
 
 cd ./cnf-certification-test && ./cnf-certification-test.test $FOCUS_STRING $SKIP_STRING $LABEL_STRING ${GINKGO_ARGS}
+
+if [[ ! -z "${TNF_PARTNER_SRC_DIR}" ]]; then
+	echo "attempting to delete litmus"
+	make -C $TNF_PARTNER_SRC_DIR delete-litmus
+fi

@@ -76,7 +76,10 @@ RUN mkdir ${TNF_BIN_DIR} && \
     cp --parents `find -name \*.db*` ${TNF_DIR} && \
 	# copy all JSON files to allow tests to run
 	cp --parents `find -name \*.json*` ${TNF_DIR} && \
-	cp cnf-certification-test/cnf-certification-test.test ${TNF_BIN_DIR}
+	cp cnf-certification-test/cnf-certification-test.test ${TNF_BIN_DIR} && \
+    # copy all of the chaos-test-files
+    mkdir -p ${TNF_DIR}/cnf-certification-test/chaostesting && \
+    cp -a cnf-certification-test/chaostesting/chaos-test-files ${TNF_DIR}/cnf-certification-test/chaostesting
 
 WORKDIR ${TNF_DIR}
 
