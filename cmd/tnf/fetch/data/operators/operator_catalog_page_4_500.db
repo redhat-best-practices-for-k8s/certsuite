@@ -74278,741 +74278,6 @@
       "version_original": "1.6.3"
     },
     {
-      "_id": "623db55a456d2e626dd7728f",
-      "alm_examples": [
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "Hazelcast",
-          "metadata": {
-            "name": "hazelcast"
-          },
-          "spec": {
-            "clusterSize": 3,
-            "licenseKeySecret": "hazelcast-license-key",
-            "repository": "docker.io/hazelcast/hazelcast-enterprise",
-            "version": "5.1"
-          }
-        },
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "ManagementCenter",
-          "metadata": {
-            "name": "managementcenter"
-          },
-          "spec": {
-            "externalConnectivity": {
-              "type": "LoadBalancer"
-            },
-            "hazelcastClusters": [
-              {
-                "address": "hazelcast",
-                "name": "dev"
-              }
-            ],
-            "licenseKeySecret": "hazelcast-license-key",
-            "persistence": {
-              "enabled": true,
-              "size": "10Gi"
-            },
-            "repository": "hazelcast/management-center",
-            "version": "5.1.1"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator-bundle@sha256:185afe553b3b5659310aeed50afb452bced4b1783f73eb9c6f54b3c27cff71ed",
-      "bundle_path_digest": "sha256:185afe553b3b5659310aeed50afb452bced4b1783f73eb9c6f54b3c27cff71ed",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-25T12:28:10.697000+00:00",
-      "csv_description": "# Hazelcast Platform Operator #\n\nEasily deploy Hazelcast clusters and Management Center into Kubernetes environments and manage their lifecycles.\n\n## Before You Start\n\nIf you are planning to create Hazelcast Platform Enterprise clusters, you need to [create a secret](https://docs.hazelcast.com/operator/latest/get-started#step-2-start-the-hazelcast-cluster) for the license. You can request a trial license key from [here](https://trialrequest.hazelcast.com).\n\nFor Hazelcast Platform clusters, you can simply continue.\n\n## Documentation\n\n1. [Get started](https://docs.hazelcast.com/operator/latest/get-started) with the Operator.\n2. [Connect to the cluster from outside Kubernetes](https://guides.hazelcast.org/hazelcast-platform-operator-expose-externally/main)\n  from the outside.\n\n## Features\n\nHazelcast Platform Operator supports the features below:\n\n* Custom resource for Hazelcast Platform (Open Source & Enterprise) and Management Center\n* Observe status of Hazelcast and Management Center clusters\n* Scale up and down Hazelcast clusters\n* Expose Hazelcast cluster to external\n  clients ([Smart & Unisocket](https://docs.hazelcast.com/hazelcast/latest/clients/java#java-client-operation-modes))\n",
-      "csv_display_name": "Hazelcast Platform Operator",
-      "csv_metadata_description": "Install Hazelcast clusters in Kubernetes environments.",
-      "csv_name": "hazelcast-platform-operator.v5.2.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:37:42.441000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "hazelcast-platform-operator",
-      "provided_apis": [
-        {
-          "group": "hazelcast.com",
-          "kind": "Hazelcast",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "HotBackup",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "ManagementCenter",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator@sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "name": "hazelcast-platform-operator-a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939-annotation"
-        },
-        {
-          "digest": "sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator@sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "5.2.0",
-      "version_original": "5.2.0"
-    },
-    {
-      "_id": "623db64e7847116cf85779b1",
-      "alm_examples": [
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "Hazelcast",
-          "metadata": {
-            "name": "hazelcast"
-          },
-          "spec": {
-            "clusterSize": 3,
-            "licenseKeySecret": "hazelcast-license-key",
-            "repository": "docker.io/hazelcast/hazelcast-enterprise",
-            "version": "5.1"
-          }
-        },
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "ManagementCenter",
-          "metadata": {
-            "name": "managementcenter"
-          },
-          "spec": {
-            "externalConnectivity": {
-              "type": "LoadBalancer"
-            },
-            "hazelcastClusters": [
-              {
-                "address": "hazelcast",
-                "name": "dev"
-              }
-            ],
-            "licenseKeySecret": "hazelcast-license-key",
-            "persistence": {
-              "enabled": true,
-              "size": "10Gi"
-            },
-            "repository": "hazelcast/management-center",
-            "version": "5.1.1"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator-bundle@sha256:185afe553b3b5659310aeed50afb452bced4b1783f73eb9c6f54b3c27cff71ed",
-      "bundle_path_digest": "sha256:185afe553b3b5659310aeed50afb452bced4b1783f73eb9c6f54b3c27cff71ed",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-25T12:32:14.775000+00:00",
-      "csv_description": "# Hazelcast Platform Operator #\n\nEasily deploy Hazelcast clusters and Management Center into Kubernetes environments and manage their lifecycles.\n\n## Before You Start\n\nIf you are planning to create Hazelcast Platform Enterprise clusters, you need to [create a secret](https://docs.hazelcast.com/operator/latest/get-started#step-2-start-the-hazelcast-cluster) for the license. You can request a trial license key from [here](https://trialrequest.hazelcast.com).\n\nFor Hazelcast Platform clusters, you can simply continue.\n\n## Documentation\n\n1. [Get started](https://docs.hazelcast.com/operator/latest/get-started) with the Operator.\n2. [Connect to the cluster from outside Kubernetes](https://guides.hazelcast.org/hazelcast-platform-operator-expose-externally/main)\n  from the outside.\n\n## Features\n\nHazelcast Platform Operator supports the features below:\n\n* Custom resource for Hazelcast Platform (Open Source & Enterprise) and Management Center\n* Observe status of Hazelcast and Management Center clusters\n* Scale up and down Hazelcast clusters\n* Expose Hazelcast cluster to external\n  clients ([Smart & Unisocket](https://docs.hazelcast.com/hazelcast/latest/clients/java#java-client-operation-modes))\n",
-      "csv_display_name": "Hazelcast Platform Operator",
-      "csv_metadata_description": "Install Hazelcast clusters in Kubernetes environments.",
-      "csv_name": "hazelcast-platform-operator.v5.2.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:47:30.813000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "hazelcast-platform-operator",
-      "provided_apis": [
-        {
-          "group": "hazelcast.com",
-          "kind": "Hazelcast",
-          "plural": "hazelcasts",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "HotBackup",
-          "plural": "hotbackups",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "ManagementCenter",
-          "plural": "managementcenters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator@sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "name": "hazelcast-platform-operator-a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939-annotation"
-        },
-        {
-          "digest": "sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator@sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "5.2.0",
-      "version_original": "5.2.0"
-    },
-    {
-      "_id": "623db85b456d2e626dd77290",
-      "alm_examples": [
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "Hazelcast",
-          "metadata": {
-            "name": "hazelcast"
-          },
-          "spec": {
-            "clusterSize": 3,
-            "licenseKeySecret": "hazelcast-license-key",
-            "repository": "docker.io/hazelcast/hazelcast-enterprise",
-            "version": "5.1"
-          }
-        },
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "ManagementCenter",
-          "metadata": {
-            "name": "managementcenter"
-          },
-          "spec": {
-            "externalConnectivity": {
-              "type": "LoadBalancer"
-            },
-            "hazelcastClusters": [
-              {
-                "address": "hazelcast",
-                "name": "dev"
-              }
-            ],
-            "licenseKeySecret": "hazelcast-license-key",
-            "persistence": {
-              "enabled": true,
-              "size": "10Gi"
-            },
-            "repository": "hazelcast/management-center",
-            "version": "5.1.1"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator-bundle@sha256:185afe553b3b5659310aeed50afb452bced4b1783f73eb9c6f54b3c27cff71ed",
-      "bundle_path_digest": "sha256:185afe553b3b5659310aeed50afb452bced4b1783f73eb9c6f54b3c27cff71ed",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-25T12:40:59.180000+00:00",
-      "csv_description": "# Hazelcast Platform Operator #\n\nEasily deploy Hazelcast clusters and Management Center into Kubernetes environments and manage their lifecycles.\n\n## Before You Start\n\nIf you are planning to create Hazelcast Platform Enterprise clusters, you need to [create a secret](https://docs.hazelcast.com/operator/latest/get-started#step-2-start-the-hazelcast-cluster) for the license. You can request a trial license key from [here](https://trialrequest.hazelcast.com).\n\nFor Hazelcast Platform clusters, you can simply continue.\n\n## Documentation\n\n1. [Get started](https://docs.hazelcast.com/operator/latest/get-started) with the Operator.\n2. [Connect to the cluster from outside Kubernetes](https://guides.hazelcast.org/hazelcast-platform-operator-expose-externally/main)\n  from the outside.\n\n## Features\n\nHazelcast Platform Operator supports the features below:\n\n* Custom resource for Hazelcast Platform (Open Source & Enterprise) and Management Center\n* Observe status of Hazelcast and Management Center clusters\n* Scale up and down Hazelcast clusters\n* Expose Hazelcast cluster to external\n  clients ([Smart & Unisocket](https://docs.hazelcast.com/hazelcast/latest/clients/java#java-client-operation-modes))\n",
-      "csv_display_name": "Hazelcast Platform Operator",
-      "csv_metadata_description": "Install Hazelcast clusters in Kubernetes environments.",
-      "csv_name": "hazelcast-platform-operator.v5.2.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:51:07.571000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "hazelcast-platform-operator",
-      "provided_apis": [
-        {
-          "group": "hazelcast.com",
-          "kind": "Hazelcast",
-          "plural": "hazelcasts",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "HotBackup",
-          "plural": "hotbackups",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "ManagementCenter",
-          "plural": "managementcenters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator@sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "name": "hazelcast-platform-operator-a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939-annotation"
-        },
-        {
-          "digest": "sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator@sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "5.2.0",
-      "version_original": "5.2.0"
-    },
-    {
-      "_id": "623db8efca2c1e0c9df285a9",
-      "alm_examples": [
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "Hazelcast",
-          "metadata": {
-            "name": "hazelcast"
-          },
-          "spec": {
-            "clusterSize": 3,
-            "licenseKeySecret": "hazelcast-license-key",
-            "repository": "docker.io/hazelcast/hazelcast-enterprise",
-            "version": "5.1"
-          }
-        },
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "ManagementCenter",
-          "metadata": {
-            "name": "managementcenter"
-          },
-          "spec": {
-            "externalConnectivity": {
-              "type": "LoadBalancer"
-            },
-            "hazelcastClusters": [
-              {
-                "address": "hazelcast",
-                "name": "dev"
-              }
-            ],
-            "licenseKeySecret": "hazelcast-license-key",
-            "persistence": {
-              "enabled": true,
-              "size": "10Gi"
-            },
-            "repository": "hazelcast/management-center",
-            "version": "5.1.1"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator-bundle@sha256:185afe553b3b5659310aeed50afb452bced4b1783f73eb9c6f54b3c27cff71ed",
-      "bundle_path_digest": "sha256:185afe553b3b5659310aeed50afb452bced4b1783f73eb9c6f54b3c27cff71ed",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-25T12:43:27.050000+00:00",
-      "csv_description": "# Hazelcast Platform Operator #\n\nEasily deploy Hazelcast clusters and Management Center into Kubernetes environments and manage their lifecycles.\n\n## Before You Start\n\nIf you are planning to create Hazelcast Platform Enterprise clusters, you need to [create a secret](https://docs.hazelcast.com/operator/latest/get-started#step-2-start-the-hazelcast-cluster) for the license. You can request a trial license key from [here](https://trialrequest.hazelcast.com).\n\nFor Hazelcast Platform clusters, you can simply continue.\n\n## Documentation\n\n1. [Get started](https://docs.hazelcast.com/operator/latest/get-started) with the Operator.\n2. [Connect to the cluster from outside Kubernetes](https://guides.hazelcast.org/hazelcast-platform-operator-expose-externally/main)\n  from the outside.\n\n## Features\n\nHazelcast Platform Operator supports the features below:\n\n* Custom resource for Hazelcast Platform (Open Source & Enterprise) and Management Center\n* Observe status of Hazelcast and Management Center clusters\n* Scale up and down Hazelcast clusters\n* Expose Hazelcast cluster to external\n  clients ([Smart & Unisocket](https://docs.hazelcast.com/hazelcast/latest/clients/java#java-client-operation-modes))\n",
-      "csv_display_name": "Hazelcast Platform Operator",
-      "csv_metadata_description": "Install Hazelcast clusters in Kubernetes environments.",
-      "csv_name": "hazelcast-platform-operator.v5.2.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:13:15.573000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "hazelcast-platform-operator",
-      "provided_apis": [
-        {
-          "group": "hazelcast.com",
-          "kind": "HotBackup",
-          "plural": "hotbackups",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "ManagementCenter",
-          "plural": "managementcenters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "Hazelcast",
-          "plural": "hazelcasts",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator@sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "name": "hazelcast-platform-operator-a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939-annotation"
-        },
-        {
-          "digest": "sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator@sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "5.2.0",
-      "version_original": "5.2.0"
-    },
-    {
-      "_id": "623db9f37847116cf85779b2",
-      "alm_examples": [
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "Hazelcast",
-          "metadata": {
-            "name": "hazelcast"
-          },
-          "spec": {
-            "clusterSize": 3,
-            "licenseKeySecret": "hazelcast-license-key",
-            "repository": "docker.io/hazelcast/hazelcast-enterprise",
-            "version": "5.1"
-          }
-        },
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "ManagementCenter",
-          "metadata": {
-            "name": "managementcenter"
-          },
-          "spec": {
-            "externalConnectivity": {
-              "type": "LoadBalancer"
-            },
-            "hazelcastClusters": [
-              {
-                "address": "hazelcast",
-                "name": "dev"
-              }
-            ],
-            "licenseKeySecret": "hazelcast-license-key",
-            "persistence": {
-              "enabled": true,
-              "size": "10Gi"
-            },
-            "repository": "hazelcast/management-center",
-            "version": "5.1.1"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator-bundle@sha256:185afe553b3b5659310aeed50afb452bced4b1783f73eb9c6f54b3c27cff71ed",
-      "bundle_path_digest": "sha256:185afe553b3b5659310aeed50afb452bced4b1783f73eb9c6f54b3c27cff71ed",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-25T12:47:47.836000+00:00",
-      "csv_description": "# Hazelcast Platform Operator #\n\nEasily deploy Hazelcast clusters and Management Center into Kubernetes environments and manage their lifecycles.\n\n## Before You Start\n\nIf you are planning to create Hazelcast Platform Enterprise clusters, you need to [create a secret](https://docs.hazelcast.com/operator/latest/get-started#step-2-start-the-hazelcast-cluster) for the license. You can request a trial license key from [here](https://trialrequest.hazelcast.com).\n\nFor Hazelcast Platform clusters, you can simply continue.\n\n## Documentation\n\n1. [Get started](https://docs.hazelcast.com/operator/latest/get-started) with the Operator.\n2. [Connect to the cluster from outside Kubernetes](https://guides.hazelcast.org/hazelcast-platform-operator-expose-externally/main)\n  from the outside.\n\n## Features\n\nHazelcast Platform Operator supports the features below:\n\n* Custom resource for Hazelcast Platform (Open Source & Enterprise) and Management Center\n* Observe status of Hazelcast and Management Center clusters\n* Scale up and down Hazelcast clusters\n* Expose Hazelcast cluster to external\n  clients ([Smart & Unisocket](https://docs.hazelcast.com/hazelcast/latest/clients/java#java-client-operation-modes))\n",
-      "csv_display_name": "Hazelcast Platform Operator",
-      "csv_metadata_description": "Install Hazelcast clusters in Kubernetes environments.",
-      "csv_name": "hazelcast-platform-operator.v5.2.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:47:02.808000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "hazelcast-platform-operator",
-      "provided_apis": [
-        {
-          "group": "hazelcast.com",
-          "kind": "ManagementCenter",
-          "plural": "managementcenters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "Hazelcast",
-          "plural": "hazelcasts",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "HotBackup",
-          "plural": "hotbackups",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator@sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "name": "hazelcast-platform-operator-a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939-annotation"
-        },
-        {
-          "digest": "sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator@sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "5.2.0",
-      "version_original": "5.2.0"
-    },
-    {
-      "_id": "623dbab7cc527bd81480b566",
-      "alm_examples": [
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "Hazelcast",
-          "metadata": {
-            "name": "hazelcast"
-          },
-          "spec": {
-            "clusterSize": 3,
-            "licenseKeySecret": "hazelcast-license-key",
-            "repository": "docker.io/hazelcast/hazelcast-enterprise",
-            "version": "5.1"
-          }
-        },
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "ManagementCenter",
-          "metadata": {
-            "name": "managementcenter"
-          },
-          "spec": {
-            "externalConnectivity": {
-              "type": "LoadBalancer"
-            },
-            "hazelcastClusters": [
-              {
-                "address": "hazelcast",
-                "name": "dev"
-              }
-            ],
-            "licenseKeySecret": "hazelcast-license-key",
-            "persistence": {
-              "enabled": true,
-              "size": "10Gi"
-            },
-            "repository": "hazelcast/management-center",
-            "version": "5.1.1"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator-bundle@sha256:185afe553b3b5659310aeed50afb452bced4b1783f73eb9c6f54b3c27cff71ed",
-      "bundle_path_digest": "sha256:185afe553b3b5659310aeed50afb452bced4b1783f73eb9c6f54b3c27cff71ed",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-25T12:51:03.445000+00:00",
-      "csv_description": "# Hazelcast Platform Operator #\n\nEasily deploy Hazelcast clusters and Management Center into Kubernetes environments and manage their lifecycles.\n\n## Before You Start\n\nIf you are planning to create Hazelcast Platform Enterprise clusters, you need to [create a secret](https://docs.hazelcast.com/operator/latest/get-started#step-2-start-the-hazelcast-cluster) for the license. You can request a trial license key from [here](https://trialrequest.hazelcast.com).\n\nFor Hazelcast Platform clusters, you can simply continue.\n\n## Documentation\n\n1. [Get started](https://docs.hazelcast.com/operator/latest/get-started) with the Operator.\n2. [Connect to the cluster from outside Kubernetes](https://guides.hazelcast.org/hazelcast-platform-operator-expose-externally/main)\n  from the outside.\n\n## Features\n\nHazelcast Platform Operator supports the features below:\n\n* Custom resource for Hazelcast Platform (Open Source & Enterprise) and Management Center\n* Observe status of Hazelcast and Management Center clusters\n* Scale up and down Hazelcast clusters\n* Expose Hazelcast cluster to external\n  clients ([Smart & Unisocket](https://docs.hazelcast.com/hazelcast/latest/clients/java#java-client-operation-modes))\n",
-      "csv_display_name": "Hazelcast Platform Operator",
-      "csv_metadata_description": "Install Hazelcast clusters in Kubernetes environments.",
-      "csv_name": "hazelcast-platform-operator.v5.2.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:20:30.403000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "hazelcast-platform-operator",
-      "provided_apis": [
-        {
-          "group": "hazelcast.com",
-          "kind": "Hazelcast",
-          "plural": "hazelcasts",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "HotBackup",
-          "plural": "hotbackups",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "ManagementCenter",
-          "plural": "managementcenters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator@sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "name": "hazelcast-platform-operator-a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939-annotation"
-        },
-        {
-          "digest": "sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator@sha256:a81df542f1c1e977b00ba6c872f60ad60e18ee49c742aa3e3c44d735a123a939",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "5.2.0",
-      "version_original": "5.2.0"
-    },
-    {
       "_id": "623dc670456d2e626dd77291",
       "alm_examples": [
         {
@@ -82578,9 +81843,258 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.16",
       "version_original": "0.0.16"
+    },
+    {
+      "_id": "6262a5a5834f257293b60f68",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "production",
+      "creation_date": "2022-04-22T12:55:01.870000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:50:26.764000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "6262a5a9173a0d36cf5d6951",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/perceptilabs/perceptilabs-operator-bundle@sha256:90b5771978da944a76d790e3609d4523b82c1c4b75f86da3960fbf682a697fb3",
+      "bundle_path_digest": "sha256:90b5771978da944a76d790e3609d4523b82c1c4b75f86da3960fbf682a697fb3",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:55:05.732000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "perceptilabs-operator.v1.0.16",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:18:02.856000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "perceptilabs-operator-package",
+      "provided_apis": [
+        {
+          "group": "perceptilabs.com",
+          "kind": "PerceptiLabs",
+          "plural": "perceptilabs",
+          "version": "v1"
+        },
+        {
+          "group": "perceptilabs.com",
+          "kind": "PerceptiLabs",
+          "plural": "perceptilabs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.0.16",
+      "version_original": "1.0.16"
+    },
+    {
+      "_id": "6262a5ac84481d5f52299930",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:3ef303a68ac1ec0f5b6b8fcb4be8471180ee24e69ddb6e454ec00cac806fdfe6",
+      "bundle_path_digest": "sha256:3ef303a68ac1ec0f5b6b8fcb4be8471180ee24e69ddb6e454ec00cac806fdfe6",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T12:55:08.047000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "neuvector-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:10:14.268000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "6262a5ae834f257293b60f6a",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.20",
+      "creation_date": "2022-04-22T12:55:10.113000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:21:47.503000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "6262a5b0834f257293b60f6b",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:e0a36fbe70d56aa4faf878b3a2d8f4196008d87ea9057f8509eaf4334b0eb1c5",
+      "bundle_path_digest": "sha256:e0a36fbe70d56aa4faf878b3a2d8f4196008d87ea9057f8509eaf4334b0eb1c5",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:55:12.626000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "mongodb-enterprise.v1.4.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:09:51.026000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.4.2",
+      "version_original": "1.4.2"
+    },
+    {
+      "_id": "6262a5b2173a0d36cf5d6953",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:2c354e02f3ddfd9ef6ccac776b77603e60f907b10bac730e133845292500dd40",
+      "bundle_path_digest": "sha256:2c354e02f3ddfd9ef6ccac776b77603e60f907b10bac730e133845292500dd40",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T12:55:14.869000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "neuvector-operator.v1.0.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:00:01.079000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.0.1",
+      "version_original": "1.0.1"
     }
   ],
   "page": 4,
   "page_size": 500,
-  "total": 3811
+  "total": 3829
 }
