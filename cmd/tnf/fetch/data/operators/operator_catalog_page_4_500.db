@@ -1,364 +1,6 @@
 {
   "data": [
     {
-      "_id": "61d478d517f914cd7233120c",
-      "alm_examples": [
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "AirgappedDeployment",
-          "metadata": {
-            "name": "airgappeddeployment"
-          },
-          "spec": {
-            "airgapped": {
-              "backup_deletion_frequency": "@daily",
-              "backup_retention_period": 7
-            },
-            "allowed_domains": "*",
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "image_pull_secret": "bas-images-pull-secret",
-            "kafka": {
-              "storage#": "5G",
-              "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
-            },
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            }
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "AnalyticsProxy",
-          "metadata": {
-            "name": "analyticsproxy"
-          },
-          "spec": {
-            "airgapped": {
-              "backup_deletion_frequency": "@daily",
-              "backup_retention_period": 7,
-              "enabled": false
-            },
-            "allowed_domains": "*",
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "ibmproxyurl": "https://iaps.ibm.com",
-            "image_pull_secret": "bas-images-pull-secret",
-            "kafka": {
-              "storage#": "5G",
-              "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
-            },
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            }
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "DeleteCluster",
-          "metadata": {
-            "name": "deletecluster"
-          },
-          "spec": {
-            "image_pull_secret": "bas-images-pull-secret"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "FullDeployment",
-          "metadata": {
-            "name": "fulldeployment"
-          },
-          "spec": {
-            "airgapped": {
-              "backup_deletion_frequency": "@daily",
-              "backup_retention_period": 7,
-              "enabled": false
-            },
-            "allowed_domains": "*",
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "ibmproxyurl": "https://iaps.ibm.com",
-            "image_pull_secret": "bas-images-pull-secret",
-            "kafka": {
-              "storage#": "5G",
-              "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
-            },
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            },
-            "prometheus_metrics": [],
-            "prometheus_scheduler_frequency": "@daily"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "GenerateKey",
-          "metadata": {
-            "name": "bas-api-key"
-          },
-          "spec": {
-            "image_pull_secret": "bas-images-pull-secret"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "StoreForwardMetric",
-          "metadata": {
-            "name": "storeforwardmetric"
-          },
-          "spec": {
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "ibmproxyurl": "https://iaps.ibm.com",
-            "image_pull_secret": "bas-images-pull-secret",
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            },
-            "prometheus_metrics": [],
-            "prometheus_scheduler_frequency": "@daily"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "Dashboard",
-          "metadata": {
-            "name": "dashboard"
-          },
-          "spec": {
-            "enable_test_api": true,
-            "image_pull_secret": "bas-images-pull-secret"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm-edge/behavior-analytics-services-operator-bundle@sha256:6164be85fcbf2c96f90fc54278f99aa40690fab6e257b8087864bfbdf9adab33",
-      "bundle_path_digest": "sha256:6164be85fcbf2c96f90fc54278f99aa40690fab6e257b8087864bfbdf9adab33",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-01-04T16:41:57.398000+00:00",
-      "csv_description": "Behavior Analytics Services Operator is a service that collects, transforms and transmits product usage data.\nThe Operator supports deployments using-\nA. Dashboard\nB. Openshift portal or CLI\n\n**A. Dashboard**\n----\nWhen the Operator is installed, the Dashboard is installed too. Goto the Dashboard Custom Resource to get the URL to the Dashboard.\n\n\n**B. Openshift portal or CLI**\n----\n----\nFor manual installation using Openshift portal or CLI, follow the steps below\n\n\n**Pre-requisites**\n----\nStep 1: Create a new Project\n```sh\noc new-project <project-name>\n```\n\nStep 2: Create a secret named \"database-credentials\" for PostgreSQL DB\n```sh\n oc create secret generic database-credentials --from-literal=db_username=<DB Username> --from-literal=db_password=<DB Password> -n <project-name>\n```\n\nStep 3: [Optional] If the images require a secret to pull the container images, create a secret of type dockerconfigjson. Pass this secret name in the CR spec image\\_pull\\_secret\n```sh\noc create secret generic bas-images-pull-secret --from-file=.dockerconfigjson=<path/to/.docker/config.json>  --type=kubernetes.io/dockerconfigjson\n```\n\nStep 4: Create a secret named \"mtls-proxy-secret\" which has the client key and certificate to connect to IBM Proxy service. If you don't have certificates then refer link https://developers.cloudflare.com/access/service-auth/mtls-testing#generating-the-root-ca to create root and client certificates. Please ensure to share root certificate with edge@us.ibm.com to allow access to IBM proxy service using client certificate.\n```sh\noc create secret tls mtls-proxy-secret --key client-key.pem --cert client.pem\n```\n\n**Installing the Behavior Analytics Services**\n----\n\nSelect any one of the deployments to setup the Behavior Analytics Services\n1. Full Deployment\n2. Analytics Proxy Deployment\n3. Store and Forward metrics Deployment\n4. Airgapped Analytics Proxy Deployment\n\n| Spec                                                      | Description                                                      | Default Value          |\n| --------------------------------------------------------- | ------------------------------------------------------------ | ---------------------- |\n| `ibmproxyurl`                                               | URL of IBM Proxy Service                                     | `https://iaps.ibm.com`   |\n| `postgres.storage_class`                                    | Storage class of type ReadWriteOnce                          | Required user input        |\n| `postgres.size`                                             | Size (in G) of the storage to be attached to Database        | `10G`                    |\n| `kafka.storage_class`                                       | Storage class of type ReadWriteOnce                          | Required user input        |\n| `kafka.storage_size`                                        | Size (in G) of the storage to be attached to Kafka  | `5G`                     |\n| `kafka.zookeeper_storage_class`                                 | Storage class of type ReadWriteOnce                          | Required user input        |\n| `kafka.zookeeper_storage_size`                                 | Size (in G) of the storage to be attached to Zookeeper | `5G`                     |\n| `airgapped.enabled`                                         | Set value to \"true\" if airgapped setup is to be enabled otherwise keep the default value \"false\" | `false`                  |\n| `airgapped.backup_retention_period`   | Number of days to keep the backup files in the storage       | `7`                     |\n| `airgapped.backup_deletion_frequency` | Frequency of job to delete files from the storage. It accepts values in Cron format (https://en.wikipedia.org/wiki/Cron) | `@daily`                 |\n| `event_scheduler_frequency`                               | Frequency at which events will be forwarded to proxy in Cron format. In case if internet connection available on the cluster only during a certain time frame, specify time in UTC equivalent Cron format. | `@hourly`                |\n| `prometheus_scheduler_frequency`                          | Frequency in Cronjob format to pull metrics from Prometheus  | `@daily`                |\n| `image_pull_secret`                                       | Secret to pull container images from registry                | `bas-images-pull-secret` |\n| `db_archive.frequency`                                    | Frequency in Cronjob format to run archive job                                                           | `@monthly`             |\n| `db_archive.retention_age`                                | Number of months to retain the data in Database              | `6`                    |\n| `db_archive.persistent_storage.storage_class`             |Storage class of type ReadWriteMany         | Required user input    |\n| `db_archive.persistent_storage.storage_size`              | Size (in G) of the storage to be attached for saving airgapped files | `10G`                  |\n| `prometheus_metrics`                                      | Array of metrics information to be send to destination at desired frequency | []\n| `env_type`              | Type of environment. Can be **prod** (HA) or **lite** (non HA)   | `lite`                  |\n| `allowed_domains`                                         | Comma separated values of domains allowed by BAS. By default all domains are allowed | '*'\n\n\n**Generating the API Key**\n----\nOnce the deployment is complete, to use the Behavior Analytics Services Endpoints, generate an API key using the CR GenerateKey. This API key to be used to authenticate Behavior Analytics Services Endpoints.\n\nNote- Key can be retrieved from the secret with same name used while creating Generate Key CR's instance.\nOnce you get key from the secret, decode it using below command:\n```sh\necho -n <secret key> | base64 -d\n```\n\n**Deleting the API Key**\n----\nTo revoke the Key, delete the corresponding GenerateKey instance.\n\n**Using Behavior Analytics Services Endpoints**\n---\nFor all BAS APIs, use the Generated API Key for Authentication. Pass it as the Header- X-API-KEY and the key while using the APIs.\n",
-      "csv_display_name": "Behavior Analytics Services",
-      "csv_metadata_description": "Behavior Analytics Services is a service that collects, transforms and transmits product usage data.",
-      "csv_name": "behavior-analytics-services-operator-certified.v1.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:57:03.848000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "behavior-analytics-services-operator-certified",
-      "provided_apis": [
-        {
-          "group": "bas.ibm.com",
-          "kind": "GenerateKey",
-          "plural": "generatekeys",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "StoreForwardMetric",
-          "plural": "storeforwardmetrics",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "AirgappedDeployment",
-          "plural": "airgappeddeployments",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "AnalyticsProxy",
-          "plural": "analyticsproxies",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "Dashboard",
-          "plural": "dashboards",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "DeleteCluster",
-          "plural": "deleteclusters",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "FullDeployment",
-          "plural": "fulldeployments",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:609c19d1718947ee814b829334c37e1d720acf5fb642b0712b8ab1b14d57f53f",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:609c19d1718947ee814b829334c37e1d720acf5fb642b0712b8ab1b14d57f53f",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:d679fb7c9fa7fbc7c4c0065e676e65416f542e5408508d3e1f5040f8c3087366",
-          "image": "registry.connect.redhat.com/ibm-edge/behavior-analytics-services-operator@sha256:d679fb7c9fa7fbc7c4c0065e676e65416f542e5408508d3e1f5040f8c3087366",
-          "name": "behavior-analytics-services-operator"
-        },
-        {
-          "digest": "sha256:8e0f1d33edf005eb2dfafed9b8367435b0f33ef4adf006bc75338f2a88e8942c",
-          "image": "registry.redhat.io/openshift4/ose-cli@sha256:8e0f1d33edf005eb2dfafed9b8367435b0f33ef4adf006bc75338f2a88e8942c",
-          "name": "dashboardinstaller"
-        },
-        {
-          "digest": "sha256:239939ea3c5d24666f31e1d0ea281dd9664fcfe8139ee6d4b686b402ad64e5df",
-          "image": "registry.connect.redhat.com/ibm-edge/event-api@sha256:239939ea3c5d24666f31e1d0ea281dd9664fcfe8139ee6d4b686b402ad64e5df",
-          "name": "event_api"
-        },
-        {
-          "digest": "sha256:6195b9dd602469d7cb3a92b2d071471d37980a6512ed604468a342ccd2ab2d42",
-          "image": "registry.connect.redhat.com/ibm-edge/store-api@sha256:6195b9dd602469d7cb3a92b2d071471d37980a6512ed604468a342ccd2ab2d42",
-          "name": "store_api"
-        },
-        {
-          "digest": "sha256:96c726cbc10c44169aa5f84e77dd408ddad124ca7580575a459ed38908e3a99b",
-          "image": "registry.connect.redhat.com/ibm-edge/event-reader@sha256:96c726cbc10c44169aa5f84e77dd408ddad124ca7580575a459ed38908e3a99b",
-          "name": "reader"
-        },
-        {
-          "digest": "sha256:6f2a627cdc0e5a05a351c160bc0dc8b73d886e7b4f93cd94a4c25acff869818e",
-          "image": "registry.connect.redhat.com/ibm-edge/event-scheduler@sha256:6f2a627cdc0e5a05a351c160bc0dc8b73d886e7b4f93cd94a4c25acff869818e",
-          "name": "event_scheduler"
-        },
-        {
-          "digest": "sha256:e8dd581088cd9b008ce8a29f43d2ce22974dfaadfbfe9faba3370917717686ee",
-          "image": "registry.connect.redhat.com/ibm-edge/prometheus-scheduler@sha256:e8dd581088cd9b008ce8a29f43d2ce22974dfaadfbfe9faba3370917717686ee",
-          "name": "prometheus_scheduler"
-        },
-        {
-          "digest": "sha256:90ddecb54abe2880b86016a407507cecf77a113b4c7724235ab0abd21ad1d9aa",
-          "image": "registry.connect.redhat.com/ibm-edge/pgo-client@sha256:90ddecb54abe2880b86016a407507cecf77a113b4c7724235ab0abd21ad1d9aa",
-          "name": "pgo_client"
-        },
-        {
-          "digest": "sha256:815630d23e8d88664907fbf8096952adfd22593a4989063e9dd55549e674ee15",
-          "image": "registry.connect.redhat.com/ibm-edge/reverse-proxy@sha256:815630d23e8d88664907fbf8096952adfd22593a4989063e9dd55549e674ee15",
-          "name": "nginx"
-        },
-        {
-          "digest": "sha256:a2e20cac50352c1ad13cd03185f326484ee20202c8a60313ba116920d6d6da88",
-          "image": "registry.redhat.io/openshift4/ose-grafana@sha256:a2e20cac50352c1ad13cd03185f326484ee20202c8a60313ba116920d6d6da88",
-          "name": "grafana"
-        },
-        {
-          "digest": "sha256:4fc96dc7a835c37dd3441a2c78e094cbfff8ea7fc8432e99f979c00965184260",
-          "image": "registry.redhat.io/openshift3/ose-kube-state-metrics@sha256:4fc96dc7a835c37dd3441a2c78e094cbfff8ea7fc8432e99f979c00965184260",
-          "name": "ksm"
-        },
-        {
-          "digest": "sha256:3288307dd03844ec3574ca5c173d7f608755fd23654434c48ea2e854fe0f22cf",
-          "image": "registry.connect.redhat.com/ibm-edge/growth-stack-base@sha256:3288307dd03844ec3574ca5c173d7f608755fd23654434c48ea2e854fe0f22cf",
-          "name": "init_container"
-        },
-        {
-          "digest": "sha256:d748c21a55796827da82c61f162b505c59451cba24f1874e5185f21275b6bddc",
-          "image": "registry.access.redhat.com/ubi8/ubi@sha256:d748c21a55796827da82c61f162b505c59451cba24f1874e5185f21275b6bddc",
-          "name": "ubi"
-        },
-        {
-          "digest": "sha256:19a8b33e2f4c2beee5266d5243abb7f43d85322fc62800899759cdf6ec568fee",
-          "image": "registry.connect.redhat.com/ibm-edge/airgap-download-ui@sha256:19a8b33e2f4c2beee5266d5243abb7f43d85322fc62800899759cdf6ec568fee",
-          "name": "download_ui"
-        },
-        {
-          "digest": "sha256:9f6eae3e715d9aff6d9674059fb6bf4f6dfc3ad42f015200c69b481becd7abd9",
-          "image": "registry.connect.redhat.com/ibm-edge/bas-operator-dashboard@sha256:9f6eae3e715d9aff6d9674059fb6bf4f6dfc3ad42f015200c69b481becd7abd9",
-          "name": "dashboard_ui"
-        },
-        {
-          "digest": "sha256:5e31ce8745926e0116827b1b658800dd3e8b91cd1800be4f9943a84a1c023f78",
-          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:5e31ce8745926e0116827b1b658800dd3e8b91cd1800be4f9943a84a1c023f78",
-          "name": "oauth_proxy"
-        },
-        {
-          "digest": "sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
-          "image": "registry.connect.redhat.com/crunchydata/pgo-deployer@sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
-          "name": "pgo_deployer"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.1.3",
-      "version_original": "1.1.3"
-    },
-    {
       "_id": "61d4791417f914cd7233120d",
       "alm_examples": [
         {
@@ -49425,120 +49067,6 @@
       "version_original": "1.9.0"
     },
     {
-      "_id": "6231ca214b7f7a37109310c4",
-      "alm_examples": [
-        {
-          "api_version": "dynatrace.com/v1beta1",
-          "kind": "DynaKube",
-          "metadata": {
-            "name": "dynakube",
-            "namespace": "dynatrace"
-          },
-          "spec": {
-            "activeGate": {
-              "capabilities": [
-                "routing",
-                "kubernetes-monitoring"
-              ],
-              "image": ""
-            },
-            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api",
-            "oneAgent": {
-              "classicFullStack": {
-                "image": "",
-                "tolerations": [
-                  {
-                    "effect": "NoSchedule",
-                    "key": "node-role.kubernetes.io/master",
-                    "operator": "Exists"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-operator-bundle@sha256:3716b9d211e0546492116502848c277e6b34bb2b9d4eb93b292db3055085f13e",
-      "bundle_path_digest": "sha256:3716b9d211e0546492116502848c277e6b34bb2b9d4eb93b292db3055085f13e",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-16T11:29:37.552000+00:00",
-      "csv_description": "The Dynatrace Operator supports rollout and lifecycle management of various Dynatrace components in Kubernetes and OpenShift.\n\nCurrently the Dynatrace Operator supports the following capabilities:\n\n### OneAgent\n  * `classicFullStack` rolls out one OneAgent pod per node to monitor its pods and the node itself\n  * `applicationMonitoring` is a webhook based injection mechanism for automatic app-only injection\n  * `hostMonitoring` monitors only the hosts, i.e., the nodes, in the cluster without app-only injection\n### ActiveGate\n  * `routing` routes OneAgent traffic through the ActiveGate\n  * `kubernetes-monitoring` allows monitoring the Kubernetes API\n  * `metrics-ingest` routes enriched metrics through an ActiveGate\n\nFor more information please refer to [our DynaKube Custom Resource examples](https://dt-url.net/dynakube-samples).\n\n### Installation\nOnce you've installed the Dynatrace Operator, you can create a DynaKube custom resource.\n\nFirst, please add a Secret within the Project you've deployed the Dynatrace Operator to, which would contain your API and PaaS tokens. Create tokens of type *Dynatrace API* (`API_TOKEN`) and *Platform as a Service* (`PAAS_TOKEN`) and use their values in the following commands respectively.\n\nFor assistance please refer to [Create user-generated access tokens](https://www.dynatrace.com/support/help/shortlink/token#create-user-generated-access-tokens).\n\n``` $ oc -n <project> create secret generic dynakube --from-literal=\"apiToken=API_TOKEN\" --from-literal=\"paasToken=PAAS_TOKEN\" ```\n\nYou may update this Secret at any time to rotate the tokens.\n\nAfter creation of the secret add the DynaKube object in the project where the Dynatrace Operator has been deployed, configured to your needs.\n\n### Required Parameters\n* `apiUrl` - provide the URL to the API of your Dynatrace environment. In Dynatrace SaaS it will look like `https://<ENVIRONMENTID>.live.dynatrace.com/api` . In Dynatrace Managed like `https://<YourDynatraceServerURL>/e/<ENVIRONMENTID>/api` .\n\n### Advanced Options\n* **Disable Certificate Checking** - disable any certificate validation that may interact poorly with proxies with in your cluster\n* **Image Override** - use a copy of the ActiveGate container image from a registry other than Docker's or Red Hat's\n\nFor a complete list of supported parameters please consult the [Operator Deploy Guide](https://www.dynatrace.com/support/help/shortlink/openshift-deploy).\n\n### Help\nYou can find more about our instructions in our [documentation](https://www.dynatrace.com/support/help/shortlink/openshift-deploy#install-dynatrace-operator).\n",
-      "csv_display_name": "Dynatrace Operator",
-      "csv_metadata_description": "",
-      "csv_name": "dynatrace-operator.v0.5.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:54:18.629000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "dynatrace-operator",
-      "provided_apis": [
-        {
-          "group": "dynatrace.com",
-          "kind": "DynaKube",
-          "plural": "dynakubes",
-          "version": "v1beta1"
-        },
-        {
-          "group": "dynatrace.com",
-          "kind": "DynaKube",
-          "plural": "dynakubes",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
-          "name": "dynatrace-operator-438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3-annotation"
-        },
-        {
-          "digest": "sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
-          "name": "dynatrace-operator"
-        },
-        {
-          "digest": "sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
-          "name": "webhook"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.5.0",
-      "version_original": "0.5.0"
-    },
-    {
       "_id": "6231ca3e4b7f7a37109310c5",
       "alm_examples": [
         {
@@ -49649,120 +49177,6 @@
       "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.5.0",
-      "version_original": "0.5.0"
-    },
-    {
-      "_id": "6231e43855e2d467ca134766",
-      "alm_examples": [
-        {
-          "api_version": "dynatrace.com/v1beta1",
-          "kind": "DynaKube",
-          "metadata": {
-            "name": "dynakube",
-            "namespace": "dynatrace"
-          },
-          "spec": {
-            "activeGate": {
-              "capabilities": [
-                "routing",
-                "kubernetes-monitoring"
-              ],
-              "image": ""
-            },
-            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api",
-            "oneAgent": {
-              "classicFullStack": {
-                "image": "",
-                "tolerations": [
-                  {
-                    "effect": "NoSchedule",
-                    "key": "node-role.kubernetes.io/master",
-                    "operator": "Exists"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-operator-bundle@sha256:3716b9d211e0546492116502848c277e6b34bb2b9d4eb93b292db3055085f13e",
-      "bundle_path_digest": "sha256:3716b9d211e0546492116502848c277e6b34bb2b9d4eb93b292db3055085f13e",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-16T13:20:56.670000+00:00",
-      "csv_description": "The Dynatrace Operator supports rollout and lifecycle management of various Dynatrace components in Kubernetes and OpenShift.\n\nCurrently the Dynatrace Operator supports the following capabilities:\n\n### OneAgent\n  * `classicFullStack` rolls out one OneAgent pod per node to monitor its pods and the node itself\n  * `applicationMonitoring` is a webhook based injection mechanism for automatic app-only injection\n  * `hostMonitoring` monitors only the hosts, i.e., the nodes, in the cluster without app-only injection\n### ActiveGate\n  * `routing` routes OneAgent traffic through the ActiveGate\n  * `kubernetes-monitoring` allows monitoring the Kubernetes API\n  * `metrics-ingest` routes enriched metrics through an ActiveGate\n\nFor more information please refer to [our DynaKube Custom Resource examples](https://dt-url.net/dynakube-samples).\n\n### Installation\nOnce you've installed the Dynatrace Operator, you can create a DynaKube custom resource.\n\nFirst, please add a Secret within the Project you've deployed the Dynatrace Operator to, which would contain your API and PaaS tokens. Create tokens of type *Dynatrace API* (`API_TOKEN`) and *Platform as a Service* (`PAAS_TOKEN`) and use their values in the following commands respectively.\n\nFor assistance please refer to [Create user-generated access tokens](https://www.dynatrace.com/support/help/shortlink/token#create-user-generated-access-tokens).\n\n``` $ oc -n <project> create secret generic dynakube --from-literal=\"apiToken=API_TOKEN\" --from-literal=\"paasToken=PAAS_TOKEN\" ```\n\nYou may update this Secret at any time to rotate the tokens.\n\nAfter creation of the secret add the DynaKube object in the project where the Dynatrace Operator has been deployed, configured to your needs.\n\n### Required Parameters\n* `apiUrl` - provide the URL to the API of your Dynatrace environment. In Dynatrace SaaS it will look like `https://<ENVIRONMENTID>.live.dynatrace.com/api` . In Dynatrace Managed like `https://<YourDynatraceServerURL>/e/<ENVIRONMENTID>/api` .\n\n### Advanced Options\n* **Disable Certificate Checking** - disable any certificate validation that may interact poorly with proxies with in your cluster\n* **Image Override** - use a copy of the ActiveGate container image from a registry other than Docker's or Red Hat's\n\nFor a complete list of supported parameters please consult the [Operator Deploy Guide](https://www.dynatrace.com/support/help/shortlink/openshift-deploy).\n\n### Help\nYou can find more about our instructions in our [documentation](https://www.dynatrace.com/support/help/shortlink/openshift-deploy#install-dynatrace-operator).\n",
-      "csv_display_name": "Dynatrace Operator",
-      "csv_metadata_description": "",
-      "csv_name": "dynatrace-operator.v0.5.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:49:09.059000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "dynatrace-operator",
-      "provided_apis": [
-        {
-          "group": "dynatrace.com",
-          "kind": "DynaKube",
-          "plural": "dynakubes",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "dynatrace.com",
-          "kind": "DynaKube",
-          "plural": "dynakubes",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
-          "name": "dynatrace-operator-438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3-annotation"
-        },
-        {
-          "digest": "sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
-          "name": "dynatrace-operator"
-        },
-        {
-          "digest": "sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
-          "name": "webhook"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "0.5.0",
       "version_original": "0.5.0"
     },
@@ -82092,9 +81506,146 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.1",
       "version_original": "1.0.1"
+    },
+    {
+      "_id": "6262a5b6834f257293b60f6e",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nginx/nginx-ingress-operator-bundle@sha256:d53eea0345b2e18fb84d1208f5ca6c2e74c425403ba1611b5b1ee525315da0ae",
+      "bundle_path_digest": "sha256:d53eea0345b2e18fb84d1208f5ca6c2e74c425403ba1611b5b1ee525315da0ae",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:55:18.206000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nginx-ingress-operator.v0.0.6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:05:52.861000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nginx-ingress-operator",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.6",
+      "version_original": "0.0.6"
+    },
+    {
+      "_id": "6262a5bf834f257293b60f70",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:ff246089fecc3946921207dfd13eabfae67e2e6bb38909f11c078fee347adae3",
+      "bundle_path_digest": "sha256:ff246089fecc3946921207dfd13eabfae67e2e6bb38909f11c078fee347adae3",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:55:27.130000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nastel-navigator-operator.v0.0.18",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:00:14.700000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "nastel-navigator-operator-certified",
+      "provided_apis": [
+        {
+          "group": "navigator.nastel.com",
+          "kind": "NastelNavigator",
+          "plural": "nastelnavigators",
+          "version": "v1alpha6"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.18",
+      "version_original": "0.0.18"
+    },
+    {
+      "_id": "6262a5c9cde83e2b177c20b9",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:c380d43717df7db52058bcf261ece6ceb0e0ce779b0576d31d25d8a3c9c70e55",
+      "bundle_path_digest": "sha256:c380d43717df7db52058bcf261ece6ceb0e0ce779b0576d31d25d8a3c9c70e55",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:55:37.031000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "seldon-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:27:31.510000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "seldon-operator-certified",
+      "provided_apis": [
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha3"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
     }
   ],
   "page": 4,
   "page_size": 500,
-  "total": 3840
+  "total": 3836
 }

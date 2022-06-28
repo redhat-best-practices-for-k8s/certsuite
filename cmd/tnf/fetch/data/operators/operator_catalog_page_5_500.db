@@ -1,143 +1,6 @@
 {
   "data": [
     {
-      "_id": "6262a5b6834f257293b60f6e",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nginx/nginx-ingress-operator-bundle@sha256:d53eea0345b2e18fb84d1208f5ca6c2e74c425403ba1611b5b1ee525315da0ae",
-      "bundle_path_digest": "sha256:d53eea0345b2e18fb84d1208f5ca6c2e74c425403ba1611b5b1ee525315da0ae",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T12:55:18.206000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "nginx-ingress-operator.v0.0.6",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:05:52.861000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "nginx-ingress-operator",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.0.6",
-      "version_original": "0.0.6"
-    },
-    {
-      "_id": "6262a5bf834f257293b60f70",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:ff246089fecc3946921207dfd13eabfae67e2e6bb38909f11c078fee347adae3",
-      "bundle_path_digest": "sha256:ff246089fecc3946921207dfd13eabfae67e2e6bb38909f11c078fee347adae3",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T12:55:27.130000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "nastel-navigator-operator.v0.0.18",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:00:14.700000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "nastel-navigator-operator-certified",
-      "provided_apis": [
-        {
-          "group": "navigator.nastel.com",
-          "kind": "NastelNavigator",
-          "plural": "nastelnavigators",
-          "version": "v1alpha6"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.0.18",
-      "version_original": "0.0.18"
-    },
-    {
-      "_id": "6262a5c9cde83e2b177c20b9",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:c380d43717df7db52058bcf261ece6ceb0e0ce779b0576d31d25d8a3c9c70e55",
-      "bundle_path_digest": "sha256:c380d43717df7db52058bcf261ece6ceb0e0ce779b0576d31d25d8a3c9c70e55",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:55:37.031000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "seldon-operator.v1.1.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:27:31.510000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "seldon-operator-certified",
-      "provided_apis": [
-        {
-          "group": "machinelearning.seldon.io",
-          "kind": "SeldonDeployment",
-          "plural": "seldondeployments",
-          "version": "v1"
-        },
-        {
-          "group": "machinelearning.seldon.io",
-          "kind": "SeldonDeployment",
-          "plural": "seldondeployments",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "machinelearning.seldon.io",
-          "kind": "SeldonDeployment",
-          "plural": "seldondeployments",
-          "version": "v1alpha3"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.1.0",
-      "version_original": "1.1.0"
-    },
-    {
       "_id": "6262a5d9cde83e2b177c20bd",
       "alm_examples": [],
       "annotations": {
@@ -27429,7 +27292,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-24T19:37:49.510000+00:00",
+      "last_update_date": "2022-06-27T08:00:43.987000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -29337,246 +29200,6 @@
       "version_original": "0.2.2"
     },
     {
-      "_id": "627c6b7f9b28cbab99bd0d7c",
-      "alm_examples": [
-        {
-          "api_version": "dynatrace.com/v1beta1",
-          "kind": "DynaKube",
-          "metadata": {
-            "name": "dynakube",
-            "namespace": "dynatrace"
-          },
-          "spec": {
-            "activeGate": {
-              "capabilities": [
-                "routing",
-                "kubernetes-monitoring"
-              ],
-              "image": ""
-            },
-            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api",
-            "oneAgent": {
-              "classicFullStack": {
-                "image": "",
-                "tolerations": [
-                  {
-                    "effect": "NoSchedule",
-                    "key": "node-role.kubernetes.io/master",
-                    "operator": "Exists"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-operator-bundle@sha256:9215cdb5a5af79f38ffbf24403057a90a498cb07771b2f1dc330fc6e307fd409",
-      "bundle_path_digest": "sha256:9215cdb5a5af79f38ffbf24403057a90a498cb07771b2f1dc330fc6e307fd409",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-05-12T02:05:51.508000+00:00",
-      "csv_description": "The Dynatrace Operator supports rollout and lifecycle management of various Dynatrace components in Kubernetes and OpenShift.\n\nCurrently the Dynatrace Operator supports the following capabilities:\n\n### OneAgent\n  * `classicFullStack` rolls out one OneAgent pod per node to monitor its pods and the node itself\n  * `applicationMonitoring` is a webhook based injection mechanism for automatic app-only injection\n  * `hostMonitoring` monitors only the hosts, i.e., the nodes, in the cluster without app-only injection\n### ActiveGate\n  * `routing` routes OneAgent traffic through the ActiveGate\n  * `kubernetes-monitoring` allows monitoring the Kubernetes API\n  * `metrics-ingest` routes enriched metrics through an ActiveGate\n\nFor more information please refer to [our DynaKube Custom Resource examples](https://dt-url.net/dynakube-samples).\n\n### Installation\nOnce you've installed the Dynatrace Operator, you can create a DynaKube custom resource.\n\nFirst, please add a Secret within the Project you've deployed the Dynatrace Operator to, which would contain your API and PaaS tokens. Create tokens of type *Dynatrace API* (`API_TOKEN`) and *Platform as a Service* (`PAAS_TOKEN`) and use their values in the following commands respectively.\n\nFor assistance please refer to [Create user-generated access tokens](https://www.dynatrace.com/support/help/shortlink/token#create-user-generated-access-tokens).\n\n``` $ oc -n <project> create secret generic dynakube --from-literal=\"apiToken=API_TOKEN\" --from-literal=\"paasToken=PAAS_TOKEN\" ```\n\nYou may update this Secret at any time to rotate the tokens.\n\nAfter creation of the secret add the DynaKube object in the project where the Dynatrace Operator has been deployed, configured to your needs.\n\n### Required Parameters\n* `apiUrl` - provide the URL to the API of your Dynatrace environment. In Dynatrace SaaS it will look like `https://<ENVIRONMENTID>.live.dynatrace.com/api` . In Dynatrace Managed like `https://<YourDynatraceServerURL>/e/<ENVIRONMENTID>/api` .\n\n### Advanced Options\n* **Disable Certificate Checking** - disable any certificate validation that may interact poorly with proxies with in your cluster\n* **Image Override** - use a copy of the ActiveGate container image from a registry other than Docker's or Red Hat's\n\nFor a complete list of supported parameters please consult the [Operator Deploy Guide](https://www.dynatrace.com/support/help/shortlink/openshift-deploy).\n\n### Help\nYou can find more about our instructions in our [documentation](https://www.dynatrace.com/support/help/shortlink/openshift-deploy#install-dynatrace-operator).\n",
-      "csv_display_name": "Dynatrace Operator",
-      "csv_metadata_description": "",
-      "csv_name": "dynatrace-operator.v0.5.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:49:12.777000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "dynatrace-operator",
-      "provided_apis": [
-        {
-          "group": "dynatrace.com",
-          "kind": "DynaKube",
-          "plural": "dynakubes",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "dynatrace.com",
-          "kind": "DynaKube",
-          "plural": "dynakubes",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:a0ae7991dcb795e703ddd081c3f78a680eadb12612586302182d8f80f052c83e",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:a0ae7991dcb795e703ddd081c3f78a680eadb12612586302182d8f80f052c83e",
-          "name": "dynatrace-operator-a0ae7991dcb795e703ddd081c3f78a680eadb12612586302182d8f80f052c83e-annotation"
-        },
-        {
-          "digest": "sha256:a0ae7991dcb795e703ddd081c3f78a680eadb12612586302182d8f80f052c83e",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:a0ae7991dcb795e703ddd081c3f78a680eadb12612586302182d8f80f052c83e",
-          "name": "dynatrace-operator"
-        },
-        {
-          "digest": "sha256:a0ae7991dcb795e703ddd081c3f78a680eadb12612586302182d8f80f052c83e",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:a0ae7991dcb795e703ddd081c3f78a680eadb12612586302182d8f80f052c83e",
-          "name": "webhook"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.5.1",
-      "version_original": "0.5.1"
-    },
-    {
-      "_id": "627c6b864be4723d90ee6bd0",
-      "alm_examples": [
-        {
-          "api_version": "dynatrace.com/v1beta1",
-          "kind": "DynaKube",
-          "metadata": {
-            "name": "dynakube",
-            "namespace": "dynatrace"
-          },
-          "spec": {
-            "activeGate": {
-              "capabilities": [
-                "routing",
-                "kubernetes-monitoring",
-                "metrics-ingest",
-                "dynatrace-api"
-              ],
-              "image": "",
-              "resources": {
-                "limits": {
-                  "cpu": "1000m",
-                  "memory": "1.5Gi"
-                },
-                "requests": {
-                  "cpu": "500m",
-                  "memory": "512Mi"
-                }
-              }
-            },
-            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api",
-            "oneAgent": {
-              "classicFullStack": {
-                "image": "",
-                "tolerations": [
-                  {
-                    "effect": "NoSchedule",
-                    "key": "node-role.kubernetes.io/master",
-                    "operator": "Exists"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-operator-bundle@sha256:fb88d5cac69b1617cd532922f3472228511973d6a0a144470feec05491a9a6cf",
-      "bundle_path_digest": "sha256:fb88d5cac69b1617cd532922f3472228511973d6a0a144470feec05491a9a6cf",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-05-12T02:05:58.913000+00:00",
-      "csv_description": "The Dynatrace Operator supports rollout and lifecycle management of various Dynatrace components in Kubernetes and OpenShift.\n\nCurrently the Dynatrace Operator supports the following capabilities:\n\n### OneAgent\n  * `classicFullStack` rolls out one OneAgent pod per node to monitor its pods and the node itself\n  * `applicationMonitoring` is a webhook based injection mechanism for automatic app-only injection\n  * `hostMonitoring` monitors only the hosts, i.e., the nodes, in the cluster without app-only injection\n### ActiveGate\n  * `routing` routes OneAgent traffic through the ActiveGate\n  * `kubernetes-monitoring` allows monitoring the Kubernetes API\n  * `metrics-ingest` routes enriched metrics through an ActiveGate\n\nFor more information please refer to [our DynaKube Custom Resource examples](https://dt-url.net/dynakube-samples).\n\n### Installation\nOnce you've installed the Dynatrace Operator, you can create a DynaKube custom resource.\n\nFirst, please add a Secret within the Project you've deployed the Dynatrace Operator to, which would contain your API and PaaS tokens. Create tokens of type *Dynatrace API* (`API_TOKEN`) and *Platform as a Service* (`PAAS_TOKEN`) and use their values in the following commands respectively.\n\nFor assistance please refer to [Create user-generated access tokens](https://www.dynatrace.com/support/help/shortlink/token#create-user-generated-access-tokens).\n\n``` $ oc -n <project> create secret generic dynakube --from-literal=\"apiToken=API_TOKEN\" --from-literal=\"paasToken=PAAS_TOKEN\" ```\n\nYou may update this Secret at any time to rotate the tokens.\n\nAfter creation of the secret add the DynaKube object in the project where the Dynatrace Operator has been deployed, configured to your needs.\n\n### Required Parameters\n* `apiUrl` - provide the URL to the API of your Dynatrace environment. In Dynatrace SaaS it will look like `https://<ENVIRONMENTID>.live.dynatrace.com/api` . In Dynatrace Managed like `https://<YourDynatraceServerURL>/e/<ENVIRONMENTID>/api` .\n\n### Advanced Options\n* **Disable Certificate Checking** - disable any certificate validation that may interact poorly with proxies with in your cluster\n* **Image Override** - use a copy of the ActiveGate container image from a registry other than Docker's or Red Hat's\n\nFor a complete list of supported parameters please consult the [Operator Deploy Guide](https://www.dynatrace.com/support/help/shortlink/openshift-deploy).\n\n### Help\nYou can find more about our instructions in our [documentation](https://www.dynatrace.com/support/help/shortlink/openshift-deploy#install-dynatrace-operator).\n",
-      "csv_display_name": "Dynatrace Operator",
-      "csv_metadata_description": "",
-      "csv_name": "dynatrace-operator.v0.6.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:49:17.467000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "dynatrace-operator",
-      "provided_apis": [
-        {
-          "group": "dynatrace.com",
-          "kind": "DynaKube",
-          "plural": "dynakubes",
-          "version": "v1beta1"
-        },
-        {
-          "group": "dynatrace.com",
-          "kind": "DynaKube",
-          "plural": "dynakubes",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:f444bf52a3ec20983a08c1442a3953d2b067fbd3f4dc5c172717c41d2c28865c",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:f444bf52a3ec20983a08c1442a3953d2b067fbd3f4dc5c172717c41d2c28865c",
-          "name": "dynatrace-operator"
-        },
-        {
-          "digest": "sha256:f444bf52a3ec20983a08c1442a3953d2b067fbd3f4dc5c172717c41d2c28865c",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:f444bf52a3ec20983a08c1442a3953d2b067fbd3f4dc5c172717c41d2c28865c",
-          "name": "dynatrace-operator-f444bf52a3ec20983a08c1442a3953d2b067fbd3f4dc5c172717c41d2c28865c-annotation"
-        },
-        {
-          "digest": "sha256:f444bf52a3ec20983a08c1442a3953d2b067fbd3f4dc5c172717c41d2c28865c",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:f444bf52a3ec20983a08c1442a3953d2b067fbd3f4dc5c172717c41d2c28865c",
-          "name": "webhook"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.6.0",
-      "version_original": "0.6.0"
-    },
-    {
       "_id": "627c6b973e0ff4d601b6f8e6",
       "alm_examples": [
         {
@@ -30560,7 +30183,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-24T19:28:47.275000+00:00",
+      "last_update_date": "2022-06-27T07:58:52.143000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -36634,9 +36257,916 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.1.0",
       "version_original": "1.1.0"
+    },
+    {
+      "_id": "627c6e264be4723d90ee6de2",
+      "alm_examples": [
+        {
+          "api_version": "sonatype.com/v1alpha1",
+          "kind": "NexusIQ",
+          "metadata": {
+            "name": "example-nexusiq"
+          },
+          "spec": {
+            "deployment": {
+              "postStart": {},
+              "preStart": {}
+            },
+            "fullnameOverride": "",
+            "imagePullSecrets": [],
+            "ingress": {
+              "annotations": {},
+              "enabled": false,
+              "hosts": [],
+              "path": "/",
+              "tls": []
+            },
+            "iq": {
+              "adminPort": 8071,
+              "applicationPort": 8070,
+              "configYaml": {
+                "createSampleData": true,
+                "logging": {
+                  "appenders": [
+                    {
+                      "logFormat": "%d{'yyyy-MM-dd HH:mm:ss,SSSZ'} %level [%thread] %X{username} %logger - %msg%n",
+                      "threshold": "INFO",
+                      "type": "console"
+                    },
+                    {
+                      "archivedFileCount": 50,
+                      "archivedLogFilenamePattern": "/var/log/nexus-iq-server/clm-server-%d.log.gz",
+                      "currentLogFilename": "/var/log/nexus-iq-server/clm-server.log",
+                      "logFormat": "%d{'yyyy-MM-dd HH:mm:ss,SSSZ'} %level [%thread] %X{username} %logger - %msg%n",
+                      "threshold": "ALL",
+                      "type": "file"
+                    }
+                  ],
+                  "level": "DEBUG",
+                  "loggers": {
+                    "com.sonatype.insight.audit": {
+                      "appenders": [
+                        {
+                          "archivedFileCount": 50,
+                          "archivedLogFilenamePattern": "/var/log/nexus-iq-server/audit-%d.log.gz",
+                          "currentLogFilename": "/var/log/nexus-iq-server/audit.log",
+                          "type": "file"
+                        }
+                      ]
+                    },
+                    "com.sonatype.insight.policy.violation": {
+                      "appenders": [
+                        {
+                          "threshold": "INFO",
+                          "type": "console"
+                        }
+                      ]
+                    },
+                    "com.sonatype.insight.scan": "INFO",
+                    "eu.medsea.mimeutil.MimeUtil2": "INFO",
+                    "org.apache.http": "INFO",
+                    "org.apache.http.wire": "ERROR",
+                    "org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter": "INFO",
+                    "org.eclipse.birt.report.engine.layout.pdf.font.FontConfigReader": "WARN",
+                    "org.eclipse.jetty": "INFO"
+                  }
+                },
+                "server": {
+                  "adminConnectors": [
+                    {
+                      "port": 8071,
+                      "type": "http"
+                    }
+                  ],
+                  "applicationConnectors": [
+                    {
+                      "port": 8070,
+                      "type": "http"
+                    }
+                  ],
+                  "requestLog": {
+                    "appenders": [
+                      {
+                        "archivedFileCount": 50,
+                        "archivedLogFilenamePattern": "/var/log/nexus-iq-server/request-%d.log.gz",
+                        "currentLogFilename": "/var/log/nexus-iq-server/request.log",
+                        "logFormat": "%clientHost %l %user [%date] \"%requestURL\" %statusCode %bytesSent %elapsedTime \"%header{User-Agent}\"",
+                        "type": "file"
+                      }
+                    ]
+                  }
+                },
+                "sonatypeWork": "/sonatype-work"
+              },
+              "env": [
+                {
+                  "name": "JAVA_OPTS",
+                  "value": "-Djava.util.prefs.userRoot=$(SONATYPE_WORK)/javaprefs"
+                }
+              ],
+              "imageName": "registry.connect.redhat.com/sonatype/nexus-iq-server@sha256:0217a5c5ea55dd31e4cd467ac4858f0cce0bc84790c3d0caad30ad069b0d5011",
+              "imagePullPolicy": "IfNotPresent",
+              "imagePullSecret": "",
+              "licenseSecret": "",
+              "memory": "1Gi",
+              "name": "nxiq"
+            },
+            "nameOverride": "",
+            "persistence": {
+              "accessMode": "ReadWriteOnce",
+              "storageSize": "1Gi"
+            },
+            "service": {
+              "annotations": {},
+              "enabled": false,
+              "labels": {},
+              "ports": [
+                {
+                  "name": "nexus-service",
+                  "port": 80,
+                  "targetPort": 80
+                }
+              ]
+            },
+            "serviceAccount": {
+              "create": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sonatype/nxiq-operator-bundle@sha256:c7e05dd5e2886f5dd28ee115bbf3e4ff5758d79249ab7bdc90763d2bf5d3b288",
+      "bundle_path_digest": "sha256:c7e05dd5e2886f5dd28ee115bbf3e4ff5758d79249ab7bdc90763d2bf5d3b288",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:17:10.918000+00:00",
+      "csv_description": "Nexus Lifecycle is an open source governance platform that continuously identifies risk,\nautomatically enforces policy, and provides visibility throughout the entire SDLC.\nDevelopers leveraging open source require a solution that helps them make safer choices\nwhile still delivering at DevOps speed.\nNexus Lifecycle empowers developers and security teams to choose the best components\nand govern open source usage, ensuring organizations continue to innovate with less risk.\n\n## Core Capabilities\n\n* **Dependency Management**:\n  Generate a precise software bill of materials for all applications\n  to identify open source components and gather contextual direct\n  and transitive dependency information for faster action.\n* **One-Click Remediation**:\n  Upgrade to the best components and versions based on real-time intelligence.\n  Available in your preferred IDE or a GitHub pull request.\n* **Automated Open Source Policy Enforcement**:\n  Create custom security, license, and architectural policies based\n  on application type or organization and contextually enforce those policies\n  across every stage of the SDLC.\n* **Continuous Monitoring**:\n  Real-time notifications of newly discovered defects,\n  as well as vulnerabilities based on component,\n  risk level or application/container affected.\n\n## Extras\n\n* IDE Integrations: Eclipse, IntelliJ, and Visual Studio\n* Source Control Integrations: GitHub, GitLab, and Bitbucket\n* Chrome Browser Extension\n* Red Hat Clair for Container Scanning\n\n## Limitations\n\nThis operator will be released on a quarterly basis.\n\n## Usage\n\nOnce the server instance is created by the operator and running,\nyou'll want to expose the service as you see fit:\n1. Create a Route to the new service for iq.applicationPort (8070).\n2. Visit the URL provided by the Route, login, and set new credentials.\n  The default credentials are `admin`/`admin123`.\n\nThe Nexus IQ Server can be further configured via the NexusIQ custom resource definition:\n\n| Parameter            | Description                                                  | Default           |\n| -------------------- | ------------------------------------------------------------ | ----------------- |\n| `iq.applicationPort` | Port of the application connector. Must match the value in the `configYaml` property | `8070`            |\n| `iq.adminPort`       | Port of the application connector. Must match the value in the `configYaml` property | `8071`            |\n| `iq.memory`          | The amount of RAM to allocate                                | `1Gi`             |\n| `iq.env`             | Customize the server environment, including `JAVA_OPTS`      | See example YAML show when ceating a NexusIQ. |\n| `iq.licenseSecret`   | The base-64 encoded license file to be installed at startup  | `\"\"`              |\n| `iq.configYaml`      | A YAML block which will be used as a configuration block for IQ Server. | See example YAML shown when creating a NexusIQ. |\n| `ingress.enabled`                           | Create an ingress for Nexus         | `true`                                  |\n| `ingress.annotations`                       | Annotations to enhance ingress configuration  | `{}`                          |\n| `ingress.tls.enabled`                       | Enable TLS                          | `true`                                 |\n| `ingress.tls.secretName`                    | Name of the secret storing TLS cert, `false` to use the Ingress' default certificate | `nexus-tls`                             |\n| `ingress.path`                              | Path for ingress rules. GCP users should set to `/*` | `/`                    |\n| `deployment.preStart.command`               | Command to run before starting the IQ Server container  | `nil`                   |\n| `deployment.postStart.command`              | Command to run after starting the IQ Server container  | `nil`                    |\n| `deployment.terminationGracePeriodSeconds` | Time to allow for clean shutdown                        | 120                      |\n| `persistence.storageClass` | The provisioner class                        | `-` (disables dynamic provisioning)            |\n| `persistence.storageSize` | The amount of drive space to allocate                        | `1Gi`             |\n| `persistence.accessMode` | Default access mode                        | `ReadWriteOnce`             |\n| `persistence.volumeConfiguration` | A YAML block to configure the persistent volume type. Defaults to `hostPath` which should not be used in production | `hostPath`             |\n\n## Configuring IQ Server\n\nYou can define the `config.yml` for IQ Server in your CRD on startup.\nIt is the `iq.configYaml` property. For more details, see the [Configuring IQ Server](https://help.sonatype.com/iqserver/configuring) help page.\n\n\n## Installing the License\n\nThe license file can be installed via the UI when IQ server is running, or it can be done as a part of the deploy.\nIf you leave the `licenseFile` field empty/commented, IQ Server will start and prompt you to manually install the license\nwhen you first enter the GUI.\n\n### Installing the License Automatically\nTo do it automatically, first encode your `.lic` file in Base 64 with no line breaks, eg:\n\n```bash\nbase64 --wrap=0 mylicense.lic > lic.base64\n```\n\nThen add this value to your CRD file as `iq.licenseSecret`, eg:\n\n```yaml\niq:\n  licenseSecret: bXkgc2FtcGxlIGxpY2Vuc2U=\n```\n\nSpecify the `licenseFile` path in `iq.configYaml` as:\n\n```yaml\niq:\n  configYaml:\n    sonatypeWork: /sonatype-work\n    createSampleData: true\n    # add this line and the `licenseSecret` above to autoconfigure licensing\n    licenseFile: /etc/nexus-iq-license/license_lic\n    server:\n      applicationConnectors:\n        - type: http\n          port: 8070\n      adminConnectors:\n        - type: http\n          port: 8071\n```",
+      "csv_display_name": "Nexus IQ Operator",
+      "csv_metadata_description": "Nexus Lifecycle is an open source governance platform that continuously identifies risk,\nautomatically enforces policy, and provides visibility throughout the entire SDLC.",
+      "csv_name": "nxiq-operator-certified.v1.135.0-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-12T02:17:10.918000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "nxiq-operator-certified",
+      "provided_apis": [
+        {
+          "group": "sonatype.com",
+          "kind": "NexusIQ",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:b887878ceb78d38e97421e733c5a53b122f854ed335339a8be6da5ec8567cf2f",
+          "image": "registry.connect.redhat.com/sonatype/nxiq-operator-certified@sha256:b887878ceb78d38e97421e733c5a53b122f854ed335339a8be6da5ec8567cf2f",
+          "name": "nxiq-operator-certified-b887878ceb78d38e97421e733c5a53b122f854ed335339a8be6da5ec8567cf2f-annotation"
+        },
+        {
+          "digest": "sha256:b887878ceb78d38e97421e733c5a53b122f854ed335339a8be6da5ec8567cf2f",
+          "image": "registry.connect.redhat.com/sonatype/nxiq-operator-certified@sha256:b887878ceb78d38e97421e733c5a53b122f854ed335339a8be6da5ec8567cf2f",
+          "name": "nxiq-operator-certified"
+        },
+        {
+          "digest": "sha256:0217a5c5ea55dd31e4cd467ac4858f0cce0bc84790c3d0caad30ad069b0d5011",
+          "image": "registry.connect.redhat.com/sonatype/nexus-iq-server@sha256:0217a5c5ea55dd31e4cd467ac4858f0cce0bc84790c3d0caad30ad069b0d5011",
+          "name": "iq"
+        },
+        {
+          "digest": "sha256:0217a5c5ea55dd31e4cd467ac4858f0cce0bc84790c3d0caad30ad069b0d5011",
+          "image": "registry.connect.redhat.com/sonatype/nexus-iq-server@sha256:0217a5c5ea55dd31e4cd467ac4858f0cce0bc84790c3d0caad30ad069b0d5011",
+          "name": "nexus-iq-server-0217a5c5ea55dd31e4cd467ac4858f0cce0bc84790c3d0caad30ad069b0d5011-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "<1.135.0-1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.135.0-1",
+      "version_original": "1.135.0-1"
+    },
+    {
+      "_id": "627c6e299b28cbab99bd0f8e",
+      "alm_examples": [
+        {
+          "api_version": "sonatype.com/v1alpha1",
+          "kind": "NexusIQ",
+          "metadata": {
+            "name": "example-nexusiq"
+          },
+          "spec": {
+            "deployment": {
+              "postStart": {},
+              "preStart": {}
+            },
+            "fullnameOverride": "",
+            "imagePullSecrets": [],
+            "ingress": {
+              "annotations": {},
+              "enabled": false,
+              "hosts": [],
+              "path": "/",
+              "tls": []
+            },
+            "iq": {
+              "adminPort": 8071,
+              "applicationPort": 8070,
+              "configYaml": {
+                "createSampleData": true,
+                "logging": {
+                  "appenders": [
+                    {
+                      "logFormat": "%d{'yyyy-MM-dd HH:mm:ss,SSSZ'} %level [%thread] %X{username} %logger - %msg%n",
+                      "threshold": "INFO",
+                      "type": "console"
+                    },
+                    {
+                      "archivedFileCount": 50,
+                      "archivedLogFilenamePattern": "/var/log/nexus-iq-server/clm-server-%d.log.gz",
+                      "currentLogFilename": "/var/log/nexus-iq-server/clm-server.log",
+                      "logFormat": "%d{'yyyy-MM-dd HH:mm:ss,SSSZ'} %level [%thread] %X{username} %logger - %msg%n",
+                      "threshold": "ALL",
+                      "type": "file"
+                    }
+                  ],
+                  "level": "DEBUG",
+                  "loggers": {
+                    "com.sonatype.insight.audit": {
+                      "appenders": [
+                        {
+                          "archivedFileCount": 50,
+                          "archivedLogFilenamePattern": "/var/log/nexus-iq-server/audit-%d.log.gz",
+                          "currentLogFilename": "/var/log/nexus-iq-server/audit.log",
+                          "type": "file"
+                        }
+                      ]
+                    },
+                    "com.sonatype.insight.policy.violation": {
+                      "appenders": [
+                        {
+                          "threshold": "INFO",
+                          "type": "console"
+                        }
+                      ]
+                    },
+                    "com.sonatype.insight.scan": "INFO",
+                    "eu.medsea.mimeutil.MimeUtil2": "INFO",
+                    "org.apache.http": "INFO",
+                    "org.apache.http.wire": "ERROR",
+                    "org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter": "INFO",
+                    "org.eclipse.birt.report.engine.layout.pdf.font.FontConfigReader": "WARN",
+                    "org.eclipse.jetty": "INFO"
+                  }
+                },
+                "server": {
+                  "adminConnectors": [
+                    {
+                      "port": 8071,
+                      "type": "http"
+                    }
+                  ],
+                  "applicationConnectors": [
+                    {
+                      "port": 8070,
+                      "type": "http"
+                    }
+                  ],
+                  "requestLog": {
+                    "appenders": [
+                      {
+                        "archivedFileCount": 50,
+                        "archivedLogFilenamePattern": "/var/log/nexus-iq-server/request-%d.log.gz",
+                        "currentLogFilename": "/var/log/nexus-iq-server/request.log",
+                        "logFormat": "%clientHost %l %user [%date] \"%requestURL\" %statusCode %bytesSent %elapsedTime \"%header{User-Agent}\"",
+                        "type": "file"
+                      }
+                    ]
+                  }
+                },
+                "sonatypeWork": "/sonatype-work"
+              },
+              "env": [
+                {
+                  "name": "JAVA_OPTS",
+                  "value": "-Djava.util.prefs.userRoot=$(SONATYPE_WORK)/javaprefs"
+                }
+              ],
+              "imageName": "registry.connect.redhat.com/sonatype/nexus-iq-server@sha256:0217a5c5ea55dd31e4cd467ac4858f0cce0bc84790c3d0caad30ad069b0d5011",
+              "imagePullPolicy": "IfNotPresent",
+              "imagePullSecret": "",
+              "licenseSecret": "",
+              "memory": "1Gi",
+              "name": "nxiq"
+            },
+            "nameOverride": "",
+            "persistence": {
+              "accessMode": "ReadWriteOnce",
+              "storageSize": "1Gi"
+            },
+            "service": {
+              "annotations": {},
+              "enabled": false,
+              "labels": {},
+              "ports": [
+                {
+                  "name": "nexus-service",
+                  "port": 80,
+                  "targetPort": 80
+                }
+              ]
+            },
+            "serviceAccount": {
+              "create": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sonatype/nxiq-operator-bundle@sha256:c7e05dd5e2886f5dd28ee115bbf3e4ff5758d79249ab7bdc90763d2bf5d3b288",
+      "bundle_path_digest": "sha256:c7e05dd5e2886f5dd28ee115bbf3e4ff5758d79249ab7bdc90763d2bf5d3b288",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:17:13.075000+00:00",
+      "csv_description": "Nexus Lifecycle is an open source governance platform that continuously identifies risk,\nautomatically enforces policy, and provides visibility throughout the entire SDLC.\nDevelopers leveraging open source require a solution that helps them make safer choices\nwhile still delivering at DevOps speed.\nNexus Lifecycle empowers developers and security teams to choose the best components\nand govern open source usage, ensuring organizations continue to innovate with less risk.\n\n## Core Capabilities\n\n* **Dependency Management**:\n  Generate a precise software bill of materials for all applications\n  to identify open source components and gather contextual direct\n  and transitive dependency information for faster action.\n* **One-Click Remediation**:\n  Upgrade to the best components and versions based on real-time intelligence.\n  Available in your preferred IDE or a GitHub pull request.\n* **Automated Open Source Policy Enforcement**:\n  Create custom security, license, and architectural policies based\n  on application type or organization and contextually enforce those policies\n  across every stage of the SDLC.\n* **Continuous Monitoring**:\n  Real-time notifications of newly discovered defects,\n  as well as vulnerabilities based on component,\n  risk level or application/container affected.\n\n## Extras\n\n* IDE Integrations: Eclipse, IntelliJ, and Visual Studio\n* Source Control Integrations: GitHub, GitLab, and Bitbucket\n* Chrome Browser Extension\n* Red Hat Clair for Container Scanning\n\n## Limitations\n\nThis operator will be released on a quarterly basis.\n\n## Usage\n\nOnce the server instance is created by the operator and running,\nyou'll want to expose the service as you see fit:\n1. Create a Route to the new service for iq.applicationPort (8070).\n2. Visit the URL provided by the Route, login, and set new credentials.\n  The default credentials are `admin`/`admin123`.\n\nThe Nexus IQ Server can be further configured via the NexusIQ custom resource definition:\n\n| Parameter            | Description                                                  | Default           |\n| -------------------- | ------------------------------------------------------------ | ----------------- |\n| `iq.applicationPort` | Port of the application connector. Must match the value in the `configYaml` property | `8070`            |\n| `iq.adminPort`       | Port of the application connector. Must match the value in the `configYaml` property | `8071`            |\n| `iq.memory`          | The amount of RAM to allocate                                | `1Gi`             |\n| `iq.env`             | Customize the server environment, including `JAVA_OPTS`      | See example YAML show when ceating a NexusIQ. |\n| `iq.licenseSecret`   | The base-64 encoded license file to be installed at startup  | `\"\"`              |\n| `iq.configYaml`      | A YAML block which will be used as a configuration block for IQ Server. | See example YAML shown when creating a NexusIQ. |\n| `ingress.enabled`                           | Create an ingress for Nexus         | `true`                                  |\n| `ingress.annotations`                       | Annotations to enhance ingress configuration  | `{}`                          |\n| `ingress.tls.enabled`                       | Enable TLS                          | `true`                                 |\n| `ingress.tls.secretName`                    | Name of the secret storing TLS cert, `false` to use the Ingress' default certificate | `nexus-tls`                             |\n| `ingress.path`                              | Path for ingress rules. GCP users should set to `/*` | `/`                    |\n| `deployment.preStart.command`               | Command to run before starting the IQ Server container  | `nil`                   |\n| `deployment.postStart.command`              | Command to run after starting the IQ Server container  | `nil`                    |\n| `deployment.terminationGracePeriodSeconds` | Time to allow for clean shutdown                        | 120                      |\n| `persistence.storageClass` | The provisioner class                        | `-` (disables dynamic provisioning)            |\n| `persistence.storageSize` | The amount of drive space to allocate                        | `1Gi`             |\n| `persistence.accessMode` | Default access mode                        | `ReadWriteOnce`             |\n| `persistence.volumeConfiguration` | A YAML block to configure the persistent volume type. Defaults to `hostPath` which should not be used in production | `hostPath`             |\n\n## Configuring IQ Server\n\nYou can define the `config.yml` for IQ Server in your CRD on startup.\nIt is the `iq.configYaml` property. For more details, see the [Configuring IQ Server](https://help.sonatype.com/iqserver/configuring) help page.\n\n\n## Installing the License\n\nThe license file can be installed via the UI when IQ server is running, or it can be done as a part of the deploy.\nIf you leave the `licenseFile` field empty/commented, IQ Server will start and prompt you to manually install the license\nwhen you first enter the GUI.\n\n### Installing the License Automatically\nTo do it automatically, first encode your `.lic` file in Base 64 with no line breaks, eg:\n\n```bash\nbase64 --wrap=0 mylicense.lic > lic.base64\n```\n\nThen add this value to your CRD file as `iq.licenseSecret`, eg:\n\n```yaml\niq:\n  licenseSecret: bXkgc2FtcGxlIGxpY2Vuc2U=\n```\n\nSpecify the `licenseFile` path in `iq.configYaml` as:\n\n```yaml\niq:\n  configYaml:\n    sonatypeWork: /sonatype-work\n    createSampleData: true\n    # add this line and the `licenseSecret` above to autoconfigure licensing\n    licenseFile: /etc/nexus-iq-license/license_lic\n    server:\n      applicationConnectors:\n        - type: http\n          port: 8070\n      adminConnectors:\n        - type: http\n          port: 8071\n```",
+      "csv_display_name": "Nexus IQ Operator",
+      "csv_metadata_description": "Nexus Lifecycle is an open source governance platform that continuously identifies risk,\nautomatically enforces policy, and provides visibility throughout the entire SDLC.",
+      "csv_name": "nxiq-operator-certified.v1.135.0-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:57:05.346000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "nxiq-operator-certified",
+      "provided_apis": [
+        {
+          "group": "sonatype.com",
+          "kind": "NexusIQ",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:b887878ceb78d38e97421e733c5a53b122f854ed335339a8be6da5ec8567cf2f",
+          "image": "registry.connect.redhat.com/sonatype/nxiq-operator-certified@sha256:b887878ceb78d38e97421e733c5a53b122f854ed335339a8be6da5ec8567cf2f",
+          "name": "nxiq-operator-certified-b887878ceb78d38e97421e733c5a53b122f854ed335339a8be6da5ec8567cf2f-annotation"
+        },
+        {
+          "digest": "sha256:b887878ceb78d38e97421e733c5a53b122f854ed335339a8be6da5ec8567cf2f",
+          "image": "registry.connect.redhat.com/sonatype/nxiq-operator-certified@sha256:b887878ceb78d38e97421e733c5a53b122f854ed335339a8be6da5ec8567cf2f",
+          "name": "nxiq-operator-certified"
+        },
+        {
+          "digest": "sha256:0217a5c5ea55dd31e4cd467ac4858f0cce0bc84790c3d0caad30ad069b0d5011",
+          "image": "registry.connect.redhat.com/sonatype/nexus-iq-server@sha256:0217a5c5ea55dd31e4cd467ac4858f0cce0bc84790c3d0caad30ad069b0d5011",
+          "name": "iq"
+        },
+        {
+          "digest": "sha256:0217a5c5ea55dd31e4cd467ac4858f0cce0bc84790c3d0caad30ad069b0d5011",
+          "image": "registry.connect.redhat.com/sonatype/nexus-iq-server@sha256:0217a5c5ea55dd31e4cd467ac4858f0cce0bc84790c3d0caad30ad069b0d5011",
+          "name": "nexus-iq-server-0217a5c5ea55dd31e4cd467ac4858f0cce0bc84790c3d0caad30ad069b0d5011-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "<1.135.0-1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.135.0-1",
+      "version_original": "1.135.0-1"
+    },
+    {
+      "_id": "627c6e2b4be4723d90ee6de9",
+      "alm_examples": [
+        {
+          "api_version": "sonatype.com/v1alpha1",
+          "kind": "NexusRepo",
+          "metadata": {
+            "name": "example-nexusrepo"
+          },
+          "spec": {
+            "config": {
+              "enabled": false,
+              "mountPath": "/sonatype-nexus-conf"
+            },
+            "deployment": {
+              "annotations": {},
+              "postStart": {},
+              "preStart": {},
+              "terminationGracePeriodSeconds": 120
+            },
+            "deploymentStrategy": {},
+            "ingress": {
+              "annotations": {},
+              "enabled": false,
+              "path": "/",
+              "tls": {
+                "enabled": true,
+                "secretName": "nexus-tls"
+              }
+            },
+            "nexus": {
+              "dockerPort": 5003,
+              "env": [
+                {
+                  "name": "INSTALL4J_ADD_VM_PARAMS",
+                  "value": "-Xms2703M -Xmx2703M -XX:MaxDirectMemorySize=2703M -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+                },
+                {
+                  "name": "NEXUS_SECURITY_RANDOMPASSWORD",
+                  "value": "false"
+                }
+              ],
+              "hostAliases": [],
+              "imageName": "registry.connect.redhat.com/sonatype/nexus-repository-manager@sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
+              "imagePullPolicy": "IfNotPresent",
+              "imagePullSecret": "",
+              "livenessProbe": {
+                "failureThreshold": 6,
+                "initialDelaySeconds": 30,
+                "path": "/",
+                "periodSeconds": 30
+              },
+              "nexusPort": 8081,
+              "podAnnotations": {},
+              "readinessProbe": {
+                "failureThreshold": 6,
+                "initialDelaySeconds": 30,
+                "path": "/",
+                "periodSeconds": 30
+              },
+              "resources": {},
+              "securityContext": {},
+              "service": {
+                "type": "NodePort"
+              }
+            },
+            "nexusProxyRoute": {
+              "enabled": false
+            },
+            "persistence": {
+              "accessMode": "ReadWriteOnce",
+              "enabled": true,
+              "storageSize": "8Gi"
+            },
+            "replicaCount": 1,
+            "route": {
+              "enabled": false,
+              "name": "docker",
+              "portName": "docker"
+            },
+            "secret": {
+              "enabled": false,
+              "mountPath": "/etc/secret-volume",
+              "readOnly": true
+            },
+            "service": {
+              "annotations": {},
+              "enabled": false,
+              "labels": {},
+              "ports": [
+                {
+                  "name": "nexus-service",
+                  "port": 80,
+                  "targetPort": 80
+                }
+              ]
+            },
+            "statefulset": {
+              "enabled": false
+            },
+            "tolerations": []
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sonatype/nxrm-operator-bundle@sha256:fe836dd88b556e5d7d03a030e6584f546ee708bc6ecf4e1a796337ccbe1f454c",
+      "bundle_path_digest": "sha256:fe836dd88b556e5d7d03a030e6584f546ee708bc6ecf4e1a796337ccbe1f454c",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:17:15.484000+00:00",
+      "csv_description": "Nexus Repository is the central source of control to efficiently manage all binaries\nand build artifacts across your DevOps pipeline.\nThe flow of open source and third-party components into and through an organization\ncreates a complex software supply chain.\nNexus Repository delivers speed, efficiency, and quality to the governance\nand management of all dependencies, libraries, and applications for your DevOps teams.\n\n## Core Capabilities\n\n* **Dependency Management**:\n  Improves reliability with repeatable, fast access to secure dependencies\n* **Developer Productivity**:\n  Streamline developer workflows by enabling the sharing of components and applications across teams\n* **Supply Chain Performance**:\n  Improve speed-to-market and reduced build times with release advanced staging and component tagging\n* **CI/CD Integrations**:\n  Increase DevOps scalability with integrations to the most popular build and deployment tools\n\nVersion control systems and package registries do not scale when managing proprietary,\nopen source, and third-party components.\nOrganizations need a central binary and build artifact repository to manage dependencies\nacross the entire software supply chain.\n\n## Limitations\n\nHigh Availability Clustering (HA-C) is not supported for Nexus Repository Pro for OpenShift.\n\nThis operator will be released on a quarterly basis.\n\n## Usage\n\nOnce the server instance is created by the operator and running,\nyou'll want to expose the service as you see fit:\n1. Create a Route to that service for nexus.port (8081).\n\nBy default, the Nexus Repository starts up in OSS mode until a license is installed.\n\nThe Nexus Repository can be further configured via the NexusRepo custom resource definition:\n\n| Parameter                                   | Description                         | Default                                 |\n| ------------------------------------------  | ----------------------------------  | ----------------------------------------|\n| `statefulset.enabled`                       | Use statefulset instead of deployment | `false` |\n| `deploymentStrategy`                        | Deployment Strategy     |  `rollingUpdate` |\n| `nexus.env`                                 | Nexus environment variables         | `See example.` |\n| `nexus.resources`                           | Nexus resource requests and limits  | `{}`                                    |\n| `nexus.dockerPort`                          | Port to access docker               | `5003`                                  |\n| `nexus.nexusPort`                           | Internal port for Nexus service     | `8081`                                  |\n| `nexus.service.type`                        | Service for Nexus                   |`NodePort`                                |\n| `nexus.service.clusterIp`                   | Specific cluster IP when service type is cluster IP. Use None for headless service |`nil`   |\n| `nexus.securityContext`                     | Security Context |\n| `nexus.labels`                              | Service labels                      | `{}`                                    |\n| `nexus.podAnnotations`                      | Pod Annotations                     | `{}`\n| `nexus.livenessProbe.initialDelaySeconds`   | LivenessProbe initial delay         | 30                                      |\n| `nexus.livenessProbe.periodSeconds`         | Seconds between polls               | 30                                      |\n| `nexus.livenessProbe.failureThreshold`      | Number of attempts before failure   | 6                                       |\n| `nexus.livenessProbe.timeoutSeconds`        | Time in seconds after liveness probe times out    | `nil`                     |\n| `nexus.livenessProbe.path`                  | Path for LivenessProbe              | /                                       |\n| `nexus.readinessProbe.initialDelaySeconds`  | ReadinessProbe initial delay        | 30                                      |\n| `nexus.readinessProbe.periodSeconds`        | Seconds between polls               | 30                                      |\n| `nexus.readinessProbe.failureThreshold`     | Number of attempts before failure   | 6                                       |\n| `nexus.readinessProbe.timeoutSeconds`       | Time in seconds after readiness probe times out    | `nil`                    |\n| `nexus.readinessProbe.path`                 | Path for ReadinessProbe             | /                                       |\n| `nexus.hostAliases`                         | Aliases for IPs in /etc/hosts       | []                                      |\n| `ingress.enabled`                           | Create an ingress for Nexus         | `true`                                  |\n| `ingress.annotations`                       | Annotations to enhance ingress configuration  | `{}`                          |\n| `ingress.tls.enabled`                       | Enable TLS                          | `true`                                 |\n| `ingress.tls.secretName`                    | Name of the secret storing TLS cert, `false` to use the Ingress' default certificate | `nexus-tls`                             |\n| `ingress.path`                              | Path for ingress rules. GCP users should set to `/*` | `/`                    |\n| `tolerations`                               | tolerations list                    | `[]`                                    |\n| `config.enabled`                            | Enable configmap                    | `false`                                 |\n| `config.mountPath`                          | Path to mount the config            | `/sonatype-nexus-conf`                  |\n| `config.data`                               | Configmap data                      | `nil`                                   |\n| `deployment.terminationGracePeriodSeconds`  | Time to allow for clean shutdown    | 120                                     |\n| `deployment.annotations`                    | Annotations to enhance deployment configuration  | `{}`                       |\n| `deployment.initContainers`                 | Init containers to run before main containers  | `nil`                        |\n| `deployment.postStart.command`              | Command to run after starting the nexus container  | `nil`                    |\n| `deployment.preStart.command`               | Command to run before starting the nexus container  | `nil`                   |\n| `deployment.additionalContainers`           | Add additional Container         | `nil`                                      |\n| `deployment.additionalVolumes`              | Add additional Volumes           | `nil`                                      |\n| `deployment.additionalVolumeMounts`         | Add additional Volume mounts     | `nil`                                      |\n| `secret.enabled`                            | Enable secret                    | `false`                                    |\n| `secret.mountPath`                          | Path to mount the secret         | `/etc/secret-volume`                       |\n| `secret.readOnly`                           | Secret readonly state            | `true`                                     |\n| `secret.data`                               | Secret data                      | `nil`                                      |\n| `service.enabled`                           | Enable additional service        | `nil`                                      |\n| `service.name`                              | Service name                     | `nil`                                      |\n| `service.portName`                          | Service port name                | `nil`                                      |\n| `service.labels`                            | Service labels                   | `nil`                                      |\n| `service.annotations`                       | Service annotations              | `nil`                                      |\n| `service.loadBalancerSourceRanges`          | Service LoadBalancer source IP whitelist | `nil`                              |\n| `service.targetPort`                        | Service port                     | `nil`                                      |\n| `service.port`                              | Port for exposing service        | `nil`                                      |\n| `route.enabled`         | Set to true to create route for additional service | `false` |\n| `route.name`            | Name of route                                      | `docker` |\n| `route.portName`        | Target port name of service                        | `docker` |\n| `route.labels`          | Labels to be added to route                        | `{}` |\n| `route.annotations`     | Annotations to be added to route                   | `{}` |\n| `route.path`            | Host name of Route e.g jenkins.example.com         | nil |",
+      "csv_display_name": "Nexus Repository Operator",
+      "csv_metadata_description": "Nexus Repository is the central source of control to efficiently manage all binaries\nand build artifacts across your DevOps pipeline.",
+      "csv_name": "nxrm-operator-certified.v3.38.1-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:57:09.826000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "nxrm-operator-certified",
+      "provided_apis": [
+        {
+          "group": "sonatype.com",
+          "kind": "NexusRepo",
+          "plural": "nexusrepos",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460",
+          "image": "registry.connect.redhat.com/sonatype/nxrm-operator-certified@sha256:f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460",
+          "name": "nxrm-operator-certified-f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460-annotation"
+        },
+        {
+          "digest": "sha256:f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460",
+          "image": "registry.connect.redhat.com/sonatype/nxrm-operator-certified@sha256:f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460",
+          "name": "nxrm-operator-certified"
+        },
+        {
+          "digest": "sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
+          "image": "registry.connect.redhat.com/sonatype/nexus-repository-manager@sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
+          "name": "nexus"
+        },
+        {
+          "digest": "sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
+          "image": "registry.connect.redhat.com/sonatype/nexus-repository-manager@sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
+          "name": "nexus-repository-manager-bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "<3.38.1-1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "3.38.1-1",
+      "version_original": "3.38.1-1"
+    },
+    {
+      "_id": "627c6e34228d5769c5692a17",
+      "alm_examples": [
+        {
+          "api_version": "intel.com/v1alpha1",
+          "kind": "ModelServer",
+          "metadata": {
+            "name": "model-server-sample"
+          },
+          "spec": {
+            "deployment_parameters": {
+              "replicas": 1
+            },
+            "image_name": "registry.connect.redhat.com/intel/openvino-model-server@sha256:f670aa3dc014b8786e554b8a3bb7e2e8475744d588e5e72d554660b74430a8c5",
+            "models_repository": {
+              "aws_access_key_id": "",
+              "aws_region": "",
+              "aws_secret_access_key": "",
+              "azure_storage_connection_string": "",
+              "gcp_creds_secret_name": "",
+              "http_proxy": "",
+              "https_proxy": "",
+              "models_host_path": "",
+              "models_volume_claim": "",
+              "s3_compat_api_endpoint": "",
+              "storage_type": "google"
+            },
+            "models_settings": {
+              "batch#": "",
+              "config_configmap_name": "",
+              "idle_sequence_cleanup": false,
+              "is_stateful": false,
+              "layout": "",
+              "low_latency_transformation": true,
+              "max_sequence_number": 0,
+              "model_config": "",
+              "model_name": "resnet",
+              "model_path": "gs://ovms-public-eu/resnet50-tf",
+              "model_version_policy": "{\"latest\": { \"num_versions\":1 }}",
+              "nireq": 0,
+              "plugin_config": "{\"CPU_THROUGHPUT_STREAMS\":1}",
+              "shape": "",
+              "single_model_mode": true,
+              "target_device": "CPU"
+            },
+            "server_settings": {
+              "file_system_poll_wait_seconds": 0,
+              "grpc_workers": 1,
+              "log_level": "INFO",
+              "rest_workers": 0,
+              "sequence_cleaner_poll_wait_minutes": 0
+            },
+            "service_parameters": {
+              "grpc_port": 8080,
+              "rest_port": 8081
+            }
+          }
+        },
+        {
+          "api_version": "intel.com/v1alpha1",
+          "kind": "Notebook",
+          "metadata": {
+            "name": "v2022.1"
+          },
+          "spec": {
+            "auto_update_image": false,
+            "git_ref": "main"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/ovms-operator-bundle@sha256:8b45235b78b31202a3938dfba688216fb4c577efe404cb84b1034a8977cd7d25",
+      "bundle_path_digest": "sha256:8b45235b78b31202a3938dfba688216fb4c577efe404cb84b1034a8977cd7d25",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:17:24.785000+00:00",
+      "csv_description": "OpenVINO Toolkit Operator manages OpenVINO components in OpenShift.\n\nCurrently there available components are ModelServer and Notebook.\n\n# Model Server\n[OpenVINO\u2122 Model Server](https://github.com/openvinotoolkit/model_server) (OVMS) is a scalable, high-performance solution for serving machine learning models optimized for Intel\u00ae architectures. The server provides an inference service via gRPC or REST API for any models trained in a framework that is supported by [OpenVINO](https://software.intel.com/en-us/openvino-toolki://docs.openvino.ai/latest/index.html).\nModel Server configuration parameters is explained [here](https://github.com/openvinotoolkit/operator/blob/main/docs/modelserver_params.md).\n## Using the cluster\nOpenVINO Model Server can be consumed as a `Service`. It is called like with `ModelServer` resource with `-ovms` suffix.\nThe suffix is ommited when `ovms` phrase is included in the name.\nThe service exposes gRPC and REST API interfaces to run inference requests.\n```\noc get pods\nNAME                                        READY   STATUS    RESTARTS   AGE\nmodel-server-sample-ovms-586f6f76df-dpps4   1/1     Running   0          8h\n\noc get services\nNAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE\nmodel-server-sample-ovms   ClusterIP   172.25.199.210   <none>        8080/TCP,8081/TCP   8h\n```\n\n# Notebook\nThe Notebook resource integrates JupyterHub from OpenShift Data Science or Open Data Hub with a container image that includes [developer\ntools](https://github.com/openvinotoolkit/openvino/blob/master/docs/install_guides/pypi-openvino-dev.md)\nfrom the OpenVINO toolkit and a set of Jupyter notebook tutorials. It enables selecting a defined image `OpenVINO\u2122 Toolkit` from\nthe Jupyter Spawner choice list.\n\nCreate the `Notebook` resource in the same project with JupyterHub and RedHat OpenShift Data Science operator as seen in [documentation](https://github.com/openvinotoolkit/operator/blob/main/docs/notebook_in_rhods.md).\nIt builds the image in the cluster based on Dockerfile from [openvino_notebooks](https://github.com/openvinotoolkit/openvino_notebooks).\n\n## References\nOpenVINO Model Server on [Github](https://github.com/openvinotoolkit/model_server)\n\nOpenVINO Model Server Operator on [Github](https://github.com/openvinotoolkit/operator)\n",
+      "csv_display_name": "OpenVINO Toolkit Operator",
+      "csv_metadata_description": "",
+      "csv_name": "openvino-operator.v1.0.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:51:39.064000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "ovms-operator",
+      "provided_apis": [
+        {
+          "group": "intel.com",
+          "kind": "ModelServer",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "intel.com",
+          "kind": "Notebook",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:12f0c23da8a11e77c4aa58bd38143ab34858405c66936296aaebf21b4e61fd92",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:12f0c23da8a11e77c4aa58bd38143ab34858405c66936296aaebf21b4e61fd92",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:8987017369fd8deadcd459b2a1758b389b8ef51e93b3894bdbbeccf9ed6e4c23",
+          "image": "registry.connect.redhat.com/intel/ovms-operator@sha256:8987017369fd8deadcd459b2a1758b389b8ef51e93b3894bdbbeccf9ed6e4c23",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:f670aa3dc014b8786e554b8a3bb7e2e8475744d588e5e72d554660b74430a8c5",
+          "image": "registry.connect.redhat.com/intel/openvino-model-server@sha256:f670aa3dc014b8786e554b8a3bb7e2e8475744d588e5e72d554660b74430a8c5",
+          "name": "openvino-model-server-f670aa3dc014b8786e554b8a3bb7e2e8475744d588e5e72d554660b74430a8c5-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.0.0",
+      "version_original": "1.0.0"
+    },
+    {
+      "_id": "627c6e399b28cbab99bd0fa4",
+      "alm_examples": [
+        {
+          "api_version": "intel.com/v1alpha1",
+          "kind": "ModelServer",
+          "metadata": {
+            "name": "model-server-sample"
+          },
+          "spec": {
+            "deployment_parameters": {
+              "replicas": 1
+            },
+            "image_name": "registry.connect.redhat.com/intel/openvino-model-server@sha256:f670aa3dc014b8786e554b8a3bb7e2e8475744d588e5e72d554660b74430a8c5",
+            "models_repository": {
+              "aws_access_key_id": "",
+              "aws_region": "",
+              "aws_secret_access_key": "",
+              "azure_storage_connection_string": "",
+              "gcp_creds_secret_name": "",
+              "http_proxy": "",
+              "https_proxy": "",
+              "models_host_path": "",
+              "models_volume_claim": "",
+              "s3_compat_api_endpoint": "",
+              "storage_type": "google"
+            },
+            "models_settings": {
+              "batch#": "",
+              "config_configmap_name": "",
+              "idle_sequence_cleanup": false,
+              "is_stateful": false,
+              "layout": "",
+              "low_latency_transformation": true,
+              "max_sequence_number": 0,
+              "model_config": "",
+              "model_name": "resnet",
+              "model_path": "gs://ovms-public-eu/resnet50-tf",
+              "model_version_policy": "{\"latest\": { \"num_versions\":1 }}",
+              "nireq": 0,
+              "plugin_config": "{\"CPU_THROUGHPUT_STREAMS\":1}",
+              "shape": "",
+              "single_model_mode": true,
+              "target_device": "CPU"
+            },
+            "server_settings": {
+              "file_system_poll_wait_seconds": 0,
+              "grpc_workers": 1,
+              "log_level": "INFO",
+              "rest_workers": 0,
+              "sequence_cleaner_poll_wait_minutes": 0
+            },
+            "service_parameters": {
+              "grpc_port": 8080,
+              "rest_port": 8081
+            }
+          }
+        },
+        {
+          "api_version": "intel.com/v1alpha1",
+          "kind": "Notebook",
+          "metadata": {
+            "name": "v2022.1"
+          },
+          "spec": {
+            "auto_update_image": false,
+            "git_ref": "main"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/ovms-operator-bundle@sha256:8b45235b78b31202a3938dfba688216fb4c577efe404cb84b1034a8977cd7d25",
+      "bundle_path_digest": "sha256:8b45235b78b31202a3938dfba688216fb4c577efe404cb84b1034a8977cd7d25",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:17:29.335000+00:00",
+      "csv_description": "OpenVINO Toolkit Operator manages OpenVINO components in OpenShift.\n\nCurrently there available components are ModelServer and Notebook.\n\n# Model Server\n[OpenVINO\u2122 Model Server](https://github.com/openvinotoolkit/model_server) (OVMS) is a scalable, high-performance solution for serving machine learning models optimized for Intel\u00ae architectures. The server provides an inference service via gRPC or REST API for any models trained in a framework that is supported by [OpenVINO](https://software.intel.com/en-us/openvino-toolki://docs.openvino.ai/latest/index.html).\nModel Server configuration parameters is explained [here](https://github.com/openvinotoolkit/operator/blob/main/docs/modelserver_params.md).\n## Using the cluster\nOpenVINO Model Server can be consumed as a `Service`. It is called like with `ModelServer` resource with `-ovms` suffix.\nThe suffix is ommited when `ovms` phrase is included in the name.\nThe service exposes gRPC and REST API interfaces to run inference requests.\n```\noc get pods\nNAME                                        READY   STATUS    RESTARTS   AGE\nmodel-server-sample-ovms-586f6f76df-dpps4   1/1     Running   0          8h\n\noc get services\nNAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE\nmodel-server-sample-ovms   ClusterIP   172.25.199.210   <none>        8080/TCP,8081/TCP   8h\n```\n\n# Notebook\nThe Notebook resource integrates JupyterHub from OpenShift Data Science or Open Data Hub with a container image that includes [developer\ntools](https://github.com/openvinotoolkit/openvino/blob/master/docs/install_guides/pypi-openvino-dev.md)\nfrom the OpenVINO toolkit and a set of Jupyter notebook tutorials. It enables selecting a defined image `OpenVINO\u2122 Toolkit` from\nthe Jupyter Spawner choice list.\n\nCreate the `Notebook` resource in the same project with JupyterHub and RedHat OpenShift Data Science operator as seen in [documentation](https://github.com/openvinotoolkit/operator/blob/main/docs/notebook_in_rhods.md).\nIt builds the image in the cluster based on Dockerfile from [openvino_notebooks](https://github.com/openvinotoolkit/openvino_notebooks).\n\n## References\nOpenVINO Model Server on [Github](https://github.com/openvinotoolkit/model_server)\n\nOpenVINO Model Server Operator on [Github](https://github.com/openvinotoolkit/operator)\n",
+      "csv_display_name": "OpenVINO Toolkit Operator",
+      "csv_metadata_description": "",
+      "csv_name": "openvino-operator.v1.0.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:57:24.131000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "ovms-operator",
+      "provided_apis": [
+        {
+          "group": "intel.com",
+          "kind": "Notebook",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "intel.com",
+          "kind": "ModelServer",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:12f0c23da8a11e77c4aa58bd38143ab34858405c66936296aaebf21b4e61fd92",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:12f0c23da8a11e77c4aa58bd38143ab34858405c66936296aaebf21b4e61fd92",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:8987017369fd8deadcd459b2a1758b389b8ef51e93b3894bdbbeccf9ed6e4c23",
+          "image": "registry.connect.redhat.com/intel/ovms-operator@sha256:8987017369fd8deadcd459b2a1758b389b8ef51e93b3894bdbbeccf9ed6e4c23",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:f670aa3dc014b8786e554b8a3bb7e2e8475744d588e5e72d554660b74430a8c5",
+          "image": "registry.connect.redhat.com/intel/openvino-model-server@sha256:f670aa3dc014b8786e554b8a3bb7e2e8475744d588e5e72d554660b74430a8c5",
+          "name": "openvino-model-server-f670aa3dc014b8786e554b8a3bb7e2e8475744d588e5e72d554660b74430a8c5-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.0.0",
+      "version_original": "1.0.0"
     }
   ],
   "page": 5,
   "page_size": 500,
-  "total": 3840
+  "total": 3836
 }
