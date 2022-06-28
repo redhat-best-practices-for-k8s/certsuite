@@ -85,7 +85,6 @@ func intersectTargetFolders(src []string) []string {
 	return dst
 }
 
-//nolint:funlen
 func (f *FsDiff) RunTest(ctx clientsholder.Context, containerUID string) {
 	output, outerr, err := f.ClientHolder.ExecCommandContainer(ctx, fmt.Sprintf("chroot /host podman diff --format json %s", containerUID))
 	if err != nil {
