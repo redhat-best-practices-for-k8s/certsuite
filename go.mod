@@ -157,7 +157,7 @@ require (
 )
 
 require (
-	github.com/hashicorp/go-version v1.5.0
+	github.com/hashicorp/go-version v1.6.0
 	k8s.io/apiextensions-apiserver v0.24.0
 )
 
