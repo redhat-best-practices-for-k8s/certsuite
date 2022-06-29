@@ -166,7 +166,7 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 	var badContainers []string
 	var errContainers []string
 	for _, cut := range env.Containers {
-		logrus.Debug(fmt.Sprintf("%s(%s) should not install new packages after starting", cut.Podname, cut.Data.Name))
+		logrus.Debug(fmt.Sprintf("%s should not install new packages after starting", cut.String()))
 		debugPod := env.DebugPods[cut.NodeName]
 		if debugPod == nil {
 			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
