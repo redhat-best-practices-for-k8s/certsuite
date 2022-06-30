@@ -22,6 +22,7 @@ const (
 	AccessControlTestKey      = "access-control"
 	LifecycleTestKey          = "lifecycle"
 	ChaosTesting              = "chaostesting"
+	Daemonset                 = "daemonset"
 	AffiliatedCertTestKey     = "affiliated-certification"
 	NetworkingTestKey         = "networking"
 	ObservabilityTestKey      = "observability"

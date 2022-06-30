@@ -2,65 +2,46 @@ package daemonset
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"time"
 
+	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	appsv1 "k8s.io/api/apps/v1"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	v1 "k8s.io/api/apps/v1"
-	v1core "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 const (
-	timeout = 5 * time.Minute
+	daemonSetName    = "partner-repo"
+	namespace        = "default"
+	containerName    = "container-00"
+	imageWithVersion = "quay.io/testnetworkfunction/debug-partner:latest"
+	timeout          = 5 * time.Minute
 )
 
-func isDaemonSetReady(status *appsv1.DaemonSetStatus) bool {
-	//nolint:gocritic
-	return status.DesiredNumberScheduled == status.CurrentNumberScheduled &&
-		status.DesiredNumberScheduled == status.NumberAvailable &&
-		status.DesiredNumberScheduled == status.NumberReady &&
-		status.NumberMisscheduled == 0
-}
-func WaitDaemonsetReady(namespace, name string, timeout time.Duration) error {
-	client := clientsholder.GetClientsHolder().K8sClient
-	nodes, err := client.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
-	if err != nil {
-		return fmt.Errorf("failed to get node list, err:%s", err)
-	}
+var _ = ginkgo.Describe(common.Daemonset, func() {
+	var env provider.TestEnvironment
 
-	nodesCount := int32(len(nodes.Items))
-	isReady := false
-	for start := time.Now(); !isReady && time.Since(start) < timeout; {
-		daemonSet, err := client.AppsV1().DaemonSets(namespace).Get(context.Background(), name, metav1.GetOptions{})
+	ginkgo.BeforeEach(func() {
+		env = provider.GetTestEnvironment()
+	})
+	ginkgo.ReportAfterEach(results.RecordResult)
+	ginkgo.AfterEach(func() {
+		env.SetNeedsRefresh()
+	})
 
-		if err != nil {
-			return fmt.Errorf("failed to get daemonset, err: %s", err)
-		}
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv4ConnectivityIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		partnerRepoDaemonset()
+	})
 
-		if daemonSet.Status.DesiredNumberScheduled != nodesCount {
-			return fmt.Errorf("daemonset DesiredNumberScheduled not equal to number of nodes:%d, please instantiate debug pods on all nodes", nodesCount)
-		}
-
-		logrus.Infof("Waiting for (%d) debug pods to be ready: %+v", nodesCount, daemonSet.Status)
-		if isDaemonSetReady(&daemonSet.Status) {
-			isReady = true
-			break
-		}
-
-		time.Sleep(time.Duration(timeout.Minutes()))
-	}
-
-	if !isReady {
-		return errors.New("daemonset debug pods not ready")
-	}
-
-	logrus.Infof("All the debug pods are ready.")
-	return nil
-}
+})
 
 func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion string) *v1.DaemonSet {
 
@@ -73,16 +54,15 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 	var trueBool bool = true
 	var zeroInt int64 = 0
 	var zeroInt32 int32 = 0
-	var preempt = v1core.PreemptLowerPriority
+	var preempt = corev1.PreemptLowerPriority
 	var tolerationsSeconds int64 = 300
-	var hostPathType = v1core.HostPathDirectory
+	var hostPathType = corev1.HostPathDirectory
 
-	container := v1core.Container{
+	container := corev1.Container{
 		Name:            containerName,
 		Image:           imageWithVersion,
 		ImagePullPolicy: "Always",
-		//Command:         []string{"/bin/sh"},
-		SecurityContext: &v1core.SecurityContext{
+		SecurityContext: &corev1.SecurityContext{
 			Privileged: &trueBool,
 			RunAsUser:  &zeroInt,
 		},
@@ -90,14 +70,13 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 		StdinOnce:              true,
 		TerminationMessagePath: "/dev/termination-log",
 		TTY:                    true,
-		VolumeMounts: []v1core.VolumeMount{
+		VolumeMounts: []corev1.VolumeMount{
 			{
 				MountPath: "/host",
 				Name:      "host",
 			},
 		},
 	}
-
 	return &v1.DaemonSet{
 
 		ObjectMeta: metav1.ObjectMeta{
@@ -109,16 +88,16 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 			Selector: &metav1.LabelSelector{
 				MatchLabels: matchLabels,
 			},
-			Template: v1core.PodTemplateSpec{
+			Template: corev1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: matchLabels,
 				},
-				Spec: v1core.PodSpec{
-					Containers:       []v1core.Container{container},
+				Spec: corev1.PodSpec{
+					Containers:       []corev1.Container{container},
 					PreemptionPolicy: &preempt,
 					Priority:         &zeroInt32,
 					HostNetwork:      true,
-					Tolerations: []v1core.Toleration{
+					Tolerations: []corev1.Toleration{
 						{
 							Effect:            "NoExecute",
 							Key:               "node.kubernetes.io/not-ready",
@@ -136,11 +115,11 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 							Key:    "node-role.kubernetes.io/master",
 						},
 					},
-					Volumes: []v1core.Volume{
+					Volumes: []corev1.Volume{
 						{
 							Name: "host",
-							VolumeSource: v1core.VolumeSource{
-								HostPath: &v1core.HostPathVolumeSource{
+							VolumeSource: corev1.VolumeSource{
+								HostPath: &corev1.HostPathVolumeSource{
 									Path: "/",
 									Type: &hostPathType,
 								},
@@ -185,17 +164,17 @@ func doesDaemonSetExist(daemonSetName, namespace string) bool {
 	client := clientsholder.GetClientsHolder().K8sClient.AppsV1()
 	_, err := client.DaemonSets(namespace).Get(context.TODO(), daemonSetName, metav1.GetOptions{})
 	if err != nil {
-		fmt.Println("Error ocurred for" + err.Error())
+		fmt.Println("Error occurred checking for Daemonset to exist: " + err.Error())
 	}
 	// If the error is not found, that means the daemon set exists
 	return err == nil
 }
-func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion string, timeout time.Duration) (*v1core.PodList, error) {
+func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion string, timeout time.Duration) (*corev1.PodList, error) {
 	rebootDaemonSet := CreateDaemonSetsTemplate(daemonSetName, namespace, containerName, imageWithVersion)
 	if doesDaemonSetExist(daemonSetName, namespace) {
 		err := DeleteDaemonSet(daemonSetName, namespace)
 		if err != nil {
-			logrus.Debug("Failed to delete L2discovery daemonset because: %s", err)
+			logrus.Debug("Failed to delete debug daemonset because: %s", err)
 		}
 	}
 
@@ -205,11 +184,14 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 	if err != nil {
 		return nil, err
 	}
-	WaitDaemonsetReady(namespace, daemonSetName, timeout)
+	err = provider.WaitDebugPodsReady()
+	if err != nil {
+		return nil, err
+	}
 
-	fmt.Println("Deamon set is ready")
+	fmt.Println("DeamonSet is ready")
 
-	var ptpPods *v1core.PodList
+	var ptpPods *corev1.PodList
 	ptpPods, err = client.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{LabelSelector: "name=" + daemonSetName})
 	if err != nil {
 		return ptpPods, err
@@ -217,15 +199,15 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 	fmt.Printf("Successfully created daemon set %s\n", daemonSetName)
 	return ptpPods, nil
 }
-
-func partnerRepoDaemonset(daemonSetName, namespace, containerName, imageWithVersion string) {
+func partnerRepoDaemonset() map[string]corev1.Pod {
 	dsRunningPods, err := CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion, timeout)
 	if err != nil {
 		logrus.Errorf("Error : +%v\n", err.Error())
 	}
 
-	nodeToPodMapping := make(map[string]v1core.Pod)
+	nodeToPodMapping := make(map[string]corev1.Pod)
 	for _, dsPod := range dsRunningPods.Items {
 		nodeToPodMapping[dsPod.Spec.NodeName] = dsPod
 	}
+	return nodeToPodMapping
 }
