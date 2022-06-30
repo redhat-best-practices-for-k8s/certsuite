@@ -63,7 +63,6 @@ RUN git -C ${TNF_PARTNER_SRC_DIR} checkout ${GIT_PARTNER_CHECKOUT_TARGET}
 # Build TNF binary
 WORKDIR ${TNF_SRC_DIR}
 
-# TODO: RUN make install-tools
 RUN make install-tools && \
 	make build-cnf-tests-debug
 
