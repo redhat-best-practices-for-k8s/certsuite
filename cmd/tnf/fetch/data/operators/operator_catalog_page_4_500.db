@@ -18179,163 +18179,6 @@
       "version_original": "0.0.1"
     },
     {
-      "_id": "61fa61b96fe3ead398e98695",
-      "alm_examples": [
-        {
-          "api_version": "modelbuilder.com/v1alpha1",
-          "kind": "Modelbuilder",
-          "metadata": {
-            "name": "modelbuilder-sample"
-          },
-          "spec": {
-            "backup_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-file-gold-gid"
-            },
-            "email_notification": {
-              "accept": true,
-              "vm_mail_recipient": ""
-            },
-            "env_type": "prod",
-            "in_memory_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-file-gold-gid"
-            },
-            "license": {
-              "accept": false
-            },
-            "metadata_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-block-bronze"
-            },
-            "photo_storage": {
-              "storage#": "500G",
-              "storage_class": "ibmc-file-gold-gid"
-            },
-            "vm_request_method": "dynamic"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/modelbuilder-bundle@sha256:8a543a64ae75166509c1b49eca6c82723fc398108f6fda4b294f89b24ab086ad",
-      "bundle_path_digest": "sha256:8a543a64ae75166509c1b49eca6c82723fc398108f6fda4b294f89b24ab086ad",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-02-02T10:49:29.940000+00:00",
-      "csv_description": "IBM Services Software Model Builder for Vision is an AI training platform that can use the capabilities of IBM Cloud and its GPUs to quickly train computer vision models for compatible mobile apps. IBM Services Software Inspection Workbench iOS and iPadOS app will be used as the exclusive UI for labeling and training. Specifically, IBM Model Builder for Vision will train computer vision models that can then be deployed for use on the IBM Services Software Inspector Portable , IBM Services Software Inspector Wearable and the IBM Maximo Visual Inspection Mobile apps.",
-      "csv_display_name": "IBM Model Builder for Vision",
-      "csv_metadata_description": "",
-      "csv_name": "ibm-modelbuilder-for-vision-certified.v1.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:51:25.136000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "model-builder-for-vision-certified",
-      "provided_apis": [
-        {
-          "group": "modelbuilder.com",
-          "kind": "Modelbuilder",
-          "plural": "modelbuilders",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:5f97c53dfb96d9cdd9118ebca5dbb3ab9efaaab763107b98588e3385c336bf16",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-operator@sha256:5f97c53dfb96d9cdd9118ebca5dbb3ab9efaaab763107b98588e3385c336bf16",
-          "name": "modelbuilder-operator-5f97c53dfb96d9cdd9118ebca5dbb3ab9efaaab763107b98588e3385c336bf16-annotation"
-        },
-        {
-          "digest": "sha256:5f97c53dfb96d9cdd9118ebca5dbb3ab9efaaab763107b98588e3385c336bf16",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-operator@sha256:5f97c53dfb96d9cdd9118ebca5dbb3ab9efaaab763107b98588e3385c336bf16",
-          "name": "modelbuilder"
-        },
-        {
-          "digest": "sha256:609c19d1718947ee814b829334c37e1d720acf5fb642b0712b8ab1b14d57f53f",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:609c19d1718947ee814b829334c37e1d720acf5fb642b0712b8ab1b14d57f53f",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1de895df0c9bce080e0a45efce78e70c99de43484de0fb6e4e5ba824d9566434",
-          "image": "registry.access.redhat.com/rhel8/postgresql-12@sha256:1de895df0c9bce080e0a45efce78e70c99de43484de0fb6e4e5ba824d9566434",
-          "name": "postgres_cli"
-        },
-        {
-          "digest": "sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
-          "image": "registry.connect.redhat.com/crunchydata/pgo-deployer@sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
-          "name": "pgo_deploy"
-        },
-        {
-          "digest": "sha256:7d7ac1726d07e5c0cce79fa2b7d6ea7dfac3b94a1873ceeac84a90b2f5a0273d",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-pgo-util@sha256:7d7ac1726d07e5c0cce79fa2b7d6ea7dfac3b94a1873ceeac84a90b2f5a0273d",
-          "name": "pgo_client"
-        },
-        {
-          "digest": "sha256:7bcd7a92907ad0939554a437fbb0e80ff12c3aeaf6ad210bba0c89433bea16af",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-augmentor@sha256:7bcd7a92907ad0939554a437fbb0e80ff12c3aeaf6ad210bba0c89433bea16af",
-          "name": "coreml_augmentor"
-        },
-        {
-          "digest": "sha256:212862b00a90d2196a5afe0d8af5cc07185c006d62dd6128f382fb3fc2f0968a",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-image-server@sha256:212862b00a90d2196a5afe0d8af5cc07185c006d62dd6128f382fb3fc2f0968a",
-          "name": "nginx"
-        },
-        {
-          "digest": "sha256:b323308be2254a0d3e6e4aa83df32392443d3c1673fa5e63a64fb54500bad71b",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-auth-service@sha256:b323308be2254a0d3e6e4aa83df32392443d3c1673fa5e63a64fb54500bad71b",
-          "name": "mb_auth_coreml"
-        },
-        {
-          "digest": "sha256:72d078265a40f4dd92f488f0445fb112e9fe8ea05b729dd7af282d3c9c710f6c",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-cv-training-service@sha256:72d078265a40f4dd92f488f0445fb112e9fe8ea05b729dd7af282d3c9c710f6c",
-          "name": "mb_service_coreml"
-        },
-        {
-          "digest": "sha256:e43443f9b8a5c0c4f228c23f302b37444f74b55539b6fd5f7ca4d6ebc9d5e0f1",
-          "image": "registry.redhat.io/rhel8/redis-6@sha256:e43443f9b8a5c0c4f228c23f302b37444f74b55539b6fd5f7ca4d6ebc9d5e0f1",
-          "name": "redis"
-        },
-        {
-          "digest": "sha256:22408e0392919e45280975044c5b3ea494e661e1db9f656df37c23ffdfbe8b96",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-util@sha256:22408e0392919e45280975044c5b3ea494e661e1db9f656df37c23ffdfbe8b96",
-          "name": "util"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<1.0.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.0.1",
-      "version_original": "1.0.1"
-    },
-    {
       "_id": "61fa63936fe3ead398e98696",
       "alm_examples": [
         {
@@ -18906,134 +18749,6 @@
       "version_original": "1.0.1"
     },
     {
-      "_id": "61fd22b14172771714799798",
-      "alm_examples": [
-        {
-          "api_version": "infrastructure.asset.orchestrator.com/v1",
-          "kind": "Generatekey",
-          "metadata": {
-            "name": "modelbuilder-token"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "infrastructure.asset.orchestrator.com/v1",
-          "kind": "Mb-broker-service",
-          "metadata": {
-            "name": "mb-broker-service-sample"
-          },
-          "spec": {
-            "env_type": "prod",
-            "external_db": {
-              "enabled": false
-            },
-            "postgres": {
-              "enable_pg_tls": true,
-              "storage#": "20G",
-              "storage_class": "ibmc-block-bronze"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/iao-bundle@sha256:1a31b4b8bf347ee1368b7df89ffbbc2fa2886c3c892eebcf2f340d1bed398f09",
-      "bundle_path_digest": "sha256:1a31b4b8bf347ee1368b7df89ffbbc2fa2886c3c892eebcf2f340d1bed398f09",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-02-04T12:57:21.989000+00:00",
-      "csv_description": "Infrastructure Asset Orchestrator provides users access to cloud resources and services. Leverages the dynamic nature of the cloud platforms to provide significant cost savings and efficiencies. Using the Infrastructure Asset Orchestrator user can provision, configure, utilize and deprovision variety of services on the IBM Cloud Catalog.",
-      "csv_display_name": "Infrastructure Asset Orchestrator",
-      "csv_metadata_description": "",
-      "csv_name": "infrastructure-asset-orchestrator-certified.v1.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:01:36.251000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "infrastructure-asset-orchestrator-certified",
-      "provided_apis": [
-        {
-          "group": "infrastructure.asset.orchestrator.com",
-          "kind": "Generatekey",
-          "version": "v1"
-        },
-        {
-          "group": "infrastructure.asset.orchestrator.com",
-          "kind": "Mb-broker-service",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:65afe0a057731a5321c848119cf352f5961a7512adf5544aded46ed9c6f66fe4",
-          "image": "registry.connect.redhat.com/ibm/iao-operator@sha256:65afe0a057731a5321c848119cf352f5961a7512adf5544aded46ed9c6f66fe4",
-          "name": "iao-operator-65afe0a057731a5321c848119cf352f5961a7512adf5544aded46ed9c6f66fe4-annotation"
-        },
-        {
-          "digest": "sha256:65afe0a057731a5321c848119cf352f5961a7512adf5544aded46ed9c6f66fe4",
-          "image": "registry.connect.redhat.com/ibm/iao-operator@sha256:65afe0a057731a5321c848119cf352f5961a7512adf5544aded46ed9c6f66fe4",
-          "name": "infrastructure-asset-orchestrator"
-        },
-        {
-          "digest": "sha256:609c19d1718947ee814b829334c37e1d720acf5fb642b0712b8ab1b14d57f53f",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:609c19d1718947ee814b829334c37e1d720acf5fb642b0712b8ab1b14d57f53f",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:18b926262665add6733d81cf08de8cd8eda7cde082be1201dd294b7aff18ce43",
-          "image": "registry.connect.redhat.com/ibm/iao-orchestrator-service@sha256:18b926262665add6733d81cf08de8cd8eda7cde082be1201dd294b7aff18ce43",
-          "name": "orchestrator"
-        },
-        {
-          "digest": "sha256:9c9d071488d4c23637684a9f0ef818151a056140e2f71df32f4112a73886d71b",
-          "image": "registry.connect.redhat.com/ibm/iao-mb-broker-service@sha256:9c9d071488d4c23637684a9f0ef818151a056140e2f71df32f4112a73886d71b",
-          "name": "mb_broker"
-        },
-        {
-          "digest": "sha256:336ee99fb072c2c7281de94c83b506fa7e3fe91d1015f10d5db275da81c568ae",
-          "image": "registry.connect.redhat.com/ibm/iao-util@sha256:336ee99fb072c2c7281de94c83b506fa7e3fe91d1015f10d5db275da81c568ae",
-          "name": "mb_util"
-        },
-        {
-          "digest": "sha256:dfef558bda03a13bdc3802220a31e89994b2c16db6588c374421df57bd539e9e",
-          "image": "registry.connect.redhat.com/ibm/iao-pgo-util@sha256:dfef558bda03a13bdc3802220a31e89994b2c16db6588c374421df57bd539e9e",
-          "name": "pgo_client"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<1.0.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.0.1",
-      "version_original": "1.0.1"
-    },
-    {
       "_id": "620147676f7520a59798cd34",
       "alm_examples": [
         {
@@ -19344,163 +19059,6 @@
       "skip_range": "",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.0.2",
-      "version_original": "1.0.2"
-    },
-    {
-      "_id": "620147df6f7520a59798cd37",
-      "alm_examples": [
-        {
-          "api_version": "modelbuilder.com/v1alpha1",
-          "kind": "Modelbuilder",
-          "metadata": {
-            "name": "modelbuilder-sample"
-          },
-          "spec": {
-            "backup_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-file-gold-gid"
-            },
-            "email_notification": {
-              "accept": true,
-              "vm_mail_recipient": ""
-            },
-            "env_type": "prod",
-            "in_memory_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-file-gold-gid"
-            },
-            "license": {
-              "accept": false
-            },
-            "metadata_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-block-bronze"
-            },
-            "photo_storage": {
-              "storage#": "500G",
-              "storage_class": "ibmc-file-gold-gid"
-            },
-            "vm_request_method": "dynamic"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/modelbuilder-bundle@sha256:5d5f3733a803a04e2a328f45a4563124e95a254c7f9d4d82ae90a2e314581783",
-      "bundle_path_digest": "sha256:5d5f3733a803a04e2a328f45a4563124e95a254c7f9d4d82ae90a2e314581783",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-02-07T16:25:03.677000+00:00",
-      "csv_description": "IBM Services Software Model Builder for Vision is an AI training platform that can use the capabilities of IBM Cloud and its GPUs to quickly train computer vision models for compatible mobile apps. IBM Services Software Inspection Workbench iOS and iPadOS app will be used as the exclusive UI for labeling and training. Specifically, IBM Model Builder for Vision will train computer vision models that can then be deployed for use on the IBM Services Software Inspector Portable , IBM Services Software Inspector Wearable and the IBM Maximo Visual Inspection Mobile apps.",
-      "csv_display_name": "IBM Model Builder for Vision",
-      "csv_metadata_description": "",
-      "csv_name": "ibm-modelbuilder-for-vision-certified.v1.0.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:16:26.547000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "model-builder-for-vision-certified",
-      "provided_apis": [
-        {
-          "group": "modelbuilder.com",
-          "kind": "Modelbuilder",
-          "plural": "modelbuilders",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:c122932689b76cd802bcbd5f662f246487b7843bd404a9bdbfdbd186b02a87c4",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-operator@sha256:c122932689b76cd802bcbd5f662f246487b7843bd404a9bdbfdbd186b02a87c4",
-          "name": "modelbuilder-operator-c122932689b76cd802bcbd5f662f246487b7843bd404a9bdbfdbd186b02a87c4-annotation"
-        },
-        {
-          "digest": "sha256:c122932689b76cd802bcbd5f662f246487b7843bd404a9bdbfdbd186b02a87c4",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-operator@sha256:c122932689b76cd802bcbd5f662f246487b7843bd404a9bdbfdbd186b02a87c4",
-          "name": "modelbuilder"
-        },
-        {
-          "digest": "sha256:609c19d1718947ee814b829334c37e1d720acf5fb642b0712b8ab1b14d57f53f",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:609c19d1718947ee814b829334c37e1d720acf5fb642b0712b8ab1b14d57f53f",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1de895df0c9bce080e0a45efce78e70c99de43484de0fb6e4e5ba824d9566434",
-          "image": "registry.redhat.io/rhel8/postgresql-12@sha256:1de895df0c9bce080e0a45efce78e70c99de43484de0fb6e4e5ba824d9566434",
-          "name": "postgres_cli"
-        },
-        {
-          "digest": "sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
-          "image": "registry.connect.redhat.com/crunchydata/pgo-deployer@sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
-          "name": "pgo_deploy"
-        },
-        {
-          "digest": "sha256:7d7ac1726d07e5c0cce79fa2b7d6ea7dfac3b94a1873ceeac84a90b2f5a0273d",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-pgo-util@sha256:7d7ac1726d07e5c0cce79fa2b7d6ea7dfac3b94a1873ceeac84a90b2f5a0273d",
-          "name": "pgo_client"
-        },
-        {
-          "digest": "sha256:63b02ce3948e9bc42a2e22d3558b94a1429f14f0eaeac015c9c65ab5f591daec",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-augmentor@sha256:63b02ce3948e9bc42a2e22d3558b94a1429f14f0eaeac015c9c65ab5f591daec",
-          "name": "coreml_augmentor"
-        },
-        {
-          "digest": "sha256:23e67f861137494026a2d4fb4e5dd0f99f122447115887d2a2a0003c753c1187",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-image-server@sha256:23e67f861137494026a2d4fb4e5dd0f99f122447115887d2a2a0003c753c1187",
-          "name": "nginx"
-        },
-        {
-          "digest": "sha256:ecb50f1b604821b01d9f7e539234db4a56417a3f02c89cef12445d2f5ac40821",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-auth-service@sha256:ecb50f1b604821b01d9f7e539234db4a56417a3f02c89cef12445d2f5ac40821",
-          "name": "mb_auth_coreml"
-        },
-        {
-          "digest": "sha256:899d7a37526ac12b3c2aafeade367d523811b771af18999d828dcd7fbc4367a8",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-cv-training-service@sha256:899d7a37526ac12b3c2aafeade367d523811b771af18999d828dcd7fbc4367a8",
-          "name": "mb_service_coreml"
-        },
-        {
-          "digest": "sha256:e43443f9b8a5c0c4f228c23f302b37444f74b55539b6fd5f7ca4d6ebc9d5e0f1",
-          "image": "registry.redhat.io/rhel8/redis-6@sha256:e43443f9b8a5c0c4f228c23f302b37444f74b55539b6fd5f7ca4d6ebc9d5e0f1",
-          "name": "redis"
-        },
-        {
-          "digest": "sha256:22408e0392919e45280975044c5b3ea494e661e1db9f656df37c23ffdfbe8b96",
-          "image": "registry.connect.redhat.com/ibm/modelbuilder-util@sha256:22408e0392919e45280975044c5b3ea494e661e1db9f656df37c23ffdfbe8b96",
-          "name": "util"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "1.0.2",
       "version_original": "1.0.2"
     },
@@ -81643,9 +81201,213 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.0",
       "version_original": "1.1.0"
+    },
+    {
+      "_id": "6262a5d9cde83e2b177c20bd",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cloudark/kubeplus-operator-bundle@sha256:a1944c0e06d995361c72f03b8a975a646dd25935a0312c5209a03cb1a1732256",
+      "bundle_path_digest": "sha256:a1944c0e06d995361c72f03b8a975a646dd25935a0312c5209a03cb1a1732256",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:55:53.204000+00:00",
+      "csv_description": "SaaS Multi-tenancy Manager",
+      "csv_display_name": "KubePlus",
+      "csv_metadata_description": "SaaS Operator - Create SaaS from Helm charts",
+      "csv_name": "kubeplus.v1.0.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:09:33.459000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "kubeplus",
+      "provided_apis": [
+        {
+          "group": "workflows.kubeplus",
+          "kind": "ResourceComposition",
+          "plural": "resourcecompositions",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "workflows.kubeplus",
+          "kind": "ResourceEvent",
+          "plural": "resourceevents",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "workflows.kubeplus",
+          "kind": "ResourceMonitor",
+          "plural": "resourcemonitors",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "workflows.kubeplus",
+          "kind": "ResourcePolicy",
+          "plural": "resourcepolicies",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:9de09c08e692625e42e9d2cf096b2fc746c6b5a0ea4833f471a3b705db8c2b97",
+          "image": "registry.connect.redhat.com/cloudark/kubeplus-platform-operator@sha256:9de09c08e692625e42e9d2cf096b2fc746c6b5a0ea4833f471a3b705db8c2b97",
+          "name": "kubeplus-platform-operator-9de09c08e692625e42e9d2cf096b2fc746c6b5a0ea4833f471a3b705db8c2b97-annotation"
+        },
+        {
+          "digest": "sha256:08a76ff2c5644872a68bb333162d86c57c79cd7d4e1201dda894902914896e7b",
+          "image": "registry.connect.redhat.com/cloudark/kubeplus-mutating-webhook@sha256:08a76ff2c5644872a68bb333162d86c57c79cd7d4e1201dda894902914896e7b",
+          "name": "crd-hook"
+        },
+        {
+          "digest": "sha256:fb180d9b3b0ce6c2141fe5280a405636eeba1ebbad54310ee83cdb412d210150",
+          "image": "registry.connect.redhat.com/cloudark/kubeplus-mutating-webhook-helper@sha256:fb180d9b3b0ce6c2141fe5280a405636eeba1ebbad54310ee83cdb412d210150",
+          "name": "mutating-webhook-helper"
+        },
+        {
+          "digest": "sha256:9de09c08e692625e42e9d2cf096b2fc746c6b5a0ea4833f471a3b705db8c2b97",
+          "image": "registry.connect.redhat.com/cloudark/kubeplus-platform-operator@sha256:9de09c08e692625e42e9d2cf096b2fc746c6b5a0ea4833f471a3b705db8c2b97",
+          "name": "platform-operator"
+        },
+        {
+          "digest": "sha256:d7861164cb1555c673d157c182852b00bd783f9d66cabb2eca4970a3f1a68eb8",
+          "image": "registry.connect.redhat.com/cloudark/kubeplus-helmer1@sha256:d7861164cb1555c673d157c182852b00bd783f9d66cabb2eca4970a3f1a68eb8",
+          "name": "helmer"
+        },
+        {
+          "digest": "sha256:c60295e9c86607e1c06aa63d027b7824c3255852e869b98ad57cb3a68a987f9c",
+          "image": "registry.connect.redhat.com/cloudark/kubeplus-webhook-cert-setup@sha256:c60295e9c86607e1c06aa63d027b7824c3255852e869b98ad57cb3a68a987f9c",
+          "name": "webhook-cert-setup"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.0.5",
+      "version_original": "1.0.5"
+    },
+    {
+      "_id": "6262a5db84481d5f5229993a",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-04-22T12:55:55.565000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-04-22T12:55:55.565000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "6262a5e1834f257293b60f74",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:29de0c8f38adb379957ec2564eea036e4f839980377e52c49f8b462e3033c7aa",
+      "bundle_path_digest": "sha256:29de0c8f38adb379957ec2564eea036e4f839980377e52c49f8b462e3033c7aa",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:56:01.553000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.1.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:16:07.369000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "plural": "dashboardwithjupyterhubs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.1.2",
+      "version_original": "0.1.2"
     }
   ],
   "page": 4,
   "page_size": 500,
-  "total": 3871
+  "total": 3878
 }
