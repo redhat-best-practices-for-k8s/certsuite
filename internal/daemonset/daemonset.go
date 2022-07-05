@@ -23,6 +23,7 @@ const (
 	containerName    = "container-00"
 	imageWithVersion = "quay.io/testnetworkfunction/debug-partner:latest"
 	timeout          = 5 * time.Minute
+	nodeExporter     = "node-exporter"
 )
 
 var _ = ginkgo.Describe(common.Daemonset, func() {
@@ -43,17 +44,17 @@ var _ = ginkgo.Describe(common.Daemonset, func() {
 
 })
 
+//nolint:funlen
 func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion string) *v1.DaemonSet {
-
 	dsAnnotations := make(map[string]string)
 	dsAnnotations["debug.openshift.io/source-container"] = containerName
-	dsAnnotations["openshift.io/scc"] = "node-exporter"
+	dsAnnotations["openshift.io/scc"] = nodeExporter
 	matchLabels := make(map[string]string)
 	matchLabels["name"] = dsName
 
-	var trueBool bool = true
-	var zeroInt int64 = 0
-	var zeroInt32 int32 = 0
+	var trueBool = true
+	var zeroInt int64
+	var zeroInt32 int32
 	var preempt = corev1.PreemptLowerPriority
 	var tolerationsSeconds int64 = 300
 	var hostPathType = corev1.HostPathDirectory
@@ -61,7 +62,7 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 	container := corev1.Container{
 		Name:            containerName,
 		Image:           imageWithVersion,
-		ImagePullPolicy: "Always",
+		ImagePullPolicy: "IfNotPresent",
 		SecurityContext: &corev1.SecurityContext{
 			Privileged: &trueBool,
 			RunAsUser:  &zeroInt,
@@ -138,7 +139,7 @@ func DeleteDaemonSet(daemonSetName, namespace string) error {
 	if err := client.DaemonSets(namespace).Delete(context.TODO(), daemonSetName, metav1.DeleteOptions{
 		PropagationPolicy: &deletePolicy,
 	}); err != nil {
-		logrus.Infof("The daemonset (%d) deletion is unsuccessful due to %+v", daemonSetName, err.Error())
+		fmt.Printf("The daemonset (%s) deletion is unsuccessful due to %s", daemonSetName, err)
 	}
 	doneCleanUp := false
 	for start := time.Now(); !doneCleanUp && time.Since(start) < timeout; {
@@ -147,7 +148,7 @@ func DeleteDaemonSet(daemonSetName, namespace string) error {
 		if err != nil {
 			return fmt.Errorf("failed to get pods, err: %s", err)
 		}
-
+		//nolint:ineffassign
 		if len(pods.Items) == 0 {
 			doneCleanUp = true
 			break
@@ -174,7 +175,7 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 	if doesDaemonSetExist(daemonSetName, namespace) {
 		err := DeleteDaemonSet(daemonSetName, namespace)
 		if err != nil {
-			logrus.Debug("Failed to delete debug daemonset because: %s", err)
+			fmt.Printf("Failed to delete debug daemonset because: %s", err)
 		}
 	}
 
@@ -206,6 +207,7 @@ func partnerRepoDaemonset() map[string]corev1.Pod {
 	}
 
 	nodeToPodMapping := make(map[string]corev1.Pod)
+	//nolint:gocritic
 	for _, dsPod := range dsRunningPods.Items {
 		nodeToPodMapping[dsPod.Spec.NodeName] = dsPod
 	}
