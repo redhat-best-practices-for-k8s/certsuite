@@ -134,7 +134,9 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNodeOperatingSystemIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		testNodeOperatingSystemStatus(&env)
+		if provider.IsOCPCluster() {
+			testNodeOperatingSystemStatus(&env)
+		}
 	})
 
 })
@@ -544,15 +546,19 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 		}
 	}
 
+	var b strings.Builder
 	if n := len(failedControlPlaneNodes); n > 0 {
 		errMsg := fmt.Sprintf("Number of control plane nodes running non-RHCOS based operating systems: %d", n)
+		b.WriteString(errMsg)
 		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
 	}
 
 	if n := len(failedWorkerNodes); n > 0 {
 		errMsg := fmt.Sprintf("Number of worker nodes running non-RHCOS or non-RHEL based operating systems: %d", n)
+		b.WriteString(errMsg)
 		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
 	}
+
+	// Write the combined failure string
+	ginkgo.Fail(b.String())
 }
