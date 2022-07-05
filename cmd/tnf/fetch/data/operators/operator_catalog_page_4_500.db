@@ -1,1954 +1,6 @@
 {
   "data": [
     {
-      "_id": "61d4791417f914cd7233120d",
-      "alm_examples": [
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "AirgappedDeployment",
-          "metadata": {
-            "name": "airgappeddeployment"
-          },
-          "spec": {
-            "airgapped": {
-              "backup_deletion_frequency": "@daily",
-              "backup_retention_period": 7
-            },
-            "allowed_domains": "*",
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "image_pull_secret": "bas-images-pull-secret",
-            "kafka": {
-              "storage#": "5G",
-              "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
-            },
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            }
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "AnalyticsProxy",
-          "metadata": {
-            "name": "analyticsproxy"
-          },
-          "spec": {
-            "airgapped": {
-              "backup_deletion_frequency": "@daily",
-              "backup_retention_period": 7,
-              "enabled": false
-            },
-            "allowed_domains": "*",
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "ibmproxyurl": "https://iaps.ibm.com",
-            "image_pull_secret": "bas-images-pull-secret",
-            "kafka": {
-              "storage#": "5G",
-              "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
-            },
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            }
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "DeleteCluster",
-          "metadata": {
-            "name": "deletecluster"
-          },
-          "spec": {
-            "image_pull_secret": "bas-images-pull-secret"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "FullDeployment",
-          "metadata": {
-            "name": "fulldeployment"
-          },
-          "spec": {
-            "airgapped": {
-              "backup_deletion_frequency": "@daily",
-              "backup_retention_period": 7,
-              "enabled": false
-            },
-            "allowed_domains": "*",
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "ibmproxyurl": "https://iaps.ibm.com",
-            "image_pull_secret": "bas-images-pull-secret",
-            "kafka": {
-              "storage#": "5G",
-              "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
-            },
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            },
-            "prometheus_metrics": [],
-            "prometheus_scheduler_frequency": "@daily"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "GenerateKey",
-          "metadata": {
-            "name": "bas-api-key"
-          },
-          "spec": {
-            "image_pull_secret": "bas-images-pull-secret"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "StoreForwardMetric",
-          "metadata": {
-            "name": "storeforwardmetric"
-          },
-          "spec": {
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "ibmproxyurl": "https://iaps.ibm.com",
-            "image_pull_secret": "bas-images-pull-secret",
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            },
-            "prometheus_metrics": [],
-            "prometheus_scheduler_frequency": "@daily"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "Dashboard",
-          "metadata": {
-            "name": "dashboard"
-          },
-          "spec": {
-            "enable_test_api": true,
-            "image_pull_secret": "bas-images-pull-secret"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm-edge/behavior-analytics-services-operator-bundle@sha256:6164be85fcbf2c96f90fc54278f99aa40690fab6e257b8087864bfbdf9adab33",
-      "bundle_path_digest": "sha256:6164be85fcbf2c96f90fc54278f99aa40690fab6e257b8087864bfbdf9adab33",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-01-04T16:43:00.546000+00:00",
-      "csv_description": "Behavior Analytics Services Operator is a service that collects, transforms and transmits product usage data.\nThe Operator supports deployments using-\nA. Dashboard\nB. Openshift portal or CLI\n\n**A. Dashboard**\n----\nWhen the Operator is installed, the Dashboard is installed too. Goto the Dashboard Custom Resource to get the URL to the Dashboard.\n\n\n**B. Openshift portal or CLI**\n----\n----\nFor manual installation using Openshift portal or CLI, follow the steps below\n\n\n**Pre-requisites**\n----\nStep 1: Create a new Project\n```sh\noc new-project <project-name>\n```\n\nStep 2: Create a secret named \"database-credentials\" for PostgreSQL DB\n```sh\n oc create secret generic database-credentials --from-literal=db_username=<DB Username> --from-literal=db_password=<DB Password> -n <project-name>\n```\n\nStep 3: [Optional] If the images require a secret to pull the container images, create a secret of type dockerconfigjson. Pass this secret name in the CR spec image\\_pull\\_secret\n```sh\noc create secret generic bas-images-pull-secret --from-file=.dockerconfigjson=<path/to/.docker/config.json>  --type=kubernetes.io/dockerconfigjson\n```\n\nStep 4: Create a secret named \"mtls-proxy-secret\" which has the client key and certificate to connect to IBM Proxy service. If you don't have certificates then refer link https://developers.cloudflare.com/access/service-auth/mtls-testing#generating-the-root-ca to create root and client certificates. Please ensure to share root certificate with edge@us.ibm.com to allow access to IBM proxy service using client certificate.\n```sh\noc create secret tls mtls-proxy-secret --key client-key.pem --cert client.pem\n```\n\n**Installing the Behavior Analytics Services**\n----\n\nSelect any one of the deployments to setup the Behavior Analytics Services\n1. Full Deployment\n2. Analytics Proxy Deployment\n3. Store and Forward metrics Deployment\n4. Airgapped Analytics Proxy Deployment\n\n| Spec                                                      | Description                                                      | Default Value          |\n| --------------------------------------------------------- | ------------------------------------------------------------ | ---------------------- |\n| `ibmproxyurl`                                               | URL of IBM Proxy Service                                     | `https://iaps.ibm.com`   |\n| `postgres.storage_class`                                    | Storage class of type ReadWriteOnce                          | Required user input        |\n| `postgres.size`                                             | Size (in G) of the storage to be attached to Database        | `10G`                    |\n| `kafka.storage_class`                                       | Storage class of type ReadWriteOnce                          | Required user input        |\n| `kafka.storage_size`                                        | Size (in G) of the storage to be attached to Kafka  | `5G`                     |\n| `kafka.zookeeper_storage_class`                                 | Storage class of type ReadWriteOnce                          | Required user input        |\n| `kafka.zookeeper_storage_size`                                 | Size (in G) of the storage to be attached to Zookeeper | `5G`                     |\n| `airgapped.enabled`                                         | Set value to \"true\" if airgapped setup is to be enabled otherwise keep the default value \"false\" | `false`                  |\n| `airgapped.backup_retention_period`   | Number of days to keep the backup files in the storage       | `7`                     |\n| `airgapped.backup_deletion_frequency` | Frequency of job to delete files from the storage. It accepts values in Cron format (https://en.wikipedia.org/wiki/Cron) | `@daily`                 |\n| `event_scheduler_frequency`                               | Frequency at which events will be forwarded to proxy in Cron format. In case if internet connection available on the cluster only during a certain time frame, specify time in UTC equivalent Cron format. | `@hourly`                |\n| `prometheus_scheduler_frequency`                          | Frequency in Cronjob format to pull metrics from Prometheus  | `@daily`                |\n| `image_pull_secret`                                       | Secret to pull container images from registry                | `bas-images-pull-secret` |\n| `db_archive.frequency`                                    | Frequency in Cronjob format to run archive job                                                           | `@monthly`             |\n| `db_archive.retention_age`                                | Number of months to retain the data in Database              | `6`                    |\n| `db_archive.persistent_storage.storage_class`             |Storage class of type ReadWriteMany         | Required user input    |\n| `db_archive.persistent_storage.storage_size`              | Size (in G) of the storage to be attached for saving airgapped files | `10G`                  |\n| `prometheus_metrics`                                      | Array of metrics information to be send to destination at desired frequency | []\n| `env_type`              | Type of environment. Can be **prod** (HA) or **lite** (non HA)   | `lite`                  |\n| `allowed_domains`                                         | Comma separated values of domains allowed by BAS. By default all domains are allowed | '*'\n\n\n**Generating the API Key**\n----\nOnce the deployment is complete, to use the Behavior Analytics Services Endpoints, generate an API key using the CR GenerateKey. This API key to be used to authenticate Behavior Analytics Services Endpoints.\n\nNote- Key can be retrieved from the secret with same name used while creating Generate Key CR's instance.\nOnce you get key from the secret, decode it using below command:\n```sh\necho -n <secret key> | base64 -d\n```\n\n**Deleting the API Key**\n----\nTo revoke the Key, delete the corresponding GenerateKey instance.\n\n**Using Behavior Analytics Services Endpoints**\n---\nFor all BAS APIs, use the Generated API Key for Authentication. Pass it as the Header- X-API-KEY and the key while using the APIs.\n",
-      "csv_display_name": "Behavior Analytics Services",
-      "csv_metadata_description": "Behavior Analytics Services is a service that collects, transforms and transmits product usage data.",
-      "csv_name": "behavior-analytics-services-operator-certified.v1.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:47:27.624000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "behavior-analytics-services-operator-certified",
-      "provided_apis": [
-        {
-          "group": "bas.ibm.com",
-          "kind": "DeleteCluster",
-          "plural": "deleteclusters",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "FullDeployment",
-          "plural": "fulldeployments",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "GenerateKey",
-          "plural": "generatekeys",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "StoreForwardMetric",
-          "plural": "storeforwardmetrics",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "AirgappedDeployment",
-          "plural": "airgappeddeployments",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "AnalyticsProxy",
-          "plural": "analyticsproxies",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "Dashboard",
-          "plural": "dashboards",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:609c19d1718947ee814b829334c37e1d720acf5fb642b0712b8ab1b14d57f53f",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:609c19d1718947ee814b829334c37e1d720acf5fb642b0712b8ab1b14d57f53f",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:d679fb7c9fa7fbc7c4c0065e676e65416f542e5408508d3e1f5040f8c3087366",
-          "image": "registry.connect.redhat.com/ibm-edge/behavior-analytics-services-operator@sha256:d679fb7c9fa7fbc7c4c0065e676e65416f542e5408508d3e1f5040f8c3087366",
-          "name": "behavior-analytics-services-operator"
-        },
-        {
-          "digest": "sha256:8e0f1d33edf005eb2dfafed9b8367435b0f33ef4adf006bc75338f2a88e8942c",
-          "image": "registry.redhat.io/openshift4/ose-cli@sha256:8e0f1d33edf005eb2dfafed9b8367435b0f33ef4adf006bc75338f2a88e8942c",
-          "name": "dashboardinstaller"
-        },
-        {
-          "digest": "sha256:239939ea3c5d24666f31e1d0ea281dd9664fcfe8139ee6d4b686b402ad64e5df",
-          "image": "registry.connect.redhat.com/ibm-edge/event-api@sha256:239939ea3c5d24666f31e1d0ea281dd9664fcfe8139ee6d4b686b402ad64e5df",
-          "name": "event_api"
-        },
-        {
-          "digest": "sha256:6195b9dd602469d7cb3a92b2d071471d37980a6512ed604468a342ccd2ab2d42",
-          "image": "registry.connect.redhat.com/ibm-edge/store-api@sha256:6195b9dd602469d7cb3a92b2d071471d37980a6512ed604468a342ccd2ab2d42",
-          "name": "store_api"
-        },
-        {
-          "digest": "sha256:96c726cbc10c44169aa5f84e77dd408ddad124ca7580575a459ed38908e3a99b",
-          "image": "registry.connect.redhat.com/ibm-edge/event-reader@sha256:96c726cbc10c44169aa5f84e77dd408ddad124ca7580575a459ed38908e3a99b",
-          "name": "reader"
-        },
-        {
-          "digest": "sha256:6f2a627cdc0e5a05a351c160bc0dc8b73d886e7b4f93cd94a4c25acff869818e",
-          "image": "registry.connect.redhat.com/ibm-edge/event-scheduler@sha256:6f2a627cdc0e5a05a351c160bc0dc8b73d886e7b4f93cd94a4c25acff869818e",
-          "name": "event_scheduler"
-        },
-        {
-          "digest": "sha256:e8dd581088cd9b008ce8a29f43d2ce22974dfaadfbfe9faba3370917717686ee",
-          "image": "registry.connect.redhat.com/ibm-edge/prometheus-scheduler@sha256:e8dd581088cd9b008ce8a29f43d2ce22974dfaadfbfe9faba3370917717686ee",
-          "name": "prometheus_scheduler"
-        },
-        {
-          "digest": "sha256:90ddecb54abe2880b86016a407507cecf77a113b4c7724235ab0abd21ad1d9aa",
-          "image": "registry.connect.redhat.com/ibm-edge/pgo-client@sha256:90ddecb54abe2880b86016a407507cecf77a113b4c7724235ab0abd21ad1d9aa",
-          "name": "pgo_client"
-        },
-        {
-          "digest": "sha256:815630d23e8d88664907fbf8096952adfd22593a4989063e9dd55549e674ee15",
-          "image": "registry.connect.redhat.com/ibm-edge/reverse-proxy@sha256:815630d23e8d88664907fbf8096952adfd22593a4989063e9dd55549e674ee15",
-          "name": "nginx"
-        },
-        {
-          "digest": "sha256:a2e20cac50352c1ad13cd03185f326484ee20202c8a60313ba116920d6d6da88",
-          "image": "registry.redhat.io/openshift4/ose-grafana@sha256:a2e20cac50352c1ad13cd03185f326484ee20202c8a60313ba116920d6d6da88",
-          "name": "grafana"
-        },
-        {
-          "digest": "sha256:4fc96dc7a835c37dd3441a2c78e094cbfff8ea7fc8432e99f979c00965184260",
-          "image": "registry.redhat.io/openshift3/ose-kube-state-metrics@sha256:4fc96dc7a835c37dd3441a2c78e094cbfff8ea7fc8432e99f979c00965184260",
-          "name": "ksm"
-        },
-        {
-          "digest": "sha256:3288307dd03844ec3574ca5c173d7f608755fd23654434c48ea2e854fe0f22cf",
-          "image": "registry.connect.redhat.com/ibm-edge/growth-stack-base@sha256:3288307dd03844ec3574ca5c173d7f608755fd23654434c48ea2e854fe0f22cf",
-          "name": "init_container"
-        },
-        {
-          "digest": "sha256:d748c21a55796827da82c61f162b505c59451cba24f1874e5185f21275b6bddc",
-          "image": "registry.access.redhat.com/ubi8/ubi@sha256:d748c21a55796827da82c61f162b505c59451cba24f1874e5185f21275b6bddc",
-          "name": "ubi"
-        },
-        {
-          "digest": "sha256:19a8b33e2f4c2beee5266d5243abb7f43d85322fc62800899759cdf6ec568fee",
-          "image": "registry.connect.redhat.com/ibm-edge/airgap-download-ui@sha256:19a8b33e2f4c2beee5266d5243abb7f43d85322fc62800899759cdf6ec568fee",
-          "name": "download_ui"
-        },
-        {
-          "digest": "sha256:9f6eae3e715d9aff6d9674059fb6bf4f6dfc3ad42f015200c69b481becd7abd9",
-          "image": "registry.connect.redhat.com/ibm-edge/bas-operator-dashboard@sha256:9f6eae3e715d9aff6d9674059fb6bf4f6dfc3ad42f015200c69b481becd7abd9",
-          "name": "dashboard_ui"
-        },
-        {
-          "digest": "sha256:5e31ce8745926e0116827b1b658800dd3e8b91cd1800be4f9943a84a1c023f78",
-          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:5e31ce8745926e0116827b1b658800dd3e8b91cd1800be4f9943a84a1c023f78",
-          "name": "oauth_proxy"
-        },
-        {
-          "digest": "sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
-          "image": "registry.connect.redhat.com/crunchydata/pgo-deployer@sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
-          "name": "pgo_deployer"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.1.3",
-      "version_original": "1.1.3"
-    },
-    {
-      "_id": "61d47f0b85d2c616abf7b0c5",
-      "alm_examples": [
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "AirgappedDeployment",
-          "metadata": {
-            "name": "airgappeddeployment"
-          },
-          "spec": {
-            "airgapped": {
-              "backup_deletion_frequency": "@daily",
-              "backup_retention_period": 7
-            },
-            "allowed_domains": "*",
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "image_pull_secret": "bas-images-pull-secret",
-            "kafka": {
-              "storage#": "5G",
-              "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
-            },
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            }
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "AnalyticsProxy",
-          "metadata": {
-            "name": "analyticsproxy"
-          },
-          "spec": {
-            "airgapped": {
-              "backup_deletion_frequency": "@daily",
-              "backup_retention_period": 7,
-              "enabled": false
-            },
-            "allowed_domains": "*",
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "ibmproxyurl": "https://iaps.ibm.com",
-            "image_pull_secret": "bas-images-pull-secret",
-            "kafka": {
-              "storage#": "5G",
-              "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
-            },
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            }
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "DeleteCluster",
-          "metadata": {
-            "name": "deletecluster"
-          },
-          "spec": {
-            "image_pull_secret": "bas-images-pull-secret"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "FullDeployment",
-          "metadata": {
-            "name": "fulldeployment"
-          },
-          "spec": {
-            "airgapped": {
-              "backup_deletion_frequency": "@daily",
-              "backup_retention_period": 7,
-              "enabled": false
-            },
-            "allowed_domains": "*",
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "ibmproxyurl": "https://iaps.ibm.com",
-            "image_pull_secret": "bas-images-pull-secret",
-            "kafka": {
-              "storage#": "5G",
-              "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
-            },
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            },
-            "prometheus_metrics": [],
-            "prometheus_scheduler_frequency": "@daily"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "GenerateKey",
-          "metadata": {
-            "name": "bas-api-key"
-          },
-          "spec": {
-            "image_pull_secret": "bas-images-pull-secret"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "StoreForwardMetric",
-          "metadata": {
-            "name": "storeforwardmetric"
-          },
-          "spec": {
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "ibmproxyurl": "https://iaps.ibm.com",
-            "image_pull_secret": "bas-images-pull-secret",
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            },
-            "prometheus_metrics": [],
-            "prometheus_scheduler_frequency": "@daily"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "Dashboard",
-          "metadata": {
-            "name": "dashboard"
-          },
-          "spec": {
-            "enable_test_api": true,
-            "image_pull_secret": "bas-images-pull-secret"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm-edge/behavior-analytics-services-operator-bundle@sha256:6164be85fcbf2c96f90fc54278f99aa40690fab6e257b8087864bfbdf9adab33",
-      "bundle_path_digest": "sha256:6164be85fcbf2c96f90fc54278f99aa40690fab6e257b8087864bfbdf9adab33",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-01-04T17:08:27.989000+00:00",
-      "csv_description": "Behavior Analytics Services Operator is a service that collects, transforms and transmits product usage data.\nThe Operator supports deployments using-\nA. Dashboard\nB. Openshift portal or CLI\n\n**A. Dashboard**\n----\nWhen the Operator is installed, the Dashboard is installed too. Goto the Dashboard Custom Resource to get the URL to the Dashboard.\n\n\n**B. Openshift portal or CLI**\n----\n----\nFor manual installation using Openshift portal or CLI, follow the steps below\n\n\n**Pre-requisites**\n----\nStep 1: Create a new Project\n```sh\noc new-project <project-name>\n```\n\nStep 2: Create a secret named \"database-credentials\" for PostgreSQL DB\n```sh\n oc create secret generic database-credentials --from-literal=db_username=<DB Username> --from-literal=db_password=<DB Password> -n <project-name>\n```\n\nStep 3: [Optional] If the images require a secret to pull the container images, create a secret of type dockerconfigjson. Pass this secret name in the CR spec image\\_pull\\_secret\n```sh\noc create secret generic bas-images-pull-secret --from-file=.dockerconfigjson=<path/to/.docker/config.json>  --type=kubernetes.io/dockerconfigjson\n```\n\nStep 4: Create a secret named \"mtls-proxy-secret\" which has the client key and certificate to connect to IBM Proxy service. If you don't have certificates then refer link https://developers.cloudflare.com/access/service-auth/mtls-testing#generating-the-root-ca to create root and client certificates. Please ensure to share root certificate with edge@us.ibm.com to allow access to IBM proxy service using client certificate.\n```sh\noc create secret tls mtls-proxy-secret --key client-key.pem --cert client.pem\n```\n\n**Installing the Behavior Analytics Services**\n----\n\nSelect any one of the deployments to setup the Behavior Analytics Services\n1. Full Deployment\n2. Analytics Proxy Deployment\n3. Store and Forward metrics Deployment\n4. Airgapped Analytics Proxy Deployment\n\n| Spec                                                      | Description                                                      | Default Value          |\n| --------------------------------------------------------- | ------------------------------------------------------------ | ---------------------- |\n| `ibmproxyurl`                                               | URL of IBM Proxy Service                                     | `https://iaps.ibm.com`   |\n| `postgres.storage_class`                                    | Storage class of type ReadWriteOnce                          | Required user input        |\n| `postgres.size`                                             | Size (in G) of the storage to be attached to Database        | `10G`                    |\n| `kafka.storage_class`                                       | Storage class of type ReadWriteOnce                          | Required user input        |\n| `kafka.storage_size`                                        | Size (in G) of the storage to be attached to Kafka  | `5G`                     |\n| `kafka.zookeeper_storage_class`                                 | Storage class of type ReadWriteOnce                          | Required user input        |\n| `kafka.zookeeper_storage_size`                                 | Size (in G) of the storage to be attached to Zookeeper | `5G`                     |\n| `airgapped.enabled`                                         | Set value to \"true\" if airgapped setup is to be enabled otherwise keep the default value \"false\" | `false`                  |\n| `airgapped.backup_retention_period`   | Number of days to keep the backup files in the storage       | `7`                     |\n| `airgapped.backup_deletion_frequency` | Frequency of job to delete files from the storage. It accepts values in Cron format (https://en.wikipedia.org/wiki/Cron) | `@daily`                 |\n| `event_scheduler_frequency`                               | Frequency at which events will be forwarded to proxy in Cron format. In case if internet connection available on the cluster only during a certain time frame, specify time in UTC equivalent Cron format. | `@hourly`                |\n| `prometheus_scheduler_frequency`                          | Frequency in Cronjob format to pull metrics from Prometheus  | `@daily`                |\n| `image_pull_secret`                                       | Secret to pull container images from registry                | `bas-images-pull-secret` |\n| `db_archive.frequency`                                    | Frequency in Cronjob format to run archive job                                                           | `@monthly`             |\n| `db_archive.retention_age`                                | Number of months to retain the data in Database              | `6`                    |\n| `db_archive.persistent_storage.storage_class`             |Storage class of type ReadWriteMany         | Required user input    |\n| `db_archive.persistent_storage.storage_size`              | Size (in G) of the storage to be attached for saving airgapped files | `10G`                  |\n| `prometheus_metrics`                                      | Array of metrics information to be send to destination at desired frequency | []\n| `env_type`              | Type of environment. Can be **prod** (HA) or **lite** (non HA)   | `lite`                  |\n| `allowed_domains`                                         | Comma separated values of domains allowed by BAS. By default all domains are allowed | '*'\n\n\n**Generating the API Key**\n----\nOnce the deployment is complete, to use the Behavior Analytics Services Endpoints, generate an API key using the CR GenerateKey. This API key to be used to authenticate Behavior Analytics Services Endpoints.\n\nNote- Key can be retrieved from the secret with same name used while creating Generate Key CR's instance.\nOnce you get key from the secret, decode it using below command:\n```sh\necho -n <secret key> | base64 -d\n```\n\n**Deleting the API Key**\n----\nTo revoke the Key, delete the corresponding GenerateKey instance.\n\n**Using Behavior Analytics Services Endpoints**\n---\nFor all BAS APIs, use the Generated API Key for Authentication. Pass it as the Header- X-API-KEY and the key while using the APIs.\n",
-      "csv_display_name": "Behavior Analytics Services",
-      "csv_metadata_description": "Behavior Analytics Services is a service that collects, transforms and transmits product usage data.",
-      "csv_name": "behavior-analytics-services-operator-certified.v1.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:23:43.807000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "behavior-analytics-services-operator-certified",
-      "provided_apis": [
-        {
-          "group": "bas.ibm.com",
-          "kind": "Dashboard",
-          "plural": "dashboards",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "DeleteCluster",
-          "plural": "deleteclusters",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "FullDeployment",
-          "plural": "fulldeployments",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "GenerateKey",
-          "plural": "generatekeys",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "StoreForwardMetric",
-          "plural": "storeforwardmetrics",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "AirgappedDeployment",
-          "plural": "airgappeddeployments",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "AnalyticsProxy",
-          "plural": "analyticsproxies",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:609c19d1718947ee814b829334c37e1d720acf5fb642b0712b8ab1b14d57f53f",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:609c19d1718947ee814b829334c37e1d720acf5fb642b0712b8ab1b14d57f53f",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:d679fb7c9fa7fbc7c4c0065e676e65416f542e5408508d3e1f5040f8c3087366",
-          "image": "registry.connect.redhat.com/ibm-edge/behavior-analytics-services-operator@sha256:d679fb7c9fa7fbc7c4c0065e676e65416f542e5408508d3e1f5040f8c3087366",
-          "name": "behavior-analytics-services-operator"
-        },
-        {
-          "digest": "sha256:8e0f1d33edf005eb2dfafed9b8367435b0f33ef4adf006bc75338f2a88e8942c",
-          "image": "registry.redhat.io/openshift4/ose-cli@sha256:8e0f1d33edf005eb2dfafed9b8367435b0f33ef4adf006bc75338f2a88e8942c",
-          "name": "dashboardinstaller"
-        },
-        {
-          "digest": "sha256:239939ea3c5d24666f31e1d0ea281dd9664fcfe8139ee6d4b686b402ad64e5df",
-          "image": "registry.connect.redhat.com/ibm-edge/event-api@sha256:239939ea3c5d24666f31e1d0ea281dd9664fcfe8139ee6d4b686b402ad64e5df",
-          "name": "event_api"
-        },
-        {
-          "digest": "sha256:6195b9dd602469d7cb3a92b2d071471d37980a6512ed604468a342ccd2ab2d42",
-          "image": "registry.connect.redhat.com/ibm-edge/store-api@sha256:6195b9dd602469d7cb3a92b2d071471d37980a6512ed604468a342ccd2ab2d42",
-          "name": "store_api"
-        },
-        {
-          "digest": "sha256:96c726cbc10c44169aa5f84e77dd408ddad124ca7580575a459ed38908e3a99b",
-          "image": "registry.connect.redhat.com/ibm-edge/event-reader@sha256:96c726cbc10c44169aa5f84e77dd408ddad124ca7580575a459ed38908e3a99b",
-          "name": "reader"
-        },
-        {
-          "digest": "sha256:6f2a627cdc0e5a05a351c160bc0dc8b73d886e7b4f93cd94a4c25acff869818e",
-          "image": "registry.connect.redhat.com/ibm-edge/event-scheduler@sha256:6f2a627cdc0e5a05a351c160bc0dc8b73d886e7b4f93cd94a4c25acff869818e",
-          "name": "event_scheduler"
-        },
-        {
-          "digest": "sha256:e8dd581088cd9b008ce8a29f43d2ce22974dfaadfbfe9faba3370917717686ee",
-          "image": "registry.connect.redhat.com/ibm-edge/prometheus-scheduler@sha256:e8dd581088cd9b008ce8a29f43d2ce22974dfaadfbfe9faba3370917717686ee",
-          "name": "prometheus_scheduler"
-        },
-        {
-          "digest": "sha256:90ddecb54abe2880b86016a407507cecf77a113b4c7724235ab0abd21ad1d9aa",
-          "image": "registry.connect.redhat.com/ibm-edge/pgo-client@sha256:90ddecb54abe2880b86016a407507cecf77a113b4c7724235ab0abd21ad1d9aa",
-          "name": "pgo_client"
-        },
-        {
-          "digest": "sha256:815630d23e8d88664907fbf8096952adfd22593a4989063e9dd55549e674ee15",
-          "image": "registry.connect.redhat.com/ibm-edge/reverse-proxy@sha256:815630d23e8d88664907fbf8096952adfd22593a4989063e9dd55549e674ee15",
-          "name": "nginx"
-        },
-        {
-          "digest": "sha256:a2e20cac50352c1ad13cd03185f326484ee20202c8a60313ba116920d6d6da88",
-          "image": "registry.redhat.io/openshift4/ose-grafana@sha256:a2e20cac50352c1ad13cd03185f326484ee20202c8a60313ba116920d6d6da88",
-          "name": "grafana"
-        },
-        {
-          "digest": "sha256:4fc96dc7a835c37dd3441a2c78e094cbfff8ea7fc8432e99f979c00965184260",
-          "image": "registry.redhat.io/openshift3/ose-kube-state-metrics@sha256:4fc96dc7a835c37dd3441a2c78e094cbfff8ea7fc8432e99f979c00965184260",
-          "name": "ksm"
-        },
-        {
-          "digest": "sha256:3288307dd03844ec3574ca5c173d7f608755fd23654434c48ea2e854fe0f22cf",
-          "image": "registry.connect.redhat.com/ibm-edge/growth-stack-base@sha256:3288307dd03844ec3574ca5c173d7f608755fd23654434c48ea2e854fe0f22cf",
-          "name": "init_container"
-        },
-        {
-          "digest": "sha256:d748c21a55796827da82c61f162b505c59451cba24f1874e5185f21275b6bddc",
-          "image": "registry.access.redhat.com/ubi8/ubi@sha256:d748c21a55796827da82c61f162b505c59451cba24f1874e5185f21275b6bddc",
-          "name": "ubi"
-        },
-        {
-          "digest": "sha256:19a8b33e2f4c2beee5266d5243abb7f43d85322fc62800899759cdf6ec568fee",
-          "image": "registry.connect.redhat.com/ibm-edge/airgap-download-ui@sha256:19a8b33e2f4c2beee5266d5243abb7f43d85322fc62800899759cdf6ec568fee",
-          "name": "download_ui"
-        },
-        {
-          "digest": "sha256:9f6eae3e715d9aff6d9674059fb6bf4f6dfc3ad42f015200c69b481becd7abd9",
-          "image": "registry.connect.redhat.com/ibm-edge/bas-operator-dashboard@sha256:9f6eae3e715d9aff6d9674059fb6bf4f6dfc3ad42f015200c69b481becd7abd9",
-          "name": "dashboard_ui"
-        },
-        {
-          "digest": "sha256:5e31ce8745926e0116827b1b658800dd3e8b91cd1800be4f9943a84a1c023f78",
-          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:5e31ce8745926e0116827b1b658800dd3e8b91cd1800be4f9943a84a1c023f78",
-          "name": "oauth_proxy"
-        },
-        {
-          "digest": "sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
-          "image": "registry.connect.redhat.com/crunchydata/pgo-deployer@sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
-          "name": "pgo_deployer"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.1.3",
-      "version_original": "1.1.3"
-    },
-    {
-      "_id": "61dd4efa9ea53314a92f9042",
-      "alm_examples": [
-        {
-          "api_version": "hxcsi.cisco.com/v2",
-          "kind": "HXCSIDriver",
-          "metadata": {
-            "name": "cisco-hyperflex-csi-driver"
-          },
-          "spec": {
-            "affinity": {},
-            "autoscaling": {},
-            "fullnameOverride": "",
-            "hx": {
-              "clientId": "INPUT_VALUE_HERE",
-              "dockerRegistryName": "INPUT_VALUE_HERE",
-              "iscsiUrl": "INPUT_VALUE_HERE",
-              "token": "INPUT_VALUE_HERE",
-              "url": "INPUT_VALUE_HERE"
-            },
-            "image": {
-              "attacher": "hxcsi-csi-attacher:3.2.1-cisco1",
-              "hxcsi": "hxcsi-ubi8:hxcsi-1.2.4-latest",
-              "provisioner": "hxcsi-csi-provisioner:2.2.1-cisco1",
-              "pullPolicy": "Always",
-              "registrar": "hxcsi-csi-node-driver-registrar:2.2.0-cisco1",
-              "resizer": "hxcsi-csi-resizer:1.2.0-cisco1",
-              "tag": ""
-            },
-            "ingress": {},
-            "nameOverride": "",
-            "nodeSelector": {},
-            "podAnnotations": {},
-            "podSecurityContext": {},
-            "replicaCount": 2,
-            "resources": {},
-            "securityContext": {},
-            "service": {},
-            "serviceAccount": {
-              "annotations": {},
-              "create": true,
-              "name": ""
-            },
-            "storageClass": {
-              "isDefault": "false",
-              "name": "hyperflex"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hxcsiadmin/hxcsi-helm-bundle@sha256:3906d0837e6745f0024a8819f1cc6d93da7d1289ed9db9ccd47552918c11e9f4",
-      "bundle_path_digest": "sha256:3906d0837e6745f0024a8819f1cc6d93da7d1289ed9db9ccd47552918c11e9f4",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-01-11T09:33:46.017000+00:00",
-      "csv_description": "\nCisco HyperFlex Data Platform (HX Data Platform) is a hyperconverged software appliance that transforms Cisco servers into a single pool of compute and storage resources. It eliminates the need for network storage and enables seamless interoperability between computing and storage in virtual environments. The Cisco HX Data Platform provides a highly fault-tolerant distributed storage system that preserves data integrity and optimizes performance for virtual machine (VM) storage workloads. In addition, native compression and deduplication reduce storage space occupied by the VMs and VM workloads.\n### HyperFlex CSI Driver\nThe Cisco HyperFlex Kubernetes CSI Integration allows Cisco HyperFlex to dynamically provide persistent storage to stateful Kubernetes workloads running on Cisco HyperFlex. The integration enables orchestration of the entire Persistent Volume object lifecycle to be offloaded and managed by Cisco HyperFlex, while being driven (initiated) by developers and users through standard Kubernetes Persistent Volume Claim objects. Developers and users get the benefit of leveraging Cisco HyperFlex for their Kubernetes persistent storage needs with zero additional administration overhead from their perspective.\n### Features Support\n- Support for CSI Spec 1.2 APIs\n- Kubernetes 1.18, 1.19, 1.20, 1.21 support\n- Kubernetes Cluster multi tenancy target masking using dedicated initiator group\n- Dynamic creation and deletion of volumes\n- Dynamic volume attach and detach\n- Block access support\n- CHAP support for iSCSI sessions\n- Clone volume (when source volume is from the same Datastore)\n- PV support with different filesystems (Ext4, Ext3, XFS)\n- Volume space statistics reporting per CSI specs\n- Multi-writer support (ReadWriteMany) for Block Mode only\n- Volume resize support for block mode volumes and ext3, ext4 filesystem volumes (expansion)\n",
-      "csv_display_name": "Cisco Hyperflex CSI Operator",
-      "csv_metadata_description": "Cisco HXCSI Plugin for RedHat OpenShift Platform",
-      "csv_name": "cisco-hxcsi-operator.v1.2.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:46:55.135000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "cisco-hxcsi-operator",
-      "provided_apis": [
-        {
-          "group": "hxcsi.cisco.com",
-          "kind": "HXCSIDriver",
-          "plural": "hxcsidrivers",
-          "version": "v1"
-        },
-        {
-          "group": "hxcsi.cisco.com",
-          "kind": "HXCSIDriver",
-          "plural": "hxcsidrivers",
-          "version": "v2"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee",
-          "image": "quay.io/hxcsiadmin/hxcsi-helm-bundle@sha256:3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee",
-          "name": "hxcsi-helm-bundle-3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee-annotation"
-        },
-        {
-          "digest": "sha256:f000432f07cd187469f0310e3ed9dcf9a5db2be14b8bab9c5293dd1ee8518176",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:f000432f07cd187469f0310e3ed9dcf9a5db2be14b8bab9c5293dd1ee8518176",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:76551da5c57ea629f1b6cf8b05b90bfa6dbc6b4e1cd886b9374fa6adb52f877d",
-          "image": "quay.io/hxcsiadmin/hxcsi-helm-operator@sha256:76551da5c57ea629f1b6cf8b05b90bfa6dbc6b4e1cd886b9374fa6adb52f877d",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.2.4",
-      "version_original": "1.2.4"
-    },
-    {
-      "_id": "61dda4a712abd998d20743d4",
-      "alm_examples": [
-        {
-          "api_version": "hxcsi.cisco.com/v2",
-          "kind": "HXCSIDriver",
-          "metadata": {
-            "name": "cisco-hyperflex-csi-driver"
-          },
-          "spec": {
-            "affinity": {},
-            "autoscaling": {},
-            "fullnameOverride": "",
-            "hx": {
-              "clientId": "INPUT_VALUE_HERE",
-              "dockerRegistryName": "INPUT_VALUE_HERE",
-              "iscsiUrl": "INPUT_VALUE_HERE",
-              "token": "INPUT_VALUE_HERE",
-              "url": "INPUT_VALUE_HERE"
-            },
-            "image": {
-              "attacher": "hxcsi-csi-attacher:3.2.1-cisco1",
-              "hxcsi": "hxcsi-ubi8:hxcsi-1.2.4-latest",
-              "provisioner": "hxcsi-csi-provisioner:2.2.1-cisco1",
-              "pullPolicy": "Always",
-              "registrar": "hxcsi-csi-node-driver-registrar:2.2.0-cisco1",
-              "resizer": "hxcsi-csi-resizer:1.2.0-cisco1",
-              "tag": ""
-            },
-            "ingress": {},
-            "nameOverride": "",
-            "nodeSelector": {},
-            "podAnnotations": {},
-            "podSecurityContext": {},
-            "replicaCount": 2,
-            "resources": {},
-            "securityContext": {},
-            "service": {},
-            "serviceAccount": {
-              "annotations": {},
-              "create": true,
-              "name": ""
-            },
-            "storageClass": {
-              "isDefault": "false",
-              "name": "hyperflex"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hxcsiadmin/hxcsi-helm-bundle@sha256:3906d0837e6745f0024a8819f1cc6d93da7d1289ed9db9ccd47552918c11e9f4",
-      "bundle_path_digest": "sha256:3906d0837e6745f0024a8819f1cc6d93da7d1289ed9db9ccd47552918c11e9f4",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-01-11T15:39:19.938000+00:00",
-      "csv_description": "\nCisco HyperFlex Data Platform (HX Data Platform) is a hyperconverged software appliance that transforms Cisco servers into a single pool of compute and storage resources. It eliminates the need for network storage and enables seamless interoperability between computing and storage in virtual environments. The Cisco HX Data Platform provides a highly fault-tolerant distributed storage system that preserves data integrity and optimizes performance for virtual machine (VM) storage workloads. In addition, native compression and deduplication reduce storage space occupied by the VMs and VM workloads.\n### HyperFlex CSI Driver\nThe Cisco HyperFlex Kubernetes CSI Integration allows Cisco HyperFlex to dynamically provide persistent storage to stateful Kubernetes workloads running on Cisco HyperFlex. The integration enables orchestration of the entire Persistent Volume object lifecycle to be offloaded and managed by Cisco HyperFlex, while being driven (initiated) by developers and users through standard Kubernetes Persistent Volume Claim objects. Developers and users get the benefit of leveraging Cisco HyperFlex for their Kubernetes persistent storage needs with zero additional administration overhead from their perspective.\n### Features Support\n- Support for CSI Spec 1.2 APIs\n- Kubernetes 1.18, 1.19, 1.20, 1.21 support\n- Kubernetes Cluster multi tenancy target masking using dedicated initiator group\n- Dynamic creation and deletion of volumes\n- Dynamic volume attach and detach\n- Block access support\n- CHAP support for iSCSI sessions\n- Clone volume (when source volume is from the same Datastore)\n- PV support with different filesystems (Ext4, Ext3, XFS)\n- Volume space statistics reporting per CSI specs\n- Multi-writer support (ReadWriteMany) for Block Mode only\n- Volume resize support for block mode volumes and ext3, ext4 filesystem volumes (expansion)\n",
-      "csv_display_name": "Cisco Hyperflex CSI Operator",
-      "csv_metadata_description": "Cisco HXCSI Plugin for RedHat OpenShift Platform",
-      "csv_name": "cisco-hxcsi-operator.v1.2.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:10:27.972000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "cisco-hxcsi-operator",
-      "provided_apis": [
-        {
-          "group": "hxcsi.cisco.com",
-          "kind": "HXCSIDriver",
-          "plural": "hxcsidrivers",
-          "version": "v1"
-        },
-        {
-          "group": "hxcsi.cisco.com",
-          "kind": "HXCSIDriver",
-          "plural": "hxcsidrivers",
-          "version": "v2"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee",
-          "image": "quay.io/hxcsiadmin/hxcsi-helm-bundle@sha256:3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee",
-          "name": "hxcsi-helm-bundle-3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee-annotation"
-        },
-        {
-          "digest": "sha256:f000432f07cd187469f0310e3ed9dcf9a5db2be14b8bab9c5293dd1ee8518176",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:f000432f07cd187469f0310e3ed9dcf9a5db2be14b8bab9c5293dd1ee8518176",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:76551da5c57ea629f1b6cf8b05b90bfa6dbc6b4e1cd886b9374fa6adb52f877d",
-          "image": "quay.io/hxcsiadmin/hxcsi-helm-operator@sha256:76551da5c57ea629f1b6cf8b05b90bfa6dbc6b4e1cd886b9374fa6adb52f877d",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.2.4",
-      "version_original": "1.2.4"
-    },
-    {
-      "_id": "61dda6c012abd998d20743d5",
-      "alm_examples": [
-        {
-          "api_version": "hxcsi.cisco.com/v2",
-          "kind": "HXCSIDriver",
-          "metadata": {
-            "name": "cisco-hyperflex-csi-driver"
-          },
-          "spec": {
-            "affinity": {},
-            "autoscaling": {},
-            "fullnameOverride": "",
-            "hx": {
-              "clientId": "INPUT_VALUE_HERE",
-              "dockerRegistryName": "INPUT_VALUE_HERE",
-              "iscsiUrl": "INPUT_VALUE_HERE",
-              "token": "INPUT_VALUE_HERE",
-              "url": "INPUT_VALUE_HERE"
-            },
-            "image": {
-              "attacher": "hxcsi-csi-attacher:3.2.1-cisco1",
-              "hxcsi": "hxcsi-ubi8:hxcsi-1.2.4-latest",
-              "provisioner": "hxcsi-csi-provisioner:2.2.1-cisco1",
-              "pullPolicy": "Always",
-              "registrar": "hxcsi-csi-node-driver-registrar:2.2.0-cisco1",
-              "resizer": "hxcsi-csi-resizer:1.2.0-cisco1",
-              "tag": ""
-            },
-            "ingress": {},
-            "nameOverride": "",
-            "nodeSelector": {},
-            "podAnnotations": {},
-            "podSecurityContext": {},
-            "replicaCount": 2,
-            "resources": {},
-            "securityContext": {},
-            "service": {},
-            "serviceAccount": {
-              "annotations": {},
-              "create": true,
-              "name": ""
-            },
-            "storageClass": {
-              "isDefault": "false",
-              "name": "hyperflex"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hxcsiadmin/hxcsi-helm-bundle@sha256:3906d0837e6745f0024a8819f1cc6d93da7d1289ed9db9ccd47552918c11e9f4",
-      "bundle_path_digest": "sha256:3906d0837e6745f0024a8819f1cc6d93da7d1289ed9db9ccd47552918c11e9f4",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-01-11T15:48:16.163000+00:00",
-      "csv_description": "\nCisco HyperFlex Data Platform (HX Data Platform) is a hyperconverged software appliance that transforms Cisco servers into a single pool of compute and storage resources. It eliminates the need for network storage and enables seamless interoperability between computing and storage in virtual environments. The Cisco HX Data Platform provides a highly fault-tolerant distributed storage system that preserves data integrity and optimizes performance for virtual machine (VM) storage workloads. In addition, native compression and deduplication reduce storage space occupied by the VMs and VM workloads.\n### HyperFlex CSI Driver\nThe Cisco HyperFlex Kubernetes CSI Integration allows Cisco HyperFlex to dynamically provide persistent storage to stateful Kubernetes workloads running on Cisco HyperFlex. The integration enables orchestration of the entire Persistent Volume object lifecycle to be offloaded and managed by Cisco HyperFlex, while being driven (initiated) by developers and users through standard Kubernetes Persistent Volume Claim objects. Developers and users get the benefit of leveraging Cisco HyperFlex for their Kubernetes persistent storage needs with zero additional administration overhead from their perspective.\n### Features Support\n- Support for CSI Spec 1.2 APIs\n- Kubernetes 1.18, 1.19, 1.20, 1.21 support\n- Kubernetes Cluster multi tenancy target masking using dedicated initiator group\n- Dynamic creation and deletion of volumes\n- Dynamic volume attach and detach\n- Block access support\n- CHAP support for iSCSI sessions\n- Clone volume (when source volume is from the same Datastore)\n- PV support with different filesystems (Ext4, Ext3, XFS)\n- Volume space statistics reporting per CSI specs\n- Multi-writer support (ReadWriteMany) for Block Mode only\n- Volume resize support for block mode volumes and ext3, ext4 filesystem volumes (expansion)\n",
-      "csv_display_name": "Cisco Hyperflex CSI Operator",
-      "csv_metadata_description": "Cisco HXCSI Plugin for RedHat OpenShift Platform",
-      "csv_name": "cisco-hxcsi-operator.v1.2.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:45:27.968000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cisco-hxcsi-operator",
-      "provided_apis": [
-        {
-          "group": "hxcsi.cisco.com",
-          "kind": "HXCSIDriver",
-          "plural": "hxcsidrivers",
-          "version": "v1"
-        },
-        {
-          "group": "hxcsi.cisco.com",
-          "kind": "HXCSIDriver",
-          "plural": "hxcsidrivers",
-          "version": "v2"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee",
-          "image": "quay.io/hxcsiadmin/hxcsi-helm-bundle@sha256:3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee",
-          "name": "hxcsi-helm-bundle-3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee-annotation"
-        },
-        {
-          "digest": "sha256:f000432f07cd187469f0310e3ed9dcf9a5db2be14b8bab9c5293dd1ee8518176",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:f000432f07cd187469f0310e3ed9dcf9a5db2be14b8bab9c5293dd1ee8518176",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:76551da5c57ea629f1b6cf8b05b90bfa6dbc6b4e1cd886b9374fa6adb52f877d",
-          "image": "quay.io/hxcsiadmin/hxcsi-helm-operator@sha256:76551da5c57ea629f1b6cf8b05b90bfa6dbc6b4e1cd886b9374fa6adb52f877d",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.2.4",
-      "version_original": "1.2.4"
-    },
-    {
-      "_id": "61decc7892aa95b37d10a636",
-      "alm_examples": [
-        {
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "route": true,
-            "runAsNonRoot": false,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "runAsNonRoot": false,
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "6.5"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            }
-          }
-        },
-        {
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:ef19254785b3c1ee16b10eaddb36c836d8257e3011cc8205b96c5bfa95f52373",
-      "bundle_path_digest": "sha256:ef19254785b3c1ee16b10eaddb36c836d8257e3011cc8205b96c5bfa95f52373",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "6.5",
-      "creation_date": "2022-01-12T12:41:28.038000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/6.5.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v6.5.22003",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-04T14:39:32.131000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "plural": "aquacsps",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "plural": "aquadatabases",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "plural": "aquaenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "plural": "aquagateways",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "plural": "aquakubeenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "plural": "aquascanners",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "plural": "aquaservers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:cf95a89db8b01a58386e34f510a99f491d219a17a7a0fa3130612a6540d9c249",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:cf95a89db8b01a58386e34f510a99f491d219a17a7a0fa3130612a6540d9c249",
-          "name": "aquasec-cf95a89db8b01a58386e34f510a99f491d219a17a7a0fa3130612a6540d9c249-annotation"
-        },
-        {
-          "digest": "sha256:cf95a89db8b01a58386e34f510a99f491d219a17a7a0fa3130612a6540d9c249",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:cf95a89db8b01a58386e34f510a99f491d219a17a7a0fa3130612a6540d9c249",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:e4a0b6b5d7b31f9366f1477a0fe10b2a353ad5d9bf4f6ab24b8d28915eb12002",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:e4a0b6b5d7b31f9366f1477a0fe10b2a353ad5d9bf4f6ab24b8d28915eb12002",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:ad9b95ae369d44b81109ecfbc8fe82b0286daf1050752c1fbdd6314ed6aab77e",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:ad9b95ae369d44b81109ecfbc8fe82b0286daf1050752c1fbdd6314ed6aab77e",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:2caaab98579fbe9626a346f836c36d4c7d33e78a52f5a4926404ac11c5a29da8",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:2caaab98579fbe9626a346f836c36d4c7d33e78a52f5a4926404ac11c5a29da8",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:3837b984c21ccf4cdbc4fb8ce4022f0de342426d39b3434f4f50d29590a8d144",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:3837b984c21ccf4cdbc4fb8ce4022f0de342426d39b3434f4f50d29590a8d144",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:0033414610ff5d13e5a527115933d7f357e69902f062a8887bdd595af85cb78a",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:0033414610ff5d13e5a527115933d7f357e69902f062a8887bdd595af85cb78a",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.2 <6.5.22003",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "6.5.22003",
-      "version_original": "6.5.22003"
-    },
-    {
-      "_id": "61df2621af2ecd8db0283c65",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.8-53.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "bundle_path_digest": "sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "production",
-      "creation_date": "2022-01-12T19:04:01.932000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.8-11",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:47:56.986000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator-5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59-annotation"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "admission"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.2.8-11",
-      "version_original": "6.2.8-11"
-    },
-    {
-      "_id": "61df262318e211622411f6d7",
-      "alm_examples": [
-        {
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.8-53.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "bundle_path_digest": "sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2022-01-12T19:04:03.747000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.8-11",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-04-04T14:50:33.752000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator-5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59-annotation"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.2.8-11",
-      "version_original": "6.2.8-11"
-    },
-    {
-      "_id": "61df268e10a746fc32d384cb",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.8-53.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "bundle_path_digest": "sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "production",
-      "creation_date": "2022-01-12T19:05:50.817000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.8-11",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:45:22.238000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator-5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59-annotation"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "admission"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.2.8-11",
-      "version_original": "6.2.8-11"
-    },
-    {
-      "_id": "61df269010a746fc32d384cc",
-      "alm_examples": [
-        {
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.8-53.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "bundle_path_digest": "sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2022-01-12T19:05:52.248000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.8-11",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:15:19.157000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator-5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59-annotation"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.2.8-11",
-      "version_original": "6.2.8-11"
-    },
-    {
       "_id": "61df28c592aa95b37d10a667",
       "alm_examples": [
         {
@@ -66543,234 +64595,6 @@
       "version_original": "1.7.8"
     },
     {
-      "_id": "62346036314381d2b0756b42",
-      "alm_examples": [
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorController",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerImage": "",
-            "dbConnectionURL": "etcd://linstor-etcd:2379",
-            "drbdRepoCred": "",
-            "priorityClassName": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorCSIDriver",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerEndpoint": "http://linstor:3370",
-            "controllerReplicas": 1,
-            "csiControllerServiceAccountName": "csi-controller",
-            "csiNodeServiceAccountName": "csi-node",
-            "imagePullSecret": "",
-            "linstorPluginImage": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorSatelliteSet",
-          "metadata": {
-            "name": "linstor-satellites"
-          },
-          "spec": {
-            "automaticStorageType": "None",
-            "controllerEndpoint": "http://linstor:3370",
-            "drbdRepoCred": "",
-            "kernelModuleInjectionMode": "ShippedModules",
-            "priorityClassName": "",
-            "satelliteImage": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/linbit/linstor-operator-bundle@sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "bundle_path_digest": "sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-18T10:34:30.810000+00:00",
-      "csv_description": "LINSTOR is a configuration management system for storage on Linux systems.\nIt manages LVM logical volumes and/or ZFS ZVOLs on a cluster of nodes.\nIt leverages DRBD for replication between different nodes and to provide block\nstorage devices to users and applications. It manages snapshots, encryption and\ncaching of HDD backed data in SSDs via bcache.\n\nLINBIT provides a certified LINSTOR operator to ease deployment of LINSTOR\non Openshift by installing DRBD, managing Satellite and Controller pods,\nand integrating with Openshift to provision persistent storage for your workloads.\n\nFor detailed instructions and more configuration options, see our [user guide].\n\n[user guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-openshift\n\n## Install\n\nUnlike deployment via the helm chart, the certified Openshift\noperator does not deploy the needed etcd cluster. You must deploy this\nyourself ahead of time. We do this via the etcd operator available in the\nOperatorHub.\n\nIMPORTANT: It is advised that the etcd deployment uses persistent\nstorage of some type. Either use an existing storage provisioner with\na default `StorageClass` or simply use `hostPath` volumes.\n\n### Installing the operator\n\nHit \"Install\", select the stable update channel and a namespace for the\noperator. Use of a new namespace is recommended.\n\nHit \"Install\" again. At this point you should have just one pod, the\noperator pod, running. Next we needs to configure the remaining provided APIs.\n\n#### A note on operator namespaces\nThe LINSTOR operator can only watch for events and manage\ncustom resources that are within the same namespace it is deployed\nwithin (OwnNamsespace). This means the LINSTOR Controller, LINSTOR\nSatellites, and LINSTOR CSI Driver pods all need to be deployed in the\nsame namsepace as the LINSTOR Operator pod.\n\n### Deploying the LINSTOR Controller\n\nNavigate to the left-hand control pane of the Openshift Web\nConsole. Expand the \"Operators\" section, selecting \"Installed Operators\".\nFind the entry for the \"Linstor Operator\", then select the \"LinstorController\"\nfrom the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorController\". Click the \"Create LinstorController\" button.\n\nHere you will be presented with options to configure the LINSTOR\nController. Either via the web-form view or the YAML View. Regardless\nof which view you select, make sure that the `dbConnectionURL` matches\nthe endpoint provided from your etcd deployment. Otherwise, the\ndefaults are usually fine for most purposes.\n\nLastly hit \"Create\", you should now see a linstor-controller pod\nrunning.\n\n### Deploying the LINSTOR Satellites\n\nNext we need to deploy the Satellites Set. Just as before navigate\nto the left-hand control pane of the Openshift Web Console. Expand the\n\"Operators\" section, but this time select \"Installed Operators\". Find\nthe entry for the \"Linstor Operator\", then select the\n\"LinstorSatelliteSet\" from the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorSatelliteSet\". Click the \"Create LinstorSatelliteSet\" button.\n\nHere you will be presented with the options to configure the LINSTOR\nSatellites. The defaults should be enough to get you started.\nMake sure the `controllerEndpoint` matches what is available in the\nopenshift endpoints. The default is usually correct here.\n\nYou can edit the `storagePools` section to configure LINSTOR storage pools,\nincluding preparing the backing devices. See our [storage guide].\n\n[storage guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-storage\n\nBelow is an example manifest:\n\n```yaml\napiVersion: linstor.linbit.com/v1\nkind: LinstorSatelliteSet\nmetadata:\n  name: linstor-satellites\nspec:\n  satelliteImage: ''\n  automaticStorageType: None\n  storagePools:\n    lvmThinPools:\n    - name: openshift-pool\n      volumeGroup: \"\"\n      thinVolume: openshift\n      devicePaths:\n      - /dev/vdb\n  drbdRepoCred: ''\n  kernelModuleInjectionMode: ShippedModules\n  controllerEndpoint: 'http://linstor:3370'\n  priorityClassName: ''\n```\n\nLastly hit \"Create\", you should now see a linstor-node pod\nrunning on every worker node.\n\n### Deploying the LINSTOR CSI driver\n\nLast bit left is the CSI pods to bridge the layer between the CSI and\nLINSTOR. Just as before navigate to the left-hand control pane of the\nOpenshift Web Console. Expand the \"Operators\" section, but this time\nselect \"Installed Operators\". Find the entry for the \"Linstor Operator\",\nthen select the \"LinstorCSIDriver\" from the \"Provided APIs\" column on the\nright.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorCSIDriver\". Click the \"Create LinstorCSIDriver\" button.\n\nAgain, you will be presented with the options. Make sure that the\n`controllerEndpoint` is correct. Otherwise the defaults are fine for\nmost use cases.\n\nLastly hit \"Create\". You will now see a single \"linstor-csi-controller\" pod,\nas well as a \"linstor-csi-node\" pod on all worker nodes.\n\n## Interacting with LINSTOR in Openshift.\n\nThe Controller pod includes a LINSTOR Client, making it easy to interact directly with LINSTOR.\nFor instance:\n\n```\noc exec deployment/linstor-cs-controller -- linstor storage-pool list\n```\n\nThis should only be necessary for investigating problems and accessing advanced functionality.\nRegular operation such as creating volumes should be achieved via the [Openshift/Kubernetes integration].\n\n[Openshift/Kubernetes integration]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-basic-configuration-and-deployment",
-      "csv_display_name": "Linstor Operator",
-      "csv_metadata_description": "LINSTOR Kubernetes Operator",
-      "csv_name": "linstor-operator.v1.5.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:37:25.716000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "linstor-operator",
-      "provided_apis": [
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorCSIDriver",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorController",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorSatelliteSet",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.5.1",
-      "version_original": "1.5.1"
-    },
-    {
-      "_id": "6234603806c5dada0193e08a",
-      "alm_examples": [
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorController",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerImage": "",
-            "dbConnectionURL": "etcd://linstor-etcd:2379",
-            "drbdRepoCred": "",
-            "priorityClassName": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorCSIDriver",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerEndpoint": "http://linstor:3370",
-            "controllerReplicas": 1,
-            "csiControllerServiceAccountName": "csi-controller",
-            "csiNodeServiceAccountName": "csi-node",
-            "imagePullSecret": "",
-            "linstorPluginImage": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorSatelliteSet",
-          "metadata": {
-            "name": "linstor-satellites"
-          },
-          "spec": {
-            "automaticStorageType": "None",
-            "controllerEndpoint": "http://linstor:3370",
-            "drbdRepoCred": "",
-            "kernelModuleInjectionMode": "ShippedModules",
-            "priorityClassName": "",
-            "satelliteImage": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/linbit/linstor-operator-bundle@sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "bundle_path_digest": "sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:34:32.778000+00:00",
-      "csv_description": "LINSTOR is a configuration management system for storage on Linux systems.\nIt manages LVM logical volumes and/or ZFS ZVOLs on a cluster of nodes.\nIt leverages DRBD for replication between different nodes and to provide block\nstorage devices to users and applications. It manages snapshots, encryption and\ncaching of HDD backed data in SSDs via bcache.\n\nLINBIT provides a certified LINSTOR operator to ease deployment of LINSTOR\non Openshift by installing DRBD, managing Satellite and Controller pods,\nand integrating with Openshift to provision persistent storage for your workloads.\n\nFor detailed instructions and more configuration options, see our [user guide].\n\n[user guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-openshift\n\n## Install\n\nUnlike deployment via the helm chart, the certified Openshift\noperator does not deploy the needed etcd cluster. You must deploy this\nyourself ahead of time. We do this via the etcd operator available in the\nOperatorHub.\n\nIMPORTANT: It is advised that the etcd deployment uses persistent\nstorage of some type. Either use an existing storage provisioner with\na default `StorageClass` or simply use `hostPath` volumes.\n\n### Installing the operator\n\nHit \"Install\", select the stable update channel and a namespace for the\noperator. Use of a new namespace is recommended.\n\nHit \"Install\" again. At this point you should have just one pod, the\noperator pod, running. Next we needs to configure the remaining provided APIs.\n\n#### A note on operator namespaces\nThe LINSTOR operator can only watch for events and manage\ncustom resources that are within the same namespace it is deployed\nwithin (OwnNamsespace). This means the LINSTOR Controller, LINSTOR\nSatellites, and LINSTOR CSI Driver pods all need to be deployed in the\nsame namsepace as the LINSTOR Operator pod.\n\n### Deploying the LINSTOR Controller\n\nNavigate to the left-hand control pane of the Openshift Web\nConsole. Expand the \"Operators\" section, selecting \"Installed Operators\".\nFind the entry for the \"Linstor Operator\", then select the \"LinstorController\"\nfrom the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorController\". Click the \"Create LinstorController\" button.\n\nHere you will be presented with options to configure the LINSTOR\nController. Either via the web-form view or the YAML View. Regardless\nof which view you select, make sure that the `dbConnectionURL` matches\nthe endpoint provided from your etcd deployment. Otherwise, the\ndefaults are usually fine for most purposes.\n\nLastly hit \"Create\", you should now see a linstor-controller pod\nrunning.\n\n### Deploying the LINSTOR Satellites\n\nNext we need to deploy the Satellites Set. Just as before navigate\nto the left-hand control pane of the Openshift Web Console. Expand the\n\"Operators\" section, but this time select \"Installed Operators\". Find\nthe entry for the \"Linstor Operator\", then select the\n\"LinstorSatelliteSet\" from the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorSatelliteSet\". Click the \"Create LinstorSatelliteSet\" button.\n\nHere you will be presented with the options to configure the LINSTOR\nSatellites. The defaults should be enough to get you started.\nMake sure the `controllerEndpoint` matches what is available in the\nopenshift endpoints. The default is usually correct here.\n\nYou can edit the `storagePools` section to configure LINSTOR storage pools,\nincluding preparing the backing devices. See our [storage guide].\n\n[storage guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-storage\n\nBelow is an example manifest:\n\n```yaml\napiVersion: linstor.linbit.com/v1\nkind: LinstorSatelliteSet\nmetadata:\n  name: linstor-satellites\nspec:\n  satelliteImage: ''\n  automaticStorageType: None\n  storagePools:\n    lvmThinPools:\n    - name: openshift-pool\n      volumeGroup: \"\"\n      thinVolume: openshift\n      devicePaths:\n      - /dev/vdb\n  drbdRepoCred: ''\n  kernelModuleInjectionMode: ShippedModules\n  controllerEndpoint: 'http://linstor:3370'\n  priorityClassName: ''\n```\n\nLastly hit \"Create\", you should now see a linstor-node pod\nrunning on every worker node.\n\n### Deploying the LINSTOR CSI driver\n\nLast bit left is the CSI pods to bridge the layer between the CSI and\nLINSTOR. Just as before navigate to the left-hand control pane of the\nOpenshift Web Console. Expand the \"Operators\" section, but this time\nselect \"Installed Operators\". Find the entry for the \"Linstor Operator\",\nthen select the \"LinstorCSIDriver\" from the \"Provided APIs\" column on the\nright.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorCSIDriver\". Click the \"Create LinstorCSIDriver\" button.\n\nAgain, you will be presented with the options. Make sure that the\n`controllerEndpoint` is correct. Otherwise the defaults are fine for\nmost use cases.\n\nLastly hit \"Create\". You will now see a single \"linstor-csi-controller\" pod,\nas well as a \"linstor-csi-node\" pod on all worker nodes.\n\n## Interacting with LINSTOR in Openshift.\n\nThe Controller pod includes a LINSTOR Client, making it easy to interact directly with LINSTOR.\nFor instance:\n\n```\noc exec deployment/linstor-cs-controller -- linstor storage-pool list\n```\n\nThis should only be necessary for investigating problems and accessing advanced functionality.\nRegular operation such as creating volumes should be achieved via the [Openshift/Kubernetes integration].\n\n[Openshift/Kubernetes integration]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-basic-configuration-and-deployment",
-      "csv_display_name": "Linstor Operator",
-      "csv_metadata_description": "LINSTOR Kubernetes Operator",
-      "csv_name": "linstor-operator.v1.5.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:37:31.844000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "linstor-operator",
-      "provided_apis": [
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorCSIDriver",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorController",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorSatelliteSet",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.5.1",
-      "version_original": "1.5.1"
-    },
-    {
       "_id": "6234603b314381d2b0756b43",
       "alm_examples": [
         {
@@ -81405,9 +79229,543 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.1.2",
       "version_original": "0.1.2"
+    },
+    {
+      "_id": "6262a5e3cde83e2b177c20c1",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:bd5065d9525fb3a5c9520200e074d7d95781b19f41f0bce6118c7c0367f4e015",
+      "bundle_path_digest": "sha256:bd5065d9525fb3a5c9520200e074d7d95781b19f41f0bce6118c7c0367f4e015",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T12:56:03.368000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "instana-agent-operator.v0.3.6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:15:51.509000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "instana-agent",
+      "provided_apis": [
+        {
+          "group": "instana.io",
+          "kind": "InstanaAgent",
+          "plural": "agents",
+          "version": "v1beta1"
+        },
+        {
+          "group": "instana.io",
+          "kind": "InstanaAgent",
+          "plural": "agents",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.3.6",
+      "version_original": "0.3.6"
+    },
+    {
+      "_id": "6262a5e8cde83e2b177c20c2",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.12",
+      "creation_date": "2022-04-22T12:56:08.552000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:22:53.061000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.8-1",
+      "version_original": "6.0.8-1"
+    },
+    {
+      "_id": "6262a5ec173a0d36cf5d695e",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.12",
+      "creation_date": "2022-04-22T12:56:12.929000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:06:21.831000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.8-1",
+      "version_original": "6.0.8-1"
+    },
+    {
+      "_id": "6262a5edcde83e2b177c20c3",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-healthcare-hub-operator-bundle@sha256:27cb3851d88ee293c260e452670cad361800cc50b1c9ff98cd3617113b13d117",
+      "bundle_path_digest": "sha256:27cb3851d88ee293c260e452670cad361800cc50b1c9ff98cd3617113b13d117",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:56:13.459000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cortex-healthcare-hub-operator.v0.0.24",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:27:12.388000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "cortex-healthcare-hub-operator",
+      "provided_apis": [
+        {
+          "group": "hubs.cortex.cognitivescale.com",
+          "kind": "Hub",
+          "plural": "hubs",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.24",
+      "version_original": "0.0.24"
+    },
+    {
+      "_id": "6262a5f2834f257293b60f78",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:cdd24dd021bb730168eb11b796872975d84fdb471456b745d03a30392dc38d2d",
+      "bundle_path_digest": "sha256:cdd24dd021bb730168eb11b796872975d84fdb471456b745d03a30392dc38d2d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:56:18.387000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.0.3",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:04:56.800000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.3",
+      "version_original": "0.0.3"
+    },
+    {
+      "_id": "6262a5f5cde83e2b177c20c5",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ca/uma-operator-bundle@sha256:bc935a0166c56bd3f477cc3027fca6e957856d37a81bb3622afe00898ee5fcfd",
+      "bundle_path_digest": "sha256:bc935a0166c56bd3f477cc3027fca6e957856d37a81bb3622afe00898ee5fcfd",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:56:21.334000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "uma-operator.v1.0.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:11:35.106000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "uma-operator",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.0.0",
+      "version_original": "1.0.0"
+    },
+    {
+      "_id": "6262a5fe84481d5f52299942",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:53569fdf8eecee215755dcd02d56cb906330f84e3bc1015652d9b7a1ddc01edd",
+      "bundle_path_digest": "sha256:53569fdf8eecee215755dcd02d56cb906330f84e3bc1015652d9b7a1ddc01edd",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:56:30.897000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "seldonoperator.v0.1.5",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:12:49.501000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "seldon-operator-certified",
+      "provided_apis": [
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha2"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.1.5",
+      "version_original": "0.1.5"
+    },
+    {
+      "_id": "6262a60184481d5f52299944",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.4",
+      "creation_date": "2022-04-22T12:56:33.507000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-04-22T12:56:33.507000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "6262a607834f257293b60f7a",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:14aa8a718a050baa0fef250d3385d18f408c572f38ee53528ce4293f4db30757",
+      "bundle_path_digest": "sha256:14aa8a718a050baa0fef250d3385d18f408c572f38ee53528ce4293f4db30757",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "v1.4",
+      "creation_date": "2022-04-22T12:56:39.822000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "couchdb-operator.v1.4.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:22:03.986000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "couchdb-operator-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": ">=1.0.0 <1.4.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.4.1",
+      "version_original": "1.4.1"
+    },
+    {
+      "_id": "6262a609cde83e2b177c20c8",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/zabbix/zabbixoperator-certified-bundle@sha256:7d7874dc07cdf9fa61a6377e87e836e63629e404415fd8bc98ce3fe88d3932ca",
+      "bundle_path_digest": "sha256:7d7874dc07cdf9fa61a6377e87e836e63629e404415fd8bc98ce3fe88d3932ca",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "lts",
+      "creation_date": "2022-04-22T12:56:41.971000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "zabbix-operator-certified.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:13:08.463000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "zabbix-operator-certified",
+      "provided_apis": [
+        {
+          "group": "kubernetes.zabbix.com",
+          "kind": "ZabbixFull",
+          "plural": "zabbixfulls",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "kubernetes.zabbix.com",
+          "kind": "ZabbixProxyMysql",
+          "plural": "zabbixproxymysqls",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "kubernetes.zabbix.com",
+          "kind": "ZabbixProxySqlite",
+          "plural": "zabbixproxysqlites",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "kubernetes.zabbix.com",
+          "kind": "ZabbixServer",
+          "plural": "zabbixservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "kubernetes.zabbix.com",
+          "kind": "ZabbixAgent",
+          "plural": "zabbixagents",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "kubernetes.zabbix.com",
+          "kind": "ZabbixAppliance",
+          "plural": "zabbixappliances",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "6262a60d834f257293b60f7c",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sonatype/nxrm-operator-bundle@sha256:69cec4ebc1b4638bc289891c7493e71df23cabb301dcaf7ee503347a36bcd8de",
+      "bundle_path_digest": "sha256:69cec4ebc1b4638bc289891c7493e71df23cabb301dcaf7ee503347a36bcd8de",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:56:45.186000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nxrm-operator-certified.v3.24.0-7",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:55:58.502000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nxrm-operator-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "3.24.0-7",
+      "version_original": "3.24.0-7"
+    },
+    {
+      "_id": "6262a615cde83e2b177c20ca",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:ff246089fecc3946921207dfd13eabfae67e2e6bb38909f11c078fee347adae3",
+      "bundle_path_digest": "sha256:ff246089fecc3946921207dfd13eabfae67e2e6bb38909f11c078fee347adae3",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:56:53.802000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nastel-navigator-operator.v0.0.18",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:57:30.176000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nastel-navigator-operator-certified",
+      "provided_apis": [
+        {
+          "group": "navigator.nastel.com",
+          "kind": "NastelNavigator",
+          "plural": "nastelnavigators",
+          "version": "v1alpha6"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.18",
+      "version_original": "0.0.18"
     }
   ],
   "page": 4,
   "page_size": 500,
-  "total": 3878
+  "total": 3863
 }
