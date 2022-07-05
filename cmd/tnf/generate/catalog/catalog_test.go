@@ -30,34 +30,6 @@ func TestNewCommand(t *testing.T) {
 	assert.NotNil(t, NewCommand())
 }
 
-func TestCmdJoin(t *testing.T) {
-	testCases := []struct {
-		testElems []string
-		testSep   string
-		expected  string
-	}{
-		{
-			testElems: []string{"this", "is", "a", "test"},
-			testSep:   ".",
-			expected:  "`this`.`is`.`a`.`test`",
-		},
-		{
-			testElems: []string{},
-			testSep:   ".",
-			expected:  "",
-		},
-		{
-			testElems: []string{"this"},
-			testSep:   ".",
-			expected:  "`this`",
-		},
-	}
-
-	for _, tc := range testCases {
-		assert.Equal(t, tc.expected, cmdJoin(tc.testElems, tc.testSep))
-	}
-}
-
 func TestEmitTextFromFile(t *testing.T) {
 	testCases := []struct {
 		filename    string
