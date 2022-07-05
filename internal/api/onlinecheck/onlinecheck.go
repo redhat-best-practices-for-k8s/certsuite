@@ -180,7 +180,7 @@ func (checker OnlineValidator) IsOperatorCertified(csvName, ocpVersion, channel 
 	var responseData []byte
 	var err error
 	url := fmt.Sprintf(certifiedOperatorsCatalogURL, csvName, filterCertifiedOperatorsOrg)
-	log.Trace(url)
+	log.Debug(url)
 	if responseData, err = checker.GetRequest(url); err != nil || len(responseData) == 0 {
 		return false
 	}

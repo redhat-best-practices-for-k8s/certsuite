@@ -36,6 +36,7 @@ func IsContainerCertified(registry, repository, tag, digest string) bool {
 }
 func IsOperatorCertified(operatorName, ocpVersion, channel string) bool {
 	if onlineClient.IsServiceReachable() {
+		logrus.Debug("Online service is reachable")
 		return onlineClient.IsOperatorCertified(operatorName, ocpVersion, channel)
 	}
 	logrus.Warnf("Online Catalog not available. Testing with offline db.")
@@ -43,6 +44,7 @@ func IsOperatorCertified(operatorName, ocpVersion, channel string) bool {
 }
 func IsReleaseCertified(helm *release.Release, ourKubeVersion string) bool {
 	if onlineClient.IsServiceReachable() {
+		logrus.Debug("Online service is reachable")
 		return onlineClient.IsReleaseCertified(helm, ourKubeVersion)
 	}
 	logrus.Warnf("Online Catalog not available. Testing with offline db.")
