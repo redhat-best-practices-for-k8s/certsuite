@@ -1011,3 +1011,149 @@ func TestGetNodeCount(t *testing.T) {
 		}
 	}
 }
+
+func TestIsRHCOS(t *testing.T) {
+	testCases := []struct {
+		testImageName  string
+		expectedOutput bool
+	}{
+		{
+			testImageName:  "Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa)",
+			expectedOutput: true,
+		},
+		{
+			testImageName:  "Ubuntu 20.04",
+			expectedOutput: false,
+		},
+		{
+			testImageName:  "Ubuntu 21.10",
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		node := Node{
+			Data: &corev1.Node{
+				Status: corev1.NodeStatus{
+					NodeInfo: corev1.NodeSystemInfo{
+						OSImage: tc.testImageName,
+					},
+				},
+			},
+		}
+		assert.Equal(t, tc.expectedOutput, node.IsRHCOS())
+	}
+}
+
+func TestIsRHEL(t *testing.T) {
+	testCases := []struct {
+		testImageName  string
+		expectedOutput bool
+	}{
+		{
+			testImageName:  "Red Hat Enterprise Linux 8.5 (Ootpa)",
+			expectedOutput: true,
+		},
+		{
+			testImageName:  "Ubuntu 20.04",
+			expectedOutput: false,
+		},
+		{
+			testImageName:  "Ubuntu 21.10",
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		node := Node{
+			Data: &corev1.Node{
+				Status: corev1.NodeStatus{
+					NodeInfo: corev1.NodeSystemInfo{
+						OSImage: tc.testImageName,
+					},
+				},
+			},
+		}
+		assert.Equal(t, tc.expectedOutput, node.IsRHEL())
+	}
+}
+
+//nolint:dupl
+func TestGetRHCOSVersion(t *testing.T) {
+	testCases := []struct {
+		testImageName  string
+		expectedOutput string
+		expectedErr    error
+	}{
+		{
+			testImageName:  "Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa)",
+			expectedOutput: "4.10.14",
+			expectedErr:    nil,
+		},
+		{
+			testImageName:  "Ubuntu 20.04",
+			expectedOutput: "",
+			expectedErr:    errors.New("invalid OS type"),
+		},
+		{
+			testImageName:  "Ubuntu 21.10",
+			expectedOutput: "",
+			expectedErr:    errors.New("invalid OS type"),
+		},
+	}
+
+	for _, tc := range testCases {
+		node := Node{
+			Data: &corev1.Node{
+				Status: corev1.NodeStatus{
+					NodeInfo: corev1.NodeSystemInfo{
+						OSImage: tc.testImageName,
+					},
+				},
+			},
+		}
+		result, err := node.GetRHCOSVersion()
+		assert.Equal(t, tc.expectedErr, err)
+		assert.Equal(t, tc.expectedOutput, result)
+	}
+}
+
+//nolint:dupl
+func TestGetRHELVersion(t *testing.T) {
+	testCases := []struct {
+		testImageName  string
+		expectedOutput string
+		expectedErr    error
+	}{
+		{
+			testImageName:  "Red Hat Enterprise Linux 8.5 (Ootpa)",
+			expectedOutput: "8.5",
+			expectedErr:    nil,
+		},
+		{
+			testImageName:  "Ubuntu 20.04",
+			expectedOutput: "",
+			expectedErr:    errors.New("invalid OS type"),
+		},
+		{
+			testImageName:  "Ubuntu 21.10",
+			expectedOutput: "",
+			expectedErr:    errors.New("invalid OS type"),
+		},
+	}
+
+	for _, tc := range testCases {
+		node := Node{
+			Data: &corev1.Node{
+				Status: corev1.NodeStatus{
+					NodeInfo: corev1.NodeSystemInfo{
+						OSImage: tc.testImageName,
+					},
+				},
+			},
+		}
+		result, err := node.GetRHELVersion()
+		assert.Equal(t, tc.expectedErr, err)
+		assert.Equal(t, tc.expectedOutput, result)
+	}
+}

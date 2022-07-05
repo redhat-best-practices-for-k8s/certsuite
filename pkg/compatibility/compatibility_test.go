@@ -90,3 +90,100 @@ func TestDetermineOCPStatus(t *testing.T) {
 		assert.Equal(t, tc.expectedOutput, DetermineOCPStatus(tc.testVersion, tc.testDate))
 	}
 }
+
+//nolint:funlen
+func TestIsRHELCompatible(t *testing.T) {
+	testCases := []struct {
+		testMachineVersion string
+		testOCPVersion     string
+		expectedOutput     bool
+	}{
+		{ // Test Case #1 - OCP 4.10 only accepts RHEL Versions 8.4 and 8.5, fail
+			testOCPVersion:     "4.10",
+			testMachineVersion: "7.9",
+			expectedOutput:     false,
+		},
+		{ // Test Case #2 - OCP 4.10 only accepts RHEL Versions 8.4 and 8.5, pass
+			testOCPVersion:     "4.10",
+			testMachineVersion: "8.4",
+			expectedOutput:     true,
+		},
+		{ // Test Case #3 - OCP 4.10 only accepts RHEL Versions 8.4 and 8.5, pass
+			testOCPVersion:     "4.10",
+			testMachineVersion: "8.5",
+			expectedOutput:     true,
+		},
+		{ // Test Case #4 - OCP 4.8 accepts RHEL versions >= 7.9, pass
+			testOCPVersion:     "4.8",
+			testMachineVersion: "8.5",
+			expectedOutput:     true,
+		},
+		{ // Test Case #5 - OCP 4.8 accepts RHEL versions >= 7.9, pass
+			testOCPVersion:     "4.8",
+			testMachineVersion: "7.9",
+			expectedOutput:     true,
+		},
+		{ // Test Case #6 - OCP 4.8 accepts RHEL versions >= 7.9, fail
+			testOCPVersion:     "4.8",
+			testMachineVersion: "7.8",
+			expectedOutput:     false,
+		},
+		{ // Test Case #7 - OCP 4.1 accepts RHEL versions >= 7.6, fail
+			testOCPVersion:     "4.8",
+			testMachineVersion: "7.8",
+			expectedOutput:     false,
+		},
+		{ // Test Case #8 - OCP version empty, fail
+			testOCPVersion:     "",
+			testMachineVersion: "7.8",
+			expectedOutput:     false,
+		},
+		{ // Test Case #9 - machine version empty, fail
+			testOCPVersion:     "4.8",
+			testMachineVersion: "",
+			expectedOutput:     false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, IsRHELCompatible(tc.testMachineVersion, tc.testOCPVersion))
+	}
+}
+
+func TestIsRHCOSCompatible(t *testing.T) {
+	testCases := []struct {
+		testMachineVersion string
+		testOCPVersion     string
+		expectedOutput     bool
+	}{
+		{ // Test Case #1 - OCP 4.10 only accepts RHCOS version 4.10, pass
+			testOCPVersion:     "4.10",
+			testMachineVersion: "4.10",
+			expectedOutput:     true,
+		},
+		{ // Test Case #2 - OCP 4.10 only accepts RHCOS version 4.10, fail
+			testOCPVersion:     "4.10",
+			testMachineVersion: "4.9",
+			expectedOutput:     false,
+		},
+		{ // Test Case #3 - OCP 4.7 accepts anything 4.7+, pass
+			testOCPVersion:     "4.7",
+			testMachineVersion: "4.9",
+			expectedOutput:     true,
+		},
+		{ // Test Case #4 - OCP version empty, fail
+			testOCPVersion:     "",
+			testMachineVersion: "7.8",
+			expectedOutput:     false,
+		},
+		{ // Test Case #5 - machine version empty, fail
+			testOCPVersion:     "4.8",
+			testMachineVersion: "",
+			expectedOutput:     false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, IsRHCOSCompatible(tc.testMachineVersion, tc.testOCPVersion))
+	}
+}

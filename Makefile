@@ -26,7 +26,8 @@ GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 	install-tools \
 	vet \
 	generate \
-	install-moq
+	install-moq \
+	update-rhcos-versions
 
 # Get default value of $GOBIN if not explicitly set
 GO_PATH=$(shell go env GOPATH)
@@ -123,3 +124,6 @@ install-moq:
 generate: install-moq
 	find . | grep _moq.go | xargs rm
 	go generate ./...
+
+update-rhcos-versions:
+	./script/rhcos_versions.sh

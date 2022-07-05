@@ -131,6 +131,12 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 			testOCPStatus(&env)
 		}
 	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNodeOperatingSystemIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testNodeOperatingSystemStatus(&env)
+	})
+
 })
 
 func TestServiceMesh(env *provider.TestEnvironment) {
@@ -476,5 +482,77 @@ func testOCPStatus(env *provider.TestEnvironment) {
 	default:
 		msg := fmt.Sprintf("OCP Version %s was unable to be found in the lifecycle compatibility matrix", env.OpenshiftVersion)
 		tnf.ClaimFilePrintf(msg)
+	}
+}
+
+//nolint:funlen
+func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
+	ginkgo.By("Testing the control-plane and workers in the cluster for Operating System compatibility")
+
+	failedControlPlaneNodes := []string{}
+	failedWorkerNodes := []string{}
+	for _, node := range env.Nodes {
+		// Get the OSImage which should tell us what version of operating system the node is running.
+		logrus.Debug(fmt.Sprintf("Node %s is running operating system: %s", node.Data.Name, node.Data.Status.NodeInfo.OSImage))
+
+		// Control plane nodes must be RHCOS.
+		// Per the release notes from OCP documentation:
+		// "You must use RHCOS machines for the control plane, and you can use either RHCOS or RHEL for compute machines."
+		if node.IsMasterNode() && !node.IsRHCOS() {
+			tnf.ClaimFilePrintf("Master Node %s has been found to be running an incompatible operating system: %s", node.Data.Name, node.Data.Status.NodeInfo.OSImage)
+			failedControlPlaneNodes = append(failedControlPlaneNodes, node.Data.Name)
+			continue
+		}
+
+		// Worker nodes can either be RHEL or RHCOS
+		if node.IsWorkerNode() {
+			//nolint:gocritic
+			if node.IsRHCOS() {
+				// Get the short version from the node
+				shortVersion, err := node.GetRHCOSVersion()
+				if err != nil {
+					tnf.ClaimFilePrintf("Node %s failed to gather RHEL version", node.Data.Name)
+					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
+					continue
+				}
+
+				// If the node's RHCOS version and the OpenShift version are not compatible, the node fails.
+				if !compatibility.IsRHCOSCompatible(shortVersion, env.OpenshiftVersion) {
+					tnf.ClaimFilePrintf("Node %s has been found to be running an incompatible version of RHCOS: %s", node.Data.Name, shortVersion)
+					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
+					continue
+				}
+			} else if node.IsRHEL() {
+				// Get the short version from the node
+				shortVersion, err := node.GetRHELVersion()
+				if err != nil {
+					tnf.ClaimFilePrintf("Node %s failed to gather RHEL version", node.Data.Name)
+					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
+					continue
+				}
+
+				// If the node's RHEL version and the OpenShift version are not compatible, the node fails.
+				if !compatibility.IsRHELCompatible(shortVersion, env.OpenshiftVersion) {
+					tnf.ClaimFilePrintf("Node %s has been found to be running an incompatible version of RHEL: %s", node.Data.Name, shortVersion)
+					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
+					continue
+				}
+			} else {
+				tnf.ClaimFilePrintf("Node %s has been found to be running an incompatible operating system", node.Data.Name)
+				failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
+			}
+		}
+	}
+
+	if n := len(failedControlPlaneNodes); n > 0 {
+		errMsg := fmt.Sprintf("Number of control plane nodes running non-RHCOS based operating systems: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
+	}
+
+	if n := len(failedWorkerNodes); n > 0 {
+		errMsg := fmt.Sprintf("Number of worker nodes running non-RHCOS or non-RHEL based operating systems: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
 	}
 }
