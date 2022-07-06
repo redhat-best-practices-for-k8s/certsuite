@@ -591,7 +591,19 @@ Version|v1.0.0
 Description|http://test-network-function.com/testcases/platform-alteration/ocp-lifecycle Tests that the running OCP version is not end of life.
 Result Type|normative
 Suggested Remediation|Please update your cluster to a version that is generally available.
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section x.x
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 7.9
+#### ocp-node-os-lifecycle
+
+Property|Description
+---|---
+Test Case Name|ocp-node-os-lifecycle
+Test Case Label|platform-alteration-ocp-node-os-lifecycle
+Unique ID|http://test-network-function.com/testcases/platform-alteration/ocp-node-os-lifecycle
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/platform-alteration/ocp-node-os-lifecycle Tests that the nodes running in the cluster have operating systems 			that are compatible with the deployed version of OpenShift.
+Result Type|normative
+Suggested Remediation|Please update your workers to a version that is supported by your version of OpenShift
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 7.9
 #### service-mesh-usage
 
 Property|Description
