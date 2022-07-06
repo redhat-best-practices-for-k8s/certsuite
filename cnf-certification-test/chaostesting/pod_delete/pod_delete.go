@@ -55,7 +55,7 @@ const (
 )
 
 // a function to search the right label for the deployment that we want to test pod delete on it
-func GetLabelDeploymetValue(env *provider.TestEnvironment, labelsMap map[string]string) (string, error) {
+func GetLabelDeploymentValue(env *provider.TestEnvironment, labelsMap map[string]string) (string, error) {
 	var key string
 	for _, label := range env.Config.TargetPodLabels {
 		if label.Prefix != "" {
@@ -190,7 +190,7 @@ func IsChaosResultVerdictPass() bool {
 		return false
 	}
 	if len(crs.Items) > 1 {
-		logrus.Errorf("u have %d more than one chaosresults resource that is wrong bahavior \n", len(crs.Items))
+		logrus.Errorf("There are currently %d chaosresults resources. That is incorrect behavior \n", len(crs.Items))
 		return false
 	}
 	cr := crs.Items[0]
@@ -216,17 +216,22 @@ func waitForResult() bool {
 		logrus.Errorf("error getting : %v\n", err)
 		return false
 	}
+
+	return parseLitmusResult(crs)
+}
+
+func parseLitmusResult(crs *unstructured.UnstructuredList) bool {
 	if len(crs.Items) > 1 {
-		logrus.Errorf("u have %d more than one chaosenging resource that is wrong bahavior \n", len(crs.Items))
+		logrus.Errorf("There are currently %d chaosengine resources. That is incorrect behavior \n", len(crs.Items))
 		return false
 	}
 	cr := crs.Items[0]
 	if status := cr.Object["status"]; status != nil {
 		if exp := status.(map[string]interface{})["experiments"]; exp != nil {
 			typ := exp.([]interface{})
-			status := cr.Object["status"].(map[string]interface{})["engineStatus"]
+			engineStatus := cr.Object["status"].(map[string]interface{})["engineStatus"]
 			if typ[0].(map[string]interface{})["name"] == chaosTestName {
-				return status == completedResult
+				return engineStatus == completedResult
 			}
 		}
 	}
