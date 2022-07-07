@@ -1,148 +1,6 @@
 {
   "data": [
     {
-      "_id": "6262a633173a0d36cf5d696c",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:14aa8a718a050baa0fef250d3385d18f408c572f38ee53528ce4293f4db30757",
-      "bundle_path_digest": "sha256:14aa8a718a050baa0fef250d3385d18f408c572f38ee53528ce4293f4db30757",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "v1.4",
-      "creation_date": "2022-04-22T12:57:23.475000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "couchdb-operator.v1.4.1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:56:19.417000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "couchdb-operator-certified",
-      "provided_apis": [
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Bucket",
-          "plural": "buckets",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "CouchDBCluster",
-          "plural": "couchdbclusters",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "FormationLock",
-          "plural": "formationlocks",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Formation",
-          "plural": "formations",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Recipe",
-          "plural": "recipes",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "RecipeTemplate",
-          "plural": "recipetemplates",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": ">=1.0.0 <1.4.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.4.1",
-      "version_original": "1.4.1"
-    },
-    {
-      "_id": "6262a63584481d5f52299957",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/portworx/portworx-certified-bundle@sha256:46948a9049f11cab4b7896b20e29381c8c06b92fbedc2c0605480711f4786323",
-      "bundle_path_digest": "sha256:46948a9049f11cab4b7896b20e29381c8c06b92fbedc2c0605480711f4786323",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T12:57:25.543000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "portworx-operator.v1.4.1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:56:46.703000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "portworx-certified",
-      "provided_apis": [
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageNode",
-          "plural": "storagenodes",
-          "version": "v1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageNode",
-          "plural": "storagenodes",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageCluster",
-          "plural": "storageclusters",
-          "version": "v1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageCluster",
-          "plural": "storageclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.4.1",
-      "version_original": "1.4.1"
-    },
-    {
       "_id": "6262a63c834f257293b60f7f",
       "alm_examples": [],
       "annotations": {
@@ -21940,8 +21798,8 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-11T19:08:06.105000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-06T16:22:47.421000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
@@ -22075,8 +21933,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:44:49.845000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-06T16:22:48.412000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
@@ -22210,8 +22068,8 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-11T19:37:25.715000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-06T22:22:36.525000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
@@ -22348,8 +22206,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:59:16.665000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-06T16:22:31.824000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
@@ -22486,8 +22344,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:47:32.869000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-06T16:29:29.026000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
@@ -22624,8 +22482,8 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-11T19:56:04.178000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-06T22:29:36.032000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
@@ -22762,8 +22620,8 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-11T20:04:21.626000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-06T21:21:32.658000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
@@ -22900,8 +22758,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:53:18.420000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-06T16:21:35.699000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
@@ -23038,8 +22896,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:01:57.097000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-06T16:41:15.558000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
@@ -23176,8 +23034,8 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-11T20:07:24.591000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-06T22:22:10.646000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
@@ -23314,8 +23172,8 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-11T20:14:31.567000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-06T22:29:27.738000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
@@ -23452,8 +23310,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:21:19.440000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-06T16:41:00.641000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
@@ -24063,7 +23921,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-07-05T13:23:08.666000+00:00",
+      "last_update_date": "2022-07-06T22:22:37.019000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -24574,7 +24432,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-07-05T13:23:08.380000+00:00",
+      "last_update_date": "2022-07-06T22:22:36.778000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -26908,7 +26766,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-07-05T13:22:24.509000+00:00",
+      "last_update_date": "2022-07-06T21:21:33.232000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -27109,7 +26967,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-07-05T13:22:24.275000+00:00",
+      "last_update_date": "2022-07-06T21:21:32.958000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -37764,9 +37622,211 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.0.26",
       "version_original": "0.0.26"
+    },
+    {
+      "_id": "627c6e93228d5769c5692acd",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Prometurbo",
+          "metadata": {
+            "name": "prometurbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/prometurbo-operator-bundle@sha256:7c4c96013c3541dbe92d1fa6b26c14e80a8b5b5987c5fddb80b8eab0f86209c0",
+      "bundle_path_digest": "sha256:7c4c96013c3541dbe92d1fa6b26c14e80a8b5b5987c5fddb80b8eab0f86209c0",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:18:59.973000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 PromeTurbo \u2014 that runs next to your Prometheus sever, which monitors your environment.\nPromeTurbo sends application and infrastructure monitoring data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Prometurbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "prometurbo-operator.v8.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-05-12T02:18:59.973000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "prometurbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Prometurbo",
+          "plural": "prometurbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Prometurbo",
+          "plural": "prometurbos",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:e18b019309edfa73a6975be007f634b55979877757c08ae1b7326210e0992e15",
+          "image": "registry.connect.redhat.com/turbonomic/prometurbo-operator@sha256:e18b019309edfa73a6975be007f634b55979877757c08ae1b7326210e0992e15",
+          "name": "prometurbo-operator-e18b019309edfa73a6975be007f634b55979877757c08ae1b7326210e0992e15-annotation"
+        },
+        {
+          "digest": "sha256:e18b019309edfa73a6975be007f634b55979877757c08ae1b7326210e0992e15",
+          "image": "registry.connect.redhat.com/turbonomic/prometurbo-operator@sha256:e18b019309edfa73a6975be007f634b55979877757c08ae1b7326210e0992e15",
+          "name": "prometurbo-operator"
+        },
+        {
+          "digest": "sha256:a0710012974c53e798afe1e6acee44e1c516fc1809538cddd13d5051cd50c662",
+          "image": "registry.connect.redhat.com/turbonomic/prometurbo@sha256:a0710012974c53e798afe1e6acee44e1c516fc1809538cddd13d5051cd50c662",
+          "name": "prometurbo"
+        },
+        {
+          "digest": "sha256:73ebc150427af91870f2fa93231ab6c79fe646167612a2c57be237c869c618cf",
+          "image": "registry.connect.redhat.com/turbonomic/turbodif@sha256:73ebc150427af91870f2fa93231ab6c79fe646167612a2c57be237c869c618cf",
+          "name": "turbodif"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "8.5.0",
+      "version_original": "8.5.0"
+    },
+    {
+      "_id": "627c6e94228d5769c5692ad0",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Prometurbo",
+          "metadata": {
+            "name": "prometurbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/prometurbo-operator-bundle@sha256:7c4c96013c3541dbe92d1fa6b26c14e80a8b5b5987c5fddb80b8eab0f86209c0",
+      "bundle_path_digest": "sha256:7c4c96013c3541dbe92d1fa6b26c14e80a8b5b5987c5fddb80b8eab0f86209c0",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:19:00.354000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 PromeTurbo \u2014 that runs next to your Prometheus sever, which monitors your environment.\nPromeTurbo sends application and infrastructure monitoring data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Prometurbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "prometurbo-operator.v8.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:59:00.458000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "prometurbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Prometurbo",
+          "plural": "prometurbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Prometurbo",
+          "plural": "prometurbos",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:e18b019309edfa73a6975be007f634b55979877757c08ae1b7326210e0992e15",
+          "image": "registry.connect.redhat.com/turbonomic/prometurbo-operator@sha256:e18b019309edfa73a6975be007f634b55979877757c08ae1b7326210e0992e15",
+          "name": "prometurbo-operator-e18b019309edfa73a6975be007f634b55979877757c08ae1b7326210e0992e15-annotation"
+        },
+        {
+          "digest": "sha256:e18b019309edfa73a6975be007f634b55979877757c08ae1b7326210e0992e15",
+          "image": "registry.connect.redhat.com/turbonomic/prometurbo-operator@sha256:e18b019309edfa73a6975be007f634b55979877757c08ae1b7326210e0992e15",
+          "name": "prometurbo-operator"
+        },
+        {
+          "digest": "sha256:a0710012974c53e798afe1e6acee44e1c516fc1809538cddd13d5051cd50c662",
+          "image": "registry.connect.redhat.com/turbonomic/prometurbo@sha256:a0710012974c53e798afe1e6acee44e1c516fc1809538cddd13d5051cd50c662",
+          "name": "prometurbo"
+        },
+        {
+          "digest": "sha256:73ebc150427af91870f2fa93231ab6c79fe646167612a2c57be237c869c618cf",
+          "image": "registry.connect.redhat.com/turbonomic/turbodif@sha256:73ebc150427af91870f2fa93231ab6c79fe646167612a2c57be237c869c618cf",
+          "name": "turbodif"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "8.5.0",
+      "version_original": "8.5.0"
     }
   ],
   "page": 5,
   "page_size": 500,
-  "total": 3869
+  "total": 3895
 }
