@@ -198,7 +198,7 @@ func (node *Node) IsRHEL() bool {
 func (node *Node) GetRHCOSVersion() (string, error) {
 	// Check if the node is running CoreOS or not
 	if !node.IsRHCOS() {
-		return "", errors.New("invalid OS type")
+		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
 	}
 
 	// Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa) --> 410.84.202205031645-0
@@ -217,7 +217,7 @@ func (node *Node) GetRHCOSVersion() (string, error) {
 func (node *Node) GetRHELVersion() (string, error) {
 	// Check if the node is running RHEL or not
 	if !node.IsRHEL() {
-		return "", errors.New("invalid OS type")
+		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
 	}
 
 	// Red Hat Enterprise Linux 8.5 (Ootpa) --> 8.5

@@ -513,7 +513,7 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 				// Get the short version from the node
 				shortVersion, err := node.GetRHCOSVersion()
 				if err != nil {
-					tnf.ClaimFilePrintf("Node %s failed to gather RHEL version", node.Data.Name)
+					tnf.ClaimFilePrintf("Node %s failed to gather RHCOS version. Error: %s", node.Data.Name, err.Error())
 					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
 					continue
 				}
@@ -528,7 +528,7 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 				// Get the short version from the node
 				shortVersion, err := node.GetRHELVersion()
 				if err != nil {
-					tnf.ClaimFilePrintf("Node %s failed to gather RHEL version", node.Data.Name)
+					tnf.ClaimFilePrintf("Node %s failed to gather RHEL version. Error: %s", node.Data.Name, err.Error())
 					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
 					continue
 				}
