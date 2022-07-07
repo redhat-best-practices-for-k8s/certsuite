@@ -39,6 +39,7 @@ import (
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	damonset "github.com/test-network-function/cnf-certification-test/internal/daemonset"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
 )
@@ -159,6 +160,7 @@ func TestTest(t *testing.T) {
 
 	// Run tests specs only if not in diagnostic mode, otherwise all TSs would run.
 	if !diagnosticMode {
+		damonset.PartnerRepoDaemonset()
 		ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)
 	}
 

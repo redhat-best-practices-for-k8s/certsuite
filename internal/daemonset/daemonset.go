@@ -5,11 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -26,24 +22,6 @@ const (
 	timeout          = 5 * time.Minute
 	nodeExporter     = "node-exporter"
 )
-
-var _ = ginkgo.Describe(common.Daemonset, func() {
-	var env provider.TestEnvironment
-
-	ginkgo.BeforeEach(func() {
-		env = provider.GetTestEnvironment()
-	})
-	ginkgo.ReportAfterEach(results.RecordResult)
-	ginkgo.AfterEach(func() {
-		env.SetNeedsRefresh()
-	})
-
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv4ConnectivityIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		partnerRepoDaemonset()
-	})
-
-})
 
 //nolint:funlen
 func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion string) *v1.DaemonSet {
@@ -201,7 +179,7 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 	tnf.ClaimFilePrintf("Successfully created daemon set %s\n", daemonSetName)
 	return ptpPods, nil
 }
-func partnerRepoDaemonset() map[string]corev1.Pod {
+func PartnerRepoDaemonset() map[string]corev1.Pod {
 	dsRunningPods, err := CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion, timeout)
 	if err != nil {
 		logrus.Errorf("Error : +%v\n", err.Error())
