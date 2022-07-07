@@ -1093,12 +1093,12 @@ func TestGetRHCOSVersion(t *testing.T) {
 		{
 			testImageName:  "Ubuntu 20.04",
 			expectedOutput: "",
-			expectedErr:    errors.New("invalid OS type"),
+			expectedErr:    errors.New("invalid OS type: Ubuntu 20.04"),
 		},
 		{
 			testImageName:  "Ubuntu 21.10",
 			expectedOutput: "",
-			expectedErr:    errors.New("invalid OS type"),
+			expectedErr:    errors.New("invalid OS type: Ubuntu 21.10"),
 		},
 	}
 
@@ -1133,12 +1133,12 @@ func TestGetRHELVersion(t *testing.T) {
 		{
 			testImageName:  "Ubuntu 20.04",
 			expectedOutput: "",
-			expectedErr:    errors.New("invalid OS type"),
+			expectedErr:    errors.New("invalid OS type: Ubuntu 20.04"),
 		},
 		{
 			testImageName:  "Ubuntu 21.10",
 			expectedOutput: "",
-			expectedErr:    errors.New("invalid OS type"),
+			expectedErr:    errors.New("invalid OS type: Ubuntu 21.10"),
 		},
 	}
 
