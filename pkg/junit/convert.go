@@ -127,7 +127,7 @@ func parseResult(individualTestResultMap map[string]interface{}, resultsMap map[
 	}
 }
 
-// parseResult parses all junit testcase instances and adds the results to resultsMap.
+// parseResults parses all junit testcase instances and adds the results to resultsMap.
 func parseResults(junitResultsObjects []interface{}) map[string]TestResult {
 	resultsMap := make(map[string]TestResult)
 	for _, resultObject := range junitResultsObjects {
