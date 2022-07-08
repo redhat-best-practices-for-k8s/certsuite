@@ -32,9 +32,8 @@ func TestIsCertified(t *testing.T) {
 		log.Println(err)
 	}
 	loadContainersCatalog(path + "/../../")
-	ans := checker.IsContainerCertified("registry.connect.redhat.com", "bitnami/nodejs", "11.14.0-rhel-7-r5-5", "")
-	assert.Equal(t, ans, true)
 
-	ans = checker.IsContainerCertified("registry.connect.redhat.com", "nearform/nearform-s2i-nodejs10", "10.1.0", "")
+	// Note: This test case might have to change periodically due to images coming/going from the offline database.
+	ans := checker.IsContainerCertified("quay.io", "fujitsu/fujitsu-enterprise-postgres-13-exporter", "ubi8-13-1.3-amd64", "")
 	assert.Equal(t, ans, true)
 }
