@@ -111,6 +111,8 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 		},
 	}
 }
+
+// Delete dameno set
 func DeleteDaemonSet(daemonSetName, namespace string) error {
 	tnf.ClaimFilePrintf("Deleting daemon set %s\n", daemonSetName)
 	deletePolicy := metav1.DeletePropagationForeground
@@ -149,6 +151,8 @@ func doesDaemonSetExist(daemonSetName, namespace string) bool {
 	// If the error is not found, that means the daemon set exists
 	return err == nil
 }
+
+// Create daemon set
 func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion string, timeout time.Duration) (*corev1.PodList, error) {
 	rebootDaemonSet := CreateDaemonSetsTemplate(daemonSetName, namespace, containerName, imageWithVersion)
 	if doesDaemonSetExist(daemonSetName, namespace) {
@@ -169,7 +173,7 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 		return nil, err
 	}
 
-	tnf.ClaimFilePrintf("DeamonSet is ready")
+	tnf.ClaimFilePrintf("Daemonset is ready")
 
 	var ptpPods *corev1.PodList
 	ptpPods, err = client.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{LabelSelector: "name=" + daemonSetName})
@@ -179,6 +183,8 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 	tnf.ClaimFilePrintf("Successfully created daemon set %s\n", daemonSetName)
 	return ptpPods, nil
 }
+
+// Deploy daemon set on repo partner
 func PartnerRepoDaemonset() map[string]corev1.Pod {
 	dsRunningPods, err := CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion, timeout)
 	if err != nil {
