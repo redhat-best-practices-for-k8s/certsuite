@@ -54,7 +54,7 @@ const (
 	chaosresultName    = "engine-test-pod-delete"
 )
 
-// a function to search the right label for the deployment that we want to test pod delete on it
+// GetLabelDeploymentValue a function to search the right label for the deployment that we want to test pod delete on it
 func GetLabelDeploymentValue(env *provider.TestEnvironment, labelsMap map[string]string) (string, error) {
 	var key string
 	for _, label := range env.Config.TargetPodLabels {
@@ -70,26 +70,27 @@ func GetLabelDeploymentValue(env *provider.TestEnvironment, labelsMap map[string
 	return "", errors.New("did not find a key and value that matching the deployment")
 }
 
+// ApplyAndCreatePodDeleteResources creates resources necessary for the chaos testing
 func ApplyAndCreatePodDeleteResources(appLabel, appKind, namespace string) error {
 	// create the chaos experiment resource
-	if err := ApplyAndCreateFile(appLabel, appKind, namespace, experimentFile); err != nil {
+	if err := applyAndCreateFile(appLabel, appKind, namespace, experimentFile); err != nil {
 		logrus.Errorf("cant create the experiment of the test: %s", err)
 		return err
 	}
 	// create the chaos serviceAccount resource
-	if err := ApplyAndCreateFile(appLabel, appKind, namespace, serviceAccountFile); err != nil {
+	if err := applyAndCreateFile(appLabel, appKind, namespace, serviceAccountFile); err != nil {
 		logrus.Errorf("cant create the serviceAccount of the test: %s", err)
 		return err
 	}
 	// create the chaos chaosEngine resource
-	if err := ApplyAndCreateFile(appLabel, appKind, namespace, chaosEngineFile); err != nil {
+	if err := applyAndCreateFile(appLabel, appKind, namespace, chaosEngineFile); err != nil {
 		logrus.Errorf("cant create the chaosEngine of the test: %s", err)
 		return err
 	}
 	return nil
 }
 
-func ApplyAndCreateFile(appLabel, appKind, namespace, filename string) error {
+func applyAndCreateFile(appLabel, appKind, namespace, filename string) error {
 	fileDecoder, err := applyTemplate(appLabel, appKind, namespace, filename)
 	if err != nil {
 		logrus.Errorf("cant create the decoderfile of the test: %s", err)
@@ -102,6 +103,7 @@ func ApplyAndCreateFile(appLabel, appKind, namespace, filename string) error {
 	return nil
 }
 
+// DeleteAllResources deletes all chaostesting resources
 func DeleteAllResources(namespace string) {
 	oc := clientsholder.GetClientsHolder()
 	deletePolicy := metav1.DeletePropagationForeground
@@ -165,6 +167,7 @@ func fillTemplate(file string, values map[string]interface{}) ([]byte, error) {
 	return buffer.Bytes(), nil
 }
 
+// WaitForTestFinish waits for the tests to finish
 func WaitForTestFinish(timeout time.Duration) bool {
 	const pollingPeriod = 1 * time.Second
 	var elapsed time.Duration
@@ -181,6 +184,7 @@ func WaitForTestFinish(timeout time.Duration) bool {
 	return result
 }
 
+// IsChaosResultVerdictPass determine the pass/fail result
 func IsChaosResultVerdictPass() bool {
 	oc := clientsholder.GetClientsHolder()
 	gvr := schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosresults"}
@@ -190,7 +194,7 @@ func IsChaosResultVerdictPass() bool {
 		return false
 	}
 	if len(crs.Items) > 1 {
-		logrus.Errorf("There are currently %d chaosresults resources. That is incorrect behavior \n", len(crs.Items))
+		logrus.Errorf("There are currently %d chaosresults resources. That is incorrect behavior.\n", len(crs.Items))
 		return false
 	}
 	cr := crs.Items[0]
@@ -222,7 +226,7 @@ func waitForResult() bool {
 
 func parseLitmusResult(crs *unstructured.UnstructuredList) bool {
 	if len(crs.Items) > 1 {
-		logrus.Errorf("There are currently %d chaosengine resources. That is incorrect behavior \n", len(crs.Items))
+		logrus.Errorf("There are currently %d chaosengine resources. That is incorrect behavior.\n", len(crs.Items))
 		return false
 	}
 	cr := crs.Items[0]
