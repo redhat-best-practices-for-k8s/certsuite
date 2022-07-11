@@ -25,7 +25,7 @@ import (
 )
 
 const (
-	rhcosRelativePath = "rhcos_version_map"
+	rhcosRelativePath = "cnf-certification-test/platform/operatingsystem/files/rhcos_version_map"
 	notFoundStr       = "version-not-found"
 )
 
