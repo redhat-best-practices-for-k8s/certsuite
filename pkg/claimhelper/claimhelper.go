@@ -40,7 +40,7 @@ const (
 	DateTimeFormatDirective = "2006-01-02T15:04:05+00:00"
 )
 
-// marshalConfigurations creates a byte stream representation of the test configurations.  In the event of an error,
+// MarshalConfigurations creates a byte stream representation of the test configurations.  In the event of an error,
 // this method fatally fails.
 func MarshalConfigurations() (configurations []byte, err error) {
 	config := provider.GetTestEnvironment()
@@ -52,7 +52,7 @@ func MarshalConfigurations() (configurations []byte, err error) {
 	return configurations, nil
 }
 
-// unmarshalConfigurations creates a map from configurations byte stream.  In the event of an error, this method fatally
+// UnmarshalConfigurations creates a map from configurations byte stream.  In the event of an error, this method fatally
 // fails.
 func UnmarshalConfigurations(configurations []byte, claimConfigurations map[string]interface{}) {
 	err := j.Unmarshal(configurations, &claimConfigurations)
@@ -61,6 +61,7 @@ func UnmarshalConfigurations(configurations []byte, claimConfigurations map[stri
 	}
 }
 
+// UnmarshalClaim unmarshals the claim file
 func UnmarshalClaim(claimFile []byte, claimRoot *claim.Root) {
 	err := j.Unmarshal(claimFile, &claimRoot)
 	if err != nil {
@@ -68,7 +69,7 @@ func UnmarshalClaim(claimFile []byte, claimRoot *claim.Root) {
 	}
 }
 
-// writeClaimOutput writes the output payload to the claim file.  In the event of an error, this method fatally fails.
+// ReadClaimFile writes the output payload to the claim file.  In the event of an error, this method fatally fails.
 func ReadClaimFile(claimFileName string) (data []byte, err error) {
 	data, err = os.ReadFile(claimFileName)
 	if err != nil {
@@ -82,6 +83,7 @@ func ReadClaimFile(claimFileName string) (data []byte, err error) {
 	return data, nil
 }
 
+// GetConfigurationFromClaimFile retrieves configuration details from claim file
 func GetConfigurationFromClaimFile(claimFileName string) (env *provider.TestEnvironment, err error) {
 	data, err := ReadClaimFile(claimFileName)
 	if err != nil {
@@ -99,7 +101,7 @@ func GetConfigurationFromClaimFile(claimFileName string) (env *provider.TestEnvi
 	return env, err
 }
 
-// marshalClaimOutput is a helper function to serialize a claim as JSON for output.  In the event of an error, this
+// MarshalClaimOutput is a helper function to serialize a claim as JSON for output.  In the event of an error, this
 // method fatally fails.
 func MarshalClaimOutput(claimRoot *claim.Root) []byte {
 	payload, err := j.MarshalIndent(claimRoot, "", "  ")
@@ -109,7 +111,7 @@ func MarshalClaimOutput(claimRoot *claim.Root) []byte {
 	return payload
 }
 
-// writeClaimOutput writes the output payload to the claim file.  In the event of an error, this method fatally fails.
+// WriteClaimOutput writes the output payload to the claim file.  In the event of an error, this method fatally fails.
 func WriteClaimOutput(claimOutputFile string, payload []byte) {
 	err := os.WriteFile(claimOutputFile, payload, claimFilePermissions)
 	if err != nil {
@@ -133,7 +135,7 @@ func GenerateNodes() map[string]interface{} {
 	return nodes
 }
 
-// createClaimRoot creates the claim based on the model created in
+// CreateClaimRoot creates the claim based on the model created in
 // https://github.com/test-network-function/cnf-certification-test-claim.
 func CreateClaimRoot() *claim.Root {
 	// Initialize the claim with the start time.
@@ -147,7 +149,7 @@ func CreateClaimRoot() *claim.Root {
 	}
 }
 
-// loadJUnitXMLIntoMap converts junitFilename's XML-formatted JUnit test results into a Go map, and adds the result to
+// LoadJUnitXMLIntoMap converts junitFilename's XML-formatted JUnit test results into a Go map, and adds the result to
 // the result Map.
 func LoadJUnitXMLIntoMap(result map[string]interface{}, junitFilename, key string) {
 	var err error
@@ -161,7 +163,7 @@ func LoadJUnitXMLIntoMap(result map[string]interface{}, junitFilename, key strin
 	}
 }
 
-// appendCNFFeatureValidationReportResults is a helper method to add the results of running the cnf-features-deploy
+// AppendCNFFeatureValidationReportResults is a helper method to add the results of running the cnf-features-deploy
 // test suite to the claim file.
 func AppendCNFFeatureValidationReportResults(junitPath *string, junitMap map[string]interface{}) {
 	cnfFeaturesDeployJUnitFile := filepath.Join(*junitPath, CNFFeatureValidationJunitXMLFileName)

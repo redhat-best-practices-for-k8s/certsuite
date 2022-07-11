@@ -29,6 +29,7 @@ import (
 	mcv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/operatingsystem"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
@@ -50,6 +51,8 @@ const (
 	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/networks-status"
 	skipConnectivityTestsLabel       = "test-network-function.com/skip_connectivity_tests"
 	skipMultusConnectivityTestsLabel = "test-network-function.com/skip_multus_connectivity_tests"
+	rhcosName                        = "Red Hat Enterprise Linux CoreOS"
+	rhelName                         = "Red Hat Enterprise Linux"
 )
 
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
@@ -182,6 +185,46 @@ func (node *Node) IsMasterNode() bool {
 		}
 	}
 	return false
+}
+
+func (node *Node) IsRHCOS() bool {
+	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.OSImage), rhcosName)
+}
+
+func (node *Node) IsRHEL() bool {
+	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.OSImage), rhelName)
+}
+
+func (node *Node) GetRHCOSVersion() (string, error) {
+	// Check if the node is running CoreOS or not
+	if !node.IsRHCOS() {
+		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
+	}
+
+	// Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa) --> 410.84.202205031645-0
+	splitStr := strings.Split(node.Data.Status.NodeInfo.OSImage, rhcosName)
+	longVersionSplit := strings.Split(strings.TrimSpace(splitStr[1]), " ")
+
+	// Get the short version string from the long version string
+	shortVersion, err := operatingsystem.GetShortVersionFromLong(longVersionSplit[0])
+	if err != nil {
+		return "", err
+	}
+
+	return shortVersion, nil
+}
+
+func (node *Node) GetRHELVersion() (string, error) {
+	// Check if the node is running RHEL or not
+	if !node.IsRHEL() {
+		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
+	}
+
+	// Red Hat Enterprise Linux 8.5 (Ootpa) --> 8.5
+	splitStr := strings.Split(node.Data.Status.NodeInfo.OSImage, rhelName)
+	longVersionSplit := strings.Split(strings.TrimSpace(splitStr[1]), " ")
+
+	return longVersionSplit[0], nil
 }
 
 type cniNetworkInterface struct {

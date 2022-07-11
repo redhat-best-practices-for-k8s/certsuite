@@ -63,7 +63,6 @@ RUN git -C ${TNF_PARTNER_SRC_DIR} checkout ${GIT_PARTNER_CHECKOUT_TARGET}
 # Build TNF binary
 WORKDIR ${TNF_SRC_DIR}
 
-# TODO: RUN make install-tools
 RUN make install-tools && \
 	make build-cnf-tests-debug
 
@@ -79,7 +78,9 @@ RUN mkdir ${TNF_BIN_DIR} && \
 	cp cnf-certification-test/cnf-certification-test.test ${TNF_BIN_DIR} && \
     # copy all of the chaos-test-files
     mkdir -p ${TNF_DIR}/cnf-certification-test/chaostesting && \
-    cp -a cnf-certification-test/chaostesting/chaos-test-files ${TNF_DIR}/cnf-certification-test/chaostesting
+    cp -a cnf-certification-test/chaostesting/chaos-test-files ${TNF_DIR}/cnf-certification-test/chaostesting && \
+    # copy the rhcos_version_map
+    cp rhcos_version_map ${TNF_DIR}/rhcos_version_map
 
 WORKDIR ${TNF_DIR}
 

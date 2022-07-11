@@ -36509,690 +36509,6 @@
       "version_original": "1.2.6"
     },
     {
-      "_id": "60d1ae6fe8987f225c72172e",
-      "alm_examples": [
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorController",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerImage": "",
-            "dbConnectionURL": "etcd://linstor-etcd:2379",
-            "drbdRepoCred": "",
-            "priorityClassName": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorCSIDriver",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerEndpoint": "http://linstor:3370",
-            "controllerReplicas": 1,
-            "csiControllerServiceAccountName": "csi-controller",
-            "csiNodeServiceAccountName": "csi-node",
-            "imagePullSecret": "",
-            "linstorPluginImage": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorSatelliteSet",
-          "metadata": {
-            "name": "linstor-satellites"
-          },
-          "spec": {
-            "automaticStorageType": "None",
-            "controllerEndpoint": "http://linstor:3370",
-            "drbdRepoCred": "",
-            "kernelModuleInjectionMode": "ShippedModules",
-            "priorityClassName": "",
-            "satelliteImage": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/linbit/linstor-operator-bundle@sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "bundle_path_digest": "sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-06-22T09:33:35.229000+00:00",
-      "csv_description": "LINSTOR is a configuration management system for storage on Linux systems.\nIt manages LVM logical volumes and/or ZFS ZVOLs on a cluster of nodes.\nIt leverages DRBD for replication between different nodes and to provide block\nstorage devices to users and applications. It manages snapshots, encryption and\ncaching of HDD backed data in SSDs via bcache.\n\nLINBIT provides a certified LINSTOR operator to ease deployment of LINSTOR\non Openshift by installing DRBD, managing Satellite and Controller pods,\nand integrating with Openshift to provision persistent storage for your workloads.\n\nFor detailed instructions and more configuration options, see our [user guide].\n\n[user guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-openshift\n\n## Install\n\nUnlike deployment via the helm chart, the certified Openshift\noperator does not deploy the needed etcd cluster. You must deploy this\nyourself ahead of time. We do this via the etcd operator available in the\nOperatorHub.\n\nIMPORTANT: It is advised that the etcd deployment uses persistent\nstorage of some type. Either use an existing storage provisioner with\na default `StorageClass` or simply use `hostPath` volumes.\n\n### Installing the operator\n\nHit \"Install\", select the stable update channel and a namespace for the\noperator. Use of a new namespace is recommended.\n\nHit \"Install\" again. At this point you should have just one pod, the\noperator pod, running. Next we needs to configure the remaining provided APIs.\n\n#### A note on operator namespaces\nThe LINSTOR operator can only watch for events and manage\ncustom resources that are within the same namespace it is deployed\nwithin (OwnNamsespace). This means the LINSTOR Controller, LINSTOR\nSatellites, and LINSTOR CSI Driver pods all need to be deployed in the\nsame namsepace as the LINSTOR Operator pod.\n\n### Deploying the LINSTOR Controller\n\nNavigate to the left-hand control pane of the Openshift Web\nConsole. Expand the \"Operators\" section, selecting \"Installed Operators\".\nFind the entry for the \"Linstor Operator\", then select the \"LinstorController\"\nfrom the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorController\". Click the \"Create LinstorController\" button.\n\nHere you will be presented with options to configure the LINSTOR\nController. Either via the web-form view or the YAML View. Regardless\nof which view you select, make sure that the `dbConnectionURL` matches\nthe endpoint provided from your etcd deployment. Otherwise, the\ndefaults are usually fine for most purposes.\n\nLastly hit \"Create\", you should now see a linstor-controller pod\nrunning.\n\n### Deploying the LINSTOR Satellites\n\nNext we need to deploy the Satellites Set. Just as before navigate\nto the left-hand control pane of the Openshift Web Console. Expand the\n\"Operators\" section, but this time select \"Installed Operators\". Find\nthe entry for the \"Linstor Operator\", then select the\n\"LinstorSatelliteSet\" from the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorSatelliteSet\". Click the \"Create LinstorSatelliteSet\" button.\n\nHere you will be presented with the options to configure the LINSTOR\nSatellites. The defaults should be enough to get you started.\nMake sure the `controllerEndpoint` matches what is available in the\nopenshift endpoints. The default is usually correct here.\n\nYou can edit the `storagePools` section to configure LINSTOR storage pools,\nincluding preparing the backing devices. See our [storage guide].\n\n[storage guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-storage\n\nBelow is an example manifest:\n\n```yaml\napiVersion: linstor.linbit.com/v1\nkind: LinstorSatelliteSet\nmetadata:\n  name: linstor-satellites\nspec:\n  satelliteImage: ''\n  automaticStorageType: None\n  storagePools:\n    lvmThinPools:\n    - name: openshift-pool\n      volumeGroup: \"\"\n      thinVolume: openshift\n      devicePaths:\n      - /dev/vdb\n  drbdRepoCred: ''\n  kernelModuleInjectionMode: ShippedModules\n  controllerEndpoint: 'http://linstor:3370'\n  priorityClassName: ''\n```\n\nLastly hit \"Create\", you should now see a linstor-node pod\nrunning on every worker node.\n\n### Deploying the LINSTOR CSI driver\n\nLast bit left is the CSI pods to bridge the layer between the CSI and\nLINSTOR. Just as before navigate to the left-hand control pane of the\nOpenshift Web Console. Expand the \"Operators\" section, but this time\nselect \"Installed Operators\". Find the entry for the \"Linstor Operator\",\nthen select the \"LinstorCSIDriver\" from the \"Provided APIs\" column on the\nright.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorCSIDriver\". Click the \"Create LinstorCSIDriver\" button.\n\nAgain, you will be presented with the options. Make sure that the\n`controllerEndpoint` is correct. Otherwise the defaults are fine for\nmost use cases.\n\nLastly hit \"Create\". You will now see a single \"linstor-csi-controller\" pod,\nas well as a \"linstor-csi-node\" pod on all worker nodes.\n\n## Interacting with LINSTOR in Openshift.\n\nThe Controller pod includes a LINSTOR Client, making it easy to interact directly with LINSTOR.\nFor instance:\n\n```\noc exec deployment/linstor-cs-controller -- linstor storage-pool list\n```\n\nThis should only be necessary for investigating problems and accessing advanced functionality.\nRegular operation such as creating volumes should be achieved via the [Openshift/Kubernetes integration].\n\n[Openshift/Kubernetes integration]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-basic-configuration-and-deployment",
-      "csv_display_name": "Linstor Operator",
-      "csv_metadata_description": "LINSTOR Kubernetes Operator",
-      "csv_name": "linstor-operator.v1.5.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:12:52.689000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "linstor-operator",
-      "provided_apis": [
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorCSIDriver",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorSatelliteSet",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorController",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.5.1",
-      "version_original": "1.5.1"
-    },
-    {
-      "_id": "60d1af02e8987f225c721732",
-      "alm_examples": [
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorController",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerImage": "",
-            "dbConnectionURL": "etcd://linstor-etcd:2379",
-            "drbdRepoCred": "",
-            "priorityClassName": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorCSIDriver",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerEndpoint": "http://linstor:3370",
-            "controllerReplicas": 1,
-            "csiControllerServiceAccountName": "csi-controller",
-            "csiNodeServiceAccountName": "csi-node",
-            "imagePullSecret": "",
-            "linstorPluginImage": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorSatelliteSet",
-          "metadata": {
-            "name": "linstor-satellites"
-          },
-          "spec": {
-            "automaticStorageType": "None",
-            "controllerEndpoint": "http://linstor:3370",
-            "drbdRepoCred": "",
-            "kernelModuleInjectionMode": "ShippedModules",
-            "priorityClassName": "",
-            "satelliteImage": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/linbit/linstor-operator-bundle@sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "bundle_path_digest": "sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-06-22T09:36:02.198000+00:00",
-      "csv_description": "LINSTOR is a configuration management system for storage on Linux systems.\nIt manages LVM logical volumes and/or ZFS ZVOLs on a cluster of nodes.\nIt leverages DRBD for replication between different nodes and to provide block\nstorage devices to users and applications. It manages snapshots, encryption and\ncaching of HDD backed data in SSDs via bcache.\n\nLINBIT provides a certified LINSTOR operator to ease deployment of LINSTOR\non Openshift by installing DRBD, managing Satellite and Controller pods,\nand integrating with Openshift to provision persistent storage for your workloads.\n\nFor detailed instructions and more configuration options, see our [user guide].\n\n[user guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-openshift\n\n## Install\n\nUnlike deployment via the helm chart, the certified Openshift\noperator does not deploy the needed etcd cluster. You must deploy this\nyourself ahead of time. We do this via the etcd operator available in the\nOperatorHub.\n\nIMPORTANT: It is advised that the etcd deployment uses persistent\nstorage of some type. Either use an existing storage provisioner with\na default `StorageClass` or simply use `hostPath` volumes.\n\n### Installing the operator\n\nHit \"Install\", select the stable update channel and a namespace for the\noperator. Use of a new namespace is recommended.\n\nHit \"Install\" again. At this point you should have just one pod, the\noperator pod, running. Next we needs to configure the remaining provided APIs.\n\n#### A note on operator namespaces\nThe LINSTOR operator can only watch for events and manage\ncustom resources that are within the same namespace it is deployed\nwithin (OwnNamsespace). This means the LINSTOR Controller, LINSTOR\nSatellites, and LINSTOR CSI Driver pods all need to be deployed in the\nsame namsepace as the LINSTOR Operator pod.\n\n### Deploying the LINSTOR Controller\n\nNavigate to the left-hand control pane of the Openshift Web\nConsole. Expand the \"Operators\" section, selecting \"Installed Operators\".\nFind the entry for the \"Linstor Operator\", then select the \"LinstorController\"\nfrom the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorController\". Click the \"Create LinstorController\" button.\n\nHere you will be presented with options to configure the LINSTOR\nController. Either via the web-form view or the YAML View. Regardless\nof which view you select, make sure that the `dbConnectionURL` matches\nthe endpoint provided from your etcd deployment. Otherwise, the\ndefaults are usually fine for most purposes.\n\nLastly hit \"Create\", you should now see a linstor-controller pod\nrunning.\n\n### Deploying the LINSTOR Satellites\n\nNext we need to deploy the Satellites Set. Just as before navigate\nto the left-hand control pane of the Openshift Web Console. Expand the\n\"Operators\" section, but this time select \"Installed Operators\". Find\nthe entry for the \"Linstor Operator\", then select the\n\"LinstorSatelliteSet\" from the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorSatelliteSet\". Click the \"Create LinstorSatelliteSet\" button.\n\nHere you will be presented with the options to configure the LINSTOR\nSatellites. The defaults should be enough to get you started.\nMake sure the `controllerEndpoint` matches what is available in the\nopenshift endpoints. The default is usually correct here.\n\nYou can edit the `storagePools` section to configure LINSTOR storage pools,\nincluding preparing the backing devices. See our [storage guide].\n\n[storage guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-storage\n\nBelow is an example manifest:\n\n```yaml\napiVersion: linstor.linbit.com/v1\nkind: LinstorSatelliteSet\nmetadata:\n  name: linstor-satellites\nspec:\n  satelliteImage: ''\n  automaticStorageType: None\n  storagePools:\n    lvmThinPools:\n    - name: openshift-pool\n      volumeGroup: \"\"\n      thinVolume: openshift\n      devicePaths:\n      - /dev/vdb\n  drbdRepoCred: ''\n  kernelModuleInjectionMode: ShippedModules\n  controllerEndpoint: 'http://linstor:3370'\n  priorityClassName: ''\n```\n\nLastly hit \"Create\", you should now see a linstor-node pod\nrunning on every worker node.\n\n### Deploying the LINSTOR CSI driver\n\nLast bit left is the CSI pods to bridge the layer between the CSI and\nLINSTOR. Just as before navigate to the left-hand control pane of the\nOpenshift Web Console. Expand the \"Operators\" section, but this time\nselect \"Installed Operators\". Find the entry for the \"Linstor Operator\",\nthen select the \"LinstorCSIDriver\" from the \"Provided APIs\" column on the\nright.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorCSIDriver\". Click the \"Create LinstorCSIDriver\" button.\n\nAgain, you will be presented with the options. Make sure that the\n`controllerEndpoint` is correct. Otherwise the defaults are fine for\nmost use cases.\n\nLastly hit \"Create\". You will now see a single \"linstor-csi-controller\" pod,\nas well as a \"linstor-csi-node\" pod on all worker nodes.\n\n## Interacting with LINSTOR in Openshift.\n\nThe Controller pod includes a LINSTOR Client, making it easy to interact directly with LINSTOR.\nFor instance:\n\n```\noc exec deployment/linstor-cs-controller -- linstor storage-pool list\n```\n\nThis should only be necessary for investigating problems and accessing advanced functionality.\nRegular operation such as creating volumes should be achieved via the [Openshift/Kubernetes integration].\n\n[Openshift/Kubernetes integration]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-basic-configuration-and-deployment",
-      "csv_display_name": "Linstor Operator",
-      "csv_metadata_description": "LINSTOR Kubernetes Operator",
-      "csv_name": "linstor-operator.v1.5.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:24:14.511000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "linstor-operator",
-      "provided_apis": [
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorController",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorCSIDriver",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorSatelliteSet",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.5.1",
-      "version_original": "1.5.1"
-    },
-    {
-      "_id": "60d1af78e8987f225c721733",
-      "alm_examples": [
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorController",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerImage": "",
-            "dbConnectionURL": "etcd://linstor-etcd:2379",
-            "drbdRepoCred": "",
-            "priorityClassName": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorCSIDriver",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerEndpoint": "http://linstor:3370",
-            "controllerReplicas": 1,
-            "csiControllerServiceAccountName": "csi-controller",
-            "csiNodeServiceAccountName": "csi-node",
-            "imagePullSecret": "",
-            "linstorPluginImage": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorSatelliteSet",
-          "metadata": {
-            "name": "linstor-satellites"
-          },
-          "spec": {
-            "automaticStorageType": "None",
-            "controllerEndpoint": "http://linstor:3370",
-            "drbdRepoCred": "",
-            "kernelModuleInjectionMode": "ShippedModules",
-            "priorityClassName": "",
-            "satelliteImage": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/linbit/linstor-operator-bundle@sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "bundle_path_digest": "sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-06-22T09:38:00.478000+00:00",
-      "csv_description": "LINSTOR is a configuration management system for storage on Linux systems.\nIt manages LVM logical volumes and/or ZFS ZVOLs on a cluster of nodes.\nIt leverages DRBD for replication between different nodes and to provide block\nstorage devices to users and applications. It manages snapshots, encryption and\ncaching of HDD backed data in SSDs via bcache.\n\nLINBIT provides a certified LINSTOR operator to ease deployment of LINSTOR\non Openshift by installing DRBD, managing Satellite and Controller pods,\nand integrating with Openshift to provision persistent storage for your workloads.\n\nFor detailed instructions and more configuration options, see our [user guide].\n\n[user guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-openshift\n\n## Install\n\nUnlike deployment via the helm chart, the certified Openshift\noperator does not deploy the needed etcd cluster. You must deploy this\nyourself ahead of time. We do this via the etcd operator available in the\nOperatorHub.\n\nIMPORTANT: It is advised that the etcd deployment uses persistent\nstorage of some type. Either use an existing storage provisioner with\na default `StorageClass` or simply use `hostPath` volumes.\n\n### Installing the operator\n\nHit \"Install\", select the stable update channel and a namespace for the\noperator. Use of a new namespace is recommended.\n\nHit \"Install\" again. At this point you should have just one pod, the\noperator pod, running. Next we needs to configure the remaining provided APIs.\n\n#### A note on operator namespaces\nThe LINSTOR operator can only watch for events and manage\ncustom resources that are within the same namespace it is deployed\nwithin (OwnNamsespace). This means the LINSTOR Controller, LINSTOR\nSatellites, and LINSTOR CSI Driver pods all need to be deployed in the\nsame namsepace as the LINSTOR Operator pod.\n\n### Deploying the LINSTOR Controller\n\nNavigate to the left-hand control pane of the Openshift Web\nConsole. Expand the \"Operators\" section, selecting \"Installed Operators\".\nFind the entry for the \"Linstor Operator\", then select the \"LinstorController\"\nfrom the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorController\". Click the \"Create LinstorController\" button.\n\nHere you will be presented with options to configure the LINSTOR\nController. Either via the web-form view or the YAML View. Regardless\nof which view you select, make sure that the `dbConnectionURL` matches\nthe endpoint provided from your etcd deployment. Otherwise, the\ndefaults are usually fine for most purposes.\n\nLastly hit \"Create\", you should now see a linstor-controller pod\nrunning.\n\n### Deploying the LINSTOR Satellites\n\nNext we need to deploy the Satellites Set. Just as before navigate\nto the left-hand control pane of the Openshift Web Console. Expand the\n\"Operators\" section, but this time select \"Installed Operators\". Find\nthe entry for the \"Linstor Operator\", then select the\n\"LinstorSatelliteSet\" from the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorSatelliteSet\". Click the \"Create LinstorSatelliteSet\" button.\n\nHere you will be presented with the options to configure the LINSTOR\nSatellites. The defaults should be enough to get you started.\nMake sure the `controllerEndpoint` matches what is available in the\nopenshift endpoints. The default is usually correct here.\n\nYou can edit the `storagePools` section to configure LINSTOR storage pools,\nincluding preparing the backing devices. See our [storage guide].\n\n[storage guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-storage\n\nBelow is an example manifest:\n\n```yaml\napiVersion: linstor.linbit.com/v1\nkind: LinstorSatelliteSet\nmetadata:\n  name: linstor-satellites\nspec:\n  satelliteImage: ''\n  automaticStorageType: None\n  storagePools:\n    lvmThinPools:\n    - name: openshift-pool\n      volumeGroup: \"\"\n      thinVolume: openshift\n      devicePaths:\n      - /dev/vdb\n  drbdRepoCred: ''\n  kernelModuleInjectionMode: ShippedModules\n  controllerEndpoint: 'http://linstor:3370'\n  priorityClassName: ''\n```\n\nLastly hit \"Create\", you should now see a linstor-node pod\nrunning on every worker node.\n\n### Deploying the LINSTOR CSI driver\n\nLast bit left is the CSI pods to bridge the layer between the CSI and\nLINSTOR. Just as before navigate to the left-hand control pane of the\nOpenshift Web Console. Expand the \"Operators\" section, but this time\nselect \"Installed Operators\". Find the entry for the \"Linstor Operator\",\nthen select the \"LinstorCSIDriver\" from the \"Provided APIs\" column on the\nright.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorCSIDriver\". Click the \"Create LinstorCSIDriver\" button.\n\nAgain, you will be presented with the options. Make sure that the\n`controllerEndpoint` is correct. Otherwise the defaults are fine for\nmost use cases.\n\nLastly hit \"Create\". You will now see a single \"linstor-csi-controller\" pod,\nas well as a \"linstor-csi-node\" pod on all worker nodes.\n\n## Interacting with LINSTOR in Openshift.\n\nThe Controller pod includes a LINSTOR Client, making it easy to interact directly with LINSTOR.\nFor instance:\n\n```\noc exec deployment/linstor-cs-controller -- linstor storage-pool list\n```\n\nThis should only be necessary for investigating problems and accessing advanced functionality.\nRegular operation such as creating volumes should be achieved via the [Openshift/Kubernetes integration].\n\n[Openshift/Kubernetes integration]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-basic-configuration-and-deployment",
-      "csv_display_name": "Linstor Operator",
-      "csv_metadata_description": "LINSTOR Kubernetes Operator",
-      "csv_name": "linstor-operator.v1.5.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:27:00.784000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "linstor-operator",
-      "provided_apis": [
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorController",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorCSIDriver",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorSatelliteSet",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.5.1",
-      "version_original": "1.5.1"
-    },
-    {
-      "_id": "60d1af9dff2993d811818462",
-      "alm_examples": [
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorController",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerImage": "",
-            "dbConnectionURL": "etcd://linstor-etcd:2379",
-            "drbdRepoCred": "",
-            "priorityClassName": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorCSIDriver",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerEndpoint": "http://linstor:3370",
-            "controllerReplicas": 1,
-            "csiControllerServiceAccountName": "csi-controller",
-            "csiNodeServiceAccountName": "csi-node",
-            "imagePullSecret": "",
-            "linstorPluginImage": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorSatelliteSet",
-          "metadata": {
-            "name": "linstor-satellites"
-          },
-          "spec": {
-            "automaticStorageType": "None",
-            "controllerEndpoint": "http://linstor:3370",
-            "drbdRepoCred": "",
-            "kernelModuleInjectionMode": "ShippedModules",
-            "priorityClassName": "",
-            "satelliteImage": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/linbit/linstor-operator-bundle@sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "bundle_path_digest": "sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-06-22T09:38:37.130000+00:00",
-      "csv_description": "LINSTOR is a configuration management system for storage on Linux systems.\nIt manages LVM logical volumes and/or ZFS ZVOLs on a cluster of nodes.\nIt leverages DRBD for replication between different nodes and to provide block\nstorage devices to users and applications. It manages snapshots, encryption and\ncaching of HDD backed data in SSDs via bcache.\n\nLINBIT provides a certified LINSTOR operator to ease deployment of LINSTOR\non Openshift by installing DRBD, managing Satellite and Controller pods,\nand integrating with Openshift to provision persistent storage for your workloads.\n\nFor detailed instructions and more configuration options, see our [user guide].\n\n[user guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-openshift\n\n## Install\n\nUnlike deployment via the helm chart, the certified Openshift\noperator does not deploy the needed etcd cluster. You must deploy this\nyourself ahead of time. We do this via the etcd operator available in the\nOperatorHub.\n\nIMPORTANT: It is advised that the etcd deployment uses persistent\nstorage of some type. Either use an existing storage provisioner with\na default `StorageClass` or simply use `hostPath` volumes.\n\n### Installing the operator\n\nHit \"Install\", select the stable update channel and a namespace for the\noperator. Use of a new namespace is recommended.\n\nHit \"Install\" again. At this point you should have just one pod, the\noperator pod, running. Next we needs to configure the remaining provided APIs.\n\n#### A note on operator namespaces\nThe LINSTOR operator can only watch for events and manage\ncustom resources that are within the same namespace it is deployed\nwithin (OwnNamsespace). This means the LINSTOR Controller, LINSTOR\nSatellites, and LINSTOR CSI Driver pods all need to be deployed in the\nsame namsepace as the LINSTOR Operator pod.\n\n### Deploying the LINSTOR Controller\n\nNavigate to the left-hand control pane of the Openshift Web\nConsole. Expand the \"Operators\" section, selecting \"Installed Operators\".\nFind the entry for the \"Linstor Operator\", then select the \"LinstorController\"\nfrom the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorController\". Click the \"Create LinstorController\" button.\n\nHere you will be presented with options to configure the LINSTOR\nController. Either via the web-form view or the YAML View. Regardless\nof which view you select, make sure that the `dbConnectionURL` matches\nthe endpoint provided from your etcd deployment. Otherwise, the\ndefaults are usually fine for most purposes.\n\nLastly hit \"Create\", you should now see a linstor-controller pod\nrunning.\n\n### Deploying the LINSTOR Satellites\n\nNext we need to deploy the Satellites Set. Just as before navigate\nto the left-hand control pane of the Openshift Web Console. Expand the\n\"Operators\" section, but this time select \"Installed Operators\". Find\nthe entry for the \"Linstor Operator\", then select the\n\"LinstorSatelliteSet\" from the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorSatelliteSet\". Click the \"Create LinstorSatelliteSet\" button.\n\nHere you will be presented with the options to configure the LINSTOR\nSatellites. The defaults should be enough to get you started.\nMake sure the `controllerEndpoint` matches what is available in the\nopenshift endpoints. The default is usually correct here.\n\nYou can edit the `storagePools` section to configure LINSTOR storage pools,\nincluding preparing the backing devices. See our [storage guide].\n\n[storage guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-storage\n\nBelow is an example manifest:\n\n```yaml\napiVersion: linstor.linbit.com/v1\nkind: LinstorSatelliteSet\nmetadata:\n  name: linstor-satellites\nspec:\n  satelliteImage: ''\n  automaticStorageType: None\n  storagePools:\n    lvmThinPools:\n    - name: openshift-pool\n      volumeGroup: \"\"\n      thinVolume: openshift\n      devicePaths:\n      - /dev/vdb\n  drbdRepoCred: ''\n  kernelModuleInjectionMode: ShippedModules\n  controllerEndpoint: 'http://linstor:3370'\n  priorityClassName: ''\n```\n\nLastly hit \"Create\", you should now see a linstor-node pod\nrunning on every worker node.\n\n### Deploying the LINSTOR CSI driver\n\nLast bit left is the CSI pods to bridge the layer between the CSI and\nLINSTOR. Just as before navigate to the left-hand control pane of the\nOpenshift Web Console. Expand the \"Operators\" section, but this time\nselect \"Installed Operators\". Find the entry for the \"Linstor Operator\",\nthen select the \"LinstorCSIDriver\" from the \"Provided APIs\" column on the\nright.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorCSIDriver\". Click the \"Create LinstorCSIDriver\" button.\n\nAgain, you will be presented with the options. Make sure that the\n`controllerEndpoint` is correct. Otherwise the defaults are fine for\nmost use cases.\n\nLastly hit \"Create\". You will now see a single \"linstor-csi-controller\" pod,\nas well as a \"linstor-csi-node\" pod on all worker nodes.\n\n## Interacting with LINSTOR in Openshift.\n\nThe Controller pod includes a LINSTOR Client, making it easy to interact directly with LINSTOR.\nFor instance:\n\n```\noc exec deployment/linstor-cs-controller -- linstor storage-pool list\n```\n\nThis should only be necessary for investigating problems and accessing advanced functionality.\nRegular operation such as creating volumes should be achieved via the [Openshift/Kubernetes integration].\n\n[Openshift/Kubernetes integration]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-basic-configuration-and-deployment",
-      "csv_display_name": "Linstor Operator",
-      "csv_metadata_description": "LINSTOR Kubernetes Operator",
-      "csv_name": "linstor-operator.v1.5.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:50:17.439000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "linstor-operator",
-      "provided_apis": [
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorCSIDriver",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorSatelliteSet",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorController",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.5.1",
-      "version_original": "1.5.1"
-    },
-    {
-      "_id": "60d1b5d6e8987f225c721734",
-      "alm_examples": [
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorController",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerImage": "",
-            "dbConnectionURL": "etcd://linstor-etcd:2379",
-            "drbdRepoCred": "",
-            "priorityClassName": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorCSIDriver",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerEndpoint": "http://linstor:3370",
-            "controllerReplicas": 1,
-            "csiControllerServiceAccountName": "csi-controller",
-            "csiNodeServiceAccountName": "csi-node",
-            "imagePullSecret": "",
-            "linstorPluginImage": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorSatelliteSet",
-          "metadata": {
-            "name": "linstor-satellites"
-          },
-          "spec": {
-            "automaticStorageType": "None",
-            "controllerEndpoint": "http://linstor:3370",
-            "drbdRepoCred": "",
-            "kernelModuleInjectionMode": "ShippedModules",
-            "priorityClassName": "",
-            "satelliteImage": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/linbit/linstor-operator-bundle@sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "bundle_path_digest": "sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-06-22T10:05:10.322000+00:00",
-      "csv_description": "LINSTOR is a configuration management system for storage on Linux systems.\nIt manages LVM logical volumes and/or ZFS ZVOLs on a cluster of nodes.\nIt leverages DRBD for replication between different nodes and to provide block\nstorage devices to users and applications. It manages snapshots, encryption and\ncaching of HDD backed data in SSDs via bcache.\n\nLINBIT provides a certified LINSTOR operator to ease deployment of LINSTOR\non Openshift by installing DRBD, managing Satellite and Controller pods,\nand integrating with Openshift to provision persistent storage for your workloads.\n\nFor detailed instructions and more configuration options, see our [user guide].\n\n[user guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-openshift\n\n## Install\n\nUnlike deployment via the helm chart, the certified Openshift\noperator does not deploy the needed etcd cluster. You must deploy this\nyourself ahead of time. We do this via the etcd operator available in the\nOperatorHub.\n\nIMPORTANT: It is advised that the etcd deployment uses persistent\nstorage of some type. Either use an existing storage provisioner with\na default `StorageClass` or simply use `hostPath` volumes.\n\n### Installing the operator\n\nHit \"Install\", select the stable update channel and a namespace for the\noperator. Use of a new namespace is recommended.\n\nHit \"Install\" again. At this point you should have just one pod, the\noperator pod, running. Next we needs to configure the remaining provided APIs.\n\n#### A note on operator namespaces\nThe LINSTOR operator can only watch for events and manage\ncustom resources that are within the same namespace it is deployed\nwithin (OwnNamsespace). This means the LINSTOR Controller, LINSTOR\nSatellites, and LINSTOR CSI Driver pods all need to be deployed in the\nsame namsepace as the LINSTOR Operator pod.\n\n### Deploying the LINSTOR Controller\n\nNavigate to the left-hand control pane of the Openshift Web\nConsole. Expand the \"Operators\" section, selecting \"Installed Operators\".\nFind the entry for the \"Linstor Operator\", then select the \"LinstorController\"\nfrom the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorController\". Click the \"Create LinstorController\" button.\n\nHere you will be presented with options to configure the LINSTOR\nController. Either via the web-form view or the YAML View. Regardless\nof which view you select, make sure that the `dbConnectionURL` matches\nthe endpoint provided from your etcd deployment. Otherwise, the\ndefaults are usually fine for most purposes.\n\nLastly hit \"Create\", you should now see a linstor-controller pod\nrunning.\n\n### Deploying the LINSTOR Satellites\n\nNext we need to deploy the Satellites Set. Just as before navigate\nto the left-hand control pane of the Openshift Web Console. Expand the\n\"Operators\" section, but this time select \"Installed Operators\". Find\nthe entry for the \"Linstor Operator\", then select the\n\"LinstorSatelliteSet\" from the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorSatelliteSet\". Click the \"Create LinstorSatelliteSet\" button.\n\nHere you will be presented with the options to configure the LINSTOR\nSatellites. The defaults should be enough to get you started.\nMake sure the `controllerEndpoint` matches what is available in the\nopenshift endpoints. The default is usually correct here.\n\nYou can edit the `storagePools` section to configure LINSTOR storage pools,\nincluding preparing the backing devices. See our [storage guide].\n\n[storage guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-storage\n\nBelow is an example manifest:\n\n```yaml\napiVersion: linstor.linbit.com/v1\nkind: LinstorSatelliteSet\nmetadata:\n  name: linstor-satellites\nspec:\n  satelliteImage: ''\n  automaticStorageType: None\n  storagePools:\n    lvmThinPools:\n    - name: openshift-pool\n      volumeGroup: \"\"\n      thinVolume: openshift\n      devicePaths:\n      - /dev/vdb\n  drbdRepoCred: ''\n  kernelModuleInjectionMode: ShippedModules\n  controllerEndpoint: 'http://linstor:3370'\n  priorityClassName: ''\n```\n\nLastly hit \"Create\", you should now see a linstor-node pod\nrunning on every worker node.\n\n### Deploying the LINSTOR CSI driver\n\nLast bit left is the CSI pods to bridge the layer between the CSI and\nLINSTOR. Just as before navigate to the left-hand control pane of the\nOpenshift Web Console. Expand the \"Operators\" section, but this time\nselect \"Installed Operators\". Find the entry for the \"Linstor Operator\",\nthen select the \"LinstorCSIDriver\" from the \"Provided APIs\" column on the\nright.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorCSIDriver\". Click the \"Create LinstorCSIDriver\" button.\n\nAgain, you will be presented with the options. Make sure that the\n`controllerEndpoint` is correct. Otherwise the defaults are fine for\nmost use cases.\n\nLastly hit \"Create\". You will now see a single \"linstor-csi-controller\" pod,\nas well as a \"linstor-csi-node\" pod on all worker nodes.\n\n## Interacting with LINSTOR in Openshift.\n\nThe Controller pod includes a LINSTOR Client, making it easy to interact directly with LINSTOR.\nFor instance:\n\n```\noc exec deployment/linstor-cs-controller -- linstor storage-pool list\n```\n\nThis should only be necessary for investigating problems and accessing advanced functionality.\nRegular operation such as creating volumes should be achieved via the [Openshift/Kubernetes integration].\n\n[Openshift/Kubernetes integration]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-basic-configuration-and-deployment",
-      "csv_display_name": "Linstor Operator",
-      "csv_metadata_description": "LINSTOR Kubernetes Operator",
-      "csv_name": "linstor-operator.v1.5.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:53:04.873000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "linstor-operator",
-      "provided_apis": [
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorCSIDriver",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorSatelliteSet",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorController",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.5.1",
-      "version_original": "1.5.1"
-    },
-    {
-      "_id": "60d1b5e0ff2993d811818463",
-      "alm_examples": [
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorController",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerImage": "",
-            "dbConnectionURL": "etcd://linstor-etcd:2379",
-            "drbdRepoCred": "",
-            "priorityClassName": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorCSIDriver",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerEndpoint": "http://linstor:3370",
-            "controllerReplicas": 1,
-            "csiControllerServiceAccountName": "csi-controller",
-            "csiNodeServiceAccountName": "csi-node",
-            "imagePullSecret": "",
-            "linstorPluginImage": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorSatelliteSet",
-          "metadata": {
-            "name": "linstor-satellites"
-          },
-          "spec": {
-            "automaticStorageType": "None",
-            "controllerEndpoint": "http://linstor:3370",
-            "drbdRepoCred": "",
-            "kernelModuleInjectionMode": "ShippedModules",
-            "priorityClassName": "",
-            "satelliteImage": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/linbit/linstor-operator-bundle@sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "bundle_path_digest": "sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-06-22T10:05:20.166000+00:00",
-      "csv_description": "LINSTOR is a configuration management system for storage on Linux systems.\nIt manages LVM logical volumes and/or ZFS ZVOLs on a cluster of nodes.\nIt leverages DRBD for replication between different nodes and to provide block\nstorage devices to users and applications. It manages snapshots, encryption and\ncaching of HDD backed data in SSDs via bcache.\n\nLINBIT provides a certified LINSTOR operator to ease deployment of LINSTOR\non Openshift by installing DRBD, managing Satellite and Controller pods,\nand integrating with Openshift to provision persistent storage for your workloads.\n\nFor detailed instructions and more configuration options, see our [user guide].\n\n[user guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-openshift\n\n## Install\n\nUnlike deployment via the helm chart, the certified Openshift\noperator does not deploy the needed etcd cluster. You must deploy this\nyourself ahead of time. We do this via the etcd operator available in the\nOperatorHub.\n\nIMPORTANT: It is advised that the etcd deployment uses persistent\nstorage of some type. Either use an existing storage provisioner with\na default `StorageClass` or simply use `hostPath` volumes.\n\n### Installing the operator\n\nHit \"Install\", select the stable update channel and a namespace for the\noperator. Use of a new namespace is recommended.\n\nHit \"Install\" again. At this point you should have just one pod, the\noperator pod, running. Next we needs to configure the remaining provided APIs.\n\n#### A note on operator namespaces\nThe LINSTOR operator can only watch for events and manage\ncustom resources that are within the same namespace it is deployed\nwithin (OwnNamsespace). This means the LINSTOR Controller, LINSTOR\nSatellites, and LINSTOR CSI Driver pods all need to be deployed in the\nsame namsepace as the LINSTOR Operator pod.\n\n### Deploying the LINSTOR Controller\n\nNavigate to the left-hand control pane of the Openshift Web\nConsole. Expand the \"Operators\" section, selecting \"Installed Operators\".\nFind the entry for the \"Linstor Operator\", then select the \"LinstorController\"\nfrom the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorController\". Click the \"Create LinstorController\" button.\n\nHere you will be presented with options to configure the LINSTOR\nController. Either via the web-form view or the YAML View. Regardless\nof which view you select, make sure that the `dbConnectionURL` matches\nthe endpoint provided from your etcd deployment. Otherwise, the\ndefaults are usually fine for most purposes.\n\nLastly hit \"Create\", you should now see a linstor-controller pod\nrunning.\n\n### Deploying the LINSTOR Satellites\n\nNext we need to deploy the Satellites Set. Just as before navigate\nto the left-hand control pane of the Openshift Web Console. Expand the\n\"Operators\" section, but this time select \"Installed Operators\". Find\nthe entry for the \"Linstor Operator\", then select the\n\"LinstorSatelliteSet\" from the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorSatelliteSet\". Click the \"Create LinstorSatelliteSet\" button.\n\nHere you will be presented with the options to configure the LINSTOR\nSatellites. The defaults should be enough to get you started.\nMake sure the `controllerEndpoint` matches what is available in the\nopenshift endpoints. The default is usually correct here.\n\nYou can edit the `storagePools` section to configure LINSTOR storage pools,\nincluding preparing the backing devices. See our [storage guide].\n\n[storage guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-storage\n\nBelow is an example manifest:\n\n```yaml\napiVersion: linstor.linbit.com/v1\nkind: LinstorSatelliteSet\nmetadata:\n  name: linstor-satellites\nspec:\n  satelliteImage: ''\n  automaticStorageType: None\n  storagePools:\n    lvmThinPools:\n    - name: openshift-pool\n      volumeGroup: \"\"\n      thinVolume: openshift\n      devicePaths:\n      - /dev/vdb\n  drbdRepoCred: ''\n  kernelModuleInjectionMode: ShippedModules\n  controllerEndpoint: 'http://linstor:3370'\n  priorityClassName: ''\n```\n\nLastly hit \"Create\", you should now see a linstor-node pod\nrunning on every worker node.\n\n### Deploying the LINSTOR CSI driver\n\nLast bit left is the CSI pods to bridge the layer between the CSI and\nLINSTOR. Just as before navigate to the left-hand control pane of the\nOpenshift Web Console. Expand the \"Operators\" section, but this time\nselect \"Installed Operators\". Find the entry for the \"Linstor Operator\",\nthen select the \"LinstorCSIDriver\" from the \"Provided APIs\" column on the\nright.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorCSIDriver\". Click the \"Create LinstorCSIDriver\" button.\n\nAgain, you will be presented with the options. Make sure that the\n`controllerEndpoint` is correct. Otherwise the defaults are fine for\nmost use cases.\n\nLastly hit \"Create\". You will now see a single \"linstor-csi-controller\" pod,\nas well as a \"linstor-csi-node\" pod on all worker nodes.\n\n## Interacting with LINSTOR in Openshift.\n\nThe Controller pod includes a LINSTOR Client, making it easy to interact directly with LINSTOR.\nFor instance:\n\n```\noc exec deployment/linstor-cs-controller -- linstor storage-pool list\n```\n\nThis should only be necessary for investigating problems and accessing advanced functionality.\nRegular operation such as creating volumes should be achieved via the [Openshift/Kubernetes integration].\n\n[Openshift/Kubernetes integration]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-basic-configuration-and-deployment",
-      "csv_display_name": "Linstor Operator",
-      "csv_metadata_description": "LINSTOR Kubernetes Operator",
-      "csv_name": "linstor-operator.v1.5.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:45:43.611000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "linstor-operator",
-      "provided_apis": [
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorCSIDriver",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorSatelliteSet",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorController",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.5.1",
-      "version_original": "1.5.1"
-    },
-    {
       "_id": "60d1bca4e8987f225c721735",
       "alm_examples": [
         {
@@ -61751,120 +61067,6 @@
       "version_original": "2.1.0"
     },
     {
-      "_id": "611fbd46bd674341b5c5f0fb",
-      "alm_examples": [
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorController",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerImage": "",
-            "dbConnectionURL": "etcd://linstor-etcd:2379",
-            "drbdRepoCred": "",
-            "priorityClassName": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorCSIDriver",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerEndpoint": "http://linstor:3370",
-            "controllerReplicas": 1,
-            "csiControllerServiceAccountName": "csi-controller",
-            "csiNodeServiceAccountName": "csi-node",
-            "imagePullSecret": "",
-            "linstorPluginImage": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorSatelliteSet",
-          "metadata": {
-            "name": "linstor-satellites"
-          },
-          "spec": {
-            "automaticStorageType": "None",
-            "controllerEndpoint": "http://linstor:3370",
-            "drbdRepoCred": "",
-            "kernelModuleInjectionMode": "ShippedModules",
-            "priorityClassName": "",
-            "satelliteImage": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/linbit/linstor-operator-bundle@sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "bundle_path_digest": "sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-08-20T14:33:42.185000+00:00",
-      "csv_description": "LINSTOR is a configuration management system for storage on Linux systems.\nIt manages LVM logical volumes and/or ZFS ZVOLs on a cluster of nodes.\nIt leverages DRBD for replication between different nodes and to provide block\nstorage devices to users and applications. It manages snapshots, encryption and\ncaching of HDD backed data in SSDs via bcache.\n\nLINBIT provides a certified LINSTOR operator to ease deployment of LINSTOR\non Openshift by installing DRBD, managing Satellite and Controller pods,\nand integrating with Openshift to provision persistent storage for your workloads.\n\nFor detailed instructions and more configuration options, see our [user guide].\n\n[user guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-openshift\n\n## Install\n\nUnlike deployment via the helm chart, the certified Openshift\noperator does not deploy the needed etcd cluster. You must deploy this\nyourself ahead of time. We do this via the etcd operator available in the\nOperatorHub.\n\nIMPORTANT: It is advised that the etcd deployment uses persistent\nstorage of some type. Either use an existing storage provisioner with\na default `StorageClass` or simply use `hostPath` volumes.\n\n### Installing the operator\n\nHit \"Install\", select the stable update channel and a namespace for the\noperator. Use of a new namespace is recommended.\n\nHit \"Install\" again. At this point you should have just one pod, the\noperator pod, running. Next we needs to configure the remaining provided APIs.\n\n#### A note on operator namespaces\nThe LINSTOR operator can only watch for events and manage\ncustom resources that are within the same namespace it is deployed\nwithin (OwnNamsespace). This means the LINSTOR Controller, LINSTOR\nSatellites, and LINSTOR CSI Driver pods all need to be deployed in the\nsame namsepace as the LINSTOR Operator pod.\n\n### Deploying the LINSTOR Controller\n\nNavigate to the left-hand control pane of the Openshift Web\nConsole. Expand the \"Operators\" section, selecting \"Installed Operators\".\nFind the entry for the \"Linstor Operator\", then select the \"LinstorController\"\nfrom the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorController\". Click the \"Create LinstorController\" button.\n\nHere you will be presented with options to configure the LINSTOR\nController. Either via the web-form view or the YAML View. Regardless\nof which view you select, make sure that the `dbConnectionURL` matches\nthe endpoint provided from your etcd deployment. Otherwise, the\ndefaults are usually fine for most purposes.\n\nLastly hit \"Create\", you should now see a linstor-controller pod\nrunning.\n\n### Deploying the LINSTOR Satellites\n\nNext we need to deploy the Satellites Set. Just as before navigate\nto the left-hand control pane of the Openshift Web Console. Expand the\n\"Operators\" section, but this time select \"Installed Operators\". Find\nthe entry for the \"Linstor Operator\", then select the\n\"LinstorSatelliteSet\" from the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorSatelliteSet\". Click the \"Create LinstorSatelliteSet\" button.\n\nHere you will be presented with the options to configure the LINSTOR\nSatellites. The defaults should be enough to get you started.\nMake sure the `controllerEndpoint` matches what is available in the\nopenshift endpoints. The default is usually correct here.\n\nYou can edit the `storagePools` section to configure LINSTOR storage pools,\nincluding preparing the backing devices. See our [storage guide].\n\n[storage guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-storage\n\nBelow is an example manifest:\n\n```yaml\napiVersion: linstor.linbit.com/v1\nkind: LinstorSatelliteSet\nmetadata:\n  name: linstor-satellites\nspec:\n  satelliteImage: ''\n  automaticStorageType: None\n  storagePools:\n    lvmThinPools:\n    - name: openshift-pool\n      volumeGroup: \"\"\n      thinVolume: openshift\n      devicePaths:\n      - /dev/vdb\n  drbdRepoCred: ''\n  kernelModuleInjectionMode: ShippedModules\n  controllerEndpoint: 'http://linstor:3370'\n  priorityClassName: ''\n```\n\nLastly hit \"Create\", you should now see a linstor-node pod\nrunning on every worker node.\n\n### Deploying the LINSTOR CSI driver\n\nLast bit left is the CSI pods to bridge the layer between the CSI and\nLINSTOR. Just as before navigate to the left-hand control pane of the\nOpenshift Web Console. Expand the \"Operators\" section, but this time\nselect \"Installed Operators\". Find the entry for the \"Linstor Operator\",\nthen select the \"LinstorCSIDriver\" from the \"Provided APIs\" column on the\nright.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorCSIDriver\". Click the \"Create LinstorCSIDriver\" button.\n\nAgain, you will be presented with the options. Make sure that the\n`controllerEndpoint` is correct. Otherwise the defaults are fine for\nmost use cases.\n\nLastly hit \"Create\". You will now see a single \"linstor-csi-controller\" pod,\nas well as a \"linstor-csi-node\" pod on all worker nodes.\n\n## Interacting with LINSTOR in Openshift.\n\nThe Controller pod includes a LINSTOR Client, making it easy to interact directly with LINSTOR.\nFor instance:\n\n```\noc exec deployment/linstor-cs-controller -- linstor storage-pool list\n```\n\nThis should only be necessary for investigating problems and accessing advanced functionality.\nRegular operation such as creating volumes should be achieved via the [Openshift/Kubernetes integration].\n\n[Openshift/Kubernetes integration]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-basic-configuration-and-deployment",
-      "csv_display_name": "Linstor Operator",
-      "csv_metadata_description": "LINSTOR Kubernetes Operator",
-      "csv_name": "linstor-operator.v1.5.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:55:04.082000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "linstor-operator",
-      "provided_apis": [
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorCSIDriver",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorSatelliteSet",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorController",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.5.1",
-      "version_original": "1.5.1"
-    },
-    {
       "_id": "611fbd4f9f14588c41ebe8f5",
       "alm_examples": [
         {
@@ -68498,120 +67700,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "2.0.1",
       "version_original": "2.0.1"
-    },
-    {
-      "_id": "611fbedf9f14588c41ebe9b4",
-      "alm_examples": [
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorController",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerImage": "",
-            "dbConnectionURL": "etcd://linstor-etcd:2379",
-            "drbdRepoCred": "",
-            "priorityClassName": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorCSIDriver",
-          "metadata": {
-            "name": "linstor"
-          },
-          "spec": {
-            "controllerEndpoint": "http://linstor:3370",
-            "controllerReplicas": 1,
-            "csiControllerServiceAccountName": "csi-controller",
-            "csiNodeServiceAccountName": "csi-node",
-            "imagePullSecret": "",
-            "linstorPluginImage": ""
-          }
-        },
-        {
-          "api_version": "linstor.linbit.com/v1",
-          "kind": "LinstorSatelliteSet",
-          "metadata": {
-            "name": "linstor-satellites"
-          },
-          "spec": {
-            "automaticStorageType": "None",
-            "controllerEndpoint": "http://linstor:3370",
-            "drbdRepoCred": "",
-            "kernelModuleInjectionMode": "ShippedModules",
-            "priorityClassName": "",
-            "satelliteImage": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/linbit/linstor-operator-bundle@sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "bundle_path_digest": "sha256:20c0b821db27ef8f551212d14ba508f88a116f92a9f9a214e79709744b96678b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-08-20T14:40:31.544000+00:00",
-      "csv_description": "LINSTOR is a configuration management system for storage on Linux systems.\nIt manages LVM logical volumes and/or ZFS ZVOLs on a cluster of nodes.\nIt leverages DRBD for replication between different nodes and to provide block\nstorage devices to users and applications. It manages snapshots, encryption and\ncaching of HDD backed data in SSDs via bcache.\n\nLINBIT provides a certified LINSTOR operator to ease deployment of LINSTOR\non Openshift by installing DRBD, managing Satellite and Controller pods,\nand integrating with Openshift to provision persistent storage for your workloads.\n\nFor detailed instructions and more configuration options, see our [user guide].\n\n[user guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#ch-openshift\n\n## Install\n\nUnlike deployment via the helm chart, the certified Openshift\noperator does not deploy the needed etcd cluster. You must deploy this\nyourself ahead of time. We do this via the etcd operator available in the\nOperatorHub.\n\nIMPORTANT: It is advised that the etcd deployment uses persistent\nstorage of some type. Either use an existing storage provisioner with\na default `StorageClass` or simply use `hostPath` volumes.\n\n### Installing the operator\n\nHit \"Install\", select the stable update channel and a namespace for the\noperator. Use of a new namespace is recommended.\n\nHit \"Install\" again. At this point you should have just one pod, the\noperator pod, running. Next we needs to configure the remaining provided APIs.\n\n#### A note on operator namespaces\nThe LINSTOR operator can only watch for events and manage\ncustom resources that are within the same namespace it is deployed\nwithin (OwnNamsespace). This means the LINSTOR Controller, LINSTOR\nSatellites, and LINSTOR CSI Driver pods all need to be deployed in the\nsame namsepace as the LINSTOR Operator pod.\n\n### Deploying the LINSTOR Controller\n\nNavigate to the left-hand control pane of the Openshift Web\nConsole. Expand the \"Operators\" section, selecting \"Installed Operators\".\nFind the entry for the \"Linstor Operator\", then select the \"LinstorController\"\nfrom the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorController\". Click the \"Create LinstorController\" button.\n\nHere you will be presented with options to configure the LINSTOR\nController. Either via the web-form view or the YAML View. Regardless\nof which view you select, make sure that the `dbConnectionURL` matches\nthe endpoint provided from your etcd deployment. Otherwise, the\ndefaults are usually fine for most purposes.\n\nLastly hit \"Create\", you should now see a linstor-controller pod\nrunning.\n\n### Deploying the LINSTOR Satellites\n\nNext we need to deploy the Satellites Set. Just as before navigate\nto the left-hand control pane of the Openshift Web Console. Expand the\n\"Operators\" section, but this time select \"Installed Operators\". Find\nthe entry for the \"Linstor Operator\", then select the\n\"LinstorSatelliteSet\" from the \"Provided APIs\" column on the right.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorSatelliteSet\". Click the \"Create LinstorSatelliteSet\" button.\n\nHere you will be presented with the options to configure the LINSTOR\nSatellites. The defaults should be enough to get you started.\nMake sure the `controllerEndpoint` matches what is available in the\nopenshift endpoints. The default is usually correct here.\n\nYou can edit the `storagePools` section to configure LINSTOR storage pools,\nincluding preparing the backing devices. See our [storage guide].\n\n[storage guide]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-storage\n\nBelow is an example manifest:\n\n```yaml\napiVersion: linstor.linbit.com/v1\nkind: LinstorSatelliteSet\nmetadata:\n  name: linstor-satellites\nspec:\n  satelliteImage: ''\n  automaticStorageType: None\n  storagePools:\n    lvmThinPools:\n    - name: openshift-pool\n      volumeGroup: \"\"\n      thinVolume: openshift\n      devicePaths:\n      - /dev/vdb\n  drbdRepoCred: ''\n  kernelModuleInjectionMode: ShippedModules\n  controllerEndpoint: 'http://linstor:3370'\n  priorityClassName: ''\n```\n\nLastly hit \"Create\", you should now see a linstor-node pod\nrunning on every worker node.\n\n### Deploying the LINSTOR CSI driver\n\nLast bit left is the CSI pods to bridge the layer between the CSI and\nLINSTOR. Just as before navigate to the left-hand control pane of the\nOpenshift Web Console. Expand the \"Operators\" section, but this time\nselect \"Installed Operators\". Find the entry for the \"Linstor Operator\",\nthen select the \"LinstorCSIDriver\" from the \"Provided APIs\" column on the\nright.\n\nFrom here you should see a page that says \"No Operands Found\" and will\nfeature a large button on the right which says \"Create\nLinstorCSIDriver\". Click the \"Create LinstorCSIDriver\" button.\n\nAgain, you will be presented with the options. Make sure that the\n`controllerEndpoint` is correct. Otherwise the defaults are fine for\nmost use cases.\n\nLastly hit \"Create\". You will now see a single \"linstor-csi-controller\" pod,\nas well as a \"linstor-csi-node\" pod on all worker nodes.\n\n## Interacting with LINSTOR in Openshift.\n\nThe Controller pod includes a LINSTOR Client, making it easy to interact directly with LINSTOR.\nFor instance:\n\n```\noc exec deployment/linstor-cs-controller -- linstor storage-pool list\n```\n\nThis should only be necessary for investigating problems and accessing advanced functionality.\nRegular operation such as creating volumes should be achieved via the [Openshift/Kubernetes integration].\n\n[Openshift/Kubernetes integration]: https://www.linbit.com/drbd-user-guide/linstor-guide-1_0-en/#s-kubernetes-basic-configuration-and-deployment",
-      "csv_display_name": "Linstor Operator",
-      "csv_metadata_description": "LINSTOR Kubernetes Operator",
-      "csv_name": "linstor-operator.v1.5.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:55:08.978000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "linstor-operator",
-      "provided_apis": [
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorCSIDriver",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorSatelliteSet",
-          "version": "v1"
-        },
-        {
-          "group": "linstor.linbit.com",
-          "kind": "LinstorController",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.5.1",
-      "version_original": "1.5.1"
     },
     {
       "_id": "611fbee0dece23122b7a790f",
@@ -78959,9 +78047,2083 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.2.2",
       "version_original": "1.2.2"
+    },
+    {
+      "_id": "6148f1c0b7165a646042e545",
+      "alm_examples": [
+        {
+          "api_version": "helm-operator.sumologic.com/v1alpha1",
+          "kind": "SumologicCollection",
+          "metadata": {
+            "name": "collection"
+          },
+          "spec": {
+            "fluent-bit": {
+              "config": {
+                "customParsers": "[PARSER]\n    Name        multi_line\n    Format      regex\n    Regex       (?<log>^{\"log\":\"\\d{4}-\\d{1,2}-\\d{1,2}.\\d{2}:\\d{2}:\\d{2}.*)\n[PARSER]\n    Name         crio\n    Format       regex\n    Regex        ^(?<time>[^ ]+) (?<stream>stdout|stderr) (?<logtag>[^ ]*) (?<log>.*)$\n    Time_Key     time\n    Time_Format  %Y-%m-%dT%H:%M:%S.%L%z\n[PARSER]\n    Name         containerd\n    Format       regex\n    Regex        ^(?<time>[^ ]+) (?<stream>stdout|stderr) (?<logtag>[^ ]*) (?<log>.*)$\n    Time_Key     time\n    Time_Format  %Y-%m-%dT%H:%M:%S.%LZ\n",
+                "inputs": "[INPUT]\n    Name                tail\n    Path                /var/log/containers/*.log\n    Parser              crio\n    Tag                 containers.*\n    Refresh_Interval    1\n    Rotate_Wait         60\n    Mem_Buf_Limit       5MB\n    Skip_Long_Lines     On\n    DB                  /tail-db/tail-containers-state-sumo.db\n    DB.Sync             Normal\n[INPUT]\n    Name            systemd\n    Tag             host.*\n    DB              /tail-db/systemd-state-sumo.db\n    Systemd_Filter  _SYSTEMD_UNIT=addon-config.service\n    Systemd_Filter  _SYSTEMD_UNIT=addon-run.service\n    Systemd_Filter  _SYSTEMD_UNIT=cfn-etcd-environment.service\n    Systemd_Filter  _SYSTEMD_UNIT=cfn-signal.service\n    Systemd_Filter  _SYSTEMD_UNIT=clean-ca-certificates.service\n    Systemd_Filter  _SYSTEMD_UNIT=containerd.service\n    Systemd_Filter  _SYSTEMD_UNIT=coreos-metadata.service\n    Systemd_Filter  _SYSTEMD_UNIT=coreos-setup-environment.service\n    Systemd_Filter  _SYSTEMD_UNIT=coreos-tmpfiles.service\n    Systemd_Filter  _SYSTEMD_UNIT=dbus.service\n    Systemd_Filter  _SYSTEMD_UNIT=docker.service\n    Systemd_Filter  _SYSTEMD_UNIT=efs.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcd-member.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcd.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcd2.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcd3.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcdadm-check.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcdadm-reconfigure.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcdadm-save.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcdadm-update-status.service\n    Systemd_Filter  _SYSTEMD_UNIT=flanneld.service\n    Systemd_Filter  _SYSTEMD_UNIT=format-etcd2-volume.service\n    Systemd_Filter  _SYSTEMD_UNIT=kube-node-taint-and-uncordon.service\n    Systemd_Filter  _SYSTEMD_UNIT=kubelet.service\n    Systemd_Filter  _SYSTEMD_UNIT=ldconfig.service\n    Systemd_Filter  _SYSTEMD_UNIT=locksmithd.service\n    Systemd_Filter  _SYSTEMD_UNIT=logrotate.service\n    Systemd_Filter  _SYSTEMD_UNIT=lvm2-monitor.service\n    Systemd_Filter  _SYSTEMD_UNIT=mdmon.service\n    Systemd_Filter  _SYSTEMD_UNIT=nfs-idmapd.service\n    Systemd_Filter  _SYSTEMD_UNIT=nfs-mountd.service\n    Systemd_Filter  _SYSTEMD_UNIT=nfs-server.service\n    Systemd_Filter  _SYSTEMD_UNIT=nfs-utils.service\n    Systemd_Filter  _SYSTEMD_UNIT=node-problem-detector.service\n    Systemd_Filter  _SYSTEMD_UNIT=ntp.service\n    Systemd_Filter  _SYSTEMD_UNIT=oem-cloudinit.service\n    Systemd_Filter  _SYSTEMD_UNIT=rkt-gc.service\n    Systemd_Filter  _SYSTEMD_UNIT=rkt-metadata.service\n    Systemd_Filter  _SYSTEMD_UNIT=rpc-idmapd.service\n    Systemd_Filter  _SYSTEMD_UNIT=rpc-mountd.service\n    Systemd_Filter  _SYSTEMD_UNIT=rpc-statd.service\n    Systemd_Filter  _SYSTEMD_UNIT=rpcbind.service\n    Systemd_Filter  _SYSTEMD_UNIT=set-aws-environment.service\n    Systemd_Filter  _SYSTEMD_UNIT=system-cloudinit.service\n    Systemd_Filter  _SYSTEMD_UNIT=systemd-timesyncd.service\n    Systemd_Filter  _SYSTEMD_UNIT=update-ca-certificates.service\n    Systemd_Filter  _SYSTEMD_UNIT=user-cloudinit.service\n    Systemd_Filter  _SYSTEMD_UNIT=var-lib-etcd2.service\n    Max_Entries     1000\n    Read_From_Tail  true\n",
+                "outputs": "[OUTPUT]\n    Name          forward\n    Match         *\n    Host          ${FLUENTD_LOGS_SVC}.${NAMESPACE}.svc.cluster.local.\n    Port          24321\n    Retry_Limit   False\n    tls           off\n    tls.verify    on\n    tls.debug     1\n    # Disable keepalive for better load balancing\n    net.keepalive off\n",
+                "service": "[SERVICE]\n    Flush        1\n    Daemon       Off\n    Log_Level    info\n    Parsers_File parsers.conf\n    Parsers_File custom_parsers.conf\n    HTTP_Server  On\n    HTTP_Listen  0.0.0.0\n    HTTP_Port    2020\n"
+              },
+              "securityContext": {
+                "privileged": true
+              }
+            },
+            "fluentd": {
+              "buffer": {
+                "queueChunkLimitSize": 256,
+                "totalLimitSize": "256m"
+              },
+              "logs": {
+                "containers": {
+                  "multiline": {
+                    "enabled": false
+                  }
+                }
+              }
+            },
+            "kube-prometheus-stack": {
+              "prometheus-node-exporter": {
+                "service": {
+                  "port": 9200,
+                  "targetPort": 9200
+                }
+              },
+              "prometheusOperator": {
+                "denyNamespaces": [
+                  "openshift-apiserver",
+                  "openshift-apiserver-operator",
+                  "openshift-authentication",
+                  "openshift-authentication-operator",
+                  "openshift-cloud-credential-operator",
+                  "openshift-cluster-machine-approver",
+                  "openshift-cluster-samples-operator",
+                  "openshift-cluster-storage-operator",
+                  "openshift-cluster-version",
+                  "openshift-config-operator",
+                  "openshift-console-operator",
+                  "openshift-controller-manager",
+                  "openshift-controller-manager-operator",
+                  "openshift-dns,openshift-dns-operator",
+                  "openshift-etcd-operator",
+                  "openshift-image-registry",
+                  "openshift-ingress",
+                  "openshift-ingress-operator",
+                  "openshift-insights",
+                  "openshift-kube-apiserver",
+                  "openshift-kube-apiserver-operator",
+                  "openshift-kube-controller-manager",
+                  "openshift-kube-controller-manager-operator",
+                  "openshift-kube-scheduler",
+                  "openshift-kube-scheduler-operator",
+                  "openshift-kube-storage-version-migrator",
+                  "openshift-kube-storage-version-migrator-operator",
+                  "openshift-machine-api",
+                  "openshift-machine-config-operator",
+                  "openshift-marketplace",
+                  "openshift-monitoring",
+                  "openshift-multus",
+                  "openshift-oauth-apiserver",
+                  "openshift-operator-lifecycle-manager",
+                  "openshift-sdn",
+                  "openshift-service-ca-operator",
+                  "openshift-user-workload-monitoring"
+                ]
+              }
+            },
+            "sumologic": {
+              "accessId": "",
+              "accessKey": "",
+              "clusterName": "kubernetes",
+              "endpoint": "",
+              "scc": {
+                "create": true
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sumologic/sumologic-kubernetes-collection-helm-operator-bundle@sha256:73b3e043557aed8392382afad2009fe2846a659d8f6eec25301a36f932b12680",
+      "bundle_path_digest": "sha256:73b3e043557aed8392382afad2009fe2846a659d8f6eec25301a36f932b12680",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-09-20T20:40:32.662000+00:00",
+      "csv_description": "Helm Operator for the Sumo Logic Kubernetes Collection Helm Chart v2.1.4",
+      "csv_display_name": "Sumo Logic Kubernetes Collection Helm Operator",
+      "csv_metadata_description": "",
+      "csv_name": "sumologic-kubernetes-collection-helm-operator.v2.1.4-0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:52:27.996000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "sumologic-kubernetes-collection-helm-operator",
+      "provided_apis": [
+        {
+          "group": "helm-operator.sumologic.com",
+          "kind": "SumologicCollection",
+          "plural": "sumologiccollections",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:b2710d0d515cb03598167cd72916923391dd62675eaef9aad7f37efa3bfeebd3",
+          "image": "registry.connect.redhat.com/sumologic/sumologic-kubernetes-collection-helm-operator@sha256:b2710d0d515cb03598167cd72916923391dd62675eaef9aad7f37efa3bfeebd3",
+          "name": "sumologic-kubernetes-collection-helm-operator-b2710d0d515cb03598167cd72916923391dd62675eaef9aad7f37efa3bfeebd3-annotation"
+        },
+        {
+          "digest": "sha256:f92b5704d9d1290b1dd9cc8bfcc445e3e118794e8cf9531f439994ee4d2523a6",
+          "image": "registry.connect.redhat.com/sumologic/kube-rbac-proxy@sha256:f92b5704d9d1290b1dd9cc8bfcc445e3e118794e8cf9531f439994ee4d2523a6",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:b2710d0d515cb03598167cd72916923391dd62675eaef9aad7f37efa3bfeebd3",
+          "image": "registry.connect.redhat.com/sumologic/sumologic-kubernetes-collection-helm-operator@sha256:b2710d0d515cb03598167cd72916923391dd62675eaef9aad7f37efa3bfeebd3",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:ca76893ae48cfc0e6ee4ef24ccbeb4a90aad738308feacdbd9eed205826406b9",
+          "image": "registry.connect.redhat.com/sumologic/kubernetes-setup@sha256:ca76893ae48cfc0e6ee4ef24ccbeb4a90aad738308feacdbd9eed205826406b9",
+          "name": "kubernetes_setup"
+        },
+        {
+          "digest": "sha256:22694389170863ac60b6c5248310c1381cb145b6b9fa354a18ee664215c5375a",
+          "image": "registry.connect.redhat.com/sumologic/node-exporter@sha256:22694389170863ac60b6c5248310c1381cb145b6b9fa354a18ee664215c5375a",
+          "name": "node_exporter"
+        },
+        {
+          "digest": "sha256:bb1f73b2be45fa31dfd3fbe72df1d553e5c6cdaa81709bf628764f5969ce4fc2",
+          "image": "registry.connect.redhat.com/sumologic/kube-state-metrics@sha256:bb1f73b2be45fa31dfd3fbe72df1d553e5c6cdaa81709bf628764f5969ce4fc2",
+          "name": "kube_state_metrics"
+        },
+        {
+          "digest": "sha256:8e29f9b5b7ae76aa9515d1ba20180511feb0c642bc61f782d8d1ea6f62f862aa",
+          "image": "registry.connect.redhat.com/sumologic/prometheus-operator@sha256:8e29f9b5b7ae76aa9515d1ba20180511feb0c642bc61f782d8d1ea6f62f862aa",
+          "name": "prometheus_operator"
+        },
+        {
+          "digest": "sha256:0309a748632654700e0d49f7ecd7ee61e6344f53107c9ce0c5cf1d301f943d37",
+          "image": "registry.connect.redhat.com/sumologic/prometheus-config-reloader@sha256:0309a748632654700e0d49f7ecd7ee61e6344f53107c9ce0c5cf1d301f943d37",
+          "name": "prometheus_config_reloader"
+        },
+        {
+          "digest": "sha256:716d5c7183affd306bee7c35c577e5da852d4dfe8da9bf37aff255cd96a0c9b3",
+          "image": "registry.connect.redhat.com/sumologic/prometheus@sha256:716d5c7183affd306bee7c35c577e5da852d4dfe8da9bf37aff255cd96a0c9b3",
+          "name": "prometheus"
+        },
+        {
+          "digest": "sha256:707e40ee919e4bc3c2edeecdc536acdf8cb67f9e5fc34eaad9d9e4c283438bb1",
+          "image": "registry.connect.redhat.com/sumologic/thanos@sha256:707e40ee919e4bc3c2edeecdc536acdf8cb67f9e5fc34eaad9d9e4c283438bb1",
+          "name": "thanos"
+        },
+        {
+          "digest": "sha256:1f3c4554e2141e67600ffb2528d8745daf1e581330cb5f4fc75ee7c8aa2298c1",
+          "image": "registry.connect.redhat.com/sumologic/metrics-server@sha256:1f3c4554e2141e67600ffb2528d8745daf1e581330cb5f4fc75ee7c8aa2298c1",
+          "name": "metrics_server"
+        },
+        {
+          "digest": "sha256:f92b5704d9d1290b1dd9cc8bfcc445e3e118794e8cf9531f439994ee4d2523a6",
+          "image": "registry.connect.redhat.com/sumologic/kube-rbac-proxy@sha256:f92b5704d9d1290b1dd9cc8bfcc445e3e118794e8cf9531f439994ee4d2523a6",
+          "name": "kube_rbac_proxy"
+        },
+        {
+          "digest": "sha256:1d9d902b165596e12a626f5dd2f9d512627b356c3773a04c96df24270a840724",
+          "image": "registry.connect.redhat.com/sumologic/tailing-sidecar-operator@sha256:1d9d902b165596e12a626f5dd2f9d512627b356c3773a04c96df24270a840724",
+          "name": "tailing_sidecar_operator"
+        },
+        {
+          "digest": "sha256:838401ab699ae1f4a581a62a6eea413bca1e2c30d60358acb16bd86be75fbca1",
+          "image": "registry.connect.redhat.com/sumologic/tailing-sidecar@sha256:838401ab699ae1f4a581a62a6eea413bca1e2c30d60358acb16bd86be75fbca1",
+          "name": "tailing_sidecar"
+        },
+        {
+          "digest": "sha256:3a63153408ff6bb5d6294fcdedfa30b07a5023ca5f72dd63c6e4de31f6bf1c68",
+          "image": "registry.connect.redhat.com/sumologic/telegraf-operator@sha256:3a63153408ff6bb5d6294fcdedfa30b07a5023ca5f72dd63c6e4de31f6bf1c68",
+          "name": "telegraf_operator"
+        },
+        {
+          "digest": "sha256:8d92cabdd8efbec83475a004209745cc14e877d361cae19ab80a622ebda57e24",
+          "image": "registry.connect.redhat.com/sumologic/telegraf@sha256:8d92cabdd8efbec83475a004209745cc14e877d361cae19ab80a622ebda57e24",
+          "name": "telegraf"
+        },
+        {
+          "digest": "sha256:362053ce1833aa51db31d36f97458f526d199bcd7efff53486b09e3a02a795ab",
+          "image": "registry.connect.redhat.com/sumologic/kubernetes-fluentd@sha256:362053ce1833aa51db31d36f97458f526d199bcd7efff53486b09e3a02a795ab",
+          "name": "kubernetes_fluentd"
+        },
+        {
+          "digest": "sha256:faa802d22e41f8d67d487e40285fa2a7ea72f9cd49c32ddb80ea34f4d302e220",
+          "image": "registry.connect.redhat.com/sumologic/fluent-bit@sha256:faa802d22e41f8d67d487e40285fa2a7ea72f9cd49c32ddb80ea34f4d302e220",
+          "name": "fluent_bit"
+        },
+        {
+          "digest": "sha256:5d468e602034fd84407429fe83c8cb5e4c9ee07e2073db3969aadc97496a958b",
+          "image": "registry.connect.redhat.com/sumologic/sumo-ubi-minimal@sha256:5d468e602034fd84407429fe83c8cb5e4c9ee07e2073db3969aadc97496a958b",
+          "name": "sumo_ubi_minimal"
+        },
+        {
+          "digest": "sha256:6f07f96178dc26f97169e899c91bd151b64bba6854fcb9f70ccefdfadb48f17a",
+          "image": "registry.connect.redhat.com/sumologic/opentelemetry-collector@sha256:6f07f96178dc26f97169e899c91bd151b64bba6854fcb9f70ccefdfadb48f17a",
+          "name": "opentelemetry_collector"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.1.4-0",
+      "version_original": "2.1.4-0"
+    },
+    {
+      "_id": "6148f20f1ea8a4ec32b37fe3",
+      "alm_examples": [
+        {
+          "api_version": "helm-operator.sumologic.com/v1alpha1",
+          "kind": "SumologicCollection",
+          "metadata": {
+            "name": "collection"
+          },
+          "spec": {
+            "fluent-bit": {
+              "config": {
+                "customParsers": "[PARSER]\n    Name        multi_line\n    Format      regex\n    Regex       (?<log>^{\"log\":\"\\d{4}-\\d{1,2}-\\d{1,2}.\\d{2}:\\d{2}:\\d{2}.*)\n[PARSER]\n    Name         crio\n    Format       regex\n    Regex        ^(?<time>[^ ]+) (?<stream>stdout|stderr) (?<logtag>[^ ]*) (?<log>.*)$\n    Time_Key     time\n    Time_Format  %Y-%m-%dT%H:%M:%S.%L%z\n[PARSER]\n    Name         containerd\n    Format       regex\n    Regex        ^(?<time>[^ ]+) (?<stream>stdout|stderr) (?<logtag>[^ ]*) (?<log>.*)$\n    Time_Key     time\n    Time_Format  %Y-%m-%dT%H:%M:%S.%LZ\n",
+                "inputs": "[INPUT]\n    Name                tail\n    Path                /var/log/containers/*.log\n    Parser              crio\n    Tag                 containers.*\n    Refresh_Interval    1\n    Rotate_Wait         60\n    Mem_Buf_Limit       5MB\n    Skip_Long_Lines     On\n    DB                  /tail-db/tail-containers-state-sumo.db\n    DB.Sync             Normal\n[INPUT]\n    Name            systemd\n    Tag             host.*\n    DB              /tail-db/systemd-state-sumo.db\n    Systemd_Filter  _SYSTEMD_UNIT=addon-config.service\n    Systemd_Filter  _SYSTEMD_UNIT=addon-run.service\n    Systemd_Filter  _SYSTEMD_UNIT=cfn-etcd-environment.service\n    Systemd_Filter  _SYSTEMD_UNIT=cfn-signal.service\n    Systemd_Filter  _SYSTEMD_UNIT=clean-ca-certificates.service\n    Systemd_Filter  _SYSTEMD_UNIT=containerd.service\n    Systemd_Filter  _SYSTEMD_UNIT=coreos-metadata.service\n    Systemd_Filter  _SYSTEMD_UNIT=coreos-setup-environment.service\n    Systemd_Filter  _SYSTEMD_UNIT=coreos-tmpfiles.service\n    Systemd_Filter  _SYSTEMD_UNIT=dbus.service\n    Systemd_Filter  _SYSTEMD_UNIT=docker.service\n    Systemd_Filter  _SYSTEMD_UNIT=efs.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcd-member.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcd.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcd2.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcd3.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcdadm-check.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcdadm-reconfigure.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcdadm-save.service\n    Systemd_Filter  _SYSTEMD_UNIT=etcdadm-update-status.service\n    Systemd_Filter  _SYSTEMD_UNIT=flanneld.service\n    Systemd_Filter  _SYSTEMD_UNIT=format-etcd2-volume.service\n    Systemd_Filter  _SYSTEMD_UNIT=kube-node-taint-and-uncordon.service\n    Systemd_Filter  _SYSTEMD_UNIT=kubelet.service\n    Systemd_Filter  _SYSTEMD_UNIT=ldconfig.service\n    Systemd_Filter  _SYSTEMD_UNIT=locksmithd.service\n    Systemd_Filter  _SYSTEMD_UNIT=logrotate.service\n    Systemd_Filter  _SYSTEMD_UNIT=lvm2-monitor.service\n    Systemd_Filter  _SYSTEMD_UNIT=mdmon.service\n    Systemd_Filter  _SYSTEMD_UNIT=nfs-idmapd.service\n    Systemd_Filter  _SYSTEMD_UNIT=nfs-mountd.service\n    Systemd_Filter  _SYSTEMD_UNIT=nfs-server.service\n    Systemd_Filter  _SYSTEMD_UNIT=nfs-utils.service\n    Systemd_Filter  _SYSTEMD_UNIT=node-problem-detector.service\n    Systemd_Filter  _SYSTEMD_UNIT=ntp.service\n    Systemd_Filter  _SYSTEMD_UNIT=oem-cloudinit.service\n    Systemd_Filter  _SYSTEMD_UNIT=rkt-gc.service\n    Systemd_Filter  _SYSTEMD_UNIT=rkt-metadata.service\n    Systemd_Filter  _SYSTEMD_UNIT=rpc-idmapd.service\n    Systemd_Filter  _SYSTEMD_UNIT=rpc-mountd.service\n    Systemd_Filter  _SYSTEMD_UNIT=rpc-statd.service\n    Systemd_Filter  _SYSTEMD_UNIT=rpcbind.service\n    Systemd_Filter  _SYSTEMD_UNIT=set-aws-environment.service\n    Systemd_Filter  _SYSTEMD_UNIT=system-cloudinit.service\n    Systemd_Filter  _SYSTEMD_UNIT=systemd-timesyncd.service\n    Systemd_Filter  _SYSTEMD_UNIT=update-ca-certificates.service\n    Systemd_Filter  _SYSTEMD_UNIT=user-cloudinit.service\n    Systemd_Filter  _SYSTEMD_UNIT=var-lib-etcd2.service\n    Max_Entries     1000\n    Read_From_Tail  true\n",
+                "outputs": "[OUTPUT]\n    Name          forward\n    Match         *\n    Host          ${FLUENTD_LOGS_SVC}.${NAMESPACE}.svc.cluster.local.\n    Port          24321\n    Retry_Limit   False\n    tls           off\n    tls.verify    on\n    tls.debug     1\n    # Disable keepalive for better load balancing\n    net.keepalive off\n",
+                "service": "[SERVICE]\n    Flush        1\n    Daemon       Off\n    Log_Level    info\n    Parsers_File parsers.conf\n    Parsers_File custom_parsers.conf\n    HTTP_Server  On\n    HTTP_Listen  0.0.0.0\n    HTTP_Port    2020\n"
+              },
+              "securityContext": {
+                "privileged": true
+              }
+            },
+            "fluentd": {
+              "buffer": {
+                "queueChunkLimitSize": 256,
+                "totalLimitSize": "256m"
+              },
+              "logs": {
+                "containers": {
+                  "multiline": {
+                    "enabled": false
+                  }
+                }
+              }
+            },
+            "kube-prometheus-stack": {
+              "prometheus-node-exporter": {
+                "service": {
+                  "port": 9200,
+                  "targetPort": 9200
+                }
+              },
+              "prometheusOperator": {
+                "denyNamespaces": [
+                  "openshift-apiserver",
+                  "openshift-apiserver-operator",
+                  "openshift-authentication",
+                  "openshift-authentication-operator",
+                  "openshift-cloud-credential-operator",
+                  "openshift-cluster-machine-approver",
+                  "openshift-cluster-samples-operator",
+                  "openshift-cluster-storage-operator",
+                  "openshift-cluster-version",
+                  "openshift-config-operator",
+                  "openshift-console-operator",
+                  "openshift-controller-manager",
+                  "openshift-controller-manager-operator",
+                  "openshift-dns,openshift-dns-operator",
+                  "openshift-etcd-operator",
+                  "openshift-image-registry",
+                  "openshift-ingress",
+                  "openshift-ingress-operator",
+                  "openshift-insights",
+                  "openshift-kube-apiserver",
+                  "openshift-kube-apiserver-operator",
+                  "openshift-kube-controller-manager",
+                  "openshift-kube-controller-manager-operator",
+                  "openshift-kube-scheduler",
+                  "openshift-kube-scheduler-operator",
+                  "openshift-kube-storage-version-migrator",
+                  "openshift-kube-storage-version-migrator-operator",
+                  "openshift-machine-api",
+                  "openshift-machine-config-operator",
+                  "openshift-marketplace",
+                  "openshift-monitoring",
+                  "openshift-multus",
+                  "openshift-oauth-apiserver",
+                  "openshift-operator-lifecycle-manager",
+                  "openshift-sdn",
+                  "openshift-service-ca-operator",
+                  "openshift-user-workload-monitoring"
+                ]
+              }
+            },
+            "sumologic": {
+              "accessId": "",
+              "accessKey": "",
+              "clusterName": "kubernetes",
+              "endpoint": "",
+              "scc": {
+                "create": true
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sumologic/sumologic-kubernetes-collection-helm-operator-bundle@sha256:73b3e043557aed8392382afad2009fe2846a659d8f6eec25301a36f932b12680",
+      "bundle_path_digest": "sha256:73b3e043557aed8392382afad2009fe2846a659d8f6eec25301a36f932b12680",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-09-20T20:41:51.640000+00:00",
+      "csv_description": "Helm Operator for the Sumo Logic Kubernetes Collection Helm Chart v2.1.4",
+      "csv_display_name": "Sumo Logic Kubernetes Collection Helm Operator",
+      "csv_metadata_description": "",
+      "csv_name": "sumologic-kubernetes-collection-helm-operator.v2.1.4-0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:53:00.768000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "sumologic-kubernetes-collection-helm-operator",
+      "provided_apis": [
+        {
+          "group": "helm-operator.sumologic.com",
+          "kind": "SumologicCollection",
+          "plural": "sumologiccollections",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:b2710d0d515cb03598167cd72916923391dd62675eaef9aad7f37efa3bfeebd3",
+          "image": "registry.connect.redhat.com/sumologic/sumologic-kubernetes-collection-helm-operator@sha256:b2710d0d515cb03598167cd72916923391dd62675eaef9aad7f37efa3bfeebd3",
+          "name": "sumologic-kubernetes-collection-helm-operator-b2710d0d515cb03598167cd72916923391dd62675eaef9aad7f37efa3bfeebd3-annotation"
+        },
+        {
+          "digest": "sha256:f92b5704d9d1290b1dd9cc8bfcc445e3e118794e8cf9531f439994ee4d2523a6",
+          "image": "registry.connect.redhat.com/sumologic/kube-rbac-proxy@sha256:f92b5704d9d1290b1dd9cc8bfcc445e3e118794e8cf9531f439994ee4d2523a6",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:b2710d0d515cb03598167cd72916923391dd62675eaef9aad7f37efa3bfeebd3",
+          "image": "registry.connect.redhat.com/sumologic/sumologic-kubernetes-collection-helm-operator@sha256:b2710d0d515cb03598167cd72916923391dd62675eaef9aad7f37efa3bfeebd3",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:ca76893ae48cfc0e6ee4ef24ccbeb4a90aad738308feacdbd9eed205826406b9",
+          "image": "registry.connect.redhat.com/sumologic/kubernetes-setup@sha256:ca76893ae48cfc0e6ee4ef24ccbeb4a90aad738308feacdbd9eed205826406b9",
+          "name": "kubernetes_setup"
+        },
+        {
+          "digest": "sha256:22694389170863ac60b6c5248310c1381cb145b6b9fa354a18ee664215c5375a",
+          "image": "registry.connect.redhat.com/sumologic/node-exporter@sha256:22694389170863ac60b6c5248310c1381cb145b6b9fa354a18ee664215c5375a",
+          "name": "node_exporter"
+        },
+        {
+          "digest": "sha256:bb1f73b2be45fa31dfd3fbe72df1d553e5c6cdaa81709bf628764f5969ce4fc2",
+          "image": "registry.connect.redhat.com/sumologic/kube-state-metrics@sha256:bb1f73b2be45fa31dfd3fbe72df1d553e5c6cdaa81709bf628764f5969ce4fc2",
+          "name": "kube_state_metrics"
+        },
+        {
+          "digest": "sha256:8e29f9b5b7ae76aa9515d1ba20180511feb0c642bc61f782d8d1ea6f62f862aa",
+          "image": "registry.connect.redhat.com/sumologic/prometheus-operator@sha256:8e29f9b5b7ae76aa9515d1ba20180511feb0c642bc61f782d8d1ea6f62f862aa",
+          "name": "prometheus_operator"
+        },
+        {
+          "digest": "sha256:0309a748632654700e0d49f7ecd7ee61e6344f53107c9ce0c5cf1d301f943d37",
+          "image": "registry.connect.redhat.com/sumologic/prometheus-config-reloader@sha256:0309a748632654700e0d49f7ecd7ee61e6344f53107c9ce0c5cf1d301f943d37",
+          "name": "prometheus_config_reloader"
+        },
+        {
+          "digest": "sha256:716d5c7183affd306bee7c35c577e5da852d4dfe8da9bf37aff255cd96a0c9b3",
+          "image": "registry.connect.redhat.com/sumologic/prometheus@sha256:716d5c7183affd306bee7c35c577e5da852d4dfe8da9bf37aff255cd96a0c9b3",
+          "name": "prometheus"
+        },
+        {
+          "digest": "sha256:707e40ee919e4bc3c2edeecdc536acdf8cb67f9e5fc34eaad9d9e4c283438bb1",
+          "image": "registry.connect.redhat.com/sumologic/thanos@sha256:707e40ee919e4bc3c2edeecdc536acdf8cb67f9e5fc34eaad9d9e4c283438bb1",
+          "name": "thanos"
+        },
+        {
+          "digest": "sha256:1f3c4554e2141e67600ffb2528d8745daf1e581330cb5f4fc75ee7c8aa2298c1",
+          "image": "registry.connect.redhat.com/sumologic/metrics-server@sha256:1f3c4554e2141e67600ffb2528d8745daf1e581330cb5f4fc75ee7c8aa2298c1",
+          "name": "metrics_server"
+        },
+        {
+          "digest": "sha256:f92b5704d9d1290b1dd9cc8bfcc445e3e118794e8cf9531f439994ee4d2523a6",
+          "image": "registry.connect.redhat.com/sumologic/kube-rbac-proxy@sha256:f92b5704d9d1290b1dd9cc8bfcc445e3e118794e8cf9531f439994ee4d2523a6",
+          "name": "kube_rbac_proxy"
+        },
+        {
+          "digest": "sha256:1d9d902b165596e12a626f5dd2f9d512627b356c3773a04c96df24270a840724",
+          "image": "registry.connect.redhat.com/sumologic/tailing-sidecar-operator@sha256:1d9d902b165596e12a626f5dd2f9d512627b356c3773a04c96df24270a840724",
+          "name": "tailing_sidecar_operator"
+        },
+        {
+          "digest": "sha256:838401ab699ae1f4a581a62a6eea413bca1e2c30d60358acb16bd86be75fbca1",
+          "image": "registry.connect.redhat.com/sumologic/tailing-sidecar@sha256:838401ab699ae1f4a581a62a6eea413bca1e2c30d60358acb16bd86be75fbca1",
+          "name": "tailing_sidecar"
+        },
+        {
+          "digest": "sha256:3a63153408ff6bb5d6294fcdedfa30b07a5023ca5f72dd63c6e4de31f6bf1c68",
+          "image": "registry.connect.redhat.com/sumologic/telegraf-operator@sha256:3a63153408ff6bb5d6294fcdedfa30b07a5023ca5f72dd63c6e4de31f6bf1c68",
+          "name": "telegraf_operator"
+        },
+        {
+          "digest": "sha256:8d92cabdd8efbec83475a004209745cc14e877d361cae19ab80a622ebda57e24",
+          "image": "registry.connect.redhat.com/sumologic/telegraf@sha256:8d92cabdd8efbec83475a004209745cc14e877d361cae19ab80a622ebda57e24",
+          "name": "telegraf"
+        },
+        {
+          "digest": "sha256:362053ce1833aa51db31d36f97458f526d199bcd7efff53486b09e3a02a795ab",
+          "image": "registry.connect.redhat.com/sumologic/kubernetes-fluentd@sha256:362053ce1833aa51db31d36f97458f526d199bcd7efff53486b09e3a02a795ab",
+          "name": "kubernetes_fluentd"
+        },
+        {
+          "digest": "sha256:faa802d22e41f8d67d487e40285fa2a7ea72f9cd49c32ddb80ea34f4d302e220",
+          "image": "registry.connect.redhat.com/sumologic/fluent-bit@sha256:faa802d22e41f8d67d487e40285fa2a7ea72f9cd49c32ddb80ea34f4d302e220",
+          "name": "fluent_bit"
+        },
+        {
+          "digest": "sha256:5d468e602034fd84407429fe83c8cb5e4c9ee07e2073db3969aadc97496a958b",
+          "image": "registry.connect.redhat.com/sumologic/sumo-ubi-minimal@sha256:5d468e602034fd84407429fe83c8cb5e4c9ee07e2073db3969aadc97496a958b",
+          "name": "sumo_ubi_minimal"
+        },
+        {
+          "digest": "sha256:6f07f96178dc26f97169e899c91bd151b64bba6854fcb9f70ccefdfadb48f17a",
+          "image": "registry.connect.redhat.com/sumologic/opentelemetry-collector@sha256:6f07f96178dc26f97169e899c91bd151b64bba6854fcb9f70ccefdfadb48f17a",
+          "name": "opentelemetry_collector"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.1.4-0",
+      "version_original": "2.1.4-0"
+    },
+    {
+      "_id": "614a7312d36186823c2a427a",
+      "alm_examples": [
+        {
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
+          "metadata": {
+            "name": "gpu-cluster-policy"
+          },
+          "spec": {
+            "daemonsets": {
+              "priorityClassName": "system-node-critical",
+              "tolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "key": "nvidia.com/gpu",
+                  "operator": "Exists"
+                }
+              ]
+            },
+            "dcgm": {
+              "enabled": true,
+              "hostPort": 5555,
+              "image": "dcgm",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:28f334d6d5ca6e5cad2cf05a255989834128c952e3c181e6861bd033476d4b2c"
+            },
+            "dcgmExporter": {
+              "config": {
+                "name": ""
+              },
+              "env": [
+                {
+                  "name": "DCGM_EXPORTER_LISTEN",
+                  "value": ":9400"
+                },
+                {
+                  "name": "DCGM_EXPORTER_KUBERNETES",
+                  "value": "true"
+                },
+                {
+                  "name": "DCGM_EXPORTER_COLLECTORS",
+                  "value": "/etc/dcgm-exporter/dcp-metrics-included.csv"
+                }
+              ],
+              "image": "dcgm-exporter",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/k8s",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:e37404194fa2bc2275827411049422b93d1493991fb925957f170b4b842846ff"
+            },
+            "devicePlugin": {
+              "args": [],
+              "env": [
+                {
+                  "name": "PASS_DEVICE_SPECS",
+                  "value": "true"
+                },
+                {
+                  "name": "FAIL_ON_INIT_ERROR",
+                  "value": "true"
+                },
+                {
+                  "name": "DEVICE_LIST_STRATEGY",
+                  "value": "envvar"
+                },
+                {
+                  "name": "DEVICE_ID_STRATEGY",
+                  "value": "uuid"
+                },
+                {
+                  "name": "NVIDIA_VISIBLE_DEVICES",
+                  "value": "all"
+                },
+                {
+                  "name": "NVIDIA_DRIVER_CAPABILITIES",
+                  "value": "all"
+                }
+              ],
+              "image": "k8s-device-plugin",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05"
+            },
+            "driver": {
+              "enabled": true,
+              "image": "driver",
+              "imagePullSecrets": [],
+              "licensingConfig": {
+                "configMapName": "",
+                "nlsEnabled": false
+              },
+              "manager": {
+                "env": [
+                  {
+                    "name": "DRAIN_USE_FORCE",
+                    "value": "false"
+                  },
+                  {
+                    "name": "DRAIN_POD_SELECTOR_LABEL",
+                    "value": ""
+                  },
+                  {
+                    "name": "DRAIN_TIMEOUT_SECONDS",
+                    "value": "0s"
+                  },
+                  {
+                    "name": "DRAIN_DELETE_EMPTYDIR_DATA",
+                    "value": "false"
+                  }
+                ],
+                "image": "k8s-driver-manager",
+                "imagePullSecrets": [],
+                "repository": "nvcr.io/nvidia/cloud-native",
+                "version": "sha256:907ab0fc008bb90149ed059ac3a8ed3d19ae010d52c58c0ddbafce45df468d5b"
+              },
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.driver": "true"
+              },
+              "podSecurityContext": {},
+              "rdma": {
+                "enabled": false
+              },
+              "repoConfig": {
+                "configMapName": "",
+                "destinationDir": ""
+              },
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:a62de5e843a41c65cf837e7db5f5b675d03fa2de05e981a859b114336cf183e3",
+              "virtualTopology": {
+                "config": ""
+              }
+            },
+            "gfd": {
+              "env": [
+                {
+                  "name": "GFD_SLEEP_INTERVAL",
+                  "value": "60s"
+                },
+                {
+                  "name": "FAIL_ON_INIT_ERROR",
+                  "value": "true"
+                }
+              ],
+              "image": "gpu-feature-discovery",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f"
+            },
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "config": {
+                "name": ""
+              },
+              "enabled": true,
+              "env": [
+                {
+                  "name": "WITH_REBOOT",
+                  "value": "false"
+                }
+              ],
+              "image": "k8s-mig-manager",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:8cdb793f8a22b076bf0f19818f9d79fe87b121608f1aa28b12a560b6fe13f47e"
+            },
+            "nodeStatusExporter": {
+              "enabled": true,
+              "image": "gpu-operator-validator",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:a07fd1c74e3e469ac316d17cf79635173764fdab3b681dbc282027a23dbbe227"
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "deployGFD": true,
+              "initContainer": {
+                "image": "cuda",
+                "imagePullSecrets": [],
+                "repository": "nvcr.io/nvidia",
+                "version": "sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce"
+              }
+            },
+            "toolkit": {
+              "enabled": true,
+              "image": "container-toolkit",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/k8s",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:b0c84b47d5f95000a842b823ad33dc9aa28f0edfa6d9565c289b61cb1d4a9934"
+            },
+            "validator": {
+              "env": [
+                {
+                  "name": "WITH_WORKLOAD",
+                  "value": "true"
+                }
+              ],
+              "image": "gpu-operator-validator",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:a07fd1c74e3e469ac316d17cf79635173764fdab3b681dbc282027a23dbbe227"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:7a0e687b8ebe398f66d371cfe148f415018eb614aa9913d177f3a401855699cf",
+      "bundle_path_digest": "sha256:7a0e687b8ebe398f66d371cfe148f415018eb614aa9913d177f3a401855699cf",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "v1.8",
+      "creation_date": "2021-09-22T00:04:34.119000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.8.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:47:43.107000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "plural": "clusterpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:2097beb34a61d906dd86d6784a4435de778c5a771865d06b60b6989f602741fd",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:2097beb34a61d906dd86d6784a4435de778c5a771865d06b60b6989f602741fd",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:e37404194fa2bc2275827411049422b93d1493991fb925957f170b4b842846ff",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:e37404194fa2bc2275827411049422b93d1493991fb925957f170b4b842846ff",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:28f334d6d5ca6e5cad2cf05a255989834128c952e3c181e6861bd033476d4b2c",
+          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:28f334d6d5ca6e5cad2cf05a255989834128c952e3c181e6861bd033476d4b2c",
+          "name": "dcgm-image"
+        },
+        {
+          "digest": "sha256:b0c84b47d5f95000a842b823ad33dc9aa28f0edfa6d9565c289b61cb1d4a9934",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:b0c84b47d5f95000a842b823ad33dc9aa28f0edfa6d9565c289b61cb1d4a9934",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:a62de5e843a41c65cf837e7db5f5b675d03fa2de05e981a859b114336cf183e3",
+          "image": "nvcr.io/nvidia/driver@sha256:a62de5e843a41c65cf837e7db5f5b675d03fa2de05e981a859b114336cf183e3",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:8cdb793f8a22b076bf0f19818f9d79fe87b121608f1aa28b12a560b6fe13f47e",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:8cdb793f8a22b076bf0f19818f9d79fe87b121608f1aa28b12a560b6fe13f47e",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce",
+          "image": "nvcr.io/nvidia/cuda@sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:a07fd1c74e3e469ac316d17cf79635173764fdab3b681dbc282027a23dbbe227",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:a07fd1c74e3e469ac316d17cf79635173764fdab3b681dbc282027a23dbbe227",
+          "name": "gpu-operator-validator-image"
+        },
+        {
+          "digest": "sha256:907ab0fc008bb90149ed059ac3a8ed3d19ae010d52c58c0ddbafce45df468d5b",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:907ab0fc008bb90149ed059ac3a8ed3d19ae010d52c58c0ddbafce45df468d5b",
+          "name": "k8s-driver-manager-image"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.8.2",
+      "version_original": "1.8.2"
+    },
+    {
+      "_id": "614a756bd2c7f84a4d2ec90a",
+      "alm_examples": [
+        {
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
+          "metadata": {
+            "name": "gpu-cluster-policy"
+          },
+          "spec": {
+            "daemonsets": {
+              "priorityClassName": "system-node-critical",
+              "tolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "key": "nvidia.com/gpu",
+                  "operator": "Exists"
+                }
+              ]
+            },
+            "dcgm": {
+              "enabled": true,
+              "hostPort": 5555,
+              "image": "dcgm",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:28f334d6d5ca6e5cad2cf05a255989834128c952e3c181e6861bd033476d4b2c"
+            },
+            "dcgmExporter": {
+              "config": {
+                "name": ""
+              },
+              "env": [
+                {
+                  "name": "DCGM_EXPORTER_LISTEN",
+                  "value": ":9400"
+                },
+                {
+                  "name": "DCGM_EXPORTER_KUBERNETES",
+                  "value": "true"
+                },
+                {
+                  "name": "DCGM_EXPORTER_COLLECTORS",
+                  "value": "/etc/dcgm-exporter/dcp-metrics-included.csv"
+                }
+              ],
+              "image": "dcgm-exporter",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/k8s",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:e37404194fa2bc2275827411049422b93d1493991fb925957f170b4b842846ff"
+            },
+            "devicePlugin": {
+              "args": [],
+              "env": [
+                {
+                  "name": "PASS_DEVICE_SPECS",
+                  "value": "true"
+                },
+                {
+                  "name": "FAIL_ON_INIT_ERROR",
+                  "value": "true"
+                },
+                {
+                  "name": "DEVICE_LIST_STRATEGY",
+                  "value": "envvar"
+                },
+                {
+                  "name": "DEVICE_ID_STRATEGY",
+                  "value": "uuid"
+                },
+                {
+                  "name": "NVIDIA_VISIBLE_DEVICES",
+                  "value": "all"
+                },
+                {
+                  "name": "NVIDIA_DRIVER_CAPABILITIES",
+                  "value": "all"
+                }
+              ],
+              "image": "k8s-device-plugin",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05"
+            },
+            "driver": {
+              "enabled": true,
+              "image": "driver",
+              "imagePullSecrets": [],
+              "licensingConfig": {
+                "configMapName": "",
+                "nlsEnabled": false
+              },
+              "manager": {
+                "env": [
+                  {
+                    "name": "DRAIN_USE_FORCE",
+                    "value": "false"
+                  },
+                  {
+                    "name": "DRAIN_POD_SELECTOR_LABEL",
+                    "value": ""
+                  },
+                  {
+                    "name": "DRAIN_TIMEOUT_SECONDS",
+                    "value": "0s"
+                  },
+                  {
+                    "name": "DRAIN_DELETE_EMPTYDIR_DATA",
+                    "value": "false"
+                  }
+                ],
+                "image": "k8s-driver-manager",
+                "imagePullSecrets": [],
+                "repository": "nvcr.io/nvidia/cloud-native",
+                "version": "sha256:907ab0fc008bb90149ed059ac3a8ed3d19ae010d52c58c0ddbafce45df468d5b"
+              },
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.driver": "true"
+              },
+              "podSecurityContext": {},
+              "rdma": {
+                "enabled": false
+              },
+              "repoConfig": {
+                "configMapName": "",
+                "destinationDir": ""
+              },
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:a62de5e843a41c65cf837e7db5f5b675d03fa2de05e981a859b114336cf183e3",
+              "virtualTopology": {
+                "config": ""
+              }
+            },
+            "gfd": {
+              "env": [
+                {
+                  "name": "GFD_SLEEP_INTERVAL",
+                  "value": "60s"
+                },
+                {
+                  "name": "FAIL_ON_INIT_ERROR",
+                  "value": "true"
+                }
+              ],
+              "image": "gpu-feature-discovery",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f"
+            },
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "config": {
+                "name": ""
+              },
+              "enabled": true,
+              "env": [
+                {
+                  "name": "WITH_REBOOT",
+                  "value": "false"
+                }
+              ],
+              "image": "k8s-mig-manager",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:8cdb793f8a22b076bf0f19818f9d79fe87b121608f1aa28b12a560b6fe13f47e"
+            },
+            "nodeStatusExporter": {
+              "enabled": true,
+              "image": "gpu-operator-validator",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:a07fd1c74e3e469ac316d17cf79635173764fdab3b681dbc282027a23dbbe227"
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "deployGFD": true,
+              "initContainer": {
+                "image": "cuda",
+                "imagePullSecrets": [],
+                "repository": "nvcr.io/nvidia",
+                "version": "sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce"
+              }
+            },
+            "toolkit": {
+              "enabled": true,
+              "image": "container-toolkit",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/k8s",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:b0c84b47d5f95000a842b823ad33dc9aa28f0edfa6d9565c289b61cb1d4a9934"
+            },
+            "validator": {
+              "env": [
+                {
+                  "name": "WITH_WORKLOAD",
+                  "value": "true"
+                }
+              ],
+              "image": "gpu-operator-validator",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:a07fd1c74e3e469ac316d17cf79635173764fdab3b681dbc282027a23dbbe227"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:7a0e687b8ebe398f66d371cfe148f415018eb614aa9913d177f3a401855699cf",
+      "bundle_path_digest": "sha256:7a0e687b8ebe398f66d371cfe148f415018eb614aa9913d177f3a401855699cf",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "v1.8",
+      "creation_date": "2021-09-22T00:14:35.691000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.8.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:15:51.985000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "plural": "clusterpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:2097beb34a61d906dd86d6784a4435de778c5a771865d06b60b6989f602741fd",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:2097beb34a61d906dd86d6784a4435de778c5a771865d06b60b6989f602741fd",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:e37404194fa2bc2275827411049422b93d1493991fb925957f170b4b842846ff",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:e37404194fa2bc2275827411049422b93d1493991fb925957f170b4b842846ff",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:28f334d6d5ca6e5cad2cf05a255989834128c952e3c181e6861bd033476d4b2c",
+          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:28f334d6d5ca6e5cad2cf05a255989834128c952e3c181e6861bd033476d4b2c",
+          "name": "dcgm-image"
+        },
+        {
+          "digest": "sha256:b0c84b47d5f95000a842b823ad33dc9aa28f0edfa6d9565c289b61cb1d4a9934",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:b0c84b47d5f95000a842b823ad33dc9aa28f0edfa6d9565c289b61cb1d4a9934",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:a62de5e843a41c65cf837e7db5f5b675d03fa2de05e981a859b114336cf183e3",
+          "image": "nvcr.io/nvidia/driver@sha256:a62de5e843a41c65cf837e7db5f5b675d03fa2de05e981a859b114336cf183e3",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:8cdb793f8a22b076bf0f19818f9d79fe87b121608f1aa28b12a560b6fe13f47e",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:8cdb793f8a22b076bf0f19818f9d79fe87b121608f1aa28b12a560b6fe13f47e",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce",
+          "image": "nvcr.io/nvidia/cuda@sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:a07fd1c74e3e469ac316d17cf79635173764fdab3b681dbc282027a23dbbe227",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:a07fd1c74e3e469ac316d17cf79635173764fdab3b681dbc282027a23dbbe227",
+          "name": "gpu-operator-validator-image"
+        },
+        {
+          "digest": "sha256:907ab0fc008bb90149ed059ac3a8ed3d19ae010d52c58c0ddbafce45df468d5b",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:907ab0fc008bb90149ed059ac3a8ed3d19ae010d52c58c0ddbafce45df468d5b",
+          "name": "k8s-driver-manager-image"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.8.2",
+      "version_original": "1.8.2"
+    },
+    {
+      "_id": "614a816969cb9f1af5ba664f",
+      "alm_examples": [
+        {
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
+          "metadata": {
+            "name": "gpu-cluster-policy"
+          },
+          "spec": {
+            "daemonsets": {
+              "priorityClassName": "system-node-critical",
+              "tolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "key": "nvidia.com/gpu",
+                  "operator": "Exists"
+                }
+              ]
+            },
+            "dcgm": {
+              "enabled": true,
+              "hostPort": 5555,
+              "image": "dcgm",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:28f334d6d5ca6e5cad2cf05a255989834128c952e3c181e6861bd033476d4b2c"
+            },
+            "dcgmExporter": {
+              "config": {
+                "name": ""
+              },
+              "env": [
+                {
+                  "name": "DCGM_EXPORTER_LISTEN",
+                  "value": ":9400"
+                },
+                {
+                  "name": "DCGM_EXPORTER_KUBERNETES",
+                  "value": "true"
+                },
+                {
+                  "name": "DCGM_EXPORTER_COLLECTORS",
+                  "value": "/etc/dcgm-exporter/dcp-metrics-included.csv"
+                }
+              ],
+              "image": "dcgm-exporter",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/k8s",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:e37404194fa2bc2275827411049422b93d1493991fb925957f170b4b842846ff"
+            },
+            "devicePlugin": {
+              "args": [],
+              "env": [
+                {
+                  "name": "PASS_DEVICE_SPECS",
+                  "value": "true"
+                },
+                {
+                  "name": "FAIL_ON_INIT_ERROR",
+                  "value": "true"
+                },
+                {
+                  "name": "DEVICE_LIST_STRATEGY",
+                  "value": "envvar"
+                },
+                {
+                  "name": "DEVICE_ID_STRATEGY",
+                  "value": "uuid"
+                },
+                {
+                  "name": "NVIDIA_VISIBLE_DEVICES",
+                  "value": "all"
+                },
+                {
+                  "name": "NVIDIA_DRIVER_CAPABILITIES",
+                  "value": "all"
+                }
+              ],
+              "image": "k8s-device-plugin",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05"
+            },
+            "driver": {
+              "enabled": true,
+              "image": "driver",
+              "imagePullSecrets": [],
+              "licensingConfig": {
+                "configMapName": "",
+                "nlsEnabled": false
+              },
+              "manager": {
+                "env": [
+                  {
+                    "name": "DRAIN_USE_FORCE",
+                    "value": "false"
+                  },
+                  {
+                    "name": "DRAIN_POD_SELECTOR_LABEL",
+                    "value": ""
+                  },
+                  {
+                    "name": "DRAIN_TIMEOUT_SECONDS",
+                    "value": "0s"
+                  },
+                  {
+                    "name": "DRAIN_DELETE_EMPTYDIR_DATA",
+                    "value": "false"
+                  }
+                ],
+                "image": "k8s-driver-manager",
+                "imagePullSecrets": [],
+                "repository": "nvcr.io/nvidia/cloud-native",
+                "version": "sha256:907ab0fc008bb90149ed059ac3a8ed3d19ae010d52c58c0ddbafce45df468d5b"
+              },
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.driver": "true"
+              },
+              "podSecurityContext": {},
+              "rdma": {
+                "enabled": false
+              },
+              "repoConfig": {
+                "configMapName": "",
+                "destinationDir": ""
+              },
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:a62de5e843a41c65cf837e7db5f5b675d03fa2de05e981a859b114336cf183e3",
+              "virtualTopology": {
+                "config": ""
+              }
+            },
+            "gfd": {
+              "env": [
+                {
+                  "name": "GFD_SLEEP_INTERVAL",
+                  "value": "60s"
+                },
+                {
+                  "name": "FAIL_ON_INIT_ERROR",
+                  "value": "true"
+                }
+              ],
+              "image": "gpu-feature-discovery",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f"
+            },
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "config": {
+                "name": ""
+              },
+              "enabled": true,
+              "env": [
+                {
+                  "name": "WITH_REBOOT",
+                  "value": "false"
+                }
+              ],
+              "image": "k8s-mig-manager",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:8cdb793f8a22b076bf0f19818f9d79fe87b121608f1aa28b12a560b6fe13f47e"
+            },
+            "nodeStatusExporter": {
+              "enabled": true,
+              "image": "gpu-operator-validator",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:a07fd1c74e3e469ac316d17cf79635173764fdab3b681dbc282027a23dbbe227"
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "deployGFD": true,
+              "initContainer": {
+                "image": "cuda",
+                "imagePullSecrets": [],
+                "repository": "nvcr.io/nvidia",
+                "version": "sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce"
+              }
+            },
+            "toolkit": {
+              "enabled": true,
+              "image": "container-toolkit",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/k8s",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:b0c84b47d5f95000a842b823ad33dc9aa28f0edfa6d9565c289b61cb1d4a9934"
+            },
+            "validator": {
+              "env": [
+                {
+                  "name": "WITH_WORKLOAD",
+                  "value": "true"
+                }
+              ],
+              "image": "gpu-operator-validator",
+              "imagePullSecrets": [],
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "version": "sha256:a07fd1c74e3e469ac316d17cf79635173764fdab3b681dbc282027a23dbbe227"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:7a0e687b8ebe398f66d371cfe148f415018eb614aa9913d177f3a401855699cf",
+      "bundle_path_digest": "sha256:7a0e687b8ebe398f66d371cfe148f415018eb614aa9913d177f3a401855699cf",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "v1.8",
+      "creation_date": "2021-09-22T01:05:45.673000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.8.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:50:46.725000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "plural": "clusterpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:2097beb34a61d906dd86d6784a4435de778c5a771865d06b60b6989f602741fd",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:2097beb34a61d906dd86d6784a4435de778c5a771865d06b60b6989f602741fd",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:e37404194fa2bc2275827411049422b93d1493991fb925957f170b4b842846ff",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:e37404194fa2bc2275827411049422b93d1493991fb925957f170b4b842846ff",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:28f334d6d5ca6e5cad2cf05a255989834128c952e3c181e6861bd033476d4b2c",
+          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:28f334d6d5ca6e5cad2cf05a255989834128c952e3c181e6861bd033476d4b2c",
+          "name": "dcgm-image"
+        },
+        {
+          "digest": "sha256:b0c84b47d5f95000a842b823ad33dc9aa28f0edfa6d9565c289b61cb1d4a9934",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:b0c84b47d5f95000a842b823ad33dc9aa28f0edfa6d9565c289b61cb1d4a9934",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:a62de5e843a41c65cf837e7db5f5b675d03fa2de05e981a859b114336cf183e3",
+          "image": "nvcr.io/nvidia/driver@sha256:a62de5e843a41c65cf837e7db5f5b675d03fa2de05e981a859b114336cf183e3",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:8cdb793f8a22b076bf0f19818f9d79fe87b121608f1aa28b12a560b6fe13f47e",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:8cdb793f8a22b076bf0f19818f9d79fe87b121608f1aa28b12a560b6fe13f47e",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce",
+          "image": "nvcr.io/nvidia/cuda@sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:a07fd1c74e3e469ac316d17cf79635173764fdab3b681dbc282027a23dbbe227",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:a07fd1c74e3e469ac316d17cf79635173764fdab3b681dbc282027a23dbbe227",
+          "name": "gpu-operator-validator-image"
+        },
+        {
+          "digest": "sha256:907ab0fc008bb90149ed059ac3a8ed3d19ae010d52c58c0ddbafce45df468d5b",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:907ab0fc008bb90149ed059ac3a8ed3d19ae010d52c58c0ddbafce45df468d5b",
+          "name": "k8s-driver-manager-image"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.8.2",
+      "version_original": "1.8.2"
+    },
+    {
+      "_id": "614b4a8ed2c7f84a4d2eca1c",
+      "alm_examples": [
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "CouchDBCluster",
+          "metadata": {
+            "name": "example-couchdbcluster"
+          },
+          "spec": {
+            "cpu": "1",
+            "disk": "1Gi",
+            "environment": {
+              "adminPassword": "changeme",
+              "search": true
+            },
+            "memory": "1Gi",
+            "size": 3,
+            "storageClass": ""
+          }
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "FormationLock",
+          "metadata": {
+            "name": "example-formationlock"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Recipe",
+          "metadata": {
+            "name": "example-recipe"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "RecipeTemplate",
+          "metadata": {
+            "name": "example-recipetemplate"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "example-backup"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Bucket",
+          "metadata": {
+            "name": "example-bucket"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Formation",
+          "metadata": {
+            "name": "example-formation"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64"
+      ],
+      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:f7fa9a0e8cd1524d7048d6e563a05ec2890941427211f02ca3f1c0faf19b7ce7",
+      "bundle_path_digest": "sha256:f7fa9a0e8cd1524d7048d6e563a05ec2890941427211f02ca3f1c0faf19b7ce7",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "v2.0",
+      "creation_date": "2021-09-22T15:23:58.931000+00:00",
+      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n### CouchDB 2.3.1 Update Instructions\nWhen the operator is updated to v2.0 or above any existing CouchDB 2.3.1 cluster will not be automatically upgraded to CouchDB 3. The user must manually trigger this process by removing the version statement `version: 2.3.1` in the CouchDBCluster CR for each CouchDB cluster\nThe operator will then perform a rolling update, with the new pods running CouchDB3.\nIt is advised that customers do this straightaway as CouchDB 2.3.1 is no longer supported.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://ibm.biz/BdfGQy)\n",
+      "csv_display_name": "Operator for Apache CouchDB",
+      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
+      "csv_name": "couchdb-operator.v2.0.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:00:19.447000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "couchdb-operator-certified",
+      "provided_apis": [
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Bucket",
+          "plural": "buckets",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "CouchDBCluster",
+          "plural": "couchdbclusters",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "FormationLock",
+          "plural": "formationlocks",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Formation",
+          "plural": "formations",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Recipe",
+          "plural": "recipes",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "RecipeTemplate",
+          "plural": "recipetemplates",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:2672b203f768e62ef507de23bf771764266b958acded02ca3c9aedbb08338aef",
+          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:2672b203f768e62ef507de23bf771764266b958acded02ca3c9aedbb08338aef",
+          "name": "COUCHDB3"
+        },
+        {
+          "digest": "sha256:27ebeed0e96dcc7d6c2ab15149bfb324c428f4aee3346e54d5200d1c72435591",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:27ebeed0e96dcc7d6c2ab15149bfb324c428f4aee3346e54d5200d1c72435591",
+          "name": "COUCHDB-MGMT"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.0.0",
+      "version_original": "2.0.0"
+    },
+    {
+      "_id": "614b4f1ed36186823c2a44de",
+      "alm_examples": [
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "CouchDBCluster",
+          "metadata": {
+            "name": "example-couchdbcluster"
+          },
+          "spec": {
+            "cpu": "1",
+            "disk": "1Gi",
+            "environment": {
+              "adminPassword": "changeme",
+              "search": true
+            },
+            "memory": "1Gi",
+            "size": 3,
+            "storageClass": ""
+          }
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "FormationLock",
+          "metadata": {
+            "name": "example-formationlock"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Recipe",
+          "metadata": {
+            "name": "example-recipe"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "RecipeTemplate",
+          "metadata": {
+            "name": "example-recipetemplate"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "example-backup"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Bucket",
+          "metadata": {
+            "name": "example-bucket"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Formation",
+          "metadata": {
+            "name": "example-formation"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64"
+      ],
+      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:f7fa9a0e8cd1524d7048d6e563a05ec2890941427211f02ca3f1c0faf19b7ce7",
+      "bundle_path_digest": "sha256:f7fa9a0e8cd1524d7048d6e563a05ec2890941427211f02ca3f1c0faf19b7ce7",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "v2.0",
+      "creation_date": "2021-09-22T15:43:26.415000+00:00",
+      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n### CouchDB 2.3.1 Update Instructions\nWhen the operator is updated to v2.0 or above any existing CouchDB 2.3.1 cluster will not be automatically upgraded to CouchDB 3. The user must manually trigger this process by removing the version statement `version: 2.3.1` in the CouchDBCluster CR for each CouchDB cluster\nThe operator will then perform a rolling update, with the new pods running CouchDB3.\nIt is advised that customers do this straightaway as CouchDB 2.3.1 is no longer supported.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://ibm.biz/BdfGQy)\n",
+      "csv_display_name": "Operator for Apache CouchDB",
+      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
+      "csv_name": "couchdb-operator.v2.0.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:14:06.746000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "couchdb-operator-certified",
+      "provided_apis": [
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Recipe",
+          "plural": "recipes",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "RecipeTemplate",
+          "plural": "recipetemplates",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Bucket",
+          "plural": "buckets",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "CouchDBCluster",
+          "plural": "couchdbclusters",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "FormationLock",
+          "plural": "formationlocks",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Formation",
+          "plural": "formations",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:2672b203f768e62ef507de23bf771764266b958acded02ca3c9aedbb08338aef",
+          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:2672b203f768e62ef507de23bf771764266b958acded02ca3c9aedbb08338aef",
+          "name": "COUCHDB3"
+        },
+        {
+          "digest": "sha256:27ebeed0e96dcc7d6c2ab15149bfb324c428f4aee3346e54d5200d1c72435591",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:27ebeed0e96dcc7d6c2ab15149bfb324c428f4aee3346e54d5200d1c72435591",
+          "name": "COUCHDB-MGMT"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "2.0.0",
+      "version_original": "2.0.0"
+    },
+    {
+      "_id": "614b5033bc74e0be7ca66255",
+      "alm_examples": [
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "CouchDBCluster",
+          "metadata": {
+            "name": "example-couchdbcluster"
+          },
+          "spec": {
+            "cpu": "1",
+            "disk": "1Gi",
+            "environment": {
+              "adminPassword": "changeme",
+              "search": true
+            },
+            "memory": "1Gi",
+            "size": 3,
+            "storageClass": ""
+          }
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "FormationLock",
+          "metadata": {
+            "name": "example-formationlock"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Recipe",
+          "metadata": {
+            "name": "example-recipe"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "RecipeTemplate",
+          "metadata": {
+            "name": "example-recipetemplate"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "example-backup"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Bucket",
+          "metadata": {
+            "name": "example-bucket"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Formation",
+          "metadata": {
+            "name": "example-formation"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64"
+      ],
+      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:f7fa9a0e8cd1524d7048d6e563a05ec2890941427211f02ca3f1c0faf19b7ce7",
+      "bundle_path_digest": "sha256:f7fa9a0e8cd1524d7048d6e563a05ec2890941427211f02ca3f1c0faf19b7ce7",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "v2.0",
+      "creation_date": "2021-09-22T15:48:03.990000+00:00",
+      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n### CouchDB 2.3.1 Update Instructions\nWhen the operator is updated to v2.0 or above any existing CouchDB 2.3.1 cluster will not be automatically upgraded to CouchDB 3. The user must manually trigger this process by removing the version statement `version: 2.3.1` in the CouchDBCluster CR for each CouchDB cluster\nThe operator will then perform a rolling update, with the new pods running CouchDB3.\nIt is advised that customers do this straightaway as CouchDB 2.3.1 is no longer supported.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://ibm.biz/BdfGQy)\n",
+      "csv_display_name": "Operator for Apache CouchDB",
+      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
+      "csv_name": "couchdb-operator.v2.0.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:58:51.242000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "couchdb-operator-certified",
+      "provided_apis": [
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "CouchDBCluster",
+          "plural": "couchdbclusters",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "FormationLock",
+          "plural": "formationlocks",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Formation",
+          "plural": "formations",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Recipe",
+          "plural": "recipes",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "RecipeTemplate",
+          "plural": "recipetemplates",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Bucket",
+          "plural": "buckets",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:2672b203f768e62ef507de23bf771764266b958acded02ca3c9aedbb08338aef",
+          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:2672b203f768e62ef507de23bf771764266b958acded02ca3c9aedbb08338aef",
+          "name": "COUCHDB3"
+        },
+        {
+          "digest": "sha256:27ebeed0e96dcc7d6c2ab15149bfb324c428f4aee3346e54d5200d1c72435591",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:27ebeed0e96dcc7d6c2ab15149bfb324c428f4aee3346e54d5200d1c72435591",
+          "name": "COUCHDB-MGMT"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.0.0",
+      "version_original": "2.0.0"
     }
   ],
   "page": 2,
   "page_size": 500,
-  "total": 3829
+  "total": 3896
 }

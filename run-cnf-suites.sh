@@ -126,7 +126,7 @@ fi
 
 cd ./cnf-certification-test && ./cnf-certification-test.test $FOCUS_STRING $SKIP_STRING $LABEL_STRING ${GINKGO_ARGS}
 
-if [[ ! -z "${TNF_PARTNER_SRC_DIR}" ]]; then
-	echo "attempting to delete litmus"
-	make -C $TNF_PARTNER_SRC_DIR delete-litmus
-fi
+# if [[ ! -z "${TNF_PARTNER_SRC_DIR}" ]]; then
+# 	echo "attempting to delete litmus"
+# 	make -C $TNF_PARTNER_SRC_DIR delete-litmus
+# fi

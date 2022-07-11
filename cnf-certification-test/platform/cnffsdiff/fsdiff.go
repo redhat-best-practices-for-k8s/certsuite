@@ -20,26 +20,27 @@ import (
 	"encoding/json"
 	"fmt"
 
+	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
 
 var (
-	// targetFolders stores all the targetFolders that shouldn't have been modified in the container.
-	// All of them exist on UBI. It's a map just for convenience.
-	targetFolders = map[string]bool{
-		"/var/lib/rpm":  true,
-		"/var/lib/dpkg": true,
-		"/bin":          true,
-		"/sbin":         true,
-		"/lib":          true,
-		"/lib64":        true,
-		"/usr/bin":      true,
-		"/usr/sbin":     true,
-		"/usr/lib":      true,
-		"/usr/lib64":    true,
-	}
+	// targetFolders stores all the targetFolders that shouldn't have been
+	// modified in the container. All of them exist on UBI.
+	targetFolders = mapset.NewSet(
+		"/bin",
+		"/lib",
+		"/lib64",
+		"/sbin",
+		"/usr/bin",
+		"/usr/lib",
+		"/usr/lib64",
+		"/usr/sbin",
+		"/var/lib/rpm",
+		"/var/lib/dpkg",
+	)
 )
 
 // fsDiffJSON is a helper struct to unmarshall the "podman diff --format json" output: a slice of
@@ -73,7 +74,17 @@ func NewFsDiffTester(client clientsholder.Command) *FsDiff {
 	}
 }
 
-//nolint:funlen
+func intersectTargetFolders(src []string) []string {
+	var dst []string
+	for _, folder := range src {
+		if targetFolders.Contains(folder) {
+			logrus.Tracef("Container's folder %s is altered.", folder)
+			dst = append(dst, folder)
+		}
+	}
+	return dst
+}
+
 func (f *FsDiff) RunTest(ctx clientsholder.Context, containerUID string) {
 	output, outerr, err := f.ClientHolder.ExecCommandContainer(ctx, fmt.Sprintf("chroot /host podman diff --format json %s", containerUID))
 	if err != nil {
@@ -97,23 +108,8 @@ func (f *FsDiff) RunTest(ctx clientsholder.Context, containerUID string) {
 		f.result = testhelper.ERROR
 		return
 	}
-
-	// Check for deleted folders.
-	for _, deletedFolder := range diff.Deleted {
-		if _, exist := targetFolders[deletedFolder]; exist {
-			logrus.Tracef("Container's folder %s has been deleted.", deletedFolder)
-			f.DeletedFolders = append(f.DeletedFolders, deletedFolder)
-		}
-	}
-
-	// Check for changed folders.
-	for _, changedFolder := range diff.Changed {
-		if _, exist := targetFolders[changedFolder]; exist {
-			logrus.Tracef("Container's folder %s is changed.", changedFolder)
-			f.ChangedFolders = append(f.ChangedFolders, changedFolder)
-		}
-	}
-
+	f.DeletedFolders = intersectTargetFolders(diff.Deleted)
+	f.ChangedFolders = intersectTargetFolders(diff.Changed)
 	if len(f.ChangedFolders) != 0 || len(f.DeletedFolders) != 0 {
 		f.result = testhelper.FAILURE
 	} else {
