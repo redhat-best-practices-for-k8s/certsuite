@@ -417,14 +417,14 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 `),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 	},
-	TestPodDeleteIdentifier: {
-		Identifier:  TestPodDeleteIdentifier,
-		Type:        normativeResult,
-		Remediation: `Make sure that the pods can be recreated successfully after deleting them`,
-		Description: formDescription(TestPodDeleteIdentifier,
-			`Using the litmus chaos operator, this test checks that pods are recreated successfully after deleting them.`),
-		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
-	},
+	// TestPodDeleteIdentifier: {
+	// 	Identifier:  TestPodDeleteIdentifier,
+	// 	Type:        normativeResult,
+	// 	Remediation: `Make sure that the pods can be recreated successfully after deleting them`,
+	// 	Description: formDescription(TestPodDeleteIdentifier,
+	// 		`Using the litmus chaos operator, this test checks that pods are recreated successfully after deleting them.`),
+	// 	BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
+	// },
 	TestSecConNonRootUserIdentifier: {
 		Identifier:  TestSecConNonRootUserIdentifier,
 		Type:        normativeResult,

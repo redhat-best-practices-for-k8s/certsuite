@@ -44,6 +44,8 @@ var _ = ginkgo.Describe(common.ChaosTesting, func() {
 })
 
 func testPodDelete(env *provider.TestEnvironment) {
+	ginkgo.Skip("This TC is under construction.")
+
 	for _, dep := range env.Deployments {
 		namespace := dep.Namespace
 		var label string
