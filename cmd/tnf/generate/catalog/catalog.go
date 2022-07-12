@@ -30,8 +30,6 @@ import (
 )
 
 const (
-	// backtickOffset is the number of extra characters required to enclose output in backticks.
-	backtickOffset = 2
 
 	// introMDFilename is the name of the file that contains the introductory text for CATALOG.md.
 	introMDFilename = "INTRO.md"
@@ -68,30 +66,6 @@ type catalogElement struct {
 	testName   string
 	testLabel  string
 	identifier claim.Identifier // {url and version}
-}
-
-// cmdJoin is a utility method abstracted from strings.Join which shims in better formatting for markdown files.
-func cmdJoin(elems []string, sep string) string {
-	switch len(elems) {
-	case 0:
-		return ""
-	case 1:
-		return "`" + elems[0] + "`"
-	}
-	n := len(sep) * (len(elems) - 1)
-	for i := 0; i < len(elems); i++ {
-		// backtickOffset is used to track the extra length required by enclosing output commands in backticks.
-		n += len(elems[i]) + backtickOffset
-	}
-
-	var b strings.Builder
-	b.Grow(n)
-	b.WriteString("`" + elems[0] + "`")
-	for _, s := range elems[1:] {
-		b.WriteString(sep)
-		b.WriteString("`" + s + "`")
-	}
-	return b.String()
 }
 
 // emitTextFromFile is a utility method to stream file contents to stdout.  This allows more natural specification of

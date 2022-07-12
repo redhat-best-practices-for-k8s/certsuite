@@ -280,6 +280,11 @@ var (
 		Url:     formTestURL(common.PlatformAlterationTestKey, "ocp-lifecycle"),
 		Version: versionOne,
 	}
+	// TestNodeOperatingSystemIdentifier ensures workers in the cluster have an operating system that is compatible with the installed version of OpenShift
+	TestNodeOperatingSystemIdentifier = claim.Identifier{
+		Url:     formTestURL(common.PlatformAlterationTestKey, "ocp-node-os-lifecycle"),
+		Version: versionOne,
+	}
 	// TestScalingIdentifier ensures deployment scale in/out operations work correctly.
 	TestScalingIdentifier = claim.Identifier{
 		Url:     formTestURL(common.LifecycleTestKey, "scaling"),
@@ -358,12 +363,21 @@ func GetSuiteAndTestFromIdentifier(identifier claim.Identifier) []string {
 // Catalog is the JUnit testcase catalog of tests.
 var Catalog = map[claim.Identifier]TestCaseDescription{
 
+	TestNodeOperatingSystemIdentifier: {
+		Identifier: TestNodeOperatingSystemIdentifier,
+		Type:       normativeResult,
+		Description: formDescription(TestNodeOperatingSystemIdentifier, `Tests that the nodes running in the cluster have operating systems
+			that are compatible with the deployed version of OpenShift.`),
+		Remediation:           `Please update your workers to a version that is supported by your version of OpenShift`,
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 7.9",
+	},
+
 	TestOCPLifecycleIdentifier: {
 		Identifier:            TestOCPLifecycleIdentifier,
 		Type:                  normativeResult,
 		Description:           formDescription(TestOCPLifecycleIdentifier, `Tests that the running OCP version is not end of life.`),
 		Remediation:           `Please update your cluster to a version that is generally available.`,
-		BestPracticeReference: bestPracticeDocV1dot3URL + " Section x.x", // TODO: Update this with correct section of requirements doc.
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 7.9",
 	},
 
 	TestDeploymentScalingIdentifier: {

@@ -7,9 +7,9 @@ require (
 	github.com/basgys/goxml2json v1.1.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.5.0
-	github.com/stretchr/testify v1.7.4
+	github.com/stretchr/testify v1.8.0
 	github.com/test-network-function/test-network-function-claim v1.0.5
-	github.com/xeipuuv/gojsonschema v1.2.0
+	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
@@ -17,7 +17,7 @@ require k8s.io/client-go v0.24.2
 
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/mittwald/go-helm-client v0.11.1
+	github.com/mittwald/go-helm-client v0.11.2
 	github.com/onsi/ginkgo/v2 v2.1.4
 	github.com/openshift/client-go v0.0.0-20211209144617-7385dd6338e3
 	github.com/operator-framework/api v0.15.0
@@ -158,11 +158,12 @@ require (
 )
 
 require (
-	github.com/hashicorp/go-version v1.5.0
+	github.com/hashicorp/go-version v1.6.0
 	k8s.io/apiextensions-apiserver v0.24.0
 )
 
 require (
+	github.com/deckarep/golang-set/v2 v2.1.0
 	github.com/go-yaml/yaml v2.1.0+incompatible
 	github.com/openshift/api v0.0.0-20220124143425-d74727069f6f
 	github.com/openshift/machine-config-operator v0.0.0-00010101000000-000000000000
