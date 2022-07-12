@@ -81,7 +81,7 @@ RUN mkdir ${TNF_BIN_DIR} && \
     cp -a cnf-certification-test/chaostesting/chaos-test-files ${TNF_DIR}/cnf-certification-test/chaostesting && \
     # copy the rhcos_version_map
     mkdir -p ${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files && \
-    cp -a cnf-certification-test/platform/operatingsystem/files ${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files
+    cp cnf-certification-test/platform/operatingsystem/files/rhcos_version_map ${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files/rhcos_version_map
 
 WORKDIR ${TNF_DIR}
 
