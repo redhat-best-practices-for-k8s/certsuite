@@ -63,7 +63,7 @@ done
 res=`oc version | grep  Server`
 if [ -z "$res" ]
 then
-   echo "Minikube or similar detected"
+   echo "Standard Kubernetes cluster detected (not OCP)"
    export TNF_NON_OCP_CLUSTER=true
 fi
 
