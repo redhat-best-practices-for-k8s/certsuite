@@ -24,14 +24,13 @@ const (
 )
 
 //nolint:funlen
-func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion string) *v1.DaemonSet {
+func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion string, runAsPrivileged bool) *v1.DaemonSet {
 	dsAnnotations := make(map[string]string)
 	dsAnnotations["debug.openshift.io/source-container"] = containerName
 	dsAnnotations["openshift.io/scc"] = nodeExporter
 	matchLabels := make(map[string]string)
 	matchLabels["name"] = dsName
 
-	var trueBool = true
 	var zeroInt int64
 	var zeroInt32 int32
 	var preempt = corev1.PreemptLowerPriority
@@ -43,7 +42,7 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 		Image:           imageWithVersion,
 		ImagePullPolicy: "IfNotPresent",
 		SecurityContext: &corev1.SecurityContext{
-			Privileged: &trueBool,
+			Privileged: &runAsPrivileged,
 			RunAsUser:  &zeroInt,
 		},
 		Stdin:                  true,
@@ -153,8 +152,8 @@ func doesDaemonSetExist(daemonSetName, namespace string) bool {
 }
 
 // Create daemon set
-func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion string, timeout time.Duration) (*corev1.PodList, error) {
-	rebootDaemonSet := CreateDaemonSetsTemplate(daemonSetName, namespace, containerName, imageWithVersion)
+func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion string, timeout time.Duration, runAsPrivileged bool) (*corev1.PodList, error) {
+	rebootDaemonSet := CreateDaemonSetsTemplate(daemonSetName, namespace, containerName, imageWithVersion, runAsPrivileged)
 	if doesDaemonSetExist(daemonSetName, namespace) {
 		err := DeleteDaemonSet(daemonSetName, namespace)
 		if err != nil {
@@ -186,7 +185,7 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 
 // Deploy daemon set on repo partner
 func PartnerRepoDaemonset() map[string]corev1.Pod {
-	dsRunningPods, err := CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion, timeout)
+	dsRunningPods, err := CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion, timeout, true)
 	if err != nil {
 		logrus.Errorf("Error : +%v\n", err.Error())
 	}
