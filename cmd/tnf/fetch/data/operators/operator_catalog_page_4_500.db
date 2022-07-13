@@ -46179,263 +46179,6 @@
       "version_original": "0.5.0"
     },
     {
-      "_id": "6231e43955e2d467ca134767",
-      "alm_examples": [
-        {
-          "api_version": "crd.nutanix.com/v1alpha1",
-          "kind": "NutanixCsiStorage",
-          "metadata": {
-            "name": "nutanixcsistorage"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "csi",
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nutanix/nutanix-csi-operator-bundle@sha256:0f14d11c27b353bf122ad29611929399824a8a009b8af400d67472d60835ca37",
-      "bundle_path_digest": "sha256:0f14d11c27b353bf122ad29611929399824a8a009b8af400d67472d60835ca37",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-16T13:20:57.340000+00:00",
-      "csv_description": "# Overview \n \nThe Nutanix CSI Operator for Kubernetes packages, deploys, manages, upgrades the Nutanix CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on Nutanix Enterprise Cloud platform.\n\nThe Nutanix Container Storage Interface (CSI) Driver for Kubernetes leverages Nutanix Volumes and Nutanix Files to provide scalable and persistent storage for stateful applications.\n\nWith the Nutanix CSI Provider you can:\n\n*  **Provide persistent storage to your containers**\n    * Leverage PVC resources to consume dynamically Nutanix storage\n    * With Files storage classes, applications on multiple pods can access the same storage, and also have the benefit of multi-pod read and write access. \n\n## Warning\n\nIf you upgrade from a previous version take care to validate your existing StorageClass parameters against the corresponding [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5).\n\n## Supported Access mode\n\n| Storage Class mode | ReadWriteOnce | ReadOnlyMany | ReadWriteMany |\n|--------------------|---------------|--------------|---------------|\n| Nutanix Volumes    | yes           | yes          | no            |\n| Nutanix Files      | yes           | yes          | yes           |\n\n\n## Supported orchestration platforms\nThe following table details orchestration platforms suitable for deployment of the Nutanix CSI driver.\n\n| Orchestration platform | Version | Architecture |\n|------------------------|---------|--------------|\n| Red Hat OpenShift      | 4.6     | x86          |\n| Red Hat OpenShift      | 4.7     | x86          |\n| Red Hat OpenShift      | 4.8     | x86          |\n| Red Hat OpenShift      | 4.9     | x86          |\n| Red Hat OpenShift      | 4.10    | x86          |\n\n## Configuring k8s secret and storage class\nIn order to use this driver, deploy your NutanixCsiStorage instance and create the relevant storage classes and secrets, by following the [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5) or the example in below section:\n\n1. Create a Nutanix system secret\n```\napiVersion: v1\nkind: Secret\nmetadata:\n  name: ntnx-secret\n  namespace: ntnx-system\nstringData:\n  # prism-ip:prism-port:username:password.\n  key: 10.0.0.14:9440:admin:password\n```\n\n2. Create storage classes\n\n- volume mode example\n```\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n  name: nutanix-volume\nprovisioner: csi.nutanix.com\nparameters:\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: ntnx-system\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: ntnx-system\n  csi.storage.k8s.io/fstype: ext4\n  storageContainer: default-container\n  storageType: NutanixVolumes\n  #description: \"description added to each storage object created by the driver\"\n  #isSegmentedIscsiNetwork: \"false\"\n  #whitelistIPMode: ENABLED\n  #chapAuth: ENABLED\n  #isLVMVolume: \"false\"\n  #numLVMDisks: 4\nallowVolumeExpansion: true\nreclaimPolicy: Delete\n```\n\n- dynamic files mode example\n\n```\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n    name: nutanix-dynfiles\nprovisioner: csi.nutanix.com\nparameters:\n  dynamicProv: ENABLED\n  nfsServerName: fs\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: ntnx-system\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: ntnx-system\n  storageType: NutanixFiles\n  #description: \"description added to each storage object created by the driver\"\nallowVolumeExpansion: true\n```",
-      "csv_display_name": "Nutanix CSI Operator",
-      "csv_metadata_description": "An Operator for deploying and managing the Nutanix CSI Driver",
-      "csv_name": "nutanixcsioperator.v2.5.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:56:56.329000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "nutanixcsioperator",
-      "provided_apis": [
-        {
-          "group": "crd.nutanix.com",
-          "kind": "NutanixCsiStorage",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "nutanix-csi-operator"
-        },
-        {
-          "digest": "sha256:66693da887ba2d9388aff5c4459a16a717246127c07bebdf36c573095a3e2118",
-          "image": "registry.connect.redhat.com/nutanix/ntnx-csi-os@sha256:66693da887ba2d9388aff5c4459a16a717246127c07bebdf36c573095a3e2118",
-          "name": "ntnx-csi-os"
-        },
-        {
-          "digest": "sha256:1b7c978a792a8fa4e96244e8059bd71bb49b07e2e5a897fb0c867bdc6db20d5d",
-          "image": "k8s.gcr.io/sig-storage/livenessprobe@sha256:1b7c978a792a8fa4e96244e8059bd71bb49b07e2e5a897fb0c867bdc6db20d5d",
-          "name": "livenessprobe"
-        },
-        {
-          "digest": "sha256:04c55b93a032ad8075cae540d60fc740a72c31006590dbdb61ad4ab9813959d0",
-          "image": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:04c55b93a032ad8075cae540d60fc740a72c31006590dbdb61ad4ab9813959d0",
-          "name": "csi-provisioner"
-        },
-        {
-          "digest": "sha256:2dee3fe5fe861bb66c3a4ac51114f3447a4cd35870e0f2e2b558c7a400d89589",
-          "image": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:2dee3fe5fe861bb66c3a4ac51114f3447a4cd35870e0f2e2b558c7a400d89589",
-          "name": "csi-node-driver-registrar"
-        },
-        {
-          "digest": "sha256:36c31f7e1f433c9634d24f876353e8646246d81a03c4e351202c2644daff1620",
-          "image": "k8s.gcr.io/sig-storage/csi-resizer@sha256:36c31f7e1f433c9634d24f876353e8646246d81a03c4e351202c2644daff1620",
-          "name": "csi-resizer"
-        },
-        {
-          "digest": "sha256:818f35653f2e214db81d655063e81995de9073328a3430498624c140881026a3",
-          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:818f35653f2e214db81d655063e81995de9073328a3430498624c140881026a3",
-          "name": "csi-snapshotter"
-        },
-        {
-          "digest": "sha256:9af9bf28430b00a0cedeb2ec29acadce45e6afcecd8bdf31c793c624cfa75fa7",
-          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:9af9bf28430b00a0cedeb2ec29acadce45e6afcecd8bdf31c793c624cfa75fa7",
-          "name": "csi-snapshotter-beta"
-        },
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "nutanix-csi-operator-1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131-annotation"
-        },
-        {
-          "digest": "sha256:f75cd86e7377bf3d9479234edf5f2c2d6aed968e623af3d42ba607e0ccd360c9",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:f75cd86e7377bf3d9479234edf5f2c2d6aed968e623af3d42ba607e0ccd360c9",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<2.5.2",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "2.5.2",
-      "version_original": "2.5.2"
-    },
-    {
-      "_id": "6231e53f5f071f8d039e3c7f",
-      "alm_examples": [
-        {
-          "api_version": "crd.nutanix.com/v1alpha1",
-          "kind": "NutanixCsiStorage",
-          "metadata": {
-            "name": "nutanixcsistorage"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "csi",
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nutanix/nutanix-csi-operator-bundle@sha256:0f14d11c27b353bf122ad29611929399824a8a009b8af400d67472d60835ca37",
-      "bundle_path_digest": "sha256:0f14d11c27b353bf122ad29611929399824a8a009b8af400d67472d60835ca37",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-16T13:25:19.399000+00:00",
-      "csv_description": "# Overview \n \nThe Nutanix CSI Operator for Kubernetes packages, deploys, manages, upgrades the Nutanix CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on Nutanix Enterprise Cloud platform.\n\nThe Nutanix Container Storage Interface (CSI) Driver for Kubernetes leverages Nutanix Volumes and Nutanix Files to provide scalable and persistent storage for stateful applications.\n\nWith the Nutanix CSI Provider you can:\n\n*  **Provide persistent storage to your containers**\n    * Leverage PVC resources to consume dynamically Nutanix storage\n    * With Files storage classes, applications on multiple pods can access the same storage, and also have the benefit of multi-pod read and write access. \n\n## Warning\n\nIf you upgrade from a previous version take care to validate your existing StorageClass parameters against the corresponding [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5).\n\n## Supported Access mode\n\n| Storage Class mode | ReadWriteOnce | ReadOnlyMany | ReadWriteMany |\n|--------------------|---------------|--------------|---------------|\n| Nutanix Volumes    | yes           | yes          | no            |\n| Nutanix Files      | yes           | yes          | yes           |\n\n\n## Supported orchestration platforms\nThe following table details orchestration platforms suitable for deployment of the Nutanix CSI driver.\n\n| Orchestration platform | Version | Architecture |\n|------------------------|---------|--------------|\n| Red Hat OpenShift      | 4.6     | x86          |\n| Red Hat OpenShift      | 4.7     | x86          |\n| Red Hat OpenShift      | 4.8     | x86          |\n| Red Hat OpenShift      | 4.9     | x86          |\n| Red Hat OpenShift      | 4.10    | x86          |\n\n## Configuring k8s secret and storage class\nIn order to use this driver, deploy your NutanixCsiStorage instance and create the relevant storage classes and secrets, by following the [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5) or the example in below section:\n\n1. Create a Nutanix system secret\n```\napiVersion: v1\nkind: Secret\nmetadata:\n  name: ntnx-secret\n  namespace: ntnx-system\nstringData:\n  # prism-ip:prism-port:username:password.\n  key: 10.0.0.14:9440:admin:password\n```\n\n2. Create storage classes\n\n- volume mode example\n```\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n  name: nutanix-volume\nprovisioner: csi.nutanix.com\nparameters:\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: ntnx-system\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: ntnx-system\n  csi.storage.k8s.io/fstype: ext4\n  storageContainer: default-container\n  storageType: NutanixVolumes\n  #description: \"description added to each storage object created by the driver\"\n  #isSegmentedIscsiNetwork: \"false\"\n  #whitelistIPMode: ENABLED\n  #chapAuth: ENABLED\n  #isLVMVolume: \"false\"\n  #numLVMDisks: 4\nallowVolumeExpansion: true\nreclaimPolicy: Delete\n```\n\n- dynamic files mode example\n\n```\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n    name: nutanix-dynfiles\nprovisioner: csi.nutanix.com\nparameters:\n  dynamicProv: ENABLED\n  nfsServerName: fs\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: ntnx-system\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: ntnx-system\n  storageType: NutanixFiles\n  #description: \"description added to each storage object created by the driver\"\nallowVolumeExpansion: true\n```",
-      "csv_display_name": "Nutanix CSI Operator",
-      "csv_metadata_description": "An Operator for deploying and managing the Nutanix CSI Driver",
-      "csv_name": "nutanixcsioperator.v2.5.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:46:31.714000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "nutanixcsioperator",
-      "provided_apis": [
-        {
-          "group": "crd.nutanix.com",
-          "kind": "NutanixCsiStorage",
-          "plural": "nutanixcsistorages",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "nutanix-csi-operator"
-        },
-        {
-          "digest": "sha256:66693da887ba2d9388aff5c4459a16a717246127c07bebdf36c573095a3e2118",
-          "image": "registry.connect.redhat.com/nutanix/ntnx-csi-os@sha256:66693da887ba2d9388aff5c4459a16a717246127c07bebdf36c573095a3e2118",
-          "name": "ntnx-csi-os"
-        },
-        {
-          "digest": "sha256:1b7c978a792a8fa4e96244e8059bd71bb49b07e2e5a897fb0c867bdc6db20d5d",
-          "image": "k8s.gcr.io/sig-storage/livenessprobe@sha256:1b7c978a792a8fa4e96244e8059bd71bb49b07e2e5a897fb0c867bdc6db20d5d",
-          "name": "livenessprobe"
-        },
-        {
-          "digest": "sha256:04c55b93a032ad8075cae540d60fc740a72c31006590dbdb61ad4ab9813959d0",
-          "image": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:04c55b93a032ad8075cae540d60fc740a72c31006590dbdb61ad4ab9813959d0",
-          "name": "csi-provisioner"
-        },
-        {
-          "digest": "sha256:2dee3fe5fe861bb66c3a4ac51114f3447a4cd35870e0f2e2b558c7a400d89589",
-          "image": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:2dee3fe5fe861bb66c3a4ac51114f3447a4cd35870e0f2e2b558c7a400d89589",
-          "name": "csi-node-driver-registrar"
-        },
-        {
-          "digest": "sha256:36c31f7e1f433c9634d24f876353e8646246d81a03c4e351202c2644daff1620",
-          "image": "k8s.gcr.io/sig-storage/csi-resizer@sha256:36c31f7e1f433c9634d24f876353e8646246d81a03c4e351202c2644daff1620",
-          "name": "csi-resizer"
-        },
-        {
-          "digest": "sha256:818f35653f2e214db81d655063e81995de9073328a3430498624c140881026a3",
-          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:818f35653f2e214db81d655063e81995de9073328a3430498624c140881026a3",
-          "name": "csi-snapshotter"
-        },
-        {
-          "digest": "sha256:9af9bf28430b00a0cedeb2ec29acadce45e6afcecd8bdf31c793c624cfa75fa7",
-          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:9af9bf28430b00a0cedeb2ec29acadce45e6afcecd8bdf31c793c624cfa75fa7",
-          "name": "csi-snapshotter-beta"
-        },
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "nutanix-csi-operator-1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131-annotation"
-        },
-        {
-          "digest": "sha256:f75cd86e7377bf3d9479234edf5f2c2d6aed968e623af3d42ba607e0ccd360c9",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:f75cd86e7377bf3d9479234edf5f2c2d6aed968e623af3d42ba607e0ccd360c9",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<2.5.2",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.5.2",
-      "version_original": "2.5.2"
-    },
-    {
       "_id": "6231e6445f071f8d039e3c87",
       "alm_examples": [
         {
@@ -46589,263 +46332,6 @@
       "version_original": "5.0.5"
     },
     {
-      "_id": "6231e6454b7f7a37109311af",
-      "alm_examples": [
-        {
-          "api_version": "crd.nutanix.com/v1alpha1",
-          "kind": "NutanixCsiStorage",
-          "metadata": {
-            "name": "nutanixcsistorage"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "csi",
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nutanix/nutanix-csi-operator-bundle@sha256:0f14d11c27b353bf122ad29611929399824a8a009b8af400d67472d60835ca37",
-      "bundle_path_digest": "sha256:0f14d11c27b353bf122ad29611929399824a8a009b8af400d67472d60835ca37",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-16T13:29:41.492000+00:00",
-      "csv_description": "# Overview \n \nThe Nutanix CSI Operator for Kubernetes packages, deploys, manages, upgrades the Nutanix CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on Nutanix Enterprise Cloud platform.\n\nThe Nutanix Container Storage Interface (CSI) Driver for Kubernetes leverages Nutanix Volumes and Nutanix Files to provide scalable and persistent storage for stateful applications.\n\nWith the Nutanix CSI Provider you can:\n\n*  **Provide persistent storage to your containers**\n    * Leverage PVC resources to consume dynamically Nutanix storage\n    * With Files storage classes, applications on multiple pods can access the same storage, and also have the benefit of multi-pod read and write access. \n\n## Warning\n\nIf you upgrade from a previous version take care to validate your existing StorageClass parameters against the corresponding [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5).\n\n## Supported Access mode\n\n| Storage Class mode | ReadWriteOnce | ReadOnlyMany | ReadWriteMany |\n|--------------------|---------------|--------------|---------------|\n| Nutanix Volumes    | yes           | yes          | no            |\n| Nutanix Files      | yes           | yes          | yes           |\n\n\n## Supported orchestration platforms\nThe following table details orchestration platforms suitable for deployment of the Nutanix CSI driver.\n\n| Orchestration platform | Version | Architecture |\n|------------------------|---------|--------------|\n| Red Hat OpenShift      | 4.6     | x86          |\n| Red Hat OpenShift      | 4.7     | x86          |\n| Red Hat OpenShift      | 4.8     | x86          |\n| Red Hat OpenShift      | 4.9     | x86          |\n| Red Hat OpenShift      | 4.10    | x86          |\n\n## Configuring k8s secret and storage class\nIn order to use this driver, deploy your NutanixCsiStorage instance and create the relevant storage classes and secrets, by following the [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5) or the example in below section:\n\n1. Create a Nutanix system secret\n```\napiVersion: v1\nkind: Secret\nmetadata:\n  name: ntnx-secret\n  namespace: ntnx-system\nstringData:\n  # prism-ip:prism-port:username:password.\n  key: 10.0.0.14:9440:admin:password\n```\n\n2. Create storage classes\n\n- volume mode example\n```\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n  name: nutanix-volume\nprovisioner: csi.nutanix.com\nparameters:\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: ntnx-system\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: ntnx-system\n  csi.storage.k8s.io/fstype: ext4\n  storageContainer: default-container\n  storageType: NutanixVolumes\n  #description: \"description added to each storage object created by the driver\"\n  #isSegmentedIscsiNetwork: \"false\"\n  #whitelistIPMode: ENABLED\n  #chapAuth: ENABLED\n  #isLVMVolume: \"false\"\n  #numLVMDisks: 4\nallowVolumeExpansion: true\nreclaimPolicy: Delete\n```\n\n- dynamic files mode example\n\n```\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n    name: nutanix-dynfiles\nprovisioner: csi.nutanix.com\nparameters:\n  dynamicProv: ENABLED\n  nfsServerName: fs\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: ntnx-system\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: ntnx-system\n  storageType: NutanixFiles\n  #description: \"description added to each storage object created by the driver\"\nallowVolumeExpansion: true\n```",
-      "csv_display_name": "Nutanix CSI Operator",
-      "csv_metadata_description": "An Operator for deploying and managing the Nutanix CSI Driver",
-      "csv_name": "nutanixcsioperator.v2.5.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:13:08.021000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "nutanixcsioperator",
-      "provided_apis": [
-        {
-          "group": "crd.nutanix.com",
-          "kind": "NutanixCsiStorage",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "nutanix-csi-operator"
-        },
-        {
-          "digest": "sha256:66693da887ba2d9388aff5c4459a16a717246127c07bebdf36c573095a3e2118",
-          "image": "registry.connect.redhat.com/nutanix/ntnx-csi-os@sha256:66693da887ba2d9388aff5c4459a16a717246127c07bebdf36c573095a3e2118",
-          "name": "ntnx-csi-os"
-        },
-        {
-          "digest": "sha256:1b7c978a792a8fa4e96244e8059bd71bb49b07e2e5a897fb0c867bdc6db20d5d",
-          "image": "k8s.gcr.io/sig-storage/livenessprobe@sha256:1b7c978a792a8fa4e96244e8059bd71bb49b07e2e5a897fb0c867bdc6db20d5d",
-          "name": "livenessprobe"
-        },
-        {
-          "digest": "sha256:04c55b93a032ad8075cae540d60fc740a72c31006590dbdb61ad4ab9813959d0",
-          "image": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:04c55b93a032ad8075cae540d60fc740a72c31006590dbdb61ad4ab9813959d0",
-          "name": "csi-provisioner"
-        },
-        {
-          "digest": "sha256:2dee3fe5fe861bb66c3a4ac51114f3447a4cd35870e0f2e2b558c7a400d89589",
-          "image": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:2dee3fe5fe861bb66c3a4ac51114f3447a4cd35870e0f2e2b558c7a400d89589",
-          "name": "csi-node-driver-registrar"
-        },
-        {
-          "digest": "sha256:36c31f7e1f433c9634d24f876353e8646246d81a03c4e351202c2644daff1620",
-          "image": "k8s.gcr.io/sig-storage/csi-resizer@sha256:36c31f7e1f433c9634d24f876353e8646246d81a03c4e351202c2644daff1620",
-          "name": "csi-resizer"
-        },
-        {
-          "digest": "sha256:818f35653f2e214db81d655063e81995de9073328a3430498624c140881026a3",
-          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:818f35653f2e214db81d655063e81995de9073328a3430498624c140881026a3",
-          "name": "csi-snapshotter"
-        },
-        {
-          "digest": "sha256:9af9bf28430b00a0cedeb2ec29acadce45e6afcecd8bdf31c793c624cfa75fa7",
-          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:9af9bf28430b00a0cedeb2ec29acadce45e6afcecd8bdf31c793c624cfa75fa7",
-          "name": "csi-snapshotter-beta"
-        },
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "nutanix-csi-operator-1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131-annotation"
-        },
-        {
-          "digest": "sha256:f75cd86e7377bf3d9479234edf5f2c2d6aed968e623af3d42ba607e0ccd360c9",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:f75cd86e7377bf3d9479234edf5f2c2d6aed968e623af3d42ba607e0ccd360c9",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<2.5.2",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.5.2",
-      "version_original": "2.5.2"
-    },
-    {
-      "_id": "62321e7b99b2bd346a063a99",
-      "alm_examples": [
-        {
-          "api_version": "crd.nutanix.com/v1alpha1",
-          "kind": "NutanixCsiStorage",
-          "metadata": {
-            "name": "nutanixcsistorage"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "csi",
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nutanix/nutanix-csi-operator-bundle@sha256:0f14d11c27b353bf122ad29611929399824a8a009b8af400d67472d60835ca37",
-      "bundle_path_digest": "sha256:0f14d11c27b353bf122ad29611929399824a8a009b8af400d67472d60835ca37",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-16T17:29:31.475000+00:00",
-      "csv_description": "# Overview \n \nThe Nutanix CSI Operator for Kubernetes packages, deploys, manages, upgrades the Nutanix CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on Nutanix Enterprise Cloud platform.\n\nThe Nutanix Container Storage Interface (CSI) Driver for Kubernetes leverages Nutanix Volumes and Nutanix Files to provide scalable and persistent storage for stateful applications.\n\nWith the Nutanix CSI Provider you can:\n\n*  **Provide persistent storage to your containers**\n    * Leverage PVC resources to consume dynamically Nutanix storage\n    * With Files storage classes, applications on multiple pods can access the same storage, and also have the benefit of multi-pod read and write access. \n\n## Warning\n\nIf you upgrade from a previous version take care to validate your existing StorageClass parameters against the corresponding [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5).\n\n## Supported Access mode\n\n| Storage Class mode | ReadWriteOnce | ReadOnlyMany | ReadWriteMany |\n|--------------------|---------------|--------------|---------------|\n| Nutanix Volumes    | yes           | yes          | no            |\n| Nutanix Files      | yes           | yes          | yes           |\n\n\n## Supported orchestration platforms\nThe following table details orchestration platforms suitable for deployment of the Nutanix CSI driver.\n\n| Orchestration platform | Version | Architecture |\n|------------------------|---------|--------------|\n| Red Hat OpenShift      | 4.6     | x86          |\n| Red Hat OpenShift      | 4.7     | x86          |\n| Red Hat OpenShift      | 4.8     | x86          |\n| Red Hat OpenShift      | 4.9     | x86          |\n| Red Hat OpenShift      | 4.10    | x86          |\n\n## Configuring k8s secret and storage class\nIn order to use this driver, deploy your NutanixCsiStorage instance and create the relevant storage classes and secrets, by following the [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5) or the example in below section:\n\n1. Create a Nutanix system secret\n```\napiVersion: v1\nkind: Secret\nmetadata:\n  name: ntnx-secret\n  namespace: ntnx-system\nstringData:\n  # prism-ip:prism-port:username:password.\n  key: 10.0.0.14:9440:admin:password\n```\n\n2. Create storage classes\n\n- volume mode example\n```\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n  name: nutanix-volume\nprovisioner: csi.nutanix.com\nparameters:\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: ntnx-system\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: ntnx-system\n  csi.storage.k8s.io/fstype: ext4\n  storageContainer: default-container\n  storageType: NutanixVolumes\n  #description: \"description added to each storage object created by the driver\"\n  #isSegmentedIscsiNetwork: \"false\"\n  #whitelistIPMode: ENABLED\n  #chapAuth: ENABLED\n  #isLVMVolume: \"false\"\n  #numLVMDisks: 4\nallowVolumeExpansion: true\nreclaimPolicy: Delete\n```\n\n- dynamic files mode example\n\n```\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n    name: nutanix-dynfiles\nprovisioner: csi.nutanix.com\nparameters:\n  dynamicProv: ENABLED\n  nfsServerName: fs\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: ntnx-system\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: ntnx-system\n  storageType: NutanixFiles\n  #description: \"description added to each storage object created by the driver\"\nallowVolumeExpansion: true\n```",
-      "csv_display_name": "Nutanix CSI Operator",
-      "csv_metadata_description": "An Operator for deploying and managing the Nutanix CSI Driver",
-      "csv_name": "nutanixcsioperator.v2.5.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:47:37.464000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "nutanixcsioperator",
-      "provided_apis": [
-        {
-          "group": "crd.nutanix.com",
-          "kind": "NutanixCsiStorage",
-          "plural": "nutanixcsistorages",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "nutanix-csi-operator"
-        },
-        {
-          "digest": "sha256:66693da887ba2d9388aff5c4459a16a717246127c07bebdf36c573095a3e2118",
-          "image": "registry.connect.redhat.com/nutanix/ntnx-csi-os@sha256:66693da887ba2d9388aff5c4459a16a717246127c07bebdf36c573095a3e2118",
-          "name": "ntnx-csi-os"
-        },
-        {
-          "digest": "sha256:1b7c978a792a8fa4e96244e8059bd71bb49b07e2e5a897fb0c867bdc6db20d5d",
-          "image": "k8s.gcr.io/sig-storage/livenessprobe@sha256:1b7c978a792a8fa4e96244e8059bd71bb49b07e2e5a897fb0c867bdc6db20d5d",
-          "name": "livenessprobe"
-        },
-        {
-          "digest": "sha256:04c55b93a032ad8075cae540d60fc740a72c31006590dbdb61ad4ab9813959d0",
-          "image": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:04c55b93a032ad8075cae540d60fc740a72c31006590dbdb61ad4ab9813959d0",
-          "name": "csi-provisioner"
-        },
-        {
-          "digest": "sha256:2dee3fe5fe861bb66c3a4ac51114f3447a4cd35870e0f2e2b558c7a400d89589",
-          "image": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:2dee3fe5fe861bb66c3a4ac51114f3447a4cd35870e0f2e2b558c7a400d89589",
-          "name": "csi-node-driver-registrar"
-        },
-        {
-          "digest": "sha256:36c31f7e1f433c9634d24f876353e8646246d81a03c4e351202c2644daff1620",
-          "image": "k8s.gcr.io/sig-storage/csi-resizer@sha256:36c31f7e1f433c9634d24f876353e8646246d81a03c4e351202c2644daff1620",
-          "name": "csi-resizer"
-        },
-        {
-          "digest": "sha256:818f35653f2e214db81d655063e81995de9073328a3430498624c140881026a3",
-          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:818f35653f2e214db81d655063e81995de9073328a3430498624c140881026a3",
-          "name": "csi-snapshotter"
-        },
-        {
-          "digest": "sha256:9af9bf28430b00a0cedeb2ec29acadce45e6afcecd8bdf31c793c624cfa75fa7",
-          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:9af9bf28430b00a0cedeb2ec29acadce45e6afcecd8bdf31c793c624cfa75fa7",
-          "name": "csi-snapshotter-beta"
-        },
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "nutanix-csi-operator-1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131-annotation"
-        },
-        {
-          "digest": "sha256:f75cd86e7377bf3d9479234edf5f2c2d6aed968e623af3d42ba607e0ccd360c9",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:f75cd86e7377bf3d9479234edf5f2c2d6aed968e623af3d42ba607e0ccd360c9",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<2.5.2",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.5.2",
-      "version_original": "2.5.2"
-    },
-    {
       "_id": "6232e1405f071f8d039e3cfc",
       "alm_examples": [
         {
@@ -46962,135 +46448,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "1.0.9",
       "version_original": "1.0.9"
-    },
-    {
-      "_id": "6232e14055defc084591b81d",
-      "alm_examples": [
-        {
-          "api_version": "crd.nutanix.com/v1alpha1",
-          "kind": "NutanixCsiStorage",
-          "metadata": {
-            "name": "nutanixcsistorage"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "csi",
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nutanix/nutanix-csi-operator-bundle@sha256:0f14d11c27b353bf122ad29611929399824a8a009b8af400d67472d60835ca37",
-      "bundle_path_digest": "sha256:0f14d11c27b353bf122ad29611929399824a8a009b8af400d67472d60835ca37",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-17T07:20:32.635000+00:00",
-      "csv_description": "# Overview \n \nThe Nutanix CSI Operator for Kubernetes packages, deploys, manages, upgrades the Nutanix CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on Nutanix Enterprise Cloud platform.\n\nThe Nutanix Container Storage Interface (CSI) Driver for Kubernetes leverages Nutanix Volumes and Nutanix Files to provide scalable and persistent storage for stateful applications.\n\nWith the Nutanix CSI Provider you can:\n\n*  **Provide persistent storage to your containers**\n    * Leverage PVC resources to consume dynamically Nutanix storage\n    * With Files storage classes, applications on multiple pods can access the same storage, and also have the benefit of multi-pod read and write access. \n\n## Warning\n\nIf you upgrade from a previous version take care to validate your existing StorageClass parameters against the corresponding [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5).\n\n## Supported Access mode\n\n| Storage Class mode | ReadWriteOnce | ReadOnlyMany | ReadWriteMany |\n|--------------------|---------------|--------------|---------------|\n| Nutanix Volumes    | yes           | yes          | no            |\n| Nutanix Files      | yes           | yes          | yes           |\n\n\n## Supported orchestration platforms\nThe following table details orchestration platforms suitable for deployment of the Nutanix CSI driver.\n\n| Orchestration platform | Version | Architecture |\n|------------------------|---------|--------------|\n| Red Hat OpenShift      | 4.6     | x86          |\n| Red Hat OpenShift      | 4.7     | x86          |\n| Red Hat OpenShift      | 4.8     | x86          |\n| Red Hat OpenShift      | 4.9     | x86          |\n| Red Hat OpenShift      | 4.10    | x86          |\n\n## Configuring k8s secret and storage class\nIn order to use this driver, deploy your NutanixCsiStorage instance and create the relevant storage classes and secrets, by following the [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5) or the example in below section:\n\n1. Create a Nutanix system secret\n```\napiVersion: v1\nkind: Secret\nmetadata:\n  name: ntnx-secret\n  namespace: ntnx-system\nstringData:\n  # prism-ip:prism-port:username:password.\n  key: 10.0.0.14:9440:admin:password\n```\n\n2. Create storage classes\n\n- volume mode example\n```\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n  name: nutanix-volume\nprovisioner: csi.nutanix.com\nparameters:\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: ntnx-system\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: ntnx-system\n  csi.storage.k8s.io/fstype: ext4\n  storageContainer: default-container\n  storageType: NutanixVolumes\n  #description: \"description added to each storage object created by the driver\"\n  #isSegmentedIscsiNetwork: \"false\"\n  #whitelistIPMode: ENABLED\n  #chapAuth: ENABLED\n  #isLVMVolume: \"false\"\n  #numLVMDisks: 4\nallowVolumeExpansion: true\nreclaimPolicy: Delete\n```\n\n- dynamic files mode example\n\n```\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n    name: nutanix-dynfiles\nprovisioner: csi.nutanix.com\nparameters:\n  dynamicProv: ENABLED\n  nfsServerName: fs\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: ntnx-system\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: ntnx-system\n  storageType: NutanixFiles\n  #description: \"description added to each storage object created by the driver\"\nallowVolumeExpansion: true\n```",
-      "csv_display_name": "Nutanix CSI Operator",
-      "csv_metadata_description": "An Operator for deploying and managing the Nutanix CSI Driver",
-      "csv_name": "nutanixcsioperator.v2.5.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:51:03.113000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "nutanixcsioperator",
-      "provided_apis": [
-        {
-          "group": "crd.nutanix.com",
-          "kind": "NutanixCsiStorage",
-          "plural": "nutanixcsistorages",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "nutanix-csi-operator"
-        },
-        {
-          "digest": "sha256:66693da887ba2d9388aff5c4459a16a717246127c07bebdf36c573095a3e2118",
-          "image": "registry.connect.redhat.com/nutanix/ntnx-csi-os@sha256:66693da887ba2d9388aff5c4459a16a717246127c07bebdf36c573095a3e2118",
-          "name": "ntnx-csi-os"
-        },
-        {
-          "digest": "sha256:1b7c978a792a8fa4e96244e8059bd71bb49b07e2e5a897fb0c867bdc6db20d5d",
-          "image": "k8s.gcr.io/sig-storage/livenessprobe@sha256:1b7c978a792a8fa4e96244e8059bd71bb49b07e2e5a897fb0c867bdc6db20d5d",
-          "name": "livenessprobe"
-        },
-        {
-          "digest": "sha256:04c55b93a032ad8075cae540d60fc740a72c31006590dbdb61ad4ab9813959d0",
-          "image": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:04c55b93a032ad8075cae540d60fc740a72c31006590dbdb61ad4ab9813959d0",
-          "name": "csi-provisioner"
-        },
-        {
-          "digest": "sha256:2dee3fe5fe861bb66c3a4ac51114f3447a4cd35870e0f2e2b558c7a400d89589",
-          "image": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:2dee3fe5fe861bb66c3a4ac51114f3447a4cd35870e0f2e2b558c7a400d89589",
-          "name": "csi-node-driver-registrar"
-        },
-        {
-          "digest": "sha256:36c31f7e1f433c9634d24f876353e8646246d81a03c4e351202c2644daff1620",
-          "image": "k8s.gcr.io/sig-storage/csi-resizer@sha256:36c31f7e1f433c9634d24f876353e8646246d81a03c4e351202c2644daff1620",
-          "name": "csi-resizer"
-        },
-        {
-          "digest": "sha256:818f35653f2e214db81d655063e81995de9073328a3430498624c140881026a3",
-          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:818f35653f2e214db81d655063e81995de9073328a3430498624c140881026a3",
-          "name": "csi-snapshotter"
-        },
-        {
-          "digest": "sha256:9af9bf28430b00a0cedeb2ec29acadce45e6afcecd8bdf31c793c624cfa75fa7",
-          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:9af9bf28430b00a0cedeb2ec29acadce45e6afcecd8bdf31c793c624cfa75fa7",
-          "name": "csi-snapshotter-beta"
-        },
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "nutanix-csi-operator-1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131-annotation"
-        },
-        {
-          "digest": "sha256:f75cd86e7377bf3d9479234edf5f2c2d6aed968e623af3d42ba607e0ccd360c9",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:f75cd86e7377bf3d9479234edf5f2c2d6aed968e623af3d42ba607e0ccd360c9",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1d79dffaf6d45aeee807034155b37517fc0a3668e0276a57a839f6d39fdd3131",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<2.5.2",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2.5.2",
-      "version_original": "2.5.2"
     },
     {
       "_id": "62338c367bd6ce5a69d76f5c",
@@ -79418,9 +78775,228 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.3.0",
       "version_original": "1.3.0"
+    },
+    {
+      "_id": "6262a64fcde83e2b177c20d5",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-certifai-operator-bundle@sha256:2ff2df4e61105cb9cc1905f504ed0e74907fcd43f85d200f729e464e824e928f",
+      "bundle_path_digest": "sha256:2ff2df4e61105cb9cc1905f504ed0e74907fcd43f85d200f729e464e824e928f",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:57:51.259000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cortex-certifai-operator.v1.3.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:12:22.818000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "cortex-certifai-operator",
+      "provided_apis": [
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "Certifai",
+          "plural": "certifais",
+          "version": "v1"
+        },
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "CertifaiScan",
+          "plural": "certifaiscans",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.3.2",
+      "version_original": "1.3.2"
+    },
+    {
+      "_id": "6262a652834f257293b60f81",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.8",
+      "creation_date": "2022-04-22T12:57:54.647000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:29:29.933000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "6262a662cde83e2b177c20d6",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:2098ab48bafee24a19a6bd6592a2b177b5d863e9c1d2519bf095325dcd4476e1",
+      "bundle_path_digest": "sha256:2098ab48bafee24a19a6bd6592a2b177b5d863e9c1d2519bf095325dcd4476e1",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:58:10.043000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.1.4",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:21:49.889000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "plural": "dashboardwithjupyterhubs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.1.4",
+      "version_original": "0.1.4"
+    },
+    {
+      "_id": "6262a667834f257293b60f85",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/triggermesh/aws-event-sources-operator-bundle@sha256:b9d8f05aa217db6847aed2b06cff677777bbdd5606191b832ff53000dea489cd",
+      "bundle_path_digest": "sha256:b9d8f05aa217db6847aed2b06cff677777bbdd5606191b832ff53000dea489cd",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T12:58:15.771000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "aws-sources-operator.v0.2.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:16:26.868000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "aws-event-sources-operator-certified",
+      "provided_apis": [
+        {
+          "group": "sources.triggermesh.com",
+          "kind": "AwsEventSources",
+          "plural": "awseventsources",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.2.2",
+      "version_original": "0.2.2"
+    },
+    {
+      "_id": "6262a66a173a0d36cf5d6973",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-fabric-operator-bundle@sha256:de8cf8423ab8ea22f2090947fb51c3091407fcca623d5a83137b266c43e00f6d",
+      "bundle_path_digest": "sha256:de8cf8423ab8ea22f2090947fb51c3091407fcca623d5a83137b266c43e00f6d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:58:18.822000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cortex-fabric-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:05:43.813000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "cortex-fabric-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Cortex5",
+          "plural": "cortex5s",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
     }
   ],
   "page": 4,
   "page_size": 500,
-  "total": 3899
+  "total": 3890
 }
