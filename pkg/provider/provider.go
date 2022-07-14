@@ -18,6 +18,7 @@ package provider
 
 import (
 	"context"
+	"os"
 	"time"
 
 	"errors"
@@ -58,8 +59,9 @@ const (
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
 // Master's role label "master" is deprecated since k8s 1.20.
 var (
-	WorkerLabels = []string{"node-role.kubernetes.io/worker"}
-	MasterLabels = []string{"node-role.kubernetes.io/master", "node-role.kubernetes.io/control-plane"}
+	WorkerLabels      = []string{"node-role.kubernetes.io/worker"}
+	MasterLabels      = []string{"node-role.kubernetes.io/master", "node-role.kubernetes.io/control-plane"}
+	rhcosRelativePath = "%s/../../cnf-certification-test/platform/operatingsystem/files/rhcos_version_map"
 )
 
 type Pod struct {
@@ -201,12 +203,19 @@ func (node *Node) GetRHCOSVersion() (string, error) {
 		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
 	}
 
+	path, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+
+	filePath := fmt.Sprintf(rhcosRelativePath, path)
+
 	// Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa) --> 410.84.202205031645-0
 	splitStr := strings.Split(node.Data.Status.NodeInfo.OSImage, rhcosName)
 	longVersionSplit := strings.Split(strings.TrimSpace(splitStr[1]), " ")
 
 	// Get the short version string from the long version string
-	shortVersion, err := operatingsystem.GetShortVersionFromLong(longVersionSplit[0])
+	shortVersion, err := operatingsystem.GetShortVersionFromLong(longVersionSplit[0], filePath)
 	if err != nil {
 		return "", err
 	}
