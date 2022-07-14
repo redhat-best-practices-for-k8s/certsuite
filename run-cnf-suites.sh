@@ -59,6 +59,14 @@ while [[ $1 == -* ]]; do
 	shift
 done
 
+# Check if the test cluster runs OCP
+res=`oc version | grep  Server`
+if [ -z "$res" ]
+then
+   echo "Standard Kubernetes cluster detected (not OCP)"
+   export TNF_NON_OCP_CLUSTER=true
+fi
+
 # List the specs (filtering by suite)
 if [ "$LIST" = true ] ; then
 	FOCUS=${FOCUS%?}  # strip the trailing "|" from the concatenation
@@ -86,12 +94,6 @@ FOCUS=${FOCUS%?}  # strip the trailing "|" from the concatenation
 SKIP=${SKIP%?} # strip the trailing "|" from the concatenation
 LABEL=${LABEL%?} # strip the trailing "|" from the concatenation
 
-res=`oc version | grep  Server`
-if [ -z "$res" ]
-then
-   echo "Minikube or similar detected"
-   export TNF_NON_OCP_CLUSTER=true
-fi
 # Run cnf-feature-deploy test container if not running inside a container
 # cgroup file doesn't exist on MacOS. Consider that as not running in container as well
 if [[ ! -f "/proc/1/cgroup" ]] || grep -q init\.scope /proc/1/cgroup; then

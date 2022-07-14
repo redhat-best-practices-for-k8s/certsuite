@@ -17,7 +17,7 @@ RUN yum install -y gcc git jq make wget
 
 # Install Go binary
 ENV GO_DL_URL="https://golang.org/dl"
-ENV GO_BIN_TAR="go1.18.3.linux-amd64.tar.gz"
+ENV GO_BIN_TAR="go1.18.4.linux-amd64.tar.gz"
 ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
 ENV GOPATH="/root/go"
 RUN if [[ "$(uname -m)" -eq "x86_64" ]] ; then \
@@ -80,7 +80,8 @@ RUN mkdir ${TNF_BIN_DIR} && \
     mkdir -p ${TNF_DIR}/cnf-certification-test/chaostesting && \
     cp -a cnf-certification-test/chaostesting/chaos-test-files ${TNF_DIR}/cnf-certification-test/chaostesting && \
     # copy the rhcos_version_map
-    cp rhcos_version_map ${TNF_DIR}/rhcos_version_map
+    mkdir -p ${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files && \
+    cp cnf-certification-test/platform/operatingsystem/files/rhcos_version_map ${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files/rhcos_version_map
 
 WORKDIR ${TNF_DIR}
 
