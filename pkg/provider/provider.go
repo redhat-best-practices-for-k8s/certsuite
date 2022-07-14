@@ -61,7 +61,7 @@ const (
 var (
 	WorkerLabels      = []string{"node-role.kubernetes.io/worker"}
 	MasterLabels      = []string{"node-role.kubernetes.io/master", "node-role.kubernetes.io/control-plane"}
-	rhcosRelativePath = "%s/cnf-certification-test/platform/operatingsystem/files/rhcos_version_map"
+	rhcosRelativePath = "%s/platform/operatingsystem/files/rhcos_version_map"
 )
 
 type Pod struct {
