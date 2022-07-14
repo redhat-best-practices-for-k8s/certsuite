@@ -1078,7 +1078,6 @@ func TestIsRHEL(t *testing.T) {
 	}
 }
 
-//nolint:dupl
 func TestGetRHCOSVersion(t *testing.T) {
 	testCases := []struct {
 		testImageName  string
@@ -1112,13 +1111,16 @@ func TestGetRHCOSVersion(t *testing.T) {
 				},
 			},
 		}
+
+		origValue := rhcosRelativePath
+		rhcosRelativePath = "%s/../../cnf-certification-test/platform/operatingsystem/files/rhcos_version_map" // for testing only
 		result, err := node.GetRHCOSVersion()
 		assert.Equal(t, tc.expectedErr, err)
 		assert.Equal(t, tc.expectedOutput, result)
+		rhcosRelativePath = origValue
 	}
 }
 
-//nolint:dupl
 func TestGetRHELVersion(t *testing.T) {
 	testCases := []struct {
 		testImageName  string
