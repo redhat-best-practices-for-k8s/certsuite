@@ -1012,6 +1012,46 @@ func TestGetNodeCount(t *testing.T) {
 	}
 }
 
+func TestIsRTKernel(t *testing.T) {
+	generateNode := func(kernel string) *Node {
+		return &Node{
+			Data: &corev1.Node{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "node1",
+				},
+				Status: corev1.NodeStatus{
+					NodeInfo: corev1.NodeSystemInfo{
+						KernelVersion: kernel,
+					},
+				},
+			},
+		}
+	}
+
+	testCases := []struct {
+		testKernel     string
+		expectedOutput bool
+	}{
+		{ // Test Case #1 - Kernel is RT
+			testKernel:     "3.10.0-1127.10.1.rt56.1106.el7",
+			expectedOutput: true,
+		},
+		{ // Test Case #2 - Kernel is standard
+			testKernel:     "3.10.0-1127.10.1.1106.el7",
+			expectedOutput: false,
+		},
+		{ // Test Case #3 - Kernel string empty
+			testKernel:     "",
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		n := generateNode(tc.testKernel)
+		assert.Equal(t, n.IsRTKernel(), tc.expectedOutput)
+	}
+}
+
 func TestIsRHCOS(t *testing.T) {
 	testCases := []struct {
 		testImageName  string

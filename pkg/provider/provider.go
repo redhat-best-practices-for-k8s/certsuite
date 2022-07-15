@@ -197,6 +197,11 @@ func (node *Node) IsRHEL() bool {
 	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.OSImage), rhelName)
 }
 
+func (node *Node) IsRTKernel() bool {
+	// More information: https://www.redhat.com/sysadmin/real-time-kernel
+	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.KernelVersion), "rt")
+}
+
 func (node *Node) GetRHCOSVersion() (string, error) {
 	// Check if the node is running CoreOS or not
 	if !node.IsRHCOS() {

@@ -137,6 +137,11 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestOneProcessPerContainer(&env)
 	})
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSYSNiceRealtimeCapabilityIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		TestSYSNiceRealtimeCapability(&env)
+	})
 })
 
 // TestSecConCapabilities verifies that non compliant capabilities are not present
@@ -470,6 +475,26 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 
 	if n := len(badContainers); n > 0 {
 		errMsg := fmt.Sprintf("Number of faulty containers found: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
+	}
+}
+
+func TestSYSNiceRealtimeCapability(env *provider.TestEnvironment) {
+	var podsWithoutSysNice []string
+
+	// Loop through all of the labeled containers and compare their security context capabilities and whether
+	// or not the node's kernel is realtime enabled.
+	for _, cut := range env.Containers {
+		n := env.Nodes[cut.NodeName]
+		if n.IsRTKernel() && !strings.Contains(cut.Data.SecurityContext.Capabilities.String(), "SYS_NICE") {
+			logrus.Debugf("Container: %s has been found running on a realtime kernel enabled node without SYS_NICE capability.", cut.String())
+			podsWithoutSysNice = append(podsWithoutSysNice, cut.String())
+		}
+	}
+
+	if n := len(podsWithoutSysNice); n > 0 {
+		errMsg := fmt.Sprintf("Number of containers running on realtime kernels without SYS_NICE: %d", n)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
 	}
