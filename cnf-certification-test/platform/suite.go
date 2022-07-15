@@ -491,6 +491,8 @@ func testOCPStatus(env *provider.TestEnvironment) {
 func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 	ginkgo.By("Testing the control-plane and workers in the cluster for Operating System compatibility")
 
+	logrus.Debug(fmt.Sprintf("There are %d nodes to process for Operating System compatibility.", len(env.Nodes)))
+
 	failedControlPlaneNodes := []string{}
 	failedWorkerNodes := []string{}
 	for _, node := range env.Nodes {
@@ -559,6 +561,8 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 		tnf.ClaimFilePrintf(errMsg)
 	}
 
-	// Write the combined failure string
-	ginkgo.Fail(b.String())
+	// Write the combined failure string if there are any failures
+	if len(failedControlPlaneNodes) > 0 || len(failedWorkerNodes) > 0 {
+		ginkgo.Fail(b.String())
+	}
 }
