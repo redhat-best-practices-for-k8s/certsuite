@@ -175,6 +175,18 @@ Description|http://test-network-function.com/testcases/access-control/security-c
 Result Type|normative
 Suggested Remediation|Configure privilege escalation to false
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+#### sys-nice-realtime-capability
+
+Property|Description
+---|---
+Test Case Name|sys-nice-realtime-capability
+Test Case Label|access-control-sys-nice-realtime-capability
+Unique ID|http://test-network-function.com/testcases/access-control/sys-nice-realtime-capability
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/sys-nice-realtime-capability Check that pods running on nodes with realtime kernel enabled have the SYS_NICE capability enabled in their spec.
+Result Type|informative
+Suggested Remediation|If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec.
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 2.7.4
 
 ### affiliated-certification
 

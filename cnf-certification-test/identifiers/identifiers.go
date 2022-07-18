@@ -317,6 +317,10 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "one-process-per-container"),
 		Version: versionOne,
 	}
+	TestSYSNiceRealtimeCapabilityIdentifier = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "sys-nice-realtime-capability"),
+		Version: versionOne,
+	}
 )
 
 func formDescription(identifier claim.Identifier, description string) string {
@@ -880,5 +884,12 @@ the changes for you.`,
 		have only one process running`),
 		Remediation:           `launch only one process per container`,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.8.3",
+	},
+	TestSYSNiceRealtimeCapabilityIdentifier: {
+		Identifier:            TestSYSNiceRealtimeCapabilityIdentifier,
+		Type:                  informativeResult,
+		Description:           formDescription(TestSYSNiceRealtimeCapabilityIdentifier, `Check that pods running on nodes with realtime kernel enabled have the SYS_NICE capability enabled in their spec.`),
+		Remediation:           `If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec.`,
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 2.7.4",
 	},
 }
