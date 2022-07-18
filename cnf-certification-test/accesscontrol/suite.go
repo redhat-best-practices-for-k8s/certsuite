@@ -481,7 +481,7 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 }
 
 func TestSYSNiceRealtimeCapability(env *provider.TestEnvironment) {
-	var podsWithoutSysNice []string
+	var containersWithoutSysNice []string
 
 	// Loop through all of the labeled containers and compare their security context capabilities and whether
 	// or not the node's kernel is realtime enabled.
@@ -489,11 +489,11 @@ func TestSYSNiceRealtimeCapability(env *provider.TestEnvironment) {
 		n := env.Nodes[cut.NodeName]
 		if n.IsRTKernel() && !strings.Contains(cut.Data.SecurityContext.Capabilities.String(), "SYS_NICE") {
 			logrus.Debugf("Container: %s has been found running on a realtime kernel enabled node without SYS_NICE capability.", cut.String())
-			podsWithoutSysNice = append(podsWithoutSysNice, cut.String())
+			containersWithoutSysNice = append(containersWithoutSysNice, cut.String())
 		}
 	}
 
-	if n := len(podsWithoutSysNice); n > 0 {
+	if n := len(containersWithoutSysNice); n > 0 {
 		errMsg := fmt.Sprintf("Number of containers running on realtime kernels without SYS_NICE: %d", n)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
