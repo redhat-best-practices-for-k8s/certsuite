@@ -102,11 +102,6 @@ if [[ ! -f "/proc/1/cgroup" ]] || grep -q init\.scope /proc/1/cgroup; then
 	cd ..
 fi
 
-if [[ ! -z "${TNF_PARTNER_SRC_DIR}" ]]; then
-	echo "attempting to install litmus"
-	make -C $TNF_PARTNER_SRC_DIR install-litmus
-fi
-
 echo "Running with focus '$FOCUS'"
 echo "Running with skip  '$SKIP'"
 echo "Running with label filter '$LABEL'"
