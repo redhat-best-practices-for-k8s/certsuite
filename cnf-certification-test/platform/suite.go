@@ -521,6 +521,7 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 				}
 
 				// If the node's RHCOS version and the OpenShift version are not compatible, the node fails.
+				logrus.Debugf("Comparing RHCOS shortVersion: %s to openshiftVersion: %s", shortVersion, env.OpenshiftVersion)
 				if !compatibility.IsRHCOSCompatible(shortVersion, env.OpenshiftVersion) {
 					tnf.ClaimFilePrintf("Node %s has been found to be running an incompatible version of RHCOS: %s", node.Data.Name, shortVersion)
 					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
@@ -536,6 +537,7 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 				}
 
 				// If the node's RHEL version and the OpenShift version are not compatible, the node fails.
+				logrus.Debugf("Comparing RHEL shortVersion: %s to openshiftVersion: %s", shortVersion, env.OpenshiftVersion)
 				if !compatibility.IsRHELCompatible(shortVersion, env.OpenshiftVersion) {
 					tnf.ClaimFilePrintf("Node %s has been found to be running an incompatible version of RHEL: %s", node.Data.Name, shortVersion)
 					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
