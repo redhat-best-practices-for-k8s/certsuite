@@ -187,6 +187,18 @@ Description|http://test-network-function.com/testcases/access-control/sys-nice-r
 Result Type|informative
 Suggested Remediation|If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 2.7.4
+#### sys-ptrace-capability
+
+Property|Description
+---|---
+Test Case Name|sys-ptrace-capability
+Test Case Label|access-control-sys-ptrace-capability
+Unique ID|http://test-network-function.com/testcases/access-control/sys-ptrace-capability
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/sys-ptrace-capability check that if process namespace sharing is enabled for a Pod then the SYS_PTRACE capability is allowed
+Result Type|informative
+Suggested Remediation|allow the SYS_PTRACE capability when enabling process namespace sharing for a Pod
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 2.7.5
 
 ### affiliated-certification
 
