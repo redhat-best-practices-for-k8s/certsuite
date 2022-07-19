@@ -74,12 +74,11 @@ func loadContainersCatalog(pathToRoot string) {
 	}
 }
 
-func LoadBinary(bytes []byte, db map[string]*ContainerCatalogEntry) {
+func LoadBinary(bytes []byte, db map[string]*ContainerCatalogEntry) error {
 	aCatalog := ContainerPageCatalog{}
 	err := json.Unmarshal(bytes, &aCatalog)
 	if err != nil {
-		logrus.Error("Cannot marshall binary data", err)
-		return
+		return fmt.Errorf("failed to unmarshall binary data: %w, data: %s", err, string(bytes))
 	}
 	for i := 0; i < len(aCatalog.Data); i++ {
 		c := aCatalog.Data[i]
@@ -87,6 +86,8 @@ func LoadBinary(bytes []byte, db map[string]*ContainerCatalogEntry) {
 			db[c.DockerImageDigest] = &c
 		}
 	}
+
+	return nil
 }
 
 func (checker OfflineChecker) IsContainerCertified(registry, repository, tag, digest string) bool {

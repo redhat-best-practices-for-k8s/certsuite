@@ -4,6 +4,10 @@ on:
   # Triggers the workflow every day
   schedule:
     - cron: "0 0 * * *"
+
+  # Allow manual runs for this workflow
+  workflow_dispatch:
+
 jobs:
   update-certification:
     name: Update offline certified targets DB
