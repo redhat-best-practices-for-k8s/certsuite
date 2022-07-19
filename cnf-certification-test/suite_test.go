@@ -160,7 +160,7 @@ func TestTest(t *testing.T) {
 
 	// Run tests specs only if not in diagnostic mode, otherwise all TSs would run.
 	if !diagnosticMode {
-		daemonset.PartnerRepoDaemonset()
+		daemonset.DeployPartnerTestDaemonset()
 		ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)
 	}
 

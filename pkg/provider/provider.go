@@ -44,8 +44,8 @@ import (
 )
 
 const (
-	daemonSetNamespace               = "default"
-	daemonSetName                    = "debug"
+	DaemonSetNamespace               = "default"
+	DaemonSetName                    = "debug"
 	debugPodsTimeout                 = 5 * time.Minute
 	debugPodsRetryInterval           = 5 * time.Second
 	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/networks-status"
@@ -369,7 +369,7 @@ func WaitDebugPodsReady() error {
 	nodesCount := int32(len(nodes.Items))
 	isReady := false
 	for start := time.Now(); !isReady && time.Since(start) < debugPodsTimeout; {
-		daemonSet, err := oc.K8sClient.AppsV1().DaemonSets(daemonSetNamespace).Get(context.TODO(), daemonSetName, metav1.GetOptions{})
+		daemonSet, err := oc.K8sClient.AppsV1().DaemonSets(DaemonSetNamespace).Get(context.TODO(), DaemonSetName, metav1.GetOptions{})
 		if err != nil {
 			return fmt.Errorf("failed to get daemonset, err: %s", err)
 		}

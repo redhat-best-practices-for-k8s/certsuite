@@ -15,8 +15,6 @@ import (
 )
 
 const (
-	daemonSetName    = "partner-repo"
-	namespace        = "default"
 	containerName    = "container-00"
 	imageWithVersion = "quay.io/testnetworkfunction/debug-partner:latest"
 	timeout          = 5 * time.Minute
@@ -112,7 +110,7 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 	}
 }
 
-// Delete dameno set
+// Delete daemon set
 func DeleteDaemonSet(daemonSetName, namespace string) error {
 	tnf.ClaimFilePrintf("Deleting daemon set %s\n", daemonSetName)
 	deletePolicy := metav1.DeletePropagationForeground
@@ -154,7 +152,7 @@ func doesDaemonSetExist(daemonSetName, namespace string) bool {
 
 // Create daemon set
 func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion string, timeout time.Duration) (*corev1.PodList, error) {
-	rebootDaemonSet := CreateDaemonSetsTemplate(daemonSetName, namespace, containerName, imageWithVersion)
+	aDaemonSet := CreateDaemonSetsTemplate(daemonSetName, namespace, containerName, imageWithVersion)
 	if doesDaemonSetExist(daemonSetName, namespace) {
 		err := DeleteDaemonSet(daemonSetName, namespace)
 		if err != nil {
@@ -164,7 +162,7 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 
 	tnf.ClaimFilePrintf("Creating daemon set %s\n", daemonSetName)
 	client := clientsholder.GetClientsHolder().K8sClient
-	_, err := client.AppsV1().DaemonSets(namespace).Create(context.TODO(), rebootDaemonSet, metav1.CreateOptions{})
+	_, err := client.AppsV1().DaemonSets(namespace).Create(context.TODO(), aDaemonSet, metav1.CreateOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -185,13 +183,14 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 }
 
 // Deploy daemon set on repo partner
-func PartnerRepoDaemonset() map[string]corev1.Pod {
-	dsRunningPods, err := CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion, timeout)
+func DeployPartnerTestDaemonset() map[string]corev1.Pod {
+	nodeToPodMapping := make(map[string]corev1.Pod)
+	dsRunningPods, err := CreateDaemonSet(provider.DaemonSetName, provider.DaemonSetNamespace, containerName, imageWithVersion, timeout)
 	if err != nil {
 		logrus.Errorf("Error : +%v\n", err.Error())
+		return nodeToPodMapping
 	}
 
-	nodeToPodMapping := make(map[string]corev1.Pod)
 	//nolint:gocritic
 	for _, dsPod := range dsRunningPods.Items {
 		nodeToPodMapping[dsPod.Spec.NodeName] = dsPod
