@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	notFoundStr = "version-not-found"
+	NotFoundStr = "version-not-found"
 )
 
 func GetRHCOSMappedVersionsFromFile(data []byte) (map[string]string, error) {
@@ -69,5 +69,5 @@ func GetShortVersionFromLong(longVersion, filename string) (string, error) {
 	}
 
 	// return "version-not-found" if the short version cannot be found
-	return notFoundStr, nil
+	return NotFoundStr, nil
 }

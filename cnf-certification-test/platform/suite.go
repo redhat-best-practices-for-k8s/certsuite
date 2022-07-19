@@ -34,6 +34,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/hugepages"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/isredhat"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/operatingsystem"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/sysctlconfig"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
@@ -487,7 +488,7 @@ func testOCPStatus(env *provider.TestEnvironment) {
 	}
 }
 
-//nolint:funlen
+//nolint:funlen,gocyclo
 func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 	ginkgo.By("Testing the control-plane and workers in the cluster for Operating System compatibility")
 
@@ -517,6 +518,11 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 				if err != nil {
 					tnf.ClaimFilePrintf("Node %s failed to gather RHCOS version. Error: %s", node.Data.Name, err.Error())
 					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
+					continue
+				}
+
+				if shortVersion == operatingsystem.NotFoundStr {
+					tnf.ClaimFilePrintf("Node %s has an RHCOS operating system that is not found in our internal database.  Skipping as to not cause failures due to database mismatch.", node.Data.Name)
 					continue
 				}
 
