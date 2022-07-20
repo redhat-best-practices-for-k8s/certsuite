@@ -134,10 +134,7 @@ func deletePod(pod *corev1.Pod, mode string, wg *sync.WaitGroup) error {
 	podName := pod.Name
 	namespace := pod.Namespace
 	go func() {
-		err = waitPodDeleted(namespace, podName, gracePeriodSeconds, watcher)
-		if err != nil {
-			logrus.Errorf("waitPodDeleted failed with err=%s", err)
-		}
+		waitPodDeleted(namespace, podName, gracePeriodSeconds, watcher)
 		wg.Done()
 	}()
 	return nil
@@ -150,7 +147,7 @@ func CordonCleanup(node string) {
 	}
 }
 
-func waitPodDeleted(ns, podName string, timeout int64, watcher watch.Interface) error {
+func waitPodDeleted(ns, podName string, timeout int64, watcher watch.Interface) {
 	logrus.Tracef("Entering waitPodDeleted ns=%s pod=%s", ns, podName)
 	defer watcher.Stop()
 
@@ -159,11 +156,11 @@ func waitPodDeleted(ns, podName string, timeout int64, watcher watch.Interface) 
 		case event := <-watcher.ResultChan():
 			if event.Type == watch.Deleted || event.Type == "" {
 				logrus.Debugf("ns=%s pod=%s deleted", ns, podName)
-				return nil
+				return
 			}
 		case <-time.After(time.Duration(timeout) * time.Second):
 			logrus.Infof("watch for pod deletion timedout after %d seconds", timeout)
-			return nil
+			return
 		}
 	}
 }
