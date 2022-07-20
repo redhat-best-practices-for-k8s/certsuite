@@ -15,8 +15,8 @@ import (
 )
 
 var (
-	containersCatalogSizeURL = "https://catalog.redhat.com/api/containers/v1/images?filter=certified==true&page=0"
-	containersCatalogPageURL = "https://catalog.redhat.com/api/containers/v1/images?filter=certified==true&page_size=%d&page=%d"
+	containersCatalogSizeURL = "https://catalog.redhat.com/api/containers/v1/images?filter=certified==true&page=0&include=total,page_size,data.docker_image_digest"
+	containersCatalogPageURL = "https://catalog.redhat.com/api/containers/v1/images?filter=certified==true&page_size=%d&page=%d&include=data.repositories,data.docker_image_digest,data.architecture"
 	operatorsCatalogSizeURL  = "https://catalog.redhat.com/api/containers/v1/operators/bundles?filter=organization==certified-operators"
 	operatorsCatalogPageURL  = "https://catalog.redhat.com/api/containers/v1/operators/bundles?filter=organization==certified-operators&page_size=%d&page=%d"
 	helmCatalogURL           = "https://charts.openshift.io/index.yaml"
@@ -237,7 +237,7 @@ func getOperatorCatalog(data *CertifiedCatalog) error {
 
 	data.Operators = int(total)
 
-	log.Info("time to process all the operators=", time.Since(start))
+	log.Info("Time to process all the operators: ", time.Since(start))
 	return nil
 }
 
@@ -267,7 +267,7 @@ func getContainerCatalogPage(page, size uint, db map[string]*offlinecheck.Contai
 		return fmt.Errorf("failed to get containers page %s: %w", url, err)
 	}
 
-	log.Info("time to fetch binary data ", time.Since(start))
+	log.Info("Time to fetch binary data: ", time.Since(start))
 
 	start = time.Now()
 	err = offlinecheck.LoadBinary(body, db)
@@ -275,7 +275,7 @@ func getContainerCatalogPage(page, size uint, db map[string]*offlinecheck.Contai
 		return fmt.Errorf("failed to load binary data: %w", err)
 	}
 
-	log.Info("time to load the data ", time.Since(start))
+	log.Info("Time to load the data: ", time.Since(start))
 	return nil
 }
 
@@ -332,13 +332,13 @@ func getContainerCatalog(data *CertifiedCatalog) error {
 	for page := uint(0); page < pages; page++ {
 		err = getContainerCatalogPage(page, pageSize, db)
 		if err != nil {
-			return fmt.Errorf("failed to get containers page %d (total %d)", pages, total)
+			return fmt.Errorf("failed to get containers page %d (total %d): %w", pages, total, err)
 		}
 	}
 	if remaining != 0 {
 		err = getContainerCatalogPage(pages, remaining, db)
 		if err != nil {
-			return fmt.Errorf("failed to get remaining containers page %d (total %d)", pages, total)
+			return fmt.Errorf("failed to get remaining containers page %d (total %d): %w", pages, total, err)
 		}
 	}
 
@@ -350,8 +350,8 @@ func getContainerCatalog(data *CertifiedCatalog) error {
 
 	data.Containers = int(total)
 
-	log.Info("time to serialize all the container=", time.Since(serializeStart))
-	log.Info("time to process all the container=", time.Since(start))
+	log.Info("Time to serialize all the container: ", time.Since(serializeStart))
+	log.Info("Time to process all the container: ", time.Since(start))
 
 	return nil
 }
@@ -383,7 +383,7 @@ func getHelmCatalog() error {
 		return fmt.Errorf("failed to write to file %s: %w", filename, err)
 	}
 
-	log.Info("time to process all the charts=", time.Since(start))
+	log.Info("Time to process all the charts: ", time.Since(start))
 	return nil
 }
 
