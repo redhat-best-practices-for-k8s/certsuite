@@ -333,6 +333,10 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "sys-ptrace-capability"),
 		Version: versionOne,
 	}
+	TestPodRequestsAndLimitsIdentifier = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "requests-and-limits"),
+		Version: versionOne,
+	}
 )
 
 func formDescription(identifier claim.Identifier, description string) string {
@@ -927,5 +931,12 @@ that there are no changes to the following directories:
 		Remediation:           SysPtraceCapabilityRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 2.7.5",
 		ExceptionProcess:      NoDocumentedProcess,
+	},
+	TestPodRequestsAndLimitsIdentifier: {
+		Identifier:            TestPodRequestsAndLimitsIdentifier,
+		Type:                  informativeResult,
+		Description:           formDescription(TestPodRequestsAndLimitsIdentifier, `Check that containers have resource requests and limits specified in their spec.`),
+		Remediation:           RequestsAndLimitsRemediation,
+		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.11",
 	},
 }

@@ -161,9 +161,11 @@ const (
 
 	OneProcessPerContainerRemediation = `Launch only one process per container`
 
-	SYSNiceRealtimeCapabilityRemediation = `If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec.`
-
 	SysPtraceCapabilityRemediation = `Allow the SYS_PTRACE capability when enabling process namespace sharing for a Pod`
 
+	SYSNiceRealtimeCapabilityRemediation = `If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec.`
+
 	OCPReservedPortsUsageRemediation = `Ensure that CNF apps do not listen on ports that are reserved by Openshift`
+
+	RequestsAndLimitsRemediation = `Add requests and limits to your container spec.  See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits`
 )

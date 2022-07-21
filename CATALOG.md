@@ -150,6 +150,19 @@ Result Type|normative
 Suggested Remediation|Ensure that the each CNF Pod is configured to use a valid Service Account
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.3 and 5.2.7
 Exception Process|There is no documented exception process for this.
+#### requests-and-limits
+
+Property|Description
+---|---
+Test Case Name|requests-and-limits
+Test Case Label|access-control-requests-and-limits
+Unique ID|http://test-network-function.com/testcases/access-control/requests-and-limits
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/requests-and-limits Check that containers have resource requests and limits specified in their spec.
+Result Type|informative
+Suggested Remediation|Add requests and limits to your container spec.  See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits
+Best Practice Reference|https://TODO Section 4.6.11
+Exception Process|
 #### security-context-capabilities-check
 
 Property|Description
