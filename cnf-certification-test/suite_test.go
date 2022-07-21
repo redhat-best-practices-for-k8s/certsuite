@@ -28,6 +28,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
@@ -159,8 +160,11 @@ func TestTest(t *testing.T) {
 	claimhelper.UnmarshalConfigurations(configurations, claimData.Configurations)
 
 	// Run tests specs only if not in diagnostic mode, otherwise all TSs would run.
+	var env provider.TestEnvironment
 	if !diagnosticMode {
 		daemonset.DeployPartnerTestDaemonset()
+		env.SetNeedsRefresh()
+		provider.GetTestEnvironment()
 		ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)
 	}
 

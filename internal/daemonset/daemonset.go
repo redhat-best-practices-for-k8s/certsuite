@@ -7,7 +7,6 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	v1 "k8s.io/api/apps/v1"
@@ -19,6 +18,7 @@ const (
 	imageWithVersion = "quay.io/testnetworkfunction/debug-partner:latest"
 	timeout          = 5 * time.Minute
 	nodeExporter     = "node-exporter"
+	containerName    = "container-00"
 )
 
 //nolint:funlen
@@ -184,23 +184,8 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 
 // Deploy daemon set on repo partner
 func DeployPartnerTestDaemonset() map[string]corev1.Pod {
-	// Refresh DebugPods
-	env := provider.TestEnvironment{}
-	env.DebugPods = make(map[string]*corev1.Pod)
-
-	data := autodiscover.DoAutoDiscover()
-	env.Config = data.TestData
-	env.Crds = data.Crds
-	env.Namespaces = data.Namespaces
-	env.IstioServiceMesh = data.Istio
-
-	env.DebugPods = make(map[string]*corev1.Pod)
-	for i := 0; i < len(data.DebugPods); i++ {
-		nodeName := data.DebugPods[i].Spec.NodeName
-		env.DebugPods[nodeName] = &data.DebugPods[i]
-	}
 	nodeToPodMapping := make(map[string]corev1.Pod)
-	dsRunningPods, err := CreateDaemonSet(provider.DaemonSetName, provider.DaemonSetNamespace, provider.GetContainer().NodeName, imageWithVersion, timeout)
+	dsRunningPods, err := CreateDaemonSet(provider.DaemonSetName, provider.DaemonSetNamespace, containerName, imageWithVersion, timeout)
 	if err != nil {
 		logrus.Errorf("Error : +%v\n", err.Error())
 		return nil
