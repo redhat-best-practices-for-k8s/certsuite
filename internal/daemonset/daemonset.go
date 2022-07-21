@@ -185,7 +185,7 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 
 // Deploy daemon set on repo partner
 func DeployPartnerTestDaemonset() map[string]corev1.Pod {
-	//Refresh DebugPods
+	// Refresh DebugPods
 	env := provider.TestEnvironment{}
 	env.DebugPods = make(map[string]*corev1.Pod)
 
