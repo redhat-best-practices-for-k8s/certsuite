@@ -16,7 +16,6 @@ import (
 )
 
 const (
-	containerName    = "container-00"
 	imageWithVersion = "quay.io/testnetworkfunction/debug-partner:latest"
 	timeout          = 5 * time.Minute
 	nodeExporter     = "node-exporter"
@@ -201,7 +200,7 @@ func DeployPartnerTestDaemonset() map[string]corev1.Pod {
 		env.DebugPods[nodeName] = &data.DebugPods[i]
 	}
 	nodeToPodMapping := make(map[string]corev1.Pod)
-	dsRunningPods, err := CreateDaemonSet(provider.DaemonSetName, provider.DaemonSetNamespace, containerName, imageWithVersion, timeout)
+	dsRunningPods, err := CreateDaemonSet(provider.DaemonSetName, provider.DaemonSetNamespace, provider.GetContainer().NodeName, imageWithVersion, timeout)
 	if err != nil {
 		logrus.Errorf("Error : +%v\n", err.Error())
 		return nil
