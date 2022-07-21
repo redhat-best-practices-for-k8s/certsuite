@@ -18,24 +18,12 @@ package operatingsystem
 
 import (
 	"os"
-	"path/filepath"
 	"strings"
-
-	"github.com/test-network-function/cnf-certification-test/internal/projectpath"
 )
 
 const (
-	rhcosRelativePath = "cnf-certification-test/platform/operatingsystem/files/rhcos_version_map"
-	notFoundStr       = "version-not-found"
+	NotFoundStr = "version-not-found"
 )
-
-var (
-	rhcosMapAbsolutePath string
-)
-
-func init() {
-	rhcosMapAbsolutePath = filepath.Join(projectpath.Root, rhcosRelativePath)
-}
 
 func GetRHCOSMappedVersionsFromFile(data []byte) (map[string]string, error) {
 	capturedInfo := make(map[string]string)
@@ -63,8 +51,8 @@ func GetRHCOSMappedVersionsFromFile(data []byte) (map[string]string, error) {
 	return capturedInfo, nil
 }
 
-func GetShortVersionFromLong(longVersion string) (string, error) {
-	file, err := os.ReadFile(rhcosMapAbsolutePath)
+func GetShortVersionFromLong(longVersion, filename string) (string, error) {
+	file, err := os.ReadFile(filename)
 	if err != nil {
 		return "", err
 	}
@@ -81,5 +69,5 @@ func GetShortVersionFromLong(longVersion string) (string, error) {
 	}
 
 	// return "version-not-found" if the short version cannot be found
-	return notFoundStr, nil
+	return NotFoundStr, nil
 }

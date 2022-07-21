@@ -21,6 +21,7 @@ import (
 	"time"
 
 	gv "github.com/hashicorp/go-version"
+	"github.com/sirupsen/logrus"
 )
 
 /* Notes for this package
@@ -195,8 +196,16 @@ func IsRHCOSCompatible(machineVersion, ocpVersion string) bool {
 	lifecycleInfo := GetLifeCycleDates()
 	if entry, ok := lifecycleInfo[ocpVersion]; ok {
 		// Collect the machine version and the entry version
-		mv, _ := gv.NewVersion(machineVersion)
-		ev, _ := gv.NewVersion(entry.MinRHCOSVersion)
+		mv, err := gv.NewVersion(machineVersion)
+		if err != nil {
+			logrus.Errorf("Error parsing machineVersion: %s err: %v", machineVersion, err)
+			return false
+		}
+		ev, err := gv.NewVersion(entry.MinRHCOSVersion)
+		if err != nil {
+			logrus.Errorf("Error parsing MinRHCOSVersion: %s err: %v", entry.MinRHCOSVersion, err)
+			return false
+		}
 
 		// If the machine version >= the entry version
 		return mv.GreaterThanOrEqual(ev)

@@ -18,6 +18,7 @@ package operatingsystem
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"reflect"
 	"testing"
@@ -86,7 +87,10 @@ func TestGetShortVersionFromLong(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		result, err := GetShortVersionFromLong(tc.testLongVersion)
+		path, _ := os.Getwd()
+		filename := fmt.Sprintf("%s/files/rhcos_version_map", path)
+
+		result, err := GetShortVersionFromLong(tc.testLongVersion, filename)
 		if tc.expectedErr != nil {
 			assert.Error(t, err)
 		} else {
