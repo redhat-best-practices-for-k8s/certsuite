@@ -87,7 +87,7 @@ to be checked for certification status on Red Hat catalogs.
 CSVs to be tested by the `operator` and `affiliated-certification` specs are identified with the `test-network-function.com/operator=target`
 label. Any value is permitted but `target` is used here for consistency with the other specs.
 
-## Runtime environement variables
+## Runtime environment variables
 ### Disable intrusive tests
 If you would like to skip intrusive tests which may disrupt cluster operations, issue the following:
 
@@ -101,7 +101,7 @@ Likewise, to enable intrusive tests, set the following:
 export TNF_NON_INTRUSIVE_ONLY=false
 ```
 
-### Specifiy the location of the partner repo
+### Specify the location of the partner repo
 This env var is optional, but highly recommended if running the test suite from a clone of this github repo. It's not needed or used if running the tnf image.
 
 To set it, clone the partner [repo](https://github.com/test-network-function/cnf-certification-test-partner) and set TNF_PARTNER_SRC_DIR to point to it.
@@ -131,7 +131,7 @@ export TNF_RUN_CFD_TEST=true
 
 By default, the image with release tag `4.6` is used and the ginkgo skip argument is set to `performance|sriov|ptp|sctp|xt_u32|dpdk|ovn`. To override the default behavior, set these environment variables: `TNF_CFD_IMAGE_TAG` and `TNF_CFD_SKIP`. For more information on the test suites, refer to [the cnf-features-deploy repository](https://github.com/openshift-kni/cnf-features-deploy)
 
-## Running the tests with in a prebuild container
+## Running the tests within a prebuilt container
 
 ### Pulling test image
 An image is built and is available at this repository: [quay.io](https://quay.io/repository/testnetworkfunction/cnf-certification-test)
@@ -141,7 +141,7 @@ docker pull quay.io/testnetworkfunction/cnf-certification-test
 ```
 ### Cluster requirement
 * OCP cluster should allow interactive shell sessions to pods/containers to stay alive when being idle for more than a few minutes. If it is not the case, consult the maintainer of the cluster infrastructure on how it can be enabled. Also, make sure the firewalls/load balancers on the path do not timeout idle connections too quickly.
-* OCP cluster should provide enough resources to drain nodes and reschedule pods. If that's not the case, then ``lifecycle-pod-recreation`` test should be skipped.
+* OCP cluster should provide enough resources to drain nodes and reschedule pods. If that is not the case, then ``lifecycle-pod-recreation`` test should be skipped.
 ### Check cluster resources
 Some tests suites such as platform-alteration require node access to get node configuration like hugepage.
 In order to get the required information, the test suite does not ssh into nodes, but instead rely on [oc debug tools ](https://docs.openshift.com/container-platform/3.7/cli_reference/basic_cli_operations.html#debug). This tool makes it easier to fetch information from nodes and also to debug running pods.
@@ -496,3 +496,7 @@ You will need an [OpenShift 4.10 installation](https://docs.openshift.com/contai
 running your CNF, and at least one other machine available to host the test suite.  The
 [cnf-certification-test-partner](https://github.com/test-network-function/cnf-certification-test-partner) repository has a very
 simple example of this you can model your setup on.
+
+## Exception Process
+
+Please refer to the [CATALOG](CATALOG.md) and to the specific test you are attempting to gain an exception for if you are a partner organization.

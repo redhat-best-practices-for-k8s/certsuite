@@ -1,527 +1,6 @@
 {
   "data": [
     {
-      "_id": "627e411d9b640f138405c125",
-      "alm_examples": [
-        {
-          "api_version": "crunchydata.com/v1",
-          "kind": "Pgcluster",
-          "metadata": {
-            "annotations": {
-              "current-primary": "hippo"
-            },
-            "labels": {
-              "crunchy-pgha-scope": "hippo",
-              "deployment-name": "hippo",
-              "name": "hippo",
-              "namespace": "pgo",
-              "pg-cluster": "hippo",
-              "pgo-version": "4.7.5"
-            },
-            "name": "hippo"
-          },
-          "spec": {
-            "BackrestStorage": {
-              "accessmode": "ReadWriteMany",
-              "matchLabels": "",
-              "name": "",
-              "size": "5Gi",
-              "storageclass": "",
-              "storagetype": "dynamic",
-              "supplementalgroups": ""
-            },
-            "PrimaryStorage": {
-              "accessmode": "ReadWriteMany",
-              "matchLabels": "",
-              "name": "hippo",
-              "size": "5Gi",
-              "storageclass": "",
-              "storagetype": "dynamic",
-              "supplementalgroups": ""
-            },
-            "ReplicaStorage": {
-              "accessmode": "ReadWriteMany",
-              "matchLabels": "",
-              "name": "",
-              "size": "5Gi",
-              "storageclass": "",
-              "storagetype": "dynamic",
-              "supplementalgroups": ""
-            },
-            "ccpimage": "crunchy-postgres-ha",
-            "ccpimagetag": "ubi8-13.6-4.7.5",
-            "clustername": "hippo",
-            "database": "hippo",
-            "exporterport": "9187",
-            "name": "hippo",
-            "namespace": "pgo",
-            "pgbadgerport": "10000",
-            "podAntiAffinity": {
-              "default": "preferred"
-            },
-            "port": "5432",
-            "user": "hippo",
-            "userlabels": {
-              "pgo-version": "4.7.5"
-            }
-          }
-        },
-        {
-          "api_version": "crunchydata.com/v1",
-          "kind": "Pgreplica",
-          "metadata": {
-            "name": "example"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "crunchydata.com/v1",
-          "kind": "Pgpolicy",
-          "metadata": {
-            "name": "example"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "crunchydata.com/v1",
-          "kind": "Pgtask",
-          "metadata": {
-            "name": "example"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/crunchydata/postgres-operator-bundle@sha256:8ae562b0c37aeffd811263713d8577df0ce88dfc57aef83fb081cf957fbe2d1b",
-      "bundle_path_digest": "sha256:8ae562b0c37aeffd811263713d8577df0ce88dfc57aef83fb081cf957fbe2d1b",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-13T11:29:33.275000+00:00",
-      "csv_description": "Crunchy PostgreSQL for OpenShift lets you run your own production-grade PostgreSQL-as-a-Service on OpenShift!\n\nPowered by the Crunchy [PostgreSQL Operator](https://github.com/CrunchyData/postgres-operator), Crunchy PostgreSQL\nfor OpenShift automates and simplifies deploying and managing open source PostgreSQL clusters on OpenShift by\nproviding the essential features you need to keep your PostgreSQL clusters up and running, including:\n\n- **PostgreSQL Cluster Provisioning**: [Create, Scale, & Delete PostgreSQL clusters with ease][provisioning],\n  while fully customizing your Pods and PostgreSQL configuration!\n- **High-Availability**: Safe, automated failover backed by a [distributed consensus based high-availability solution][high-availability].\n  Uses [Pod Anti-Affinity][k8s-anti-affinity] to help resiliency; you can configure how aggressive this can be!\n  Failed primaries automatically heal, allowing for faster recovery time. You can even create regularly scheduled\n  backups as well and set your backup retention policy\n- **Disaster Recovery**: Backups and restores leverage the open source [pgBackRest][] utility\n  and [includes support for full, incremental, and differential backups as well as efficient delta restores][disaster-recovery].\n  Set how long you want your backups retained for. Works great with very large databases!\n- **Monitoring**: Track the health of your PostgreSQL clusters using the open source [pgMonitor][] library.\n- **Clone**: Create new clusters from your existing clusters or backups with a single [`pgo create cluster --restore-from`][pgo-create-cluster] command.\n- **TLS**: Secure communication between your applications and data servers by [enabling TLS for your PostgreSQL servers][pgo-task-tls], including the ability to enforce that all of your connections to use TLS.\n- **Connection Pooling**: Use [pgBouncer][] for connection pooling\n- **Affinity and Tolerations**: Have your PostgreSQL clusters deployed to [Kubernetes Nodes][k8s-nodes] of your preference with [node affinity][high-availability-node-affinity], or designate which nodes Kubernetes can schedule PostgreSQL instances to with Kubernetes [tolerations][high-availability-tolerations].\n- **Full Customizability**: Crunchy PostgreSQL for OpenShift makes it easy to get your own PostgreSQL-as-a-Service up and running on\n  and lets make further enhancements to customize your deployments, including:\n    - Selecting different storage classes for your primary, replica, and backup storage\n    - Select your own container resources class for each PostgreSQL cluster deployment; differentiate between resources applied for primary and replica clusters!\n    - Use your own container image repository, including support `imagePullSecrets` and private repositories\n    - Bring your own trusted certificate authority (CA) for use with the Operator API server\n    - Override your PostgreSQL configuration for each cluster\n\nand much more!\n\n[disaster-recovery]: https://access.crunchydata.com/documentation/postgres-operator/latest/architecture/disaster-recovery/\n[high-availability]: https://access.crunchydata.com/documentation/postgres-operator/latest/architecture/high-availability/\n[high-availability-node-affinity]: https://access.crunchydata.com/documentation/postgres-operator/latest/architecture/high-availability/#node-affinity\n[high-availability-tolerations]: https://access.crunchydata.com/documentation/postgres-operator/latest/architecture/high-availability/#tolerations\n[pgo-create-cluster]: https://access.crunchydata.com/documentation/postgres-operator/latest/pgo-client/reference/pgo_create_cluster/\n[pgo-task-tls]: https://access.crunchydata.com/documentation/postgres-operator/latest/tutorial/tls/\n[provisioning]: https://access.crunchydata.com/documentation/postgres-operator/latest/architecture/provisioning/\n\n[k8s-anti-affinity]: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity\n[k8s-nodes]: https://kubernetes.io/docs/concepts/architecture/nodes/\n\n[pgBackRest]: https://www.pgbackrest.org\n[pgBouncer]: https://access.crunchydata.com/documentation/postgres-operator/latest/tutorial/pgbouncer/\n[pgMonitor]: https://github.com/CrunchyData/pgmonitor\n\n## Pre-Installation\n\nThere are a few manual steps that the cluster administrator must perform prior to installing the PostgreSQL Operator.\nAt the very least, it must be provided with an initial configuration.\n\nFirst, select a namespace in which to install the PostgreSQL Operator. PostgreSQL clusters will also be deployed here.\nIf it does not exist, create it now.\n\n```\nexport PGO_OPERATOR_NAMESPACE=pgo\noc create namespace \"$PGO_OPERATOR_NAMESPACE\"\n```\n\n### Security\n\nFor the PostgreSQL Operator and PostgreSQL clusters to run in the recommended `restricted` [Security Context Constraint][],\nedit `conf/postgres-operator/pgo.yaml` and set `DisableFSGroup` to `true`.\n\n[Security Context Constraint]: https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html\n\n### Secrets (optional)\n\nIf you plan to use AWS S3 to store backups, you can configure your environment to automatically provide your AWS S3 credentials to all newly created PostgreSQL clusters:\n\n```\noc -n \"$PGO_OPERATOR_NAMESPACE\" create secret generic pgo-backrest-repo-config \\\n  --from-literal=aws-s3-key=\"<your-aws-s3-key>\" \\\n  --from-literal=aws-s3-key-secret=\"<your-aws-s3-key-secret>\"\noc -n \"$PGO_OPERATOR_NAMESPACE\" label secret pgo-backrest-repo-config vendor=crunchydata\n```\n\n### Certificates (optional)\n\nThe PostgreSQL Operator has an API that uses TLS to communicate securely with clients. If one is not provided, the API will automatically generated one for you.\n\nIf you have a certificate bundle validated by your organization, you can install it now.\n\n```\noc -n \"$PGO_OPERATOR_NAMESPACE\" create secret tls pgo.tls \\\n  --cert=/path/to/server.crt \\\n  --key=/path/to/server.key\n```\n\nOnce these resources are in place, the PostgreSQL Operator can be installed into the cluster.\n\n## Installation\n\nYou can now go ahead and install the PostgreSQL Operator from OperatorHub.\n\n### Security\n\nFor the PostgreSQL Operator and PostgreSQL clusters to run in the recommended `restricted` [Security Context Constraint][],\nedit the ConfigMap `pgo-config`, find the `pgo.yaml` entry, and set `DisableFSGroup` to `true`.\n\n[Security Context Constraint]: https://docs.openshift.com/container-platform/latest/authentication/managing-security-context-constraints.html\n\nYou will have to scale the `postgres-operator` Deployment down and up for the above change to take effect:\n\n```\noc -n pgo scale --replicas 0 deployment/postgres-operator\noc -n pgo scale --replicas 1 deployment/postgres-operator\n```\n\n## Post-Installation\n\n### Tutorial\n\nFor a guide on how to perform many of the daily functions of the PostgreSQL Operator, we recommend that you read the [Postgres Operator tutorial][pgo-tutorial]\n\n[pgo-tutorial]: https://access.crunchydata.com/documentation/postgres-operator/latest/tutorial/create-cluster/\n\nHowever, the below guide will show you how to create a Postgres cluster from a custom resource or from using the `pgo-client`.\n\n### Create a PostgreSQL Cluster from a Custom Resource\n\nThe fundamental workflow for interfacing with a PostgreSQL Operator Custom\nResource Definition is for creating a PostgreSQL cluster. There are several\nthat a PostgreSQL cluster requires to be deployed, including:\n\n- Secrets\n  - Information for setting up a pgBackRest repository\n  - PostgreSQL superuser bootstrap credentials\n  - PostgreSQL replication user bootstrap credentials\n  - PostgresQL standard user bootstrap credentials\n\nAdditionally, if you want to add some of the other sidecars, you may need to\ncreate additional secrets.\n\nThe good news is that if you do not provide these objects, the PostgreSQL\nOperator will create them for you to get your Postgres cluster up and running!\n\nThe following goes through how to create a PostgreSQL cluster called\n`hippo` by creating a new custom resource.\n\n```\n# this variable is the name of the cluster being created\nexport pgo_cluster_name=hippo\n# this variable is the namespace the cluster is being deployed into\nexport cluster_namespace=pgo\n# this variable is set to the location of your image repository\nexport cluster_image_prefix=registry.developers.crunchydata.com/crunchydata\n\ncat <<-EOF > \"${pgo_cluster_name}-pgcluster.yaml\"\napiVersion: crunchydata.com/v1\nkind: Pgcluster\nmetadata:\n  annotations:\n    current-primary: ${pgo_cluster_name}\n  labels:\n    crunchy-pgha-scope: ${pgo_cluster_name}\n    deployment-name: ${pgo_cluster_name}\n    name: ${pgo_cluster_name}\n    pg-cluster: ${pgo_cluster_name}\n    pgo-version: 4.7.5\n    pgouser: admin\n  name: ${pgo_cluster_name}\n  namespace: ${cluster_namespace}\nspec:\n  BackrestStorage:\n    accessmode: ReadWriteMany\n    matchLabels: \"\"\n    name: \"\"\n    size: 1G\n    storageclass: \"\"\n    storagetype: create\n    supplementalgroups: \"\"\n  PrimaryStorage:\n    accessmode: ReadWriteMany\n    matchLabels: \"\"\n    name: ${pgo_cluster_name}\n    size: 1G\n    storageclass: \"\"\n    storagetype: create\n    supplementalgroups: \"\"\n  ReplicaStorage:\n    accessmode: ReadWriteMany\n    matchLabels: \"\"\n    name: \"\"\n    size: 1G\n    storageclass: \"\"\n    storagetype: create\n    supplementalgroups: \"\"\n  annotations: {}\n  ccpimage: crunchy-postgres-ha\n  ccpimageprefix: ${cluster_image_prefix}\n  ccpimagetag: centos8-13.6-4.7.5\n  clustername: ${pgo_cluster_name}\n  database: ${pgo_cluster_name}\n  exporterport: \"9187\"\n  limits: {}\n  name: ${pgo_cluster_name}\n  pgDataSource:\n    restoreFrom: \"\"\n    restoreOpts: \"\"\n  pgbadgerport: \"10000\"\n  pgoimageprefix: ${cluster_image_prefix}\n  podAntiAffinity:\n    default: preferred\n    pgBackRest: preferred\n    pgBouncer: preferred\n  port: \"5432\"\n  tolerations: []\n  user: hippo\n  userlabels:\n    pgo-version: 4.7.5\nEOF\n\noc apply -f \"${pgo_cluster_name}-pgcluster.yaml\"\n```\n\nAnd that's all! The PostgreSQL Operator will go ahead and create the cluster.\n\nIf you have the PostgreSQL client `psql` installed on your host machine, you can\ntest connection to the PostgreSQL cluster using the following command:\n\n```\n# namespace that the cluster is running in\nexport PGO_OPERATOR_NAMESPACE=pgo\n# name of the cluster\nexport pgo_cluster_name=hippo\n# name of the user whose password we want to get\nexport pgo_cluster_username=hippo\n\n# get the password of the user and set it to a recognized psql environmental variable\nexport PGPASSWORD=$(oc -n \"${PGO_OPERATOR_NAMESPACE}\" get secrets \\\n  \"${pgo_cluster_name}-${pgo_cluster_username}-secret\" -o \"jsonpath={.data['password']}\" | base64 -d)\n\n# set up a port-forward either in a new terminal, or in the same terminal in the background:\noc -n pgo port-forward svc/hippo 5432:5432 &\n\npsql -h localhost -U \"${pgo_cluster_username}\" \"${pgo_cluster_name}\"\n```\n\n### Create a PostgreSQL Cluster the `pgo` Client\n\nOnce the PostgreSQL Operator is installed in your OpenShift cluster, you will need to do a few things\nto use the [PostgreSQL Operator Client][pgo-client].\n\n[pgo-client]: https://access.crunchydata.com/documentation/postgres-operator/latest/pgo-client/\n\nInstall the first set of client credentials and download the `pgo` binary and client certificates.\n\n```\ncurl https://raw.githubusercontent.com/CrunchyData/postgres-operator/v4.7.5/deploy/install-bootstrap-creds.sh > install-bootstrap-creds.sh\ncurl https://raw.githubusercontent.com/CrunchyData/postgres-operator/v4.7.5/installers/kubectl/client-setup.sh > client-setup.sh\n\nchmod +x install-bootstrap-creds.sh client-setup.sh\n\nPGO_CMD=oc ./install-bootstrap-creds.sh\nPGO_CMD=oc ./client-setup.sh\n```\n\nThe client needs to be able to reach the PostgreSQL Operator API from outside the OpenShift cluster.\nCreate an external service or forward a port locally.\n\n```\noc -n \"$PGO_OPERATOR_NAMESPACE\" expose deployment postgres-operator\noc -n \"$PGO_OPERATOR_NAMESPACE\" create route passthrough postgres-operator --service=postgres-operator\n\nexport PGO_APISERVER_URL=\"https://$(oc -n \"$PGO_OPERATOR_NAMESPACE\" get route postgres-operator -o jsonpath=\"{.spec.host}\")\"\n```\n_or_\n```\noc -n \"$PGO_OPERATOR_NAMESPACE\" port-forward deployment/postgres-operator 8443\n\nexport PGO_APISERVER_URL=\"https://127.0.0.1:8443\"\n```\n\nVerify connectivity using the `pgo` command.\n\n```\npgo version\n# pgo client version 4.7.5\n# pgo-apiserver version 4.7.5\n```\n\n\nYou can then create a cluster with the `pgo` client as simply as this:\n\n```\npgo create cluster -n pgo hippo\n```\n\nThe cluster may take a few moments to provision. You can verify that the cluster is up and running by using the `pgo test` command:\n\n```\npgo test cluster -n pgo hippo\n```\n\nIf you have the PostgreSQL client `psql` installed on your host machine, you can\ntest connection to the PostgreSQL cluster using the following command:\n\n```\n# namespace that the cluster is running in\nexport PGO_OPERATOR_NAMESPACE=pgo\n# name of the cluster\nexport pgo_cluster_name=hippo\n# name of the user whose password we want to get\nexport pgo_cluster_username=hippo\n\n# get the password of the user and set it to a recognized psql environmental variable\nexport PGPASSWORD=$(kubectl -n \"${PGO_OPERATOR_NAMESPACE}\" get secrets \\\n  \"${pgo_cluster_name}-${pgo_cluster_username}-secret\" -o \"jsonpath={.data['password']}\" | base64 -d)\n\n# set up a port-forward either in a new terminal, or in the same terminal in the background:\nkubectl -n pgo port-forward svc/hippo 5432:5432 &\n\npsql -h localhost -U \"${pgo_cluster_username}\" \"${pgo_cluster_name}\"\n```",
-      "csv_display_name": "Crunchy PostgreSQL for OpenShift",
-      "csv_metadata_description": "Enterprise open source PostgreSQL-as-a-Service",
-      "csv_name": "postgresoperator.v4.7.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:43:13.328000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "crunchy-postgres-operator",
-      "provided_apis": [
-        {
-          "group": "crunchydata.com",
-          "kind": "Pgcluster",
-          "plural": "pgclusters",
-          "version": "v1"
-        },
-        {
-          "group": "crunchydata.com",
-          "kind": "Pgpolicy",
-          "plural": "pgpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crunchydata.com",
-          "kind": "Pgreplica",
-          "plural": "pgreplicas",
-          "version": "v1"
-        },
-        {
-          "group": "crunchydata.com",
-          "kind": "Pgtask",
-          "plural": "pgtasks",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:d9f91cb300615bcf39e610abd4741ff6be3d13418db4260f9409395a2a5c1ecb",
-          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:d9f91cb300615bcf39e610abd4741ff6be3d13418db4260f9409395a2a5c1ecb",
-          "name": "postgres-operator-d9f91cb300615bcf39e610abd4741ff6be3d13418db4260f9409395a2a5c1ecb-annotation"
-        },
-        {
-          "digest": "sha256:86b5b293c263667dfc5016fc587643261438bd8868cc1c523ccb77a7c4e1b85a",
-          "image": "registry.connect.redhat.com/crunchydata/pgo-apiserver@sha256:86b5b293c263667dfc5016fc587643261438bd8868cc1c523ccb77a7c4e1b85a",
-          "name": "apiserver"
-        },
-        {
-          "digest": "sha256:d9f91cb300615bcf39e610abd4741ff6be3d13418db4260f9409395a2a5c1ecb",
-          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:d9f91cb300615bcf39e610abd4741ff6be3d13418db4260f9409395a2a5c1ecb",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:481c48699d7ba6aefc7ad27b43e4df54b8f8686f3445cf303a45bd43ceec4244",
-          "image": "registry.connect.redhat.com/crunchydata/pgo-scheduler@sha256:481c48699d7ba6aefc7ad27b43e4df54b8f8686f3445cf303a45bd43ceec4244",
-          "name": "scheduler"
-        },
-        {
-          "digest": "sha256:bcc9f68cfce901352408e4645f7c6aa5d2157af93952b9124c3a20923e4f1288",
-          "image": "registry.connect.redhat.com/crunchydata/pgo-event@sha256:bcc9f68cfce901352408e4645f7c6aa5d2157af93952b9124c3a20923e4f1288",
-          "name": "event"
-        },
-        {
-          "digest": "sha256:0016bf993af9ed5fdfdbbd56b1e743d1991ed390a4800cf1a04cdf55cafe119a",
-          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbackrest@sha256:0016bf993af9ed5fdfdbbd56b1e743d1991ed390a4800cf1a04cdf55cafe119a",
-          "name": "pgo_backrest"
-        },
-        {
-          "digest": "sha256:2991db135d2158fbb496afaabee221c432e13d11767e90130f4b2b5c2912a6b5",
-          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbackrest-repo@sha256:2991db135d2158fbb496afaabee221c432e13d11767e90130f4b2b5c2912a6b5",
-          "name": "pgo_backrest_repo"
-        },
-        {
-          "digest": "sha256:dabd59ff8e97a06e5e823c33805da6f66300c43c8b315cfd7ab0315bd92803e1",
-          "image": "registry.connect.redhat.com/crunchydata/pgo-client@sha256:dabd59ff8e97a06e5e823c33805da6f66300c43c8b315cfd7ab0315bd92803e1",
-          "name": "pgo_client"
-        },
-        {
-          "digest": "sha256:c44507bfc3286017afef0697133595043256b8b595e1e2e470b6ff7598cff575",
-          "image": "registry.connect.redhat.com/crunchydata/pgo-rmdata@sha256:c44507bfc3286017afef0697133595043256b8b595e1e2e470b6ff7598cff575",
-          "name": "pgo_rmdata"
-        },
-        {
-          "digest": "sha256:79d658ec93a10951cd06950e753f92332ea07ce191197213e14f4dc6042cc9f1",
-          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-exporter@sha256:79d658ec93a10951cd06950e753f92332ea07ce191197213e14f4dc6042cc9f1",
-          "name": "crunchy_postgres_exporter"
-        },
-        {
-          "digest": "sha256:77e508924d2358af0f3a8f597f7f59c38f7aecda2af9014ab9438d35f503de9c",
-          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgadmin4@sha256:77e508924d2358af0f3a8f597f7f59c38f7aecda2af9014ab9438d35f503de9c",
-          "name": "crunchy_pgadmin"
-        },
-        {
-          "digest": "sha256:8850ac1be18d01b7dee9bb0f61d453c787961985bc84df3bc8c1595962a00fab",
-          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbadger@sha256:8850ac1be18d01b7dee9bb0f61d453c787961985bc84df3bc8c1595962a00fab",
-          "name": "crunchy_pgbadger"
-        },
-        {
-          "digest": "sha256:a339798a1712a3a3bcf303e6df8186460edfb47aca0e2ae4cadf9db2207d72d6",
-          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbouncer@sha256:a339798a1712a3a3bcf303e6df8186460edfb47aca0e2ae4cadf9db2207d72d6",
-          "name": "crunchy_pgbouncer"
-        },
-        {
-          "digest": "sha256:ea787e002ce3aee1b8c54127816885b07c1f063515fa5b80ce957676f4e0a21b",
-          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-ha@sha256:ea787e002ce3aee1b8c54127816885b07c1f063515fa5b80ce957676f4e0a21b",
-          "name": "crunchy_postgres_ha"
-        },
-        {
-          "digest": "sha256:f0d2c8df4adb038af6be43089d96af02afd88b82568a2da342d8d97e1fa4ba8f",
-          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis-ha@sha256:f0d2c8df4adb038af6be43089d96af02afd88b82568a2da342d8d97e1fa4ba8f",
-          "name": "crunchy_postgres_gis_ha"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "4.7.5",
-      "version_original": "4.7.5"
-    },
-    {
-      "_id": "627e41889b640f138405c191",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "6.2"
-            },
-            "route": true,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.2"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.2"
-            },
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway.aqua:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "6.2"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.2"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.2"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.2"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:5b52a4f073c00a03805d9eb815f5a69a044822431b0b1224c44ba85f5f8a5e52",
-      "bundle_path_digest": "sha256:5b52a4f073c00a03805d9eb815f5a69a044822431b0b1224c44ba85f5f8a5e52",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "6.2",
-      "creation_date": "2022-05-13T11:31:20.160000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v6.2.22020",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-05-13T11:31:20.160000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:5e4742e82b54d834bd07ade4469d03e2b5994b4e14ab9d8514d4274811d66031",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:5e4742e82b54d834bd07ade4469d03e2b5994b4e14ab9d8514d4274811d66031",
-          "name": "aquasec-5e4742e82b54d834bd07ade4469d03e2b5994b4e14ab9d8514d4274811d66031-annotation"
-        },
-        {
-          "digest": "sha256:5e4742e82b54d834bd07ade4469d03e2b5994b4e14ab9d8514d4274811d66031",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:5e4742e82b54d834bd07ade4469d03e2b5994b4e14ab9d8514d4274811d66031",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:058cf7349adc4e91ab980132ba9229ebd388cd49296c547f7074e118e928ace6",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:058cf7349adc4e91ab980132ba9229ebd388cd49296c547f7074e118e928ace6",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:65ebfa69753987e407876a69fba7985c39d3cf7590a9a3546bc5798f98f1ccc9",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:65ebfa69753987e407876a69fba7985c39d3cf7590a9a3546bc5798f98f1ccc9",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:33efebe75e947f5769afe5337c89a00583aafc7925d881db5df672f3da2fbc0b",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:33efebe75e947f5769afe5337c89a00583aafc7925d881db5df672f3da2fbc0b",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:f9028eb7724ffadc119fe3a126c5d276844ec7ca562285445e3f4ab7229e8c1a",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:f9028eb7724ffadc119fe3a126c5d276844ec7ca562285445e3f4ab7229e8c1a",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:a6866c31c235a038c47a0ff252973e1ce98cc8df21c0f69f1af27784ce3814b0",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:a6866c31c235a038c47a0ff252973e1ce98cc8df21c0f69f1af27784ce3814b0",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": "",
-      "skip_range": ">=1.0.2 <6.2.22020",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "6.2.22020",
-      "version_original": "6.2.22020"
-    },
-    {
       "_id": "627e418f9b640f138405c19d",
       "alm_examples": [],
       "annotations": {
@@ -14637,6 +14116,482 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.16.1",
       "version_original": "1.16.1"
+    },
+    {
+      "_id": "628f80b10f80b55368ab4a6b",
+      "alm_examples": [
+        {
+          "api_version": "tenantoperator.stakater.com/v1beta1",
+          "kind": "Tenant",
+          "metadata": {
+            "name": "bluesky"
+          },
+          "spec": {
+            "editors": {
+              "groups": [
+                "alpha"
+              ],
+              "users": [
+                "john@aurora.org"
+              ]
+            },
+            "namespaces": [
+              "dev",
+              "build",
+              "prod"
+            ],
+            "owners": {
+              "users": [
+                "anna@aurora.org",
+                "anthony@aurora.org"
+              ]
+            },
+            "quota": "small"
+          }
+        },
+        {
+          "api_version": "tenantoperator.stakater.com/v1alpha1",
+          "kind": "IntegrationConfig",
+          "metadata": {
+            "name": "tenant-operator-config",
+            "namespace": "stakater-tenant-operator"
+          },
+          "spec": {
+            "argocd": {
+              "clusterResourceWhitelist": [
+                {
+                  "group": "tronador.stakater.com",
+                  "kind": "EnvironmentProvisioner"
+                }
+              ],
+              "namespace": "openshift-operators",
+              "namespaceResourceBlacklist": [
+                {
+                  "group": "",
+                  "kind": "ResourceQuota"
+                }
+              ]
+            },
+            "openshift": {
+              "clusterAdminGroups": [
+                "cluster-admins"
+              ],
+              "group": {
+                "labels": {
+                  "role": "customer-reader"
+                }
+              },
+              "namespaceAccessPolicy": {
+                "deny": {
+                  "privilegedNamespaces": {
+                    "groups": [
+                      "cluster-admins"
+                    ],
+                    "users": [
+                      "system:serviceaccount:openshift-argocd:argocd-application-controller",
+                      "adam@stakater.com"
+                    ]
+                  }
+                }
+              },
+              "privilegedNamespaces": [
+                "default",
+                "^openshift-*",
+                "^kube-*"
+              ],
+              "privilegedServiceAccounts": [
+                "^system:serviceaccount:openshift-*",
+                "^system:serviceaccount:kube-*"
+              ],
+              "project": {
+                "annotations": {
+                  "openshift.io/node-selector": "node-role.kubernetes.io/worker="
+                },
+                "labels": {
+                  "stakater.com/workload-monitoring": "true"
+                }
+              },
+              "sandbox": {
+                "labels": {
+                  "stakater.com/kind": "sandbox"
+                }
+              }
+            },
+            "rhsso": {
+              "enabled": true,
+              "endpoint": {
+                "secretReference": {
+                  "name": "auth-secrets",
+                  "namespace": "openshift-auth"
+                },
+                "url": "https://iam-keycloak-auth.apps.prod.abcdefghi.kubeapp.cloud/"
+              }
+            },
+            "vault": {
+              "enabled": true,
+              "endpoint": {
+                "secretReference": {
+                  "name": "vault-root-token",
+                  "namespace": "vault"
+                },
+                "url": "https://vault.apps.prod.abcdefghi.kubeapp.cloud/"
+              },
+              "sso": {
+                "accessorID": "<ACCESSOR_ID_TOKEN>",
+                "clientName": "vault"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/stakater/tenant-operator-0@sha256:aa9a994b83e11741c35fa0c5b6bce10efbfec3cb1bf4ec308fe5167eb99a1bfc",
+      "bundle_path_digest": "sha256:aa9a994b83e11741c35fa0c5b6bce10efbfec3cb1bf4ec308fe5167eb99a1bfc",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-26T13:29:21.894000+00:00",
+      "csv_description": "tenant operator",
+      "csv_display_name": "tenant-operator",
+      "csv_metadata_description": "",
+      "csv_name": "tenant-operator.v0.3.33",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:01:11.102000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "tenant-operator",
+      "provided_apis": [
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "Tenant",
+          "plural": "tenants",
+          "version": "v1beta1"
+        },
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "TemplateInstance",
+          "plural": "templateinstances",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "Tenant",
+          "plural": "tenants",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "IntegrationConfig",
+          "plural": "integrationconfigs",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "Quota",
+          "plural": "quotas",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "Quota",
+          "plural": "quotas",
+          "version": "v1beta1"
+        },
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "TemplateGroupInstance",
+          "plural": "templategroupinstances",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "Template",
+          "plural": "templates",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:b2d9424d5ba70ba370c73b5fcf85fa5e5a1265a5f046c50969500a21dca97aaa",
+          "image": "registry.connect.redhat.com/stakater/tenant-operator@sha256:b2d9424d5ba70ba370c73b5fcf85fa5e5a1265a5f046c50969500a21dca97aaa",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.3.33",
+      "version_original": "0.3.33"
+    },
+    {
+      "_id": "628f86161c42afc5aaad48d5",
+      "alm_examples": [
+        {
+          "api_version": "tenantoperator.stakater.com/v1beta1",
+          "kind": "Tenant",
+          "metadata": {
+            "name": "bluesky"
+          },
+          "spec": {
+            "editors": {
+              "groups": [
+                "alpha"
+              ],
+              "users": [
+                "john@aurora.org"
+              ]
+            },
+            "namespaces": [
+              "dev",
+              "build",
+              "prod"
+            ],
+            "owners": {
+              "users": [
+                "anna@aurora.org",
+                "anthony@aurora.org"
+              ]
+            },
+            "quota": "small"
+          }
+        },
+        {
+          "api_version": "tenantoperator.stakater.com/v1alpha1",
+          "kind": "IntegrationConfig",
+          "metadata": {
+            "name": "tenant-operator-config",
+            "namespace": "stakater-tenant-operator"
+          },
+          "spec": {
+            "argocd": {
+              "clusterResourceWhitelist": [
+                {
+                  "group": "tronador.stakater.com",
+                  "kind": "EnvironmentProvisioner"
+                }
+              ],
+              "namespace": "openshift-operators",
+              "namespaceResourceBlacklist": [
+                {
+                  "group": "",
+                  "kind": "ResourceQuota"
+                }
+              ]
+            },
+            "openshift": {
+              "clusterAdminGroups": [
+                "cluster-admins"
+              ],
+              "group": {
+                "labels": {
+                  "role": "customer-reader"
+                }
+              },
+              "namespaceAccessPolicy": {
+                "deny": {
+                  "privilegedNamespaces": {
+                    "groups": [
+                      "cluster-admins"
+                    ],
+                    "users": [
+                      "system:serviceaccount:openshift-argocd:argocd-application-controller",
+                      "adam@stakater.com"
+                    ]
+                  }
+                }
+              },
+              "privilegedNamespaces": [
+                "default",
+                "^openshift-*",
+                "^kube-*"
+              ],
+              "privilegedServiceAccounts": [
+                "^system:serviceaccount:openshift-*",
+                "^system:serviceaccount:kube-*"
+              ],
+              "project": {
+                "annotations": {
+                  "openshift.io/node-selector": "node-role.kubernetes.io/worker="
+                },
+                "labels": {
+                  "stakater.com/workload-monitoring": "true"
+                }
+              },
+              "sandbox": {
+                "labels": {
+                  "stakater.com/kind": "sandbox"
+                }
+              }
+            },
+            "rhsso": {
+              "enabled": true,
+              "endpoint": {
+                "secretReference": {
+                  "name": "auth-secrets",
+                  "namespace": "openshift-auth"
+                },
+                "url": "https://iam-keycloak-auth.apps.prod.abcdefghi.kubeapp.cloud/"
+              }
+            },
+            "vault": {
+              "enabled": true,
+              "endpoint": {
+                "secretReference": {
+                  "name": "vault-root-token",
+                  "namespace": "vault"
+                },
+                "url": "https://vault.apps.prod.abcdefghi.kubeapp.cloud/"
+              },
+              "sso": {
+                "accessorID": "<ACCESSOR_ID_TOKEN>",
+                "clientName": "vault"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/stakater/tenant-operator-0@sha256:aa9a994b83e11741c35fa0c5b6bce10efbfec3cb1bf4ec308fe5167eb99a1bfc",
+      "bundle_path_digest": "sha256:aa9a994b83e11741c35fa0c5b6bce10efbfec3cb1bf4ec308fe5167eb99a1bfc",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-26T13:52:22.794000+00:00",
+      "csv_description": "tenant operator",
+      "csv_display_name": "tenant-operator",
+      "csv_metadata_description": "",
+      "csv_name": "tenant-operator.v0.3.33",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:16:53.345000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "tenant-operator",
+      "provided_apis": [
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "TemplateGroupInstance",
+          "plural": "templategroupinstances",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "TemplateInstance",
+          "plural": "templateinstances",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "Tenant",
+          "plural": "tenants",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "IntegrationConfig",
+          "plural": "integrationconfigs",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "Quota",
+          "plural": "quotas",
+          "version": "v1beta1"
+        },
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "Template",
+          "plural": "templates",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "Tenant",
+          "plural": "tenants",
+          "version": "v1beta1"
+        },
+        {
+          "group": "tenantoperator.stakater.com",
+          "kind": "Quota",
+          "plural": "quotas",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:b2d9424d5ba70ba370c73b5fcf85fa5e5a1265a5f046c50969500a21dca97aaa",
+          "image": "registry.connect.redhat.com/stakater/tenant-operator@sha256:b2d9424d5ba70ba370c73b5fcf85fa5e5a1265a5f046c50969500a21dca97aaa",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.3.33",
+      "version_original": "0.3.33"
     }
   ],
   "page": 33,

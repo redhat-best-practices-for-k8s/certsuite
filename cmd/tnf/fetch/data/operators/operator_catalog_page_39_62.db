@@ -1,330 +1,6 @@
 {
   "data": [
     {
-      "_id": "624ca9b41bf4f81c51bc8ae4",
-      "alm_examples": [
-        {
-          "api_version": "conjur.cyberark.com/v1",
-          "kind": "ConjurFollower",
-          "metadata": {
-            "labels": {
-              "app": "conjur-follower"
-            },
-            "name": "conjur-follower-operator-my-conjur-follower",
-            "namespace": "conjur-follower-operator-system"
-          },
-          "spec": {
-            "images": {
-              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458g"
-            },
-            "master": {
-              "account": "my-company",
-              "authenticatorID": "conjur-openshift-follower",
-              "authnLogin": "host/conjur-openshift-follower",
-              "caCertificateFrom": {
-                "configMapKeyRef": {
-                  "key": "conjur.master-cert",
-                  "name": "follower"
-                }
-              },
-              "hostname": "conjur.my-company.net"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "bundle_path_digest": "sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-04-05T20:42:28.585000+00:00",
-      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
-      "csv_display_name": "Conjur Enterprise Follower Operator",
-      "csv_metadata_description": "",
-      "csv_name": "conjur-follower-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T02:16:56.784000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "conjur-follower-operator",
-      "provided_apis": [
-        {
-          "group": "conjur.cyberark.com",
-          "kind": "ConjurFollower",
-          "plural": "conjurfollowers",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-openshift-follower-operator"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres"
-        },
-        {
-          "digest": "sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "name": "conjur-openshift-follower-syslog-ng"
-        },
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-follower-operator"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres-2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8-annotation"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx-eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2-annotation"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info-002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1-annotation"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur-130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c-annotation"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator-a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530-annotation"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
-    },
-    {
-      "_id": "624ca9f81bf4f81c51bc8aef",
-      "alm_examples": [
-        {
-          "api_version": "conjur.cyberark.com/v1",
-          "kind": "ConjurFollower",
-          "metadata": {
-            "labels": {
-              "app": "conjur-follower"
-            },
-            "name": "conjur-follower-operator-my-conjur-follower",
-            "namespace": "conjur-follower-operator-system"
-          },
-          "spec": {
-            "images": {
-              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458g"
-            },
-            "master": {
-              "account": "my-company",
-              "authenticatorID": "conjur-openshift-follower",
-              "authnLogin": "host/conjur-openshift-follower",
-              "caCertificateFrom": {
-                "configMapKeyRef": {
-                  "key": "conjur.master-cert",
-                  "name": "follower"
-                }
-              },
-              "hostname": "conjur.my-company.net"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "bundle_path_digest": "sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-05T20:43:36.161000+00:00",
-      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
-      "csv_display_name": "Conjur Enterprise Follower Operator",
-      "csv_metadata_description": "",
-      "csv_name": "conjur-follower-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:02:27.542000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "conjur-follower-operator",
-      "provided_apis": [
-        {
-          "group": "conjur.cyberark.com",
-          "kind": "ConjurFollower",
-          "plural": "conjurfollowers",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-openshift-follower-operator"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres"
-        },
-        {
-          "digest": "sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "name": "conjur-openshift-follower-syslog-ng"
-        },
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-follower-operator"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres-2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8-annotation"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx-eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2-annotation"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info-002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1-annotation"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur-130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c-annotation"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator-a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530-annotation"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
-    },
-    {
       "_id": "624ca9f99065edc05c072e7b",
       "alm_examples": [
         {
@@ -3779,6 +3455,148 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.18",
       "version_original": "0.0.18"
+    },
+    {
+      "_id": "6262a633173a0d36cf5d696c",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:14aa8a718a050baa0fef250d3385d18f408c572f38ee53528ce4293f4db30757",
+      "bundle_path_digest": "sha256:14aa8a718a050baa0fef250d3385d18f408c572f38ee53528ce4293f4db30757",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "v1.4",
+      "creation_date": "2022-04-22T12:57:23.475000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "couchdb-operator.v1.4.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:56:19.417000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "couchdb-operator-certified",
+      "provided_apis": [
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Bucket",
+          "plural": "buckets",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "CouchDBCluster",
+          "plural": "couchdbclusters",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "FormationLock",
+          "plural": "formationlocks",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Formation",
+          "plural": "formations",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Recipe",
+          "plural": "recipes",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "RecipeTemplate",
+          "plural": "recipetemplates",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": ">=1.0.0 <1.4.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.4.1",
+      "version_original": "1.4.1"
+    },
+    {
+      "_id": "6262a63584481d5f52299957",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/portworx/portworx-certified-bundle@sha256:46948a9049f11cab4b7896b20e29381c8c06b92fbedc2c0605480711f4786323",
+      "bundle_path_digest": "sha256:46948a9049f11cab4b7896b20e29381c8c06b92fbedc2c0605480711f4786323",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:57:25.543000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "portworx-operator.v1.4.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:56:46.703000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "portworx-certified",
+      "provided_apis": [
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageNode",
+          "plural": "storagenodes",
+          "version": "v1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageNode",
+          "plural": "storagenodes",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageCluster",
+          "plural": "storageclusters",
+          "version": "v1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageCluster",
+          "plural": "storageclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.4.1",
+      "version_original": "1.4.1"
     }
   ],
   "page": 39,
