@@ -74,22 +74,24 @@ func loadContainersCatalog(pathToRoot string) {
 	}
 }
 
-func LoadBinary(bytes []byte, db map[string]*ContainerCatalogEntry) {
+func LoadBinary(bytes []byte, db map[string]*ContainerCatalogEntry) error {
 	aCatalog := ContainerPageCatalog{}
 	err := json.Unmarshal(bytes, &aCatalog)
 	if err != nil {
-		logrus.Error("Cannot marshall binary data", err)
-		return
+		return fmt.Errorf("failed to unmarshall binary data: %w, data: %s", err, string(bytes))
 	}
+
 	for i := 0; i < len(aCatalog.Data); i++ {
 		c := aCatalog.Data[i]
-		if c.Certified {
-			db[c.DockerImageDigest] = &c
-		}
+		db[c.DockerImageDigest] = &c
 	}
+
+	return nil
 }
 
 func (checker OfflineChecker) IsContainerCertified(registry, repository, tag, digest string) bool {
+	const tagLatest = "latest"
+
 	if digest != "" {
 		if _, ok := containerdb[digest]; ok {
 			logrus.Trace("container is certified based on digest", digest)
@@ -97,11 +99,15 @@ func (checker OfflineChecker) IsContainerCertified(registry, repository, tag, di
 		}
 		return false
 	}
-	// This is a non optimized code to process
-	// the certified containers
+
+	// When tag is not provided, we'll default it to 'latest'
+	if tag == "" {
+		tag = tagLatest
+	}
+
+	// This is a non optimized code to process the certified containers
 	// The reason behind it is users do not necessarily use image digest
-	// in deployment file.
-	// The code runs under 100 us. Not an issue in our case
+	// in deployment file. The code runs under 100 us: not an issue in our case.
 	for _, c := range containerdb {
 		for _, repo := range c.Repositories {
 			if repo.Registry == registry && repo.Repository == repository {
