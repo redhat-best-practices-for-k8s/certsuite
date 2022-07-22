@@ -1,236 +1,6 @@
 {
   "data": [
     {
-      "_id": "61df645f92aa95b37d10a685",
-      "alm_examples": [
-        {
-          "api_version": "app.joget.com/v1alpha1",
-          "kind": "JogetDX",
-          "metadata": {
-            "name": "example-joget"
-          },
-          "spec": {
-            "size": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:2710597189b856e4eb175a5b08ca65f67a762be6bbf6b68f247d86f412c13a61",
-      "bundle_path_digest": "sha256:2710597189b856e4eb175a5b08ca65f67a762be6bbf6b68f247d86f412c13a61",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-01-12T23:29:35.839000+00:00",
-      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
-      "csv_display_name": "Joget DX Operator",
-      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
-      "csv_name": "joget-dx-openshift-operator.v0.0.24",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:08:45.069000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "joget-dx-operator",
-      "provided_apis": [
-        {
-          "group": "app.joget.com",
-          "kind": "JogetDX",
-          "plural": "jogetdx",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
-          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
-          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
-        },
-        {
-          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
-          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:560d089ad138bb6f3e38ba33d78aee348cce0020f0cfbbe1ea6f87586b01b1df",
-          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:560d089ad138bb6f3e38ba33d78aee348cce0020f0cfbbe1ea6f87586b01b1df",
-          "name": "joget"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.0.24",
-      "version_original": "0.0.24"
-    },
-    {
-      "_id": "61e6fc1ffb528ee347236de6",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "OpenshiftArtifactoryHa",
-          "metadata": {
-            "name": "openshiftartifactoryha"
-          },
-          "spec": {
-            "artifactory-ha": {
-              "artifactory": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/artifactory-pro",
-                  "tag": "7.27.3-1"
-                },
-                "joinKey": "OVERRIDE",
-                "masterKey": "OVERRIDE",
-                "node": {
-                  "replicaCount": 2,
-                  "waitForPrimaryStartup": {
-                    "enabled": false
-                  }
-                },
-                "uid": "1000721030"
-              },
-              "database": {
-                "driver": "OVERRIDE",
-                "password": "OVERRIDE",
-                "type": "OVERRIDE",
-                "url": "OVERRIDE",
-                "user": "OVERRIDE"
-              },
-              "databaseUpgradeReady": true,
-              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
-              "nginx": {
-                "gid": "1000720107",
-                "http": {
-                  "externalPort": 80,
-                  "internalPort": 8080
-                },
-                "https": {
-                  "externalPort": 443,
-                  "internalPort": 8443
-                },
-                "image": {
-                  "registry": "registry.redhat.io",
-                  "repository": "rhel8/nginx-116",
-                  "tag": "latest"
-                },
-                "service": {
-                  "ssloffload": false
-                },
-                "tlsSecretName": "OVERRIDE",
-                "uid": "1000720104"
-              },
-              "postgresql": {
-                "enabled": false
-              },
-              "waitForDatabase": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:3c12c9d9537b12f610b9f759ad0a94ed465608f69e6bd1cd175a8c3d177151b8",
-      "bundle_path_digest": "sha256:3c12c9d9537b12f610b9f759ad0a94ed465608f69e6bd1cd175a8c3d177151b8",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-01-18T17:42:55.933000+00:00",
-      "csv_description": " ## Breaking change\nPlease update to version 1.1.10 of the operator.\nVersion 1.1.8 and 1.1.9 have issues. Please skip these versions.\n\n## Overview\nOpenshift Operator to deploy JFrog Artifactory Enterprise into your Openshift cluster.\n## Security Context Constraints\nTo deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc.\n```\noc adm policy add-scc-to-user anyuid -z artifactory-ha-operator -n openshift-operators\n```\nAdd the service account for the Artifactory chart to deploy successfully:\n``` oc adm policy add-scc-to-user anyuid -z openshiftartifactoryha-artifactory-ha -n artifactory ```\n### Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Artifactory Enterprise Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Artifactory Enterprise Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Artifactory HA.\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nDATABASE_TYPE\nDATABASE_DRIVER\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\nMaster key and Join key must be supplied. To generate a new key for each run the command below:\n\n```\n# Create a key\nexport JOIN_KEY=$(openssl rand -hex 32)\necho ${JOIN_KEY}\n```\n\nTo use TLS you will need to first create a k8s tls secret to store your .crt and .key file into.\nThen supply the value of this k8s secret into the TLS_SECRET field.\n``` oc create secret tls my_tls_secret --cert=tls.crt --key=tls.key --namespace=my_namespace ```\nClick Create for Artifactory Enterprise to deploy into OpenShift and connect to it on the external IP exposed by the load balancer.\n### Create a route\nTo expose Artifactory from Openshift we recommend you create a new route in Openshift.\nYou can either use the oc command line tool or the Openshift web console to generate a new route.\nDepending upon where you terminate TLS you will need to either specify pass through or edge.\nCommand Line (Edge):\n``` oc create route edge --service=openshiftartifactory-ha --cert=tls.crt --key=tls.key --ca-cert=ca.crt --hostname=www.example.com ```\nOr for more information visit the official Openshift documentation on routes here:\nhttps://docs.openshift.com/container-platform/4.6/networking/routes/route-configuration.html\n\n",
-      "csv_display_name": "JFrog Artifactory Enterprise Operator",
-      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
-      "csv_name": "artifactory-ha-operator.v1.1.20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:55:24.863000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "openshiftartifactoryha-operator",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
-          "name": "artifactory-operator-29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4-annotation"
-        },
-        {
-          "digest": "sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
-          "name": "artifactory-ha-operator"
-        },
-        {
-          "digest": "sha256:7289dde95d1e4d8e161a28cffd9c4a0cc96f92f7536d069ab63ec304a92254fd",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:7289dde95d1e4d8e161a28cffd9c4a0cc96f92f7536d069ab63ec304a92254fd",
-          "name": "artifactory_image_repository"
-        },
-        {
-          "digest": "sha256:d71d368d6094a5777000a8d99164959ccb97fca355e855e24bd92c13a8df04f6",
-          "image": "registry.redhat.io/rhel8/nginx-116@sha256:d71d368d6094a5777000a8d99164959ccb97fca355e855e24bd92c13a8df04f6",
-          "name": "nginx_image_repository"
-        },
-        {
-          "digest": "sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
-          "image": "registry.connect.redhat.com/jfrog/init@sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
-          "name": "init-164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8-annotation"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.1.20",
-      "version_original": "1.1.20"
-    },
-    {
       "_id": "61e70984223cb93ac44fa0c7",
       "alm_examples": [
         {
@@ -78660,9 +78430,83 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.0",
       "version_original": "1.4.0"
+    },
+    {
+      "_id": "6262a6d9834f257293b60f91",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sonatype/nxrm-operator-bundle@sha256:3e6bec18d3fcb326ef63f81b8dff5f5d21db6fad489744c94542c75518ca638e",
+      "bundle_path_digest": "sha256:3e6bec18d3fcb326ef63f81b8dff5f5d21db6fad489744c94542c75518ca638e",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:00:09.746000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nxrm-operator-certified.v3.23.0-1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:25:19.456000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nxrm-operator-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "3.23.0-1",
+      "version_original": "3.23.0-1"
+    },
+    {
+      "_id": "6262a6ddcde83e2b177c20dd",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:02820de3e0134fbca92a2d59286dfc4c873a2df593d9b08e1e17481554c9c717",
+      "bundle_path_digest": "sha256:02820de3e0134fbca92a2d59286dfc4c873a2df593d9b08e1e17481554c9c717",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:00:13.478000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "tigera-operator.v1.5.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:22:35.274000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.5.2",
+      "version_original": "1.5.2"
     }
   ],
   "page": 4,
   "page_size": 500,
-  "total": 3962
+  "total": 3972
 }
