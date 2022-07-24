@@ -1,110 +1,6 @@
 {
   "data": [
     {
-      "_id": "614c8cefd36186823c2a47c3",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "operator": {
-                "clusterPoolIPv4MaskSize": "23",
-                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
-              }
-            },
-            "kubeProxyReplacement": "probe",
-            "nativeRoutingCIDR": "10.128.0.0/14",
-            "prometheus": {
-              "serviceMonitor": {
-                "enabled": false
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:33a2e21a069ff24af4bf0ffc51e83ddf398df5d9735d0123120768e9dc2c27f9",
-      "bundle_path_digest": "sha256:33a2e21a069ff24af4bf0ffc51e83ddf398df5d9735d0123120768e9dc2c27f9",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-09-23T14:19:27.549000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.4-x5bfd7b3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:45:28.583000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:b45ff6a6552d71cbc26e358e0b25759d33818fd92301f1656453c5bcf826ff13",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:b45ff6a6552d71cbc26e358e0b25759d33818fd92301f1656453c5bcf826ff13",
-          "name": "operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.10.4+x5bfd7b3",
-      "version_original": "1.10.4+x5bfd7b3"
-    },
-    {
       "_id": "614ce052d2c7f84a4d2ecf4b",
       "alm_examples": [],
       "annotations": {
@@ -14637,9 +14533,194 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "1.100202.4",
       "version_original": "1.100202.4"
+    },
+    {
+      "_id": "616080e85cfcf7adc247ac56",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:4d0d814fcfeb628aae8a05cb7a0a416ae85395197950085c907b6cdcf2fb4317",
+      "bundle_path_digest": "sha256:4d0d814fcfeb628aae8a05cb7a0a416ae85395197950085c907b6cdcf2fb4317",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.20",
+      "creation_date": "2021-10-08T17:33:28.853000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.20.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:14:09.366000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "ImageSet",
+          "plural": "imagesets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "image": "quay.io/tigera/operator@sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "name": "operator-bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2-annotation"
+        },
+        {
+          "digest": "sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "image": "quay.io/tigera/operator@sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "<1.20.4",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.20.4",
+      "version_original": "1.20.4"
     }
   ],
   "page": 15,
   "page_size": 100,
-  "total": 3975
+  "total": 3969
 }

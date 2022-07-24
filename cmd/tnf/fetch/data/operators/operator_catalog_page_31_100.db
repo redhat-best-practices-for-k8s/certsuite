@@ -1,572 +1,6 @@
 {
   "data": [
     {
-      "_id": "627c79853e0ff4d601b71bc5",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.20-69.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:6eba0d4cdc724698aa1d42dd74ae6b19e9446f601f337d5752531a14f10e41ef",
-      "bundle_path_digest": "sha256:6eba0d4cdc724698aa1d42dd74ae6b19e9446f601f337d5752531a14f10e41ef",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2022-05-12T03:05:41.164000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.20-4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-05-12T03:05:41.164000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
-          "name": "redis-enterprise-operator-3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f-annotation"
-        },
-        {
-          "digest": "sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.20-4",
-      "version_original": "6.0.20-4"
-    },
-    {
-      "_id": "627c79a89b28cbab99bd31b4",
-      "alm_examples": [
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "AirgappedDeployment",
-          "metadata": {
-            "name": "airgappeddeployment"
-          },
-          "spec": {
-            "airgapped": {
-              "backup_deletion_frequency": "@daily",
-              "backup_retention_period": 7
-            },
-            "allowed_domains": "*",
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "image_pull_secret": "bas-images-pull-secret",
-            "kafka": {
-              "storage#": "5G",
-              "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
-            },
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            }
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "AnalyticsProxy",
-          "metadata": {
-            "name": "analyticsproxy"
-          },
-          "spec": {
-            "airgapped": {
-              "backup_deletion_frequency": "@daily",
-              "backup_retention_period": 7,
-              "enabled": false
-            },
-            "allowed_domains": "*",
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "ibmproxyurl": "https://iaps.ibm.com",
-            "image_pull_secret": "bas-images-pull-secret",
-            "kafka": {
-              "storage#": "5G",
-              "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
-            },
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            }
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "DeleteCluster",
-          "metadata": {
-            "name": "deletecluster"
-          },
-          "spec": {
-            "image_pull_secret": "bas-images-pull-secret"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "FullDeployment",
-          "metadata": {
-            "name": "fulldeployment"
-          },
-          "spec": {
-            "airgapped": {
-              "backup_deletion_frequency": "@daily",
-              "backup_retention_period": 7,
-              "enabled": false
-            },
-            "allowed_domains": "*",
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "ibmproxyurl": "https://iaps.ibm.com",
-            "image_pull_secret": "bas-images-pull-secret",
-            "kafka": {
-              "storage#": "5G",
-              "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
-            },
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            },
-            "prometheus_metrics": [],
-            "prometheus_scheduler_frequency": "@daily"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "GenerateKey",
-          "metadata": {
-            "name": "bas-api-key"
-          },
-          "spec": {
-            "image_pull_secret": "bas-images-pull-secret"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "StoreForwardMetric",
-          "metadata": {
-            "name": "storeforwardmetric"
-          },
-          "spec": {
-            "db_archive": {
-              "frequency": "@monthly",
-              "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
-              },
-              "retention_age": 6
-            },
-            "env_type": "lite",
-            "event_scheduler_frequency": "@hourly",
-            "ibmproxyurl": "https://iaps.ibm.com",
-            "image_pull_secret": "bas-images-pull-secret",
-            "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
-            },
-            "prometheus_metrics": [],
-            "prometheus_scheduler_frequency": "@daily"
-          }
-        },
-        {
-          "api_version": "bas.ibm.com/v1",
-          "kind": "Dashboard",
-          "metadata": {
-            "name": "dashboard"
-          },
-          "spec": {
-            "enable_test_api": true,
-            "image_pull_secret": "bas-images-pull-secret"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm-edge/behavior-analytics-services-operator-bundle@sha256:e89c77cde658a1966773f0752c1b6ce5c07013f50e7bf50996156d94a624a1db",
-      "bundle_path_digest": "sha256:e89c77cde658a1966773f0752c1b6ce5c07013f50e7bf50996156d94a624a1db",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-05-12T03:06:16.678000+00:00",
-      "csv_description": "Behavior Analytics Services Operator is a service that collects, transforms and transmits product usage data.\nThe Operator supports deployments using-\nA. Dashboard\nB. Openshift portal or CLI\n\n**A. Dashboard**\n----\nWhen the Operator is installed, the Dashboard is installed too. Goto the Dashboard Custom Resource to get the URL to the Dashboard.\n\n\n**B. Openshift portal or CLI**\n----\n----\nFor manual installation using Openshift portal or CLI, follow the steps below\n\n\n**Pre-requisites**\n----\nStep 1: Create a new Project\n```sh\noc new-project <project-name>\n```\n\nStep 2: Create a secret named \"database-credentials\" for PostgreSQL DB\n```sh\n oc create secret generic database-credentials --from-literal=db_username=<DB Username> --from-literal=db_password=<DB Password> -n <project-name>\n```\n\nStep 3: [Optional] If the images require a secret to pull the container images, create a secret of type dockerconfigjson. Pass this secret name in the CR spec image\\_pull\\_secret\n```sh\noc create secret generic bas-images-pull-secret --from-file=.dockerconfigjson=<path/to/.docker/config.json>  --type=kubernetes.io/dockerconfigjson\n```\n\nStep 4: Create a secret named \"mtls-proxy-secret\" which has the client key and certificate to connect to IBM Proxy service. If you don't have certificates then refer link https://developers.cloudflare.com/access/service-auth/mtls-testing#generating-the-root-ca to create root and client certificates. Please ensure to share root certificate with edge@us.ibm.com to allow access to IBM proxy service using client certificate.\n```sh\noc create secret tls mtls-proxy-secret --key client-key.pem --cert client.pem\n```\n\n**Installing the Behavior Analytics Services**\n----\n\nSelect any one of the deployments to setup the Behavior Analytics Services\n1. Full Deployment\n2. Analytics Proxy Deployment\n3. Store and Forward metrics Deployment\n4. Airgapped Analytics Proxy Deployment\n\n| Spec                                                      | Description                                                      | Default Value          |\n| --------------------------------------------------------- | ------------------------------------------------------------ | ---------------------- |\n| `ibmproxyurl`                                               | URL of IBM Proxy Service                                     | `https://iaps.ibm.com`   |\n| `postgres.storage_class`                                    | Storage class of type ReadWriteOnce                          | Required user input        |\n| `postgres.size`                                             | Size (in G) of the storage to be attached to Database        | `10G`                    |\n| `kafka.storage_class`                                       | Storage class of type ReadWriteOnce                          | Required user input        |\n| `kafka.storage_size`                                        | Size (in G) of the storage to be attached to Kafka  | `5G`                     |\n| `kafka.zookeeper_storage_class`                                 | Storage class of type ReadWriteOnce                          | Required user input        |\n| `kafka.zookeeper_storage_size`                                 | Size (in G) of the storage to be attached to Zookeeper | `5G`                     |\n| `airgapped.enabled`                                         | Set value to \"true\" if airgapped setup is to be enabled otherwise keep the default value \"false\" | `false`                  |\n| `airgapped.backup_retention_period`   | Number of days to keep the backup files in the storage       | `7`                     |\n| `airgapped.backup_deletion_frequency` | Frequency of job to delete files from the storage. It accepts values in Cron format (https://en.wikipedia.org/wiki/Cron) | `@daily`                 |\n| `event_scheduler_frequency`                               | Frequency at which events will be forwarded to proxy in Cron format. In case if internet connection available on the cluster only during a certain time frame, specify time in UTC equivalent Cron format. | `@hourly`                |\n| `prometheus_scheduler_frequency`                          | Frequency in Cronjob format to pull metrics from Prometheus  | `@daily`                |\n| `image_pull_secret`                                       | Secret to pull container images from registry                | `bas-images-pull-secret` |\n| `db_archive.frequency`                                    | Frequency in Cronjob format to run archive job                                                           | `@monthly`             |\n| `db_archive.retention_age`                                | Number of months to retain the data in Database              | `6`                    |\n| `db_archive.persistent_storage.storage_class`             |Storage class of type ReadWriteMany         | Required user input    |\n| `db_archive.persistent_storage.storage_size`              | Size (in G) of the storage to be attached for saving airgapped files | `10G`                  |\n| `prometheus_metrics`                                      | Array of metrics information to be send to destination at desired frequency | []\n| `env_type`              | Type of environment. Can be **prod** (HA) or **lite** (non HA)   | `lite`                  |\n| `allowed_domains`                                         | Comma separated values of domains allowed by BAS. By default all domains are allowed | '*'\n\n\n**Generating the API Key**\n----\nOnce the deployment is complete, to use the Behavior Analytics Services Endpoints, generate an API key using the CR GenerateKey. This API key to be used to authenticate Behavior Analytics Services Endpoints.\n\nNote- Key can be retrieved from the secret with same name used while creating Generate Key CR's instance.\nOnce you get key from the secret, decode it using below command:\n```sh\necho -n <secret key> | base64 -d\n```\n\n**Deleting the API Key**\n----\nTo revoke the Key, delete the corresponding GenerateKey instance.\n\n**Using Behavior Analytics Services Endpoints**\n---\nFor all BAS APIs, use the Generated API Key for Authentication. Pass it as the Header- X-API-KEY and the key while using the APIs.\n",
-      "csv_display_name": "Behavior Analytics Services",
-      "csv_metadata_description": "Behavior Analytics Services is a service that collects, transforms and transmits product usage data.",
-      "csv_name": "behavior-analytics-services-operator-certified.v1.1.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-29T15:01:27.963000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "behavior-analytics-services-operator-certified",
-      "provided_apis": [
-        {
-          "group": "bas.ibm.com",
-          "kind": "FullDeployment",
-          "plural": "fulldeployments",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "GenerateKey",
-          "plural": "generatekeys",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "StoreForwardMetric",
-          "plural": "storeforwardmetrics",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "AirgappedDeployment",
-          "plural": "airgappeddeployments",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "AnalyticsProxy",
-          "plural": "analyticsproxies",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "Dashboard",
-          "plural": "dashboards",
-          "version": "v1"
-        },
-        {
-          "group": "bas.ibm.com",
-          "kind": "DeleteCluster",
-          "plural": "deleteclusters",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:609c19d1718947ee814b829334c37e1d720acf5fb642b0712b8ab1b14d57f53f",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:609c19d1718947ee814b829334c37e1d720acf5fb642b0712b8ab1b14d57f53f",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:dc79358d5ff6044db8a233d88d4d29331cfd5bfed76518f66acc7baa28c33643",
-          "image": "registry.connect.redhat.com/ibm-edge/behavior-analytics-services-operator@sha256:dc79358d5ff6044db8a233d88d4d29331cfd5bfed76518f66acc7baa28c33643",
-          "name": "behavior-analytics-services-operator"
-        },
-        {
-          "digest": "sha256:8e0f1d33edf005eb2dfafed9b8367435b0f33ef4adf006bc75338f2a88e8942c",
-          "image": "registry.redhat.io/openshift4/ose-cli@sha256:8e0f1d33edf005eb2dfafed9b8367435b0f33ef4adf006bc75338f2a88e8942c",
-          "name": "dashboardinstaller"
-        },
-        {
-          "digest": "sha256:e16ff252bcd87e077b29fabfcd30a86a8f913055b6c3ddfc2c277343e419d459",
-          "image": "registry.connect.redhat.com/ibm-edge/event-api@sha256:e16ff252bcd87e077b29fabfcd30a86a8f913055b6c3ddfc2c277343e419d459",
-          "name": "event_api"
-        },
-        {
-          "digest": "sha256:5a5cb1ec8f56c7a491ac50894ed8644c4863686d514fd6f83935811e430671ce",
-          "image": "registry.connect.redhat.com/ibm-edge/store-api@sha256:5a5cb1ec8f56c7a491ac50894ed8644c4863686d514fd6f83935811e430671ce",
-          "name": "store_api"
-        },
-        {
-          "digest": "sha256:3c4659be4db05521de9f3094a2da93d75644e2834d9fcbd94b8a4fc89b92ef47",
-          "image": "registry.connect.redhat.com/ibm-edge/event-reader@sha256:3c4659be4db05521de9f3094a2da93d75644e2834d9fcbd94b8a4fc89b92ef47",
-          "name": "reader"
-        },
-        {
-          "digest": "sha256:d55bee4dfb9c5f65749ab98981ffe0cac2d6c57399593347130c8588b7ba4b5d",
-          "image": "registry.connect.redhat.com/ibm-edge/event-scheduler@sha256:d55bee4dfb9c5f65749ab98981ffe0cac2d6c57399593347130c8588b7ba4b5d",
-          "name": "event_scheduler"
-        },
-        {
-          "digest": "sha256:26c5ad9fa67063e0c7066c0e7b7dddf1b18059184a1abc9fc8e1ba25a7679f48",
-          "image": "registry.connect.redhat.com/ibm-edge/prometheus-scheduler@sha256:26c5ad9fa67063e0c7066c0e7b7dddf1b18059184a1abc9fc8e1ba25a7679f48",
-          "name": "prometheus_scheduler"
-        },
-        {
-          "digest": "sha256:90ddecb54abe2880b86016a407507cecf77a113b4c7724235ab0abd21ad1d9aa",
-          "image": "registry.connect.redhat.com/ibm-edge/pgo-client@sha256:90ddecb54abe2880b86016a407507cecf77a113b4c7724235ab0abd21ad1d9aa",
-          "name": "pgo_client"
-        },
-        {
-          "digest": "sha256:815630d23e8d88664907fbf8096952adfd22593a4989063e9dd55549e674ee15",
-          "image": "registry.connect.redhat.com/ibm-edge/reverse-proxy@sha256:815630d23e8d88664907fbf8096952adfd22593a4989063e9dd55549e674ee15",
-          "name": "nginx"
-        },
-        {
-          "digest": "sha256:a2e20cac50352c1ad13cd03185f326484ee20202c8a60313ba116920d6d6da88",
-          "image": "registry.redhat.io/openshift4/ose-grafana@sha256:a2e20cac50352c1ad13cd03185f326484ee20202c8a60313ba116920d6d6da88",
-          "name": "grafana"
-        },
-        {
-          "digest": "sha256:4fc96dc7a835c37dd3441a2c78e094cbfff8ea7fc8432e99f979c00965184260",
-          "image": "registry.redhat.io/openshift3/ose-kube-state-metrics@sha256:4fc96dc7a835c37dd3441a2c78e094cbfff8ea7fc8432e99f979c00965184260",
-          "name": "ksm"
-        },
-        {
-          "digest": "sha256:749a8b7a0fda5f3c7e834e75a8525f9963f379f849cb1db0f3dc804fc426c65f",
-          "image": "registry.connect.redhat.com/ibm-edge/growth-stack-base@sha256:749a8b7a0fda5f3c7e834e75a8525f9963f379f849cb1db0f3dc804fc426c65f",
-          "name": "init_container"
-        },
-        {
-          "digest": "sha256:d748c21a55796827da82c61f162b505c59451cba24f1874e5185f21275b6bddc",
-          "image": "registry.access.redhat.com/ubi8/ubi@sha256:d748c21a55796827da82c61f162b505c59451cba24f1874e5185f21275b6bddc",
-          "name": "ubi"
-        },
-        {
-          "digest": "sha256:19a8b33e2f4c2beee5266d5243abb7f43d85322fc62800899759cdf6ec568fee",
-          "image": "registry.connect.redhat.com/ibm-edge/airgap-download-ui@sha256:19a8b33e2f4c2beee5266d5243abb7f43d85322fc62800899759cdf6ec568fee",
-          "name": "download_ui"
-        },
-        {
-          "digest": "sha256:9f6eae3e715d9aff6d9674059fb6bf4f6dfc3ad42f015200c69b481becd7abd9",
-          "image": "registry.connect.redhat.com/ibm-edge/bas-operator-dashboard@sha256:9f6eae3e715d9aff6d9674059fb6bf4f6dfc3ad42f015200c69b481becd7abd9",
-          "name": "dashboard_ui"
-        },
-        {
-          "digest": "sha256:5e31ce8745926e0116827b1b658800dd3e8b91cd1800be4f9943a84a1c023f78",
-          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:5e31ce8745926e0116827b1b658800dd3e8b91cd1800be4f9943a84a1c023f78",
-          "name": "oauth_proxy"
-        },
-        {
-          "digest": "sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
-          "image": "registry.connect.redhat.com/crunchydata/pgo-deployer@sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
-          "name": "pgo_deployer"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.1.5",
-      "version_original": "1.1.5"
-    },
-    {
-      "_id": "627c79dc9b28cbab99bd3226",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
-      "bundle_path_digest": "sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-12T03:07:08.077000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:00:53.540000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "8.5.1",
-      "version_original": "8.5.1"
-    },
-    {
       "_id": "627c79f69b28cbab99bd3280",
       "alm_examples": [
         {
@@ -17314,9 +16748,846 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "8.5.2",
       "version_original": "8.5.2"
+    },
+    {
+      "_id": "627d9091c8a338bed8ba486c",
+      "alm_examples": [
+        {
+          "api_version": "elasticsearch.k8s.elastic.co/v1",
+          "kind": "Elasticsearch",
+          "metadata": {
+            "name": "elasticsearch-sample"
+          },
+          "spec": {
+            "nodeSets": [
+              {
+                "config": {
+                  "node.attr.attr_name": "attr_value",
+                  "node.roles": [
+                    "master",
+                    "data"
+                  ],
+                  "node.store.allow_mmap": false
+                },
+                "count": 3,
+                "name": "default",
+                "podTemplate": {
+                  "metadata": {
+                    "labels": {
+                      "foo": "bar"
+                    }
+                  },
+                  "spec": {
+                    "containers": [
+                      {
+                        "name": "elasticsearch",
+                        "resources": {
+                          "limits": {
+                            "cpu": 2,
+                            "memory": "4Gi"
+                          },
+                          "requests": {
+                            "cpu": 1,
+                            "memory": "4Gi"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "version": "8.2.0"
+          }
+        },
+        {
+          "api_version": "kibana.k8s.elastic.co/v1",
+          "kind": "Kibana",
+          "metadata": {
+            "name": "kibana-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "podTemplate": {
+              "metadata": {
+                "labels": {
+                  "foo": "bar"
+                }
+              },
+              "spec": {
+                "containers": [
+                  {
+                    "name": "kibana",
+                    "resources": {
+                      "limits": {
+                        "cpu": 2,
+                        "memory": "2Gi"
+                      },
+                      "requests": {
+                        "cpu": 0.5,
+                        "memory": "1Gi"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "version": "8.2.0"
+          }
+        },
+        {
+          "api_version": "apm.k8s.elastic.co/v1",
+          "kind": "ApmServer",
+          "metadata": {
+            "name": "apmserver-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.2.0"
+          }
+        },
+        {
+          "api_version": "enterprisesearch.k8s.elastic.co/v1",
+          "kind": "EnterpriseSearch",
+          "metadata": {
+            "name": "ent-sample"
+          },
+          "spec": {
+            "config": {
+              "ent_search.external_url": "https://localhost:3002"
+            },
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.2.0"
+          }
+        },
+        {
+          "api_version": "beat.k8s.elastic.co/v1beta1",
+          "kind": "Beat",
+          "metadata": {
+            "name": "heartbeat-sample"
+          },
+          "spec": {
+            "config": {
+              "heartbeat.monitors": [
+                {
+                  "hosts": [
+                    "elasticsearch-sample-es-http.default.svc:9200"
+                  ],
+                  "schedule": "@every 5s",
+                  "type": "tcp"
+                }
+              ]
+            },
+            "deployment": {
+              "podTemplate": {
+                "spec": {
+                  "securityContext": {
+                    "runAsUser": 0
+                  }
+                }
+              },
+              "replicas": 1
+            },
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "type": "heartbeat",
+            "version": "8.2.0"
+          }
+        },
+        {
+          "api_version": "agent.k8s.elastic.co/v1alpha1",
+          "kind": "Agent",
+          "metadata": {
+            "name": "agent-sample"
+          },
+          "spec": {
+            "config": {
+              "inputs": [
+                {
+                  "data_stream": {
+                    "namespace": "default"
+                  },
+                  "meta": {
+                    "package": {
+                      "name": "system",
+                      "version": "0.9.1"
+                    }
+                  },
+                  "name": "system-1",
+                  "revision": 1,
+                  "streams": [
+                    {
+                      "cpu.metrics": [
+                        "percentages",
+                        "normalized_percentages"
+                      ],
+                      "data_stream": {
+                        "dataset": "system.cpu",
+                        "type": "metrics"
+                      },
+                      "id": "system/metrics-system.cpu",
+                      "metricsets": [
+                        "cpu"
+                      ],
+                      "period": "10s"
+                    }
+                  ],
+                  "type": "system/metrics",
+                  "use_output": "default"
+                }
+              ]
+            },
+            "daemonSet": {},
+            "elasticsearchRefs": [
+              {
+                "name": "elasticsearch-sample"
+              }
+            ],
+            "version": "8.2.0"
+          }
+        },
+        {
+          "api_version": "maps.k8s.elastic.co/v1alpha1",
+          "kind": "ElasticMapsServer",
+          "metadata": {
+            "name": "ems-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.2.0"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:f12f8825bb7e18ffc03e5e44a73b8775a9f5c1c5131db67fca40d2da71da9bad",
+      "bundle_path_digest": "sha256:f12f8825bb7e18ffc03e5e44a73b8775a9f5c1c5131db67fca40d2da71da9bad",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T22:56:17.114000+00:00",
+      "csv_description": "Elastic Cloud on Kubernetes (ECK) is the official operator by Elastic for automating the deployment, provisioning, management, and orchestration of Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes.\n\nCurrent features:\n\n*  Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent and Elastic Maps Server deployments\n*  TLS Certificates management\n*  Safe Elasticsearch cluster configuration and topology changes\n*  Persistent volumes usage\n*  Custom node configuration and attributes\n*  Secure settings keystore updates\n\nSupported versions:\n\n* Kubernetes 1.19-1.23\n* OpenShift 4.6-4.10\n* Google Kubernetes Engine (GKE), Azure Kubernetes Service (AKS), and Amazon Elastic Kubernetes Service (EKS)\n* Elasticsearch, Kibana, APM Server: 7.10+, 8+\n* Enterprise Search: 7.10+, 8+\n* Beats: 7.10+, 8+\n* Elastic Agent: 7.10+, 8+\n* Elastic Maps Server: 7.11+, 8+\n\nECK should work with all conformant installers as listed in these [FAQs](https://github.com/cncf/k8s-conformance/blob/master/faq.md#what-is-a-distribution-hosted-platform-and-an-installer). Distributions include source patches and so may not work as-is with ECK.\nAlpha, beta, and stable API versions follow the same [conventions used by Kubernetes](https://kubernetes.io/docs/concepts/overview/kubernetes-api/#api-versioning).\nSee the full [Elastic support matrix](https://www.elastic.co/support/matrix#matrix_kubernetes) for more information.\nSee the [Quickstart](https://www.elastic.co/guide/en/cloud-on-k8s/2.2/k8s-quickstart.html) to get started with ECK.",
+      "csv_display_name": "Elasticsearch (ECK) Operator",
+      "csv_metadata_description": "Run Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes and OpenShift",
+      "csv_name": "elasticsearch-eck-operator-certified.v2.2.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-07-05T13:22:25.298000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "elasticsearch-eck-operator-certified",
+      "provided_apis": [
+        {
+          "group": "maps.k8s.elastic.co",
+          "kind": "ElasticMapsServer",
+          "plural": "elasticmapsservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "plural": "enterprisesearches",
+          "version": "v1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "plural": "enterprisesearches",
+          "version": "v1beta1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "beat.k8s.elastic.co",
+          "kind": "Beat",
+          "plural": "beats",
+          "version": "v1beta1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1beta1"
+        },
+        {
+          "group": "agent.k8s.elastic.co",
+          "kind": "Agent",
+          "plural": "agents",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "name": "eck-operator-465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb-annotation"
+        },
+        {
+          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.2.0",
+      "version_original": "2.2.0"
+    },
+    {
+      "_id": "627d90915cbc1cba9c78237b",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
+      "bundle_path_digest": "sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T22:56:17.966000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:49:42.146000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "8.5.2",
+      "version_original": "8.5.2"
+    },
+    {
+      "_id": "627d91509b640f1384059ea8",
+      "alm_examples": [
+        {
+          "api_version": "elasticsearch.k8s.elastic.co/v1",
+          "kind": "Elasticsearch",
+          "metadata": {
+            "name": "elasticsearch-sample"
+          },
+          "spec": {
+            "nodeSets": [
+              {
+                "config": {
+                  "node.attr.attr_name": "attr_value",
+                  "node.roles": [
+                    "master",
+                    "data"
+                  ],
+                  "node.store.allow_mmap": false
+                },
+                "count": 3,
+                "name": "default",
+                "podTemplate": {
+                  "metadata": {
+                    "labels": {
+                      "foo": "bar"
+                    }
+                  },
+                  "spec": {
+                    "containers": [
+                      {
+                        "name": "elasticsearch",
+                        "resources": {
+                          "limits": {
+                            "cpu": 2,
+                            "memory": "4Gi"
+                          },
+                          "requests": {
+                            "cpu": 1,
+                            "memory": "4Gi"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "version": "8.2.0"
+          }
+        },
+        {
+          "api_version": "kibana.k8s.elastic.co/v1",
+          "kind": "Kibana",
+          "metadata": {
+            "name": "kibana-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "podTemplate": {
+              "metadata": {
+                "labels": {
+                  "foo": "bar"
+                }
+              },
+              "spec": {
+                "containers": [
+                  {
+                    "name": "kibana",
+                    "resources": {
+                      "limits": {
+                        "cpu": 2,
+                        "memory": "2Gi"
+                      },
+                      "requests": {
+                        "cpu": 0.5,
+                        "memory": "1Gi"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "version": "8.2.0"
+          }
+        },
+        {
+          "api_version": "apm.k8s.elastic.co/v1",
+          "kind": "ApmServer",
+          "metadata": {
+            "name": "apmserver-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.2.0"
+          }
+        },
+        {
+          "api_version": "enterprisesearch.k8s.elastic.co/v1",
+          "kind": "EnterpriseSearch",
+          "metadata": {
+            "name": "ent-sample"
+          },
+          "spec": {
+            "config": {
+              "ent_search.external_url": "https://localhost:3002"
+            },
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.2.0"
+          }
+        },
+        {
+          "api_version": "beat.k8s.elastic.co/v1beta1",
+          "kind": "Beat",
+          "metadata": {
+            "name": "heartbeat-sample"
+          },
+          "spec": {
+            "config": {
+              "heartbeat.monitors": [
+                {
+                  "hosts": [
+                    "elasticsearch-sample-es-http.default.svc:9200"
+                  ],
+                  "schedule": "@every 5s",
+                  "type": "tcp"
+                }
+              ]
+            },
+            "deployment": {
+              "podTemplate": {
+                "spec": {
+                  "securityContext": {
+                    "runAsUser": 0
+                  }
+                }
+              },
+              "replicas": 1
+            },
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "type": "heartbeat",
+            "version": "8.2.0"
+          }
+        },
+        {
+          "api_version": "agent.k8s.elastic.co/v1alpha1",
+          "kind": "Agent",
+          "metadata": {
+            "name": "agent-sample"
+          },
+          "spec": {
+            "config": {
+              "inputs": [
+                {
+                  "data_stream": {
+                    "namespace": "default"
+                  },
+                  "meta": {
+                    "package": {
+                      "name": "system",
+                      "version": "0.9.1"
+                    }
+                  },
+                  "name": "system-1",
+                  "revision": 1,
+                  "streams": [
+                    {
+                      "cpu.metrics": [
+                        "percentages",
+                        "normalized_percentages"
+                      ],
+                      "data_stream": {
+                        "dataset": "system.cpu",
+                        "type": "metrics"
+                      },
+                      "id": "system/metrics-system.cpu",
+                      "metricsets": [
+                        "cpu"
+                      ],
+                      "period": "10s"
+                    }
+                  ],
+                  "type": "system/metrics",
+                  "use_output": "default"
+                }
+              ]
+            },
+            "daemonSet": {},
+            "elasticsearchRefs": [
+              {
+                "name": "elasticsearch-sample"
+              }
+            ],
+            "version": "8.2.0"
+          }
+        },
+        {
+          "api_version": "maps.k8s.elastic.co/v1alpha1",
+          "kind": "ElasticMapsServer",
+          "metadata": {
+            "name": "ems-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.2.0"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:f12f8825bb7e18ffc03e5e44a73b8775a9f5c1c5131db67fca40d2da71da9bad",
+      "bundle_path_digest": "sha256:f12f8825bb7e18ffc03e5e44a73b8775a9f5c1c5131db67fca40d2da71da9bad",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T22:59:28.645000+00:00",
+      "csv_description": "Elastic Cloud on Kubernetes (ECK) is the official operator by Elastic for automating the deployment, provisioning, management, and orchestration of Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes.\n\nCurrent features:\n\n*  Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent and Elastic Maps Server deployments\n*  TLS Certificates management\n*  Safe Elasticsearch cluster configuration and topology changes\n*  Persistent volumes usage\n*  Custom node configuration and attributes\n*  Secure settings keystore updates\n\nSupported versions:\n\n* Kubernetes 1.19-1.23\n* OpenShift 4.6-4.10\n* Google Kubernetes Engine (GKE), Azure Kubernetes Service (AKS), and Amazon Elastic Kubernetes Service (EKS)\n* Elasticsearch, Kibana, APM Server: 7.10+, 8+\n* Enterprise Search: 7.10+, 8+\n* Beats: 7.10+, 8+\n* Elastic Agent: 7.10+, 8+\n* Elastic Maps Server: 7.11+, 8+\n\nECK should work with all conformant installers as listed in these [FAQs](https://github.com/cncf/k8s-conformance/blob/master/faq.md#what-is-a-distribution-hosted-platform-and-an-installer). Distributions include source patches and so may not work as-is with ECK.\nAlpha, beta, and stable API versions follow the same [conventions used by Kubernetes](https://kubernetes.io/docs/concepts/overview/kubernetes-api/#api-versioning).\nSee the full [Elastic support matrix](https://www.elastic.co/support/matrix#matrix_kubernetes) for more information.\nSee the [Quickstart](https://www.elastic.co/guide/en/cloud-on-k8s/2.2/k8s-quickstart.html) to get started with ECK.",
+      "csv_display_name": "Elasticsearch (ECK) Operator",
+      "csv_metadata_description": "Run Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes and OpenShift",
+      "csv_name": "elasticsearch-eck-operator-certified.v2.2.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-07-05T13:26:06.692000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "elasticsearch-eck-operator-certified",
+      "provided_apis": [
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "plural": "enterprisesearches",
+          "version": "v1beta1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1beta1"
+        },
+        {
+          "group": "agent.k8s.elastic.co",
+          "kind": "Agent",
+          "plural": "agents",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "plural": "enterprisesearches",
+          "version": "v1"
+        },
+        {
+          "group": "maps.k8s.elastic.co",
+          "kind": "ElasticMapsServer",
+          "plural": "elasticmapsservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "beat.k8s.elastic.co",
+          "kind": "Beat",
+          "plural": "beats",
+          "version": "v1beta1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "name": "eck-operator-465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb-annotation"
+        },
+        {
+          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.2.0",
+      "version_original": "2.2.0"
     }
   ],
   "page": 31,
   "page_size": 100,
-  "total": 3975
+  "total": 3969
 }
