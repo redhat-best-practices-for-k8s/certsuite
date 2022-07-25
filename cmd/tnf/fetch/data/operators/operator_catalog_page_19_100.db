@@ -1,412 +1,6 @@
 {
   "data": [
     {
-      "_id": "61b3950d9e4335b6d1b1d8bd",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:69638694cb924d90c1c741bb90be3fee24efc6a3072774e875b30d5c55877108",
-      "bundle_path_digest": "sha256:69638694cb924d90c1c741bb90be3fee24efc6a3072774e875b30d5c55877108",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.23",
-      "creation_date": "2021-12-10T17:57:33.938000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.23.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:01:35.282000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "CalicoNodeStatus",
-          "plural": "caliconodestatuses",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkPolicy",
-          "plural": "networkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPConfiguration",
-          "plural": "bgpconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkPolicy",
-          "plural": "globalnetworkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BlockAffinity",
-          "plural": "blockaffinities",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "APIServer",
-          "plural": "apiservers",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMHandle",
-          "plural": "ipamhandles",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPPool",
-          "plural": "ippools",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPReservation",
-          "plural": "ipreservations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPPeer",
-          "plural": "bgppeers",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "Installation",
-          "plural": "installations",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "TigeraStatus",
-          "plural": "tigerastatuses",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "HostEndpoint",
-          "plural": "hostendpoints",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "FelixConfiguration",
-          "plural": "felixconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkSet",
-          "plural": "globalnetworksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMConfig",
-          "plural": "ipamconfigs",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkSet",
-          "plural": "networksets",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "ImageSet",
-          "plural": "imagesets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "ClusterInformation",
-          "plural": "clusterinformations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMBlock",
-          "plural": "ipamblocks",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "KubeControllersConfiguration",
-          "plural": "kubecontrollersconfigurations",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:3685ddcc878ab11b91b9ea8b0adc94570dc398c8d79bb6ca87b1ea78e16ca272",
-          "image": "quay.io/tigera/operator@sha256:3685ddcc878ab11b91b9ea8b0adc94570dc398c8d79bb6ca87b1ea78e16ca272",
-          "name": "tigera-operator"
-        },
-        {
-          "digest": "sha256:3685ddcc878ab11b91b9ea8b0adc94570dc398c8d79bb6ca87b1ea78e16ca272",
-          "image": "quay.io/tigera/operator@sha256:3685ddcc878ab11b91b9ea8b0adc94570dc398c8d79bb6ca87b1ea78e16ca272",
-          "name": "operator-3685ddcc878ab11b91b9ea8b0adc94570dc398c8d79bb6ca87b1ea78e16ca272-annotation"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<1.23.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.23.0",
-      "version_original": "1.23.0"
-    },
-    {
-      "_id": "61b3956860a98527f7695a58",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:69638694cb924d90c1c741bb90be3fee24efc6a3072774e875b30d5c55877108",
-      "bundle_path_digest": "sha256:69638694cb924d90c1c741bb90be3fee24efc6a3072774e875b30d5c55877108",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.23",
-      "creation_date": "2021-12-10T17:59:04.690000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.23.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T02:04:35.416000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BlockAffinity",
-          "plural": "blockaffinities",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMHandle",
-          "plural": "ipamhandles",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "ClusterInformation",
-          "plural": "clusterinformations",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "Installation",
-          "plural": "installations",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "TigeraStatus",
-          "plural": "tigerastatuses",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "FelixConfiguration",
-          "plural": "felixconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkPolicy",
-          "plural": "globalnetworkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkSet",
-          "plural": "networksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPPeer",
-          "plural": "bgppeers",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "KubeControllersConfiguration",
-          "plural": "kubecontrollersconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPPool",
-          "plural": "ippools",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkPolicy",
-          "plural": "networkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMBlock",
-          "plural": "ipamblocks",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMConfig",
-          "plural": "ipamconfigs",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "APIServer",
-          "plural": "apiservers",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPReservation",
-          "plural": "ipreservations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkSet",
-          "plural": "globalnetworksets",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "ImageSet",
-          "plural": "imagesets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPConfiguration",
-          "plural": "bgpconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "CalicoNodeStatus",
-          "plural": "caliconodestatuses",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "HostEndpoint",
-          "plural": "hostendpoints",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:3685ddcc878ab11b91b9ea8b0adc94570dc398c8d79bb6ca87b1ea78e16ca272",
-          "image": "quay.io/tigera/operator@sha256:3685ddcc878ab11b91b9ea8b0adc94570dc398c8d79bb6ca87b1ea78e16ca272",
-          "name": "tigera-operator"
-        },
-        {
-          "digest": "sha256:3685ddcc878ab11b91b9ea8b0adc94570dc398c8d79bb6ca87b1ea78e16ca272",
-          "image": "quay.io/tigera/operator@sha256:3685ddcc878ab11b91b9ea8b0adc94570dc398c8d79bb6ca87b1ea78e16ca272",
-          "name": "operator-3685ddcc878ab11b91b9ea8b0adc94570dc398c8d79bb6ca87b1ea78e16ca272-annotation"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<1.23.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.23.0",
-      "version_original": "1.23.0"
-    },
-    {
       "_id": "61b395c3f5a71c2d7c841e50",
       "alm_examples": [
         {
@@ -18433,9 +18027,255 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.20",
       "version_original": "1.1.20"
+    },
+    {
+      "_id": "61e70984223cb93ac44fa0c7",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "OpenshiftArtifactoryHa",
+          "metadata": {
+            "name": "openshiftartifactoryha"
+          },
+          "spec": {
+            "artifactory-ha": {
+              "artifactory": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/artifactory-pro",
+                  "tag": "7.27.9-1"
+                },
+                "joinKey": "OVERRIDE",
+                "masterKey": "OVERRIDE",
+                "node": {
+                  "replicaCount": 2,
+                  "waitForPrimaryStartup": {
+                    "enabled": false
+                  }
+                },
+                "uid": "1000721030"
+              },
+              "database": {
+                "driver": "OVERRIDE",
+                "password": "OVERRIDE",
+                "type": "OVERRIDE",
+                "url": "OVERRIDE",
+                "user": "OVERRIDE"
+              },
+              "databaseUpgradeReady": true,
+              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:9522611104cf958cc4322ed2d5d6ec0e3ffd75c39780a816f6f30d248c66ec02",
+              "nginx": {
+                "gid": "1000720107",
+                "http": {
+                  "externalPort": 80,
+                  "internalPort": 8080
+                },
+                "https": {
+                  "externalPort": 443,
+                  "internalPort": 8443
+                },
+                "image": {
+                  "registry": "registry.redhat.io",
+                  "repository": "rhel8/nginx-116",
+                  "tag": "latest"
+                },
+                "service": {
+                  "ssloffload": false
+                },
+                "tlsSecretName": "OVERRIDE",
+                "uid": "1000720104"
+              },
+              "postgresql": {
+                "enabled": false
+              },
+              "waitForDatabase": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:7f0eac75c3ad62bff844979c3f7cf1bf8553caa2c28e38c59299979a452bfb28",
+      "bundle_path_digest": "sha256:7f0eac75c3ad62bff844979c3f7cf1bf8553caa2c28e38c59299979a452bfb28",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-01-18T18:40:04.932000+00:00",
+      "csv_description": " ## Breaking change\nPlease update to version 1.1.10 of the operator.\nVersion 1.1.8 and 1.1.9 have issues. Please skip these versions.\n\n## Overview\nOpenshift Operator to deploy JFrog Artifactory Enterprise into your Openshift cluster.\n## Security Context Constraints\nTo deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc.\n```\noc adm policy add-scc-to-user anyuid -z artifactory-ha-operator -n openshift-operators\n```\nAdd the service account for the Artifactory chart to deploy successfully:\n``` oc adm policy add-scc-to-user anyuid -z openshiftartifactoryha-artifactory-ha -n artifactory ```\n### Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Artifactory Enterprise Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Artifactory Enterprise Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Artifactory HA.\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nDATABASE_TYPE\nDATABASE_DRIVER\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\nMaster key and Join key must be supplied. To generate a new key for each run the command below:\n\n```\n# Create a key\nexport JOIN_KEY=$(openssl rand -hex 32)\necho ${JOIN_KEY}\n```\n\nTo use TLS you will need to first create a k8s tls secret to store your .crt and .key file into.\nThen supply the value of this k8s secret into the TLS_SECRET field.\n``` oc create secret tls my_tls_secret --cert=tls.crt --key=tls.key --namespace=my_namespace ```\nClick Create for Artifactory Enterprise to deploy into OpenShift and connect to it on the external IP exposed by the load balancer.\n### Create a route\nTo expose Artifactory from Openshift we recommend you create a new route in Openshift.\nYou can either use the oc command line tool or the Openshift web console to generate a new route.\nDepending upon where you terminate TLS you will need to either specify pass through or edge.\nCommand Line (Edge):\n``` oc create route edge --service=openshiftartifactory-ha --cert=tls.crt --key=tls.key --ca-cert=ca.crt --hostname=www.example.com ```\nOr for more information visit the official Openshift documentation on routes here:\nhttps://docs.openshift.com/container-platform/4.6/networking/routes/route-configuration.html\n\n",
+      "csv_display_name": "JFrog Artifactory Enterprise Operator",
+      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
+      "csv_name": "artifactory-ha-operator.v1.1.21",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:21:35.713000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "openshiftartifactoryha-operator",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:7f06776ddcaffa1f4c3ca74b0d71f7fd11a6af5b0f2f42ade89a7f4ef4011296",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:7f06776ddcaffa1f4c3ca74b0d71f7fd11a6af5b0f2f42ade89a7f4ef4011296",
+          "name": "artifactory-pro"
+        },
+        {
+          "digest": "sha256:65fbf73f8affdafa2b4122daa2515164a6cd7e43864eda7ed7f4357465269e3f",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:65fbf73f8affdafa2b4122daa2515164a6cd7e43864eda7ed7f4357465269e3f",
+          "name": "artifactory-operator"
+        },
+        {
+          "digest": "sha256:bce2fa53c4e5b913c707183f49ab9dcde9e601b22f9fb85b98ba56f2e163c1a8",
+          "image": "registry.redhat.io/rhel8/nginx-116@sha256:bce2fa53c4e5b913c707183f49ab9dcde9e601b22f9fb85b98ba56f2e163c1a8",
+          "name": "nginx"
+        },
+        {
+          "digest": "sha256:65fbf73f8affdafa2b4122daa2515164a6cd7e43864eda7ed7f4357465269e3f",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:65fbf73f8affdafa2b4122daa2515164a6cd7e43864eda7ed7f4357465269e3f",
+          "name": "artifactory-operator-65fbf73f8affdafa2b4122daa2515164a6cd7e43864eda7ed7f4357465269e3f-annotation"
+        },
+        {
+          "digest": "sha256:65fbf73f8affdafa2b4122daa2515164a6cd7e43864eda7ed7f4357465269e3f",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:65fbf73f8affdafa2b4122daa2515164a6cd7e43864eda7ed7f4357465269e3f",
+          "name": "artifactory-ha-operator"
+        },
+        {
+          "digest": "sha256:7f06776ddcaffa1f4c3ca74b0d71f7fd11a6af5b0f2f42ade89a7f4ef4011296",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:7f06776ddcaffa1f4c3ca74b0d71f7fd11a6af5b0f2f42ade89a7f4ef4011296",
+          "name": "artifactory_image_repository"
+        },
+        {
+          "digest": "sha256:bce2fa53c4e5b913c707183f49ab9dcde9e601b22f9fb85b98ba56f2e163c1a8",
+          "image": "registry.redhat.io/rhel8/nginx-116@sha256:bce2fa53c4e5b913c707183f49ab9dcde9e601b22f9fb85b98ba56f2e163c1a8",
+          "name": "nginx_image_repository"
+        },
+        {
+          "digest": "sha256:9522611104cf958cc4322ed2d5d6ec0e3ffd75c39780a816f6f30d248c66ec02",
+          "image": "registry.connect.redhat.com/jfrog/init@sha256:9522611104cf958cc4322ed2d5d6ec0e3ffd75c39780a816f6f30d248c66ec02",
+          "name": "init-9522611104cf958cc4322ed2d5d6ec0e3ffd75c39780a816f6f30d248c66ec02-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.1.21",
+      "version_original": "1.1.21"
+    },
+    {
+      "_id": "61e71658fe3f56de6a31386a",
+      "alm_examples": [
+        {
+          "api_version": "headspin.com/v1alpha1",
+          "kind": "HeadspinUnifiedcontroller",
+          "metadata": {
+            "name": "headspin-sample"
+          },
+          "spec": {
+            "keys-map": "headspin-keys",
+            "keys-map-red": "keys-red"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/headspin/headspin-operator-bundle@sha256:85b3c93ba5a9355fb05273401b04c4d3b9d37187f83e928640c147e2cab2b149",
+      "bundle_path_digest": "sha256:85b3c93ba5a9355fb05273401b04c4d3b9d37187f83e928640c147e2cab2b149",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-01-18T19:34:48.914000+00:00",
+      "csv_description": "The Headspin unifiedcontroller operator for ubi 8.4",
+      "csv_display_name": "Headspin Unifiedcontroller",
+      "csv_metadata_description": "",
+      "csv_name": "headspinunifiedcontroller.v1.0.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:51:12.391000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "headspinunifiedcontroller",
+      "provided_apis": [
+        {
+          "group": "headspin.com",
+          "kind": "HeadspinUnifiedcontroller",
+          "plural": "headspinunifiedcontrollers",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:8b4f814c112d7b91dc5e7904d4f3c684f3d77227344d2b553a84d4a1bc2829d3",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:8b4f814c112d7b91dc5e7904d4f3c684f3d77227344d2b553a84d4a1bc2829d3",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:40fc6a4c5c76dc3e99d557c5c590bc95294f9edd249bfa839551b22837e1511e",
+          "image": "registry.connect.redhat.com/headspin/headspin-operator@sha256:40fc6a4c5c76dc3e99d557c5c590bc95294f9edd249bfa839551b22837e1511e",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:6f4aaaa8f67784d63790a65c9155b2cbbad7f8cc73034c0d7a70ce7ad638e81e",
+          "image": "registry.connect.redhat.com/headspin/hspusher@sha256:6f4aaaa8f67784d63790a65c9155b2cbbad7f8cc73034c0d7a70ce7ad638e81e",
+          "name": "headspin"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.0.0",
+      "version_original": "1.0.0"
     }
   ],
   "page": 19,
   "page_size": 100,
-  "total": 3975
+  "total": 3969
 }

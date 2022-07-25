@@ -1,191 +1,6 @@
 {
   "data": [
     {
-      "_id": "616080e85cfcf7adc247ac56",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:4d0d814fcfeb628aae8a05cb7a0a416ae85395197950085c907b6cdcf2fb4317",
-      "bundle_path_digest": "sha256:4d0d814fcfeb628aae8a05cb7a0a416ae85395197950085c907b6cdcf2fb4317",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.20",
-      "creation_date": "2021-10-08T17:33:28.853000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.20.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T02:14:09.366000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BlockAffinity",
-          "plural": "blockaffinities",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "FelixConfiguration",
-          "plural": "felixconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "KubeControllersConfiguration",
-          "plural": "kubecontrollersconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkPolicy",
-          "plural": "networkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "TigeraStatus",
-          "plural": "tigerastatuses",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMBlock",
-          "plural": "ipamblocks",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "ImageSet",
-          "plural": "imagesets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMHandle",
-          "plural": "ipamhandles",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkSet",
-          "plural": "globalnetworksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkSet",
-          "plural": "networksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "HostEndpoint",
-          "plural": "hostendpoints",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMConfig",
-          "plural": "ipamconfigs",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPPeer",
-          "plural": "bgppeers",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkPolicy",
-          "plural": "globalnetworkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPConfiguration",
-          "plural": "bgpconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "Installation",
-          "plural": "installations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPPool",
-          "plural": "ippools",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "ClusterInformation",
-          "plural": "clusterinformations",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
-          "image": "quay.io/tigera/operator@sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
-          "name": "operator-bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2-annotation"
-        },
-        {
-          "digest": "sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
-          "image": "quay.io/tigera/operator@sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
-          "name": "tigera-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<1.20.4",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.20.4",
-      "version_original": "1.20.4"
-    },
-    {
       "_id": "6160824b5ac6c12504902082",
       "alm_examples": [
         {
@@ -25381,9 +25196,91 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "2.0.1",
       "version_original": "2.0.1"
+    },
+    {
+      "_id": "616fd426c9ba1ce49b9f0ae0",
+      "alm_examples": [
+        {
+          "api_version": "csi.nec.com/v1",
+          "kind": "NSPC",
+          "metadata": {
+            "name": "nspc",
+            "namespace": "kube-system"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nec/nspc-operator-bundle@sha256:10335d1fd74373cfcbdd09b51b7405be004b48691b870fd2ab8825ccd450201d",
+      "bundle_path_digest": "sha256:10335d1fd74373cfcbdd09b51b7405be004b48691b870fd2ab8825ccd450201d",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-10-20T08:32:38.938000+00:00",
+      "csv_description": "## About\nNEC Storage Plug-in for Containers (NSPC) is a plugin that integrates NEC Storage V Series into Kubernetes based clusters.\nNSPC provides dynamic persistent volume provisioning capabilities from NEC Storage V Series arrays.\n\nFor full documentation, refer to the reference guide for NSPC v3.6.0.\n\n## Requirements\n\n### Supported Driver Version\n\n* NSPC v3.6.0\n\n### Supported Platforms\n\n* OpenShift v4.5, v4.6, v4.7\n\n### Supported Operating Systems\n\n* RHEL 7.x",
+      "csv_display_name": "NEC Storage Plug-in for Containers",
+      "csv_metadata_description": "An operator for managing NEC Storage Plug-in for Containers CSI driver",
+      "csv_name": "nspc-operator.v1.6.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:06:29.464000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nspc-operator",
+      "provided_apis": [
+        {
+          "group": "csi.nec.com",
+          "kind": "NSPC",
+          "plural": "nspcs",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:7d760bb4d699a8cc0de9f9282ea5c159802bc211cbdadd220e87090f87740d56",
+          "image": "registry.connect.redhat.com/nec/nspc-operator@sha256:7d760bb4d699a8cc0de9f9282ea5c159802bc211cbdadd220e87090f87740d56",
+          "name": "nspc-operator-7d760bb4d699a8cc0de9f9282ea5c159802bc211cbdadd220e87090f87740d56-annotation"
+        },
+        {
+          "digest": "sha256:7d760bb4d699a8cc0de9f9282ea5c159802bc211cbdadd220e87090f87740d56",
+          "image": "registry.connect.redhat.com/nec/nspc-operator@sha256:7d760bb4d699a8cc0de9f9282ea5c159802bc211cbdadd220e87090f87740d56",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.6.0",
+      "version_original": "1.6.0"
     }
   ],
   "page": 16,
   "page_size": 100,
-  "total": 3975
+  "total": 3969
 }

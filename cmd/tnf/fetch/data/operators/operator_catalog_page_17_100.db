@@ -1,88 +1,6 @@
 {
   "data": [
     {
-      "_id": "616fd426c9ba1ce49b9f0ae0",
-      "alm_examples": [
-        {
-          "api_version": "csi.nec.com/v1",
-          "kind": "NSPC",
-          "metadata": {
-            "name": "nspc",
-            "namespace": "kube-system"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nec/nspc-operator-bundle@sha256:10335d1fd74373cfcbdd09b51b7405be004b48691b870fd2ab8825ccd450201d",
-      "bundle_path_digest": "sha256:10335d1fd74373cfcbdd09b51b7405be004b48691b870fd2ab8825ccd450201d",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-10-20T08:32:38.938000+00:00",
-      "csv_description": "## About\nNEC Storage Plug-in for Containers (NSPC) is a plugin that integrates NEC Storage V Series into Kubernetes based clusters.\nNSPC provides dynamic persistent volume provisioning capabilities from NEC Storage V Series arrays.\n\nFor full documentation, refer to the reference guide for NSPC v3.6.0.\n\n## Requirements\n\n### Supported Driver Version\n\n* NSPC v3.6.0\n\n### Supported Platforms\n\n* OpenShift v4.5, v4.6, v4.7\n\n### Supported Operating Systems\n\n* RHEL 7.x",
-      "csv_display_name": "NEC Storage Plug-in for Containers",
-      "csv_metadata_description": "An operator for managing NEC Storage Plug-in for Containers CSI driver",
-      "csv_name": "nspc-operator.v1.6.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:06:29.464000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "nspc-operator",
-      "provided_apis": [
-        {
-          "group": "csi.nec.com",
-          "kind": "NSPC",
-          "plural": "nspcs",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:7d760bb4d699a8cc0de9f9282ea5c159802bc211cbdadd220e87090f87740d56",
-          "image": "registry.connect.redhat.com/nec/nspc-operator@sha256:7d760bb4d699a8cc0de9f9282ea5c159802bc211cbdadd220e87090f87740d56",
-          "name": "nspc-operator-7d760bb4d699a8cc0de9f9282ea5c159802bc211cbdadd220e87090f87740d56-annotation"
-        },
-        {
-          "digest": "sha256:7d760bb4d699a8cc0de9f9282ea5c159802bc211cbdadd220e87090f87740d56",
-          "image": "registry.connect.redhat.com/nec/nspc-operator@sha256:7d760bb4d699a8cc0de9f9282ea5c159802bc211cbdadd220e87090f87740d56",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.6.0",
-      "version_original": "1.6.0"
-    },
-    {
       "_id": "616fd42ac9ba1ce49b9f0ae1",
       "alm_examples": [
         {
@@ -15098,9 +15016,92 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.3.0",
       "version_original": "0.3.0"
+    },
+    {
+      "_id": "619ff4c1c17162a20c1c65f2",
+      "alm_examples": [
+        {
+          "api_version": "cache.omarg.net/v1alpha1",
+          "kind": "Memcached",
+          "metadata": {
+            "name": "memcached-sample"
+          },
+          "spec": {
+            "size": 3
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ogaye/ogaye-operator-bundle@sha256:5fb22f02153f2609ec21fe1af3a14b7e6c3779cdde7f387a59179b8152528225",
+      "bundle_path_digest": "sha256:5fb22f02153f2609ec21fe1af3a14b7e6c3779cdde7f387a59179b8152528225",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-25T20:40:33.461000+00:00",
+      "csv_description": "Testing RH CI Pipeline",
+      "csv_display_name": "Omar Test Memcached Operator",
+      "csv_metadata_description": "",
+      "csv_name": "ogaye-operator.v0.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:29:28.627000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "ogaye-operator",
+      "provided_apis": [
+        {
+          "group": "cache.omarg.net",
+          "kind": "Memcached",
+          "plural": "memcacheds",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:7f6a280132b9746c51e44a4e795a0f861ec932c454d597a60a421b882ef924ff",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:7f6a280132b9746c51e44a4e795a0f861ec932c454d597a60a421b882ef924ff",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:07e569609319c4884acc8e6f4a0e10344109b5f392898b628996925e96fafc83",
+          "image": "quay.io/ogaye/ogaye-operator@sha256:07e569609319c4884acc8e6f4a0e10344109b5f392898b628996925e96fafc83",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.0.2",
+      "version_original": "0.0.2"
     }
   ],
   "page": 17,
   "page_size": 100,
-  "total": 3975
+  "total": 3969
 }

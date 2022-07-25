@@ -1,993 +1,6 @@
 {
   "data": [
     {
-      "_id": "62cd43b44f09db93321cc224",
-      "alm_examples": [
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "License",
-          "metadata": {
-            "name": "tvk-license-one",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "Target",
-          "metadata": {
-            "labels": {
-              "app": "triliovault"
-            },
-            "name": "triliovault-target",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "nfsCredentials": {
-              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
-              "nfsOptions": "nfsvers=4"
-            },
-            "type": "NFS",
-            "vendor": "Other"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "BackupPlan",
-          "metadata": {
-            "name": "tvk-backupplan"
-          },
-          "spec": {
-            "backupConfig": {
-              "retentionPolicy": {
-                "name": "retention-policy",
-                "namespace": "openshift-marketplace"
-              },
-              "schedulePolicy": {
-                "fullBackupPolicy": {
-                  "name": "full-bp-policy",
-                  "namespace": "openshift-marketplace"
-                },
-                "incrementalBackupPolicy": {
-                  "name": "inc-bp-policy",
-                  "namespace": "openshift-marketplace"
-                }
-              },
-              "target": {
-                "name": "triliovault-target",
-                "namespace": "openshift-marketplace"
-              }
-            },
-            "backupPlanComponents": {
-              "custom": [
-                {
-                  "matchLabels": {
-                    "app": "nginx"
-                  }
-                }
-              ],
-              "helmReleases": [
-                "sample-release"
-              ],
-              "operators": [
-                {
-                  "applicationResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "app": "etcd"
-                      }
-                    }
-                  ],
-                  "customResources": [
-                    {
-                      "groupVersionKind": {
-                        "group": "etcd.database.coreos.com",
-                        "kind": "EtcdCluster",
-                        "version": "v1beta2"
-                      },
-                      "objects": [
-                        "demo-etcd-cluster"
-                      ]
-                    }
-                  ],
-                  "operatorId": "demo-etcd-cluster",
-                  "operatorResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "release": "demo-etcd-operator"
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:a41a34a2254d49d73d0a1fb7369772e1a17aa8be345a60b96928107b3fb8c708",
-      "bundle_path_digest": "sha256:a41a34a2254d49d73d0a1fb7369772e1a17aa8be345a60b96928107b3fb8c708",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-12T09:49:40.009000+00:00",
-      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
-      "csv_display_name": "TrilioVault for Kubernetes",
-      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
-      "csv_name": "k8s-triliovault-stable.2.10.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-07-14T05:06:43.081000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "k8s-triliovault",
-      "provided_apis": [
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Hook",
-          "plural": "hooks",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Target",
-          "plural": "targets",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "BackupPlan",
-          "plural": "backupplans",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterRestore",
-          "plural": "clusterrestores",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackupPlan",
-          "plural": "clusterbackupplans",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "License",
-          "plural": "licenses",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Restore",
-          "plural": "restores",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackup",
-          "plural": "clusterbackups",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Policy",
-          "plural": "policies",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "control-plane-222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701-annotation"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "k8s-triliovault-control-plane"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "k8s-triliovault-analyzer"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "triliovault-admission-webhook"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "triliovault-exporter"
-        },
-        {
-          "digest": "sha256:44dbb94a1fc3a9c666c7ea1ffa5edd5b09a2e0e9be75f7178796efe37e11ea50",
-          "image": "registry.connect.redhat.com/trilio/web@sha256:44dbb94a1fc3a9c666c7ea1ffa5edd5b09a2e0e9be75f7178796efe37e11ea50",
-          "name": "triliovault-web"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "triliovault-web-backend"
-        },
-        {
-          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "name": "triliovault-dex"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "webhook-init"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "dex-init"
-        },
-        {
-          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "name": "metamover"
-        },
-        {
-          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "name": "datamover"
-        },
-        {
-          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "name": "datastore_attacher"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "backup_scheduler"
-        },
-        {
-          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "name": "backup_cleaner"
-        },
-        {
-          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "name": "backup_retention"
-        },
-        {
-          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "name": "target_browser"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "hook"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "resource_cleaner"
-        },
-        {
-          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
-          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
-          "name": "minio"
-        },
-        {
-          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "name": "dex"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "tvk_init"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<2.10.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2.10.0",
-      "version_original": "2.10.0"
-    },
-    {
-      "_id": "62cd47d1aae29e66d1b44b9a",
-      "alm_examples": [
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "License",
-          "metadata": {
-            "name": "tvk-license-one",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "Target",
-          "metadata": {
-            "labels": {
-              "app": "triliovault"
-            },
-            "name": "triliovault-target",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "nfsCredentials": {
-              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
-              "nfsOptions": "nfsvers=4"
-            },
-            "type": "NFS",
-            "vendor": "Other"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "BackupPlan",
-          "metadata": {
-            "name": "tvk-backupplan"
-          },
-          "spec": {
-            "backupConfig": {
-              "retentionPolicy": {
-                "name": "retention-policy",
-                "namespace": "openshift-marketplace"
-              },
-              "schedulePolicy": {
-                "fullBackupPolicy": {
-                  "name": "full-bp-policy",
-                  "namespace": "openshift-marketplace"
-                },
-                "incrementalBackupPolicy": {
-                  "name": "inc-bp-policy",
-                  "namespace": "openshift-marketplace"
-                }
-              },
-              "target": {
-                "name": "triliovault-target",
-                "namespace": "openshift-marketplace"
-              }
-            },
-            "backupPlanComponents": {
-              "custom": [
-                {
-                  "matchLabels": {
-                    "app": "nginx"
-                  }
-                }
-              ],
-              "helmReleases": [
-                "sample-release"
-              ],
-              "operators": [
-                {
-                  "applicationResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "app": "etcd"
-                      }
-                    }
-                  ],
-                  "customResources": [
-                    {
-                      "groupVersionKind": {
-                        "group": "etcd.database.coreos.com",
-                        "kind": "EtcdCluster",
-                        "version": "v1beta2"
-                      },
-                      "objects": [
-                        "demo-etcd-cluster"
-                      ]
-                    }
-                  ],
-                  "operatorId": "demo-etcd-cluster",
-                  "operatorResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "release": "demo-etcd-operator"
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:a41a34a2254d49d73d0a1fb7369772e1a17aa8be345a60b96928107b3fb8c708",
-      "bundle_path_digest": "sha256:a41a34a2254d49d73d0a1fb7369772e1a17aa8be345a60b96928107b3fb8c708",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-12T10:07:13.799000+00:00",
-      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
-      "csv_display_name": "TrilioVault for Kubernetes",
-      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
-      "csv_name": "k8s-triliovault-stable.2.10.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-07-14T05:21:10.070000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "k8s-triliovault",
-      "provided_apis": [
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "License",
-          "plural": "licenses",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackupPlan",
-          "plural": "clusterbackupplans",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterRestore",
-          "plural": "clusterrestores",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Policy",
-          "plural": "policies",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Restore",
-          "plural": "restores",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "BackupPlan",
-          "plural": "backupplans",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackup",
-          "plural": "clusterbackups",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Hook",
-          "plural": "hooks",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Target",
-          "plural": "targets",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "control-plane-222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701-annotation"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "k8s-triliovault-control-plane"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "k8s-triliovault-analyzer"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "triliovault-admission-webhook"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "triliovault-exporter"
-        },
-        {
-          "digest": "sha256:44dbb94a1fc3a9c666c7ea1ffa5edd5b09a2e0e9be75f7178796efe37e11ea50",
-          "image": "registry.connect.redhat.com/trilio/web@sha256:44dbb94a1fc3a9c666c7ea1ffa5edd5b09a2e0e9be75f7178796efe37e11ea50",
-          "name": "triliovault-web"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "triliovault-web-backend"
-        },
-        {
-          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "name": "triliovault-dex"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "webhook-init"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "dex-init"
-        },
-        {
-          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "name": "metamover"
-        },
-        {
-          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "name": "datamover"
-        },
-        {
-          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "name": "datastore_attacher"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "backup_scheduler"
-        },
-        {
-          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "name": "backup_cleaner"
-        },
-        {
-          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "name": "backup_retention"
-        },
-        {
-          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "name": "target_browser"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "hook"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "resource_cleaner"
-        },
-        {
-          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
-          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
-          "name": "minio"
-        },
-        {
-          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "name": "dex"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "tvk_init"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<2.10.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "2.10.0",
-      "version_original": "2.10.0"
-    },
-    {
-      "_id": "62cd4889e4ad541e1fa791c1",
-      "alm_examples": [
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "License",
-          "metadata": {
-            "name": "tvk-license-one",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "Target",
-          "metadata": {
-            "labels": {
-              "app": "triliovault"
-            },
-            "name": "triliovault-target",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "nfsCredentials": {
-              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
-              "nfsOptions": "nfsvers=4"
-            },
-            "type": "NFS",
-            "vendor": "Other"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "BackupPlan",
-          "metadata": {
-            "name": "tvk-backupplan"
-          },
-          "spec": {
-            "backupConfig": {
-              "retentionPolicy": {
-                "name": "retention-policy",
-                "namespace": "openshift-marketplace"
-              },
-              "schedulePolicy": {
-                "fullBackupPolicy": {
-                  "name": "full-bp-policy",
-                  "namespace": "openshift-marketplace"
-                },
-                "incrementalBackupPolicy": {
-                  "name": "inc-bp-policy",
-                  "namespace": "openshift-marketplace"
-                }
-              },
-              "target": {
-                "name": "triliovault-target",
-                "namespace": "openshift-marketplace"
-              }
-            },
-            "backupPlanComponents": {
-              "custom": [
-                {
-                  "matchLabels": {
-                    "app": "nginx"
-                  }
-                }
-              ],
-              "helmReleases": [
-                "sample-release"
-              ],
-              "operators": [
-                {
-                  "applicationResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "app": "etcd"
-                      }
-                    }
-                  ],
-                  "customResources": [
-                    {
-                      "groupVersionKind": {
-                        "group": "etcd.database.coreos.com",
-                        "kind": "EtcdCluster",
-                        "version": "v1beta2"
-                      },
-                      "objects": [
-                        "demo-etcd-cluster"
-                      ]
-                    }
-                  ],
-                  "operatorId": "demo-etcd-cluster",
-                  "operatorResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "release": "demo-etcd-operator"
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:a41a34a2254d49d73d0a1fb7369772e1a17aa8be345a60b96928107b3fb8c708",
-      "bundle_path_digest": "sha256:a41a34a2254d49d73d0a1fb7369772e1a17aa8be345a60b96928107b3fb8c708",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-12T10:10:17.883000+00:00",
-      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
-      "csv_display_name": "TrilioVault for Kubernetes",
-      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
-      "csv_name": "k8s-triliovault-stable.2.10.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-07-14T05:23:55.034000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "k8s-triliovault",
-      "provided_apis": [
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackupPlan",
-          "plural": "clusterbackupplans",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackup",
-          "plural": "clusterbackups",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "BackupPlan",
-          "plural": "backupplans",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Hook",
-          "plural": "hooks",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Restore",
-          "plural": "restores",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterRestore",
-          "plural": "clusterrestores",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "License",
-          "plural": "licenses",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Policy",
-          "plural": "policies",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Target",
-          "plural": "targets",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "control-plane-222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701-annotation"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "k8s-triliovault-control-plane"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "k8s-triliovault-analyzer"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "triliovault-admission-webhook"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "triliovault-exporter"
-        },
-        {
-          "digest": "sha256:44dbb94a1fc3a9c666c7ea1ffa5edd5b09a2e0e9be75f7178796efe37e11ea50",
-          "image": "registry.connect.redhat.com/trilio/web@sha256:44dbb94a1fc3a9c666c7ea1ffa5edd5b09a2e0e9be75f7178796efe37e11ea50",
-          "name": "triliovault-web"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "triliovault-web-backend"
-        },
-        {
-          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "name": "triliovault-dex"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "webhook-init"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "dex-init"
-        },
-        {
-          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "name": "metamover"
-        },
-        {
-          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "name": "datamover"
-        },
-        {
-          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "name": "datastore_attacher"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "backup_scheduler"
-        },
-        {
-          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
-          "name": "backup_cleaner"
-        },
-        {
-          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "name": "backup_retention"
-        },
-        {
-          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
-          "name": "target_browser"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "hook"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "resource_cleaner"
-        },
-        {
-          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
-          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
-          "name": "minio"
-        },
-        {
-          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "name": "dex"
-        },
-        {
-          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
-          "name": "tvk_init"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<2.10.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.10.0",
-      "version_original": "2.10.0"
-    },
-    {
       "_id": "62cd488a4f09db93321cc265",
       "alm_examples": [
         {
@@ -15039,9 +14052,996 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "2.10.1",
       "version_original": "2.10.1"
+    },
+    {
+      "_id": "62cfa462233d67e5fa7e8161",
+      "alm_examples": [
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:faf4271ba9065f12dd6960c643ba0c3b9d6eded06f30f72efd5df2638e2f65f7",
+      "bundle_path_digest": "sha256:faf4271ba9065f12dd6960c643ba0c3b9d6eded06f30f72efd5df2638e2f65f7",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-14T05:06:42.762000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.10.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-07-14T05:06:42.762000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "plural": "clusterrestores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "plural": "clusterbackupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "plural": "clusterbackups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "control-plane-b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7-annotation"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:3ab0c984dcd9a6076426d483f6ff2d78de50cf27310296e34d062c0b00648c2c",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:3ab0c984dcd9a6076426d483f6ff2d78de50cf27310296e34d062c0b00648c2c",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "<2.10.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.10.1",
+      "version_original": "2.10.1"
+    },
+    {
+      "_id": "62cfa7c56537ee32f3d7c803",
+      "alm_examples": [
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:faf4271ba9065f12dd6960c643ba0c3b9d6eded06f30f72efd5df2638e2f65f7",
+      "bundle_path_digest": "sha256:faf4271ba9065f12dd6960c643ba0c3b9d6eded06f30f72efd5df2638e2f65f7",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-14T05:21:09.296000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.10.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-07-14T05:21:09.296000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "plural": "clusterbackups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "plural": "clusterbackupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "plural": "clusterrestores",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "control-plane-b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7-annotation"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:3ab0c984dcd9a6076426d483f6ff2d78de50cf27310296e34d062c0b00648c2c",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:3ab0c984dcd9a6076426d483f6ff2d78de50cf27310296e34d062c0b00648c2c",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "<2.10.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.10.1",
+      "version_original": "2.10.1"
+    },
+    {
+      "_id": "62cfa868233d67e5fa7e944d",
+      "alm_examples": [
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:faf4271ba9065f12dd6960c643ba0c3b9d6eded06f30f72efd5df2638e2f65f7",
+      "bundle_path_digest": "sha256:faf4271ba9065f12dd6960c643ba0c3b9d6eded06f30f72efd5df2638e2f65f7",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-14T05:23:52.785000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.10.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-07-14T05:23:52.785000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "plural": "clusterbackups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "plural": "clusterrestores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "plural": "clusterbackupplans",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "control-plane-b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7-annotation"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:3ab0c984dcd9a6076426d483f6ff2d78de50cf27310296e34d062c0b00648c2c",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:3ab0c984dcd9a6076426d483f6ff2d78de50cf27310296e34d062c0b00648c2c",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:705860b391c26db74a8ce737767a03ae6fa3e4079b067cea4fd90375ba759f1b",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:fc6dd200c5a392dfc0606c5ba7aaf243e1b25ffeac6fa63202f42761def158a1",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:b9e233fc7e2559081a0346125ef164ca12e3b16cf04dd06cfc7fc7ec4f0576f7",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "<2.10.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "2.10.1",
+      "version_original": "2.10.1"
     }
   ],
   "page": 38,
   "page_size": 100,
-  "total": 3975
+  "total": 3969
 }
