@@ -21,6 +21,44 @@ const (
 	debug            = "debug"
 )
 
+// Delete daemon set
+func DeleteDaemonSet(daemonSetName, namespace string) error {
+	logrus.Infof("Deleting daemon set %s", daemonSetName)
+	deletePolicy := metav1.DeletePropagationForeground
+	client := clientsholder.GetClientsHolder().K8sClient
+	err := client.AppsV1().DaemonSets(namespace).Delete(context.TODO(), daemonSetName, metav1.DeleteOptions{
+		PropagationPolicy: &deletePolicy})
+	if err != nil {
+		return fmt.Errorf("daemonset %s deletion failed: %w", daemonSetName, err)
+	}
+	for start := time.Now(); time.Since(start) < timeout; {
+		pods, err := client.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{LabelSelector: "test-network-function.com/app=debug"})
+		if err != nil {
+			return fmt.Errorf("failed to get pods, err: %s", err)
+		}
+
+		if len(pods.Items) == 0 {
+			break
+		}
+		time.Sleep(time.Duration(timeout.Minutes()))
+	}
+
+	logrus.Infof("Successfully cleaned up daemon set %s", daemonSetName)
+	return nil
+}
+
+// Check if the daemon set exists
+func doesDaemonSetExist(daemonSetName, namespace string) bool {
+	client := clientsholder.GetClientsHolder().K8sClient.AppsV1()
+	_, err := client.DaemonSets(namespace).Get(context.TODO(), daemonSetName, metav1.GetOptions{})
+	if err != nil {
+		logrus.Infof("Error occurred checking for Daemonset to exist: %s", err.Error())
+		return false
+	}
+	// If the error is not found, that means the daemon set exists
+	return err == nil
+}
+
 //nolint:funlen
 func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion string) *v1.DaemonSet {
 	dsAnnotations := make(map[string]string)
@@ -40,7 +78,7 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 	container := corev1.Container{
 		Name:            containerName,
 		Image:           imageWithVersion,
-		ImagePullPolicy: "IfNotPresent",
+		ImagePullPolicy: corev1.PullIfNotPresent,
 		SecurityContext: &corev1.SecurityContext{
 			Privileged: &runAsPrivileged,
 			RunAsUser:  &zeroInt,
@@ -112,53 +150,13 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 	}
 }
 
-// Delete daemon set
-func DeleteDaemonSet(daemonSetName, namespace string) error {
-	logrus.Infof("Deleting daemon set %s", daemonSetName)
-	deletePolicy := metav1.DeletePropagationForeground
-	client := clientsholder.GetClientsHolder().K8sClient.AppsV1()
-	err := client.DaemonSets(namespace).Delete(context.TODO(), daemonSetName, metav1.DeleteOptions{
-		PropagationPolicy: &deletePolicy})
-	if err != nil {
-		return fmt.Errorf("daemonset %s deletion failed: %w", daemonSetName, err)
-	}
-
-	for start := time.Now(); time.Since(start) < timeout; {
-		client := clientsholder.GetClientsHolder().K8sClient
-		pods, err := client.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{LabelSelector: "name=" + daemonSetName})
-		if err != nil {
-			return fmt.Errorf("failed to get pods, err: %s", err)
-		}
-
-		if len(pods.Items) == 0 {
-			break
-		}
-		time.Sleep(time.Duration(timeout.Minutes()))
-	}
-
-	logrus.Infof("Successfully cleaned up daemon set %s", daemonSetName)
-	return nil
-}
-
-// Check if the daemon set exists
-func doesDaemonSetExist(daemonSetName, namespace string) bool {
-	client := clientsholder.GetClientsHolder().K8sClient.AppsV1()
-	_, err := client.DaemonSets(namespace).Get(context.TODO(), daemonSetName, metav1.GetOptions{})
-	if err != nil {
-		logrus.Infof("Error occurred checking for Daemonset to exist: %s", err.Error())
-		return false
-	}
-	// If the error is not found, that means the daemon set exists
-	return err == nil
-}
-
 // Create daemon set
 func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion string, timeout time.Duration) (*corev1.PodList, error) {
 	aDaemonSet := CreateDaemonSetsTemplate(daemonSetName, namespace, containerName, imageWithVersion)
 	if doesDaemonSetExist(daemonSetName, namespace) {
 		err := DeleteDaemonSet(daemonSetName, namespace)
 		if err != nil {
-			return nil, fmt.Errorf("failed to delete debug daemonset because: %w", err)
+			return nil, err
 		}
 	}
 
@@ -188,7 +186,7 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 func DeployPartnerTestDaemonset() error {
 	_, err := CreateDaemonSet(provider.DaemonSetName, provider.DaemonSetNamespace, containerName, imageWithVersion, timeout)
 	if err != nil {
-		logrus.Errorf("Error : +%v\n", err.Error())
+		logrus.Errorf("Error deploying partner daemonset %s", err.Error())
 		return err
 	}
 	return nil
