@@ -1,191 +1,6 @@
 {
   "data": [
     {
-      "_id": "60c1b398233d5ea79c3083c2",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:c20625e1364f7ccdd95d36fbed3a21ac131a092a56e0a0447dfc5af3e06e543b",
-      "bundle_path_digest": "sha256:c20625e1364f7ccdd95d36fbed3a21ac131a092a56e0a0447dfc5af3e06e543b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.15",
-      "creation_date": "2021-06-10T06:39:20.377000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.15.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:58:28.715000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkPolicy",
-          "plural": "networkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "TigeraStatus",
-          "plural": "tigerastatuses",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMHandle",
-          "plural": "ipamhandles",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPPool",
-          "plural": "ippools",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPPeer",
-          "plural": "bgppeers",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMBlock",
-          "plural": "ipamblocks",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "ImageSet",
-          "plural": "imagesets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkSet",
-          "plural": "globalnetworksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkSet",
-          "plural": "networksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BlockAffinity",
-          "plural": "blockaffinities",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "ClusterInformation",
-          "plural": "clusterinformations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMConfig",
-          "plural": "ipamconfigs",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPConfiguration",
-          "plural": "bgpconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "Installation",
-          "plural": "installations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "KubeControllersConfiguration",
-          "plural": "kubecontrollersconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "FelixConfiguration",
-          "plural": "felixconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkPolicy",
-          "plural": "globalnetworkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "HostEndpoint",
-          "plural": "hostendpoints",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:48b3a1f162ace3388159d2e858f00aef8ca9755f1ef328bb77ffd37d71df07e4",
-          "image": "quay.io/tigera/operator@sha256:48b3a1f162ace3388159d2e858f00aef8ca9755f1ef328bb77ffd37d71df07e4",
-          "name": "operator-48b3a1f162ace3388159d2e858f00aef8ca9755f1ef328bb77ffd37d71df07e4-annotation"
-        },
-        {
-          "digest": "sha256:48b3a1f162ace3388159d2e858f00aef8ca9755f1ef328bb77ffd37d71df07e4",
-          "image": "quay.io/tigera/operator@sha256:48b3a1f162ace3388159d2e858f00aef8ca9755f1ef328bb77ffd37d71df07e4",
-          "name": "tigera-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<1.15.2",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.15.2",
-      "version_original": "1.15.2"
-    },
-    {
       "_id": "60c1ba87adf15566a5a97bc7",
       "alm_examples": [
         {
@@ -2137,198 +1952,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.17.3",
       "version_original": "1.17.3"
-    },
-    {
-      "_id": "60c374e247c96fe63ef4c4b0",
-      "alm_examples": [
-        {
-          "api_version": "nvmesh.excelero.com/v1",
-          "kind": "NVMesh",
-          "metadata": {
-            "name": "cluster1"
-          },
-          "spec": {
-            "core": {
-              "azureOptimized": true,
-              "version": "2.2.1"
-            },
-            "csi": {
-              "controllerReplicas": 1,
-              "version": "v1.1.4-7"
-            },
-            "management": {
-              "mongoDB": {
-                "replicas": 1
-              },
-              "replicas": 1,
-              "version": "2.2.1-1"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/excelero/nvmesh-operator-bundle@sha256:31d2c78ff1afd16b0e5db2cee34d8cb325c61bcf2f6c0f0fccff7899e97548d9",
-      "bundle_path_digest": "sha256:31d2c78ff1afd16b0e5db2cee34d8cb325c61bcf2f6c0f0fccff7899e97548d9",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2021-06-11T14:36:18.059000+00:00",
-      "csv_description": "Excelero NVMesh is a low-latency distributed block storage solution providing web-scale applications access to hot data in any cloud, private or public. NVMesh enables pooling and sharing NVMe across any network. It drives both local and distributed file systems. The solution features an intelligent management layer that abstracts underlying hardware with CPU offload, creates logical volumes with redundancy and provides centralized, intelligent management and monitoring. Applications can enjoy the latency, throughput and IO/s of local NVMe devices with the convenience of centralized storage while avoiding proprietary hardware lock-in and reducing the overall storage TCO. In public cloud environments, NVMesh supports instances, both virtualized and containerized, that feature NVMe drives. Public cloud instances with local NVMe drives have become widely available allowing easy transition between on-premises and public cloud deployments of NVMesh.\n\nExcelero NVMesh has a flexible distributed data protection architecture providing multiple redundancy schemes that can be tuned for specific use cases and data center restrictions and requirements to ensure reliability and to reduce cost. The system can also work around failure to strive for maximal data availability. In NVMesh, drives are perceived as resources that are pooled into a large storage area. Logical volumes are then carved out of the storage area and presented to clients as block devices. Volumes may span multiple physical drives and target hosts, but do not need to use entire drives, so a single drive can be allocated to multiple volumes.\n\nVolumes can be configured in any of the following redundancy levels:\n\n**Concatenated** \u2013 Data is laid out on a single or multiple drives with no data redundancy. This volume type can be used for applications requiring temporary storage. Failures are typically isolated to a single device or host.\n\n**Striped** \u2013 Data is laid out across a set of drives and hosts with no data redundancy. This volume type can be used for applications requiring high performance temporary storage.\n\n**Mirrored** \u2013 Data is protected by mirroring data across drive segments. To increase data availability, the drive segments are allocated from drives on different target hosts. These hosts should be connected to different power supplies, preferably in separate upgrade zones and availability zones and any other zoning used to protect against risk. The software\u2019s management layer provides the agility to ensure such separation. Multi-way, active-active multipath networking is used for availability and for performance.\n\n**Striped** and Mirrored \u2013 Data is protected by mirroring data across drive segments and striping across these mirrors. Data is serviced from many drives and hosts, achieving high performance without sacrificing redundancy.\n\nFor details on licensing, support and usage under Red Hat OpenShift please access [https://www.excelero.com/openshift](https://www.excelero.com/openshift)\n",
-      "csv_display_name": "NVMesh Operator",
-      "csv_metadata_description": "NVMesh Operator enables users to install Excelero NVMesh on Kubernetes and OpenShift clusters",
-      "csv_name": "nvmesh-operator.0.7.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:53:32.610000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "nvmesh-operator",
-      "provided_apis": [
-        {
-          "group": "nvmesh.excelero.com",
-          "kind": "NVMesh",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d",
-          "image": "registry.connect.redhat.com/excelero/nvmesh-operator@sha256:dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d",
-          "name": "nvmesh-operator-dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d-annotation"
-        },
-        {
-          "digest": "sha256:dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d",
-          "image": "registry.connect.redhat.com/excelero/nvmesh-operator@sha256:dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d",
-          "name": "controller"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.7.0-48",
-      "version_original": "0.7.0-48"
-    },
-    {
-      "_id": "60c38317102db8eff44130c5",
-      "alm_examples": [
-        {
-          "api_version": "nvmesh.excelero.com/v1",
-          "kind": "NVMesh",
-          "metadata": {
-            "name": "cluster1"
-          },
-          "spec": {
-            "core": {
-              "azureOptimized": true,
-              "version": "2.2.1"
-            },
-            "csi": {
-              "controllerReplicas": 1,
-              "version": "v1.1.4-7"
-            },
-            "management": {
-              "mongoDB": {
-                "replicas": 1
-              },
-              "replicas": 1,
-              "version": "2.2.1-1"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/excelero/nvmesh-operator-bundle@sha256:31d2c78ff1afd16b0e5db2cee34d8cb325c61bcf2f6c0f0fccff7899e97548d9",
-      "bundle_path_digest": "sha256:31d2c78ff1afd16b0e5db2cee34d8cb325c61bcf2f6c0f0fccff7899e97548d9",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2021-06-11T15:36:55.761000+00:00",
-      "csv_description": "Excelero NVMesh is a low-latency distributed block storage solution providing web-scale applications access to hot data in any cloud, private or public. NVMesh enables pooling and sharing NVMe across any network. It drives both local and distributed file systems. The solution features an intelligent management layer that abstracts underlying hardware with CPU offload, creates logical volumes with redundancy and provides centralized, intelligent management and monitoring. Applications can enjoy the latency, throughput and IO/s of local NVMe devices with the convenience of centralized storage while avoiding proprietary hardware lock-in and reducing the overall storage TCO. In public cloud environments, NVMesh supports instances, both virtualized and containerized, that feature NVMe drives. Public cloud instances with local NVMe drives have become widely available allowing easy transition between on-premises and public cloud deployments of NVMesh.\n\nExcelero NVMesh has a flexible distributed data protection architecture providing multiple redundancy schemes that can be tuned for specific use cases and data center restrictions and requirements to ensure reliability and to reduce cost. The system can also work around failure to strive for maximal data availability. In NVMesh, drives are perceived as resources that are pooled into a large storage area. Logical volumes are then carved out of the storage area and presented to clients as block devices. Volumes may span multiple physical drives and target hosts, but do not need to use entire drives, so a single drive can be allocated to multiple volumes.\n\nVolumes can be configured in any of the following redundancy levels:\n\n**Concatenated** \u2013 Data is laid out on a single or multiple drives with no data redundancy. This volume type can be used for applications requiring temporary storage. Failures are typically isolated to a single device or host.\n\n**Striped** \u2013 Data is laid out across a set of drives and hosts with no data redundancy. This volume type can be used for applications requiring high performance temporary storage.\n\n**Mirrored** \u2013 Data is protected by mirroring data across drive segments. To increase data availability, the drive segments are allocated from drives on different target hosts. These hosts should be connected to different power supplies, preferably in separate upgrade zones and availability zones and any other zoning used to protect against risk. The software\u2019s management layer provides the agility to ensure such separation. Multi-way, active-active multipath networking is used for availability and for performance.\n\n**Striped** and Mirrored \u2013 Data is protected by mirroring data across drive segments and striping across these mirrors. Data is serviced from many drives and hosts, achieving high performance without sacrificing redundancy.\n\nFor details on licensing, support and usage under Red Hat OpenShift please access [https://www.excelero.com/openshift](https://www.excelero.com/openshift)\n",
-      "csv_display_name": "NVMesh Operator",
-      "csv_metadata_description": "NVMesh Operator enables users to install Excelero NVMesh on Kubernetes and OpenShift clusters",
-      "csv_name": "nvmesh-operator.0.7.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:47:39.365000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "nvmesh-operator",
-      "provided_apis": [
-        {
-          "group": "nvmesh.excelero.com",
-          "kind": "NVMesh",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d",
-          "image": "registry.connect.redhat.com/excelero/nvmesh-operator@sha256:dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d",
-          "name": "nvmesh-operator-dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d-annotation"
-        },
-        {
-          "digest": "sha256:dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d",
-          "image": "registry.connect.redhat.com/excelero/nvmesh-operator@sha256:dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d",
-          "name": "controller"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.7.0-48",
-      "version_original": "0.7.0-48"
     },
     {
       "_id": "60c3982347c96fe63ef4c4c4",
@@ -14485,9 +14108,296 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.1",
       "version_original": "0.0.1"
+    },
+    {
+      "_id": "60d4747fc7208e1f82577ff1",
+      "alm_examples": [
+        {
+          "api_version": "openlegacy.com/v1alpha1",
+          "kind": "Mf-cics-tg",
+          "metadata": {
+            "name": "mf-cics-tg-sample"
+          },
+          "spec": {
+            "image": "registry.connect.redhat.com/openlegacy-corp/mf-cics-tg@sha256:bc3915187df704fd6950045583562cf6421fae42ea182aae4142f8d9dabe8b49",
+            "replicaCount": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/openlegacy-corp/mf-cics-tg-nocode@sha256:bf84c776f995025ffac87b50971ff401cf92badf987d5c34a19915fa5e124b87",
+      "bundle_path_digest": "sha256:bf84c776f995025ffac87b50971ff401cf92badf987d5c34a19915fa5e124b87",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-06-24T12:03:11.507000+00:00",
+      "csv_description": "no-code application that allows simple configuration-based integration to CICS systems with CTG installed",
+      "csv_display_name": "OpenLegacy No-code Integration with CICS CTG",
+      "csv_metadata_description": "OpenLegacy connects to core systems, automatically generates digital services. This container includes the assets necessary to deploy to OpenShift once you generate the CICS specific content. It leverages CTG for the connection services. Please us the OpenLegacy No-code Integration with CICS system operator if you don't have CTG installed.",
+      "csv_name": "mf-cics-tg-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:44:45.322000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "mf-cics-tg-operator",
+      "provided_apis": [
+        {
+          "group": "openlegacy.com",
+          "kind": "Mf-cics-tg",
+          "plural": "mf-cics-tgs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:103cff7195035944a0874f931cb0c8264a03209b7d629971515019fb47be3c44",
+          "image": "registry.connect.redhat.com/openlegacy-corp/mf-cics-tg-operator@sha256:103cff7195035944a0874f931cb0c8264a03209b7d629971515019fb47be3c44",
+          "name": "mf-cics-tg-operator-103cff7195035944a0874f931cb0c8264a03209b7d629971515019fb47be3c44-annotation"
+        },
+        {
+          "digest": "sha256:331049f20a66e983578d0cf0e2d447a495ac8734588a867df4b7a5a309beb991",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:331049f20a66e983578d0cf0e2d447a495ac8734588a867df4b7a5a309beb991",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:103cff7195035944a0874f931cb0c8264a03209b7d629971515019fb47be3c44",
+          "image": "registry.connect.redhat.com/openlegacy-corp/mf-cics-tg-operator@sha256:103cff7195035944a0874f931cb0c8264a03209b7d629971515019fb47be3c44",
+          "name": "mf-cics-tg-operator"
+        },
+        {
+          "digest": "sha256:bc3915187df704fd6950045583562cf6421fae42ea182aae4142f8d9dabe8b49",
+          "image": "registry.connect.redhat.com/openlegacy-corp/mf-cics-tg@sha256:bc3915187df704fd6950045583562cf6421fae42ea182aae4142f8d9dabe8b49",
+          "name": "mf_cics_tg"
+        },
+        {
+          "digest": "sha256:bc3915187df704fd6950045583562cf6421fae42ea182aae4142f8d9dabe8b49",
+          "image": "registry.connect.redhat.com/openlegacy-corp/mf-cics-tg@sha256:bc3915187df704fd6950045583562cf6421fae42ea182aae4142f8d9dabe8b49",
+          "name": "mf-cics-tg-bc3915187df704fd6950045583562cf6421fae42ea182aae4142f8d9dabe8b49-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "60d4751dbc87930656669bb3",
+      "alm_examples": [
+        {
+          "api_version": "openlegacy.com/v1alpha1",
+          "kind": "Mf-cics-tg",
+          "metadata": {
+            "name": "mf-cics-tg-sample"
+          },
+          "spec": {
+            "image": "registry.connect.redhat.com/openlegacy-corp/mf-cics-tg@sha256:bc3915187df704fd6950045583562cf6421fae42ea182aae4142f8d9dabe8b49",
+            "replicaCount": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/openlegacy-corp/mf-cics-tg-nocode@sha256:bf84c776f995025ffac87b50971ff401cf92badf987d5c34a19915fa5e124b87",
+      "bundle_path_digest": "sha256:bf84c776f995025ffac87b50971ff401cf92badf987d5c34a19915fa5e124b87",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-06-24T12:05:49.411000+00:00",
+      "csv_description": "no-code application that allows simple configuration-based integration to CICS systems with CTG installed",
+      "csv_display_name": "OpenLegacy No-code Integration with CICS CTG",
+      "csv_metadata_description": "OpenLegacy connects to core systems, automatically generates digital services. This container includes the assets necessary to deploy to OpenShift once you generate the CICS specific content. It leverages CTG for the connection services. Please us the OpenLegacy No-code Integration with CICS system operator if you don't have CTG installed.",
+      "csv_name": "mf-cics-tg-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:03:39.318000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "mf-cics-tg-operator",
+      "provided_apis": [
+        {
+          "group": "openlegacy.com",
+          "kind": "Mf-cics-tg",
+          "plural": "mf-cics-tgs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:103cff7195035944a0874f931cb0c8264a03209b7d629971515019fb47be3c44",
+          "image": "registry.connect.redhat.com/openlegacy-corp/mf-cics-tg-operator@sha256:103cff7195035944a0874f931cb0c8264a03209b7d629971515019fb47be3c44",
+          "name": "mf-cics-tg-operator-103cff7195035944a0874f931cb0c8264a03209b7d629971515019fb47be3c44-annotation"
+        },
+        {
+          "digest": "sha256:331049f20a66e983578d0cf0e2d447a495ac8734588a867df4b7a5a309beb991",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:331049f20a66e983578d0cf0e2d447a495ac8734588a867df4b7a5a309beb991",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:103cff7195035944a0874f931cb0c8264a03209b7d629971515019fb47be3c44",
+          "image": "registry.connect.redhat.com/openlegacy-corp/mf-cics-tg-operator@sha256:103cff7195035944a0874f931cb0c8264a03209b7d629971515019fb47be3c44",
+          "name": "mf-cics-tg-operator"
+        },
+        {
+          "digest": "sha256:bc3915187df704fd6950045583562cf6421fae42ea182aae4142f8d9dabe8b49",
+          "image": "registry.connect.redhat.com/openlegacy-corp/mf-cics-tg@sha256:bc3915187df704fd6950045583562cf6421fae42ea182aae4142f8d9dabe8b49",
+          "name": "mf_cics_tg"
+        },
+        {
+          "digest": "sha256:bc3915187df704fd6950045583562cf6421fae42ea182aae4142f8d9dabe8b49",
+          "image": "registry.connect.redhat.com/openlegacy-corp/mf-cics-tg@sha256:bc3915187df704fd6950045583562cf6421fae42ea182aae4142f8d9dabe8b49",
+          "name": "mf-cics-tg-bc3915187df704fd6950045583562cf6421fae42ea182aae4142f8d9dabe8b49-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "60da09702d9a1be0419f7ff4",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta2",
+          "kind": "Runner",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": {
+            "gitlabUrl": "https://gitlab.com",
+            "imagePullPolicy": "Always",
+            "tags": "openshift, test",
+            "token": "gitlab-dev-runner-secret"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-runner-operator-bundle@sha256:9a88454a1cb9fe76e6a3a788c0d7a9015af3cc1fd42caf63ad46602959fba2b8",
+      "bundle_path_digest": "sha256:9a88454a1cb9fe76e6a3a788c0d7a9015af3cc1fd42caf63ad46602959fba2b8",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-06-28T17:40:00.879000+00:00",
+      "csv_description": "GitLab Runner is the lightweight, highly-scalable agent that runs your build jobs and sends the results back to a GitLab instance. GitLab Runner works in conjunction with GitLab CI/CD, the open-source continuous integration service included with GitLab.\n\nThe GitLab Runner operator manages the lifecycle of GitLab Runner in Kubernetes or Openshift clusters. The operator aims to automate the tasks needed to run your CI/CD jobs in your container orchestration platform.\n\n## Usage\n\n To link a GitLab Runner instance to a self-hosted GitLab instance or the hosted [GitLab](https://gitlab.com), you first need to:\n\n 1. create a secret containing the `runner-registration-token` from your GitLab project.\n\n   ```\n  cat > gitlab-runner-secret.yml << EOF\n  apiVersion: v1\n  kind: Secret\n  metadata:\n    name: gitlab-runner-secret\n  type: Opaque\n  stringData:\n    runner-registration-token: REPLACE_ME # your project runner secret\n  EOF\n  ```\n\n  ```\n  oc apply -f gitlab-runner-secret.yml\n  ```\n\n 2. Create the Custom Resource Definition (CRD) file and include the following information. The tags value must be openshift for the job to run.\n\n   ```\n   cat > gitlab-runner.yml << EOF\n   apiVersion: apps.gitlab.com/v1beta2\n   kind: Runner\n   metadata:\n     name: gitlab-runner\n   spec:\n     gitlabUrl: https://gitlab.example.com\n     buildImage: alpine\n     token: gitlab-runner-secret\n     tags: openshift\n   EOF\n   ```\n\n  ```\n  oc apply -f gitlab-runner.yml\n  ```\n\n## Full documentation\n\nVisit [Install GitLab Runner on Red Hat OpenShift](https://docs.gitlab.com/runner/install/openshift.html)\n",
+      "csv_display_name": "GitLab Runner",
+      "csv_metadata_description": "GitLab Runner operator manages lifecycle of GitLab Runner instances",
+      "csv_name": "gitlab-runner-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:12:25.471000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "gitlab-runner-operator",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:0ac74dadb45986ba59d3080446441bf0de35ea58d320c14d1d81558c52beaf9d",
+          "image": "registry.connect.redhat.com/gitlab/gitlab-runner@sha256:0ac74dadb45986ba59d3080446441bf0de35ea58d320c14d1d81558c52beaf9d",
+          "name": "gitlab-runner"
+        },
+        {
+          "digest": "sha256:20d6b89d8880f1796e3d3fff84940803a0ea084eb5417773511d6a7e4650ffbf",
+          "image": "registry.connect.redhat.com/gitlab/gitlab-runner-helper@sha256:20d6b89d8880f1796e3d3fff84940803a0ea084eb5417773511d6a7e4650ffbf",
+          "name": "gitlab-runner-helper"
+        },
+        {
+          "digest": "sha256:74924b4c33290eb557680b4584f45890f7731f6b252bf5009e318d2d74f48735",
+          "image": "registry.connect.redhat.com/gitlab/gitlab-runner-operator@sha256:74924b4c33290eb557680b4584f45890f7731f6b252bf5009e318d2d74f48735",
+          "name": "gitlab-runner-operator"
+        },
+        {
+          "digest": "sha256:dc0f91e256c86c3f7cb930d0e4d48eb68576425bc4bd288fb76decb0577c7e9e",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:dc0f91e256c86c3f7cb930d0e4d48eb68576425bc4bd288fb76decb0577c7e9e",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
     }
   ],
   "page": 12,
   "page_size": 100,
-  "total": 3969
+  "total": 3982
 }

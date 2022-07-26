@@ -1,316 +1,6 @@
 {
   "data": [
     {
-      "_id": "62211f4e5c46c6464085fd21",
-      "alm_examples": [
-        {
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.8-64.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9d1a896c1276852d8cad7e670924f309a7a82de2f8843f23d2a6ae42ba0a8b53",
-      "bundle_path_digest": "sha256:9d1a896c1276852d8cad7e670924f309a7a82de2f8843f23d2a6ae42ba0a8b53",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-03-03T20:04:30.993000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.8-15",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:17:21.181000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
-          "name": "redis-enterprise-operator-0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37-annotation"
-        },
-        {
-          "digest": "sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.2.8-15",
-      "version_original": "6.2.8-15"
-    },
-    {
-      "_id": "62211f509206cd6accd15a6d",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
-      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-03-03T20:04:32.512000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-11",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-04-16T17:11:27.736000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.6-11",
-      "version_original": "6.0.6-11"
-    },
-    {
-      "_id": "62211f519206cd6accd15a6e",
-      "alm_examples": [
-        {
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.20-97.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:5666acf5598f96dfbfac5704bb70e6578522979ef63b418ed2d1438a32d2440f",
-      "bundle_path_digest": "sha256:5666acf5598f96dfbfac5704bb70e6578522979ef63b418ed2d1438a32d2440f",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-03-03T20:04:33.962000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.20-12a",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:17:21.676000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "name": "redis-enterprise-operator-f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730-annotation"
-        },
-        {
-          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.20-12a",
-      "version_original": "6.0.20-12a"
-    },
-    {
       "_id": "62211f5310f4fb3122143e16",
       "alm_examples": [],
       "annotations": {
@@ -18724,9 +18414,313 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "1.18.5",
       "version_original": "1.18.5"
+    },
+    {
+      "_id": "62345fa7314381d2b0756b31",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta2",
+          "kind": "Runner",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": {
+            "gitlabUrl": "https://gitlab.com",
+            "imagePullPolicy": "Always",
+            "tags": "openshift, test",
+            "token": "gitlab-dev-runner-secret"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-runner-operator-bundle@sha256:abe1504fedbf38bc1cb45e5393216bae9cca95066ca84fa730c7e8b129930074",
+      "bundle_path_digest": "sha256:abe1504fedbf38bc1cb45e5393216bae9cca95066ca84fa730c7e8b129930074",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:32:07.664000+00:00",
+      "csv_description": "GitLab Runner is the lightweight, highly-scalable agent that runs your build jobs and sends the results back to a GitLab instance. GitLab Runner works in conjunction with GitLab CI/CD, the open-source continuous integration service included with GitLab.\n\nThe GitLab Runner operator manages the lifecycle of GitLab Runner in Kubernetes or Openshift clusters. The operator aims to automate the tasks needed to run your CI/CD jobs in your container orchestration platform.\n\n## Usage\n\n To link a GitLab Runner instance to a self-hosted GitLab instance or the hosted [GitLab](https://gitlab.com), you first need to:\n\n 1. create a secret containing the `runner-registration-token` from your GitLab project.\n\n   ```\n  cat > gitlab-runner-secret.yml << EOF\n  apiVersion: v1\n  kind: Secret\n  metadata:\n    name: gitlab-runner-secret\n  type: Opaque\n  stringData:\n    runner-registration-token: REPLACE_ME # your project runner secret\n  EOF\n  ```\n\n  ```\n  oc apply -f gitlab-runner-secret.yml\n  ```\n\n 2. Create the Custom Resource Definition (CRD) file and include the following information. The tags value must be openshift for the job to run.\n\n   ```\n   cat > gitlab-runner.yml << EOF\n   apiVersion: apps.gitlab.com/v1beta2\n   kind: Runner\n   metadata:\n     name: gitlab-runner\n   spec:\n     gitlabUrl: https://gitlab.example.com\n     buildImage: alpine\n     token: gitlab-runner-secret\n     tags: openshift\n   EOF\n   ```\n\n  ```\n  oc apply -f gitlab-runner.yml\n  ```\n\n## Full documentation\n\nVisit [Install GitLab Runner on Red Hat OpenShift](https://docs.gitlab.com/runner/install/openshift.html)\n",
+      "csv_display_name": "GitLab Runner",
+      "csv_metadata_description": "GitLab Runner operator manages lifecycle of GitLab Runner instances",
+      "csv_name": "gitlab-runner-operator.v1.2.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:41:25.074000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "gitlab-runner-operator",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "Runner",
+          "version": "v1beta2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:f48d93d89905284a35a72ec312ad4313bb1a42deaaab662eb181a65d34a89cd9",
+          "image": "registry.connect.redhat.com/gitlab/gitlab-runner@sha256:f48d93d89905284a35a72ec312ad4313bb1a42deaaab662eb181a65d34a89cd9",
+          "name": "gitlab-runner"
+        },
+        {
+          "digest": "sha256:9148c4c10685871e3bbed037d9c36e85f0603da38e721c5db2a85b9c6defeac9",
+          "image": "registry.connect.redhat.com/gitlab/gitlab-runner-helper@sha256:9148c4c10685871e3bbed037d9c36e85f0603da38e721c5db2a85b9c6defeac9",
+          "name": "gitlab-runner-helper"
+        },
+        {
+          "digest": "sha256:6ac79da50858f82949e1dae4a016cbe86b75de977fe747a958d28dcd5c8e4080",
+          "image": "registry.connect.redhat.com/gitlab/gitlab-runner-operator@sha256:6ac79da50858f82949e1dae4a016cbe86b75de977fe747a958d28dcd5c8e4080",
+          "name": "gitlab-runner-operator"
+        },
+        {
+          "digest": "sha256:dc0f91e256c86c3f7cb930d0e4d48eb68576425bc4bd288fb76decb0577c7e9e",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:dc0f91e256c86c3f7cb930d0e4d48eb68576425bc4bd288fb76decb0577c7e9e",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.2.0",
+      "version_original": "1.2.0"
+    },
+    {
+      "_id": "62345fa95593ce895a7b5355",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta2",
+          "kind": "Runner",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": {
+            "gitlabUrl": "https://gitlab.com",
+            "imagePullPolicy": "Always",
+            "tags": "openshift, test",
+            "token": "gitlab-dev-runner-secret"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-runner-operator-bundle@sha256:a983d27fdb8e3c63bdbf40efe22a2ab62016c3ca75040c2f1a4b429278d72731",
+      "bundle_path_digest": "sha256:a983d27fdb8e3c63bdbf40efe22a2ab62016c3ca75040c2f1a4b429278d72731",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:32:09.415000+00:00",
+      "csv_description": "GitLab Runner is the lightweight, highly-scalable agent that runs your build jobs and sends the results back to a GitLab instance. GitLab Runner works in conjunction with GitLab CI/CD, the open-source continuous integration service included with GitLab.\n\nThe GitLab Runner operator manages the lifecycle of GitLab Runner in Kubernetes or Openshift clusters. The operator aims to automate the tasks needed to run your CI/CD jobs in your container orchestration platform.\n\n## Usage\n\n To link a GitLab Runner instance to a self-hosted GitLab instance or the hosted [GitLab](https://gitlab.com), you first need to:\n\n 1. create a secret containing the `runner-registration-token` from your GitLab project.\n\n   ```\n  cat > gitlab-runner-secret.yml << EOF\n  apiVersion: v1\n  kind: Secret\n  metadata:\n    name: gitlab-runner-secret\n  type: Opaque\n  stringData:\n    runner-registration-token: REPLACE_ME # your project runner secret\n  EOF\n  ```\n\n  ```\n  oc apply -f gitlab-runner-secret.yml\n  ```\n\n 2. Create the Custom Resource Definition (CRD) file and include the following information. The tags value must be openshift for the job to run.\n\n   ```\n   cat > gitlab-runner.yml << EOF\n   apiVersion: apps.gitlab.com/v1beta2\n   kind: Runner\n   metadata:\n     name: gitlab-runner\n   spec:\n     gitlabUrl: https://gitlab.example.com\n     buildImage: alpine\n     token: gitlab-runner-secret\n     tags: openshift\n   EOF\n   ```\n\n  ```\n  oc apply -f gitlab-runner.yml\n  ```\n\n## Full documentation\n\nVisit [Install GitLab Runner on Red Hat OpenShift](https://docs.gitlab.com/runner/install/openshift.html)\n",
+      "csv_display_name": "GitLab Runner",
+      "csv_metadata_description": "GitLab Runner operator manages lifecycle of GitLab Runner instances",
+      "csv_name": "gitlab-runner-operator.v1.4.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:41:31.816000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "gitlab-runner-operator",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "Runner",
+          "version": "v1beta2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:4cd860f02a5c22208cebfdae751fdc27069a4c14442a9020024c576c700f0634",
+          "image": "registry.connect.redhat.com/gitlab/gitlab-runner@sha256:4cd860f02a5c22208cebfdae751fdc27069a4c14442a9020024c576c700f0634",
+          "name": "gitlab-runner"
+        },
+        {
+          "digest": "sha256:272c50ca9ef77c92deac0ca302df9e0127d5c54609c35230f96cf1d91de5fe97",
+          "image": "registry.connect.redhat.com/gitlab/gitlab-runner-helper@sha256:272c50ca9ef77c92deac0ca302df9e0127d5c54609c35230f96cf1d91de5fe97",
+          "name": "gitlab-runner-helper"
+        },
+        {
+          "digest": "sha256:c6572cb1c20713f2f582f8b436307e80c23dcac08c1d7bde37833fd266ef9618",
+          "image": "registry.connect.redhat.com/gitlab/gitlab-runner-operator@sha256:c6572cb1c20713f2f582f8b436307e80c23dcac08c1d7bde37833fd266ef9618",
+          "name": "gitlab-runner-operator"
+        },
+        {
+          "digest": "sha256:dc0f91e256c86c3f7cb930d0e4d48eb68576425bc4bd288fb76decb0577c7e9e",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:dc0f91e256c86c3f7cb930d0e4d48eb68576425bc4bd288fb76decb0577c7e9e",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.4.0",
+      "version_original": "1.4.0"
+    },
+    {
+      "_id": "62345fad314381d2b0756b33",
+      "alm_examples": [
+        {
+          "api_version": "xcrypt.zettaset.com/v1alpha1",
+          "kind": "XCrypt",
+          "metadata": {
+            "name": "zts-masterset"
+          },
+          "spec": {
+            "status": {
+              "podNames": "zts-ca",
+              "replicas": "1,"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/zts/xcrypt-operator-1-bundle@sha256:c3913778f986ae4f3a7d94da2a9d0157233dbb676e3c1eecacbdbc02a864685a",
+      "bundle_path_digest": "sha256:c3913778f986ae4f3a7d94da2a9d0157233dbb676e3c1eecacbdbc02a864685a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-18T10:32:13.847000+00:00",
+      "csv_description": "Zettaset\u2019s RedHat Certified XCrypt Operator allows users to deploy multiple XCrypt components on OpenShift with just a few simple commands. The XCrypt Operator deployment provides software-defined encryption that transparently protects container data throughout your OpenShift environment.\n\n## Core Features\n* **Automated XCrypt provisioning** - Deploying a Zettaset XCrypt has never been easier. Adjust cluster specific configuration and let the Zettaset Operator take care of provisioning XCrypt services and setting up the XCrypt encryption to your exact specification. \n* **CSI Driver deployment**: Zettaset XCrypt Operator automatically deploys Zettaset XCrypt CSI Driver in order to provide automated and transparent data-at-rest  encryption functionality compatible with Openshift and any other container orchestrator. Once the Operator is provisioned, the driver runs fine tuned and ready to work with other XCrypt components.\n* **Multi-node topology**: Encrypt as many nodes and volumes as you need to. XCrypt components can be installed on multiple nodes across the cluster. This is defined by two labels: zts-master and zts-worker. Normally zts-master node is a single node that runs Zettaset XCrypt major services required for the product operation. Multiple nodes can be marked as zts-worker and those are the nodes that can have encrypted volumes.\n* **Seamless Encrypted Volume mount**: Volumes are not only being encrypted, but also are mounted/unmounted to containers with Persistent Volume Claims. This happens as seamlessly as regular volumes provision and mount/unmount.\n* **Robust failover**: A node failure doesn\u2019t affect XCrypt operations on other nodes of the cluster. Encryption on a restarted/recovered node gets back to normal functioning if the node stays healthy and data hasn\u2019t been corrupted during the restart\n\n## About Zettaset XCrypt Kubernetes Encryption for OpenShift\nXCrypt Kubernetes Encryption for OpenShift is a software-only solution that enables encryption of data at rest stored in Red Hat OpenShift container environments without slowing down the DevSecOps process. In addition to providing a transparent and high-performance layer of security that flexibly protects container data across on-premise, in hybrid, and multi-cloud environments, it also helps your organization efficiently transition from DevOps to DevSecOps.  \n\nMore information about Zettaset XCrypt Kubernetes Encryption for OpenShift can be found in the [Deployment and Administration Guide](https://1f2aca073706bb52f501-133f3466c38fdb0417539cdf095d8336.ssl.cf1.rackcdn.com/ZettasetXCryptContainerEncryption.8.5.0.Final.pdf)\n\n## RedHat OpenShift + Zettaset: The next generation of secure enterprise infrastructure for DevSecOps  \nBy combining RedHat\u2019s Container Platform with Zettaset\u2019s certified software-defined encryption, you can create the next generation of secure enterprise infrastructure that DevSecOps requires. Together they create the stable, consistent, and supported base that your organization needs to develop applications faster, simplify updates, drive innovation, and reduce the risk of potential security breaches and data theft.\n### Core Features\n* Software-only for simple and scalable deployments \n* Negligible performance impact\n* Transparent to developers and administrators \n* Works with AWS, Google, and Azure \n* Unique encryption key per container volume \n* Encrypted volumes are only available when in use\n* Direct integration with OpenShift \n* Automated encryption policy management Secure erase of volumes\n* Ability to securely decommission a node\n\n## How does XCrypt Kubernetes Encryption fit into OpenShift? \nXCrypt XCrypt Kubernetes Encryption for OpenShift Encryption makes it incredibly easy to protect container data in your OpenShift environment. \n### Use cases include:\n* Transitioning from DevOps to DevSecOps \n* Ensuring data protection in OpenShift container environments with negligible performance impact \n* Achieving compliance in regulated industries like healthcare and finance\n\n## Other Information\nRole-based access control needs to be configured prior to the Operator installation. Please find details in the [Deployment and Administration Guide](https://1f2aca073706bb52f501-133f3466c38fdb0417539cdf095d8336.ssl.cf1.rackcdn.com/ZettasetXCryptContainerEncryption.8.5.0.Final.pdf)    ",
+      "csv_display_name": "Zettaset XCrypt Operator",
+      "csv_metadata_description": "XCrypt Operator deploys Zettaset XCrypt Container Encryption  - the only software-defined solution that offers transparent high performance data-at-rest encryption of critical data in container environments.",
+      "csv_name": "zts-xcrypt-operator.v0.0.17",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:46:07.441000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "xcrypt-operator",
+      "provided_apis": [
+        {
+          "group": "xcrypt.zettaset.com",
+          "kind": "XCrypt",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac",
+          "image": "registry.connect.redhat.com/zts/xcrypt-operator-1@sha256:7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac",
+          "name": "xcrypt-operator-1-7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac-annotation"
+        },
+        {
+          "digest": "sha256:7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac",
+          "image": "registry.connect.redhat.com/zts/xcrypt-operator-1@sha256:7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac",
+          "name": "zts-xcrypt-operator"
+        },
+        {
+          "digest": "sha256:9f1015dfb459b69f5dbf449efa0517452095a6cf4f20826ebae278f9f800ffe7",
+          "image": "registry.connect.redhat.com/zts/xcrypt-ca-1@sha256:9f1015dfb459b69f5dbf449efa0517452095a6cf4f20826ebae278f9f800ffe7",
+          "name": "ca"
+        },
+        {
+          "digest": "sha256:9af5d21dd748dfbf4e107f27a5f10fa3c0ba928ade9b989a744b620ce34ec757",
+          "image": "registry.connect.redhat.com/zts/xcrypt-kmip-server-1@sha256:9af5d21dd748dfbf4e107f27a5f10fa3c0ba928ade9b989a744b620ce34ec757",
+          "name": "kmip"
+        },
+        {
+          "digest": "sha256:bc5486892a41e70f5dc4c4e1d82fca8db2149598fb8b5950ba5da1ee2d9d245d",
+          "image": "registry.connect.redhat.com/zts/xcrypt-license-server-1@sha256:bc5486892a41e70f5dc4c4e1d82fca8db2149598fb8b5950ba5da1ee2d9d245d",
+          "name": "ls"
+        },
+        {
+          "digest": "sha256:9faa4b597eb74df412761dffa057b64fb69dbf9fa016414962eb2099a343e734",
+          "image": "registry.connect.redhat.com/zts/xcrypt-host-manager-1@sha256:9faa4b597eb74df412761dffa057b64fb69dbf9fa016414962eb2099a343e734",
+          "name": "hm"
+        },
+        {
+          "digest": "sha256:c15fa9a7cc40891103f426206663dcebe1210c8ee3ab6037cbf64e1f86b9c7e5",
+          "image": "registry.connect.redhat.com/zts/zts-csi-driver-1@sha256:c15fa9a7cc40891103f426206663dcebe1210c8ee3ab6037cbf64e1f86b9c7e5",
+          "name": "csi_driver"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "0.0.17",
+      "version_original": "0.0.17"
     }
   ],
   "page": 22,
   "page_size": 100,
-  "total": 3969
+  "total": 3982
 }

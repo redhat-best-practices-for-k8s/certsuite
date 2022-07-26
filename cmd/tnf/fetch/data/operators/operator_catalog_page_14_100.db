@@ -1,649 +1,6 @@
 {
   "data": [
     {
-      "_id": "611eca7cbd674341b5c5f0ce",
-      "alm_examples": [
-        {
-          "api_version": "elasticsearch.k8s.elastic.co/v1",
-          "kind": "Elasticsearch",
-          "metadata": {
-            "name": "elasticsearch-sample"
-          },
-          "spec": {
-            "nodeSets": [
-              {
-                "config": {
-                  "node.attr.attr_name": "attr_value",
-                  "node.roles": [
-                    "master",
-                    "data"
-                  ],
-                  "node.store.allow_mmap": false
-                },
-                "count": 3,
-                "name": "default",
-                "podTemplate": {
-                  "metadata": {
-                    "labels": {
-                      "foo": "bar"
-                    }
-                  },
-                  "spec": {
-                    "containers": [
-                      {
-                        "name": "elasticsearch",
-                        "resources": {
-                          "limits": {
-                            "cpu": 2,
-                            "memory": "4Gi"
-                          },
-                          "requests": {
-                            "cpu": 1,
-                            "memory": "4Gi"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            ],
-            "version": "7.12.1"
-          }
-        },
-        {
-          "api_version": "kibana.k8s.elastic.co/v1",
-          "kind": "Kibana",
-          "metadata": {
-            "name": "kibana-sample"
-          },
-          "spec": {
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "podTemplate": {
-              "metadata": {
-                "labels": {
-                  "foo": "bar"
-                }
-              },
-              "spec": {
-                "containers": [
-                  {
-                    "name": "kibana",
-                    "resources": {
-                      "limits": {
-                        "cpu": 2,
-                        "memory": "2Gi"
-                      },
-                      "requests": {
-                        "cpu": 0.5,
-                        "memory": "1Gi"
-                      }
-                    }
-                  }
-                ]
-              }
-            },
-            "version": "7.12.1"
-          }
-        },
-        {
-          "api_version": "apm.k8s.elastic.co/v1",
-          "kind": "ApmServer",
-          "metadata": {
-            "name": "apmserver-sample"
-          },
-          "spec": {
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "version": "7.12.1"
-          }
-        },
-        {
-          "api_version": "enterprisesearch.k8s.elastic.co/v1",
-          "kind": "EnterpriseSearch",
-          "metadata": {
-            "name": "ent-sample"
-          },
-          "spec": {
-            "config": {
-              "ent_search.external_url": "https://localhost:3002"
-            },
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "version": "7.12.1"
-          }
-        },
-        {
-          "api_version": "beat.k8s.elastic.co/v1beta1",
-          "kind": "Beat",
-          "metadata": {
-            "name": "heartbeat-sample"
-          },
-          "spec": {
-            "config": {
-              "heartbeat.monitors": [
-                {
-                  "hosts": [
-                    "elasticsearch-sample-es-http.default.svc:9200"
-                  ],
-                  "schedule": "@every 5s",
-                  "type": "tcp"
-                }
-              ]
-            },
-            "deployment": {
-              "podTemplate": {
-                "spec": {
-                  "securityContext": {
-                    "runAsUser": 0
-                  }
-                }
-              },
-              "replicas": 1
-            },
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "type": "heartbeat",
-            "version": "7.12.1"
-          }
-        },
-        {
-          "api_version": "agent.k8s.elastic.co/v1alpha1",
-          "kind": "Agent",
-          "metadata": {
-            "name": "agent-sample"
-          },
-          "spec": {
-            "config": {
-              "inputs": [
-                {
-                  "data_stream": {
-                    "namespace": "default"
-                  },
-                  "meta": {
-                    "package": {
-                      "name": "system",
-                      "version": "0.9.1"
-                    }
-                  },
-                  "name": "system-1",
-                  "revision": 1,
-                  "streams": [
-                    {
-                      "cpu.metrics": [
-                        "percentages",
-                        "normalized_percentages"
-                      ],
-                      "data_stream": {
-                        "dataset": "system.cpu",
-                        "type": "metrics"
-                      },
-                      "id": "system/metrics-system.cpu",
-                      "metricsets": [
-                        "cpu"
-                      ],
-                      "period": "10s"
-                    }
-                  ],
-                  "type": "system/metrics",
-                  "use_output": "default"
-                }
-              ]
-            },
-            "daemonSet": {},
-            "elasticsearchRefs": [
-              {
-                "name": "elasticsearch-sample"
-              }
-            ],
-            "version": "7.12.1"
-          }
-        },
-        {
-          "api_version": "maps.k8s.elastic.co/v1alpha1",
-          "kind": "ElasticMapsServer",
-          "metadata": {
-            "name": "ems-sample"
-          },
-          "spec": {
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "version": "7.12.1"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:30333a951cdac81f368f047aad9d8b6b7261bd1cc8a8f7434c69d2ff103ecb1d",
-      "bundle_path_digest": "sha256:30333a951cdac81f368f047aad9d8b6b7261bd1cc8a8f7434c69d2ff103ecb1d",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-08-19T21:17:48.389000+00:00",
-      "csv_description": "Elastic Cloud on Kubernetes (ECK) is the official operator by Elastic for automating the deployment, provisioning, management, and orchestration of Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Beats, Elastic Agent, and Elastic Maps Server on Kubernetes.\n\nCurrent features:\n\n*  Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent and Elastic Maps Server deployments\n*  TLS Certificates management\n*  Safe Elasticsearch cluster configuration and topology changes\n*  Persistent volumes usage\n*  Custom node configuration and attributes\n*  Secure settings keystore updates\n\nSupported versions:\n\n* Kubernetes: 1.12+ or OpenShift 3.11+\n* Elasticsearch: 6.8+, 7.1+\n\nSee the [Quickstart](https://www.elastic.co/guide/en/cloud-on-k8s/1.6/k8s-quickstart.html) to get started with ECK.",
-      "csv_display_name": "Elasticsearch (ECK) Operator",
-      "csv_metadata_description": "Run Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent and Elastic Maps Server on Kubernetes and OpenShift",
-      "csv_name": "elasticsearch-eck-operator-certified.v1.6.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:15:53.105000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "elasticsearch-eck-operator-certified",
-      "provided_apis": [
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "maps.k8s.elastic.co",
-          "kind": "ElasticMapsServer",
-          "plural": "elasticmapsservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1beta1"
-        },
-        {
-          "group": "enterprisesearch.k8s.elastic.co",
-          "kind": "EnterpriseSearch",
-          "plural": "enterprisesearches",
-          "version": "v1"
-        },
-        {
-          "group": "enterprisesearch.k8s.elastic.co",
-          "kind": "EnterpriseSearch",
-          "plural": "enterprisesearches",
-          "version": "v1beta1"
-        },
-        {
-          "group": "agent.k8s.elastic.co",
-          "kind": "Agent",
-          "plural": "agents",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1beta1"
-        },
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1"
-        },
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "beat.k8s.elastic.co",
-          "kind": "Beat",
-          "plural": "beats",
-          "version": "v1beta1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:91c6d22b19fddec0b49fa0336795019063d9c566704476d853b8a238dbbc8165",
-          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:91c6d22b19fddec0b49fa0336795019063d9c566704476d853b8a238dbbc8165",
-          "name": "eck-operator-91c6d22b19fddec0b49fa0336795019063d9c566704476d853b8a238dbbc8165-annotation"
-        },
-        {
-          "digest": "sha256:91c6d22b19fddec0b49fa0336795019063d9c566704476d853b8a238dbbc8165",
-          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:91c6d22b19fddec0b49fa0336795019063d9c566704476d853b8a238dbbc8165",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.6.0",
-      "version_original": "1.6.0"
-    },
-    {
-      "_id": "611fbd13bd674341b5c5f0ef",
-      "alm_examples": [
-        {
-          "api_version": "anzo.cambridgesemantics.com/v1",
-          "kind": "Anzo",
-          "metadata": {
-            "name": "agent01"
-          },
-          "spec": {
-            "nodeConfig": {
-              "spec": {
-                "replicas": 1,
-                "selector": {
-                  "matchLabels": {
-                    "app": "anzo"
-                  }
-                },
-                "serviceName": "anzo-agent01",
-                "template": {
-                  "metadata": {
-                    "labels": {
-                      "app": "anzo"
-                    }
-                  },
-                  "spec": {
-                    "containers": [
-                      {
-                        "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
-                        "name": "anzo",
-                        "resources": {
-                          "limits": {
-                            "cpu": "4000m",
-                            "memory": "12Gi"
-                          },
-                          "requests": {
-                            "cpu": "4000m",
-                            "memory": "12Gi"
-                          }
-                        }
-                      }
-                    ],
-                    "serviceAccountName": "anzo-operator"
-                  }
-                }
-              }
-            },
-            "role": "AnzoAgent"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzo-operator-bundle@sha256:28703523a1c160570fc23fb1236d2a02108b97e4423d42b0d3cde98c94d351cb",
-      "bundle_path_digest": "sha256:28703523a1c160570fc23fb1236d2a02108b97e4423d42b0d3cde98c94d351cb",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-08-20T14:32:51.478000+00:00",
-      "csv_description": "The Anzo Operator provides the way to install and configure an anzo agent setup on Red Hat K8S environment.\nCurrently, this is supported only through when deployed as an Anzo Agent as part of an Anzo Unstructured deployment.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzo/blob/v2.0.0/README.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzo/userdoc/cloud-deployments.htm )\n\n### Support\n\nWe offer Support to our customers through [ Cambridge Semantics Customer Center ]( https://customercenter.cambridgesemantics.com/ ).",
-      "csv_display_name": "Anzo Operator",
-      "csv_metadata_description": "kubernetes operator for Anzo",
-      "csv_name": "anzo-operator.v2.0.101",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:45:36.153000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "anzo-operator",
-      "provided_apis": [
-        {
-          "group": "anzo.cambridgesemantics.com",
-          "kind": "Anzo",
-          "plural": "anzos",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
-          "name": "anzo-operator-563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0-annotation"
-        },
-        {
-          "digest": "sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
-          "name": "anzo"
-        },
-        {
-          "digest": "sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
-          "name": "anzo-d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8-annotation"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "2.0.0",
-      "version_original": "2.0.0"
-    },
-    {
-      "_id": "611fbd1c9f14588c41ebe8e8",
-      "alm_examples": [
-        {
-          "api_version": "crd.nutanix.com/v1alpha1",
-          "kind": "NutanixCsiStorage",
-          "metadata": {
-            "name": "nutanixcsistorage"
-          },
-          "spec": {
-            "imagePullPolicy": "IfNotPresent",
-            "node": {
-              "image": "registry.connect.redhat.com/nutanix/ntnx-csi-os@sha256:2289045e0f79733c4f1871f7c686e35b49a4d484aa82446784e3713dfa3d23c7"
-            },
-            "provisioner": {
-              "image": "registry.connect.redhat.com/nutanix/ntnx-csi-os@sha256:2289045e0f79733c4f1871f7c686e35b49a4d484aa82446784e3713dfa3d23c7"
-            },
-            "scc": "yes",
-            "sidecars": {
-              "livenessprobe": {
-                "image": "quay.io/k8scsi/livenessprobe@sha256:04a9c4a49de1bd83d21e962122da2ac768f356119fb384660aa33d93183996c3"
-              },
-              "provisioner": {
-                "image": "quay.io/k8scsi/csi-provisioner@sha256:78e3393f5fd5ff6c1e5dada2478cfa456fb7164929e573cf9a87bf6532730679"
-              },
-              "registrar": {
-                "image": "quay.io/k8scsi/csi-node-driver-registrar@sha256:9622c6a6dac7499a055a382930f4de82905a3c5735c0753f7094115c9c871309"
-              },
-              "resizer": {
-                "image": "quay.io/k8scsi/csi-resizer@sha256:6c6a0332693a7c456378f6abd2bb40611826c1e1a733cadbdae2daab3125b71c"
-              },
-              "snapshotController": {
-                "image": "quay.io/k8scsi/snapshot-controller@sha256:45720fd73a0de75ad512351a725c197a6c144912b1cb09500c09752a3741388c"
-              },
-              "snapshotter": {
-                "image": "quay.io/k8scsi/csi-snapshotter@sha256:35ead85dd09aa8cc612fdb598d4e0e2f048bef816f1b74df5eeab67cd21b10aa"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nutanix/nutanix-csi-operator-bundle@sha256:95cb57529b51a318cc3e8a39f68d1424e4a6e5ec0550b0010ccf331b6cfedf54",
-      "bundle_path_digest": "sha256:95cb57529b51a318cc3e8a39f68d1424e4a6e5ec0550b0010ccf331b6cfedf54",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2021-08-20T14:33:00.787000+00:00",
-      "csv_description": "# Overview\n\nThe Nutanix CSI Operator for Kubernetes packages, deploys, manages, upgrades the Nutanix CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on Nutanix Enterprise Cloud platform.\n\nThe Nutanix Container Storage Interface (CSI) Driver for Kubernetes leverages Nutanix Volumes and Nutanix Files to provide scalable and persistent storage for stateful applications.\n\nWith Nutanix CSI Provider you can:\n\n  *  **Provide persistent storage to your containers**\n     * Leverage PVC ressources to consume dynamicaly Nutanix storage\n\n     * With Files storage classes, applications on multiple pods can access the same storage, and also have the benefit of multi-pod read and write access.\n\n## Configuring k8s secret and storage class\nIn order to use this driver, create the relevant storage classes and secrets, by followinig the below section:\n 1. Create a Nutanix system secret\n```\n apiVersion: v1\n kind: Secret\n metadata:\n   name: ntnx-secret\n   namespace: ntnx-system\n data:\n   # base64 encoded prism-ip:prism-port:admin:password. \n   # E.g.: echo -n \"10.0.0.14:9440:admin:mypassword\" | base64\n   key: MS4yLjMuNDo5NDQwOm51dGFuaXg6aXRpc21hZ2lj\n```\n 2. Create storage classes\n```\n kind: StorageClass\n apiVersion: storage.k8s.io/v1\n metadata:\n     name: nutanix-volume\n provisioner: csi.nutanix.com\n parameters:\n     csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n     csi.storage.k8s.io/provisioner-secret-namespace: ntnx-system\n     csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n     csi.storage.k8s.io/node-publish-secret-namespace: ntnx-system\n     csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n     csi.storage.k8s.io/controller-expand-secret-namespace: ntnx-system\n     csi.storage.k8s.io/fstype: ext4\n     dataServiceEndPoint: 10.0.0.15:3260\n     storageContainer: default-container\n     storageType: NutanixVolumes\n     #whitelistIPMode: ENABLED\n     #chapAuth: ENABLED\n allowVolumeExpansion: true\n reclaimPolicy: Delete\n```\n",
-      "csv_display_name": "Nutanix CSI Operator",
-      "csv_metadata_description": "An Operator for deploying and managing the Nutanix CSI Driver",
-      "csv_name": "nutanixcsioperator.v0.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:56:53.192000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "nutanixcsioperator",
-      "provided_apis": [
-        {
-          "group": "crd.nutanix.com",
-          "kind": "NutanixCsiStorage",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:6d0286b8a8f6f3cd9d6cd8319400acf27b70fbb52df5808ec6fe2d9849be7d8c",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:6d0286b8a8f6f3cd9d6cd8319400acf27b70fbb52df5808ec6fe2d9849be7d8c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1a51992e5f0f3bea36996cb5e60cb9e62f51f8cff4a5dcc3e977e0b301546dd7",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:1a51992e5f0f3bea36996cb5e60cb9e62f51f8cff4a5dcc3e977e0b301546dd7",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:35ead85dd09aa8cc612fdb598d4e0e2f048bef816f1b74df5eeab67cd21b10aa",
-          "image": "quay.io/k8scsi/csi-snapshotter@sha256:35ead85dd09aa8cc612fdb598d4e0e2f048bef816f1b74df5eeab67cd21b10aa",
-          "name": "csi-snapshotter-35ead85dd09aa8cc612fdb598d4e0e2f048bef816f1b74df5eeab67cd21b10aa-annotation"
-        },
-        {
-          "digest": "sha256:45720fd73a0de75ad512351a725c197a6c144912b1cb09500c09752a3741388c",
-          "image": "quay.io/k8scsi/snapshot-controller@sha256:45720fd73a0de75ad512351a725c197a6c144912b1cb09500c09752a3741388c",
-          "name": "snapshot-controller-45720fd73a0de75ad512351a725c197a6c144912b1cb09500c09752a3741388c-annotation"
-        },
-        {
-          "digest": "sha256:6c6a0332693a7c456378f6abd2bb40611826c1e1a733cadbdae2daab3125b71c",
-          "image": "quay.io/k8scsi/csi-resizer@sha256:6c6a0332693a7c456378f6abd2bb40611826c1e1a733cadbdae2daab3125b71c",
-          "name": "csi-resizer-6c6a0332693a7c456378f6abd2bb40611826c1e1a733cadbdae2daab3125b71c-annotation"
-        },
-        {
-          "digest": "sha256:9622c6a6dac7499a055a382930f4de82905a3c5735c0753f7094115c9c871309",
-          "image": "quay.io/k8scsi/csi-node-driver-registrar@sha256:9622c6a6dac7499a055a382930f4de82905a3c5735c0753f7094115c9c871309",
-          "name": "csi-node-driver-registrar-9622c6a6dac7499a055a382930f4de82905a3c5735c0753f7094115c9c871309-annotation"
-        },
-        {
-          "digest": "sha256:78e3393f5fd5ff6c1e5dada2478cfa456fb7164929e573cf9a87bf6532730679",
-          "image": "quay.io/k8scsi/csi-provisioner@sha256:78e3393f5fd5ff6c1e5dada2478cfa456fb7164929e573cf9a87bf6532730679",
-          "name": "csi-provisioner-78e3393f5fd5ff6c1e5dada2478cfa456fb7164929e573cf9a87bf6532730679-annotation"
-        },
-        {
-          "digest": "sha256:04a9c4a49de1bd83d21e962122da2ac768f356119fb384660aa33d93183996c3",
-          "image": "quay.io/k8scsi/livenessprobe@sha256:04a9c4a49de1bd83d21e962122da2ac768f356119fb384660aa33d93183996c3",
-          "name": "livenessprobe-04a9c4a49de1bd83d21e962122da2ac768f356119fb384660aa33d93183996c3-annotation"
-        },
-        {
-          "digest": "sha256:2289045e0f79733c4f1871f7c686e35b49a4d484aa82446784e3713dfa3d23c7",
-          "image": "registry.connect.redhat.com/nutanix/ntnx-csi-os@sha256:2289045e0f79733c4f1871f7c686e35b49a4d484aa82446784e3713dfa3d23c7",
-          "name": "ntnx-csi-os-2289045e0f79733c4f1871f7c686e35b49a4d484aa82446784e3713dfa3d23c7-annotation"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.1.3",
-      "version_original": "0.1.3"
-    },
-    {
       "_id": "611fbd2edece23122b7a7834",
       "alm_examples": [
         {
@@ -20467,9 +19824,213 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "1.10.4+x5bfd7b3",
       "version_original": "1.10.4+x5bfd7b3"
+    },
+    {
+      "_id": "614ce052d2c7f84a4d2ecf4b",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/aikit-operator-bundle@sha256:80d12669b1557465cbb9e99640847c9dd6043e1c16f19f3105c04ee658e8a595",
+      "bundle_path_digest": "sha256:80d12669b1557465cbb9e99640847c9dd6043e1c16f19f3105c04ee658e8a595",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-09-23T20:15:14.938000+00:00",
+      "csv_description": "The Intel\u00ae oneAPI AI Analytics Toolkit gives data scientists, AI developers, and researchers familiar Python* tools and frameworks to accelerate end-to-end data science and machine learning pipelines on Intel\u00ae architectures. The components are built using oneAPI libraries for low-level compute optimizations. This toolkit maximizes performance from preprocessing through machine and deep learning phases and provides interoperability for efficient model development and deployment across single and multinodes.\n",
+      "csv_display_name": "Intel\u00ae oneAPI AI Analytics Toolkit Operator",
+      "csv_metadata_description": "",
+      "csv_name": "aikit-operator.v2021.2.92221-dev-38cda35",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-16T17:01:59.744000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "aikit-operator",
+      "provided_apis": [
+        {
+          "group": "aikit.intel",
+          "kind": "AIKitContainer",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:aa647edd31b33144548e72dcd05919872dd262230eff4c60ceb7bfb4fabcfabc",
+          "image": "registry.connect.redhat.com/intel/aikit-operator@sha256:aa647edd31b33144548e72dcd05919872dd262230eff4c60ceb7bfb4fabcfabc",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2021.2.92221-dev-38cda35",
+      "version_original": "2021.2.92221-dev-38cda35"
+    },
+    {
+      "_id": "614d267abc74e0be7ca66613",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/aikit-operator-bundle@sha256:5a7daeb62b61540068d4e3edec853066f8294a96cea8abf433b48fdffd1dc4cd",
+      "bundle_path_digest": "sha256:5a7daeb62b61540068d4e3edec853066f8294a96cea8abf433b48fdffd1dc4cd",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-09-24T01:14:34.377000+00:00",
+      "csv_description": "The Intel\u00ae oneAPI AI Analytics Toolkit gives data scientists, AI developers, and researchers familiar Python* tools and frameworks to accelerate end-to-end data science and machine learning pipelines on Intel\u00ae architectures. The components are built using oneAPI libraries for low-level compute optimizations. This toolkit maximizes performance from preprocessing through machine and deep learning phases and provides interoperability for efficient model development and deployment across single and multinodes.\n",
+      "csv_display_name": "Intel\u00ae oneAPI AI Analytics Toolkit Operator",
+      "csv_metadata_description": "",
+      "csv_name": "aikit-operator.v2021.2.92315-dev-d55e022",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-16T17:19:58.831000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "aikit-operator",
+      "provided_apis": [
+        {
+          "group": "aikit.intel",
+          "kind": "AIKitContainer",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:0347c7a3a4fbe60038b4a6eaa872fae0a62d69ddbf349eece9b9ec63811f0b78",
+          "image": "registry.connect.redhat.com/intel/aikit-operator@sha256:0347c7a3a4fbe60038b4a6eaa872fae0a62d69ddbf349eece9b9ec63811f0b78",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2021.2.92315-dev-d55e022",
+      "version_original": "2021.2.92315-dev-d55e022"
+    },
+    {
+      "_id": "614d80f169cb9f1af5ba6b03",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/iomesh/iomesh@sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "bundle_path_digest": "sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-09-24T07:40:33.339000+00:00",
+      "csv_description": "IOMesh (https://www.iomesh.com/) is a cloud-native storage product specifically designed and developed for Kubernetes. It takes ZBS as its core, a \u201cproduction-ready\u201d distributed storage system developed independently by SmartX, to provide production-level high performance and reliable persistent storage for business-critical applications such as MySQL, Cassandra, MongoDB, etc., contributing to the containerized transformation of stateful applications.      \n## Pre-Requisites\n* According to https://docs.iomesh.com/deploy/prerequisites, make sure that your openshift cluster meets the \"Installation Requirements\" and set up the worker nodes correctly according to the \"Setup Worker Node\" chapter.\n* Run IOMesh Operator pre-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install the dependencies of IOMesh Operator and specific IOMesh settings for the openshift cluster:\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-pre-install-openshift.sh | sh -\n```\n## Install IOMesh Operator and IOMesh Cluster\n* Click install button on the current web page to install IOMesh Operator\n* On the **Installed Operators** -> **IOMesh Operator** -> **Create instance** -> **YAML view**, fill in an IOMesh Custom Resources according https://iomesh.run/iomesh.yaml, change the `spec.*.dataCIDR` to your own data network CIDR:\n## Post Install\n* Run IOMesh Operator post-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install IOMesh CSI Driver\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-post-install-openshift.sh | sh -\n```\n## Getting Started\n* Try to quickstart setup and use IOMesh: https://docs.iomesh.com/deploy/setup-iomesh\n",
+      "csv_display_name": "IOMesh Operator",
+      "csv_metadata_description": "",
+      "csv_name": "iomesh-operator.0.10.1-rc4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-16T17:27:18.344000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "iomesh-operator",
+      "provided_apis": [
+        {
+          "group": "iomesh.com",
+          "kind": "IOMeshCluster",
+          "plural": "iomeshclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator-52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3-annotation"
+        },
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.10.1-rc4",
+      "version_original": "0.10.1-rc4"
     }
   ],
   "page": 14,
   "page_size": 100,
-  "total": 3969
+  "total": 3982
 }

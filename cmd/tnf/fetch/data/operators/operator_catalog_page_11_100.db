@@ -8099,102 +8099,6 @@
       "version_original": "0.7.0-48"
     },
     {
-      "_id": "60a633d31cd4abb653ffc92b",
-      "alm_examples": [
-        {
-          "api_version": "nvmesh.excelero.com/v1",
-          "kind": "NVMesh",
-          "metadata": {
-            "name": "cluster1"
-          },
-          "spec": {
-            "core": {
-              "azureOptimized": true,
-              "version": "2.2.1"
-            },
-            "csi": {
-              "controllerReplicas": 1,
-              "version": "v1.1.4-7"
-            },
-            "management": {
-              "mongoDB": {
-                "replicas": 1
-              },
-              "replicas": 1,
-              "version": "2.2.1-1"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/excelero/nvmesh-operator-bundle@sha256:31d2c78ff1afd16b0e5db2cee34d8cb325c61bcf2f6c0f0fccff7899e97548d9",
-      "bundle_path_digest": "sha256:31d2c78ff1afd16b0e5db2cee34d8cb325c61bcf2f6c0f0fccff7899e97548d9",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2021-05-20T10:02:59.152000+00:00",
-      "csv_description": "Excelero NVMesh is a low-latency distributed block storage solution providing web-scale applications access to hot data in any cloud, private or public. NVMesh enables pooling and sharing NVMe across any network. It drives both local and distributed file systems. The solution features an intelligent management layer that abstracts underlying hardware with CPU offload, creates logical volumes with redundancy and provides centralized, intelligent management and monitoring. Applications can enjoy the latency, throughput and IO/s of local NVMe devices with the convenience of centralized storage while avoiding proprietary hardware lock-in and reducing the overall storage TCO. In public cloud environments, NVMesh supports instances, both virtualized and containerized, that feature NVMe drives. Public cloud instances with local NVMe drives have become widely available allowing easy transition between on-premises and public cloud deployments of NVMesh.\n\nExcelero NVMesh has a flexible distributed data protection architecture providing multiple redundancy schemes that can be tuned for specific use cases and data center restrictions and requirements to ensure reliability and to reduce cost. The system can also work around failure to strive for maximal data availability. In NVMesh, drives are perceived as resources that are pooled into a large storage area. Logical volumes are then carved out of the storage area and presented to clients as block devices. Volumes may span multiple physical drives and target hosts, but do not need to use entire drives, so a single drive can be allocated to multiple volumes.\n\nVolumes can be configured in any of the following redundancy levels:\n\n**Concatenated** \u2013 Data is laid out on a single or multiple drives with no data redundancy. This volume type can be used for applications requiring temporary storage. Failures are typically isolated to a single device or host.\n\n**Striped** \u2013 Data is laid out across a set of drives and hosts with no data redundancy. This volume type can be used for applications requiring high performance temporary storage.\n\n**Mirrored** \u2013 Data is protected by mirroring data across drive segments. To increase data availability, the drive segments are allocated from drives on different target hosts. These hosts should be connected to different power supplies, preferably in separate upgrade zones and availability zones and any other zoning used to protect against risk. The software\u2019s management layer provides the agility to ensure such separation. Multi-way, active-active multipath networking is used for availability and for performance.\n\n**Striped** and Mirrored \u2013 Data is protected by mirroring data across drive segments and striping across these mirrors. Data is serviced from many drives and hosts, achieving high performance without sacrificing redundancy.\n\nFor details on licensing, support and usage under Red Hat OpenShift please access [https://www.excelero.com/openshift](https://www.excelero.com/openshift)\n",
-      "csv_display_name": "NVMesh Operator",
-      "csv_metadata_description": "NVMesh Operator enables users to install Excelero NVMesh on Kubernetes and OpenShift clusters",
-      "csv_name": "nvmesh-operator.0.7.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:29:56.235000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "nvmesh-operator",
-      "provided_apis": [
-        {
-          "group": "nvmesh.excelero.com",
-          "kind": "NVMesh",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d",
-          "image": "registry.connect.redhat.com/excelero/nvmesh-operator@sha256:dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d",
-          "name": "nvmesh-operator-dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d-annotation"
-        },
-        {
-          "digest": "sha256:dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d",
-          "image": "registry.connect.redhat.com/excelero/nvmesh-operator@sha256:dcbf50781a1beda4cdb88a6706a1ad190118274c58b30f5c65db52e550a2852d",
-          "name": "controller"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.7.0-48",
-      "version_original": "0.7.0-48"
-    },
-    {
       "_id": "60a81641f13ea7781b9fd6bc",
       "alm_examples": [],
       "annotations": {
@@ -16219,9 +16123,194 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.325.0",
       "version_original": "1.325.0"
+    },
+    {
+      "_id": "60c1b398233d5ea79c3083c2",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:c20625e1364f7ccdd95d36fbed3a21ac131a092a56e0a0447dfc5af3e06e543b",
+      "bundle_path_digest": "sha256:c20625e1364f7ccdd95d36fbed3a21ac131a092a56e0a0447dfc5af3e06e543b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.15",
+      "creation_date": "2021-06-10T06:39:20.377000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.15.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:58:28.715000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "ImageSet",
+          "plural": "imagesets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:48b3a1f162ace3388159d2e858f00aef8ca9755f1ef328bb77ffd37d71df07e4",
+          "image": "quay.io/tigera/operator@sha256:48b3a1f162ace3388159d2e858f00aef8ca9755f1ef328bb77ffd37d71df07e4",
+          "name": "operator-48b3a1f162ace3388159d2e858f00aef8ca9755f1ef328bb77ffd37d71df07e4-annotation"
+        },
+        {
+          "digest": "sha256:48b3a1f162ace3388159d2e858f00aef8ca9755f1ef328bb77ffd37d71df07e4",
+          "image": "quay.io/tigera/operator@sha256:48b3a1f162ace3388159d2e858f00aef8ca9755f1ef328bb77ffd37d71df07e4",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "<1.15.2",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.15.2",
+      "version_original": "1.15.2"
     }
   ],
   "page": 11,
   "page_size": 100,
-  "total": 3969
+  "total": 3982
 }

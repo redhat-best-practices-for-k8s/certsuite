@@ -1,606 +1,6 @@
 {
   "data": [
     {
-      "_id": "62bad758655931047b684504",
-      "alm_examples": [
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDB",
-          "metadata": {
-            "name": "my-replica-set"
-          },
-          "spec": {
-            "credentials": "my-credentials",
-            "members": 3,
-            "opsManager": {
-              "configMapRef": {
-                "name": "my-project"
-              }
-            },
-            "persistent": true,
-            "type": "ReplicaSet",
-            "version": "4.4.0-ent"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDB",
-          "metadata": {
-            "name": "sample-sharded-cluster"
-          },
-          "spec": {
-            "configServerCount": 3,
-            "credentials": "my-credentials",
-            "mongodsPerShardCount": 3,
-            "mongosCount": 2,
-            "opsManager": {
-              "configMapRef": {
-                "name": "my-project"
-              }
-            },
-            "persistent": true,
-            "shardCount": 1,
-            "type": "ShardedCluster",
-            "version": "4.4.0-ent"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDBMulti",
-          "metadata": {
-            "name": "multi-replica-set"
-          },
-          "spec": {
-            "clusterSpecList": {
-              "clusterSpecs": [
-                {
-                  "clusterName": "e2e.cluster1.mongokubernetes.com",
-                  "members": 2
-                },
-                {
-                  "clusterName": "e2e.cluster2.mongokubernetes.com",
-                  "members": 1
-                },
-                {
-                  "clusterName": "e2e.cluster3.mongokubernetes.com",
-                  "members": 2
-                }
-              ]
-            },
-            "credentials": "my-credentials",
-            "duplicateServiceObjects": false,
-            "opsManager": {
-              "configMapRef": {
-                "name": "my-project"
-              }
-            },
-            "persistent": false,
-            "type": "ReplicaSet",
-            "version": "4.4.0-ent"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDBOpsManager",
-          "metadata": {
-            "name": "ops-manager"
-          },
-          "spec": {
-            "adminCredentials": "ops-manager-admin",
-            "applicationDatabase": {
-              "members": 3,
-              "persistent": true,
-              "podSpec": {
-                "cpu": 1
-              }
-            },
-            "configuration": {
-              "mms.fromEmailAddr": "admin@thecompany.com"
-            },
-            "externalConnectivity": {
-              "type": "LoadBalancer"
-            },
-            "version": "4.4.1"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDBUser",
-          "metadata": {
-            "name": "my-replica-set-x509-user"
-          },
-          "spec": {
-            "db": "$external",
-            "mongodbResourceRef": {
-              "name": "my-replica-set"
-            },
-            "roles": [
-              {
-                "db": "admin",
-                "name": "dbOwner"
-              }
-            ],
-            "username": "CN=my-replica-set-x509-user,OU=cloud,O=MongoDB,L=New York,ST=New York,C=US"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:82fdada2703e13083559ff1b8e8467a8e075d00e2153c0ee7323e4b713964694",
-      "bundle_path_digest": "sha256:82fdada2703e13083559ff1b8e8467a8e075d00e2153c0ee7323e4b713964694",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-06-28T10:26:32.353000+00:00",
-      "csv_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB\ninto Kubernetes clusters, using our management, monitoring and backup\nplatforms, Ops Manager and Cloud Manager.\n\n## Before You Start\n\nTo start using the operator you''ll need an account in MongoDB Cloud Manager or\na MongoDB Ops Manager deployment.\n\n* [Create a Secret with your OpsManager API key](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-operator-credentials/#procedure)\n\n* [Create a ConfigMap with your OpsManager project ID and URL](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-project-using-configmap/)\n\nBy installing this integration, you will be able to deploy MongoDB instances\nwith a single simple command.\n\n## Required Parameters\n\n* `opsManager` or `cloudManager` - Enter the name of the ConfigMap containing project information\n* `credentials` - Enter the name of the Secret containing your OpsManager credentials\n* `type` - Enter MongoDB Deployment Types (\"Standalone\", \"ReplicaSet\", \"ShardedCluster\"\n\n## Supported MongoDB Deployment Types ##\n\n* Standalone: An instance of mongod that is running as a single server and\nnot as part of a replica set, this is, it does not do any kind of\nreplication.\n\n* Replica Set: A replica set in MongoDB is a group of mongod processes that\nmaintain the same data set. Replica sets provide redundancy and high\navailability, and are the basis for all production deployments. This section\nintroduces replication in MongoDB as well as the components and architecture\nof replica sets. The section also provides tutorials for common tasks\nrelated to replica sets.\n\n* Sharded Cluster: The set of nodes comprising a sharded MongoDB deployment.\nA sharded cluster consists of config servers, shards, and one or more mongos\nrouting processes. Sharding is a A database architecture that partitions\ndata by key ranges and distributes the data among two or more database\ninstances. Sharding enables horizontal scaling.\n\n## Requirements for deploying MongoDB OpsManager\n\n* In order to deploy resources of type MongoDB OpsManager, you will need to\ncreate a secret containing the [credentials](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/plan-om-resource/#om-rsrc-prereqs)\nfor the Global Onwer user\n\n## Security ##\n\nThe operator can enable TLS for all traffic between servers and also between\nclients and servers. Before enabling `security.tls.enabled` to `true` you\nshould create your certificates.  or you can leave the operator to create all\nthe certificates for you. The operator ability to create certs is been\ndepricted due to Kuberentes API changes.\n\nFor more information, please read the official MongoDB\nKubernetes Operator  [docs](https://docs.mongodb.com/kubernetes-operator/stable/).\n",
-      "csv_display_name": "MongoDB Enterprise Operator",
-      "csv_metadata_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB into Kubernetes clusters, using our management, monitoring and backup platforms, Ops Manager and Cloud Manager.",
-      "csv_name": "mongodb-enterprise.v1.16.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-07-15T09:24:22.605000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "mongodb-enterprise",
-      "provided_apis": [
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDBUser",
-          "plural": "mongodbusers",
-          "version": "v1"
-        },
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDBOpsManager",
-          "plural": "opsmanagers",
-          "version": "v1"
-        },
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDB",
-          "plural": "mongodb",
-          "version": "v1"
-        },
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDBMulti",
-          "plural": "mongodbmulti",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:fe45e0de1221ea740602a3c55d6e45c2f8af46f26963b8f82ffd608079335026",
-          "image": "registry.connect.redhat.com/mongodb/enterprise-operator@sha256:fe45e0de1221ea740602a3c55d6e45c2f8af46f26963b8f82ffd608079335026",
-          "name": "mongodb-enterprise-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.16.2",
-      "version_original": "1.16.2"
-    },
-    {
-      "_id": "62bb39b543b2350294b255e8",
-      "alm_examples": [
-        {
-          "api_version": "nvidia.com/v1",
-          "kind": "ClusterPolicy",
-          "metadata": {
-            "name": "gpu-cluster-policy"
-          },
-          "spec": {
-            "daemonsets": {},
-            "dcgm": {
-              "enabled": true
-            },
-            "dcgmExporter": {
-              "config": {
-                "name": ""
-              }
-            },
-            "devicePlugin": {},
-            "driver": {
-              "certConfig": {
-                "name": ""
-              },
-              "enabled": true,
-              "kernelModuleConfig": {
-                "name": ""
-              },
-              "licensingConfig": {
-                "configMapName": "",
-                "nlsEnabled": false
-              },
-              "repoConfig": {
-                "configMapName": ""
-              },
-              "use_ocp_driver_toolkit": true,
-              "virtualTopology": {
-                "config": ""
-              }
-            },
-            "gfd": {},
-            "mig": {
-              "strategy": "single"
-            },
-            "migManager": {
-              "enabled": true
-            },
-            "nodeStatusExporter": {
-              "enabled": true
-            },
-            "operator": {
-              "defaultRuntime": "crio",
-              "deployGFD": true,
-              "initContainer": {}
-            },
-            "toolkit": {
-              "enabled": true
-            },
-            "validator": {
-              "plugin": {
-                "env": [
-                  {
-                    "name": "WITH_WORKLOAD",
-                    "value": "true"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
-      "bundle_path_digest": "sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "v1.11",
-      "creation_date": "2022-06-28T17:26:13.709000+00:00",
-      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
-      "csv_display_name": "NVIDIA GPU Operator",
-      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
-      "csv_name": "gpu-operator-certified.v1.10.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-28T17:26:13.709000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "gpu-operator-certified",
-      "provided_apis": [
-        {
-          "group": "nvidia.com",
-          "kind": "ClusterPolicy",
-          "plural": "clusterpolicies",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "name": "gpu-operator-image"
-        },
-        {
-          "digest": "sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
-          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
-          "name": "dcgm-exporter-image"
-        },
-        {
-          "digest": "sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
-          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
-          "name": "dcgm-image"
-        },
-        {
-          "digest": "sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
-          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
-          "name": "container-toolkit-image"
-        },
-        {
-          "digest": "sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
-          "image": "nvcr.io/nvidia/driver@sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
-          "name": "driver-image"
-        },
-        {
-          "digest": "sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
-          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
-          "name": "device-plugin-image"
-        },
-        {
-          "digest": "sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
-          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
-          "name": "gpu-feature-discovery-image"
-        },
-        {
-          "digest": "sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
-          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
-          "name": "mig-manager-image"
-        },
-        {
-          "digest": "sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
-          "image": "docker.io/nvidia/cuda@sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
-          "name": "init-container-image"
-        },
-        {
-          "digest": "sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
-          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
-          "name": "gpu-operator-validator-image"
-        },
-        {
-          "digest": "sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
-          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
-          "name": "k8s-driver-manager-image"
-        },
-        {
-          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "name": "gpu-operator-e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be-annotation"
-        },
-        {
-          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "name": "gpu-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.10.0",
-      "version_original": "1.10.0"
-    },
-    {
-      "_id": "62bb39b943b2350294b255ed",
-      "alm_examples": [
-        {
-          "api_version": "nvidia.com/v1",
-          "kind": "ClusterPolicy",
-          "metadata": {
-            "name": "gpu-cluster-policy"
-          },
-          "spec": {
-            "daemonsets": {},
-            "dcgm": {
-              "enabled": true
-            },
-            "dcgmExporter": {
-              "config": {
-                "name": ""
-              }
-            },
-            "devicePlugin": {},
-            "driver": {
-              "certConfig": {
-                "name": ""
-              },
-              "enabled": true,
-              "kernelModuleConfig": {
-                "name": ""
-              },
-              "licensingConfig": {
-                "configMapName": "",
-                "nlsEnabled": false
-              },
-              "repoConfig": {
-                "configMapName": ""
-              },
-              "use_ocp_driver_toolkit": true,
-              "virtualTopology": {
-                "config": ""
-              }
-            },
-            "gfd": {},
-            "mig": {
-              "strategy": "single"
-            },
-            "migManager": {
-              "enabled": true
-            },
-            "nodeStatusExporter": {
-              "enabled": true
-            },
-            "operator": {
-              "defaultRuntime": "crio",
-              "deployGFD": true,
-              "initContainer": {}
-            },
-            "toolkit": {
-              "enabled": true
-            },
-            "validator": {
-              "plugin": {
-                "env": [
-                  {
-                    "name": "WITH_WORKLOAD",
-                    "value": "true"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:60b1d25ebb3aada94985e359bb059d4491bf0148ac75d51b68a461670659e429",
-      "bundle_path_digest": "sha256:60b1d25ebb3aada94985e359bb059d4491bf0148ac75d51b68a461670659e429",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "v1.11",
-      "creation_date": "2022-06-28T17:26:17.224000+00:00",
-      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
-      "csv_display_name": "NVIDIA GPU Operator",
-      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
-      "csv_name": "gpu-operator-certified.v1.10.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-28T17:26:17.224000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "gpu-operator-certified",
-      "provided_apis": [
-        {
-          "group": "nvidia.com",
-          "kind": "ClusterPolicy",
-          "plural": "clusterpolicies",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
-          "name": "gpu-operator-image"
-        },
-        {
-          "digest": "sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
-          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
-          "name": "dcgm-exporter-image"
-        },
-        {
-          "digest": "sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
-          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
-          "name": "dcgm-image"
-        },
-        {
-          "digest": "sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
-          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
-          "name": "container-toolkit-image"
-        },
-        {
-          "digest": "sha256:f99b66855e92451a59a722355dd52bf97eb985cc8a647172273de8178aeaa93c",
-          "image": "nvcr.io/nvidia/driver@sha256:f99b66855e92451a59a722355dd52bf97eb985cc8a647172273de8178aeaa93c",
-          "name": "driver-image"
-        },
-        {
-          "digest": "sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
-          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
-          "name": "device-plugin-image"
-        },
-        {
-          "digest": "sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
-          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
-          "name": "gpu-feature-discovery-image"
-        },
-        {
-          "digest": "sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
-          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
-          "name": "mig-manager-image"
-        },
-        {
-          "digest": "sha256:7f0f7dc8c993a86865d4d9f9b0e36d113ea15603d5d5279d2879fa2bc21c8236",
-          "image": "nvcr.io/nvidia/cuda@sha256:7f0f7dc8c993a86865d4d9f9b0e36d113ea15603d5d5279d2879fa2bc21c8236",
-          "name": "init-container-image"
-        },
-        {
-          "digest": "sha256:24d804e8f005d7aeca8343aa13e5f92295d8642a4c47cb24e3ac86a22543bc37",
-          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:24d804e8f005d7aeca8343aa13e5f92295d8642a4c47cb24e3ac86a22543bc37",
-          "name": "gpu-operator-validator-image"
-        },
-        {
-          "digest": "sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
-          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
-          "name": "k8s-driver-manager-image"
-        },
-        {
-          "digest": "sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
-          "name": "gpu-operator-c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a-annotation"
-        },
-        {
-          "digest": "sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
-          "name": "gpu-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": ">=v1.9.0 <v1.10.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.10.1",
-      "version_original": "1.10.1"
-    },
-    {
       "_id": "62bb39bd43b2350294b255f0",
       "alm_examples": [
         {
@@ -6059,8 +5459,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-30T18:54:20.967000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-25T19:37:20.087000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
       "package": "cilium",
@@ -6259,8 +5659,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-30T19:04:36.749000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-25T19:37:45.741000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
       "package": "cilium",
@@ -6460,8 +5860,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-30T19:05:31.129000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-25T19:37:30.579000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
       "package": "cilium",
@@ -23094,9 +22494,1001 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "2.10.0",
       "version_original": "2.10.0"
+    },
+    {
+      "_id": "62cd488a4f09db93321cc265",
+      "alm_examples": [
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:a41a34a2254d49d73d0a1fb7369772e1a17aa8be345a60b96928107b3fb8c708",
+      "bundle_path_digest": "sha256:a41a34a2254d49d73d0a1fb7369772e1a17aa8be345a60b96928107b3fb8c708",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-12T10:10:18.938000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-07-14T05:24:44.800000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "plural": "clusterbackups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "plural": "clusterbackupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "plural": "clusterrestores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "control-plane-222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701-annotation"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:44dbb94a1fc3a9c666c7ea1ffa5edd5b09a2e0e9be75f7178796efe37e11ea50",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:44dbb94a1fc3a9c666c7ea1ffa5edd5b09a2e0e9be75f7178796efe37e11ea50",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "<2.10.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.10.0",
+      "version_original": "2.10.0"
+    },
+    {
+      "_id": "62cd48a34f09db93321cc26a",
+      "alm_examples": [
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:a41a34a2254d49d73d0a1fb7369772e1a17aa8be345a60b96928107b3fb8c708",
+      "bundle_path_digest": "sha256:a41a34a2254d49d73d0a1fb7369772e1a17aa8be345a60b96928107b3fb8c708",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-12T10:10:43.209000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-07-14T05:24:27.007000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "plural": "clusterrestores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "plural": "clusterbackupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "plural": "clusterbackups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "control-plane-222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701-annotation"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:44dbb94a1fc3a9c666c7ea1ffa5edd5b09a2e0e9be75f7178796efe37e11ea50",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:44dbb94a1fc3a9c666c7ea1ffa5edd5b09a2e0e9be75f7178796efe37e11ea50",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:37fed0913300344853e6ac86358c2f71f7c63208bcd79e4cc7a35c21bfd56109",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:2c8f54518706f05a8fe5b158e0fa1049f6bfe4a5685f63564b44acce5fb3ea1c",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:222e5991deaafb48f710cbd60dbce1e5474a4467a39126599588a7b6fa1f5701",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "<2.10.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.10.0",
+      "version_original": "2.10.0"
+    },
+    {
+      "_id": "62cd5f1eaae29e66d1b44c86",
+      "alm_examples": [
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecClusterConfig",
+          "metadata": {
+            "name": "acc100SampleConfig",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "acceleratorSelector": {
+              "deviceID": "someDevice",
+              "driver": "someDriver",
+              "maxVirtualFunctions": 2,
+              "pciAddress": "somePciAddress",
+              "vendorID": "someVendor"
+            },
+            "drainSkip": false,
+            "nodeSelector": {
+              "expectedLabel1": "valueOfExpectedLabel1",
+              "expectedLabelN": "valueOfExpectedLabelN"
+            },
+            "physicalFunction": {
+              "bbDevConfig": {
+                "acc100": {
+                  "downlink4G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 0
+                  },
+                  "downlink5G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 4
+                  },
+                  "maxQueueSize": 1024,
+                  "numVfBundles": 16,
+                  "pfMode": true,
+                  "uplink4G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 0
+                  },
+                  "uplink5G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 4
+                  }
+                }
+              },
+              "pfDriver": "pci-pf-stub",
+              "vfAmount": 2,
+              "vfDriver": "vfio-pci"
+            },
+            "priority": 100
+          }
+        },
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecClusterConfig",
+          "metadata": {
+            "name": "n3000SampleConfig",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "acceleratorSelector": {
+              "deviceID": "someDevice",
+              "driver": "someDriver",
+              "maxVirtualFunctions": 2,
+              "pciAddress": "somePciAddress",
+              "vendorID": "someVendor"
+            },
+            "drainSkip": false,
+            "nodeSelector": {
+              "expectedLabel1": "valueOfExpectedLabel1",
+              "expectedLabelN": "valueOfExpectedLabelN"
+            },
+            "physicalFunction": {
+              "bbDevConfig": {
+                "n3000": {
+                  "downlink": {
+                    "bandwidth": 3,
+                    "loadBalance": 128,
+                    "queues": {
+                      "vf0": 16,
+                      "vf1": 16,
+                      "vf2": 0,
+                      "vf3": 0,
+                      "vf4": 0,
+                      "vf5": 0,
+                      "vf6": 0,
+                      "vf7": 0
+                    }
+                  },
+                  "flrTimeout": 610,
+                  "networkType": "FPGA_5GNR",
+                  "pfMode": true,
+                  "uplink": {
+                    "bandwidth": 3,
+                    "loadBalance": 128,
+                    "queues": {
+                      "vf0": 16,
+                      "vf1": 16,
+                      "vf2": 0,
+                      "vf3": 0,
+                      "vf4": 0,
+                      "vf5": 0,
+                      "vf6": 0,
+                      "vf7": 0
+                    }
+                  }
+                }
+              },
+              "pfDriver": "pci-pf-stub",
+              "vfAmount": 2,
+              "vfDriver": "vfio-pci"
+            },
+            "priority": 100
+          }
+        },
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecNodeConfig",
+          "metadata": {
+            "name": "acc100-worker",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "drainSkip": false,
+            "physicalFunctions": [
+              {
+                "bbDevConfig": {
+                  "acc100": {
+                    "downlink4G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 0
+                    },
+                    "downlink5G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 4
+                    },
+                    "maxQueueSize": 1024,
+                    "numVfBundles": 16,
+                    "pfMode": true,
+                    "uplink4G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 0
+                    },
+                    "uplink5G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 4
+                    }
+                  }
+                },
+                "pci_addr": "somePciAddress",
+                "pf_driver": "pci-pf-stub",
+                "vf_amount": 2,
+                "vf_driver": "vfio-pci"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecNodeConfig",
+          "metadata": {
+            "name": "n3000-worker",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "drainSkip": false,
+            "physicalFunctions": [
+              {
+                "bbDevConfig": {
+                  "n3000": {
+                    "downlink": {
+                      "bandwidth": 3,
+                      "loadBalance": 128,
+                      "queues": {
+                        "vf0": 16,
+                        "vf1": 16,
+                        "vf2": 0,
+                        "vf3": 0,
+                        "vf4": 0,
+                        "vf5": 0,
+                        "vf6": 0,
+                        "vf7": 0
+                      }
+                    },
+                    "flrTimeout": 610,
+                    "networkType": "FPGA_5GNR",
+                    "pfMode": true,
+                    "uplink": {
+                      "bandwidth": 3,
+                      "loadBalance": 128,
+                      "queues": {
+                        "vf0": 16,
+                        "vf1": 16,
+                        "vf2": 0,
+                        "vf3": 0,
+                        "vf4": 0,
+                        "vf5": 0,
+                        "vf6": 0,
+                        "vf7": 0
+                      }
+                    }
+                  }
+                },
+                "pci_addr": "somePciAddress",
+                "pf_driver": "pci-pf-stub",
+                "vf_amount": 2,
+                "vf_driver": "vfio-pci"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/sriov-fec-operator-bundle@sha256:77f5d6ca42d106beab21225d56949aeb99347f17085fd1d3b9e42c6af6a332f8",
+      "bundle_path_digest": "sha256:77f5d6ca42d106beab21225d56949aeb99347f17085fd1d3b9e42c6af6a332f8",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-12T11:46:38.132000+00:00",
+      "csv_description": "The vRAN Dedicated Accelerator ACC100, based on Intel eASIC technology is designed to offload and accelerate the computing-intensive process of forward error correction (FEC) for 4G/LTE and 5G technology, freeing up processing power. Intel eASIC devices are structured ASICs, an intermediate technology between FPGAs and standard application-specific integrated circuits (ASICs). It allows the optimization of data plane performance to reduce total cost of ownership while maintaining a high degree of flexibility.  The Intel ACC100 plays a key role in accelerating 5G and network functions virtualization (NFV) adoption for ecosystem partners such as telecommunications equipment manufacturers (TEMs) virtual network functions (VNF) vendors, system integrators and telcos, to bring scalable and high-performance solutions to market. The Intel ACC100 includes a variant that is design to be Network Equipment Building System (NEBS)-friendly, and features a Root-of-Trust device that helps protect systems from FPGA host security exploits. This document explains how the ACC100 resource can be used on the Smart Edge Open (SEO) platform for accelerating network functions and edge application workloads. We use LTE/5G Forward Error Correction (FEC) as an example workload that accelerates the 5G or 4G L1 base station network function. The same concept and mechanism is applicable for application acceleration workloads like AI and ML on eASIC for Inference applications. The ACC100 supports the O-RAN adopted DPDK BBDev API - an API which Intel contributed to the opensource community to enable choice and TTM for FEC acceleration solutions. The FlexRAN software reference architecture supports the ACC100 which enables users to quickly evaluate and build platforms for the wide range of vRAN networks. Reduces platform power, E2E latency and Intel\u00ae CPU core count requirements as well as increases cell capacity than existing programmable accelerator. Accelerates both 4G and 5G data concurrently.\tLowers development cost using commercial off the shelf (COTS) servers. Accommodates space-constrained implementations via a low-profile PCIe card form factor. Enables a variety of flexible FlexRAN deployments from small cell to macro to Massive MIMO networks. Supports extended temperature for the most challenging of RAN deployment scenario\u2019s.",
+      "csv_display_name": "SEO SR-IOV Operator for Wireless FEC Accelerators",
+      "csv_metadata_description": "An operator for Intel Wireless FEC Accelerator to orchestrate and manage the resources/devices exposed by a range of Intel's vRAN FEC acceleration devices/hardware within the OpenShift cluster.",
+      "csv_name": "sriov-fec.v2.3.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-07-12T11:46:38.132000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "sriov-fec",
+      "provided_apis": [
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecNodeConfig",
+          "plural": "sriovfecnodeconfigs",
+          "version": "v2"
+        },
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecClusterConfig",
+          "plural": "sriovfecclusterconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecClusterConfig",
+          "plural": "sriovfecclusterconfigs",
+          "version": "v2"
+        },
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecNodeConfig",
+          "plural": "sriovfecnodeconfigs",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:d87dfc05f054c856549ea7722d9e6c7299b8ce87fbf659a6904c9fbf5a8f2841",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-daemon@sha256:d87dfc05f054c856549ea7722d9e6c7299b8ce87fbf659a6904c9fbf5a8f2841",
+          "name": "sriov-fec-daemon"
+        },
+        {
+          "digest": "sha256:5055121216aa2e2a8240d1a1a30850077e77c4828d94e1bd02045d640faf1f1d",
+          "image": "registry.connect.redhat.com/intel/n3000-labeler@sha256:5055121216aa2e2a8240d1a1a30850077e77c4828d94e1bd02045d640faf1f1d",
+          "name": "sriov-fec-labeler"
+        },
+        {
+          "digest": "sha256:5ad615f1256d1d23b159a5a331a31103692dd0293b6f128b9095d0b34c0f6586",
+          "image": "registry.redhat.io/openshift4/ose-sriov-network-device-plugin@sha256:5ad615f1256d1d23b159a5a331a31103692dd0293b6f128b9095d0b34c0f6586",
+          "name": "sriov-network-device-plugin"
+        },
+        {
+          "digest": "sha256:558b236c3938024280600939798a0aad84949fce4de758763b6ecbd57d00f48b",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-operator@sha256:558b236c3938024280600939798a0aad84949fce4de758763b6ecbd57d00f48b",
+          "name": "sriov-fec-operator"
+        },
+        {
+          "digest": "sha256:86e5fa1fa294987114be200890c2e516501e424aee0fb98ece25c95e7716295b",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:86e5fa1fa294987114be200890c2e516501e424aee0fb98ece25c95e7716295b",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:558b236c3938024280600939798a0aad84949fce4de758763b6ecbd57d00f48b",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-operator@sha256:558b236c3938024280600939798a0aad84949fce4de758763b6ecbd57d00f48b",
+          "name": "sriov-fec-operator-558b236c3938024280600939798a0aad84949fce4de758763b6ecbd57d00f48b-annotation"
+        },
+        {
+          "digest": "sha256:558b236c3938024280600939798a0aad84949fce4de758763b6ecbd57d00f48b",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-operator@sha256:558b236c3938024280600939798a0aad84949fce4de758763b6ecbd57d00f48b",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.3.1",
+      "version_original": "2.3.1"
     }
   ],
   "page": 37,
   "page_size": 100,
-  "total": 3969
+  "total": 3982
 }

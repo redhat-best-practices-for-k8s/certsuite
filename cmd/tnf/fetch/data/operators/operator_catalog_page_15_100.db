@@ -1,210 +1,6 @@
 {
   "data": [
     {
-      "_id": "614ce052d2c7f84a4d2ecf4b",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/intel/aikit-operator-bundle@sha256:80d12669b1557465cbb9e99640847c9dd6043e1c16f19f3105c04ee658e8a595",
-      "bundle_path_digest": "sha256:80d12669b1557465cbb9e99640847c9dd6043e1c16f19f3105c04ee658e8a595",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-09-23T20:15:14.938000+00:00",
-      "csv_description": "The Intel\u00ae oneAPI AI Analytics Toolkit gives data scientists, AI developers, and researchers familiar Python* tools and frameworks to accelerate end-to-end data science and machine learning pipelines on Intel\u00ae architectures. The components are built using oneAPI libraries for low-level compute optimizations. This toolkit maximizes performance from preprocessing through machine and deep learning phases and provides interoperability for efficient model development and deployment across single and multinodes.\n",
-      "csv_display_name": "Intel\u00ae oneAPI AI Analytics Toolkit Operator",
-      "csv_metadata_description": "",
-      "csv_name": "aikit-operator.v2021.2.92221-dev-38cda35",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:01:59.744000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "aikit-operator",
-      "provided_apis": [
-        {
-          "group": "aikit.intel",
-          "kind": "AIKitContainer",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:aa647edd31b33144548e72dcd05919872dd262230eff4c60ceb7bfb4fabcfabc",
-          "image": "registry.connect.redhat.com/intel/aikit-operator@sha256:aa647edd31b33144548e72dcd05919872dd262230eff4c60ceb7bfb4fabcfabc",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2021.2.92221-dev-38cda35",
-      "version_original": "2021.2.92221-dev-38cda35"
-    },
-    {
-      "_id": "614d267abc74e0be7ca66613",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/intel/aikit-operator-bundle@sha256:5a7daeb62b61540068d4e3edec853066f8294a96cea8abf433b48fdffd1dc4cd",
-      "bundle_path_digest": "sha256:5a7daeb62b61540068d4e3edec853066f8294a96cea8abf433b48fdffd1dc4cd",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-09-24T01:14:34.377000+00:00",
-      "csv_description": "The Intel\u00ae oneAPI AI Analytics Toolkit gives data scientists, AI developers, and researchers familiar Python* tools and frameworks to accelerate end-to-end data science and machine learning pipelines on Intel\u00ae architectures. The components are built using oneAPI libraries for low-level compute optimizations. This toolkit maximizes performance from preprocessing through machine and deep learning phases and provides interoperability for efficient model development and deployment across single and multinodes.\n",
-      "csv_display_name": "Intel\u00ae oneAPI AI Analytics Toolkit Operator",
-      "csv_metadata_description": "",
-      "csv_name": "aikit-operator.v2021.2.92315-dev-d55e022",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:19:58.831000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "aikit-operator",
-      "provided_apis": [
-        {
-          "group": "aikit.intel",
-          "kind": "AIKitContainer",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:0347c7a3a4fbe60038b4a6eaa872fae0a62d69ddbf349eece9b9ec63811f0b78",
-          "image": "registry.connect.redhat.com/intel/aikit-operator@sha256:0347c7a3a4fbe60038b4a6eaa872fae0a62d69ddbf349eece9b9ec63811f0b78",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2021.2.92315-dev-d55e022",
-      "version_original": "2021.2.92315-dev-d55e022"
-    },
-    {
-      "_id": "614d80f169cb9f1af5ba6b03",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/iomesh/iomesh@sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
-      "bundle_path_digest": "sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-09-24T07:40:33.339000+00:00",
-      "csv_description": "IOMesh (https://www.iomesh.com/) is a cloud-native storage product specifically designed and developed for Kubernetes. It takes ZBS as its core, a \u201cproduction-ready\u201d distributed storage system developed independently by SmartX, to provide production-level high performance and reliable persistent storage for business-critical applications such as MySQL, Cassandra, MongoDB, etc., contributing to the containerized transformation of stateful applications.      \n## Pre-Requisites\n* According to https://docs.iomesh.com/deploy/prerequisites, make sure that your openshift cluster meets the \"Installation Requirements\" and set up the worker nodes correctly according to the \"Setup Worker Node\" chapter.\n* Run IOMesh Operator pre-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install the dependencies of IOMesh Operator and specific IOMesh settings for the openshift cluster:\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-pre-install-openshift.sh | sh -\n```\n## Install IOMesh Operator and IOMesh Cluster\n* Click install button on the current web page to install IOMesh Operator\n* On the **Installed Operators** -> **IOMesh Operator** -> **Create instance** -> **YAML view**, fill in an IOMesh Custom Resources according https://iomesh.run/iomesh.yaml, change the `spec.*.dataCIDR` to your own data network CIDR:\n## Post Install\n* Run IOMesh Operator post-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install IOMesh CSI Driver\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-post-install-openshift.sh | sh -\n```\n## Getting Started\n* Try to quickstart setup and use IOMesh: https://docs.iomesh.com/deploy/setup-iomesh\n",
-      "csv_display_name": "IOMesh Operator",
-      "csv_metadata_description": "",
-      "csv_name": "iomesh-operator.0.10.1-rc4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:27:18.344000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "iomesh-operator",
-      "provided_apis": [
-        {
-          "group": "iomesh.com",
-          "kind": "IOMeshCluster",
-          "plural": "iomeshclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "name": "operator-52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3-annotation"
-        },
-        {
-          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "name": "operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.10.1-rc4",
-      "version_original": "0.10.1-rc4"
-    },
-    {
       "_id": "614d81cfd36186823c2a492b",
       "alm_examples": [],
       "annotations": {
@@ -14718,9 +14514,455 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.20.4",
       "version_original": "1.20.4"
+    },
+    {
+      "_id": "6160824b5ac6c12504902082",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:4d0d814fcfeb628aae8a05cb7a0a416ae85395197950085c907b6cdcf2fb4317",
+      "bundle_path_digest": "sha256:4d0d814fcfeb628aae8a05cb7a0a416ae85395197950085c907b6cdcf2fb4317",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.20",
+      "creation_date": "2021-10-08T17:39:23.625000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.20.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:24:28.965000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "image": "quay.io/tigera/operator@sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "name": "operator-bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2-annotation"
+        },
+        {
+          "digest": "sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "image": "quay.io/tigera/operator@sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "<1.20.4",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.20.4",
+      "version_original": "1.20.4"
+    },
+    {
+      "_id": "616083595ac6c12504902083",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:4d0d814fcfeb628aae8a05cb7a0a416ae85395197950085c907b6cdcf2fb4317",
+      "bundle_path_digest": "sha256:4d0d814fcfeb628aae8a05cb7a0a416ae85395197950085c907b6cdcf2fb4317",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.20",
+      "creation_date": "2021-10-08T17:43:53.069000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.20.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:17:26.171000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "ImageSet",
+          "plural": "imagesets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "image": "quay.io/tigera/operator@sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "name": "operator-bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2-annotation"
+        },
+        {
+          "digest": "sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "image": "quay.io/tigera/operator@sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "<1.20.4",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.20.4",
+      "version_original": "1.20.4"
+    },
+    {
+      "_id": "616084f15cfcf7adc247ac5a",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:4d0d814fcfeb628aae8a05cb7a0a416ae85395197950085c907b6cdcf2fb4317",
+      "bundle_path_digest": "sha256:4d0d814fcfeb628aae8a05cb7a0a416ae85395197950085c907b6cdcf2fb4317",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.20",
+      "creation_date": "2021-10-08T17:50:41.665000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.20.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:28:33.040000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "ImageSet",
+          "plural": "imagesets",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "image": "quay.io/tigera/operator@sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "name": "operator-bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2-annotation"
+        },
+        {
+          "digest": "sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "image": "quay.io/tigera/operator@sha256:bd93e66be5cfbc123fe4e8c3f6e8ddf7654217bf26136f06dcf23f28b53063d2",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "<1.20.4",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.20.4",
+      "version_original": "1.20.4"
     }
   ],
   "page": 15,
   "page_size": 100,
-  "total": 3969
+  "total": 3982
 }
