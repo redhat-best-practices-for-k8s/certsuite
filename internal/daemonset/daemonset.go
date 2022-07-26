@@ -8,7 +8,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	v1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -19,6 +18,7 @@ const (
 	timeout          = 5 * time.Minute
 	nodeExporter     = "node-exporter"
 	containerName    = "container-00"
+	debug            = "debug"
 )
 
 //nolint:funlen
@@ -28,6 +28,7 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 	dsAnnotations["openshift.io/scc"] = nodeExporter
 	matchLabels := make(map[string]string)
 	matchLabels["name"] = dsName
+	matchLabels["test-network-function.com/app"] = debug
 
 	var runAsPrivileged = true
 	var zeroInt int64
@@ -75,6 +76,7 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 					PreemptionPolicy: &preempt,
 					Priority:         &zeroInt32,
 					HostNetwork:      true,
+					HostPID:          true,
 					Tolerations: []corev1.Toleration{
 						{
 							Effect:            "NoExecute",
@@ -112,30 +114,29 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 
 // Delete daemon set
 func DeleteDaemonSet(daemonSetName, namespace string) error {
-	tnf.ClaimFilePrintf("Deleting daemon set %s\n", daemonSetName)
+	logrus.Infof("Deleting daemon set %s", daemonSetName)
 	deletePolicy := metav1.DeletePropagationForeground
 	client := clientsholder.GetClientsHolder().K8sClient.AppsV1()
-	if err := client.DaemonSets(namespace).Delete(context.TODO(), daemonSetName, metav1.DeleteOptions{
-		PropagationPolicy: &deletePolicy,
-	}); err != nil {
-		tnf.ClaimFilePrintf("The daemonset (%s) deletion is unsuccessful due to %s", daemonSetName, err)
+	err := client.DaemonSets(namespace).Delete(context.TODO(), daemonSetName, metav1.DeleteOptions{
+		PropagationPolicy: &deletePolicy})
+	if err != nil {
+		return fmt.Errorf("daemonset %s deletion failed: %w", daemonSetName, err)
 	}
-	doneCleanUp := false
-	for start := time.Now(); !doneCleanUp && time.Since(start) < timeout; {
+
+	for start := time.Now(); time.Since(start) < timeout; {
 		client := clientsholder.GetClientsHolder().K8sClient
 		pods, err := client.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{LabelSelector: "name=" + daemonSetName})
 		if err != nil {
 			return fmt.Errorf("failed to get pods, err: %s", err)
 		}
-		//nolint:ineffassign
+
 		if len(pods.Items) == 0 {
-			doneCleanUp = true
 			break
 		}
 		time.Sleep(time.Duration(timeout.Minutes()))
 	}
 
-	tnf.ClaimFilePrintf("Successfully cleaned up daemon set %s\n", daemonSetName)
+	logrus.Infof("Successfully cleaned up daemon set %s", daemonSetName)
 	return nil
 }
 
@@ -144,7 +145,8 @@ func doesDaemonSetExist(daemonSetName, namespace string) bool {
 	client := clientsholder.GetClientsHolder().K8sClient.AppsV1()
 	_, err := client.DaemonSets(namespace).Get(context.TODO(), daemonSetName, metav1.GetOptions{})
 	if err != nil {
-		tnf.ClaimFilePrintf("Error occurred checking for Daemonset to exist: " + err.Error())
+		logrus.Infof("Error occurred checking for Daemonset to exist: %s", err.Error())
+		return false
 	}
 	// If the error is not found, that means the daemon set exists
 	return err == nil
@@ -156,11 +158,11 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 	if doesDaemonSetExist(daemonSetName, namespace) {
 		err := DeleteDaemonSet(daemonSetName, namespace)
 		if err != nil {
-			tnf.ClaimFilePrintf("Failed to delete debug daemonset because: %s", err)
+			return nil, fmt.Errorf("failed to delete debug daemonset because: %w", err)
 		}
 	}
 
-	tnf.ClaimFilePrintf("Creating daemon set %s\n", daemonSetName)
+	logrus.Infof("Creating daemon set %s", daemonSetName)
 	client := clientsholder.GetClientsHolder().K8sClient
 	_, err := client.AppsV1().DaemonSets(namespace).Create(context.TODO(), aDaemonSet, metav1.CreateOptions{})
 	if err != nil {
@@ -171,29 +173,23 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 		return nil, err
 	}
 
-	tnf.ClaimFilePrintf("Daemonset is ready")
+	logrus.Infof("Daemonset is ready")
 
-	var ptpPods *corev1.PodList
-	ptpPods, err = client.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{LabelSelector: "name=" + daemonSetName})
+	var daemonsetPods *corev1.PodList
+	daemonsetPods, err = client.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{LabelSelector: "name=" + daemonSetName})
 	if err != nil {
-		return ptpPods, err
+		return nil, err
 	}
-	tnf.ClaimFilePrintf("Successfully created daemon set %s\n", daemonSetName)
-	return ptpPods, nil
+	logrus.Infof("Successfully created daemon set %s", daemonSetName)
+	return daemonsetPods, nil
 }
 
 // Deploy daemon set on repo partner
-func DeployPartnerTestDaemonset() map[string]corev1.Pod {
-	nodeToPodMapping := make(map[string]corev1.Pod)
-	dsRunningPods, err := CreateDaemonSet(provider.DaemonSetName, provider.DaemonSetNamespace, containerName, imageWithVersion, timeout)
+func DeployPartnerTestDaemonset() error {
+	_, err := CreateDaemonSet(provider.DaemonSetName, provider.DaemonSetNamespace, containerName, imageWithVersion, timeout)
 	if err != nil {
 		logrus.Errorf("Error : +%v\n", err.Error())
-		return nil
+		return err
 	}
-
-	//nolint:gocritic
-	for _, dsPod := range dsRunningPods.Items {
-		nodeToPodMapping[dsPod.Spec.NodeName] = dsPod
-	}
-	return nodeToPodMapping
+	return nil
 }

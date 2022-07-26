@@ -162,7 +162,10 @@ func TestTest(t *testing.T) {
 	// Run tests specs only if not in diagnostic mode, otherwise all TSs would run.
 	var env provider.TestEnvironment
 	if !diagnosticMode {
-		daemonset.DeployPartnerTestDaemonset()
+		err = daemonset.DeployPartnerTestDaemonset()
+		if err != nil {
+			log.Errorf("Error : +%v\n", err.Error())
+		}
 		env.SetNeedsRefresh()
 		provider.GetTestEnvironment()
 		ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)

@@ -271,7 +271,6 @@ func buildTestEnvironment() { //nolint:funlen
 	if err != nil {
 		logrus.Errorf("Debug daemonset failure: %s", err)
 	}
-
 	env = TestEnvironment{}
 
 	data := autodiscover.DoAutoDiscover()
@@ -288,6 +287,7 @@ func buildTestEnvironment() { //nolint:funlen
 		env.Pods = append(env.Pods, &aNewPod)
 		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
+
 	env.DebugPods = make(map[string]*corev1.Pod)
 	for i := 0; i < len(data.DebugPods); i++ {
 		nodeName := data.DebugPods[i].Spec.NodeName
