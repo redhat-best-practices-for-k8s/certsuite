@@ -114,7 +114,11 @@ func (checker OnlineValidator) getImageByTag(registry, repository, tag string) (
 		return imageID, err
 	}
 	db := make(map[string]*offlinecheck.ContainerCatalogEntry)
-	offlinecheck.LoadBinary(responseData, db)
+	err = offlinecheck.LoadBinary(responseData, db)
+	if err != nil {
+		return "", fmt.Errorf("failed to load binary data: %w", err)
+	}
+
 	if len(db) == 0 {
 		return imageID, errors.New("certified image not found")
 	}
@@ -138,7 +142,11 @@ func (checker OnlineValidator) getImageByRepository(registry, repository string)
 		imageID, _ = checker.getIDFromResponse(responseData)
 	}
 	db := make(map[string]*offlinecheck.ContainerCatalogEntry)
-	offlinecheck.LoadBinary(responseData, db)
+	err = offlinecheck.LoadBinary(responseData, db)
+	if err != nil {
+		return "", fmt.Errorf("failed to loadbinary data: %w", err)
+	}
+
 	if len(db) == 0 {
 		return imageID, errors.New("certified image not found")
 	}
