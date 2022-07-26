@@ -75,7 +75,7 @@ clean:
 
 # Run configured linters
 lint:
-	golangci-lint run --timeout 6m0s
+	golangci-lint run --timeout 10m0s
 
 # Build and run unit tests
 test:

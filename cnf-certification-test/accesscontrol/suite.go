@@ -446,30 +446,30 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 		debugPod := env.DebugPods[cut.NodeName]
 		if debugPod == nil {
 			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
-		}
+		} else {
+			ocpContext := clientsholder.Context{
+				Namespace:     debugPod.Namespace,
+				Podname:       debugPod.Name,
+				Containername: debugPod.Spec.Containers[0].Name,
+			}
 
-		ocpContext := clientsholder.Context{
-			Namespace:     debugPod.Namespace,
-			Podname:       debugPod.Name,
-			Containername: debugPod.Spec.Containers[0].Name,
-		}
+			pid, err := crclient.GetPidFromContainer(cut, ocpContext)
+			if err != nil {
+				tnf.ClaimFilePrintf("Could not get PID for: %s, error: %s", cut, err)
+				badContainers = append(badContainers, cut.String())
+				continue
+			}
 
-		pid, err := crclient.GetPidFromContainer(cut, ocpContext)
-		if err != nil {
-			tnf.ClaimFilePrintf("Could not get PID for: %s, error: %s", cut, err)
-			badContainers = append(badContainers, cut.String())
-			continue
-		}
-
-		nbProcesses, err := getNbOfProcessesInPidNamespace(ocpContext, pid, clientsholder.GetClientsHolder())
-		if err != nil {
-			tnf.ClaimFilePrintf("Could not get number of processes for: %s, error: %s", cut, err)
-			badContainers = append(badContainers, cut.String())
-			continue
-		}
-		if nbProcesses > 1 {
-			tnf.ClaimFilePrintf("Container %s has more than one process running", cut.String())
-			badContainers = append(badContainers, cut.String())
+			nbProcesses, err := getNbOfProcessesInPidNamespace(ocpContext, pid, clientsholder.GetClientsHolder())
+			if err != nil {
+				tnf.ClaimFilePrintf("Could not get number of processes for: %s, error: %s", cut, err)
+				badContainers = append(badContainers, cut.String())
+				continue
+			}
+			if nbProcesses > 1 {
+				tnf.ClaimFilePrintf("Container %s has more than one process running", cut.String())
+				badContainers = append(badContainers, cut.String())
+			}
 		}
 	}
 
