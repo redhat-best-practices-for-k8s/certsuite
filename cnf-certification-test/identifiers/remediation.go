@@ -159,5 +159,9 @@ const (
 
 	ReadinessProbeRemediation = `Add readiness probe to deployed containers`
 
-	OneProcessPerContainerRemediation = `launch only one process per container`
+	OneProcessPerContainerRemediation = `Launch only one process per container`
+
+	SYSNiceRealtimeCapabilityRemediation = `If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec.`
+
+	SysPtraceCapabilityRemediation = `Allow the SYS_PTRACE capability when enabling process namespace sharing for a Pod`
 )

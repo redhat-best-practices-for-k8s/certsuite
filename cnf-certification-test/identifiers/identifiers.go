@@ -323,6 +323,11 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "sys-nice-realtime-capability"),
 		Version: versionOne,
 	}
+	// TestSysPtraceCapabilityIdentifier ensures that if process namespace sharing is enabled then the SYS_PTRACE capability is allowed
+	TestSysPtraceCapabilityIdentifier = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "sys-ptrace-capability"),
+		Version: versionOne,
+	}
 )
 
 func formDescription(identifier claim.Identifier, description string) string {
@@ -897,7 +902,14 @@ that there are no changes to the following directories:
 		Identifier:            TestSYSNiceRealtimeCapabilityIdentifier,
 		Type:                  informativeResult,
 		Description:           formDescription(TestSYSNiceRealtimeCapabilityIdentifier, `Check that pods running on nodes with realtime kernel enabled have the SYS_NICE capability enabled in their spec.`),
-		Remediation:           `If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec.`,
+		Remediation:           SYSNiceRealtimeCapabilityRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 2.7.4",
+	},
+	TestSysPtraceCapabilityIdentifier: {
+		Identifier:            TestSysPtraceCapabilityIdentifier,
+		Type:                  informativeResult,
+		Description:           formDescription(TestSysPtraceCapabilityIdentifier, `check that if process namespace sharing is enabled for a Pod then the SYS_PTRACE capability is allowed`),
+		Remediation:           SysPtraceCapabilityRemediation,
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 2.7.5",
 	},
 }

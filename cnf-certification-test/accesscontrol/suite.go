@@ -142,6 +142,12 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestSYSNiceRealtimeCapability(&env)
 	})
+	// SYS_PTRACE capability
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSysPtraceCapabilityIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		TestSysPtraceCapability(&env)
+	})
 })
 
 // TestSecConCapabilities verifies that non compliant capabilities are not present
@@ -495,6 +501,32 @@ func TestSYSNiceRealtimeCapability(env *provider.TestEnvironment) {
 
 	if n := len(containersWithoutSysNice); n > 0 {
 		errMsg := fmt.Sprintf("Number of containers running on realtime kernels without SYS_NICE: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
+	}
+}
+
+func TestSysPtraceCapability(env *provider.TestEnvironment) {
+	var podsWithoutSysPtrace []string
+
+	for _, put := range env.Pods {
+		sysPtraceEnabled := false
+		if put.Data.Spec.ShareProcessNamespace != nil && *put.Data.Spec.ShareProcessNamespace {
+			for _, cut := range put.Containers {
+				if strings.Contains(cut.Data.SecurityContext.Capabilities.String(), "SYS_PTRACE") {
+					sysPtraceEnabled = true
+					break
+				}
+			}
+			if !sysPtraceEnabled {
+				logrus.Infof("Pod %s has process namespace sharing enabled but no container allowing the SYS_PTRACE capability.", put.String())
+				podsWithoutSysPtrace = append(podsWithoutSysPtrace, put.String())
+			}
+		}
+	}
+
+	if n := len(podsWithoutSysPtrace); n > 0 {
+		errMsg := fmt.Sprintf("Number of pods with process namespace sharing enabled for which none of their containers allows the SYS_PTRACE capability: %d", n)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
 	}
