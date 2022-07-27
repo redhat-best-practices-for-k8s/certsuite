@@ -164,7 +164,7 @@ func TestTest(t *testing.T) {
 	if !diagnosticMode {
 		err = daemonset.DeployPartnerTestDaemonset()
 		if err != nil {
-			log.Errorf("Error : +%v\n", err.Error())
+			log.Errorf("Error deploying partner daemonset %s", err.Error())
 		}
 		env.SetNeedsRefresh()
 		provider.GetTestEnvironment()
