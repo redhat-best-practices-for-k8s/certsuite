@@ -376,7 +376,7 @@ func testHugepages(env *provider.TestEnvironment) {
 			continue
 		}
 
-		hpTester, err := hugepages.NewTester(&node, env.DebugPods[node.Data.Name])
+		hpTester, err := hugepages.NewTester(&node, env.DebugPods[node.Data.Name], clientsholder.GetClientsHolder())
 		if err != nil {
 			tnf.ClaimFilePrintf("Unable to get node hugepages tester for node %s, err: %v", node.Data.Name, err)
 			badNodes = append(badNodes, node.Data.Name)
