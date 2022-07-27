@@ -43,7 +43,6 @@ func DeleteDaemonSet(daemonSetName, namespace string) error {
 			allPodsRemoved = true
 			break
 		}
-		allPodsRemoved = false
 		time.Sleep(daemonsetDeletionCheckRetryInteval)
 	}
 
