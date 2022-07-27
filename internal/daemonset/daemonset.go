@@ -32,7 +32,7 @@ func DeleteDaemonSet(daemonSetName, namespace string) error {
 	if err != nil {
 		return fmt.Errorf("daemonset %s deletion failed: %w", daemonSetName, err)
 	}
-	lenOfPods := false
+	allPodsRemoved := false
 	for start := time.Now(); time.Since(start) < timeout; {
 		pods, err := client.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{LabelSelector: "test-network-function.com/app=debug"})
 		if err != nil {
@@ -40,18 +40,17 @@ func DeleteDaemonSet(daemonSetName, namespace string) error {
 		}
 
 		if len(pods.Items) == 0 {
-			lenOfPods = true
+			allPodsRemoved = true
 			break
 		}
-		lenOfPods = false
+		allPodsRemoved = false
 		time.Sleep(daemonsetDeletionCheckRetryInteval)
 	}
 
-	if !lenOfPods {
-		logrus.Errorf("failed cleaned up daemo set")
-	} else {
-		logrus.Infof("Successfully cleaned up daemon set %s", daemonSetName)
+	if !allPodsRemoved {
+		return fmt.Errorf("timeout waiting for daemonset's pods to be deleted")
 	}
+	logrus.Infof("Successfully cleaned up daemon set %s", daemonSetName)
 	return nil
 }
 
