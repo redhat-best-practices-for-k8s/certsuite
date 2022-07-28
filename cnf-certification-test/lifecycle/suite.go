@@ -84,8 +84,8 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHighAvailabilityBestPractices)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		if len(env.Nodes) < 2 {
-			ginkgo.Skip("Skipping pod high availability because of a single node.")
+		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
+			ginkgo.Skip("Skipping pod high availability test because invalid number of available workers.")
 		}
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatetfulSets)
 		testHighAvailability(&env)
@@ -93,8 +93,8 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodNodeSelectorAndAffinityBestPractices)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
-		if len(env.Nodes) < 2 {
-			ginkgo.Skip("Skipping pod scheduling because of a single node.")
+		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
+			ginkgo.Skip("Skipping pod scheduling test because invalid number of available workers.")
 		}
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		testPodNodeSelectorAndAffinityBestPractices(&env)
