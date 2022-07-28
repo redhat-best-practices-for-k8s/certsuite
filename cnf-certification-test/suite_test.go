@@ -28,6 +28,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
@@ -39,6 +40,7 @@ import (
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	daemonset "github.com/test-network-function/cnf-certification-test/internal/daemonset"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
 )
@@ -158,7 +160,14 @@ func TestTest(t *testing.T) {
 	claimhelper.UnmarshalConfigurations(configurations, claimData.Configurations)
 
 	// Run tests specs only if not in diagnostic mode, otherwise all TSs would run.
+	var env provider.TestEnvironment
 	if !diagnosticMode {
+		err = daemonset.DeployPartnerTestDaemonset()
+		if err != nil {
+			log.Errorf("Error deploying partner daemonset %s", err)
+		}
+		env.SetNeedsRefresh()
+		provider.GetTestEnvironment()
 		ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)
 	}
 

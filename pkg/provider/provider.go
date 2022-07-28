@@ -45,8 +45,8 @@ import (
 )
 
 const (
-	daemonSetNamespace               = "default"
-	daemonSetName                    = "debug"
+	DaemonSetNamespace               = "default"
+	DaemonSetName                    = "debug"
 	debugPodsTimeout                 = 5 * time.Minute
 	debugPodsRetryInterval           = 5 * time.Second
 	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/networks-status"
@@ -271,7 +271,6 @@ func buildTestEnvironment() { //nolint:funlen
 	if err != nil {
 		logrus.Errorf("Debug daemonset failure: %s", err)
 	}
-
 	env = TestEnvironment{}
 
 	data := autodiscover.DoAutoDiscover()
@@ -288,6 +287,7 @@ func buildTestEnvironment() { //nolint:funlen
 		env.Pods = append(env.Pods, &aNewPod)
 		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
+
 	env.DebugPods = make(map[string]*corev1.Pod)
 	for i := 0; i < len(data.DebugPods); i++ {
 		nodeName := data.DebugPods[i].Spec.NodeName
@@ -383,7 +383,7 @@ func WaitDebugPodsReady() error {
 	nodesCount := int32(len(nodes.Items))
 	isReady := false
 	for start := time.Now(); !isReady && time.Since(start) < debugPodsTimeout; {
-		daemonSet, err := oc.K8sClient.AppsV1().DaemonSets(daemonSetNamespace).Get(context.TODO(), daemonSetName, metav1.GetOptions{})
+		daemonSet, err := oc.K8sClient.AppsV1().DaemonSets(DaemonSetNamespace).Get(context.TODO(), DaemonSetName, metav1.GetOptions{})
 		if err != nil {
 			return fmt.Errorf("failed to get daemonset, err: %s", err)
 		}
