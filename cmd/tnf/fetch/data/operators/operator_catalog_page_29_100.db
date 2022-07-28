@@ -1,846 +1,6 @@
 {
   "data": [
     {
-      "_id": "627c6a0c4be4723d90ee6b66",
-      "alm_examples": [
-        {
-          "api_version": "charts.operatorhub.io/v1",
-          "kind": "CcmNodeAgent",
-          "metadata": {
-            "name": "ccmnodeagent-sample"
-          },
-          "spec": {
-            "ccmJoinToken": {
-              "secretName": "ccm-join-token",
-              "token": ""
-            },
-            "fullnameOverride": "",
-            "image": {
-              "ccmNodeAgent": {
-                "pullPolicy": "IfNotPresent",
-                "repository": "docker.io/fortanix/ccm-node-agent-ubi7",
-                "tag": "latest"
-              },
-              "ccmNodeAgentInit": {
-                "pullPolicy": "IfNotPresent",
-                "repository": "busybox",
-                "tag": "latest"
-              },
-              "sgxSoftwareInstaller": {
-                "pullPolicy": "IfNotPresent",
-                "repository": "docker.io/fortanix/sgx-software-installer-ubi7",
-                "tag": "latest"
-              }
-            },
-            "log": {
-              "debug": false
-            },
-            "nameOverride": "",
-            "podAnnotations": {},
-            "ports": {
-              "containerPort": 9092,
-              "hostPort": 9092
-            },
-            "replicaCount": 1,
-            "resources": {
-              "limits": {
-                "cpu": "100m",
-                "memory": "128Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "128Mi"
-              }
-            },
-            "serviceAccount": {
-              "annotations": {},
-              "create": true,
-              "name": ""
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/fortanix/ccm-node-agent-operator-bundle@sha256:12746020eefd383963e08a86e3542608aed1999b4e520435e366a307a6a9eebc",
-      "bundle_path_digest": "sha256:12746020eefd383963e08a86e3542608aed1999b4e520435e366a307a6a9eebc",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-05-12T01:59:39.997000+00:00",
-      "csv_description": "CCM Node Agent software enables registration of the compute nodes to Fortanix CCM when installed in the Openshift Cluster Nodes\u200b. \nIt also assists with application attestation and visibility for Fortanix CCM.\n\n## About this Operator\nThis Operator is based on a Helm chart for CCM Node Agent. It enrolls all the nodes in the openshift cluster to a particular CCM account. You have to provide the base64 encode of join token of CCM account while creating CcmNodeAgent resource.\n\n## Prerequisites\nAll the worker nodes in the cluster must have SGX capabilities.\n\n## Installation\n* Choose a namespace to install the Operator. Operator will be available in all namespaces.\n* Select Approval Strategy: Available options are Automatic or Manual. Automatic approval will automatically upgrade the running instance of your Operator without human intervention when a new version is available. In case of Manual approval, when a new version is available, OLM will create an update request. You must manually approve the request to update the Operator to a new version.\n* Generate your CCM Account Join Token: Please log in to https://ccm.fortanix.com, and in the Management Console tab, click the + ENROLL NODE button. In the ENROLL NODE screen, a Join Token will be generated in the text box for \"Get a join token to register an SGX compute node\". This Join Token is used by the compute node to authenticate itself.\n* Base64 encode the Join Token:\n```shell\necho -n <join-token> | openssl base64 -A\n```\n* Create an instance of CcmNodeAgent by setting the `spec.ccmJoinToken.Token` to the base64 encoded CCM account join token.\n* After CcmNodeAgent resource is installed successfully you should be able to see all the worker nodes of the cluster in your CCM account under Compute Node Tab.\n\n## Getting Started\nNow to run your application inside SGX enclaves on your cluster follow the [documentation](https://support.fortanix.com/hc/en-us/articles/360043527431-User-s-Guide-Add-and-Edit-an-Application).\n",
-      "csv_display_name": "CCM Node Agent Operator",
-      "csv_metadata_description": "",
-      "csv_name": "ccm-node-agent-operator.v0.0.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:46:31.273000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "ccm-node-agent-operator",
-      "provided_apis": [
-        {
-          "group": "charts.operatorhub.io",
-          "kind": "CcmNodeAgent",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:62575404000cb77fa8d2284c87b31e39e667a55b0fb47821263b23b3d1135a7e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:62575404000cb77fa8d2284c87b31e39e667a55b0fb47821263b23b3d1135a7e",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:e2a3d52551198102ddbe7f4ebd9621edc357c57ddeff47b7ed9f2cf56a1bed39",
-          "image": "docker.io/fortanix/ccm-node-agent-operator@sha256:e2a3d52551198102ddbe7f4ebd9621edc357c57ddeff47b7ed9f2cf56a1bed39",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.0.2",
-      "version_original": "0.0.2"
-    },
-    {
-      "_id": "627c6a194be4723d90ee6b6c",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "operator": {
-                "clusterPoolIPv4MaskSize": "23",
-                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
-              }
-            },
-            "kubeProxyReplacement": "probe",
-            "nativeRoutingCIDR": "10.128.0.0/14",
-            "prometheus": {
-              "serviceMonitor": {
-                "enabled": false
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:a20d66bf3efda232b27631304f86eb54f0363a9435771c374d4e1357387be2af",
-      "bundle_path_digest": "sha256:a20d66bf3efda232b27631304f86eb54f0363a9435771c374d4e1357387be2af",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "1.10",
-      "creation_date": "2022-05-12T01:59:53.869000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.10-x6adc6ff",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-07-07T13:11:45.692000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:83bfc1052543e8b1e31f06fa2b5bbd2bd41cc79f264010241fc1994e35281616",
-          "image": "quay.io/cilium/cilium@sha256:83bfc1052543e8b1e31f06fa2b5bbd2bd41cc79f264010241fc1994e35281616",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:a0769e44299bba301dee08d489f4e2d3b3924916bed985346dcf9fcf10861c8a",
-          "image": "quay.io/cilium/hubble-relay@sha256:a0769e44299bba301dee08d489f4e2d3b3924916bed985346dcf9fcf10861c8a",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:8a317287b6ac8fe0ba4999342c9627dc913e0c1591552164f96d0aadf5d1a740",
-          "image": "quay.io/cilium/operator-generic@sha256:8a317287b6ac8fe0ba4999342c9627dc913e0c1591552164f96d0aadf5d1a740",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:83bfc1052543e8b1e31f06fa2b5bbd2bd41cc79f264010241fc1994e35281616",
-          "image": "quay.io/cilium/cilium@sha256:83bfc1052543e8b1e31f06fa2b5bbd2bd41cc79f264010241fc1994e35281616",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:e13d41db3f5ee93d8b3abcaa10cc4005522bc797be3d69fc96ac5e03b60c7b11",
-          "image": "quay.io/cilium/clustermesh-apiserver@sha256:e13d41db3f5ee93d8b3abcaa10cc4005522bc797be3d69fc96ac5e03b60c7b11",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "name": "hubble-ui-proxy"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:4245ae5650f075cea29ebce2c2eb7dc59c223cb6cae50a0ab2efe6004ef2363f",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:4245ae5650f075cea29ebce2c2eb7dc59c223cb6cae50a0ab2efe6004ef2363f",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:a0769e44299bba301dee08d489f4e2d3b3924916bed985346dcf9fcf10861c8a",
-          "image": "quay.io/cilium/hubble-relay@sha256:a0769e44299bba301dee08d489f4e2d3b3924916bed985346dcf9fcf10861c8a",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:8a317287b6ac8fe0ba4999342c9627dc913e0c1591552164f96d0aadf5d1a740",
-          "image": "quay.io/cilium/operator-generic@sha256:8a317287b6ac8fe0ba4999342c9627dc913e0c1591552164f96d0aadf5d1a740",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "name": "hubble_ui_proxy"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.10.10+x6adc6ff",
-      "version_original": "1.10.10+x6adc6ff"
-    },
-    {
-      "_id": "627c6a1f228d5769c56927a8",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.12-57.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
-      "bundle_path_digest": "sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-05-12T01:59:59.595000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.12-5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-05-12T01:59:59.595000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "name": "redis-enterprise-operator-b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f-annotation"
-        },
-        {
-          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.12-5",
-      "version_original": "6.0.12-5"
-    },
-    {
-      "_id": "627c6a28228d5769c56927ab",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "operator": {
-                "clusterPoolIPv4MaskSize": "23",
-                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
-              }
-            },
-            "kubeProxyReplacement": "probe",
-            "nativeRoutingCIDR": "10.128.0.0/14",
-            "prometheus": {
-              "serviceMonitor": {
-                "enabled": false
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:ee80fbc119a6fa70f1657b8a72614bd8221eff20a2e2fcac2b7c209f244e1f85",
-      "bundle_path_digest": "sha256:ee80fbc119a6fa70f1657b8a72614bd8221eff20a2e2fcac2b7c209f244e1f85",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-12T02:00:08.647000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.11.3-xe1ecfe7",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:46:43.302000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:cb6aac121e348abd61a692c435a90a6e2ad3f25baa9915346be7b333de8a767f",
-          "image": "quay.io/cilium/cilium@sha256:cb6aac121e348abd61a692c435a90a6e2ad3f25baa9915346be7b333de8a767f",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:7256ec111259a79b4f0e0f80ba4256ea23bd472e1fc3f0865975c2ed113ccb97",
-          "image": "quay.io/cilium/hubble-relay@sha256:7256ec111259a79b4f0e0f80ba4256ea23bd472e1fc3f0865975c2ed113ccb97",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:5b81db7a32cb7e2d00bb3cf332277ec2b3be239d9e94a8d979915f4e6648c787",
-          "image": "quay.io/cilium/operator-generic@sha256:5b81db7a32cb7e2d00bb3cf332277ec2b3be239d9e94a8d979915f4e6648c787",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:cb6aac121e348abd61a692c435a90a6e2ad3f25baa9915346be7b333de8a767f",
-          "image": "quay.io/cilium/cilium@sha256:cb6aac121e348abd61a692c435a90a6e2ad3f25baa9915346be7b333de8a767f",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:75c03de7756bb77ea7ac8aed8449a2fc9204a1c3384157d8cf41336976e6825d",
-          "image": "quay.io/cilium/clustermesh-apiserver@sha256:75c03de7756bb77ea7ac8aed8449a2fc9204a1c3384157d8cf41336976e6825d",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "name": "hubble-ui-proxy"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:25086881203511c40afbda91762bcbac023a5a2ca8a722cfea0dd119fa3546d4",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:25086881203511c40afbda91762bcbac023a5a2ca8a722cfea0dd119fa3546d4",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:7256ec111259a79b4f0e0f80ba4256ea23bd472e1fc3f0865975c2ed113ccb97",
-          "image": "quay.io/cilium/hubble-relay@sha256:7256ec111259a79b4f0e0f80ba4256ea23bd472e1fc3f0865975c2ed113ccb97",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:5b81db7a32cb7e2d00bb3cf332277ec2b3be239d9e94a8d979915f4e6648c787",
-          "image": "quay.io/cilium/operator-generic@sha256:5b81db7a32cb7e2d00bb3cf332277ec2b3be239d9e94a8d979915f4e6648c787",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "name": "hubble_ui_proxy"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.11.3+xe1ecfe7",
-      "version_original": "1.11.3+xe1ecfe7"
-    },
-    {
-      "_id": "627c6a359b28cbab99bd0d11",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "operator": {
-                "clusterPoolIPv4MaskSize": "23",
-                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
-              }
-            },
-            "kubeProxyReplacement": "probe",
-            "nativeRoutingCIDR": "10.128.0.0/14",
-            "prometheus": {
-              "serviceMonitor": {
-                "enabled": false
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:3f69a124f9c31ebc0c78f249872a69b1289622bf4f5aad4c739f6e8caf9cb85b",
-      "bundle_path_digest": "sha256:3f69a124f9c31ebc0c78f249872a69b1289622bf4f5aad4c739f6e8caf9cb85b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "1.9",
-      "creation_date": "2022-05-12T02:00:21.535000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.9.14-x70dc065",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-07-07T13:11:45.335000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:2c6ce93fa7e625979043a387eb998c17ad57df8768d89facb9b715da42a4c51c",
-          "image": "quay.io/cilium/cilium@sha256:2c6ce93fa7e625979043a387eb998c17ad57df8768d89facb9b715da42a4c51c",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:fd6ab1aea260abc5f64eca26c1b1e7009983e4aaa8e5d098e8d442f7659603fb",
-          "image": "quay.io/cilium/hubble-relay@sha256:fd6ab1aea260abc5f64eca26c1b1e7009983e4aaa8e5d098e8d442f7659603fb",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:bdcfd2eade99933f2fda55ef79ea697ddfad3512f65b15bcd0ba7702518c1ba3",
-          "image": "quay.io/cilium/operator-generic@sha256:bdcfd2eade99933f2fda55ef79ea697ddfad3512f65b15bcd0ba7702518c1ba3",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:2c6ce93fa7e625979043a387eb998c17ad57df8768d89facb9b715da42a4c51c",
-          "image": "quay.io/cilium/cilium@sha256:2c6ce93fa7e625979043a387eb998c17ad57df8768d89facb9b715da42a4c51c",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:a0da5edf0372899647da51de1b277f0bab8e676d694aee7f939cddfdd3172010",
-          "image": "quay.io/cilium/clustermesh-apiserver@sha256:a0da5edf0372899647da51de1b277f0bab8e676d694aee7f939cddfdd3172010",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "name": "hubble-ui-proxy"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:3a9ca9a4c2f78109f265c4758f5f693d01865f2d0e31bc5f1ecbc065e878628b",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:3a9ca9a4c2f78109f265c4758f5f693d01865f2d0e31bc5f1ecbc065e878628b",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:fd6ab1aea260abc5f64eca26c1b1e7009983e4aaa8e5d098e8d442f7659603fb",
-          "image": "quay.io/cilium/hubble-relay@sha256:fd6ab1aea260abc5f64eca26c1b1e7009983e4aaa8e5d098e8d442f7659603fb",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:bdcfd2eade99933f2fda55ef79ea697ddfad3512f65b15bcd0ba7702518c1ba3",
-          "image": "quay.io/cilium/operator-generic@sha256:bdcfd2eade99933f2fda55ef79ea697ddfad3512f65b15bcd0ba7702518c1ba3",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "name": "hubble_ui_proxy"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.9.14+x70dc065",
-      "version_original": "1.9.14+x70dc065"
-    },
-    {
       "_id": "627c6a51228d5769c56927b4",
       "alm_examples": [
         {
@@ -12391,8 +11551,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:52:58.313000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-27T16:12:55.235000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
       "package": "prometurbo-certified",
@@ -14061,8 +13221,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:59:00.458000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-07-27T16:21:58.563000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
       "package": "prometurbo-certified",
@@ -18877,9 +18037,1259 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.1.0",
       "version_original": "1.1.0"
+    },
+    {
+      "_id": "627c6edf9b28cbab99bd1140",
+      "alm_examples": [
+        {
+          "api_version": "enterprise.splunk.com/v3",
+          "kind": "ClusterMaster",
+          "metadata": {
+            "finalizers": [
+              "enterprise.splunk.com/delete-pvc"
+            ],
+            "name": "clustermaster-sample"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "enterprise.splunk.com/v3",
+          "kind": "IndexerCluster",
+          "metadata": {
+            "finalizers": [
+              "enterprise.splunk.com/delete-pvc"
+            ],
+            "name": "indexercluster-sample"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "enterprise.splunk.com/v3",
+          "kind": "LicenseMaster",
+          "metadata": {
+            "finalizers": [
+              "enterprise.splunk.com/delete-pvc"
+            ],
+            "name": "licensemaster-sample"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "enterprise.splunk.com/v3",
+          "kind": "MonitoringConsole",
+          "metadata": {
+            "finalizers": [
+              "enterprise.splunk.com/delete-pvc"
+            ],
+            "name": "monitoringconsole-sample"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "enterprise.splunk.com/v3",
+          "kind": "SearchHeadCluster",
+          "metadata": {
+            "finalizers": [
+              "enterprise.splunk.com/delete-pvc"
+            ],
+            "name": "searchheadcluster-sample"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "enterprise.splunk.com/v3",
+          "kind": "Standalone",
+          "metadata": {
+            "finalizers": [
+              "enterprise.splunk.com/delete-pvc"
+            ],
+            "name": "standalone-sample"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/61b0dd9a4841f1221d73cdba/splunk-operator@sha256:72a0d007e387c1b8c6506ef6500f59014100c0f0fb53c6c710ebea917dd89da0",
+      "bundle_path_digest": "sha256:72a0d007e387c1b8c6506ef6500f59014100c0f0fb53c6c710ebea917dd89da0",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:20:15.786000+00:00",
+      "csv_description": "K8 Operator for Splunk Enterprise Deployments",
+      "csv_display_name": "Splunk Operator",
+      "csv_metadata_description": "",
+      "csv_name": "splunk-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:00:37.478000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "splunk-operator",
+      "provided_apis": [
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "LicenseMaster",
+          "plural": "licensemasters",
+          "version": "v3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "ClusterMaster",
+          "plural": "clustermasters",
+          "version": "v1beta2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "LicenseMaster",
+          "plural": "licensemasters",
+          "version": "v1beta3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "IndexerCluster",
+          "plural": "indexerclusters",
+          "version": "v1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "SearchHeadCluster",
+          "plural": "searchheadclusters",
+          "version": "v3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "ClusterMaster",
+          "plural": "clustermasters",
+          "version": "v2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "IndexerCluster",
+          "plural": "indexerclusters",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "SearchHeadCluster",
+          "plural": "searchheadclusters",
+          "version": "v1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "LicenseMaster",
+          "plural": "licensemasters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "LicenseMaster",
+          "plural": "licensemasters",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "ClusterMaster",
+          "plural": "clustermasters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "SearchHeadCluster",
+          "plural": "searchheadclusters",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "LicenseMaster",
+          "plural": "licensemasters",
+          "version": "v1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "Standalone",
+          "plural": "standalones",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "SearchHeadCluster",
+          "plural": "searchheadclusters",
+          "version": "v2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "Standalone",
+          "plural": "standalones",
+          "version": "v1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "SearchHeadCluster",
+          "plural": "searchheadclusters",
+          "version": "v1beta3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "ClusterMaster",
+          "plural": "clustermasters",
+          "version": "v1beta3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "LicenseMaster",
+          "plural": "licensemasters",
+          "version": "v1beta2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "IndexerCluster",
+          "plural": "indexerclusters",
+          "version": "v2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "ClusterMaster",
+          "plural": "clustermasters",
+          "version": "v3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "ClusterMaster",
+          "plural": "clustermasters",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "Standalone",
+          "plural": "standalones",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "Standalone",
+          "plural": "standalones",
+          "version": "v1beta2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "LicenseMaster",
+          "plural": "licensemasters",
+          "version": "v2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "IndexerCluster",
+          "plural": "indexerclusters",
+          "version": "v1beta3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "Standalone",
+          "plural": "standalones",
+          "version": "v3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "IndexerCluster",
+          "plural": "indexerclusters",
+          "version": "v1beta2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "ClusterMaster",
+          "plural": "clustermasters",
+          "version": "v1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "IndexerCluster",
+          "plural": "indexerclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "IndexerCluster",
+          "plural": "indexerclusters",
+          "version": "v3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "SearchHeadCluster",
+          "plural": "searchheadclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "SearchHeadCluster",
+          "plural": "searchheadclusters",
+          "version": "v1beta2"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "MonitoringConsole",
+          "plural": "monitoringconsoles",
+          "version": "v3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "Standalone",
+          "plural": "standalones",
+          "version": "v1beta3"
+        },
+        {
+          "group": "enterprise.splunk.com",
+          "kind": "Standalone",
+          "plural": "standalones",
+          "version": "v2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:caf3bb58d7e8b0e17ccf3a580a368f9321fbdbf748d8e1ad05aef8720c1a168e",
+          "image": "splunk/splunk-operator@sha256:caf3bb58d7e8b0e17ccf3a580a368f9321fbdbf748d8e1ad05aef8720c1a168e",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e343936f31820045a773b9b5373c2105ee559481ad1d1a18bad45c706b48ea3c",
+          "image": "docker.io/splunk/splunk@sha256:e343936f31820045a773b9b5373c2105ee559481ad1d1a18bad45c706b48ea3c",
+          "name": "splunk_enterprise"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "627c6ee09b28cbab99bd1146",
+      "alm_examples": [
+        {
+          "api_version": "tm.solution-soft.com/v1alpha1",
+          "kind": "TimeMachine",
+          "metadata": {
+            "name": "timemachine-sample"
+          },
+          "spec": {
+            "aws": {
+              "shared_volume_name": ""
+            },
+            "cluster_provider": "ibm",
+            "ibm": {
+              "persistentvolume": {
+                "storageclass": "ibmc-file-silver-gid"
+              }
+            },
+            "imagePullSecrets": [],
+            "tm_lichost": "52.152.148.40",
+            "tm_licpass": "qwaszx",
+            "tm_licport": "57777"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/rhel-timemachine-container/timemachine-operator-bundle@sha256:84ca0942b56f65de1ca027c9491111f37862b7165c5fe1d52b4d25b618e88ba6",
+      "bundle_path_digest": "sha256:84ca0942b56f65de1ca027c9491111f37862b7165c5fe1d52b4d25b618e88ba6",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:20:16.195000+00:00",
+      "csv_description": "Time Machine operator enables time travel of OpenShift pods/deployments.\n\nTo time travel a pod where your application is, you just need to install the Time Machine operator and create a Time Machine custom resource in the same namespace, without the need of changing the container images of the application you\u2019re using, or adding containers to the pod with your application.\n\nTime travelling is done on the namespace level where all the (configured) target pods/deployments see the same virtual time.",
+      "csv_display_name": "Time Machine Operator",
+      "csv_metadata_description": "Time Machine Operator enables time travel of OpenShift pods, without the need to change the system clock on any of the cluster nodes",
+      "csv_name": "timemachine-operator.v1.0.12",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:55:20.875000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "timemachine-operator",
+      "provided_apis": [
+        {
+          "group": "tm.solution-soft.com",
+          "kind": "TimeMachine",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:aecf0041badb80885c4a08ae662676488c0f282a7eae35bd6f73e87d58a02cda",
+          "image": "registry.connect.redhat.com/rhel-timemachine-container/timemachine-operator@sha256:aecf0041badb80885c4a08ae662676488c0f282a7eae35bd6f73e87d58a02cda",
+          "name": "timemachine-operator-aecf0041badb80885c4a08ae662676488c0f282a7eae35bd6f73e87d58a02cda-annotation"
+        },
+        {
+          "digest": "sha256:b92b2a908e0b0e12632a94a8dce075aa61f11122b84f28115d4327d56c398fd8",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:b92b2a908e0b0e12632a94a8dce075aa61f11122b84f28115d4327d56c398fd8",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:aecf0041badb80885c4a08ae662676488c0f282a7eae35bd6f73e87d58a02cda",
+          "image": "registry.connect.redhat.com/rhel-timemachine-container/timemachine-operator@sha256:aecf0041badb80885c4a08ae662676488c0f282a7eae35bd6f73e87d58a02cda",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:d3698323751c95740b5086802f856def96ec9509ed0f1ad07c9571e6d31ab35a",
+          "image": "registry.connect.redhat.com/rhel-timemachine-container/virtual-clock-testing-tool@sha256:d3698323751c95740b5086802f856def96ec9509ed0f1ad07c9571e6d31ab35a",
+          "name": "timemachine"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=0.0.4 <1.0.12",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.0.12",
+      "version_original": "1.0.12"
+    },
+    {
+      "_id": "627c6ee34be4723d90ee6f99",
+      "alm_examples": [
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecClusterConfig",
+          "metadata": {
+            "name": "acc100SampleConfig",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "acceleratorSelector": {
+              "deviceID": "someDevice",
+              "driver": "someDriver",
+              "maxVirtualFunctions": 2,
+              "pciAddress": "somePciAddress",
+              "vendorID": "someVendor"
+            },
+            "drainSkip": false,
+            "nodeSelector": {
+              "expectedLabel1": "valueOfExpectedLabel1",
+              "expectedLabelN": "valueOfExpectedLabelN"
+            },
+            "physicalFunction": {
+              "bbDevConfig": {
+                "acc100": {
+                  "downlink4G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 0
+                  },
+                  "downlink5G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 4
+                  },
+                  "maxQueueSize": 1024,
+                  "numVfBundles": 16,
+                  "pfMode": true,
+                  "uplink4G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 0
+                  },
+                  "uplink5G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 4
+                  }
+                }
+              },
+              "pfDriver": "pci-pf-stub",
+              "vfAmount": 2,
+              "vfDriver": "vfio-pci"
+            },
+            "priority": 100
+          }
+        },
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecClusterConfig",
+          "metadata": {
+            "name": "n3000SampleConfig",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "acceleratorSelector": {
+              "deviceID": "someDevice",
+              "driver": "someDriver",
+              "maxVirtualFunctions": 2,
+              "pciAddress": "somePciAddress",
+              "vendorID": "someVendor"
+            },
+            "drainSkip": false,
+            "nodeSelector": {
+              "expectedLabel1": "valueOfExpectedLabel1",
+              "expectedLabelN": "valueOfExpectedLabelN"
+            },
+            "physicalFunction": {
+              "bbDevConfig": {
+                "n3000": {
+                  "downlink": {
+                    "bandwidth": 3,
+                    "loadBalance": 128,
+                    "queues": {
+                      "vf0": 16,
+                      "vf1": 16,
+                      "vf2": 0,
+                      "vf3": 0,
+                      "vf4": 0,
+                      "vf5": 0,
+                      "vf6": 0,
+                      "vf7": 0
+                    }
+                  },
+                  "flrTimeout": 610,
+                  "networkType": "FPGA_5GNR",
+                  "pfMode": true,
+                  "uplink": {
+                    "bandwidth": 3,
+                    "loadBalance": 128,
+                    "queues": {
+                      "vf0": 16,
+                      "vf1": 16,
+                      "vf2": 0,
+                      "vf3": 0,
+                      "vf4": 0,
+                      "vf5": 0,
+                      "vf6": 0,
+                      "vf7": 0
+                    }
+                  }
+                }
+              },
+              "pfDriver": "pci-pf-stub",
+              "vfAmount": 2,
+              "vfDriver": "vfio-pci"
+            },
+            "priority": 100
+          }
+        },
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecNodeConfig",
+          "metadata": {
+            "name": "acc100-worker",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "drainSkip": false,
+            "physicalFunctions": [
+              {
+                "bbDevConfig": {
+                  "acc100": {
+                    "downlink4G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 0
+                    },
+                    "downlink5G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 4
+                    },
+                    "maxQueueSize": 1024,
+                    "numVfBundles": 16,
+                    "pfMode": true,
+                    "uplink4G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 0
+                    },
+                    "uplink5G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 4
+                    }
+                  }
+                },
+                "pci_addr": "somePciAddress",
+                "pf_driver": "pci-pf-stub",
+                "vf_amount": 2,
+                "vf_driver": "vfio-pci"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecNodeConfig",
+          "metadata": {
+            "name": "n3000-worker",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "drainSkip": false,
+            "physicalFunctions": [
+              {
+                "bbDevConfig": {
+                  "n3000": {
+                    "downlink": {
+                      "bandwidth": 3,
+                      "loadBalance": 128,
+                      "queues": {
+                        "vf0": 16,
+                        "vf1": 16,
+                        "vf2": 0,
+                        "vf3": 0,
+                        "vf4": 0,
+                        "vf5": 0,
+                        "vf6": 0,
+                        "vf7": 0
+                      }
+                    },
+                    "flrTimeout": 610,
+                    "networkType": "FPGA_5GNR",
+                    "pfMode": true,
+                    "uplink": {
+                      "bandwidth": 3,
+                      "loadBalance": 128,
+                      "queues": {
+                        "vf0": 16,
+                        "vf1": 16,
+                        "vf2": 0,
+                        "vf3": 0,
+                        "vf4": 0,
+                        "vf5": 0,
+                        "vf6": 0,
+                        "vf7": 0
+                      }
+                    }
+                  }
+                },
+                "pci_addr": "somePciAddress",
+                "pf_driver": "pci-pf-stub",
+                "vf_amount": 2,
+                "vf_driver": "vfio-pci"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/sriov-fec-operator-bundle@sha256:3427eb10344d1e197d8d2d22957a51902db065490534883285ea2f383d00e364",
+      "bundle_path_digest": "sha256:3427eb10344d1e197d8d2d22957a51902db065490534883285ea2f383d00e364",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:20:19.898000+00:00",
+      "csv_description": "The Intel\u00ae FPGA Programmable Acceleration Card N3000 (Intel\u00ae FPGA PAC N3000) is a highly customizable FPGA SmartNIC which enables high-throughput, low latency and high-bandwith applications.  It allows the optimization of data plane performance to reduce total cost of ownership while maintaining a high degree of flexibility.  The Intel FPGA PAC N3000 plays a key role in accelerating 5G and network functions virtualization (NFV) adoption for ecosystem partners such as telecommunications equipment manufacturers (TEMs) virtual network functions (VNF) vendors, system integrators and telcos, to bring scalable and high-performance solutions to market. The Intel FPGA PAC N3000 includes a variant that is design to be Network Equipment Building System (NEBS)-friendly, and features a Root-of-Trust device that helps protect systems from FPGA host security exploits. This document explains how the FPGA resource can be used on the Smart Edge Open (SEO) platform for accelerating network functions and edge application workloads. We use the Intel\u00ae FPGA PAC N3000 as a reference FPGA PAC and use LTE/5G Forward Error Correction (FEC) as an example workload that accelerates the 5G or 4G L1 base station network function. The same concept and mechanism is applicable for application acceleration workloads like AI and ML on FPGA for Inference applications. The Intel\u00ae FPGA PAC N3000 is a full-duplex, 100 Gbps in-system, re-programmable acceleration card for multi-workload networking application acceleration. It has an optimal memory mixture designed for network functions, with an integrated network interface card (NIC) in a small form factor that enables high throughput, low latency, and low power per bit for a custom networking pipeline. The ACC100 supports the O-RAN adopted DPDK BBDev API - an API which Intel contributed to the opensource community to enable choice and TTM for FEC acceleration solutions. The FlexRAN software reference architecture supports the ACC100 which enables users to quickly evaluate and build platforms for the wide range of vRAN networks. Reduces platform power, E2E latency and Intel\u00ae CPU core count requirements as well as increases cell capacity than existing programmable accelerator. Accelerates both 4G and 5G data concurrently.\tLowers development cost using commercial off the shelf (COTS) servers. Accommodates space-constrained implementations via a low-profile PCIe card form factor. Enables a variety of flexible FlexRAN deployments from small cell to macro to Massive MIMO networks. Supports extended temperature for the most challenging of RAN deployment scenario\u2019s.",
+      "csv_display_name": "SEO SR-IOV Operator for Wireless FEC Accelerators",
+      "csv_metadata_description": "An operator for Intel Wireless FEC Accelerator to orchestrate and manage the resources/devices exposed by a range of Intel's vRAN FEC acceleration devices/hardware within the OpenShift cluster.",
+      "csv_name": "sriov-fec.v2.2.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-07-07T13:11:46.001000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "sriov-fec",
+      "provided_apis": [
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecNodeConfig",
+          "version": "v2"
+        },
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecClusterConfig",
+          "version": "v1"
+        },
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecClusterConfig",
+          "version": "v2"
+        },
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecNodeConfig",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:12e9101ac85babaa033f577b585e7aa2604b40095fcdc6172359f81d8be05cf4",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-daemon@sha256:12e9101ac85babaa033f577b585e7aa2604b40095fcdc6172359f81d8be05cf4",
+          "name": "sriov-fec-daemon"
+        },
+        {
+          "digest": "sha256:5fd8ac9d05661cb4a75ff2a6792a78a66c74c341caf472bd0948351b88f47daa",
+          "image": "registry.connect.redhat.com/intel/n3000-labeler@sha256:5fd8ac9d05661cb4a75ff2a6792a78a66c74c341caf472bd0948351b88f47daa",
+          "name": "sriov-fec-labeler"
+        },
+        {
+          "digest": "sha256:5ad615f1256d1d23b159a5a331a31103692dd0293b6f128b9095d0b34c0f6586",
+          "image": "registry.redhat.io/openshift4/ose-sriov-network-device-plugin@sha256:5ad615f1256d1d23b159a5a331a31103692dd0293b6f128b9095d0b34c0f6586",
+          "name": "sriov-network-device-plugin"
+        },
+        {
+          "digest": "sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-operator@sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "name": "sriov-fec-operator"
+        },
+        {
+          "digest": "sha256:86e5fa1fa294987114be200890c2e516501e424aee0fb98ece25c95e7716295b",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:86e5fa1fa294987114be200890c2e516501e424aee0fb98ece25c95e7716295b",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-operator@sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "name": "sriov-fec-operator-f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89-annotation"
+        },
+        {
+          "digest": "sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-operator@sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=2.0.2 <=2.2.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.2.1",
+      "version_original": "2.2.1"
+    },
+    {
+      "_id": "627c6ee43e0ff4d601b6fca5",
+      "alm_examples": [
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecClusterConfig",
+          "metadata": {
+            "name": "acc100SampleConfig",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "acceleratorSelector": {
+              "deviceID": "someDevice",
+              "driver": "someDriver",
+              "maxVirtualFunctions": 2,
+              "pciAddress": "somePciAddress",
+              "vendorID": "someVendor"
+            },
+            "drainSkip": false,
+            "nodeSelector": {
+              "expectedLabel1": "valueOfExpectedLabel1",
+              "expectedLabelN": "valueOfExpectedLabelN"
+            },
+            "physicalFunction": {
+              "bbDevConfig": {
+                "acc100": {
+                  "downlink4G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 0
+                  },
+                  "downlink5G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 4
+                  },
+                  "maxQueueSize": 1024,
+                  "numVfBundles": 16,
+                  "pfMode": true,
+                  "uplink4G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 0
+                  },
+                  "uplink5G": {
+                    "aqDepthLog2": 4,
+                    "numAqsPerGroups": 16,
+                    "numQueueGroups": 4
+                  }
+                }
+              },
+              "pfDriver": "pci-pf-stub",
+              "vfAmount": 2,
+              "vfDriver": "vfio-pci"
+            },
+            "priority": 100
+          }
+        },
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecClusterConfig",
+          "metadata": {
+            "name": "n3000SampleConfig",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "acceleratorSelector": {
+              "deviceID": "someDevice",
+              "driver": "someDriver",
+              "maxVirtualFunctions": 2,
+              "pciAddress": "somePciAddress",
+              "vendorID": "someVendor"
+            },
+            "drainSkip": false,
+            "nodeSelector": {
+              "expectedLabel1": "valueOfExpectedLabel1",
+              "expectedLabelN": "valueOfExpectedLabelN"
+            },
+            "physicalFunction": {
+              "bbDevConfig": {
+                "n3000": {
+                  "downlink": {
+                    "bandwidth": 3,
+                    "loadBalance": 128,
+                    "queues": {
+                      "vf0": 16,
+                      "vf1": 16,
+                      "vf2": 0,
+                      "vf3": 0,
+                      "vf4": 0,
+                      "vf5": 0,
+                      "vf6": 0,
+                      "vf7": 0
+                    }
+                  },
+                  "flrTimeout": 610,
+                  "networkType": "FPGA_5GNR",
+                  "pfMode": true,
+                  "uplink": {
+                    "bandwidth": 3,
+                    "loadBalance": 128,
+                    "queues": {
+                      "vf0": 16,
+                      "vf1": 16,
+                      "vf2": 0,
+                      "vf3": 0,
+                      "vf4": 0,
+                      "vf5": 0,
+                      "vf6": 0,
+                      "vf7": 0
+                    }
+                  }
+                }
+              },
+              "pfDriver": "pci-pf-stub",
+              "vfAmount": 2,
+              "vfDriver": "vfio-pci"
+            },
+            "priority": 100
+          }
+        },
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecNodeConfig",
+          "metadata": {
+            "name": "acc100-worker",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "drainSkip": false,
+            "physicalFunctions": [
+              {
+                "bbDevConfig": {
+                  "acc100": {
+                    "downlink4G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 0
+                    },
+                    "downlink5G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 4
+                    },
+                    "maxQueueSize": 1024,
+                    "numVfBundles": 16,
+                    "pfMode": true,
+                    "uplink4G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 0
+                    },
+                    "uplink5G": {
+                      "aqDepthLog2": 4,
+                      "numAqsPerGroups": 16,
+                      "numQueueGroups": 4
+                    }
+                  }
+                },
+                "pci_addr": "somePciAddress",
+                "pf_driver": "pci-pf-stub",
+                "vf_amount": 2,
+                "vf_driver": "vfio-pci"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "sriovfec.intel.com/v2",
+          "kind": "SriovFecNodeConfig",
+          "metadata": {
+            "name": "n3000-worker",
+            "namespace": "vran-acceleration-operators"
+          },
+          "spec": {
+            "drainSkip": false,
+            "physicalFunctions": [
+              {
+                "bbDevConfig": {
+                  "n3000": {
+                    "downlink": {
+                      "bandwidth": 3,
+                      "loadBalance": 128,
+                      "queues": {
+                        "vf0": 16,
+                        "vf1": 16,
+                        "vf2": 0,
+                        "vf3": 0,
+                        "vf4": 0,
+                        "vf5": 0,
+                        "vf6": 0,
+                        "vf7": 0
+                      }
+                    },
+                    "flrTimeout": 610,
+                    "networkType": "FPGA_5GNR",
+                    "pfMode": true,
+                    "uplink": {
+                      "bandwidth": 3,
+                      "loadBalance": 128,
+                      "queues": {
+                        "vf0": 16,
+                        "vf1": 16,
+                        "vf2": 0,
+                        "vf3": 0,
+                        "vf4": 0,
+                        "vf5": 0,
+                        "vf6": 0,
+                        "vf7": 0
+                      }
+                    }
+                  }
+                },
+                "pci_addr": "somePciAddress",
+                "pf_driver": "pci-pf-stub",
+                "vf_amount": 2,
+                "vf_driver": "vfio-pci"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/sriov-fec-operator-bundle@sha256:3427eb10344d1e197d8d2d22957a51902db065490534883285ea2f383d00e364",
+      "bundle_path_digest": "sha256:3427eb10344d1e197d8d2d22957a51902db065490534883285ea2f383d00e364",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:20:20.092000+00:00",
+      "csv_description": "The Intel\u00ae FPGA Programmable Acceleration Card N3000 (Intel\u00ae FPGA PAC N3000) is a highly customizable FPGA SmartNIC which enables high-throughput, low latency and high-bandwith applications.  It allows the optimization of data plane performance to reduce total cost of ownership while maintaining a high degree of flexibility.  The Intel FPGA PAC N3000 plays a key role in accelerating 5G and network functions virtualization (NFV) adoption for ecosystem partners such as telecommunications equipment manufacturers (TEMs) virtual network functions (VNF) vendors, system integrators and telcos, to bring scalable and high-performance solutions to market. The Intel FPGA PAC N3000 includes a variant that is design to be Network Equipment Building System (NEBS)-friendly, and features a Root-of-Trust device that helps protect systems from FPGA host security exploits. This document explains how the FPGA resource can be used on the Smart Edge Open (SEO) platform for accelerating network functions and edge application workloads. We use the Intel\u00ae FPGA PAC N3000 as a reference FPGA PAC and use LTE/5G Forward Error Correction (FEC) as an example workload that accelerates the 5G or 4G L1 base station network function. The same concept and mechanism is applicable for application acceleration workloads like AI and ML on FPGA for Inference applications. The Intel\u00ae FPGA PAC N3000 is a full-duplex, 100 Gbps in-system, re-programmable acceleration card for multi-workload networking application acceleration. It has an optimal memory mixture designed for network functions, with an integrated network interface card (NIC) in a small form factor that enables high throughput, low latency, and low power per bit for a custom networking pipeline. The ACC100 supports the O-RAN adopted DPDK BBDev API - an API which Intel contributed to the opensource community to enable choice and TTM for FEC acceleration solutions. The FlexRAN software reference architecture supports the ACC100 which enables users to quickly evaluate and build platforms for the wide range of vRAN networks. Reduces platform power, E2E latency and Intel\u00ae CPU core count requirements as well as increases cell capacity than existing programmable accelerator. Accelerates both 4G and 5G data concurrently.\tLowers development cost using commercial off the shelf (COTS) servers. Accommodates space-constrained implementations via a low-profile PCIe card form factor. Enables a variety of flexible FlexRAN deployments from small cell to macro to Massive MIMO networks. Supports extended temperature for the most challenging of RAN deployment scenario\u2019s.",
+      "csv_display_name": "SEO SR-IOV Operator for Wireless FEC Accelerators",
+      "csv_metadata_description": "An operator for Intel Wireless FEC Accelerator to orchestrate and manage the resources/devices exposed by a range of Intel's vRAN FEC acceleration devices/hardware within the OpenShift cluster.",
+      "csv_name": "sriov-fec.v2.2.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:00:40.747000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "sriov-fec",
+      "provided_apis": [
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecNodeConfig",
+          "version": "v2"
+        },
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecClusterConfig",
+          "version": "v1"
+        },
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecClusterConfig",
+          "version": "v2"
+        },
+        {
+          "group": "sriovfec.intel.com",
+          "kind": "SriovFecNodeConfig",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:12e9101ac85babaa033f577b585e7aa2604b40095fcdc6172359f81d8be05cf4",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-daemon@sha256:12e9101ac85babaa033f577b585e7aa2604b40095fcdc6172359f81d8be05cf4",
+          "name": "sriov-fec-daemon"
+        },
+        {
+          "digest": "sha256:5fd8ac9d05661cb4a75ff2a6792a78a66c74c341caf472bd0948351b88f47daa",
+          "image": "registry.connect.redhat.com/intel/n3000-labeler@sha256:5fd8ac9d05661cb4a75ff2a6792a78a66c74c341caf472bd0948351b88f47daa",
+          "name": "sriov-fec-labeler"
+        },
+        {
+          "digest": "sha256:5ad615f1256d1d23b159a5a331a31103692dd0293b6f128b9095d0b34c0f6586",
+          "image": "registry.redhat.io/openshift4/ose-sriov-network-device-plugin@sha256:5ad615f1256d1d23b159a5a331a31103692dd0293b6f128b9095d0b34c0f6586",
+          "name": "sriov-network-device-plugin"
+        },
+        {
+          "digest": "sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-operator@sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "name": "sriov-fec-operator"
+        },
+        {
+          "digest": "sha256:86e5fa1fa294987114be200890c2e516501e424aee0fb98ece25c95e7716295b",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:86e5fa1fa294987114be200890c2e516501e424aee0fb98ece25c95e7716295b",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-operator@sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "name": "sriov-fec-operator-f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89-annotation"
+        },
+        {
+          "digest": "sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "image": "registry.connect.redhat.com/intel/sriov-fec-operator@sha256:f15e43381b2c8315cf38d15bbcf28b2f529ae5241fa9c8b05ac5e55a13ff3e89",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=2.0.2 <=2.2.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.2.1",
+      "version_original": "2.2.1"
+    },
+    {
+      "_id": "627c6ee64be4723d90ee6fa5",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.2.4-55.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
+      "bundle_path_digest": "sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-05-12T02:20:22.387000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.4-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-05-12T02:20:22.387000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "redis-enterprise-operator-8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9-annotation"
+        },
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "admission"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.2.4-1",
+      "version_original": "6.2.4-1"
     }
   ],
   "page": 29,
   "page_size": 100,
-  "total": 3982
+  "total": 4010
 }

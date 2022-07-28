@@ -56,7 +56,7 @@ Unique ID|http://test-network-function.com/testcases/access-control/one-process-
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/access-control/one-process-per-container check that all containers under test 		have only one process running
 Result Type|informative
-Suggested Remediation|launch only one process per container
+Suggested Remediation|Launch only one process per container
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 10.8.3
 Exception Process|There is no documented exception process for this.
 #### pod-automount-service-account-token
@@ -212,7 +212,7 @@ Unique ID|http://test-network-function.com/testcases/access-control/sys-ptrace-c
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/access-control/sys-ptrace-capability check that if process namespace sharing is enabled for a Pod then the SYS_PTRACE capability is allowed
 Result Type|informative
-Suggested Remediation|allow the SYS_PTRACE capability when enabling process namespace sharing for a Pod
+Suggested Remediation|Allow the SYS_PTRACE capability when enabling process namespace sharing for a Pod
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 2.7.5
 Exception Process|
 

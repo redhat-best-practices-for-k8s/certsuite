@@ -1,1336 +1,6 @@
 {
   "data": [
     {
-      "_id": "62abd078240dc134424c44b6",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "bootstrapperImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise-operator"
-            },
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise",
-              "versionTag": "6.2.10-107.rhel8-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "redisEnterpriseServicesRiggerImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/services-manager"
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a6a5a8925abe7ed7899b1c0cbfa7808223ad5a641adf6d537dbc197be3eb6c16",
-      "bundle_path_digest": "sha256:a6a5a8925abe7ed7899b1c0cbfa7808223ad5a641adf6d537dbc197be3eb6c16",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-06-17T00:53:12.810000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n*  Changing the name of the Redis Enterprise Cluster in the spec from the\n  default requires running commands to grant permissions to the pods:\n\n  Operator service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\n    Redis Enterprise Cluster service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\n    Replace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.\n\n* When creating a Redis Enterprise Cluster without specifying in its spec a `persistentSpec` with explicit `storageClassName`,\nthe default Storage Class of the Kubernetes cluster will be used to dynamically provision storage for the Redis Enterprise Cluster's nodes.\nHowever, if the Kubernetes cluster doesn't have a default Storage Class configured\nand no specific Storage Class was specified in the Redis Enterprise Cluster Spec, the installation of the cluster could fail.\nTo avoid such scenario in cases where a specific Storage Class isn't specified, make sure the Kubernetes Cluster has a default Storage Cluster configured.\nThis can be done by running a `kubectl get storageclass` command and see if one of the Storage Classes' names contains a `(default)` mark.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.10-34",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:53:12.810000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "name": "redis-enterprise-operator-53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb-annotation"
-        },
-        {
-          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "name": "admission"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "6.2.10-34",
-      "version_original": "6.2.10-34"
-    },
-    {
-      "_id": "62abd081240dc134424c44c0",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.4-55.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
-      "bundle_path_digest": "sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2022-06-17T00:53:21.291000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.4-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:53:21.291000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "redis-enterprise-operator-8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9-annotation"
-        },
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "admission"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.2.4-1",
-      "version_original": "6.2.4-1"
-    },
-    {
-      "_id": "62abd0ebdd92c1f1f12a724e",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.12-57.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
-      "bundle_path_digest": "sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-06-17T00:55:07.784000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.12-5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:55:07.784000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "name": "redis-enterprise-operator-b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f-annotation"
-        },
-        {
-          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.12-5",
-      "version_original": "6.0.12-5"
-    },
-    {
-      "_id": "62abd0ef150d8182de8ea339",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
-      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-06-17T00:55:11.562000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-11",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:55:11.562000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.6-11",
-      "version_original": "6.0.6-11"
-    },
-    {
-      "_id": "62abd11f150d8182de8ea38e",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.8-30.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
-      "bundle_path_digest": "sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-06-17T00:55:59.406000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:55:59.406000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "name": "redis-enterprise-operator-0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1-annotation"
-        },
-        {
-          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.8-20",
-      "version_original": "6.0.8-20"
-    },
-    {
-      "_id": "62abd13e150d8182de8ea3d6",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.6-39.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
-      "bundle_path_digest": "sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-06-17T00:56:30.380000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-24",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:56:30.380000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "image": "redislabs/operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "name": "operator-998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b-annotation"
-        },
-        {
-          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "6.0.6-24",
-      "version_original": "6.0.6-24"
-    },
-    {
-      "_id": "62abd15bbe1fd3a96e0566eb",
-      "alm_examples": [
-        {
-          "api_version": "mellanox.com/v1alpha1",
-          "kind": "HostDeviceNetwork",
-          "metadata": {
-            "name": "hostdevicenetwork-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        },
-        {
-          "api_version": "mellanox.com/v1alpha1",
-          "kind": "MacvlanNetwork",
-          "metadata": {
-            "name": "macvlannetwork-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        },
-        {
-          "api_version": "mellanox.com/v1alpha1",
-          "kind": "NicClusterPolicy",
-          "metadata": {
-            "name": "nicclusterpolicy-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nvidia-network-operator/nvidia-network-operator@sha256:2367829886a0f8aaa3705ec0d98118fb53e21c56f02b3e58f8ec312b337dd9c6",
-      "bundle_path_digest": "sha256:2367829886a0f8aaa3705ec0d98118fb53e21c56f02b3e58f8ec312b337dd9c6",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "1.1.0",
-      "creation_date": "2022-06-17T00:56:59.954000+00:00",
-      "csv_description": "## NVIDIA Network Operator\nThe NVIDIA Network Operator simplifies the provisioning and management of NVIDIA networking resources  in a Kubernetes cluster. The operator automatically installs the required host networking software - bringing together all the needed components to provide high-speed network connectivity. These components include the NVIDIA networking driver, Kubernetes device plugin, CNI plugins, IP address management (IPAM) plugin and others.\nThe NVIDIA Network Operator works in conjunction with the NVIDIA GPU Operator to deliver high-throughput, low-latency networking for scale-out, GPU computing clusters.\nThe Network Operator is open-source. For more information on contributions and release artifacts, see the [GitHub repo](https://github.com/Mellanox/network-operator/)\n",
-      "csv_display_name": "NVIDIA Network Operator",
-      "csv_metadata_description": "Deploy and manage NVIDIA networking resources in Kubernetes",
-      "csv_name": "nvidia-network-operator.v1.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:56:59.954000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "nvidia-network-operator",
-      "provided_apis": [
-        {
-          "group": "mellanox.com",
-          "kind": "NicClusterPolicy",
-          "plural": "nicclusterpolicies",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "k8s.cni.cncf.io",
-          "kind": "NetworkAttachmentDefinition",
-          "plural": "network-attachment-definitions",
-          "version": "v1"
-        },
-        {
-          "group": "mellanox.com",
-          "kind": "HostDeviceNetwork",
-          "plural": "hostdevicenetworks",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "mellanox.com",
-          "kind": "MacvlanNetwork",
-          "plural": "macvlannetworks",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:17afa53f1cf3733c8d0cd282c565975ed5de3124dfc2b7c485ad12c97e51c251",
-          "image": "nvcr.io/nvidia/cloud-native/network-operator@sha256:17afa53f1cf3733c8d0cd282c565975ed5de3124dfc2b7c485ad12c97e51c251",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.1.0",
-      "version_original": "1.1.0"
-    },
-    {
-      "_id": "62abd165dd92c1f1f12a7317",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "5.4.14-31.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "size": 3,
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
-      "bundle_path_digest": "sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-06-17T00:57:09.112000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v5.4.14-7",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:57:09.112000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "image": "redislabs/operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "name": "operator-062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217-annotation"
-        },
-        {
-          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "5.4.14-7",
-      "version_original": "5.4.14-7"
-    },
-    {
-      "_id": "62abd168dd92c1f1f12a7320",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-06-17T00:57:12.416000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:57:12.416000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.8-1",
-      "version_original": "6.0.8-1"
-    },
-    {
-      "_id": "62abd17edd92c1f1f12a7340",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-06-17T00:57:34.164000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:57:34.164000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "6.0.8-1",
-      "version_original": "6.0.8-1"
-    },
-    {
-      "_id": "62abd1abbe1fd3a96e05677d",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.12-57.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
-      "bundle_path_digest": "sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2022-06-17T00:58:19.787000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.12-5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:58:19.787000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "name": "redis-enterprise-operator-b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f-annotation"
-        },
-        {
-          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.12-5",
-      "version_original": "6.0.12-5"
-    },
-    {
-      "_id": "62abd1e0be1fd3a96e0567ed",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "bootstrapperImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise-operator"
-            },
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise",
-              "versionTag": "6.2.10-107.rhel8-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "redisEnterpriseServicesRiggerImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/services-manager"
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a6a5a8925abe7ed7899b1c0cbfa7808223ad5a641adf6d537dbc197be3eb6c16",
-      "bundle_path_digest": "sha256:a6a5a8925abe7ed7899b1c0cbfa7808223ad5a641adf6d537dbc197be3eb6c16",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-06-17T00:59:12.513000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n*  Changing the name of the Redis Enterprise Cluster in the spec from the\n  default requires running commands to grant permissions to the pods:\n\n  Operator service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\n    Redis Enterprise Cluster service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\n    Replace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.\n\n* When creating a Redis Enterprise Cluster without specifying in its spec a `persistentSpec` with explicit `storageClassName`,\nthe default Storage Class of the Kubernetes cluster will be used to dynamically provision storage for the Redis Enterprise Cluster's nodes.\nHowever, if the Kubernetes cluster doesn't have a default Storage Class configured\nand no specific Storage Class was specified in the Redis Enterprise Cluster Spec, the installation of the cluster could fail.\nTo avoid such scenario in cases where a specific Storage Class isn't specified, make sure the Kubernetes Cluster has a default Storage Cluster configured.\nThis can be done by running a `kubectl get storageclass` command and see if one of the Storage Classes' names contains a `(default)` mark.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.10-34",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:59:12.513000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "name": "redis-enterprise-operator-53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb-annotation"
-        },
-        {
-          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "name": "admission"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "6.2.10-34",
-      "version_original": "6.2.10-34"
-    },
-    {
-      "_id": "62abd1e4150d8182de8ea4ee",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.4-55.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
-      "bundle_path_digest": "sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-06-17T00:59:16.915000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.4-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:59:16.915000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "redis-enterprise-operator-8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9-annotation"
-        },
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "admission"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.2.4-1",
-      "version_original": "6.2.4-1"
-    },
-    {
       "_id": "62abd1e6240dc134424c4714",
       "alm_examples": [
         {
@@ -11849,9 +10519,1754 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "6.0.20-12a",
       "version_original": "6.0.20-12a"
+    },
+    {
+      "_id": "62abdfed240dc134424c6b8f",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.6-39.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
+      "bundle_path_digest": "sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-06-17T01:59:09.529000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-24",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:59:09.529000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "image": "redislabs/operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "name": "operator-998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b-annotation"
+        },
+        {
+          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "6.0.6-24",
+      "version_original": "6.0.6-24"
+    },
+    {
+      "_id": "62abe008150d8182de8ec9b7",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.12-57.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
+      "bundle_path_digest": "sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.4",
+      "creation_date": "2022-06-17T01:59:36.071000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.12-5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:59:36.071000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "name": "redis-enterprise-operator-b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f-annotation"
+        },
+        {
+          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.12-5",
+      "version_original": "6.0.12-5"
+    },
+    {
+      "_id": "62abe028240dc134424c6bdc",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:23f06fa446df0253aeacaf9f063d959c91e56f8a210ac493dc47bc238bb84bfe",
+      "bundle_path_digest": "sha256:23f06fa446df0253aeacaf9f063d959c91e56f8a210ac493dc47bc238bb84bfe",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-06-17T02:00:08.250000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-07-04T16:43:43.270000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:e08debe4fcac4b377e86ed57c9587057e8f99d37c5bd8acfe94dfa17605d0759",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:e08debe4fcac4b377e86ed57c9587057e8f99d37c5bd8acfe94dfa17605d0759",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "8.5.5",
+      "version_original": "8.5.5"
+    },
+    {
+      "_id": "62abe035150d8182de8eca08",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "bootstrapperImageSpec": {
+              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise-operator"
+            },
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise",
+              "versionTag": "6.2.10-107.rhel8-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "redisEnterpriseServicesRiggerImageSpec": {
+              "repository": "registry.connect.redhat.com/redislabs/services-manager"
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a6a5a8925abe7ed7899b1c0cbfa7808223ad5a641adf6d537dbc197be3eb6c16",
+      "bundle_path_digest": "sha256:a6a5a8925abe7ed7899b1c0cbfa7808223ad5a641adf6d537dbc197be3eb6c16",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.10",
+      "creation_date": "2022-06-17T02:00:21.724000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n*  Changing the name of the Redis Enterprise Cluster in the spec from the\n  default requires running commands to grant permissions to the pods:\n\n  Operator service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\n    Redis Enterprise Cluster service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\n    Replace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.\n\n* When creating a Redis Enterprise Cluster without specifying in its spec a `persistentSpec` with explicit `storageClassName`,\nthe default Storage Class of the Kubernetes cluster will be used to dynamically provision storage for the Redis Enterprise Cluster's nodes.\nHowever, if the Kubernetes cluster doesn't have a default Storage Class configured\nand no specific Storage Class was specified in the Redis Enterprise Cluster Spec, the installation of the cluster could fail.\nTo avoid such scenario in cases where a specific Storage Class isn't specified, make sure the Kubernetes Cluster has a default Storage Cluster configured.\nThis can be done by running a `kubectl get storageclass` command and see if one of the Storage Classes' names contains a `(default)` mark.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.10-34",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:00:21.724000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
+          "name": "redis-enterprise-operator-53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb-annotation"
+        },
+        {
+          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
+          "name": "admission"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "6.2.10-34",
+      "version_original": "6.2.10-34"
+    },
+    {
+      "_id": "62abe054240dc134424c6c2b",
+      "alm_examples": [
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaCsp",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "db-password",
+                "name": "aqua-database-password"
+              },
+              "dbDiskSize": 10
+            },
+            "database": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "gateway": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "infra": {
+              "namespace": "aqua",
+              "requirements": true,
+              "serviceAccount": "aqua-sa",
+              "version": "5.3"
+            },
+            "route": true,
+            "server": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaDatabase",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "diskSize": 10,
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "5.3"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "gateway": {
+              "host": "aqua-gateway",
+              "port": 8443
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "5.3"
+            },
+            "token": "<<your-token>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaKubeEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "config": {
+              "cluster_name": "aqua-secure",
+              "gateway_address": "aqua-gateway.aqua:8443"
+            },
+            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaGateway",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "5.3"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaScanner",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "deploy": {
+              "replicas": 1
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "5.3"
+            },
+            "login": {
+              "host": "http://aqua-server:8080",
+              "password": "<<YOUR AQUA USER PASSWORD>>",
+              "username": "<<YOUR AQUA USER NAME>>"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaServer",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "5.3"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:c367a6e2000ff5eb18363b3008930e86623a1ef74d0236cdb9423b63468fdfc2",
+      "bundle_path_digest": "sha256:c367a6e2000ff5eb18363b3008930e86623a1ef74d0236cdb9423b63468fdfc2",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "5.3",
+      "creation_date": "2022-06-17T02:00:52.171000+00:00",
+      "csv_description": "The Aqua Security Operator is used to deploy and manage the Aqua Cloud Native Security Platform (CSP) and its components:\n* Server (aka \"console\")\n* Database (optional; you can map an external database as well)\n* Gateway\n* Enforcer\n* KubeEnforcer\n* Scanner\n\nUse the Aqua Operator to:\n* Deploy Aqua CSP on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua CSP components\n* Automatically scale the number of Aqua scanners based on the number of images in the scan queue\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n3. Create the secret for Aqua Database password\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password>```\n    \nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* latest: This maps to the Aqua version 4.6.0\n* alpha: This maps to the Aqua version 5.0.0\n* 5.3: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
+      "csv_display_name": "Aqua Security Operator",
+      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
+      "csv_name": "aqua-operator.v5.3.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:00:52.171000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "aqua-operator-certified",
+      "provided_apis": [
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaKubeEnforcer",
+          "plural": "aquakubeenforcers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaScanner",
+          "plural": "aquascanners",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaServer",
+          "plural": "aquaservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaCsp",
+          "plural": "aquacsps",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaDatabase",
+          "plural": "aquadatabases",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaEnforcer",
+          "plural": "aquaenforcers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaGateway",
+          "plural": "aquagateways",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17",
+          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17",
+          "name": "aquasec-5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17-annotation"
+        },
+        {
+          "digest": "sha256:5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17",
+          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17",
+          "name": "aqua-operator"
+        },
+        {
+          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
+          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
+          "name": "database"
+        },
+        {
+          "digest": "sha256:5e3f0ceb3805eb556a270ff6dd24f38b7363af635be67a07537537fdcea91a59",
+          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:5e3f0ceb3805eb556a270ff6dd24f38b7363af635be67a07537537fdcea91a59",
+          "name": "gateway"
+        },
+        {
+          "digest": "sha256:736ebc8d15add4f82999d0d4cd95f0d7ddf4d4459496718c1482716841750dd9",
+          "image": "registry.connect.redhat.com/aquasec/console@sha256:736ebc8d15add4f82999d0d4cd95f0d7ddf4d4459496718c1482716841750dd9",
+          "name": "server"
+        },
+        {
+          "digest": "sha256:03669814dfa811b54116ce9c7481c6594f44058593ab50f8549beeef9ed0e54c",
+          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:03669814dfa811b54116ce9c7481c6594f44058593ab50f8549beeef9ed0e54c",
+          "name": "scanner"
+        },
+        {
+          "digest": "sha256:6617cc185815d883ef25d40d0ba02e00bd39224c9431d36ecbf2254690206230",
+          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:6617cc185815d883ef25d40d0ba02e00bd39224c9431d36ecbf2254690206230",
+          "name": "enforcer"
+        },
+        {
+          "digest": "sha256:a132492d9678275c250aaddcdf9af4fea551e79d6aaf95682f457edf8f92af50",
+          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:a132492d9678275c250aaddcdf9af4fea551e79d6aaf95682f457edf8f92af50",
+          "name": "kube_enforcer"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "5.3.0",
+      "version_original": "5.3.0"
+    },
+    {
+      "_id": "62abe057240dc134424c6c37",
+      "alm_examples": [
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaCsp",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "db-password",
+                "name": "aqua-database-password"
+              },
+              "dbDiskSize": 10
+            },
+            "database": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "gateway": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "infra": {
+              "namespace": "aqua",
+              "requirements": true,
+              "serviceAccount": "aqua-sa",
+              "version": "6.0"
+            },
+            "route": true,
+            "server": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaDatabase",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "diskSize": 10,
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.0"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "gateway": {
+              "host": "aqua-gateway",
+              "port": 8443
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.0"
+            },
+            "token": "<<your-token>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaKubeEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "config": {
+              "cluster_name": "aqua-secure",
+              "gateway_address": "aqua-gateway.aqua:8443",
+              "imagePullSecret": "aqua-registry"
+            },
+            "deploy": {
+              "service": "ClusterIP"
+            },
+            "infra": {
+              "serviceAccount": "aqua-kube-enforcer-sa",
+              "version": "6.0"
+            },
+            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaGateway",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.0"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaScanner",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "deploy": {
+              "replicas": 1
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.0"
+            },
+            "login": {
+              "host": "http://aqua-server:8080",
+              "password": "<<YOUR AQUA USER PASSWORD>>",
+              "username": "<<YOUR AQUA USER NAME>>"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaServer",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.0"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:26b6039d957e1dd8de17b1f46bde410c797159c581a217d5e396b39ccfd304cf",
+      "bundle_path_digest": "sha256:26b6039d957e1dd8de17b1f46bde410c797159c581a217d5e396b39ccfd304cf",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "6.0",
+      "creation_date": "2022-06-17T02:00:55.179000+00:00",
+      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n* Automatically scale the number of Aqua scanners based on the number of images in the scan queue\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/6.0.0/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/6.0.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.0.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
+      "csv_display_name": "Aqua Security Operator",
+      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
+      "csv_name": "aqua-operator.v6.0.8",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:00:55.179000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "aqua-operator-certified",
+      "provided_apis": [
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaServer",
+          "plural": "aquaservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaCsp",
+          "plural": "aquacsps",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaDatabase",
+          "plural": "aquadatabases",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaEnforcer",
+          "plural": "aquaenforcers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaGateway",
+          "plural": "aquagateways",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaKubeEnforcer",
+          "plural": "aquakubeenforcers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaScanner",
+          "plural": "aquascanners",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": ">=1.0.2 <6.0.8",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.8",
+      "version_original": "6.0.8"
+    },
+    {
+      "_id": "62abe070dd92c1f1f12a99e6",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.10",
+      "creation_date": "2022-06-17T02:01:20.192000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:01:20.192000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "62abe097be1fd3a96e058d22",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.2.8-64.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9d1a896c1276852d8cad7e670924f309a7a82de2f8843f23d2a6ae42ba0a8b53",
+      "bundle_path_digest": "sha256:9d1a896c1276852d8cad7e670924f309a7a82de2f8843f23d2a6ae42ba0a8b53",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-06-17T02:01:59.218000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.8-15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:01:59.218000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
+          "name": "redis-enterprise-operator-0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37-annotation"
+        },
+        {
+          "digest": "sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
+          "name": "admission"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.2.8-15",
+      "version_original": "6.2.8-15"
+    },
+    {
+      "_id": "62abe09dbe1fd3a96e058d33",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "bootstrapperImageSpec": {
+              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise-operator"
+            },
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise",
+              "versionTag": "6.2.10-107.rhel8-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "redisEnterpriseServicesRiggerImageSpec": {
+              "repository": "registry.connect.redhat.com/redislabs/services-manager"
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a6a5a8925abe7ed7899b1c0cbfa7808223ad5a641adf6d537dbc197be3eb6c16",
+      "bundle_path_digest": "sha256:a6a5a8925abe7ed7899b1c0cbfa7808223ad5a641adf6d537dbc197be3eb6c16",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.10",
+      "creation_date": "2022-06-17T02:02:05.858000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n*  Changing the name of the Redis Enterprise Cluster in the spec from the\n  default requires running commands to grant permissions to the pods:\n\n  Operator service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\n    Redis Enterprise Cluster service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\n    Replace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.\n\n* When creating a Redis Enterprise Cluster without specifying in its spec a `persistentSpec` with explicit `storageClassName`,\nthe default Storage Class of the Kubernetes cluster will be used to dynamically provision storage for the Redis Enterprise Cluster's nodes.\nHowever, if the Kubernetes cluster doesn't have a default Storage Class configured\nand no specific Storage Class was specified in the Redis Enterprise Cluster Spec, the installation of the cluster could fail.\nTo avoid such scenario in cases where a specific Storage Class isn't specified, make sure the Kubernetes Cluster has a default Storage Cluster configured.\nThis can be done by running a `kubectl get storageclass` command and see if one of the Storage Classes' names contains a `(default)` mark.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.10-34",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:02:05.858000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
+          "name": "redis-enterprise-operator-53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb-annotation"
+        },
+        {
+          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
+          "name": "admission"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.2.10-34",
+      "version_original": "6.2.10-34"
+    },
+    {
+      "_id": "62abe0a8be1fd3a96e058d52",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.8-28.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.4",
+      "creation_date": "2022-06-17T02:02:16.007000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:02:16.007000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca",
+          "image": "redislabs/operator@sha256:29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca",
+          "name": "operator-29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca-annotation"
+        },
+        {
+          "digest": "sha256:29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "6.0.8-1",
+      "version_original": "6.0.8-1"
+    },
+    {
+      "_id": "62abe0dd150d8182de8ecb5e",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.10",
+      "creation_date": "2022-06-17T02:03:09.143000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:03:09.143000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "62abe0f0dd92c1f1f12a9aed",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "5.4.14-31.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "size": 3,
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
+      "bundle_path_digest": "sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-06-17T02:03:28.173000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v5.4.14-7",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:03:28.173000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "image": "redislabs/operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "name": "operator-062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217-annotation"
+        },
+        {
+          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "5.4.14-7",
+      "version_original": "5.4.14-7"
+    },
+    {
+      "_id": "62abe0f4240dc134424c6d79",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.8-30.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
+      "bundle_path_digest": "sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-06-17T02:03:32.137000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-20",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:03:32.137000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "name": "redis-enterprise-operator-0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1-annotation"
+        },
+        {
+          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.8-20",
+      "version_original": "6.0.8-20"
     }
   ],
   "page": 35,
   "page_size": 100,
-  "total": 3982
+  "total": 4010
 }

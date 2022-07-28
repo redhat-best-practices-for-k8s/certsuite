@@ -1,626 +1,6 @@
 {
   "data": [
     {
-      "_id": "627e421a5cbc1cba9c78474a",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.4-55.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
-      "bundle_path_digest": "sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-05-13T11:33:46.911000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.4-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-05-13T11:33:46.911000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "redis-enterprise-operator-8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9-annotation"
-        },
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "admission"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.2.4-1",
-      "version_original": "6.2.4-1"
-    },
-    {
-      "_id": "627e423f5cbc1cba9c78476e",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "5.4.14-31.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "size": 3,
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
-      "bundle_path_digest": "sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-05-13T11:34:23.070000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v5.4.14-7",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-05-13T11:34:23.070000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "image": "redislabs/operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "name": "operator-062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217-annotation"
-        },
-        {
-          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "5.4.14-7",
-      "version_original": "5.4.14-7"
-    },
-    {
-      "_id": "627e42535cbc1cba9c784787",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "bootstrapperImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise-operator"
-            },
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise",
-              "versionTag": "6.2.10-90.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "redisEnterpriseServicesRiggerImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/services-manager"
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:95644b2ccc560118c16350bcd4380db7c08d97258bf1034387e96a9b1814fef5",
-      "bundle_path_digest": "sha256:95644b2ccc560118c16350bcd4380db7c08d97258bf1034387e96a9b1814fef5",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-05-13T11:34:43.331000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.10-4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-05-13T11:34:43.331000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
-          "name": "redis-enterprise-operator-97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31-annotation"
-        },
-        {
-          "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
-          "name": "admission"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.2.10-4",
-      "version_original": "6.2.10-4"
-    },
-    {
-      "_id": "627e429b9b640f138405c2b6",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.8-53.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "bundle_path_digest": "sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-05-13T11:35:55.831000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.8-11",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-05-13T11:35:55.831000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator-5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59-annotation"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "admission"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.2.8-11",
-      "version_original": "6.2.8-11"
-    },
-    {
-      "_id": "627e42a7ded3b14cfb806e14",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.8-30.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
-      "bundle_path_digest": "sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-05-13T11:36:07.503000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-05-13T11:36:07.503000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "name": "redis-enterprise-operator-0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1-annotation"
-        },
-        {
-          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.0.8-20",
-      "version_original": "6.0.8-20"
-    },
-    {
       "_id": "627e42b59b640f138405c2d0",
       "alm_examples": [
         {
@@ -13582,482 +12962,6 @@
       "version_original": "1.16.1"
     },
     {
-      "_id": "628f80b10f80b55368ab4a6b",
-      "alm_examples": [
-        {
-          "api_version": "tenantoperator.stakater.com/v1beta1",
-          "kind": "Tenant",
-          "metadata": {
-            "name": "bluesky"
-          },
-          "spec": {
-            "editors": {
-              "groups": [
-                "alpha"
-              ],
-              "users": [
-                "john@aurora.org"
-              ]
-            },
-            "namespaces": [
-              "dev",
-              "build",
-              "prod"
-            ],
-            "owners": {
-              "users": [
-                "anna@aurora.org",
-                "anthony@aurora.org"
-              ]
-            },
-            "quota": "small"
-          }
-        },
-        {
-          "api_version": "tenantoperator.stakater.com/v1alpha1",
-          "kind": "IntegrationConfig",
-          "metadata": {
-            "name": "tenant-operator-config",
-            "namespace": "stakater-tenant-operator"
-          },
-          "spec": {
-            "argocd": {
-              "clusterResourceWhitelist": [
-                {
-                  "group": "tronador.stakater.com",
-                  "kind": "EnvironmentProvisioner"
-                }
-              ],
-              "namespace": "openshift-operators",
-              "namespaceResourceBlacklist": [
-                {
-                  "group": "",
-                  "kind": "ResourceQuota"
-                }
-              ]
-            },
-            "openshift": {
-              "clusterAdminGroups": [
-                "cluster-admins"
-              ],
-              "group": {
-                "labels": {
-                  "role": "customer-reader"
-                }
-              },
-              "namespaceAccessPolicy": {
-                "deny": {
-                  "privilegedNamespaces": {
-                    "groups": [
-                      "cluster-admins"
-                    ],
-                    "users": [
-                      "system:serviceaccount:openshift-argocd:argocd-application-controller",
-                      "adam@stakater.com"
-                    ]
-                  }
-                }
-              },
-              "privilegedNamespaces": [
-                "default",
-                "^openshift-*",
-                "^kube-*"
-              ],
-              "privilegedServiceAccounts": [
-                "^system:serviceaccount:openshift-*",
-                "^system:serviceaccount:kube-*"
-              ],
-              "project": {
-                "annotations": {
-                  "openshift.io/node-selector": "node-role.kubernetes.io/worker="
-                },
-                "labels": {
-                  "stakater.com/workload-monitoring": "true"
-                }
-              },
-              "sandbox": {
-                "labels": {
-                  "stakater.com/kind": "sandbox"
-                }
-              }
-            },
-            "rhsso": {
-              "enabled": true,
-              "endpoint": {
-                "secretReference": {
-                  "name": "auth-secrets",
-                  "namespace": "openshift-auth"
-                },
-                "url": "https://iam-keycloak-auth.apps.prod.abcdefghi.kubeapp.cloud/"
-              }
-            },
-            "vault": {
-              "enabled": true,
-              "endpoint": {
-                "secretReference": {
-                  "name": "vault-root-token",
-                  "namespace": "vault"
-                },
-                "url": "https://vault.apps.prod.abcdefghi.kubeapp.cloud/"
-              },
-              "sso": {
-                "accessorID": "<ACCESSOR_ID_TOKEN>",
-                "clientName": "vault"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/stakater/tenant-operator-0@sha256:aa9a994b83e11741c35fa0c5b6bce10efbfec3cb1bf4ec308fe5167eb99a1bfc",
-      "bundle_path_digest": "sha256:aa9a994b83e11741c35fa0c5b6bce10efbfec3cb1bf4ec308fe5167eb99a1bfc",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-05-26T13:29:21.894000+00:00",
-      "csv_description": "tenant operator",
-      "csv_display_name": "tenant-operator",
-      "csv_metadata_description": "",
-      "csv_name": "tenant-operator.v0.3.33",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:01:11.102000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "tenant-operator",
-      "provided_apis": [
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Tenant",
-          "plural": "tenants",
-          "version": "v1beta1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "TemplateInstance",
-          "plural": "templateinstances",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Tenant",
-          "plural": "tenants",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "IntegrationConfig",
-          "plural": "integrationconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Quota",
-          "plural": "quotas",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Quota",
-          "plural": "quotas",
-          "version": "v1beta1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "TemplateGroupInstance",
-          "plural": "templategroupinstances",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Template",
-          "plural": "templates",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:b2d9424d5ba70ba370c73b5fcf85fa5e5a1265a5f046c50969500a21dca97aaa",
-          "image": "registry.connect.redhat.com/stakater/tenant-operator@sha256:b2d9424d5ba70ba370c73b5fcf85fa5e5a1265a5f046c50969500a21dca97aaa",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.3.33",
-      "version_original": "0.3.33"
-    },
-    {
-      "_id": "628f86161c42afc5aaad48d5",
-      "alm_examples": [
-        {
-          "api_version": "tenantoperator.stakater.com/v1beta1",
-          "kind": "Tenant",
-          "metadata": {
-            "name": "bluesky"
-          },
-          "spec": {
-            "editors": {
-              "groups": [
-                "alpha"
-              ],
-              "users": [
-                "john@aurora.org"
-              ]
-            },
-            "namespaces": [
-              "dev",
-              "build",
-              "prod"
-            ],
-            "owners": {
-              "users": [
-                "anna@aurora.org",
-                "anthony@aurora.org"
-              ]
-            },
-            "quota": "small"
-          }
-        },
-        {
-          "api_version": "tenantoperator.stakater.com/v1alpha1",
-          "kind": "IntegrationConfig",
-          "metadata": {
-            "name": "tenant-operator-config",
-            "namespace": "stakater-tenant-operator"
-          },
-          "spec": {
-            "argocd": {
-              "clusterResourceWhitelist": [
-                {
-                  "group": "tronador.stakater.com",
-                  "kind": "EnvironmentProvisioner"
-                }
-              ],
-              "namespace": "openshift-operators",
-              "namespaceResourceBlacklist": [
-                {
-                  "group": "",
-                  "kind": "ResourceQuota"
-                }
-              ]
-            },
-            "openshift": {
-              "clusterAdminGroups": [
-                "cluster-admins"
-              ],
-              "group": {
-                "labels": {
-                  "role": "customer-reader"
-                }
-              },
-              "namespaceAccessPolicy": {
-                "deny": {
-                  "privilegedNamespaces": {
-                    "groups": [
-                      "cluster-admins"
-                    ],
-                    "users": [
-                      "system:serviceaccount:openshift-argocd:argocd-application-controller",
-                      "adam@stakater.com"
-                    ]
-                  }
-                }
-              },
-              "privilegedNamespaces": [
-                "default",
-                "^openshift-*",
-                "^kube-*"
-              ],
-              "privilegedServiceAccounts": [
-                "^system:serviceaccount:openshift-*",
-                "^system:serviceaccount:kube-*"
-              ],
-              "project": {
-                "annotations": {
-                  "openshift.io/node-selector": "node-role.kubernetes.io/worker="
-                },
-                "labels": {
-                  "stakater.com/workload-monitoring": "true"
-                }
-              },
-              "sandbox": {
-                "labels": {
-                  "stakater.com/kind": "sandbox"
-                }
-              }
-            },
-            "rhsso": {
-              "enabled": true,
-              "endpoint": {
-                "secretReference": {
-                  "name": "auth-secrets",
-                  "namespace": "openshift-auth"
-                },
-                "url": "https://iam-keycloak-auth.apps.prod.abcdefghi.kubeapp.cloud/"
-              }
-            },
-            "vault": {
-              "enabled": true,
-              "endpoint": {
-                "secretReference": {
-                  "name": "vault-root-token",
-                  "namespace": "vault"
-                },
-                "url": "https://vault.apps.prod.abcdefghi.kubeapp.cloud/"
-              },
-              "sso": {
-                "accessorID": "<ACCESSOR_ID_TOKEN>",
-                "clientName": "vault"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/stakater/tenant-operator-0@sha256:aa9a994b83e11741c35fa0c5b6bce10efbfec3cb1bf4ec308fe5167eb99a1bfc",
-      "bundle_path_digest": "sha256:aa9a994b83e11741c35fa0c5b6bce10efbfec3cb1bf4ec308fe5167eb99a1bfc",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-05-26T13:52:22.794000+00:00",
-      "csv_description": "tenant operator",
-      "csv_display_name": "tenant-operator",
-      "csv_metadata_description": "",
-      "csv_name": "tenant-operator.v0.3.33",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:16:53.345000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "tenant-operator",
-      "provided_apis": [
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "TemplateGroupInstance",
-          "plural": "templategroupinstances",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "TemplateInstance",
-          "plural": "templateinstances",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Tenant",
-          "plural": "tenants",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "IntegrationConfig",
-          "plural": "integrationconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Quota",
-          "plural": "quotas",
-          "version": "v1beta1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Template",
-          "plural": "templates",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Tenant",
-          "plural": "tenants",
-          "version": "v1beta1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Quota",
-          "plural": "quotas",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:b2d9424d5ba70ba370c73b5fcf85fa5e5a1265a5f046c50969500a21dca97aaa",
-          "image": "registry.connect.redhat.com/stakater/tenant-operator@sha256:b2d9424d5ba70ba370c73b5fcf85fa5e5a1265a5f046c50969500a21dca97aaa",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.3.33",
-      "version_original": "0.3.33"
-    },
-    {
       "_id": "628f8d31256da2c054d060dd",
       "alm_examples": [
         {
@@ -14460,482 +13364,6 @@
       "version_original": "1.2.0"
     },
     {
-      "_id": "628f907289e0a10bc811f92c",
-      "alm_examples": [
-        {
-          "api_version": "tenantoperator.stakater.com/v1beta1",
-          "kind": "Tenant",
-          "metadata": {
-            "name": "bluesky"
-          },
-          "spec": {
-            "editors": {
-              "groups": [
-                "alpha"
-              ],
-              "users": [
-                "john@aurora.org"
-              ]
-            },
-            "namespaces": [
-              "dev",
-              "build",
-              "prod"
-            ],
-            "owners": {
-              "users": [
-                "anna@aurora.org",
-                "anthony@aurora.org"
-              ]
-            },
-            "quota": "small"
-          }
-        },
-        {
-          "api_version": "tenantoperator.stakater.com/v1alpha1",
-          "kind": "IntegrationConfig",
-          "metadata": {
-            "name": "tenant-operator-config",
-            "namespace": "stakater-tenant-operator"
-          },
-          "spec": {
-            "argocd": {
-              "clusterResourceWhitelist": [
-                {
-                  "group": "tronador.stakater.com",
-                  "kind": "EnvironmentProvisioner"
-                }
-              ],
-              "namespace": "openshift-operators",
-              "namespaceResourceBlacklist": [
-                {
-                  "group": "",
-                  "kind": "ResourceQuota"
-                }
-              ]
-            },
-            "openshift": {
-              "clusterAdminGroups": [
-                "cluster-admins"
-              ],
-              "group": {
-                "labels": {
-                  "role": "customer-reader"
-                }
-              },
-              "namespaceAccessPolicy": {
-                "deny": {
-                  "privilegedNamespaces": {
-                    "groups": [
-                      "cluster-admins"
-                    ],
-                    "users": [
-                      "system:serviceaccount:openshift-argocd:argocd-application-controller",
-                      "adam@stakater.com"
-                    ]
-                  }
-                }
-              },
-              "privilegedNamespaces": [
-                "default",
-                "^openshift-*",
-                "^kube-*"
-              ],
-              "privilegedServiceAccounts": [
-                "^system:serviceaccount:openshift-*",
-                "^system:serviceaccount:kube-*"
-              ],
-              "project": {
-                "annotations": {
-                  "openshift.io/node-selector": "node-role.kubernetes.io/worker="
-                },
-                "labels": {
-                  "stakater.com/workload-monitoring": "true"
-                }
-              },
-              "sandbox": {
-                "labels": {
-                  "stakater.com/kind": "sandbox"
-                }
-              }
-            },
-            "rhsso": {
-              "enabled": true,
-              "endpoint": {
-                "secretReference": {
-                  "name": "auth-secrets",
-                  "namespace": "openshift-auth"
-                },
-                "url": "https://iam-keycloak-auth.apps.prod.abcdefghi.kubeapp.cloud/"
-              }
-            },
-            "vault": {
-              "enabled": true,
-              "endpoint": {
-                "secretReference": {
-                  "name": "vault-root-token",
-                  "namespace": "vault"
-                },
-                "url": "https://vault.apps.prod.abcdefghi.kubeapp.cloud/"
-              },
-              "sso": {
-                "accessorID": "<ACCESSOR_ID_TOKEN>",
-                "clientName": "vault"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/stakater/tenant-operator-0@sha256:aa9a994b83e11741c35fa0c5b6bce10efbfec3cb1bf4ec308fe5167eb99a1bfc",
-      "bundle_path_digest": "sha256:aa9a994b83e11741c35fa0c5b6bce10efbfec3cb1bf4ec308fe5167eb99a1bfc",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-05-26T14:36:34.989000+00:00",
-      "csv_description": "tenant operator",
-      "csv_display_name": "tenant-operator",
-      "csv_metadata_description": "",
-      "csv_name": "tenant-operator.v0.3.33",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:54:24.712000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "tenant-operator",
-      "provided_apis": [
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "TemplateInstance",
-          "plural": "templateinstances",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Template",
-          "plural": "templates",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Tenant",
-          "plural": "tenants",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "IntegrationConfig",
-          "plural": "integrationconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Quota",
-          "plural": "quotas",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "TemplateGroupInstance",
-          "plural": "templategroupinstances",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Tenant",
-          "plural": "tenants",
-          "version": "v1beta1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Quota",
-          "plural": "quotas",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:b2d9424d5ba70ba370c73b5fcf85fa5e5a1265a5f046c50969500a21dca97aaa",
-          "image": "registry.connect.redhat.com/stakater/tenant-operator@sha256:b2d9424d5ba70ba370c73b5fcf85fa5e5a1265a5f046c50969500a21dca97aaa",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.3.33",
-      "version_original": "0.3.33"
-    },
-    {
-      "_id": "628f9798256da2c054d0656a",
-      "alm_examples": [
-        {
-          "api_version": "tenantoperator.stakater.com/v1beta1",
-          "kind": "Tenant",
-          "metadata": {
-            "name": "bluesky"
-          },
-          "spec": {
-            "editors": {
-              "groups": [
-                "alpha"
-              ],
-              "users": [
-                "john@aurora.org"
-              ]
-            },
-            "namespaces": [
-              "dev",
-              "build",
-              "prod"
-            ],
-            "owners": {
-              "users": [
-                "anna@aurora.org",
-                "anthony@aurora.org"
-              ]
-            },
-            "quota": "small"
-          }
-        },
-        {
-          "api_version": "tenantoperator.stakater.com/v1alpha1",
-          "kind": "IntegrationConfig",
-          "metadata": {
-            "name": "tenant-operator-config",
-            "namespace": "stakater-tenant-operator"
-          },
-          "spec": {
-            "argocd": {
-              "clusterResourceWhitelist": [
-                {
-                  "group": "tronador.stakater.com",
-                  "kind": "EnvironmentProvisioner"
-                }
-              ],
-              "namespace": "openshift-operators",
-              "namespaceResourceBlacklist": [
-                {
-                  "group": "",
-                  "kind": "ResourceQuota"
-                }
-              ]
-            },
-            "openshift": {
-              "clusterAdminGroups": [
-                "cluster-admins"
-              ],
-              "group": {
-                "labels": {
-                  "role": "customer-reader"
-                }
-              },
-              "namespaceAccessPolicy": {
-                "deny": {
-                  "privilegedNamespaces": {
-                    "groups": [
-                      "cluster-admins"
-                    ],
-                    "users": [
-                      "system:serviceaccount:openshift-argocd:argocd-application-controller",
-                      "adam@stakater.com"
-                    ]
-                  }
-                }
-              },
-              "privilegedNamespaces": [
-                "default",
-                "^openshift-*",
-                "^kube-*"
-              ],
-              "privilegedServiceAccounts": [
-                "^system:serviceaccount:openshift-*",
-                "^system:serviceaccount:kube-*"
-              ],
-              "project": {
-                "annotations": {
-                  "openshift.io/node-selector": "node-role.kubernetes.io/worker="
-                },
-                "labels": {
-                  "stakater.com/workload-monitoring": "true"
-                }
-              },
-              "sandbox": {
-                "labels": {
-                  "stakater.com/kind": "sandbox"
-                }
-              }
-            },
-            "rhsso": {
-              "enabled": true,
-              "endpoint": {
-                "secretReference": {
-                  "name": "auth-secrets",
-                  "namespace": "openshift-auth"
-                },
-                "url": "https://iam-keycloak-auth.apps.prod.abcdefghi.kubeapp.cloud/"
-              }
-            },
-            "vault": {
-              "enabled": true,
-              "endpoint": {
-                "secretReference": {
-                  "name": "vault-root-token",
-                  "namespace": "vault"
-                },
-                "url": "https://vault.apps.prod.abcdefghi.kubeapp.cloud/"
-              },
-              "sso": {
-                "accessorID": "<ACCESSOR_ID_TOKEN>",
-                "clientName": "vault"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/stakater/tenant-operator-0@sha256:aa9a994b83e11741c35fa0c5b6bce10efbfec3cb1bf4ec308fe5167eb99a1bfc",
-      "bundle_path_digest": "sha256:aa9a994b83e11741c35fa0c5b6bce10efbfec3cb1bf4ec308fe5167eb99a1bfc",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-05-26T15:07:04.069000+00:00",
-      "csv_description": "tenant operator",
-      "csv_display_name": "tenant-operator",
-      "csv_metadata_description": "",
-      "csv_name": "tenant-operator.v0.3.33",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:08:57.516000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "tenant-operator",
-      "provided_apis": [
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Tenant",
-          "plural": "tenants",
-          "version": "v1beta1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Quota",
-          "plural": "quotas",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Quota",
-          "plural": "quotas",
-          "version": "v1beta1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "TemplateInstance",
-          "plural": "templateinstances",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Template",
-          "plural": "templates",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Tenant",
-          "plural": "tenants",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "IntegrationConfig",
-          "plural": "integrationconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "TemplateGroupInstance",
-          "plural": "templategroupinstances",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:b2d9424d5ba70ba370c73b5fcf85fa5e5a1265a5f046c50969500a21dca97aaa",
-          "image": "registry.connect.redhat.com/stakater/tenant-operator@sha256:b2d9424d5ba70ba370c73b5fcf85fa5e5a1265a5f046c50969500a21dca97aaa",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.3.33",
-      "version_original": "0.3.33"
-    },
-    {
       "_id": "628fa6b4256da2c054d06a66",
       "alm_examples": [
         {
@@ -15116,9 +13544,1340 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "8.0.32",
       "version_original": "8.0.32"
+    },
+    {
+      "_id": "628faa4b89e0a10bc812018a",
+      "alm_examples": [
+        {
+          "api_version": "infoscale.veritas.com/v1",
+          "kind": "InfoScaleCluster",
+          "metadata": {
+            "name": "infoscalecluster-dev"
+          },
+          "spec": {
+            "clusterInfo": [
+              {},
+              {}
+            ],
+            "version": "8.0.30"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/veritas-technologies/infoscale-operator-bundle@sha256:b4c0c14990302bce27404b1659575fd3c507fb514fc546d2d141e48337d39072",
+      "bundle_path_digest": "sha256:b4c0c14990302bce27404b1659575fd3c507fb514fc546d2d141e48337d39072",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-26T16:26:51.856000+00:00",
+      "csv_description": "# InfoScale\u2122 SDS Operator\n\nInfoScale\u2122 SDS Operator manages the lifecycle of the InfoScale\u2122 cluster\n\n## Overview\n\n- Veritas InfoScale\u2122 delivers Infrastructure resiliency and persistent storage for your critical containerized applications for OpenShift\u00ae and Kubernetes Native deployments\n- Engineered to support stateful workloads generated for mission-critical containerized applications.\n\n---\n\n## Data Services & Benefits\n\n**1. Software-Defined Persistent Storage Volumes:** Enables customers to support multiple container application requirements leveraging existing SAN or DAS storage\n\n**2. CSI API Driver:** Facilitates static and dynamic provisioning for applications with RWX, RWO and ROX access modes\n\n**3. Life Cycle Management:** Enables automated deployment, configuration and upgrades of InfoScale Software-defined container images. Certified and Integrated with Red Hat OpenShift for a single-click deployment\n\n**4. Availability:** Provides scaling, mounting and/or movement of InfoScale persistent storage volumes on cluster nodes with minimal disruption\n\n**5. Data Integrity:** Prevents data corruption by allowing only the active cluster nodes to write to the volume. The I/O fencing feature recovers from cluster disruptions quickly by ensuring that application pods are moved to another node to continue normal operations\n\n**6. Point-in-Time Data Copies:** Create snapshots of Persistent Volumes for backup products, data analytics or forensic discovery and analysis\n\n**7. Disaster Recovery (DR) Tech Preview:** This DR feature provides the ability to test and validate disaster recovery capabilities by migrating Kubernetes cluster metadata and application components to peer cluster in case of a local or remote disaster\n\n---\n\n## Pre-requisites\n\n- [Please refer to pre-requisite section from official documentation](https://www.veritas.com/support/en_US/doc/151215298-151215302-0)\n\n\n## InfoScale Cluster custom resource\n\n```\nkind: InfoScaleCluster\nmetadata:\n  name:  < Infoscale Cluster Name >\n\nspec:\n  version: \"8.0.30\"\n\n  clusterInfo:\n  - nodeName: <Name of the first node>\n  ip:\n  - <Optional - First IP address of the first node >\n  - <Optional - Second IP address of the first node>\n  excludeDevice:\n  - <Optional - Device path of the disk on the node that you want to exclude from Infoscale disk group.>\n\n  - nodeName: <Name of the second node>\n  ip:\n  - <Optional - First IP address of the second node >\n  - <Optional - Second IP address of the second node>\n  excludeDevice:\n  - <Optional - Device path of the disk on the node that you want to exclude from Infoscale disk group.>\n\n  # You can add up to 16 nodes.\n\n  licenseServer: < Optional - License server name/IP address >\n  licensePort: < Optional - License port number >\n\n  customImageRegistry: < Optional \u2013 Registry for Infoscale Container images>\n\n```\n\n#### Note\n\nYou can specify up to 16 worker nodes in CR. Although cluster configuration is allowed even with one Network Interface Card,\nVeritas recommends a minimum of two physical links for performance and High Availability (HA). Number of links for each network link must be same on all\nnodes. Optionally, you can enter node level IP addresses. If IP addresses are not provided, IP addresses of OpenShift cluster nodes are used.\n",
+      "csv_display_name": "InfoScale\u2122 SDS Operator",
+      "csv_metadata_description": "InfoScale\u2122 SDS Operator manages the lifecycle of the InfoScale\u2122 cluster",
+      "csv_name": "infoscale-operator.v8.0.32",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:17:24.632000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "infoscale-operator",
+      "provided_apis": [
+        {
+          "group": "infoscale.veritas.com",
+          "kind": "InfoScaleCluster",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:5d2b00432d31159577cd3f423a40bc3cc79d033447032fe51905074ccf961c16",
+          "image": "registry.connect.redhat.com/veritas-technologies/infoscale-operator@sha256:5d2b00432d31159577cd3f423a40bc3cc79d033447032fe51905074ccf961c16",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:5d2b00432d31159577cd3f423a40bc3cc79d033447032fe51905074ccf961c16",
+          "image": "registry.connect.redhat.com/veritas-technologies/infoscale-operator@sha256:5d2b00432d31159577cd3f423a40bc3cc79d033447032fe51905074ccf961c16",
+          "name": "pre-manager"
+        },
+        {
+          "digest": "sha256:5d2b00432d31159577cd3f423a40bc3cc79d033447032fe51905074ccf961c16",
+          "image": "registry.connect.redhat.com/veritas-technologies/infoscale-operator@sha256:5d2b00432d31159577cd3f423a40bc3cc79d033447032fe51905074ccf961c16",
+          "name": "infoscale-operator-5d2b00432d31159577cd3f423a40bc3cc79d033447032fe51905074ccf961c16-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "8.0.32",
+      "version_original": "8.0.32"
+    },
+    {
+      "_id": "6292f9e9301a731de19f1ee5",
+      "alm_examples": [
+        {
+          "api_version": "apps.ibmz.com/v1alpha1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "mongodb-sample"
+          },
+          "spec": {
+            "affinity": {},
+            "autoscaling": {
+              "enabled": false,
+              "maxReplicas": 100,
+              "minReplicas": 1,
+              "targetCPUUtilizationPercentage": 80
+            },
+            "database": {
+              "adminpassword": "snowball123",
+              "adminuser": "adminuser",
+              "name_database": "mydb"
+            },
+            "fullnameOverride": "",
+            "global": {
+              "license": true,
+              "persistence": {
+                "claims": {
+                  "accessMode": "ReadWriteMany",
+                  "capacity": 10,
+                  "capacityUnit": "Gi",
+                  "mountPath": "/data/db/",
+                  "name": "mongo-pv-claim",
+                  "storageClassName": "managed-nfs-storage"
+                },
+                "securityContext": {
+                  "fsGroup": 0,
+                  "supplementalGroup": 0
+                }
+              }
+            },
+            "image": {
+              "pullPolicy": "Always",
+              "repository": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195"
+            },
+            "imagePullSecretRef": "registry-pull-secret",
+            "imagePullSecrets": [
+              {
+                "name": "registry-pull-secret"
+              }
+            ],
+            "ingress": {
+              "annotations": {},
+              "controller": "nginx",
+              "tls": []
+            },
+            "name": "mongodb",
+            "nameOverride": "",
+            "namespaceList": [],
+            "namespaced": true,
+            "nodeSelector": {},
+            "podSecurity": {
+              "enabled": true,
+              "securityContext": {
+                "fsGroup": 1000650000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000650000
+              }
+            },
+            "replicaCount": 1,
+            "resources": {
+              "limits": {
+                "cpu": "200m",
+                "memory": "1Gi"
+              },
+              "requests": {
+                "cpu": "200m",
+                "memory": "1Gi"
+              }
+            },
+            "service": {
+              "port": 27017,
+              "type": "ClusterIP"
+            },
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": "mongod"
+            },
+            "tolerations": []
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/tonyfieit/ibmz-mongodb-operator-bundle@sha256:436d0ba532b631d78d9148ab2f2856beebae91a6ed605afcf8c3a69fe93948d0",
+      "bundle_path_digest": "sha256:436d0ba532b631d78d9148ab2f2856beebae91a6ed605afcf8c3a69fe93948d0",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-29T04:43:21.035000+00:00",
+      "csv_description": "IBM Operator to deploy MongoDB Enterprise on OpenShift Container",
+      "csv_display_name": "ibmz-mongodb-enterprise-operator",
+      "csv_metadata_description": "Run IBMz Mongodb Enterprise Edition on OpenShift on LinuxONE.",
+      "csv_name": "ibmz-mongodb-enterprise-operator.v4.4.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:47:51.511000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "ibmz-mongodb-enterprise-operator",
+      "provided_apis": [
+        {
+          "group": "apps.ibmz.com",
+          "kind": "MongoDB",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:7b40fc146e6e7fc55cf3fe3e7637b2f6202ec124cbb2c9d875064eb2d4d4f220",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:7b40fc146e6e7fc55cf3fe3e7637b2f6202ec124cbb2c9d875064eb2d4d4f220",
+          "name": "mongodb-enterprise-operator"
+        },
+        {
+          "digest": "sha256:7d51abdae2740d73a05cb3f60bbc047cbe332f29f559b6233b8d15d41f168966",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:7d51abdae2740d73a05cb3f60bbc047cbe332f29f559b6233b8d15d41f168966",
+          "name": "mongo-enterprise-database"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "name": "ibmz-mongodb-enterprise-operator-331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01-annotation"
+        },
+        {
+          "digest": "sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195",
+          "name": "ibmz-mongodb-enterprise-database-6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=4.4.0 <4.4.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "4.4.2",
+      "version_original": "4.4.2"
+    },
+    {
+      "_id": "6292feb24ad695bac574fe6a",
+      "alm_examples": [
+        {
+          "api_version": "apps.ibmz.com/v1alpha1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "mongodb-sample"
+          },
+          "spec": {
+            "affinity": {},
+            "autoscaling": {
+              "enabled": false,
+              "maxReplicas": 100,
+              "minReplicas": 1,
+              "targetCPUUtilizationPercentage": 80
+            },
+            "database": {
+              "adminpassword": "snowball123",
+              "adminuser": "adminuser",
+              "name_database": "mydb"
+            },
+            "fullnameOverride": "",
+            "global": {
+              "license": true,
+              "persistence": {
+                "claims": {
+                  "accessMode": "ReadWriteMany",
+                  "capacity": 10,
+                  "capacityUnit": "Gi",
+                  "mountPath": "/data/db/",
+                  "name": "mongo-pv-claim",
+                  "storageClassName": "managed-nfs-storage"
+                },
+                "securityContext": {
+                  "fsGroup": 0,
+                  "supplementalGroup": 0
+                }
+              }
+            },
+            "image": {
+              "pullPolicy": "Always",
+              "repository": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195"
+            },
+            "imagePullSecretRef": "registry-pull-secret",
+            "imagePullSecrets": [
+              {
+                "name": "registry-pull-secret"
+              }
+            ],
+            "ingress": {
+              "annotations": {},
+              "controller": "nginx",
+              "tls": []
+            },
+            "name": "mongodb",
+            "nameOverride": "",
+            "namespaceList": [],
+            "namespaced": true,
+            "nodeSelector": {},
+            "podSecurity": {
+              "enabled": true,
+              "securityContext": {
+                "fsGroup": 1000650000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000650000
+              }
+            },
+            "replicaCount": 1,
+            "resources": {
+              "limits": {
+                "cpu": "200m",
+                "memory": "1Gi"
+              },
+              "requests": {
+                "cpu": "200m",
+                "memory": "1Gi"
+              }
+            },
+            "service": {
+              "port": 27017,
+              "type": "ClusterIP"
+            },
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": "mongod"
+            },
+            "tolerations": []
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/tonyfieit/ibmz-mongodb-operator-bundle@sha256:436d0ba532b631d78d9148ab2f2856beebae91a6ed605afcf8c3a69fe93948d0",
+      "bundle_path_digest": "sha256:436d0ba532b631d78d9148ab2f2856beebae91a6ed605afcf8c3a69fe93948d0",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-29T05:03:46.060000+00:00",
+      "csv_description": "IBM Operator to deploy MongoDB Enterprise on OpenShift Container",
+      "csv_display_name": "ibmz-mongodb-enterprise-operator",
+      "csv_metadata_description": "Run IBMz Mongodb Enterprise Edition on OpenShift on LinuxONE.",
+      "csv_name": "ibmz-mongodb-enterprise-operator.v4.4.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:03:16.229000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "ibmz-mongodb-enterprise-operator",
+      "provided_apis": [
+        {
+          "group": "apps.ibmz.com",
+          "kind": "MongoDB",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:7b40fc146e6e7fc55cf3fe3e7637b2f6202ec124cbb2c9d875064eb2d4d4f220",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:7b40fc146e6e7fc55cf3fe3e7637b2f6202ec124cbb2c9d875064eb2d4d4f220",
+          "name": "mongodb-enterprise-operator"
+        },
+        {
+          "digest": "sha256:7d51abdae2740d73a05cb3f60bbc047cbe332f29f559b6233b8d15d41f168966",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:7d51abdae2740d73a05cb3f60bbc047cbe332f29f559b6233b8d15d41f168966",
+          "name": "mongo-enterprise-database"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "name": "ibmz-mongodb-enterprise-operator-331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01-annotation"
+        },
+        {
+          "digest": "sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195",
+          "name": "ibmz-mongodb-enterprise-database-6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=4.4.0 <4.4.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "4.4.2",
+      "version_original": "4.4.2"
+    },
+    {
+      "_id": "6292fec04ad695bac574fe6c",
+      "alm_examples": [
+        {
+          "api_version": "apps.ibmz.com/v1alpha1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "mongodb-sample"
+          },
+          "spec": {
+            "affinity": {},
+            "autoscaling": {
+              "enabled": false,
+              "maxReplicas": 100,
+              "minReplicas": 1,
+              "targetCPUUtilizationPercentage": 80
+            },
+            "database": {
+              "adminpassword": "snowball123",
+              "adminuser": "adminuser",
+              "name_database": "mydb"
+            },
+            "fullnameOverride": "",
+            "global": {
+              "license": true,
+              "persistence": {
+                "claims": {
+                  "accessMode": "ReadWriteMany",
+                  "capacity": 10,
+                  "capacityUnit": "Gi",
+                  "mountPath": "/data/db/",
+                  "name": "mongo-pv-claim",
+                  "storageClassName": "managed-nfs-storage"
+                },
+                "securityContext": {
+                  "fsGroup": 0,
+                  "supplementalGroup": 0
+                }
+              }
+            },
+            "image": {
+              "pullPolicy": "Always",
+              "repository": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195"
+            },
+            "imagePullSecretRef": "registry-pull-secret",
+            "imagePullSecrets": [
+              {
+                "name": "registry-pull-secret"
+              }
+            ],
+            "ingress": {
+              "annotations": {},
+              "controller": "nginx",
+              "tls": []
+            },
+            "name": "mongodb",
+            "nameOverride": "",
+            "namespaceList": [],
+            "namespaced": true,
+            "nodeSelector": {},
+            "podSecurity": {
+              "enabled": true,
+              "securityContext": {
+                "fsGroup": 1000650000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000650000
+              }
+            },
+            "replicaCount": 1,
+            "resources": {
+              "limits": {
+                "cpu": "200m",
+                "memory": "1Gi"
+              },
+              "requests": {
+                "cpu": "200m",
+                "memory": "1Gi"
+              }
+            },
+            "service": {
+              "port": 27017,
+              "type": "ClusterIP"
+            },
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": "mongod"
+            },
+            "tolerations": []
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/tonyfieit/ibmz-mongodb-operator-bundle@sha256:436d0ba532b631d78d9148ab2f2856beebae91a6ed605afcf8c3a69fe93948d0",
+      "bundle_path_digest": "sha256:436d0ba532b631d78d9148ab2f2856beebae91a6ed605afcf8c3a69fe93948d0",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-29T05:04:00.750000+00:00",
+      "csv_description": "IBM Operator to deploy MongoDB Enterprise on OpenShift Container",
+      "csv_display_name": "ibmz-mongodb-enterprise-operator",
+      "csv_metadata_description": "Run IBMz Mongodb Enterprise Edition on OpenShift on LinuxONE.",
+      "csv_name": "ibmz-mongodb-enterprise-operator.v4.4.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:17:59.031000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "ibmz-mongodb-enterprise-operator",
+      "provided_apis": [
+        {
+          "group": "apps.ibmz.com",
+          "kind": "MongoDB",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:7b40fc146e6e7fc55cf3fe3e7637b2f6202ec124cbb2c9d875064eb2d4d4f220",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:7b40fc146e6e7fc55cf3fe3e7637b2f6202ec124cbb2c9d875064eb2d4d4f220",
+          "name": "mongodb-enterprise-operator"
+        },
+        {
+          "digest": "sha256:7d51abdae2740d73a05cb3f60bbc047cbe332f29f559b6233b8d15d41f168966",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:7d51abdae2740d73a05cb3f60bbc047cbe332f29f559b6233b8d15d41f168966",
+          "name": "mongo-enterprise-database"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "name": "ibmz-mongodb-enterprise-operator-331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01-annotation"
+        },
+        {
+          "digest": "sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195",
+          "name": "ibmz-mongodb-enterprise-database-6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=4.4.0 <4.4.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "4.4.2",
+      "version_original": "4.4.2"
+    },
+    {
+      "_id": "6292ff28bf1369b7ed5b07fe",
+      "alm_examples": [
+        {
+          "api_version": "apps.ibmz.com/v1alpha1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "mongodb-sample"
+          },
+          "spec": {
+            "affinity": {},
+            "autoscaling": {
+              "enabled": false,
+              "maxReplicas": 100,
+              "minReplicas": 1,
+              "targetCPUUtilizationPercentage": 80
+            },
+            "database": {
+              "adminpassword": "snowball123",
+              "adminuser": "adminuser",
+              "name_database": "mydb"
+            },
+            "fullnameOverride": "",
+            "global": {
+              "license": true,
+              "persistence": {
+                "claims": {
+                  "accessMode": "ReadWriteMany",
+                  "capacity": 10,
+                  "capacityUnit": "Gi",
+                  "mountPath": "/data/db/",
+                  "name": "mongo-pv-claim",
+                  "storageClassName": "managed-nfs-storage"
+                },
+                "securityContext": {
+                  "fsGroup": 0,
+                  "supplementalGroup": 0
+                }
+              }
+            },
+            "image": {
+              "pullPolicy": "Always",
+              "repository": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195"
+            },
+            "imagePullSecretRef": "registry-pull-secret",
+            "imagePullSecrets": [
+              {
+                "name": "registry-pull-secret"
+              }
+            ],
+            "ingress": {
+              "annotations": {},
+              "controller": "nginx",
+              "tls": []
+            },
+            "name": "mongodb",
+            "nameOverride": "",
+            "namespaceList": [],
+            "namespaced": true,
+            "nodeSelector": {},
+            "podSecurity": {
+              "enabled": true,
+              "securityContext": {
+                "fsGroup": 1000650000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000650000
+              }
+            },
+            "replicaCount": 1,
+            "resources": {
+              "limits": {
+                "cpu": "200m",
+                "memory": "1Gi"
+              },
+              "requests": {
+                "cpu": "200m",
+                "memory": "1Gi"
+              }
+            },
+            "service": {
+              "port": 27017,
+              "type": "ClusterIP"
+            },
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": "mongod"
+            },
+            "tolerations": []
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/tonyfieit/ibmz-mongodb-operator-bundle@sha256:436d0ba532b631d78d9148ab2f2856beebae91a6ed605afcf8c3a69fe93948d0",
+      "bundle_path_digest": "sha256:436d0ba532b631d78d9148ab2f2856beebae91a6ed605afcf8c3a69fe93948d0",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-29T05:05:44.919000+00:00",
+      "csv_description": "IBM Operator to deploy MongoDB Enterprise on OpenShift Container",
+      "csv_display_name": "ibmz-mongodb-enterprise-operator",
+      "csv_metadata_description": "Run IBMz Mongodb Enterprise Edition on OpenShift on LinuxONE.",
+      "csv_name": "ibmz-mongodb-enterprise-operator.v4.4.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:51:58.776000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "ibmz-mongodb-enterprise-operator",
+      "provided_apis": [
+        {
+          "group": "apps.ibmz.com",
+          "kind": "MongoDB",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:7b40fc146e6e7fc55cf3fe3e7637b2f6202ec124cbb2c9d875064eb2d4d4f220",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:7b40fc146e6e7fc55cf3fe3e7637b2f6202ec124cbb2c9d875064eb2d4d4f220",
+          "name": "mongodb-enterprise-operator"
+        },
+        {
+          "digest": "sha256:7d51abdae2740d73a05cb3f60bbc047cbe332f29f559b6233b8d15d41f168966",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:7d51abdae2740d73a05cb3f60bbc047cbe332f29f559b6233b8d15d41f168966",
+          "name": "mongo-enterprise-database"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "name": "ibmz-mongodb-enterprise-operator-331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01-annotation"
+        },
+        {
+          "digest": "sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195",
+          "name": "ibmz-mongodb-enterprise-database-6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=4.4.0 <4.4.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "4.4.2",
+      "version_original": "4.4.2"
+    },
+    {
+      "_id": "6292ff9b301a731de19f1f24",
+      "alm_examples": [
+        {
+          "api_version": "apps.ibmz.com/v1alpha1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "mongodb-sample"
+          },
+          "spec": {
+            "affinity": {},
+            "autoscaling": {
+              "enabled": false,
+              "maxReplicas": 100,
+              "minReplicas": 1,
+              "targetCPUUtilizationPercentage": 80
+            },
+            "database": {
+              "adminpassword": "snowball123",
+              "adminuser": "adminuser",
+              "name_database": "mydb"
+            },
+            "fullnameOverride": "",
+            "global": {
+              "license": true,
+              "persistence": {
+                "claims": {
+                  "accessMode": "ReadWriteMany",
+                  "capacity": 10,
+                  "capacityUnit": "Gi",
+                  "mountPath": "/data/db/",
+                  "name": "mongo-pv-claim",
+                  "storageClassName": "managed-nfs-storage"
+                },
+                "securityContext": {
+                  "fsGroup": 0,
+                  "supplementalGroup": 0
+                }
+              }
+            },
+            "image": {
+              "pullPolicy": "Always",
+              "repository": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195"
+            },
+            "imagePullSecretRef": "registry-pull-secret",
+            "imagePullSecrets": [
+              {
+                "name": "registry-pull-secret"
+              }
+            ],
+            "ingress": {
+              "annotations": {},
+              "controller": "nginx",
+              "tls": []
+            },
+            "name": "mongodb",
+            "nameOverride": "",
+            "namespaceList": [],
+            "namespaced": true,
+            "nodeSelector": {},
+            "podSecurity": {
+              "enabled": true,
+              "securityContext": {
+                "fsGroup": 1000650000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000650000
+              }
+            },
+            "replicaCount": 1,
+            "resources": {
+              "limits": {
+                "cpu": "200m",
+                "memory": "1Gi"
+              },
+              "requests": {
+                "cpu": "200m",
+                "memory": "1Gi"
+              }
+            },
+            "service": {
+              "port": 27017,
+              "type": "ClusterIP"
+            },
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": "mongod"
+            },
+            "tolerations": []
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/tonyfieit/ibmz-mongodb-operator-bundle@sha256:436d0ba532b631d78d9148ab2f2856beebae91a6ed605afcf8c3a69fe93948d0",
+      "bundle_path_digest": "sha256:436d0ba532b631d78d9148ab2f2856beebae91a6ed605afcf8c3a69fe93948d0",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-29T05:07:39.045000+00:00",
+      "csv_description": "IBM Operator to deploy MongoDB Enterprise on OpenShift Container",
+      "csv_display_name": "ibmz-mongodb-enterprise-operator",
+      "csv_metadata_description": "Run IBMz Mongodb Enterprise Edition on OpenShift on LinuxONE.",
+      "csv_name": "ibmz-mongodb-enterprise-operator.v4.4.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:01:50.142000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "ibmz-mongodb-enterprise-operator",
+      "provided_apis": [
+        {
+          "group": "apps.ibmz.com",
+          "kind": "MongoDB",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:7b40fc146e6e7fc55cf3fe3e7637b2f6202ec124cbb2c9d875064eb2d4d4f220",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:7b40fc146e6e7fc55cf3fe3e7637b2f6202ec124cbb2c9d875064eb2d4d4f220",
+          "name": "mongodb-enterprise-operator"
+        },
+        {
+          "digest": "sha256:7d51abdae2740d73a05cb3f60bbc047cbe332f29f559b6233b8d15d41f168966",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:7d51abdae2740d73a05cb3f60bbc047cbe332f29f559b6233b8d15d41f168966",
+          "name": "mongo-enterprise-database"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "name": "ibmz-mongodb-enterprise-operator-331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01-annotation"
+        },
+        {
+          "digest": "sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-operator@sha256:331564d2061b566baf0d4d77008b08e7f7dfdeea6069f12a6df082988e5c3c01",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195",
+          "image": "quay.io/ibm/ibmz-mongodb-enterprise-database@sha256:6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195",
+          "name": "ibmz-mongodb-enterprise-database-6ddfec49c1682283b031168fa9a2e09c5746bb1288b6fc4b6f72feb49db35195-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=4.4.0 <4.4.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "4.4.2",
+      "version_original": "4.4.2"
+    },
+    {
+      "_id": "629660ec0de577781eb829d6",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta2",
+          "kind": "Runner",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": {
+            "gitlabUrl": "https://gitlab.com",
+            "imagePullPolicy": "Always",
+            "tags": "openshift, test",
+            "token": "gitlab-dev-runner-secret"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le"
+      ],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-runner-operator-bundle@sha256:0ceab16ea7872acc13ebcd287233cff0ed9f88d82b248710d4cc64c563cc6271",
+      "bundle_path_digest": "sha256:0ceab16ea7872acc13ebcd287233cff0ed9f88d82b248710d4cc64c563cc6271",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-31T18:39:40.991000+00:00",
+      "csv_description": "GitLab Runner is the lightweight, highly-scalable agent that runs your build jobs and sends the results back to a GitLab instance. GitLab Runner works in conjunction with GitLab CI/CD, the open-source continuous integration service included with GitLab.\n\nThe GitLab Runner operator manages the lifecycle of GitLab Runner in Kubernetes or Openshift clusters. The operator aims to automate the tasks needed to run your CI/CD jobs in your container orchestration platform.\n\n## Prerequisites\n\n  Install cert-manager:\n\n  ```shell\n  kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.7.1/cert-manager.yaml\n  ```\n\n## GitLab Runner version\n\nThis version of **GitLab Runner Operator** ships with **GitLab Runner v15.0.0**.\n\nTo use a different version of **GitLab Runner** change the [`runnerImage` and `helperImage` properties](https://docs.gitlab.com/runner/configuration/configuring_runner_operator.html#operator-properties).\n\n## Usage\n\n To link a GitLab Runner instance to a self-hosted GitLab instance or the hosted [GitLab](https://gitlab.com), you first need to:\n\n 1. Create a secret containing the `runner-registration-token` from your GitLab project.\n\n   ```\n  cat > gitlab-runner-secret.yml << EOF\n  apiVersion: v1\n  kind: Secret\n  metadata:\n    name: gitlab-runner-secret\n  type: Opaque\n  stringData:\n    runner-registration-token: REPLACE_ME # your project runner secret\n  EOF\n  ```\n\n  ```\n  oc apply -f gitlab-runner-secret.yml\n  ```\n\n 2. Create the Custom Resource Definition (CRD) file and include the following information. The tags value must be openshift for the job to run.\n\n   ```\n   cat > gitlab-runner.yml << EOF\n   apiVersion: apps.gitlab.com/v1beta2\n   kind: Runner\n   metadata:\n     name: gitlab-runner\n   spec:\n     gitlabUrl: https://gitlab.example.com\n     buildImage: alpine\n     token: gitlab-runner-secret\n     tags: openshift\n   EOF\n   ```\n\n  ```\n  oc apply -f gitlab-runner.yml\n  ```\n\n## Full documentation\n\nVisit [Install GitLab Runner Operator](https://docs.gitlab.com/runner/install/operator.html)\n",
+      "csv_display_name": "GitLab Runner",
+      "csv_metadata_description": "GitLab Runner operator manages lifecycle of GitLab Runner instances",
+      "csv_name": "gitlab-runner-operator.v1.9.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:47:08.842000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "gitlab-runner-operator",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "Runner",
+          "version": "v1beta2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:101d0e79200344df095eb055dcda5401e2315f5d10aa3b73d80199f8baca5f2b",
+          "image": "registry.gitlab.com/gitlab-org/ci-cd/gitlab-runner-ubi-images/gitlab-runner-ocp@sha256:101d0e79200344df095eb055dcda5401e2315f5d10aa3b73d80199f8baca5f2b",
+          "name": "gitlab-runner"
+        },
+        {
+          "digest": "sha256:c8fd9317cdd464bdc948b3f7674821d2a55165e41fba31b80ee2736847e9aa09",
+          "image": "registry.gitlab.com/gitlab-org/ci-cd/gitlab-runner-ubi-images/gitlab-runner-helper-ocp@sha256:c8fd9317cdd464bdc948b3f7674821d2a55165e41fba31b80ee2736847e9aa09",
+          "name": "gitlab-runner-helper"
+        },
+        {
+          "digest": "sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "image": "registry.gitlab.com/gitlab-org/gl-openshift/gitlab-runner-operator/gitlab-runner-operator@sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "name": "gitlab-runner-operator"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "image": "registry.gitlab.com/gitlab-org/gl-openshift/gitlab-runner-operator/gitlab-runner-operator@sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "name": "gl-openshift/gitlab-runner-operator/gitlab-runner-operator-ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b-annotation"
+        },
+        {
+          "digest": "sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "image": "registry.gitlab.com/gitlab-org/gl-openshift/gitlab-runner-operator/gitlab-runner-operator@sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.9.0",
+      "version_original": "1.9.0"
+    },
+    {
+      "_id": "629661594b05ff1d1a1d32c7",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta2",
+          "kind": "Runner",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": {
+            "gitlabUrl": "https://gitlab.com",
+            "imagePullPolicy": "Always",
+            "tags": "openshift, test",
+            "token": "gitlab-dev-runner-secret"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le"
+      ],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-runner-operator-bundle@sha256:0ceab16ea7872acc13ebcd287233cff0ed9f88d82b248710d4cc64c563cc6271",
+      "bundle_path_digest": "sha256:0ceab16ea7872acc13ebcd287233cff0ed9f88d82b248710d4cc64c563cc6271",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-31T18:41:29.423000+00:00",
+      "csv_description": "GitLab Runner is the lightweight, highly-scalable agent that runs your build jobs and sends the results back to a GitLab instance. GitLab Runner works in conjunction with GitLab CI/CD, the open-source continuous integration service included with GitLab.\n\nThe GitLab Runner operator manages the lifecycle of GitLab Runner in Kubernetes or Openshift clusters. The operator aims to automate the tasks needed to run your CI/CD jobs in your container orchestration platform.\n\n## Prerequisites\n\n  Install cert-manager:\n\n  ```shell\n  kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.7.1/cert-manager.yaml\n  ```\n\n## GitLab Runner version\n\nThis version of **GitLab Runner Operator** ships with **GitLab Runner v15.0.0**.\n\nTo use a different version of **GitLab Runner** change the [`runnerImage` and `helperImage` properties](https://docs.gitlab.com/runner/configuration/configuring_runner_operator.html#operator-properties).\n\n## Usage\n\n To link a GitLab Runner instance to a self-hosted GitLab instance or the hosted [GitLab](https://gitlab.com), you first need to:\n\n 1. Create a secret containing the `runner-registration-token` from your GitLab project.\n\n   ```\n  cat > gitlab-runner-secret.yml << EOF\n  apiVersion: v1\n  kind: Secret\n  metadata:\n    name: gitlab-runner-secret\n  type: Opaque\n  stringData:\n    runner-registration-token: REPLACE_ME # your project runner secret\n  EOF\n  ```\n\n  ```\n  oc apply -f gitlab-runner-secret.yml\n  ```\n\n 2. Create the Custom Resource Definition (CRD) file and include the following information. The tags value must be openshift for the job to run.\n\n   ```\n   cat > gitlab-runner.yml << EOF\n   apiVersion: apps.gitlab.com/v1beta2\n   kind: Runner\n   metadata:\n     name: gitlab-runner\n   spec:\n     gitlabUrl: https://gitlab.example.com\n     buildImage: alpine\n     token: gitlab-runner-secret\n     tags: openshift\n   EOF\n   ```\n\n  ```\n  oc apply -f gitlab-runner.yml\n  ```\n\n## Full documentation\n\nVisit [Install GitLab Runner Operator](https://docs.gitlab.com/runner/install/operator.html)\n",
+      "csv_display_name": "GitLab Runner",
+      "csv_metadata_description": "GitLab Runner operator manages lifecycle of GitLab Runner instances",
+      "csv_name": "gitlab-runner-operator.v1.9.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:50:16.764000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "gitlab-runner-operator",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "Runner",
+          "version": "v1beta2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:101d0e79200344df095eb055dcda5401e2315f5d10aa3b73d80199f8baca5f2b",
+          "image": "registry.gitlab.com/gitlab-org/ci-cd/gitlab-runner-ubi-images/gitlab-runner-ocp@sha256:101d0e79200344df095eb055dcda5401e2315f5d10aa3b73d80199f8baca5f2b",
+          "name": "gitlab-runner"
+        },
+        {
+          "digest": "sha256:c8fd9317cdd464bdc948b3f7674821d2a55165e41fba31b80ee2736847e9aa09",
+          "image": "registry.gitlab.com/gitlab-org/ci-cd/gitlab-runner-ubi-images/gitlab-runner-helper-ocp@sha256:c8fd9317cdd464bdc948b3f7674821d2a55165e41fba31b80ee2736847e9aa09",
+          "name": "gitlab-runner-helper"
+        },
+        {
+          "digest": "sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "image": "registry.gitlab.com/gitlab-org/gl-openshift/gitlab-runner-operator/gitlab-runner-operator@sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "name": "gitlab-runner-operator"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "image": "registry.gitlab.com/gitlab-org/gl-openshift/gitlab-runner-operator/gitlab-runner-operator@sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "name": "gl-openshift/gitlab-runner-operator/gitlab-runner-operator-ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b-annotation"
+        },
+        {
+          "digest": "sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "image": "registry.gitlab.com/gitlab-org/gl-openshift/gitlab-runner-operator/gitlab-runner-operator@sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.9.0",
+      "version_original": "1.9.0"
+    },
+    {
+      "_id": "6296638d0de577781eb82b1e",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta2",
+          "kind": "Runner",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": {
+            "gitlabUrl": "https://gitlab.com",
+            "imagePullPolicy": "Always",
+            "tags": "openshift, test",
+            "token": "gitlab-dev-runner-secret"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le"
+      ],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-runner-operator-bundle@sha256:0ceab16ea7872acc13ebcd287233cff0ed9f88d82b248710d4cc64c563cc6271",
+      "bundle_path_digest": "sha256:0ceab16ea7872acc13ebcd287233cff0ed9f88d82b248710d4cc64c563cc6271",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-31T18:50:53.491000+00:00",
+      "csv_description": "GitLab Runner is the lightweight, highly-scalable agent that runs your build jobs and sends the results back to a GitLab instance. GitLab Runner works in conjunction with GitLab CI/CD, the open-source continuous integration service included with GitLab.\n\nThe GitLab Runner operator manages the lifecycle of GitLab Runner in Kubernetes or Openshift clusters. The operator aims to automate the tasks needed to run your CI/CD jobs in your container orchestration platform.\n\n## Prerequisites\n\n  Install cert-manager:\n\n  ```shell\n  kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.7.1/cert-manager.yaml\n  ```\n\n## GitLab Runner version\n\nThis version of **GitLab Runner Operator** ships with **GitLab Runner v15.0.0**.\n\nTo use a different version of **GitLab Runner** change the [`runnerImage` and `helperImage` properties](https://docs.gitlab.com/runner/configuration/configuring_runner_operator.html#operator-properties).\n\n## Usage\n\n To link a GitLab Runner instance to a self-hosted GitLab instance or the hosted [GitLab](https://gitlab.com), you first need to:\n\n 1. Create a secret containing the `runner-registration-token` from your GitLab project.\n\n   ```\n  cat > gitlab-runner-secret.yml << EOF\n  apiVersion: v1\n  kind: Secret\n  metadata:\n    name: gitlab-runner-secret\n  type: Opaque\n  stringData:\n    runner-registration-token: REPLACE_ME # your project runner secret\n  EOF\n  ```\n\n  ```\n  oc apply -f gitlab-runner-secret.yml\n  ```\n\n 2. Create the Custom Resource Definition (CRD) file and include the following information. The tags value must be openshift for the job to run.\n\n   ```\n   cat > gitlab-runner.yml << EOF\n   apiVersion: apps.gitlab.com/v1beta2\n   kind: Runner\n   metadata:\n     name: gitlab-runner\n   spec:\n     gitlabUrl: https://gitlab.example.com\n     buildImage: alpine\n     token: gitlab-runner-secret\n     tags: openshift\n   EOF\n   ```\n\n  ```\n  oc apply -f gitlab-runner.yml\n  ```\n\n## Full documentation\n\nVisit [Install GitLab Runner Operator](https://docs.gitlab.com/runner/install/operator.html)\n",
+      "csv_display_name": "GitLab Runner",
+      "csv_metadata_description": "GitLab Runner operator manages lifecycle of GitLab Runner instances",
+      "csv_name": "gitlab-runner-operator.v1.9.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:24:24.072000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "gitlab-runner-operator",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "Runner",
+          "version": "v1beta2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:101d0e79200344df095eb055dcda5401e2315f5d10aa3b73d80199f8baca5f2b",
+          "image": "registry.gitlab.com/gitlab-org/ci-cd/gitlab-runner-ubi-images/gitlab-runner-ocp@sha256:101d0e79200344df095eb055dcda5401e2315f5d10aa3b73d80199f8baca5f2b",
+          "name": "gitlab-runner"
+        },
+        {
+          "digest": "sha256:c8fd9317cdd464bdc948b3f7674821d2a55165e41fba31b80ee2736847e9aa09",
+          "image": "registry.gitlab.com/gitlab-org/ci-cd/gitlab-runner-ubi-images/gitlab-runner-helper-ocp@sha256:c8fd9317cdd464bdc948b3f7674821d2a55165e41fba31b80ee2736847e9aa09",
+          "name": "gitlab-runner-helper"
+        },
+        {
+          "digest": "sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "image": "registry.gitlab.com/gitlab-org/gl-openshift/gitlab-runner-operator/gitlab-runner-operator@sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "name": "gitlab-runner-operator"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "image": "registry.gitlab.com/gitlab-org/gl-openshift/gitlab-runner-operator/gitlab-runner-operator@sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "name": "gl-openshift/gitlab-runner-operator/gitlab-runner-operator-ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b-annotation"
+        },
+        {
+          "digest": "sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "image": "registry.gitlab.com/gitlab-org/gl-openshift/gitlab-runner-operator/gitlab-runner-operator@sha256:ead726da6f75d80ff7b389dac853096d8680b9910cd5079d3aaf77a31846bf7b",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.9.0",
+      "version_original": "1.9.0"
     }
   ],
   "page": 33,
   "page_size": 100,
-  "total": 3982
+  "total": 4010
 }

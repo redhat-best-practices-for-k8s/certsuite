@@ -1,638 +1,6 @@
 {
   "data": [
     {
-      "_id": "62345fb0314381d2b0756b34",
-      "alm_examples": [
-        {
-          "api_version": "anzounstructured.clusters.cambridgesemantics.com/v1",
-          "kind": "AnzoUnstructured",
-          "metadata": {
-            "name": "au01"
-          },
-          "spec": {
-            "auWorker": {
-              "nodeConfig": {
-                "spec": {
-                  "replicas": 1,
-                  "selector": {
-                    "matchLabels": {
-                      "app": "anzounstructured"
-                    }
-                  },
-                  "serviceName": "au-au01-w",
-                  "template": {
-                    "metadata": {
-                      "labels": {
-                        "app": "anzounstructured"
-                      }
-                    },
-                    "spec": {
-                      "containers": [
-                        {
-                          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
-                          "name": "w",
-                          "resources": {
-                            "limits": {
-                              "cpu": "2",
-                              "memory": "4Gi"
-                            },
-                            "requests": {
-                              "cpu": "2",
-                              "memory": "4Gi"
-                            }
-                          }
-                        }
-                      ],
-                      "serviceAccountName": "unstructured-operator"
-                    }
-                  }
-                }
-              }
-            },
-            "msLeader": {
-              "nodeConfig": {
-                "spec": {
-                  "replicas": 1,
-                  "selector": {
-                    "matchLabels": {
-                      "app": "anzounstructured"
-                    }
-                  },
-                  "serviceName": "au-au01-ms",
-                  "template": {
-                    "metadata": {
-                      "labels": {
-                        "app": "anzounstructured"
-                      }
-                    },
-                    "spec": {
-                      "containers": [
-                        {
-                          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader@sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
-                          "name": "ms",
-                          "resources": {
-                            "limits": {
-                              "cpu": "2",
-                              "memory": "4Gi"
-                            },
-                            "requests": {
-                              "cpu": "2",
-                              "memory": "4Gi"
-                            }
-                          }
-                        }
-                      ],
-                      "serviceAccountName": "unstructured-operator"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-operator-bundle@sha256:800c686058a8b80d2c082741019db9d35535b2ba2b59007cbde0c2dffa143e82",
-      "bundle_path_digest": "sha256:800c686058a8b80d2c082741019db9d35535b2ba2b59007cbde0c2dffa143e82",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:32:16.545000+00:00",
-      "csv_description": "The Anzo Unstructured Operator provides the way to install and configure an anzo unstructured setup on Red Hat K8S environment.\nCurrently, this is possible only through existing Anzo installation.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzo-unstructured/blob/v2.0.0/README.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzo/userdoc/cloud-deployments.htm )\n\n### Support\n\nWe offer Support to our customers through [ Cambridge Semantics Customer Center ]( https://customercenter.cambridgesemantics.com/ ).",
-      "csv_display_name": "Anzo Unstructured Operator",
-      "csv_metadata_description": "Kubernetes Operator for Anzo Unstructured",
-      "csv_name": "anzounstructured-operator.v2.0.101",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:40:21.913000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "anzounstructured-operator",
-      "provided_apis": [
-        {
-          "group": "anzounstructured.clusters.cambridgesemantics.com",
-          "kind": "AnzoUnstructured",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04",
-          "image": "registry.connect.redhat.com/cambridgesemantics/unstructured-operator@sha256:a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04",
-          "name": "unstructured-operator-a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04-annotation"
-        },
-        {
-          "digest": "sha256:a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04",
-          "image": "registry.connect.redhat.com/cambridgesemantics/unstructured-operator@sha256:a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader@sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
-          "name": "anzo_microservices_leader"
-        },
-        {
-          "digest": "sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
-          "name": "anzo_unstructured_worker"
-        },
-        {
-          "digest": "sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader@sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
-          "name": "anzo-microservices-leader-0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286-annotation"
-        },
-        {
-          "digest": "sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
-          "name": "anzo-unstructured-worker-4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2-annotation"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2.0.0",
-      "version_original": "2.0.0"
-    },
-    {
-      "_id": "62345fb2314381d2b0756b35",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/iomesh/iomesh@sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
-      "bundle_path_digest": "sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:32:18.838000+00:00",
-      "csv_description": "IOMesh (https://www.iomesh.com/) is a cloud-native storage product specifically designed and developed for Kubernetes. It takes ZBS as its core, a \u201cproduction-ready\u201d distributed storage system developed independently by SmartX, to provide production-level high performance and reliable persistent storage for business-critical applications such as MySQL, Cassandra, MongoDB, etc., contributing to the containerized transformation of stateful applications.      \n## Pre-Requisites\n* According to https://docs.iomesh.com/deploy/prerequisites, make sure that your openshift cluster meets the \"Installation Requirements\" and set up the worker nodes correctly according to the \"Setup Worker Node\" chapter.\n* Run IOMesh Operator pre-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install the dependencies of IOMesh Operator and specific IOMesh settings for the openshift cluster:\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-pre-install-openshift.sh | sh -\n```\n## Install IOMesh Operator and IOMesh Cluster\n* Click install button on the current web page to install IOMesh Operator\n* On the **Installed Operators** -> **IOMesh Operator** -> **Create instance** -> **YAML view**, fill in an IOMesh Custom Resources according https://iomesh.run/iomesh.yaml, change the `spec.*.dataCIDR` to your own data network CIDR:\n## Post Install\n* Run IOMesh Operator post-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install IOMesh CSI Driver\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-post-install-openshift.sh | sh -\n```\n## Getting Started\n* Try to quickstart setup and use IOMesh: https://docs.iomesh.com/deploy/setup-iomesh\n",
-      "csv_display_name": "IOMesh Operator",
-      "csv_metadata_description": "",
-      "csv_name": "iomesh-operator.0.10.1-rc4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-16T16:38:20.736000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "iomesh-operator",
-      "provided_apis": [
-        {
-          "group": "iomesh.com",
-          "kind": "IOMeshCluster",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "name": "operator-52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3-annotation"
-        },
-        {
-          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "name": "operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.10.1-rc4",
-      "version_original": "0.10.1-rc4"
-    },
-    {
-      "_id": "62345fb5314381d2b0756b36",
-      "alm_examples": [
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyApplication",
-          "metadata": {
-            "name": "openliberty-app-sample"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyDump",
-          "metadata": {
-            "name": "openliberty-dump-sample"
-          },
-          "spec": {
-            "include": [
-              "thread",
-              "heap"
-            ],
-            "podName": "Specify_Pod_Name_Here"
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyTrace",
-          "metadata": {
-            "name": "openliberty-trace-sample"
-          },
-          "spec": {
-            "maxFileSize": 20,
-            "maxFiles": 5,
-            "podName": "Specify_Pod_Name_Here",
-            "traceSpecification": "*=info:com.ibm.ws.webcontainer*=all"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/open-liberty-operator-bundle@sha256:88ff3cd847c4b606466b1e782cec0dfbdb62fb3dd0e4e1bc8b9c2d1016c74132",
-      "bundle_path_digest": "sha256:88ff3cd847c4b606466b1e782cec0dfbdb62fb3dd0e4e1bc8b9c2d1016c74132",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta2",
-      "creation_date": "2022-03-18T10:32:21.767000+00:00",
-      "csv_description": "This advanced Operator can be used to deploy and manage Open Liberty applications with consistent, production-grade QoS. This operator is based on the [Runtime Component Operator](https://github.com/application-stacks/runtime-component-operator) and provides all of its capabilities in addition to Open Liberty specific features such as gathering traces and dumps (Day-2 operations) and easily configuring and managing the single sign-on information for your Open Liberty applications.\n\nOpen Liberty Operator enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code! Here are some key features:\n\n#### Application Lifecyle\nYou can deploy your Open Liberty application container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled. Expiring Route certificates are re-issued.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and We will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where the user specifies a built-in PersistentVolumeClaim, allowing them to configure many details of the persistent volume, such as its storage class and access mode.\nYou can also easily configure and use a single storage for serviceability related Day-2 operations, such as gatherig server traces and dumps.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Single Sign-On (SSO)\nOpen Liberty provides capabilities to delegate authentication to external providers. Your application users can log in using their existing social media credentials from providers such as Google, Facebook, LinkedIn, Twitter, GitHub, and any OpenID Connect (OIDC) or OAuth 2.0 clients. Open Liberty Operator allows to easily configure and manage the single sign-on information for your applications.\n\n#### Exposing metrics to Prometheus\nThe Open Liberty Operator exposes the runtime container's metrics via the [Prometheus Operator](https://operatorhub.io/operator/prometheus).\nUsers can pick between a basic mode, where they simply specify the label that Prometheus is watching to scrape the metrics from the container, or they can specify the full `ServiceMonitor` spec embedded into the OpenLibertyApplication's `spec.monitoring` key controlling things like the poll internal and security credentials.\n\n#### Easily mount logs and transaction directories\nIf you need to mount the logs and transaction data from your application to an external volume such as NFS (or any storage supported in your cluster), simply add the following (customizing the folder location and size) to your OpenLibertyApplication CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/OpenLiberty/open-liberty-operator/tree/main/doc/) for more information.\n",
-      "csv_display_name": "Open Liberty",
-      "csv_metadata_description": "Deploy and manage applications running on Liberty",
-      "csv_name": "open-liberty-operator.v0.8.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:44:15.991000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "open-liberty-certified",
-      "provided_apis": [
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyApplication",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyDump",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyTrace",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1",
-          "name": "open-liberty-operator-controller-43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1-annotation"
-        },
-        {
-          "digest": "sha256:43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<0.8.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.8.0",
-      "version_original": "0.8.0"
-    },
-    {
-      "_id": "62345fb95593ce895a7b5357",
-      "alm_examples": [
-        {
-          "api_version": "machinelearning.seldon.io/v1",
-          "kind": "SeldonDeployment",
-          "metadata": {
-            "labels": {
-              "app": "seldon",
-              "app.kubernetes.io/instance": "seldon1",
-              "app.kubernetes.io/name": "seldon",
-              "app.kubernetes.io/version": "v0.5"
-            },
-            "name": "seldon-model"
-          },
-          "spec": {
-            "name": "test-deployment",
-            "predictors": [
-              {
-                "componentSpecs": [
-                  {
-                    "spec": {
-                      "containers": [
-                        {
-                          "image": "seldonio/mock_classifier:1.6.0",
-                          "name": "classifier"
-                        }
-                      ]
-                    }
-                  }
-                ],
-                "graph": {
-                  "children": [],
-                  "name": "classifier",
-                  "type": "MODEL"
-                },
-                "name": "example",
-                "replicas": 1
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:4ff78537117948052d6e7414fec414ff8351601ec09e7a097a804298a831c11d",
-      "bundle_path_digest": "sha256:4ff78537117948052d6e7414fec414ff8351601ec09e7a097a804298a831c11d",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:32:25.669000+00:00",
-      "csv_description": "The Seldon operator enables for native operation of production machine learning workloads, including monitoring and operations of language-agnostic models with the benefits of real-time metrics and log analysis.\n   \n## Overview\nSeldon Core is an open source platform for deploying machine learning models on a Kubernetes cluster.\n\n* Deploy machine learning models in the cloud or on-premise.\n* Get metrics and ensure proper governance and compliance for your running machine learning models.\n* Create powerful inference graphs made up of multiple components.\n* Provide a consistent serving layer for models built using heterogeneous ML toolkits.\n\nYou can get started by following the guides in our documentation at https://docs.seldon.io/projects/seldon-core/en/latest/workflow/README.html\n",
-      "csv_display_name": "Seldon Operator",
-      "csv_metadata_description": "The Seldon operator for management, monitoring and operations of machine learning systems through the Seldon Engine. Once installed, the Seldon Operator provides multiple functions which facilitate the productisation, monitoring and maintenance of machine learning systems at scale.",
-      "csv_name": "seldon-operator.v1.12.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:38:08.618000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "seldon-operator-certified",
-      "provided_apis": [
-        {
-          "group": "machinelearning.seldon.io",
-          "kind": "SeldonDeployment",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda",
-          "image": "registry.connect.redhat.com/seldonio/seldon-core-operator@sha256:dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda",
-          "name": "seldon-core-operator-dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda-annotation"
-        },
-        {
-          "digest": "sha256:dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda",
-          "image": "registry.connect.redhat.com/seldonio/seldon-core-operator@sha256:dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:4aab0706cef5ae37e3d62ba3cc4f92bc5d0b0e18d0d953143d25d745696ecc54",
-          "image": "registry.connect.redhat.com/seldonio/seldon-core-executor@sha256:4aab0706cef5ae37e3d62ba3cc4f92bc5d0b0e18d0d953143d25d745696ecc54",
-          "name": "executor"
-        },
-        {
-          "digest": "sha256:0abffc5f882b16a7ffa9ecfb7d1b362d8e8017b47e94b4b72b10dce74daeec65",
-          "image": "registry.connect.redhat.com/seldonio/seldon-engine@sha256:0abffc5f882b16a7ffa9ecfb7d1b362d8e8017b47e94b4b72b10dce74daeec65",
-          "name": "engine"
-        },
-        {
-          "digest": "sha256:554547229653bf1ebedb88c8eec40e63c8282146e0a0ea14f2d47f000004439f",
-          "image": "registry.connect.redhat.com/seldonio/storage-initializer@sha256:554547229653bf1ebedb88c8eec40e63c8282146e0a0ea14f2d47f000004439f",
-          "name": "storage_initializer"
-        },
-        {
-          "digest": "sha256:0a68b243b28d2dc273a3278393e9f986b6ed5fc29aea7b9f3f343bf9efc5ac8e",
-          "image": "registry.connect.redhat.com/seldonio/sklearnserver@sha256:0a68b243b28d2dc273a3278393e9f986b6ed5fc29aea7b9f3f343bf9efc5ac8e",
-          "name": "sklearnserver"
-        },
-        {
-          "digest": "sha256:0ee0001730d21ca636417824655d74d423d4492d7fed28befc74c23caf0cc4c8",
-          "image": "registry.connect.redhat.com/seldonio/xgboostserver@sha256:0ee0001730d21ca636417824655d74d423d4492d7fed28befc74c23caf0cc4c8",
-          "name": "xgboostserver"
-        },
-        {
-          "digest": "sha256:3381cad85a16434f48cd65afbcfc65f2693bee46a149aa143a4088c9f9d899a2",
-          "image": "registry.connect.redhat.com/seldonio/mlflowserver@sha256:3381cad85a16434f48cd65afbcfc65f2693bee46a149aa143a4088c9f9d899a2",
-          "name": "mlflowserver"
-        },
-        {
-          "digest": "sha256:407932f2d8e670bb4d3b9f6670a687039fae8d79312269d4da2677b73dc3e301",
-          "image": "registry.connect.redhat.com/seldonio/tfproxy@sha256:407932f2d8e670bb4d3b9f6670a687039fae8d79312269d4da2677b73dc3e301",
-          "name": "tfproxy"
-        },
-        {
-          "digest": "sha256:04d1eee0208ca0e64ae277197cb1ddff4c0ee143a712a7f7a30faec397239dfc",
-          "image": "registry.connect.redhat.com/seldonio/tensorflow-serving@sha256:04d1eee0208ca0e64ae277197cb1ddff4c0ee143a712a7f7a30faec397239dfc",
-          "name": "tensorflow"
-        },
-        {
-          "digest": "sha256:6ec697ad5187639712701454198a5f6afa1f662d3c127641c06b4322f391d6dd",
-          "image": "registry.connect.redhat.com/seldonio/alibiexplainer@sha256:6ec697ad5187639712701454198a5f6afa1f662d3c127641c06b4322f391d6dd",
-          "name": "explainer"
-        },
-        {
-          "digest": "sha256:ea78453871e656b71ec9ce4660623a58938d0492fb8b660cc36a1943c768ce4d",
-          "image": "registry.connect.redhat.com/seldonio/mock-classifier@sha256:ea78453871e656b71ec9ce4660623a58938d0492fb8b660cc36a1943c768ce4d",
-          "name": "mock_classifier"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "<1.12.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.12.0",
-      "version_original": "1.12.0"
-    },
-    {
-      "_id": "62345fbc670f4cadbafad2a6",
-      "alm_examples": [
-        {
-          "api_version": "logs.grafana.com/v1alpha1",
-          "kind": "GrafanaCloudLogForwarder",
-          "metadata": {
-            "name": "grafanacloudlogforwarder-sample",
-            "namespace": "openshift-logging"
-          },
-          "spec": {
-            "apipassword": "******",
-            "url": "******",
-            "username": "******"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/grafana/openshift-cloud-log-forwarder-bundle@sha256:8934fe4f13280cbc19868094bd9accb243f3862c104254b23dcf218c7b2a184d",
-      "bundle_path_digest": "sha256:8934fe4f13280cbc19868094bd9accb243f3862c104254b23dcf218c7b2a184d",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-18T10:32:28.205000+00:00",
-      "csv_description": "Grafana Cloud is a completeobservability stack for metrics, logs, and traces that's tightly integrated with Grafana.\nLeverage the best open source observability software without the overhead of installing, maintaining, and scaling your observability stack.\n",
-      "csv_display_name": "Grafana Cloud Log Forwarder",
-      "csv_metadata_description": "",
-      "csv_name": "grafana-cloud-log-forwarder-operator.v1.0.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:40:26.425000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "grafana-cloud-log-forwarder-operator",
-      "provided_apis": [
-        {
-          "group": "logs.grafana.com",
-          "kind": "GrafanaCloudLogForwarder",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:06b389c049dd4648257abf151f16e03d3c518a625a96fe68a63365ea86678514",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:06b389c049dd4648257abf151f16e03d3c518a625a96fe68a63365ea86678514",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:9cb04cb779615c2b42ee37528da7f5abf71dc40c238de0c601035c9cf8fa1bc4",
-          "image": "docker.io/grafana/openshift-cloud-log-forwarder@sha256:9cb04cb779615c2b42ee37528da7f5abf71dc40c238de0c601035c9cf8fa1bc4",
-          "name": "openshift-cloud-log-forwarder"
-        },
-        {
-          "digest": "sha256:06b389c049dd4648257abf151f16e03d3c518a625a96fe68a63365ea86678514",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:06b389c049dd4648257abf151f16e03d3c518a625a96fe68a63365ea86678514",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:9cb04cb779615c2b42ee37528da7f5abf71dc40c238de0c601035c9cf8fa1bc4",
-          "image": "docker.io/grafana/openshift-cloud-log-forwarder@sha256:9cb04cb779615c2b42ee37528da7f5abf71dc40c238de0c601035c9cf8fa1bc4",
-          "name": "manager"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.0.2",
-      "version_original": "1.0.2"
-    },
-    {
       "_id": "62345fbe5593ce895a7b5358",
       "alm_examples": [
         {
@@ -18666,9 +18034,768 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "36.0.0",
       "version_original": "36.0.0"
+    },
+    {
+      "_id": "6247575c485b927808ef1403",
+      "alm_examples": [
+        {
+          "api_version": "ibm.com/v1",
+          "kind": "IBMApplicationGateway",
+          "metadata": {
+            "name": "iag-instance"
+          },
+          "spec": {
+            "configuration": [
+              {
+                "dataKey": "config",
+                "name": "test-config",
+                "type": "configmap"
+              },
+              {
+                "discoveryEndpoint": "https://isam.mmfa.ibm.com/mga/sps/oauth/oauth20/metadata/test",
+                "postData": [
+                  {
+                    "name": "redirect_uris",
+                    "values": [
+                      "https://isam.mmfa.ibm.com/pkmsoidc"
+                    ]
+                  },
+                  {
+                    "name": "client_name",
+                    "value": "OperatorTest"
+                  },
+                  {
+                    "name": "enforce_pkce",
+                    "value": "false"
+                  },
+                  {
+                    "name": "all_users_entitled",
+                    "value": "true"
+                  },
+                  {
+                    "name": "consent_action",
+                    "value": "never_prompt"
+                  }
+                ],
+                "secret": "oidc-client",
+                "type": "oidc_registration"
+              },
+              {
+                "headers": [
+                  {
+                    "name": "Authorization",
+                    "secretKey": "value",
+                    "type": "secret",
+                    "value": "githubsecret"
+                  }
+                ],
+                "type": "web",
+                "url": "https://raw.github.com/ibm-security/iag-config/master/test/sample1.yaml"
+              },
+              {
+                "type": "literal",
+                "value": "version: \"21.12\"\n\nserver:\n  local_applications:\n    cred_viewer:\n      path_segment: creds\n      enable_html: true\n\nidentity:\n  oidc:\n    discovery_endpoint: \"https://iag-dev.ibmcloudsecurity.com/oidc/endpoint/default/.well-known/openid-configuration\"\n    client_id: 1cbfe647-9e5f-4d99-8e05-8ed1c862eb47\n    client_secret: uPP8rM7N0e\n"
+              }
+            ],
+            "deployment": {
+              "image": "ibmcom/ibm-application-gateway@sha256:410fc5d3bc187c01e5ea699ce5023a24a9eb8309902fe513900286ecce5af99f",
+              "imagePullPolicy": "Always",
+              "imagePullSecrets": [
+                {
+                  "name": "regcred"
+                }
+              ],
+              "lang": "C",
+              "livenessProbe": {
+                "failureThreshold": 6,
+                "initialDelaySeconds": 8,
+                "periodSeconds": 9,
+                "successThreshold": 7,
+                "timeoutSeconds": 1
+              },
+              "readinessProbe": {
+                "failureThreshold": 2,
+                "initialDelaySeconds": 7,
+                "periodSeconds": 8,
+                "successThreshold": 4,
+                "timeoutSeconds": 5
+              },
+              "serviceAccountName": "iag"
+            },
+            "replicas": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/ibm-application-gateway-operator-bundle@sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
+      "bundle_path_digest": "sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-01T19:49:48.817000+00:00",
+      "csv_description": "The [IBM Application Gateway (IAG)](https://ibm.biz/ibm-app-gateway) image provides a containerized secure Web Reverse proxy which is designed to sit in front of your application, seamlessly adding authentication and authorization protection to your application.\n\nAn IAG instance deployed on Kubernetes can be a complex deployment.  In particular the configuration can be defined externally in one or more locations, and changes to this configuration may require all instances to be reloaded for the changes to take effect. \n\nThe internal Kubernetes deployment controller does not have any knowledge of how an IBM Application Gateway instance should behave when the configuration changes. As such this IBM Application Gateway specific Kubernetes operator is available to be deployed. Once deployed the operator can manage the lifecycle of the IBM Application Gateway instances.\n\nSee the project [Readme](https://github.com/IBM-Security/ibm-application-gateway-operator/blob/master/README.md) for further information and details.\n\n",
+      "csv_display_name": "IBM Application Gateway Operator",
+      "csv_metadata_description": "The IBM Application Gateway operator manages the lifecycle of IBM Application Gateway containers.",
+      "csv_name": "ibm-application-gateway-operator.v22.3.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:14:22.383000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "ibm-application-gateway-operator",
+      "provided_apis": [
+        {
+          "group": "ibm.com",
+          "kind": "IBMApplicationGateway",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "name": "ibm-application-gateway-operator"
+        },
+        {
+          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "name": "ibm-application-gateway-operator-2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf-annotation"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "22.3.0",
+      "version_original": "22.3.0"
+    },
+    {
+      "_id": "624757654a140551e01d26f5",
+      "alm_examples": [
+        {
+          "api_version": "manta.getmanta.com/v1alpha1",
+          "kind": "MantaAuth",
+          "metadata": {
+            "name": "mantaauth-sample"
+          },
+          "spec": {
+            "imagePullSecrets": "manta-registry-credentials",
+            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
+            "mantaFlowCredentials": "mantaflow-credentials",
+            "mantaVersion": "36.0.0",
+            "replicas": 1,
+            "storageClassName": "ibmc-block-custom"
+          }
+        },
+        {
+          "api_version": "manta.getmanta.com/v1alpha1",
+          "kind": "MantaFlow",
+          "metadata": {
+            "name": "mantaflow-sample"
+          },
+          "spec": {
+            "connectors": {
+              "wkc": {
+                "enabled": false,
+                "logInfo": true,
+                "routeName": "cpd",
+                "tlsSecretName": "internal-tls"
+              }
+            },
+            "imagePullSecrets": "manta-registry-credentials",
+            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
+            "mantaFlowCredentials": "mantaflow-credentials",
+            "mantaFlowKeys": "mantaflow-keys",
+            "mantaVersion": "36.0.0",
+            "replicas": 1,
+            "storageClassName": "ibmc-block-custom"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/manta-ubi8/mantaflow-operator-bundle@sha256:090101b2aa091e12e08ea5dbd719fb7ebc8ee86c170fba82641c714776667061",
+      "bundle_path_digest": "sha256:090101b2aa091e12e08ea5dbd719fb7ebc8ee86c170fba82641c714776667061",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-01T19:49:57.149000+00:00",
+      "csv_description": "# MANTA Flow\nMANTA is a Unified Lineage Platform for Data Lineage.  MANTA performs code scanning for lineage that is illustrated to the detailed attribute level with transformations.   Extreme color coding and filtering to make lineage consumable.  Also includes time-slicing for historical lineage analysis.\n\n## Features\n* **Create/Destroy**: Launch MANTA Flow Container deployment.\n* **Scaling to zero**: Scale down the deployment (turn off the container).\n\n## Prerequisites and Requirements\n### MANTA Flow Namespace\nMANTA should be installed into its own namespace.\n\nFor additional installation documentation see a [MANTA Flow Container documentation](https://mantatools.atlassian.net/wiki/spaces/MTKB/pages/2450620467/MANTA+Flow+Container)\nin the MANTA Flow Knowledge Base.\n\n### MANTA Flow Operator\nThe MANTA Flow Operator is responsible for deployment and management of MANTA Flow container deployment.\n\n### Memory Considerations\nMANTA Flow is a memory intensive application. The MANTA Flow Container will specify the memory and cpu requirements for both request and limits. Also, the minimum storage requirements are specified for the persistent volumes (PVs).\n\n### MANTA Flow license.key\nValid license.key needs to be provided in order to successfully launch MANTA Flow Container.\n\n## MANTA Flow Deployment\n\n### Secrets\nCreate a secret for MANTA Flow license.key by:\n    \n    oc create secret generic mantaflow-keys --from-file=<path to license.key>/license.key\n\nCreate an initial admin credentials `username` and `password` and a MANTA master password, which is used for encryption of sensitive data in the persistent storage.\n\n    oc create secret generic mantaflow-credentials --from-literal=username=<manta admin username> --from-literal=password=<manta admin password> --from-literal=MANTA_MASTERPASSWORD=<password for encryption>\n\n### Create MANTA Auth Custom Resource\nCreate a MANTA Auth custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n### Create MANTA Flow Custom Resource\nCreate a MANTA Flow custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n## Scaling\nMANTA Flow currently supports scaling to zero. This means you can set `replicas: 0` in MANTA Flow Custom Resource Definition (CRD) and MANTA Flow container will be stopped.\n\nBy setting `replicas: 1` MANTA Flow will be scaled to be running on 1 container. All other values of `replicas` are considered invalid.\n",
+      "csv_display_name": "MANTA Flow Operator",
+      "csv_metadata_description": "",
+      "csv_name": "mantaflow-operator.v36.0.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:13:37.420000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "mantaflow-operator",
+      "provided_apis": [
+        {
+          "group": "manta.getmanta.com",
+          "kind": "MantaFlow",
+          "plural": "mantaflows",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "manta.getmanta.com",
+          "kind": "MantaAuth",
+          "plural": "mantaauths",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
+          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
+          "name": "mantaflow-operator-083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3-annotation"
+        },
+        {
+          "digest": "sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
+          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "36.0.0",
+      "version_original": "36.0.0"
+    },
+    {
+      "_id": "62476622485b927808ef1404",
+      "alm_examples": [
+        {
+          "api_version": "ibm.com/v1",
+          "kind": "IBMApplicationGateway",
+          "metadata": {
+            "name": "iag-instance"
+          },
+          "spec": {
+            "configuration": [
+              {
+                "dataKey": "config",
+                "name": "test-config",
+                "type": "configmap"
+              },
+              {
+                "discoveryEndpoint": "https://isam.mmfa.ibm.com/mga/sps/oauth/oauth20/metadata/test",
+                "postData": [
+                  {
+                    "name": "redirect_uris",
+                    "values": [
+                      "https://isam.mmfa.ibm.com/pkmsoidc"
+                    ]
+                  },
+                  {
+                    "name": "client_name",
+                    "value": "OperatorTest"
+                  },
+                  {
+                    "name": "enforce_pkce",
+                    "value": "false"
+                  },
+                  {
+                    "name": "all_users_entitled",
+                    "value": "true"
+                  },
+                  {
+                    "name": "consent_action",
+                    "value": "never_prompt"
+                  }
+                ],
+                "secret": "oidc-client",
+                "type": "oidc_registration"
+              },
+              {
+                "headers": [
+                  {
+                    "name": "Authorization",
+                    "secretKey": "value",
+                    "type": "secret",
+                    "value": "githubsecret"
+                  }
+                ],
+                "type": "web",
+                "url": "https://raw.github.com/ibm-security/iag-config/master/test/sample1.yaml"
+              },
+              {
+                "type": "literal",
+                "value": "version: \"21.12\"\n\nserver:\n  local_applications:\n    cred_viewer:\n      path_segment: creds\n      enable_html: true\n\nidentity:\n  oidc:\n    discovery_endpoint: \"https://iag-dev.ibmcloudsecurity.com/oidc/endpoint/default/.well-known/openid-configuration\"\n    client_id: 1cbfe647-9e5f-4d99-8e05-8ed1c862eb47\n    client_secret: uPP8rM7N0e\n"
+              }
+            ],
+            "deployment": {
+              "image": "ibmcom/ibm-application-gateway@sha256:410fc5d3bc187c01e5ea699ce5023a24a9eb8309902fe513900286ecce5af99f",
+              "imagePullPolicy": "Always",
+              "imagePullSecrets": [
+                {
+                  "name": "regcred"
+                }
+              ],
+              "lang": "C",
+              "livenessProbe": {
+                "failureThreshold": 6,
+                "initialDelaySeconds": 8,
+                "periodSeconds": 9,
+                "successThreshold": 7,
+                "timeoutSeconds": 1
+              },
+              "readinessProbe": {
+                "failureThreshold": 2,
+                "initialDelaySeconds": 7,
+                "periodSeconds": 8,
+                "successThreshold": 4,
+                "timeoutSeconds": 5
+              },
+              "serviceAccountName": "iag"
+            },
+            "replicas": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/ibm-application-gateway-operator-bundle@sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
+      "bundle_path_digest": "sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-01T20:52:50.747000+00:00",
+      "csv_description": "The [IBM Application Gateway (IAG)](https://ibm.biz/ibm-app-gateway) image provides a containerized secure Web Reverse proxy which is designed to sit in front of your application, seamlessly adding authentication and authorization protection to your application.\n\nAn IAG instance deployed on Kubernetes can be a complex deployment.  In particular the configuration can be defined externally in one or more locations, and changes to this configuration may require all instances to be reloaded for the changes to take effect. \n\nThe internal Kubernetes deployment controller does not have any knowledge of how an IBM Application Gateway instance should behave when the configuration changes. As such this IBM Application Gateway specific Kubernetes operator is available to be deployed. Once deployed the operator can manage the lifecycle of the IBM Application Gateway instances.\n\nSee the project [Readme](https://github.com/IBM-Security/ibm-application-gateway-operator/blob/master/README.md) for further information and details.\n\n",
+      "csv_display_name": "IBM Application Gateway Operator",
+      "csv_metadata_description": "The IBM Application Gateway operator manages the lifecycle of IBM Application Gateway containers.",
+      "csv_name": "ibm-application-gateway-operator.v22.3.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:47:40.308000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "ibm-application-gateway-operator",
+      "provided_apis": [
+        {
+          "group": "ibm.com",
+          "kind": "IBMApplicationGateway",
+          "plural": "ibmapplicationgateways",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "name": "ibm-application-gateway-operator"
+        },
+        {
+          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "name": "ibm-application-gateway-operator-2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf-annotation"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "22.3.0",
+      "version_original": "22.3.0"
+    },
+    {
+      "_id": "624c2ae61bf4f81c51bc8953",
+      "alm_examples": [
+        {
+          "api_version": "ibm.com/v1",
+          "kind": "IBMApplicationGateway",
+          "metadata": {
+            "name": "iag-instance"
+          },
+          "spec": {
+            "configuration": [
+              {
+                "dataKey": "config",
+                "name": "test-config",
+                "type": "configmap"
+              },
+              {
+                "discoveryEndpoint": "https://isam.mmfa.ibm.com/mga/sps/oauth/oauth20/metadata/test",
+                "postData": [
+                  {
+                    "name": "redirect_uris",
+                    "values": [
+                      "https://isam.mmfa.ibm.com/pkmsoidc"
+                    ]
+                  },
+                  {
+                    "name": "client_name",
+                    "value": "OperatorTest"
+                  },
+                  {
+                    "name": "enforce_pkce",
+                    "value": "false"
+                  },
+                  {
+                    "name": "all_users_entitled",
+                    "value": "true"
+                  },
+                  {
+                    "name": "consent_action",
+                    "value": "never_prompt"
+                  }
+                ],
+                "secret": "oidc-client",
+                "type": "oidc_registration"
+              },
+              {
+                "headers": [
+                  {
+                    "name": "Authorization",
+                    "secretKey": "value",
+                    "type": "secret",
+                    "value": "githubsecret"
+                  }
+                ],
+                "type": "web",
+                "url": "https://raw.github.com/ibm-security/iag-config/master/test/sample1.yaml"
+              },
+              {
+                "type": "literal",
+                "value": "version: \"21.12\"\n\nserver:\n  local_applications:\n    cred_viewer:\n      path_segment: creds\n      enable_html: true\n\nidentity:\n  oidc:\n    discovery_endpoint: \"https://iag-dev.ibmcloudsecurity.com/oidc/endpoint/default/.well-known/openid-configuration\"\n    client_id: 1cbfe647-9e5f-4d99-8e05-8ed1c862eb47\n    client_secret: uPP8rM7N0e\n"
+              }
+            ],
+            "deployment": {
+              "image": "ibmcom/ibm-application-gateway@sha256:410fc5d3bc187c01e5ea699ce5023a24a9eb8309902fe513900286ecce5af99f",
+              "imagePullPolicy": "Always",
+              "imagePullSecrets": [
+                {
+                  "name": "regcred"
+                }
+              ],
+              "lang": "C",
+              "livenessProbe": {
+                "failureThreshold": 6,
+                "initialDelaySeconds": 8,
+                "periodSeconds": 9,
+                "successThreshold": 7,
+                "timeoutSeconds": 1
+              },
+              "readinessProbe": {
+                "failureThreshold": 2,
+                "initialDelaySeconds": 7,
+                "periodSeconds": 8,
+                "successThreshold": 4,
+                "timeoutSeconds": 5
+              },
+              "serviceAccountName": "iag"
+            },
+            "replicas": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/ibm-application-gateway-operator-bundle@sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
+      "bundle_path_digest": "sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-05T11:41:26.281000+00:00",
+      "csv_description": "The [IBM Application Gateway (IAG)](https://ibm.biz/ibm-app-gateway) image provides a containerized secure Web Reverse proxy which is designed to sit in front of your application, seamlessly adding authentication and authorization protection to your application.\n\nAn IAG instance deployed on Kubernetes can be a complex deployment.  In particular the configuration can be defined externally in one or more locations, and changes to this configuration may require all instances to be reloaded for the changes to take effect. \n\nThe internal Kubernetes deployment controller does not have any knowledge of how an IBM Application Gateway instance should behave when the configuration changes. As such this IBM Application Gateway specific Kubernetes operator is available to be deployed. Once deployed the operator can manage the lifecycle of the IBM Application Gateway instances.\n\nSee the project [Readme](https://github.com/IBM-Security/ibm-application-gateway-operator/blob/master/README.md) for further information and details.\n\n",
+      "csv_display_name": "IBM Application Gateway Operator",
+      "csv_metadata_description": "The IBM Application Gateway operator manages the lifecycle of IBM Application Gateway containers.",
+      "csv_name": "ibm-application-gateway-operator.v22.3.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:37:15.364000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "ibm-application-gateway-operator",
+      "provided_apis": [
+        {
+          "group": "ibm.com",
+          "kind": "IBMApplicationGateway",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "name": "ibm-application-gateway-operator"
+        },
+        {
+          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "name": "ibm-application-gateway-operator-2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf-annotation"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "22.3.0",
+      "version_original": "22.3.0"
+    },
+    {
+      "_id": "624c2b3fefa705f49f5dfbbc",
+      "alm_examples": [
+        {
+          "api_version": "hxcsi.cisco.com/v2",
+          "kind": "HXCSIDriver",
+          "metadata": {
+            "name": "cisco-hyperflex-csi-driver"
+          },
+          "spec": {
+            "affinity": {},
+            "autoscaling": {},
+            "fullnameOverride": "",
+            "hx": {
+              "clientId": "INPUT_VALUE_HERE",
+              "dockerRegistryName": "INPUT_VALUE_HERE",
+              "iscsiUrl": "INPUT_VALUE_HERE",
+              "token": "INPUT_VALUE_HERE",
+              "url": "INPUT_VALUE_HERE"
+            },
+            "image": {
+              "attacher": "hxcsi-csi-attacher:3.2.1-cisco1",
+              "hxcsi": "hxcsi-ubi8:hxcsi-1.2.4-latest",
+              "provisioner": "hxcsi-csi-provisioner:2.2.1-cisco1",
+              "pullPolicy": "Always",
+              "registrar": "hxcsi-csi-node-driver-registrar:2.2.0-cisco1",
+              "resizer": "hxcsi-csi-resizer:1.2.0-cisco1",
+              "tag": ""
+            },
+            "ingress": {},
+            "nameOverride": "",
+            "nodeSelector": {},
+            "podAnnotations": {},
+            "podSecurityContext": {},
+            "replicaCount": 2,
+            "resources": {},
+            "securityContext": {},
+            "service": {},
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": ""
+            },
+            "storageClass": {
+              "isDefault": "false",
+              "name": "hyperflex"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/hxcsiadmin/hxcsi-helm-bundle@sha256:3906d0837e6745f0024a8819f1cc6d93da7d1289ed9db9ccd47552918c11e9f4",
+      "bundle_path_digest": "sha256:3906d0837e6745f0024a8819f1cc6d93da7d1289ed9db9ccd47552918c11e9f4",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-05T11:42:55.950000+00:00",
+      "csv_description": "\nCisco HyperFlex Data Platform (HX Data Platform) is a hyperconverged software appliance that transforms Cisco servers into a single pool of compute and storage resources. It eliminates the need for network storage and enables seamless interoperability between computing and storage in virtual environments. The Cisco HX Data Platform provides a highly fault-tolerant distributed storage system that preserves data integrity and optimizes performance for virtual machine (VM) storage workloads. In addition, native compression and deduplication reduce storage space occupied by the VMs and VM workloads.\n### HyperFlex CSI Driver\nThe Cisco HyperFlex Kubernetes CSI Integration allows Cisco HyperFlex to dynamically provide persistent storage to stateful Kubernetes workloads running on Cisco HyperFlex. The integration enables orchestration of the entire Persistent Volume object lifecycle to be offloaded and managed by Cisco HyperFlex, while being driven (initiated) by developers and users through standard Kubernetes Persistent Volume Claim objects. Developers and users get the benefit of leveraging Cisco HyperFlex for their Kubernetes persistent storage needs with zero additional administration overhead from their perspective.\n### Features Support\n- Support for CSI Spec 1.2 APIs\n- Kubernetes 1.18, 1.19, 1.20, 1.21 support\n- Kubernetes Cluster multi tenancy target masking using dedicated initiator group\n- Dynamic creation and deletion of volumes\n- Dynamic volume attach and detach\n- Block access support\n- CHAP support for iSCSI sessions\n- Clone volume (when source volume is from the same Datastore)\n- PV support with different filesystems (Ext4, Ext3, XFS)\n- Volume space statistics reporting per CSI specs\n- Multi-writer support (ReadWriteMany) for Block Mode only\n- Volume resize support for block mode volumes and ext3, ext4 filesystem volumes (expansion)\n",
+      "csv_display_name": "Cisco Hyperflex CSI Operator",
+      "csv_metadata_description": "Cisco HXCSI Plugin for RedHat OpenShift Platform",
+      "csv_name": "cisco-hxcsi-operator.v1.2.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:43:34.880000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "cisco-hxcsi-operator",
+      "provided_apis": [
+        {
+          "group": "hxcsi.cisco.com",
+          "kind": "HXCSIDriver",
+          "version": "v1"
+        },
+        {
+          "group": "hxcsi.cisco.com",
+          "kind": "HXCSIDriver",
+          "version": "v2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee",
+          "image": "quay.io/hxcsiadmin/hxcsi-helm-bundle@sha256:3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee",
+          "name": "hxcsi-helm-bundle-3539d2e9746e6c007b32ba49de8dcb5e04546779cd43ddb3b2412beb44dacfee-annotation"
+        },
+        {
+          "digest": "sha256:f000432f07cd187469f0310e3ed9dcf9a5db2be14b8bab9c5293dd1ee8518176",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:f000432f07cd187469f0310e3ed9dcf9a5db2be14b8bab9c5293dd1ee8518176",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:76551da5c57ea629f1b6cf8b05b90bfa6dbc6b4e1cd886b9374fa6adb52f877d",
+          "image": "quay.io/hxcsiadmin/hxcsi-helm-operator@sha256:76551da5c57ea629f1b6cf8b05b90bfa6dbc6b4e1cd886b9374fa6adb52f877d",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.2.4",
+      "version_original": "1.2.4"
     }
   ],
   "page": 23,
   "page_size": 100,
-  "total": 3982
+  "total": 4010
 }

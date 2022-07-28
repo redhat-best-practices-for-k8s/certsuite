@@ -9516,105 +9516,6 @@
       "version_original": "2.0.0"
     },
     {
-      "_id": "60cc155b5f14ddb47d3b729c",
-      "alm_examples": [
-        {
-          "api_version": "storage.hpe.com/v1",
-          "kind": "HPECSIDriver",
-          "metadata": {
-            "name": "csi-driver"
-          },
-          "spec": {
-            "cspClientTimeout": 60,
-            "disable": {
-              "alletra6000": false,
-              "alletra9000": false,
-              "nimble": false,
-              "primera": false
-            },
-            "disableNodeConformance": false,
-            "disableNodeGetVolumeStats": false,
-            "imagePullPolicy": "IfNotPresent",
-            "iscsi": {
-              "chapPassword": "",
-              "chapUser": ""
-            },
-            "kubeletRootDir": "/var/lib/kubelet/",
-            "logLevel": "info",
-            "registry": "quay.io"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hpestorage/csi-driver-operator-bundle@sha256:24d8008a3b72f61d720a20f0f12eecc5b13fdc0916edcb7cb0ae99498c012c9b",
-      "bundle_path_digest": "sha256:24d8008a3b72f61d720a20f0f12eecc5b13fdc0916edcb7cb0ae99498c012c9b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-06-18T03:39:07.413000+00:00",
-      "csv_description": "The HPE CSI Operator for Kubernetes packages, deploys, manages, upgrades the HPE CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on HPE storage systems.\nThe HPE CSI Driver for Kubernetes leverages HPE storage platforms to provide scalable and persistent storage for stateful applications. Please refer to our CSI driver [documentation](https://scod.hpedev.io/csi_driver/index.html) for supported HPE platforms and full list of supported CSI features.\n## Installation\nRefer to the HPE CSI Operator for Kubernetes [documentation](https://scod.hpedev.io/csi_driver/deployment.html#operator).\n",
-      "csv_display_name": "HPE CSI Operator for Kubernetes",
-      "csv_metadata_description": "A Container Storage Interface (CSI) driver for HPE storage platforms. The CSI driver allows you to use HPE storage with your preferred container orchestrator.",
-      "csv_name": "hpe-csi-operator.v2.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:50:48.088000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "hpe-csi-operator",
-      "provided_apis": [
-        {
-          "group": "storage.hpe.com",
-          "kind": "HPECSIDriver",
-          "plural": "hpecsidrivers",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "name": "csi-driver-operator-e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771-annotation"
-        },
-        {
-          "digest": "sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:e397fc7820775a2667e28a8f5ce59860ffc802968f1752e1672319c6e2e8e771",
-          "name": "hpe-csi-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.0.0",
-      "version_original": "2.0.0"
-    },
-    {
       "_id": "60cc15c94924e145193315c0",
       "alm_examples": [
         {
@@ -14395,9 +14296,158 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.0",
       "version_original": "1.1.0"
+    },
+    {
+      "_id": "60da48473a733787222135f5",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1alpha1",
+          "kind": "OpenshiftArtifactoryHa",
+          "metadata": {
+            "name": "openshiftartifactoryha"
+          },
+          "spec": {
+            "artifactory-ha": {
+              "artifactory": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/artifactory-pro",
+                  "tag": "7.19.4-1"
+                },
+                "joinKey": "OVERRIDE",
+                "masterKey": "OVERRIDE",
+                "node": {
+                  "replicaCount": 2,
+                  "waitForPrimaryStartup": {
+                    "enabled": false
+                  }
+                },
+                "uid": "1000721030"
+              },
+              "database": {
+                "driver": "OVERRIDE",
+                "password": "OVERRIDE",
+                "type": "OVERRIDE",
+                "url": "OVERRIDE",
+                "user": "OVERRIDE"
+              },
+              "databaseUpgradeReady": true,
+              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:4073f6eb6eb55cd8012a7b929e583ba915dbc0d92be9d6b057e6daac520283b9",
+              "nginx": {
+                "gid": "1000720107",
+                "http": {
+                  "externalPort": 80,
+                  "internalPort": 8080
+                },
+                "https": {
+                  "externalPort": 443,
+                  "internalPort": 8443
+                },
+                "image": {
+                  "registry": "registry.redhat.io",
+                  "repository": "rhel8/nginx-116",
+                  "tag": "latest"
+                },
+                "service": {
+                  "ssloffload": false
+                },
+                "tlsSecretName": "OVERRIDE",
+                "uid": "1000720104"
+              },
+              "postgresql": {
+                "enabled": false
+              },
+              "waitForDatabase": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:c791ad2b333614b4409381e5898c1a48029104af25f722cc5c93945fbfe1a800",
+      "bundle_path_digest": "sha256:c791ad2b333614b4409381e5898c1a48029104af25f722cc5c93945fbfe1a800",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-06-28T22:08:07.973000+00:00",
+      "csv_description": " ## Breaking change\nPlease update to version 1.1.10 of the operator.\nVersion 1.1.8 and 1.1.9 have issues. Please skip these versions.\n\n## Overview\nOpenshift Operator to deploy JFrog Artifactory Enterprise into your Openshift cluster.\n## Security Context Constraints\nTo deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc.\n```\noc adm policy add-scc-to-user anyuid -z artifactory-ha-operator -n openshift-operators\n```\nAdd the service account for the Artifactory chart to deploy successfully:\n``` oc adm policy add-scc-to-user anyuid -z openshiftartifactoryha-artifactory-ha -n artifactory ```\n### Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Artifactory Enterprise Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Artifactory Enterprise Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Artifactory HA.\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nDATABASE_TYPE\nDATABASE_DRIVER\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\nMaster key and Join key must be supplied. To generate a new key for each run the command below:\n\n```\n# Create a key\nexport JOIN_KEY=$(openssl rand -hex 32)\necho ${JOIN_KEY}\n```\n\nTo use TLS you will need to first create a k8s tls secret to store your .crt and .key file into.\nThen supply the value of this k8s secret into the TLS_SECRET field.\n``` oc create secret tls my_tls_secret --cert=tls.crt --key=tls.key --namespace=my_namespace ```\nClick Create for Artifactory Enterprise to deploy into OpenShift and connect to it on the external IP exposed by the load balancer.\n### Create a route\nTo expose Artifactory from Openshift we recommend you create a new route in Openshift.\nYou can either use the oc command line tool or the Openshift web console to generate a new route.\nDepending upon where you terminate TLS you will need to either specify pass through or edge.\nCommand Line (Edge):\n``` oc create route edge --service=openshiftartifactory-ha --cert=tls.crt --key=tls.key --ca-cert=ca.crt --hostname=www.example.com ```\nOr for more information visit the official Openshift documentation on routes here:\nhttps://docs.openshift.com/container-platform/4.6/networking/routes/route-configuration.html\n\n",
+      "csv_display_name": "JFrog Artifactory Enterprise Operator",
+      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
+      "csv_name": "artifactory-ha-operator.v1.1.13",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:50:44.025000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "openshiftartifactoryha-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftArtifactoryHa",
+          "plural": "openshiftartifactoryhas",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:97a64d13e85f782c55d9975bd478df61c6037a2fbe9213a0fbe076882d450185",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:97a64d13e85f782c55d9975bd478df61c6037a2fbe9213a0fbe076882d450185",
+          "name": "artifactory-operator-97a64d13e85f782c55d9975bd478df61c6037a2fbe9213a0fbe076882d450185-annotation"
+        },
+        {
+          "digest": "sha256:97a64d13e85f782c55d9975bd478df61c6037a2fbe9213a0fbe076882d450185",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:97a64d13e85f782c55d9975bd478df61c6037a2fbe9213a0fbe076882d450185",
+          "name": "artifactory-ha-operator"
+        },
+        {
+          "digest": "sha256:34d7ea895d6eb132bcf388a520d9d2d0cd5a6ed995fad141dc03ac5bf0ec7aeb",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:34d7ea895d6eb132bcf388a520d9d2d0cd5a6ed995fad141dc03ac5bf0ec7aeb",
+          "name": "artifactory_image_repository"
+        },
+        {
+          "digest": "sha256:cddf1f73ce3db90d27a65cf0fed5c2987d30e37ff5d0c8bda50cbeca0dd78ece",
+          "image": "registry.redhat.io/rhel8/nginx-116@sha256:cddf1f73ce3db90d27a65cf0fed5c2987d30e37ff5d0c8bda50cbeca0dd78ece",
+          "name": "nginx_image_repository"
+        },
+        {
+          "digest": "sha256:4073f6eb6eb55cd8012a7b929e583ba915dbc0d92be9d6b057e6daac520283b9",
+          "image": "registry.connect.redhat.com/jfrog/init@sha256:4073f6eb6eb55cd8012a7b929e583ba915dbc0d92be9d6b057e6daac520283b9",
+          "name": "init-4073f6eb6eb55cd8012a7b929e583ba915dbc0d92be9d6b057e6daac520283b9-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.1.13",
+      "version_original": "1.1.13"
     }
   ],
   "page": 12,
   "page_size": 100,
-  "total": 3982
+  "total": 4010
 }
