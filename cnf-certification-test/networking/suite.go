@@ -37,9 +37,9 @@ import (
 )
 
 const (
-	defaultNumPings = 5
-	cmd             = `ss -tulwnH`
-	nodePort        = "NodePort"
+	defaultNumPings      = 5
+	getListeningPortsCmd = `ss -tulwnH`
+	nodePort             = "NodePort"
 )
 
 type Port []struct {
@@ -94,6 +94,11 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testNodePort(&env)
 	})
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestOCPReservedPortsUsage)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
+		testOCPReservedPortsUsage(&env)
+	})
 })
 
 //nolint:funlen
@@ -113,9 +118,9 @@ func testListenAndDeclared(env *provider.TestEnvironment) {
 			}
 		}
 		firstPodContainer := podUnderTest.Containers[0]
-		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(cmd, firstPodContainer)
+		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(getListeningPortsCmd, firstPodContainer)
 		if err != nil || errStr != "" {
-			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s, errStr: %s", cmd, firstPodContainer, err, errStr)
+			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s, errStr: %s", getListeningPortsCmd, firstPodContainer, err, errStr)
 			failedPods = append(failedPods, podUnderTest)
 			continue
 		}
@@ -177,5 +182,53 @@ func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommon
 	if n := len(badNets); n > 0 {
 		logrus.Debugf("Failed nets: %+v", badNets)
 		ginkgo.Fail(fmt.Sprintf("%d nets failed the %s network %s ping test.", n, aType, aIPVersion))
+	}
+}
+
+func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
+	// List of all ports reserved by Openshift
+	OCPReservedPorts := map[int32]bool{22623: true, 22624: true}
+
+	var failedContainers int
+	var rogueContainers []string
+	for _, cut := range env.Containers {
+		// First check if any of the containers under test has declared a port reserved by OCP
+		for _, port := range cut.Data.Ports {
+			if OCPReservedPorts[port.ContainerPort] {
+				tnf.ClaimFilePrintf("%s has declared a port (%d) reserved by Openshift", cut.String(), port.ContainerPort)
+				rogueContainers = append(rogueContainers, cut.String())
+				break
+			}
+		}
+
+		// Then verify that no container is listening to the reserved OCP ports
+		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(getListeningPortsCmd, cut)
+		if err != nil || errStr != "" {
+			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s, errStr: %s", getListeningPortsCmd, cut, err, errStr)
+			failedContainers++
+			continue
+		}
+
+		listeningPorts := make(map[declaredandlistening.Key]bool)
+		declaredandlistening.ParseListening(outStr, listeningPorts)
+		for port := range listeningPorts {
+			if OCPReservedPorts[int32(port.Port)] {
+				tnf.ClaimFilePrintf("%s is listening on a port (%d) reserved by Openshift", cut.String(), port.Port)
+				rogueContainers = append(rogueContainers, cut.String())
+				break
+			}
+		}
+	}
+
+	if n := len(rogueContainers); n > 0 {
+		errMsg := fmt.Sprintf("Number of containers declaring or listening on ports reserved by Openshift: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
+	}
+
+	if failedContainers > 0 {
+		errMsg := fmt.Sprintf("Number of containers in which the test could not be performed due to an error: %d", failedContainers)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
 	}
 }

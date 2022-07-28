@@ -164,4 +164,6 @@ const (
 	SYSNiceRealtimeCapabilityRemediation = `If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec.`
 
 	SysPtraceCapabilityRemediation = `Allow the SYS_PTRACE capability when enabling process namespace sharing for a Pod`
+
+	OCPReservedPortsUsageRemediation = `Ensure that CNF apps do not listen on ports that are reserved by Openshift`
 )
