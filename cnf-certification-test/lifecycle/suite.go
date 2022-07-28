@@ -144,6 +144,11 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 			testStatefulSetScaling(&env, timeout)
 		})
 	}
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPersistentVolumeReclaimPolicyIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testPodPersistentVolumeReclaimPolicy(&env)
+	})
 })
 
 func testContainersPreStop(env *provider.TestEnvironment) {
@@ -453,6 +458,27 @@ func testPodRequestsAndLimits(env *provider.TestEnvironment) {
 
 	if n := len(containersMissingRequestsOrLimits); n > 0 {
 		errMsg := fmt.Sprintf("Containers found that are missing either resource requests or limits: %d. See logs for more detail.", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
+	}
+}
+
+func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
+	ginkgo.By("Testing PersistentVolumes for reclaim policy to be set to delete")
+	var persistentVolumesBadReclaim []string
+
+	// Look through all of the pods, matching their persistent volumes to the list of overall cluster PVs and checking their reclaim status.
+	for _, put := range env.Pods {
+		for index := range env.PersistentVolumes {
+			if put.Data.Name == env.PersistentVolumes[index].Name && env.PersistentVolumes[index].Spec.PersistentVolumeReclaimPolicy != corev1.PersistentVolumeReclaimDelete {
+				persistentVolumesBadReclaim = append(persistentVolumesBadReclaim, env.PersistentVolumes[index].Name)
+				tnf.ClaimFilePrintf("Persistent Volume: %s in namespace %s has been found without a reclaim policy of DELETE.", env.PersistentVolumes[index].Name, env.PersistentVolumes[index].Namespace)
+			}
+		}
+	}
+
+	if n := len(persistentVolumesBadReclaim); n > 0 {
+		errMsg := fmt.Sprintf("Persistent Volumes found that are missing a reclaim policy of DELETE: %d. See logs for more detail.", n)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
 	}

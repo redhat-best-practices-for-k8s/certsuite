@@ -100,10 +100,11 @@ func ConvertArrayPods(pods []*corev1.Pod) (out []*Pod) {
 }
 
 type TestEnvironment struct { // rename this with testTarget
-	Namespaces        []string               `json:"testNamespaces"`
-	Pods              []*Pod                 `json:"testPods"`
-	Containers        []*Container           `json:"testContainers"`
-	Operators         []Operator             `json:"testOperators"`
+	Namespaces        []string     `json:"testNamespaces"`
+	Pods              []*Pod       `json:"testPods"`
+	Containers        []*Container `json:"testContainers"`
+	Operators         []Operator   `json:"testOperators"`
+	PersistentVolumes []corev1.PersistentVolume
 	DebugPods         map[string]*corev1.Pod // map from nodename to debugPod
 	Config            configuration.TestConfiguration
 	variables         configuration.TestParameters

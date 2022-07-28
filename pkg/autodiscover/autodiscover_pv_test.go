@@ -26,23 +26,23 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
-func TestGetResourceQuotas(t *testing.T) {
-	generateResourceQuota := func(name string) *corev1.ResourceQuota {
-		return &corev1.ResourceQuota{
+func TestGetPersistentVolumes(t *testing.T) {
+	generatePersistentVolume := func(name string) *corev1.PersistentVolume {
+		return &corev1.PersistentVolume{
 			ObjectMeta: metav1.ObjectMeta{
 				Name: name,
 			},
-			Spec: corev1.ResourceQuotaSpec{},
+			Spec: corev1.PersistentVolumeSpec{},
 		}
 	}
 
 	testCases := []struct {
 		rqName      string
-		expectedRQs []corev1.ResourceQuota
+		expectedRQs []corev1.PersistentVolume
 	}{
 		{
 			rqName: "test1",
-			expectedRQs: []corev1.ResourceQuota{
+			expectedRQs: []corev1.PersistentVolume{
 				{
 					ObjectMeta: metav1.ObjectMeta{
 						Name: "test1",
@@ -54,10 +54,10 @@ func TestGetResourceQuotas(t *testing.T) {
 
 	for _, tc := range testCases {
 		var testRuntimeObjects []runtime.Object
-		testRuntimeObjects = append(testRuntimeObjects, generateResourceQuota(tc.rqName))
+		testRuntimeObjects = append(testRuntimeObjects, generatePersistentVolume(tc.rqName))
 		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
-		resourceQuotas, err := getResourceQuotas(oc.K8sClient.CoreV1())
+		PersistentVolumes, err := getPersistentVolumes(oc.K8sClient.CoreV1())
 		assert.Nil(t, err)
-		assert.Equal(t, tc.expectedRQs[0].Name, resourceQuotas[0].Name)
+		assert.Equal(t, tc.expectedRQs[0].Name, PersistentVolumes[0].Name)
 	}
 }
