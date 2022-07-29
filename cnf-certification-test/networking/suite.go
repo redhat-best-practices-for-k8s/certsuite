@@ -192,6 +192,7 @@ func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 
 	var failedContainers int
 	var rogueContainers []string
+	var roguePods []string
 
 	// First check if any of the containers under test has declared a port reserved by OCP
 	for _, cut := range env.Containers {
@@ -204,7 +205,7 @@ func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 		}
 	}
 
-	// Then verify that no container is listening to the reserved OCP ports
+	// Then verify that no container is listening on the reserved OCP ports
 	for _, put := range env.Pods {
 		cut := put.Containers[0]
 		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(getListeningPortsCmd, cut)
@@ -218,15 +219,21 @@ func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 		declaredandlistening.ParseListening(outStr, listeningPorts)
 		for port := range listeningPorts {
 			if OCPReservedPorts[int32(port.Port)] {
-				tnf.ClaimFilePrintf("%s is listening on a port (%d) reserved by Openshift", cut, port.Port)
-				rogueContainers = append(rogueContainers, cut.String())
+				tnf.ClaimFilePrintf("%s has one container listening on port %d reserved by Openshift", put, port.Port)
+				roguePods = append(roguePods, put.String())
 				break
 			}
 		}
 	}
 
 	if n := len(rogueContainers); n > 0 {
-		errMsg := fmt.Sprintf("Number of containers declaring or listening on ports reserved by Openshift: %d", n)
+		errMsg := fmt.Sprintf("Number of containers declaring ports reserved by Openshift: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
+	}
+
+	if n := len(roguePods); n > 0 {
+		errMsg := fmt.Sprintf("Number of pods having one or more containers listening on ports reserved by Openshift: %d", n)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
 	}
