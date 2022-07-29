@@ -30,6 +30,7 @@ const (
 	url                      = "http://test-network-function.com/testcases"
 	versionOne               = "v1.0.0"
 	bestPracticeDocV1dot3URL = "https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf"
+	bestPracticeDocV1dot4URL = "https://TODO" // TODO: Fill in this variable with the new v1.4 document when available.
 )
 
 // TestCaseDescription describes a JUnit test case.
@@ -304,6 +305,10 @@ var (
 	}
 	TestUndeclaredContainerPortsUsage = claim.Identifier{
 		Url:     formTestURL(common.NetworkingTestKey, "undeclared-container-ports-usage"),
+		Version: versionOne,
+	}
+	TestOCPReservedPortsUsage = claim.Identifier{
+		Url:     formTestURL(common.NetworkingTestKey, "ocp-reserved-ports-usage"),
 		Version: versionOne,
 	}
 	TestLivenessProbeIdentifier = claim.Identifier{
@@ -835,6 +840,15 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 16.3.1.1",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
+	TestOCPReservedPortsUsage: {
+		Identifier: TestOCPReservedPortsUsage,
+		Type:       normativeResult,
+		Description: formDescription(TestOCPReservedPortsUsage,
+			`check that containers do not listen on ports that are reserved by Openshift`),
+		Remediation:           OCPReservedPortsUsageRemediation,
+		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.5.9",
+		ExceptionProcess:      NoDocumentedProcess,
+	},
 	TestCrdsStatusSubresourceIdentifier: {
 		Identifier: TestCrdsStatusSubresourceIdentifier,
 		Type:       informativeResult,
@@ -904,6 +918,7 @@ that there are no changes to the following directories:
 		Description:           formDescription(TestSYSNiceRealtimeCapabilityIdentifier, `Check that pods running on nodes with realtime kernel enabled have the SYS_NICE capability enabled in their spec.`),
 		Remediation:           SYSNiceRealtimeCapabilityRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 2.7.4",
+		ExceptionProcess:      NoDocumentedProcess,
 	},
 	TestSysPtraceCapabilityIdentifier: {
 		Identifier:            TestSysPtraceCapabilityIdentifier,
@@ -911,5 +926,6 @@ that there are no changes to the following directories:
 		Description:           formDescription(TestSysPtraceCapabilityIdentifier, `check that if process namespace sharing is enabled for a Pod then the SYS_PTRACE capability is allowed`),
 		Remediation:           SysPtraceCapabilityRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 2.7.5",
+		ExceptionProcess:      NoDocumentedProcess,
 	},
 }

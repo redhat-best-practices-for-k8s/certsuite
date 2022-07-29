@@ -201,7 +201,7 @@ Description|http://test-network-function.com/testcases/access-control/sys-nice-r
 Result Type|informative
 Suggested Remediation|If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 2.7.4
-Exception Process|
+Exception Process|There is no documented exception process for this.
 #### sys-ptrace-capability
 
 Property|Description
@@ -214,7 +214,7 @@ Description|http://test-network-function.com/testcases/access-control/sys-ptrace
 Result Type|informative
 Suggested Remediation|Allow the SYS_PTRACE capability when enabling process namespace sharing for a Pod
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 2.7.5
-Exception Process|
+Exception Process|There is no documented exception process for this.
 
 ### affiliated-certification
 
@@ -457,6 +457,19 @@ Description|http://test-network-function.com/testcases/networking/icmpv6-connect
 Result Type|normative
 Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, 	CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod 	from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is not important, only its presence.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Exception Process|There is no documented exception process for this.
+#### ocp-reserved-ports-usage
+
+Property|Description
+---|---
+Test Case Name|ocp-reserved-ports-usage
+Test Case Label|networking-ocp-reserved-ports-usage
+Unique ID|http://test-network-function.com/testcases/networking/ocp-reserved-ports-usage
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/networking/ocp-reserved-ports-usage check that containers do not listen on ports that are reserved by Openshift
+Result Type|normative
+Suggested Remediation|Ensure that CNF apps do not listen on ports that are reserved by Openshift
+Best Practice Reference|https://TODO Section 3.5.9
 Exception Process|There is no documented exception process for this.
 #### service-type
 
