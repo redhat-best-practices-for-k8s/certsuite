@@ -185,23 +185,28 @@ func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommon
 	}
 }
 
+//nolint:funlen
 func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 	// List of all ports reserved by Openshift
 	OCPReservedPorts := map[int32]bool{22623: true, 22624: true}
 
 	var failedContainers int
 	var rogueContainers []string
+
+	// First check if any of the containers under test has declared a port reserved by OCP
 	for _, cut := range env.Containers {
-		// First check if any of the containers under test has declared a port reserved by OCP
 		for _, port := range cut.Data.Ports {
 			if OCPReservedPorts[port.ContainerPort] {
-				tnf.ClaimFilePrintf("%s has declared a port (%d) reserved by Openshift", cut.String(), port.ContainerPort)
+				tnf.ClaimFilePrintf("%s has declared a port (%d) reserved by Openshift", cut, port.ContainerPort)
 				rogueContainers = append(rogueContainers, cut.String())
 				break
 			}
 		}
+	}
 
-		// Then verify that no container is listening to the reserved OCP ports
+	// Then verify that no container is listening to the reserved OCP ports
+	for _, put := range env.Pods {
+		cut := put.Containers[0]
 		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(getListeningPortsCmd, cut)
 		if err != nil || errStr != "" {
 			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s, errStr: %s", getListeningPortsCmd, cut, err, errStr)
@@ -213,7 +218,7 @@ func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 		declaredandlistening.ParseListening(outStr, listeningPorts)
 		for port := range listeningPorts {
 			if OCPReservedPorts[int32(port.Port)] {
-				tnf.ClaimFilePrintf("%s is listening on a port (%d) reserved by Openshift", cut.String(), port.Port)
+				tnf.ClaimFilePrintf("%s is listening on a port (%d) reserved by Openshift", cut, port.Port)
 				rogueContainers = append(rogueContainers, cut.String())
 				break
 			}
