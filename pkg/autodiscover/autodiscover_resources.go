@@ -24,14 +24,6 @@ import (
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
-func getLimitRanges(oc corev1client.CoreV1Interface) ([]corev1.LimitRange, error) {
-	lrl, err := oc.LimitRanges("").List(context.TODO(), metav1.ListOptions{})
-	if err != nil {
-		return nil, err
-	}
-	return lrl.Items, nil
-}
-
 func getResourceQuotas(oc corev1client.CoreV1Interface) ([]corev1.ResourceQuota, error) {
 	rql, err := oc.ResourceQuotas("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {

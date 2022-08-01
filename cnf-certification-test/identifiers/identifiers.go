@@ -341,10 +341,6 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "namespace-resource-quota"),
 		Version: versionOne,
 	}
-	TestNamespaceLimitRangeIdentifier = claim.Identifier{
-		Url:     formTestURL(common.AccessControlTestKey, "namespace-limit-range"),
-		Version: versionOne,
-	}
 )
 
 func formDescription(identifier claim.Identifier, description string) string {
@@ -952,13 +948,6 @@ that there are no changes to the following directories:
 		Type:                  informativeResult,
 		Description:           formDescription(TestNamespaceResourceQuotaIdentifier, `Checks to see if CNF workload pods are running in namespaces that have resource quotas applied.`),
 		Remediation:           NamespaceResourceQuotaRemediation,
-		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.8", // TODO Change this to v1.4 when available
-	},
-	TestNamespaceLimitRangeIdentifier: {
-		Identifier:            TestNamespaceLimitRangeIdentifier,
-		Type:                  informativeResult,
-		Description:           formDescription(TestNamespaceLimitRangeIdentifier, `Checks to see if CNF workload pods are running in namespaces that have limit ranges applied.`),
-		Remediation:           NamespaceLimitRangeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.8", // TODO Change this to v1.4 when available
 	},
 }

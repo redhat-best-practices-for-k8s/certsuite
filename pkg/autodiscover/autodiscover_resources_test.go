@@ -26,49 +26,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
-func TestGetLimitRanges(t *testing.T) {
-	generateLimitRange := func(name string) *corev1.LimitRange {
-		return &corev1.LimitRange{
-			ObjectMeta: metav1.ObjectMeta{
-				Name: name,
-				// Namespace: "testNamespace",
-			},
-			Spec: corev1.LimitRangeSpec{
-				Limits: []corev1.LimitRangeItem{
-					{
-						Type: corev1.LimitTypeContainer,
-					},
-				},
-			},
-		}
-	}
-
-	testCases := []struct {
-		lrName      string
-		expectedLRs []corev1.LimitRange
-	}{
-		{
-			lrName: "test1",
-			expectedLRs: []corev1.LimitRange{
-				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: "test1",
-					},
-				},
-			},
-		},
-	}
-
-	for _, tc := range testCases {
-		var testRuntimeObjects []runtime.Object
-		testRuntimeObjects = append(testRuntimeObjects, generateLimitRange(tc.lrName))
-		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
-		limitRanges, err := getLimitRanges(oc.K8sClient.CoreV1())
-		assert.Nil(t, err)
-		assert.Equal(t, tc.expectedLRs[0].Name, limitRanges[0].Name)
-	}
-}
-
 func TestGetResourceQuotas(t *testing.T) {
 	generateResourceQuota := func(name string) *corev1.ResourceQuota {
 		return &corev1.ResourceQuota{

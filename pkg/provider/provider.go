@@ -116,7 +116,6 @@ type TestEnvironment struct { // rename this with testTarget
 	OpenshiftVersion  string                                        `json:"-"`
 	OCPStatus         string                                        `json:"-"`
 	HelmChartReleases []*release.Release                            `json:"testHelmChartReleases"`
-	LimitRanges       []corev1.LimitRange
 	ResourceQuotas    []corev1.ResourceQuota
 	IstioServiceMesh  bool
 }
@@ -299,7 +298,6 @@ func buildTestEnvironment() { //nolint:funlen
 	env.OpenshiftVersion = data.OpenshiftVersion
 	env.OCPStatus = data.OCPStatus
 	env.K8sVersion = data.K8sVersion
-	env.LimitRanges = data.LimitRangeItems
 	env.ResourceQuotas = data.ResourceQuotaItems
 	for _, nsHelmChartReleases := range data.HelmChartReleases {
 		for _, helmChartRelease := range nsHelmChartReleases {

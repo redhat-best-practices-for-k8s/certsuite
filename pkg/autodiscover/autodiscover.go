@@ -52,7 +52,6 @@ type DiscoveredTestData struct {
 	TestData           configuration.TestConfiguration
 	Pods               []corev1.Pod
 	DebugPods          []corev1.Pod
-	LimitRangeItems    []corev1.LimitRange
 	ResourceQuotaItems []corev1.ResourceQuota
 	Crds               []*apiextv1.CustomResourceDefinition
 	Namespaces         []string
@@ -109,10 +108,6 @@ func DoAutoDiscover() DiscoveredTestData {
 	debugLabels := []configuration.Label{debugLabel}
 	debugNS := []string{defaultNamespace}
 	data.DebugPods = findPodsByLabel(oc.K8sClient.CoreV1(), debugLabels, debugNS)
-	data.LimitRangeItems, err = getLimitRanges(oc.K8sClient.CoreV1())
-	if err != nil {
-		logrus.Fatalln("Cannot get limit ranges")
-	}
 	data.ResourceQuotaItems, err = getResourceQuotas(oc.K8sClient.CoreV1())
 	if err != nil {
 		logrus.Fatalln("Cannot get resource quotas")
