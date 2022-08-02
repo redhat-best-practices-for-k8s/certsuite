@@ -179,23 +179,22 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 		debugPod := env.DebugPods[cut.NodeName]
 		if debugPod == nil {
 			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
-		} else {
-			fsDiffTester := cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder())
-			fsDiffTester.RunTest(clientsholder.Context{
-				Namespace:     debugPod.Namespace,
-				Podname:       debugPod.Name,
-				Containername: debugPod.Spec.Containers[0].Name,
-			}, cut.UID)
-			switch fsDiffTester.GetResults() {
-			case testhelper.SUCCESS:
-				continue
-			case testhelper.FAILURE:
-				tnf.ClaimFilePrintf("%s - changed folders: %v, deleted folders: %v", cut, fsDiffTester.ChangedFolders, fsDiffTester.DeletedFolders)
-				badContainers = append(badContainers, cut.Data.Name)
-			case testhelper.ERROR:
-				tnf.ClaimFilePrintf("%s - error while running fs-diff: %v: ", cut, fsDiffTester.Error)
-				errContainers = append(errContainers, cut.Data.Name)
-			}
+		}
+		fsDiffTester := cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder())
+		fsDiffTester.RunTest(clientsholder.Context{
+			Namespace:     debugPod.Namespace,
+			Podname:       debugPod.Name,
+			Containername: debugPod.Spec.Containers[0].Name,
+		}, cut.UID)
+		switch fsDiffTester.GetResults() {
+		case testhelper.SUCCESS:
+			continue
+		case testhelper.FAILURE:
+			tnf.ClaimFilePrintf("%s - changed folders: %v, deleted folders: %v", cut, fsDiffTester.ChangedFolders, fsDiffTester.DeletedFolders)
+			badContainers = append(badContainers, cut.Data.Name)
+		case testhelper.ERROR:
+			tnf.ClaimFilePrintf("%s - error while running fs-diff: %v: ", cut, fsDiffTester.Error)
+			errContainers = append(errContainers, cut.Data.Name)
 		}
 	}
 

@@ -94,7 +94,7 @@ func RunCommand(cmd *cobra.Command, args []string) error {
 
 // getHTTPBody helper function to get binary data from URL
 func getHTTPBody(url string) ([]uint8, error) {
-	//nolint:gosec
+	//nolint:gosec,noctx
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("http request %s failed with error: %w", url, err)
