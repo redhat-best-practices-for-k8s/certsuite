@@ -27,6 +27,7 @@ import (
 
 const (
 	getListeningPortsCmd = `ss -tulwnH`
+	portStateListen      = "LISTEN"
 	indexProtocol        = 0
 	indexState           = 1
 	indexPort            = 4
@@ -47,7 +48,7 @@ func parseListeningPorts(cmdOut string) (map[PortInfo]bool, error) {
 		if len(fields) < indexPort+1 {
 			continue
 		}
-		if fields[indexState] != "LISTEN" {
+		if fields[indexState] != portStateListen {
 			continue
 		}
 		s := strings.Split(fields[indexPort], ":")
@@ -69,7 +70,6 @@ func parseListeningPorts(cmdOut string) (map[PortInfo]bool, error) {
 }
 
 func GetListeningPorts(cut *provider.Container) (map[PortInfo]bool, error) {
-
 	outStr, errStr, err := crclient.ExecCommandContainerNSEnter(getListeningPortsCmd, cut)
 	if err != nil || errStr != "" {
 		return nil, fmt.Errorf("failed to execute command %s on %s, err: %s", getListeningPortsCmd, cut, err)

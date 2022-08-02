@@ -36,9 +36,8 @@ import (
 )
 
 const (
-	defaultNumPings      = 5
-	getListeningPortsCmd = `ss -tulwnH`
-	nodePort             = "NodePort"
+	defaultNumPings = 5
+	nodePort        = "NodePort"
 )
 
 type Port []struct {
