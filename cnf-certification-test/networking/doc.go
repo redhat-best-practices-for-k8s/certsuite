@@ -18,4 +18,4 @@
 Package networking contains tests that check connectivity and networking config
 related best practices.
 */
-package declaredandlistening
+package networking
