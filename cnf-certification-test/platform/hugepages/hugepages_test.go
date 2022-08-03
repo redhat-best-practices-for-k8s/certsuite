@@ -126,8 +126,9 @@ func Test_hugepagesFromKernelArgsFunc(t *testing.T) {
 		},
 	}
 
-	mc := provider.MachineConfig{MachineConfig: &mcv1.MachineConfig{}}
 	for _, tc := range testCases {
+		mc := provider.MachineConfig{MachineConfig: &mcv1.MachineConfig{}}
+
 		// Prepare fake MC object: only KernelArguments is needed.
 		mc.Spec.KernelArguments = tc.kernelArgs
 
@@ -310,8 +311,7 @@ func TestPositiveMachineConfigSystemdHugepages(t *testing.T) {
 			&client,
 		)
 
-		err := hpTester.Run()
-		assert.Equal(t, nil, err)
+		assert.Nil(t, hpTester.Run())
 	}
 }
 
@@ -483,10 +483,7 @@ func TestNegativeMachineConfigSystemdHugepages(t *testing.T) {
 			&client,
 		)
 
-		expectedErr := errors.New(tc.expectedErrorMsg)
-
-		err := hpTester.Run()
-		assert.Equal(t, expectedErr, err)
+		assert.Equal(t, errors.New(tc.expectedErrorMsg), hpTester.Run())
 	}
 }
 
@@ -609,8 +606,7 @@ func TestPositiveMachineConfigKernelArgsHugepages(t *testing.T) {
 			&client,
 		)
 
-		err := hpTester.Run()
-		assert.Equal(t, err, nil)
+		assert.Nil(t, hpTester.Run())
 	}
 }
 
@@ -708,9 +704,6 @@ func TestNegativeMachineConfigKernelArgsHugepages(t *testing.T) {
 			&client,
 		)
 
-		expectedErr := errors.New(tc.expectedErrorMsg)
-
-		err := hpTester.Run()
-		assert.Equal(t, expectedErr, err)
+		assert.Equal(t, errors.New(tc.expectedErrorMsg), hpTester.Run())
 	}
 }
