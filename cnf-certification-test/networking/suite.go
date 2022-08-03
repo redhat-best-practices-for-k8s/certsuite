@@ -14,7 +14,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package declaredandlistening
+package networking
 
 import (
 	"context"
@@ -24,12 +24,11 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/declaredandlistening"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/icmp"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -37,9 +36,8 @@ import (
 )
 
 const (
-	defaultNumPings      = 5
-	getListeningPortsCmd = `ss -tulwnH`
-	nodePort             = "NodePort"
+	defaultNumPings = 5
+	nodePort        = "NodePort"
 )
 
 type Port []struct {
@@ -87,7 +85,7 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestUndeclaredContainerPortsUsage)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
-		testListenAndDeclared(&env)
+		testUndeclaredContainerPortsUsage(&env)
 	})
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestServicesDoNotUseNodeportsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
@@ -102,40 +100,43 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 })
 
 //nolint:funlen
-func testListenAndDeclared(env *provider.TestEnvironment) {
-	var k declaredandlistening.Key
+func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
+	var portInfo netutil.PortInfo
 	var failedPods []*provider.Pod
-	for _, podUnderTest := range env.Pods {
-		declaredPorts := make(map[declaredandlistening.Key]bool)
-		listeningPorts := make(map[declaredandlistening.Key]bool)
-		for _, cut := range podUnderTest.Containers {
-			ports := cut.Data.Ports
-			logrus.Debugf("%s declaredPorts: %v", podUnderTest, ports)
-			for j := 0; j < len(ports); j++ {
-				k.Port = int(ports[j].ContainerPort)
-				k.Protocol = string(ports[j].Protocol)
-				declaredPorts[k] = true
+	for _, put := range env.Pods {
+		// First get the ports declared in the Pod's containers spec
+		declaredPorts := make(map[netutil.PortInfo]bool)
+		for _, cut := range put.Containers {
+			for _, port := range cut.Data.Ports {
+				portInfo.PortNumber = int(port.ContainerPort)
+				portInfo.Protocol = string(port.Protocol)
+				declaredPorts[portInfo] = true
 			}
 		}
-		firstPodContainer := podUnderTest.Containers[0]
-		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(getListeningPortsCmd, firstPodContainer)
-		if err != nil || errStr != "" {
-			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s, errStr: %s", getListeningPortsCmd, firstPodContainer, err, errStr)
-			failedPods = append(failedPods, podUnderTest)
+
+		// Then check the actual ports that the containers are listening on
+		firstPodContainer := put.Containers[0]
+		listeningPorts, err := netutil.GetListeningPorts(firstPodContainer)
+		if err != nil {
+			tnf.ClaimFilePrintf("Failed to get the container's listening ports, err: %s", err)
+			failedPods = append(failedPods, put)
 			continue
 		}
-		declaredandlistening.ParseListening(outStr, listeningPorts)
 		if len(listeningPorts) == 0 {
-			tnf.ClaimFilePrintf("None of the containers of %s have any listening port.", podUnderTest)
+			tnf.ClaimFilePrintf("None of the containers of %s have any listening port.", put)
 			continue
 		}
-		// compare between declaredPort,listeningPort
-		undeclaredPorts := declaredandlistening.CheckIfListenIsDeclared(listeningPorts, declaredPorts)
-		for k := range undeclaredPorts {
-			tnf.ClaimFilePrintf("%s is listening on port %d protocol %d, but that port was not declared in any container spec.", podUnderTest, k.Port, k.Protocol)
+
+		// Verify that all the listening ports have been declared in the container spec
+		failedPod := false
+		for listeningPort := range listeningPorts {
+			if !declaredPorts[listeningPort] {
+				tnf.ClaimFilePrintf("%s is listening on port %d protocol %d, but that port was not declared in any container spec.", put, portInfo.PortNumber, portInfo.Protocol)
+				failedPod = true
+			}
 		}
-		if len(undeclaredPorts) != 0 {
-			failedPods = append(failedPods, podUnderTest)
+		if failedPod {
+			failedPods = append(failedPods, put)
 		}
 	}
 	if nf := len(failedPods); nf > 0 {
@@ -208,18 +209,16 @@ func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 	// Then verify that no container is listening on the reserved OCP ports
 	for _, put := range env.Pods {
 		cut := put.Containers[0]
-		outStr, errStr, err := crclient.ExecCommandContainerNSEnter(getListeningPortsCmd, cut)
-		if err != nil || errStr != "" {
-			tnf.ClaimFilePrintf("Failed to execute command %s on %s, err: %s, errStr: %s", getListeningPortsCmd, cut, err, errStr)
+
+		listeningPorts, err := netutil.GetListeningPorts(cut)
+		if err != nil {
+			tnf.ClaimFilePrintf("Failed to get the listening ports on %s, err: %s", cut, err)
 			failedContainers++
 			continue
 		}
-
-		listeningPorts := make(map[declaredandlistening.Key]bool)
-		declaredandlistening.ParseListening(outStr, listeningPorts)
 		for port := range listeningPorts {
-			if OCPReservedPorts[int32(port.Port)] {
-				tnf.ClaimFilePrintf("%s has one container listening on port %d reserved by Openshift", put, port.Port)
+			if OCPReservedPorts[int32(port.PortNumber)] {
+				tnf.ClaimFilePrintf("%s has one container listening on port %d reserved by Openshift", put, port.PortNumber)
 				roguePods = append(roguePods, put.String())
 				break
 			}
