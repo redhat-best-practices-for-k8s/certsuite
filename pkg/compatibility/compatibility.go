@@ -66,9 +66,8 @@ var (
 		},
 		"4.9": {
 			GADate:  time.Date(2021, 10, 18, 0, 0, 0, 0, time.UTC), // October 18, 2021
-			FSEDate: time.Date(2022, 6, 8, 0, 0, 0, 0, time.UTC),   // June 8, 2022
+			FSEDate: time.Date(2022, 6, 10, 0, 0, 0, 0, time.UTC),  // June 10, 2022
 			MSEDate: time.Date(2023, 4, 18, 0, 0, 0, 0, time.UTC),  // April 18, 2023
-			// Note: FSEDate (Release of 4.10 + 3 months) is currently a "guess".  Update when available.
 
 			// OS Compatibility
 			MinRHCOSVersion:      "4.9",
