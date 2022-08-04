@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"time"
+	"os"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
@@ -14,7 +15,8 @@ import (
 )
 
 const (
-	imageWithVersion                   = "quay.io/testnetworkfunction/debug-partner:latest"
+	imageWithVersion                   = os.Getenv("TNF_PARTNER_REPO") != "" ? 
+									os.Getenv("TNF_PARTNER_REPO") + "/debug-partner:latest" : "quay.io/testnetworkfunction/debug-partner:latest"
 	timeout                            = 5 * time.Minute
 	daemonsetDeletionCheckRetryInteval = 5 * time.Second
 	nodeExporter                       = "node-exporter"
