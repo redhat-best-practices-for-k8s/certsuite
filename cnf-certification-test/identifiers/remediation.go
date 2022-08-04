@@ -170,4 +170,7 @@ const (
 	RequestsAndLimitsRemediation = `Add requests and limits to your container spec.  See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits`
 
 	NamespaceResourceQuotaRemediation = `Apply a ResourceQuota to the namespace your CNF is running in`
+
+	//nolint:gosec
+	PodTolerationBypassRemediation = `Do not allow pods to bypass the NoExecute, PreferNoSchedule, or NoSchedule tolerations that are default applied by Kubernetes.`
 )
