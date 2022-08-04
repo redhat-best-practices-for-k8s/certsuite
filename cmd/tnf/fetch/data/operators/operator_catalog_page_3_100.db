@@ -164,7 +164,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:15:36.062000+00:00",
+      "last_update_date": "2022-08-03T01:55:28.499000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -238,7 +238,7 @@
           "name": "kube_rbac"
         }
       ],
-      "replaces": "",
+      "replaces": null,
       "skip_range": ">=1.0.0 <1.0.6",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
@@ -315,7 +315,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:01:05.394000+00:00",
+      "last_update_date": "2022-08-03T01:44:07.592000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -334,8 +334,8 @@
           "name": "redis-enterprise-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "6.0.8-20",
@@ -531,7 +531,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:54:12.045000+00:00",
+      "last_update_date": "2022-08-03T01:46:31.791000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -572,7 +572,7 @@
           "name": "ui"
         }
       ],
-      "replaces": "",
+      "replaces": null,
       "skip_range": ">=2.3.0 <2.3.4",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
@@ -685,7 +685,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:15:59.893000+00:00",
+      "last_update_date": "2022-08-03T01:35:58.063000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -709,8 +709,8 @@
           "name": "uma"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "3.0.0",
@@ -786,7 +786,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:18:15.309000+00:00",
+      "last_update_date": "2022-08-03T05:03:30.366000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -795,13 +795,11 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         }
       ],
@@ -818,8 +816,8 @@
           "name": "redis-enterprise-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "6.0.8-20",
@@ -847,7 +845,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:08:09.448000+00:00",
+      "last_update_date": "2022-08-03T04:37:36.449000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -862,6 +860,7 @@
         {
           "group": "instana.io",
           "kind": "InstanaAgent",
+          "plural": "agents",
           "version": "v1beta1"
         }
       ],
@@ -896,7 +895,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-16T16:40:36.270000+00:00",
+      "last_update_date": "2022-08-03T01:40:23.106000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -946,7 +945,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:20:28.061000+00:00",
+      "last_update_date": "2022-08-03T01:56:15.475000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -990,7 +989,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:05:07.183000+00:00",
+      "last_update_date": "2022-08-03T05:04:16.113000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -1033,7 +1032,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:10:51.142000+00:00",
+      "last_update_date": "2022-08-03T01:55:33.327000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -1077,7 +1076,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-16T17:32:59.583000+00:00",
+      "last_update_date": "2022-08-03T04:46:29.692000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -1218,7 +1217,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:08:06.205000+00:00",
+      "last_update_date": "2022-08-03T01:28:46.495000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -1264,8 +1263,8 @@
           "name": "citrix-k8s-cpx-ingress-01834b5b33f61a8a5670ef5c8917475b7f21b341d09d3416a5fa8c2412ec6fdc-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.9.5",
@@ -1332,7 +1331,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:11:57.967000+00:00",
+      "last_update_date": "2022-08-03T05:07:09.533000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -1369,8 +1368,8 @@
           "name": "instana_agent"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.0.0",
@@ -1437,7 +1436,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:01:26.113000+00:00",
+      "last_update_date": "2022-08-03T01:39:13.931000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -1474,8 +1473,8 @@
           "name": "instana_agent"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.0",
@@ -1530,7 +1529,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:12:18.020000+00:00",
+      "last_update_date": "2022-08-03T04:01:13.370000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -1556,8 +1555,8 @@
           "name": "cert-manager-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.15.3",
@@ -1612,7 +1611,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:18:58.848000+00:00",
+      "last_update_date": "2022-08-03T03:57:39.256000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -1638,8 +1637,8 @@
           "name": "cert-manager-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.15.3",
@@ -1694,7 +1693,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:51:06.527000+00:00",
+      "last_update_date": "2022-08-03T01:37:31.076000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -1720,8 +1719,8 @@
           "name": "cert-manager-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.15.3",
@@ -1776,7 +1775,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:17:26.931000+00:00",
+      "last_update_date": "2022-08-03T01:25:39.055000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -1802,8 +1801,8 @@
           "name": "cert-manager-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.15.3",
@@ -1831,7 +1830,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:09:00.239000+00:00",
+      "last_update_date": "2022-08-03T01:44:26.562000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -1933,7 +1932,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:16:34.683000+00:00",
+      "last_update_date": "2022-08-03T01:43:44.872000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -1986,8 +1985,8 @@
           "name": "grafana"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.0",
@@ -2015,7 +2014,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:31:13.899000+00:00",
+      "last_update_date": "2022-08-03T04:42:54.930000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -2058,7 +2057,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:13:51.638000+00:00",
+      "last_update_date": "2022-08-03T01:48:09.757000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -2095,7 +2094,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-16T16:58:48.245000+00:00",
+      "last_update_date": "2022-08-03T01:51:21.770000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -2326,7 +2325,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:25:58.525000+00:00",
+      "last_update_date": "2022-08-03T05:03:11.384000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -2468,8 +2467,8 @@
           "name": "pgo_deployer"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.0.0",
@@ -2684,7 +2683,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:05:57.385000+00:00",
+      "last_update_date": "2022-08-03T01:52:08.101000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -2826,8 +2825,8 @@
           "name": "pgo_deployer"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.0",
@@ -2892,7 +2891,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:48:52.871000+00:00",
+      "last_update_date": "2022-08-03T01:36:54.683000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -2928,8 +2927,8 @@
           "name": "jupyterhub_dashboard"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.0",
@@ -2990,7 +2989,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:50:22.854000+00:00",
+      "last_update_date": "2022-08-03T01:34:13.234000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -3014,8 +3013,8 @@
           "name": "kubeturbo"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "8.0.6",
@@ -3163,7 +3162,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:11:41.383000+00:00",
+      "last_update_date": "2022-08-03T01:56:41.354000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -3192,8 +3191,8 @@
           "name": "nexus-repository-manager-4d816619ae0add7010dcc297d7593ceace9c92c060ed01764dd3d84e804c42f0-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "3.27.0-1",
@@ -3258,7 +3257,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:54:48.925000+00:00",
+      "last_update_date": "2022-08-03T04:55:39.839000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -3293,8 +3292,8 @@
           "name": "jupyterhub_dashboard"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.1.5",
@@ -3359,7 +3358,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:57:54.254000+00:00",
+      "last_update_date": "2022-08-03T01:52:04.940000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -3395,8 +3394,8 @@
           "name": "jupyterhub_dashboard"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.1.5",
@@ -3561,7 +3560,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:31:33.534000+00:00",
+      "last_update_date": "2022-08-03T04:00:44.172000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -3637,8 +3636,8 @@
           "name": "controller-c8d36c69c8e740d6cc9c1adc630d10b9b67639d45d5c103fdf8961151407af30-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.2.2",
@@ -3803,7 +3802,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:17:08.922000+00:00",
+      "last_update_date": "2022-08-03T01:36:42.226000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -3879,8 +3878,8 @@
           "name": "controller-c8d36c69c8e740d6cc9c1adc630d10b9b67639d45d5c103fdf8961151407af30-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.2.2",
@@ -3908,7 +3907,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:13:40.899000+00:00",
+      "last_update_date": "2022-08-03T01:53:20.652000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -3945,7 +3944,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:36:00.573000+00:00",
+      "last_update_date": "2022-08-03T04:53:26.197000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4043,7 +4042,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:21:14.237000+00:00",
+      "last_update_date": "2022-08-03T01:44:23.654000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -4077,8 +4076,8 @@
           "name": "dynatrace_oneagent"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.9.5",
@@ -4156,7 +4155,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:24:39.126000+00:00",
+      "last_update_date": "2022-08-03T04:05:24.220000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4201,8 +4200,8 @@
           "name": "dynatrace_oneagent"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.9.5",
@@ -4303,7 +4302,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:59:47.041000+00:00",
+      "last_update_date": "2022-08-03T01:36:03.923000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -4344,8 +4343,8 @@
           "name": "citrix-k8s-cpx-ingress-01834b5b33f61a8a5670ef5c8917475b7f21b341d09d3416a5fa8c2412ec6fdc-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.9.5",
@@ -4411,7 +4410,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:58:20.698000+00:00",
+      "last_update_date": "2022-08-03T01:41:18.105000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -4443,8 +4442,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.0.0",
@@ -4510,7 +4509,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:23:00.159000+00:00",
+      "last_update_date": "2022-08-03T05:02:09.497000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4542,8 +4541,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.0.0",
@@ -4703,7 +4702,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:04:40.774000+00:00",
+      "last_update_date": "2022-08-03T04:51:05.043000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4735,8 +4734,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.0.0",
@@ -4863,7 +4862,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:11:38.467000+00:00",
+      "last_update_date": "2022-08-03T01:49:07.186000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -4924,8 +4923,8 @@
           "name": "vprotect-init-762b1b58f178857dfc25f014c1c290a8c3813fcd9ce544f75c362b3e98df3870-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.2",
@@ -5052,7 +5051,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:55:51.459000+00:00",
+      "last_update_date": "2022-08-03T04:37:22.772000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5113,8 +5112,8 @@
           "name": "vprotect-init-762b1b58f178857dfc25f014c1c290a8c3813fcd9ce544f75c362b3e98df3870-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.0.2",
@@ -5142,7 +5141,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-16T16:41:26.799000+00:00",
+      "last_update_date": "2022-08-03T01:56:45.992000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -5186,7 +5185,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-16T17:27:01.083000+00:00",
+      "last_update_date": "2022-08-03T04:25:02.929000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5275,7 +5274,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:09:19.671000+00:00",
+      "last_update_date": "2022-08-03T01:39:19.256000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -5306,8 +5305,8 @@
           "name": "kube-rbac-proxy"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.40.3",
@@ -5380,7 +5379,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:12:52.065000+00:00",
+      "last_update_date": "2022-08-03T04:28:38.276000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5411,8 +5410,8 @@
           "name": "kube-rbac-proxy"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.40.3",
@@ -5497,7 +5496,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:16:26.022000+00:00",
+      "last_update_date": "2022-08-03T04:47:39.153000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5506,6 +5505,7 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Cluster",
+          "plural": "clusters",
           "version": "v1"
         },
         {
@@ -5516,6 +5516,7 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
           "version": "v1"
         },
         {
@@ -5526,6 +5527,7 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Backup",
+          "plural": "backups",
           "version": "v1"
         },
         {
@@ -5547,8 +5549,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.0.0",
@@ -5633,7 +5635,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:04:08.004000+00:00",
+      "last_update_date": "2022-08-03T04:31:46.809000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5642,6 +5644,7 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Cluster",
+          "plural": "clusters",
           "version": "v1"
         },
         {
@@ -5652,6 +5655,7 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
           "version": "v1"
         },
         {
@@ -5662,6 +5666,7 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Backup",
+          "plural": "backups",
           "version": "v1"
         },
         {
@@ -5683,8 +5688,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.0.0",
@@ -5769,7 +5774,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:13:25.598000+00:00",
+      "last_update_date": "2022-08-03T01:41:12.004000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -5788,8 +5793,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.0",
@@ -5874,7 +5879,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:00:18.308000+00:00",
+      "last_update_date": "2022-08-03T01:41:08.827000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -5893,8 +5898,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.0",
@@ -5984,7 +5989,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:54:05.618000+00:00",
+      "last_update_date": "2022-08-03T04:59:44.815000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -6010,8 +6015,8 @@
           "name": "cass-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.5.0",
@@ -6101,7 +6106,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:51:50.589000+00:00",
+      "last_update_date": "2022-08-03T01:39:03.658000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -6127,8 +6132,8 @@
           "name": "cass-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.5.0",
@@ -6156,7 +6161,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-16T17:13:34.270000+00:00",
+      "last_update_date": "2022-08-03T01:35:08.242000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -6279,7 +6284,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:58:50.873000+00:00",
+      "last_update_date": "2022-08-03T01:35:27.273000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -6320,8 +6325,8 @@
           "name": "init-7f5694d99d1d8ecba6f650f71c5bfc246a1e382dbd943e0766dad4473d214036-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.6",
@@ -6461,7 +6466,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:03:27.648000+00:00",
+      "last_update_date": "2022-08-03T04:19:46.886000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -6517,8 +6522,8 @@
           "name": "dcgm-init-container-image"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.5.2",
@@ -6658,7 +6663,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:28:24.517000+00:00",
+      "last_update_date": "2022-08-03T01:47:59.648000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -6714,8 +6719,8 @@
           "name": "dcgm-init-container-image"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.5.2",
@@ -6789,7 +6794,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:00:19.378000+00:00",
+      "last_update_date": "2022-08-03T04:41:20.104000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -6820,8 +6825,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.0.1",
@@ -6895,7 +6900,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:15:13.269000+00:00",
+      "last_update_date": "2022-08-03T01:38:31.810000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -6926,8 +6931,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.1",
@@ -6955,7 +6960,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-04-16T16:36:36.744000+00:00",
+      "last_update_date": "2022-08-03T01:50:16.781000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -7029,7 +7034,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:56:08.907000+00:00",
+      "last_update_date": "2022-08-03T05:00:28.150000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -7065,8 +7070,8 @@
           "name": "jupyterlab_dashboard"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.1.6",
@@ -7131,7 +7136,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:23:20.136000+00:00",
+      "last_update_date": "2022-08-03T01:53:42.383000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -7167,8 +7172,8 @@
           "name": "jupyterlab_dashboard"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.1.6",
@@ -7232,7 +7237,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:58:56.053000+00:00",
+      "last_update_date": "2022-08-03T04:27:13.851000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -7263,8 +7268,8 @@
           "name": "h2o-62500ca14adacd1164d7ef4f64ccc96c3d0ad90ddf29c3e02d1aa82bd42aa1a4-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.1.0",
@@ -7328,7 +7333,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:55:28.978000+00:00",
+      "last_update_date": "2022-08-03T01:40:53.644000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -7359,8 +7364,8 @@
           "name": "h2o-62500ca14adacd1164d7ef4f64ccc96c3d0ad90ddf29c3e02d1aa82bd42aa1a4-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.1.0",
@@ -7462,7 +7467,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:20:34.169000+00:00",
+      "last_update_date": "2022-08-03T04:34:21.344000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -7488,8 +7493,8 @@
           "name": "universalagent-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.0.32",
@@ -7591,7 +7596,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:16:53.566000+00:00",
+      "last_update_date": "2022-08-03T01:40:43.332000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -7610,8 +7615,8 @@
           "name": "universalagent-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.32",
@@ -7676,7 +7681,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:15:56.492000+00:00",
+      "last_update_date": "2022-08-03T04:48:34.043000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -7712,8 +7717,8 @@
           "name": "jupyterlab_dashboard"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.1.7",
@@ -7778,7 +7783,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:50:03.469000+00:00",
+      "last_update_date": "2022-08-03T01:35:26.921000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -7814,8 +7819,8 @@
           "name": "jupyterlab_dashboard"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.1.7",
@@ -7922,7 +7927,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:26:31.077000+00:00",
+      "last_update_date": "2022-08-03T01:50:36.966000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -7963,8 +7968,8 @@
           "name": "init-0216318bff670cc971a4ddd1015ba23e1b27e0fc56a024f3db8e7a5011ef7013-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.7",
@@ -8022,7 +8027,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:50:35.093000+00:00",
+      "last_update_date": "2022-08-03T01:47:05.189000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -8054,8 +8059,8 @@
           "name": "t8c-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "8.0.0",
@@ -8140,7 +8145,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:08:27.547000+00:00",
+      "last_update_date": "2022-08-03T01:51:53.894000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -8193,8 +8198,8 @@
           "name": "nodered_restore"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.3",
@@ -8512,7 +8517,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:02:25.919000+00:00",
+      "last_update_date": "2022-08-03T01:27:12.966000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -8538,8 +8543,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.5.0",
@@ -8988,7 +8993,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:56:50.407000+00:00",
+      "last_update_date": "2022-08-03T02:20:52.286000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -9014,8 +9019,8 @@
           "name": "ibm-block-csi-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.4.0",
@@ -9198,7 +9203,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:12:14.864000+00:00",
+      "last_update_date": "2022-08-03T04:54:10.230000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -9219,8 +9224,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.0.0",
@@ -9363,7 +9368,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:05:43.559000+00:00",
+      "last_update_date": "2022-08-03T04:14:02.034000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -9389,8 +9394,8 @@
           "name": "ibm-block-csi-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.4.0",
@@ -9573,7 +9578,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:23:55.745000+00:00",
+      "last_update_date": "2022-08-03T01:43:02.139000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -9594,8 +9599,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.0.0",
@@ -9937,7 +9942,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:24:32.557000+00:00",
+      "last_update_date": "2022-08-03T01:25:18.478000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -10113,8 +10118,8 @@
           "name": "server-fd6d9c0ef033009e76d60dc36f55ce7f3aaa942a7be9c2b66c335eabc8f5b11e-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "2.1.0-1",
@@ -10324,7 +10329,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:17:52.463000+00:00",
+      "last_update_date": "2022-08-03T01:42:27.491000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -10424,8 +10429,8 @@
           "name": "pgpool2"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "2.0.0",
@@ -10501,7 +10506,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:12:37.875000+00:00",
+      "last_update_date": "2022-08-03T01:47:33.170000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -10533,8 +10538,8 @@
           "name": "redis-enterprise-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "6.0.12-5",
@@ -10610,7 +10615,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:54:21.639000+00:00",
+      "last_update_date": "2022-08-03T01:42:12.401000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -10642,8 +10647,8 @@
           "name": "redis-enterprise-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "6.0.12-5",
@@ -10719,7 +10724,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:01:53.833000+00:00",
+      "last_update_date": "2022-08-03T04:25:34.712000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -10728,13 +10733,11 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
@@ -10751,8 +10754,8 @@
           "name": "redis-enterprise-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "6.0.12-5",
@@ -10828,7 +10831,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:14:17.710000+00:00",
+      "last_update_date": "2022-08-03T04:47:19.253000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -10837,13 +10840,11 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
@@ -10860,8 +10861,8 @@
           "name": "redis-enterprise-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "6.0.12-5",
@@ -11112,7 +11113,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:54:30.149000+00:00",
+      "last_update_date": "2022-08-03T04:54:36.983000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -11213,8 +11214,8 @@
           "name": "alibi-detect-server-8864b941bc1a14610471aef520f87561b229e5df826fbc74e480dd733d937628-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.0.0",
@@ -11465,7 +11466,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:30:19.489000+00:00",
+      "last_update_date": "2022-08-03T04:09:25.515000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -11566,8 +11567,8 @@
           "name": "alibi-detect-server-8864b941bc1a14610471aef520f87561b229e5df826fbc74e480dd733d937628-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.0.0",
@@ -12068,7 +12069,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T02:05:37.503000+00:00",
+      "last_update_date": "2022-08-03T02:00:32.133000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12077,37 +12078,31 @@
         {
           "group": "operator.aquasec.com",
           "kind": "AquaCsp",
-          "plural": "aquacsps",
           "version": "v1alpha1"
         },
         {
           "group": "operator.aquasec.com",
           "kind": "AquaDatabase",
-          "plural": "aquadatabases",
           "version": "v1alpha1"
         },
         {
           "group": "operator.aquasec.com",
           "kind": "AquaEnforcer",
-          "plural": "aquaenforcers",
           "version": "v1alpha1"
         },
         {
           "group": "operator.aquasec.com",
           "kind": "AquaGateway",
-          "plural": "aquagateways",
           "version": "v1alpha1"
         },
         {
           "group": "operator.aquasec.com",
           "kind": "AquaScanner",
-          "plural": "aquascanners",
           "version": "v1alpha1"
         },
         {
           "group": "operator.aquasec.com",
           "kind": "AquaServer",
-          "plural": "aquaservers",
           "version": "v1alpha1"
         }
       ],
@@ -12149,8 +12144,8 @@
           "name": "enforcer"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "5.0.0",
@@ -12224,7 +12219,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:00:57.450000+00:00",
+      "last_update_date": "2022-08-03T01:52:14.927000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12255,8 +12250,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.0.1",
@@ -12471,7 +12466,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:06:39.007000+00:00",
+      "last_update_date": "2022-08-03T01:52:38.677000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12613,8 +12608,8 @@
           "name": "pgo_deployer"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.0.0",
@@ -12797,7 +12792,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:58:32.542000+00:00",
+      "last_update_date": "2022-08-03T02:22:18.026000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12818,8 +12813,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.0.0",
@@ -12874,7 +12869,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T02:12:59.185000+00:00",
+      "last_update_date": "2022-08-03T01:42:56.850000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12900,8 +12895,8 @@
           "name": "cert-manager-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.15.3",
@@ -12956,7 +12951,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:56:13.845000+00:00",
+      "last_update_date": "2022-08-03T02:17:06.268000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12982,8 +12977,8 @@
           "name": "cert-manager-operator"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.15.3",
@@ -13108,7 +13103,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:07:53.196000+00:00",
+      "last_update_date": "2022-08-03T02:04:44.430000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13154,8 +13149,8 @@
           "name": "citrix-k8s-cpx-ingress-01834b5b33f61a8a5670ef5c8917475b7f21b341d09d3416a5fa8c2412ec6fdc-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.9.5",
@@ -13240,7 +13235,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T02:13:37.390000+00:00",
+      "last_update_date": "2022-08-03T02:06:03.428000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13249,6 +13244,7 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Cluster",
+          "plural": "clusters",
           "version": "v1"
         },
         {
@@ -13259,6 +13255,7 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
           "version": "v1"
         },
         {
@@ -13269,6 +13266,7 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Backup",
+          "plural": "backups",
           "version": "v1"
         },
         {
@@ -13290,8 +13288,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.0.0",
@@ -13376,7 +13374,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T02:03:54.104000+00:00",
+      "last_update_date": "2022-08-03T01:52:19.641000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13385,6 +13383,7 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Cluster",
+          "plural": "clusters",
           "version": "v1"
         },
         {
@@ -13395,6 +13394,7 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
           "version": "v1"
         },
         {
@@ -13405,6 +13405,7 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Backup",
+          "plural": "backups",
           "version": "v1"
         },
         {
@@ -13426,8 +13427,8 @@
           "name": "manager"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.0.0",
@@ -13769,7 +13770,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:05:38.325000+00:00",
+      "last_update_date": "2022-08-03T02:10:48.396000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13935,8 +13936,8 @@
           "name": "server-fd6d9c0ef033009e76d60dc36f55ce7f3aaa942a7be9c2b66c335eabc8f5b11e-annotation"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "2.1.0",
@@ -14047,7 +14048,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:56:00.970000+00:00",
+      "last_update_date": "2022-08-03T02:19:22.629000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -14109,7 +14110,7 @@
           "name": "couchdb-operator"
         }
       ],
-      "replaces": "",
+      "replaces": null,
       "skip_range": ">=1.0.0 <1.4.2",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
@@ -14175,7 +14176,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:47:54.081000+00:00",
+      "last_update_date": "2022-08-03T02:25:22.852000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -14211,8 +14212,8 @@
           "name": "jupyterlab_dashboard"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.1.7",
@@ -14295,7 +14296,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:49:50.550000+00:00",
+      "last_update_date": "2022-08-03T01:57:31.117000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -14337,7 +14338,7 @@
           "name": "container-data-collection-forwarder-d99a1bc9213554cdf70202fa73e135c68fdd77a4b4972f591997dd2b94fde50a-annotation"
         }
       ],
-      "replaces": "",
+      "replaces": null,
       "skip_range": ">=0.0.2 <1.0.0",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
@@ -14478,7 +14479,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-06-17T02:06:13.746000+00:00",
+      "last_update_date": "2022-08-03T02:07:51.937000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -14534,8 +14535,8 @@
           "name": "dcgm-init-container-image"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.5.2",
@@ -14544,5 +14545,5 @@
   ],
   "page": 3,
   "page_size": 100,
-  "total": 4093
+  "total": 4575
 }
