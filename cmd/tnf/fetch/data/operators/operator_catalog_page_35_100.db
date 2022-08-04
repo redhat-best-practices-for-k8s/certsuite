@@ -1,43 +1,6 @@
 {
   "data": [
     {
-      "_id": "62abd21cdd92c1f1f12a7481",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-06-17T01:00:12.985000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-6",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:00:12.985000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "6.0.6-6",
-      "version_original": "6.0.6-6"
-    },
-    {
       "_id": "62abd25d240dc134424c481f",
       "alm_examples": [
         {
@@ -4803,7 +4766,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-07-04T16:40:25.327000+00:00",
+      "last_update_date": "2022-08-03T04:08:20.409000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -4840,8 +4803,8 @@
           "name": "kubeturbo"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "8.5.5",
@@ -5535,7 +5498,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-07-04T16:40:54.097000+00:00",
+      "last_update_date": "2022-08-03T04:17:21.575000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -5572,8 +5535,8 @@
           "name": "kubeturbo"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "8.5.5",
@@ -5634,7 +5597,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-07-04T16:40:00.877000+00:00",
+      "last_update_date": "2022-08-03T04:06:19.036000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -5669,8 +5632,8 @@
           "name": "kubeturbo"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "8.5.5",
@@ -7443,7 +7406,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-07-04T16:43:22.354000+00:00",
+      "last_update_date": "2022-08-03T04:00:27.493000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -7480,8 +7443,8 @@
           "name": "kubeturbo"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "8.5.5",
@@ -9859,7 +9822,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-07-04T16:43:43.270000+00:00",
+      "last_update_date": "2022-08-03T01:41:12.824000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -9896,8 +9859,8 @@
           "name": "kubeturbo"
         }
       ],
-      "replaces": "",
-      "skip_range": "",
+      "replaces": null,
+      "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "8.5.5",
@@ -12189,9 +12152,59 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "6.2.8-11",
       "version_original": "6.2.8-11"
+    },
+    {
+      "_id": "62abe231be1fd3a96e059063",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-06-17T02:08:49.368000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:08:49.368000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
     }
   ],
   "page": 35,
   "page_size": 100,
-  "total": 4093
+  "total": 4575
 }
