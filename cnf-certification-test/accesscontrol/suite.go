@@ -498,7 +498,7 @@ func TestSYSNiceRealtimeCapability(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		n := env.Nodes[cut.NodeName]
 		if n.IsRTKernel() && !strings.Contains(cut.Data.SecurityContext.Capabilities.String(), "SYS_NICE") {
-			logrus.Debugf("Container: %s has been found running on a realtime kernel enabled node without SYS_NICE capability.", cut.String())
+			tnf.ClaimFilePrintf("Container: %s has been found running on a realtime kernel enabled node without SYS_NICE capability.", cut.String())
 			containersWithoutSysNice = append(containersWithoutSysNice, cut.String())
 		}
 	}
