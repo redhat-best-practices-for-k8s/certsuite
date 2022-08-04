@@ -26,41 +26,41 @@ const (
 	numRegexFields           = 4
 )
 
-type hugePagesConfig struct {
-	hugepagesSize  int // size in kb
-	hugepagesCount int
-}
+// countBySize maps a hugepages size to a count=number of hugepages.
+type countBySize map[int]int
 
-// numaHugePagesPerSize maps a numa id to an array of hugePagesConfig structs.
-type numaHugePagesPerSize map[int][]hugePagesConfig
+// hugepagesByNuma maps a numa id to a hpSizeCounts map.
+type hugepagesByNuma map[int]countBySize
 
-// String is the stringer implementation for the numaHugePagesPerSize type so debug/info
+// String is the stringer implementation for the numaHpSizeCounts type so debug/info
 // lines look better.
-func (numaHugepages numaHugePagesPerSize) String() string {
+func (numaHps hugepagesByNuma) String() string {
 	// Order numa ids/indexes
-	numaIndexes := make([]int, 0)
-	for numaIdx := range numaHugepages {
+	numaIndexes := []int{}
+
+	for numaIdx := range numaHps {
 		numaIndexes = append(numaIndexes, numaIdx)
 	}
 	sort.Ints(numaIndexes)
 
 	var sb strings.Builder
 	for _, numaIdx := range numaIndexes {
-		hugepagesPerSize := numaHugepages[numaIdx]
+		sizeCounts := numaHps[numaIdx]
 		sb.WriteString(fmt.Sprintf("Numa=%d ", numaIdx))
-		for _, hugepages := range hugepagesPerSize {
-			sb.WriteString(fmt.Sprintf("[Size=%dkB Count=%d] ", hugepages.hugepagesSize, hugepages.hugepagesCount))
+		for size, count := range sizeCounts {
+			sb.WriteString(fmt.Sprintf("[Size=%dkB Count=%d] ", size, count))
 		}
 	}
 	return sb.String()
 }
 
 type Tester struct {
-	node    *provider.Node
-	context clientsholder.Context
+	node      *provider.Node
+	context   clientsholder.Context
+	commander clientsholder.Command
 
-	nodeNumaHugePagesPerSize numaHugePagesPerSize
-	mcSystemdHugepages       numaHugePagesPerSize
+	nodeHugepagesByNuma      hugepagesByNuma
+	mcSystemdHugepagesByNuma hugepagesByNuma
 }
 
 func hugepageSizeToInt(s string) int {
@@ -76,9 +76,10 @@ func hugepageSizeToInt(s string) int {
 	return num
 }
 
-func NewTester(node *provider.Node, debugPod *corev1.Pod) (*Tester, error) {
+func NewTester(node *provider.Node, debugPod *corev1.Pod, commander clientsholder.Command) (*Tester, error) {
 	tester := &Tester{
-		node: node,
+		node:      node,
+		commander: commander,
 		context: clientsholder.Context{
 			Namespace:     debugPod.Namespace,
 			Podname:       debugPod.Name,
@@ -88,13 +89,13 @@ func NewTester(node *provider.Node, debugPod *corev1.Pod) (*Tester, error) {
 
 	logrus.Infof("Getting node %s numa's hugepages values.", node.Data.Name)
 	var err error
-	tester.nodeNumaHugePagesPerSize, err = tester.getNodeNumaHugePages()
+	tester.nodeHugepagesByNuma, err = tester.getNodeNumaHugePages()
 	if err != nil {
 		return nil, fmt.Errorf("unable to get node hugepages, err: %v", err)
 	}
 
 	logrus.Info("Parsing machineconfig's kernelArguments and systemd's hugepages units.")
-	tester.mcSystemdHugepages, err = getMcSystemdUnitsHugepagesConfig(&tester.node.Mc)
+	tester.mcSystemdHugepagesByNuma, err = getMcSystemdUnitsHugepagesConfig(&tester.node.Mc)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get MC systemd hugepages config, err: %v", err)
 	}
@@ -103,7 +104,7 @@ func NewTester(node *provider.Node, debugPod *corev1.Pod) (*Tester, error) {
 }
 
 func (tester *Tester) HasMcSystemdHugepagesUnits() bool {
-	return len(tester.mcSystemdHugepages) > 0
+	return len(tester.mcSystemdHugepagesByNuma) > 0
 }
 
 func (tester *Tester) Run() error {
@@ -123,27 +124,48 @@ func (tester *Tester) Run() error {
 
 // TestNodeHugepagesWithMcSystemd compares the node's hugepages values against the mc's systemd units ones.
 func (tester *Tester) TestNodeHugepagesWithMcSystemd() (bool, error) {
-	// Iterate through mc's numas and make sure they exist and have the same sizes and values in the node.
-	for mcNumaIdx, mcNumaHugepageCfgs := range tester.mcSystemdHugepages {
-		nodeNumaHugepageCfgs, exists := tester.nodeNumaHugePagesPerSize[mcNumaIdx]
-		if !exists {
-			return false, fmt.Errorf("hugepages config not found for machine config's numa %d", mcNumaIdx)
+	// Iterate through node's actual hugepages to make sure that each node's size that does not exist in the
+	// MachineConfig has a value of 0.
+	for nodeNumaIdx, nodeCountBySize := range tester.nodeHugepagesByNuma {
+		// First, numa index should exist in MC
+		mcCountBySize, numaExistsInMc := tester.mcSystemdHugepagesByNuma[nodeNumaIdx]
+		if !numaExistsInMc {
+			logrus.Warnf("Numa %d does not exist in machine config. All hugepage count for all sizes must be zero.", nodeNumaIdx)
+			for _, count := range nodeCountBySize {
+				if count != 0 {
+					return false, fmt.Errorf("node's numa %d hugepages config does not exist in node's machineconfig", nodeNumaIdx)
+				}
+			}
+		}
+
+		// Second, all sizes must exist in mc. If it does not exist (e.g. default 2MB size), its count should be 0.
+		for nodeSize, nodeCount := range nodeCountBySize {
+			if _, sizeExistsInMc := mcCountBySize[nodeSize]; !sizeExistsInMc && nodeCount != 0 {
+				return false, fmt.Errorf("node's numa %d hugepages size=%d does not appear in MC, but the count is not zero (%d)",
+					nodeNumaIdx, nodeSize, nodeCount)
+			}
+		}
+	}
+
+	// Now, iterate through mc's numas and make sure they exist and have the same sizes and values in the node.
+	for mcNumaIdx, mcCountBySize := range tester.mcSystemdHugepagesByNuma {
+		nodeCountBySize, numaExistsInNode := tester.nodeHugepagesByNuma[mcNumaIdx]
+		// First, numa index should exist in the node
+		if !numaExistsInNode {
+			return false, fmt.Errorf("node does not have numa id %d found in the machine config", mcNumaIdx)
 		}
 
 		// For this numa, iterate through each of the mc's hugepages sizes and compare with node ones.
-		for _, mcHugepagesCfg := range mcNumaHugepageCfgs {
-			configMatching := false
-			for _, nodeHugepagesCfg := range nodeNumaHugepageCfgs {
-				if nodeHugepagesCfg.hugepagesSize == mcHugepagesCfg.hugepagesSize && nodeHugepagesCfg.hugepagesCount == mcHugepagesCfg.hugepagesCount {
-					logrus.Infof("MC numa=%d, hugepages count:%d, size:%d match node ones: %s",
-						mcNumaIdx, mcHugepagesCfg.hugepagesCount, mcHugepagesCfg.hugepagesSize, tester.nodeNumaHugePagesPerSize)
-					configMatching = true
-					break
-				}
+		for mcSize, mcCount := range mcCountBySize {
+			nodeCount, nodeSizeExistsInNode := nodeCountBySize[mcSize]
+			if !nodeSizeExistsInNode {
+				return false, fmt.Errorf("node's numa id %d does not have size %d found in the machine config",
+					mcNumaIdx, mcSize)
 			}
-			if !configMatching {
-				return false, fmt.Errorf("MC numa=%d, hugepages (count:%d, size:%d) not matching node ones: %s",
-					mcNumaIdx, mcHugepagesCfg.hugepagesCount, mcHugepagesCfg.hugepagesSize, tester.nodeNumaHugePagesPerSize)
+
+			if nodeCount != mcCount {
+				return false, fmt.Errorf("mc numa=%d, hugepages count:%d, size:%d does not match node ones=%d",
+					mcNumaIdx, mcCount, mcSize, nodeCount)
 			}
 		}
 	}
@@ -155,28 +177,34 @@ func (tester *Tester) TestNodeHugepagesWithMcSystemd() (bool, error) {
 // The total count of hugepages of the size defined in the kernelArguments must match the kernArgs' hugepages value.
 // For other sizes, the sum should be 0.
 func (tester *Tester) TestNodeHugepagesWithKernelArgs() (bool, error) {
-	kernelArgsHugepagesPerSize, _ := getMcHugepagesFromMcKernelArguments(&tester.node.Mc)
+	kernelArgsHpCountBySize, _ := getMcHugepagesFromMcKernelArguments(&tester.node.Mc)
 
-	for size, count := range kernelArgsHugepagesPerSize {
-		total := 0
-		for numaIdx, numaHugepages := range tester.nodeNumaHugePagesPerSize {
-			found := false
-			for _, hugepages := range numaHugepages {
-				if hugepages.hugepagesSize == size {
-					total += hugepages.hugepagesCount
-					found = true
-					break
-				}
-			}
-			if !found {
-				return false, fmt.Errorf("numa %d has no hugepages of size %d", numaIdx, size)
+	// First, check that all the actual hp sizes across all numas exist in the kernelArguments.
+	for nodeNumaIdx, nodeCountBySize := range tester.nodeHugepagesByNuma {
+		for nodeSize, nodeCount := range nodeCountBySize {
+			if _, sizeExistsInKernelArgs := kernelArgsHpCountBySize[nodeSize]; !sizeExistsInKernelArgs && nodeCount != 0 {
+				return false, fmt.Errorf("node's numa %d hugepages size=%d does not appear in kernelArgs, but the count is not zero (%d)",
+					nodeNumaIdx, nodeSize, nodeCount)
 			}
 		}
+	}
 
-		if total == count {
-			logrus.Infof("kernelArguments' hugepages count:%d, size:%d match total node ones for that size.", count, size)
+	// kernelArguments don't have numa info, so we'll add up all numa's hp count
+	// for the same size and it should match the values in the kernelArgs.
+	for kernelSize, kernelCount := range kernelArgsHpCountBySize {
+		total := 0
+		for numaIdx, numaCountBySize := range tester.nodeHugepagesByNuma {
+			nodeCount, sizeExistsInNode := numaCountBySize[kernelSize]
+			if !sizeExistsInNode {
+				return false, fmt.Errorf("node's numa %d has no hugepages of kernelArgs' size %d", numaIdx, kernelSize)
+			}
+			total += nodeCount
+		}
+
+		if total == kernelCount {
+			logrus.Infof("kernelArguments' hugepages count:%d, size:%d match total node ones for that size.", kernelCount, kernelSize)
 		} else {
-			return false, fmt.Errorf("total hugepages of size %d won't match (node count=%d, expected=%d)", size, total, count)
+			return false, fmt.Errorf("total hugepages of size %d won't match (node count=%d, expected=%d)", kernelSize, total, kernelCount)
 		}
 	}
 
@@ -184,19 +212,18 @@ func (tester *Tester) TestNodeHugepagesWithKernelArgs() (bool, error) {
 }
 
 // getNodeNumaHugePages gets the actual node's hugepages config based on /sys/devices/system/node/nodeX files.
-func (tester *Tester) getNodeNumaHugePages() (hugepages numaHugePagesPerSize, err error) {
-	client := clientsholder.GetClientsHolder()
-
+func (tester *Tester) getNodeNumaHugePages() (hugepages hugepagesByNuma, err error) {
 	// This command must run inside the node, so we'll need the node's context to run commands inside the debug daemonset pod.
-	stdout, stderr, err := client.ExecCommandContainer(tester.context, cmd)
+	stdout, stderr, err := tester.commander.ExecCommandContainer(tester.context, cmd)
+	logrus.Tracef("getNodeNumaHugePages stdout: %s, stderr: %s", stdout, stderr)
 	if err != nil {
-		return numaHugePagesPerSize{}, err
+		return hugepagesByNuma{}, err
 	}
 	if stderr != "" {
-		return numaHugePagesPerSize{}, errors.New(stderr)
+		return hugepagesByNuma{}, errors.New(stderr)
 	}
 
-	hugepages = numaHugePagesPerSize{}
+	hugepages = hugepagesByNuma{}
 	r := regexp.MustCompile(outputRegex)
 	for _, line := range strings.Split(stdout, "\n") {
 		if line == "" {
@@ -205,23 +232,17 @@ func (tester *Tester) getNodeNumaHugePages() (hugepages numaHugePagesPerSize, er
 
 		values := r.FindStringSubmatch(line)
 		if len(values) != numRegexFields {
-			return numaHugePagesPerSize{}, fmt.Errorf("failed to parse node's numa hugepages output line:%s (stdout: %s)", line, stdout)
+			return hugepagesByNuma{}, fmt.Errorf("failed to parse node's numa hugepages output line:%s (stdout: %s)", line, stdout)
 		}
 
 		numaNode, _ := strconv.Atoi(values[1])
 		hpSize, _ := strconv.Atoi(values[2])
 		hpCount, _ := strconv.Atoi(values[3])
 
-		hugepagesCfg := hugePagesConfig{
-			hugepagesCount: hpCount,
-			hugepagesSize:  hpSize,
-		}
-
-		if numaHugepagesCfg, exists := hugepages[numaNode]; exists {
-			numaHugepagesCfg = append(numaHugepagesCfg, hugepagesCfg)
-			hugepages[numaNode] = numaHugepagesCfg
+		if sizeCounts, exists := hugepages[numaNode]; exists {
+			sizeCounts[hpSize] = hpCount
 		} else {
-			hugepages[numaNode] = []hugePagesConfig{hugepagesCfg}
+			hugepages[numaNode] = countBySize{hpSize: hpCount}
 		}
 	}
 
@@ -230,9 +251,9 @@ func (tester *Tester) getNodeNumaHugePages() (hugepages numaHugePagesPerSize, er
 }
 
 // getMcSystemdUnitsHugepagesConfig gets the hugepages information from machineconfig's systemd units.
-func getMcSystemdUnitsHugepagesConfig(mc *provider.MachineConfig) (hugepages numaHugePagesPerSize, err error) {
+func getMcSystemdUnitsHugepagesConfig(mc *provider.MachineConfig) (hugepages hugepagesByNuma, err error) {
 	const UnitContentsRegexMatchLen = 4
-	hugepages = numaHugePagesPerSize{}
+	hugepages = hugepagesByNuma{}
 
 	r := regexp.MustCompile(`(?ms)HUGEPAGES_COUNT=(\d+).*HUGEPAGES_SIZE=(\d+).*NUMA_NODE=(\d+)`)
 	for _, unit := range mc.Config.Systemd.Units {
@@ -240,26 +261,21 @@ func getMcSystemdUnitsHugepagesConfig(mc *provider.MachineConfig) (hugepages num
 		if !strings.Contains(unit.Name, "hugepages-allocation") {
 			continue
 		}
+		logrus.Infof("Systemd Unit with hugepages info -> name: %s, contents: %s", unit.Name, unit.Contents)
 		unit.Contents = strings.Trim(unit.Contents, "\"")
 		values := r.FindStringSubmatch(unit.Contents)
 		if len(values) < UnitContentsRegexMatchLen {
-			return numaHugePagesPerSize{}, fmt.Errorf("unable to get hugepages values from mc (contents=%s)", unit.Contents)
+			return hugepagesByNuma{}, fmt.Errorf("unable to get hugepages values from mc (contents=%s)", unit.Contents)
 		}
 
 		numaNode, _ := strconv.Atoi(values[3])
 		hpSize, _ := strconv.Atoi(values[2])
 		hpCount, _ := strconv.Atoi(values[1])
 
-		hugepagesCfg := hugePagesConfig{
-			hugepagesCount: hpCount,
-			hugepagesSize:  hpSize,
-		}
-
-		if numaHugepagesCfg, exists := hugepages[numaNode]; exists {
-			numaHugepagesCfg = append(numaHugepagesCfg, hugepagesCfg)
-			hugepages[numaNode] = numaHugepagesCfg
+		if sizeCounts, exists := hugepages[numaNode]; exists {
+			sizeCounts[hpSize] = hpCount
 		} else {
-			hugepages[numaNode] = []hugePagesConfig{hugepagesCfg}
+			hugepages[numaNode] = countBySize{hpSize: hpCount}
 		}
 	}
 
