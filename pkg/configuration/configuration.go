@@ -48,6 +48,11 @@ type AcceptedKernelTaintsInfo struct {
 	Module string `yaml:"module" json:"module"`
 }
 
+// TestScenarioLabels will help determine which set of tests we want to run for different types of scenarios
+type TestScenarioLabels struct {
+	Scenario string `yaml:"scenario" json:"scenario"`
+}
+
 // Label ns/name/value for resource lookup
 type Label struct {
 	Prefix string `yaml:"prefix" json:"prefix"`
@@ -98,6 +103,8 @@ type TestConfiguration struct {
 	SkipHelmChartList    []SkipHelmChartList        `yaml:"skipHelmChartList" json:"skipHelmChartList"`
 	// CheckDiscoveredContainerCertificationStatus controls whether the container certification test will validate images used by autodiscovered containers, in addition to the configured image list
 	CheckDiscoveredContainerCertificationStatus bool `yaml:"checkDiscoveredContainerCertificationStatus" json:"checkDiscoveredContainerCertificationStatus"`
+	// Scenarios is a configurable set of labels that are applied to certain tests that only desired ran in certain scenarios
+	Scenarios []TestScenarioLabels `yaml:"scenarioLabels,omitempty" json:"scenarioLabels,omitempty"`
 }
 
 type TestParameters struct {
