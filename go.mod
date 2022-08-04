@@ -171,5 +171,3 @@ require (
 )
 
 replace github.com/openshift/machine-config-operator => github.com/openshift/machine-config-operator v0.0.1-0.20200913004441-7eba765c69c9
-
-replace github.com/containerd/containerd => github.com/containerd/containerd v1.6.6 // Temporary fix for CVE-2022-31030.  Remove when helm updates their packages.
