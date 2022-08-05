@@ -203,10 +203,7 @@ func buildImageWithVersion() string {
 		supportImage = "debug-partner:latest"
 	}
 
-	var imageWithVersion string
-	imageWithVersion = tnfPartnerRepo + "/" + supportImage
-
-	return imageWithVersion
+	return tnfPartnerRepo + "/" + supportImage
 }
 
 // Deploy daemon set on repo partner
