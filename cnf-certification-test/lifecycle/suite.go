@@ -470,9 +470,11 @@ func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
 	// Look through all of the pods, matching their persistent volumes to the list of overall cluster PVs and checking their reclaim status.
 	for _, put := range env.Pods {
 		for index := range env.PersistentVolumes {
-			if put.Data.Name == env.PersistentVolumes[index].Name && env.PersistentVolumes[index].Spec.PersistentVolumeReclaimPolicy != corev1.PersistentVolumeReclaimDelete {
-				persistentVolumesBadReclaim = append(persistentVolumesBadReclaim, env.PersistentVolumes[index].Name)
-				tnf.ClaimFilePrintf("Persistent Volume: %s in namespace %s has been found without a reclaim policy of DELETE.", env.PersistentVolumes[index].Name, env.PersistentVolumes[index].Namespace)
+			for pvIndex := range put.Data.Spec.Volumes {
+				if put.Data.Spec.Volumes[pvIndex].Name == env.PersistentVolumes[index].Name && env.PersistentVolumes[index].Spec.PersistentVolumeReclaimPolicy != corev1.PersistentVolumeReclaimDelete {
+					persistentVolumesBadReclaim = append(persistentVolumesBadReclaim, env.PersistentVolumes[index].Name)
+					tnf.ClaimFilePrintf("Persistent Volume: %s in namespace %s has been found without a reclaim policy of DELETE.", env.PersistentVolumes[index].Name, env.PersistentVolumes[index].Namespace)
+				}
 			}
 		}
 	}
