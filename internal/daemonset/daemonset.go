@@ -65,7 +65,7 @@ func doesDaemonSetExist(daemonSetName, namespace string) bool {
 }
 
 //nolint:funlen
-func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion) *v1.DaemonSet {
+func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion string) *v1.DaemonSet {
 	dsAnnotations := make(map[string]string)
 	dsAnnotations["debug.openshift.io/source-container"] = containerName
 	dsAnnotations["openshift.io/scc"] = nodeExporter
@@ -156,7 +156,7 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 }
 
 // Create daemon set
-func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion, timeout time.Duration) (*corev1.PodList, error) {
+func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion string, timeout time.Duration) (*corev1.PodList, error) {
 	aDaemonSet := CreateDaemonSetsTemplate(daemonSetName, namespace, containerName, imageWithVersion)
 	if doesDaemonSetExist(daemonSetName, namespace) {
 		err := DeleteDaemonSet(daemonSetName, namespace)
