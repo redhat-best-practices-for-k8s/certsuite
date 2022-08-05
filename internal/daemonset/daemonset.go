@@ -15,8 +15,6 @@ import (
 )
 
 const (
-	imageWithVersion                   = os.Getenv("TNF_PARTNER_REPO") != "" ? 
-									os.Getenv("TNF_PARTNER_REPO") + "/debug-partner:latest" : "quay.io/testnetworkfunction/debug-partner:latest"
 	timeout                            = 5 * time.Minute
 	daemonsetDeletionCheckRetryInteval = 5 * time.Second
 	nodeExporter                       = "node-exporter"
@@ -67,7 +65,7 @@ func doesDaemonSetExist(daemonSetName, namespace string) bool {
 }
 
 //nolint:funlen
-func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion string) *v1.DaemonSet {
+func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion) *v1.DaemonSet {
 	dsAnnotations := make(map[string]string)
 	dsAnnotations["debug.openshift.io/source-container"] = containerName
 	dsAnnotations["openshift.io/scc"] = nodeExporter
@@ -158,7 +156,7 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 }
 
 // Create daemon set
-func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion string, timeout time.Duration) (*corev1.PodList, error) {
+func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion, timeout time.Duration) (*corev1.PodList, error) {
 	aDaemonSet := CreateDaemonSetsTemplate(daemonSetName, namespace, containerName, imageWithVersion)
 	if doesDaemonSetExist(daemonSetName, namespace) {
 		err := DeleteDaemonSet(daemonSetName, namespace)
@@ -189,8 +187,24 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 	return daemonsetPods, nil
 }
 
+// Build image with version based on environment variables if provided, else use a default value
+func buildImageWithVersion() string {
+	tnf_partner_repo := "quay.io/testnetworkfunction"
+	support_image := "debug-partner:latest"
+
+	if os.Getenv("TNF_PARTNER_REPO") != "" {
+		tnf_partner_repo := os.Getenv("TNF_PARTNER_REPO")
+	}
+	if os.Getenv("SUPPORT_IMAGE") != "" {
+		support_image := os.Getenv("SUPPORT_IMAGE")
+	}
+
+	return tnf_partner_repo + "/" + support_image
+}
+
 // Deploy daemon set on repo partner
 func DeployPartnerTestDaemonset() error {
+	imageWithVersion := buildImageWithVersion()
 	_, err := CreateDaemonSet(provider.DaemonSetName, provider.DaemonSetNamespace, containerName, imageWithVersion, timeout)
 	if err != nil {
 		logrus.Errorf("Error deploying partner daemonset %s", err)

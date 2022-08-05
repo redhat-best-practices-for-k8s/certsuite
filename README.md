@@ -121,6 +121,8 @@ and `TNF_PARTNER_REPO` should be set to the local repo, e.g.:
 export TNF_PARTNER_REPO="registry.dfwt5g.lab:5000/testnetworkfunction"
 ```
 
+Note that you can also specify the debug pod image to use with `SUPPORT_IMAGE` environment variable, default to `debug-partner:latest`.
+
 ### Execute test suites from openshift-kni/cnf-feature-deploy
 The test suites from openshift-kni/cnf-feature-deploy can be run prior to the actual CNF certification test execution and the results are incorporated in the same claim file if the following environment variable is set:
 
