@@ -155,9 +155,11 @@ const (
 
 	TerminationMessagePolicyRemediation = `Ensure containers are all using FallbackToLogsOnError in terminationMessagePolicy`
 
-	LivenessProbeRemediation = `Add liveness probe to deployed containers`
+	LivenessProbeRemediation = `Add a liveness probe to deployed containers`
 
-	ReadinessProbeRemediation = `Add readiness probe to deployed containers`
+	ReadinessProbeRemediation = `Add a readiness probe to deployed containers`
+
+	StartupProbeRemediation = `Add a startup probe to deployed containers`
 
 	OneProcessPerContainerRemediation = `Launch only one process per container`
 

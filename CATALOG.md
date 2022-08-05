@@ -337,17 +337,17 @@ Result Type|normative
 Suggested Remediation|Ensure that the containers under test are using IfNotPresent as Image Pull Policy.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf  Section 12.6
 Exception Process|There is no documented exception process for this.
-#### liveness
+#### liveness-probe
 
 Property|Description
 ---|---
-Test Case Name|liveness
-Test Case Label|lifecycle-liveness
-Unique ID|http://test-network-function.com/testcases/lifecycle/liveness
+Test Case Name|liveness-probe
+Test Case Label|lifecycle-liveness-probe
+Unique ID|http://test-network-function.com/testcases/lifecycle/liveness-probe
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/liveness check that all containers under test 		have liveness probe defined
+Description|http://test-network-function.com/testcases/lifecycle/liveness-probe check that all containers under test a have liveness probe defined
 Result Type|normative
-Suggested Remediation|Add liveness probe to deployed containers
+Suggested Remediation|Add a liveness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
 Exception Process|There is no documented exception process for this.
 #### pod-high-availability
@@ -402,17 +402,17 @@ Result Type|informative
 Suggested Remediation|In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity.  However, there are 	cases in which CNFs require specialized hardware specific to a particular class of Node.  As such, this test is purely 	informative, and will not prevent a CNF from being certified. However, one should have an appropriate justification as 	to why nodeSelector and/or nodeAffinity is utilized by a CNF.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-#### readiness
+#### readiness-probe
 
 Property|Description
 ---|---
-Test Case Name|readiness
-Test Case Label|lifecycle-readiness
-Unique ID|http://test-network-function.com/testcases/lifecycle/readiness
+Test Case Name|readiness-probe
+Test Case Label|lifecycle-readiness-probe
+Unique ID|http://test-network-function.com/testcases/lifecycle/readiness-probe
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/readiness check that all containers under test 		have readiness probe defined
+Description|http://test-network-function.com/testcases/lifecycle/readiness-probe check that all containers under test a have readiness probe defined
 Result Type|normative
-Suggested Remediation|Add readiness probe to deployed containers
+Suggested Remediation|Add a readiness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
 Exception Process|There is no documented exception process for this.
 #### scaling
@@ -427,6 +427,19 @@ Description|http://test-network-function.com/testcases/lifecycle/scaling tests t
 Result Type|normative
 Suggested Remediation|Ensure CNF deployments/replica sets can scale in/out successfully.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Exception Process|There is no documented exception process for this.
+#### startup-probe
+
+Property|Description
+---|---
+Test Case Name|startup-probe
+Test Case Label|lifecycle-startup-probe
+Unique ID|http://test-network-function.com/testcases/lifecycle/startup-probe
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/startup-probe check that all containers under test a have startup probe defined
+Result Type|normative
+Suggested Remediation|Add a startup probe to deployed containers
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.12
 Exception Process|There is no documented exception process for this.
 #### statefulset-scaling
 

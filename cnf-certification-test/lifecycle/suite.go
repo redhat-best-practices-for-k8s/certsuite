@@ -76,6 +76,12 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testContainersLivenessProbe(&env)
 	})
 
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestStartupProbeIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testContainersStartupProbe(&env)
+	})
+
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodDeploymentBestPracticesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Pods)
@@ -199,6 +205,21 @@ func testContainersLivenessProbe(env *provider.TestEnvironment) {
 	if len(badcontainers) > 0 {
 		tnf.ClaimFilePrintf("Containers have been found without livenessProbe defined: %v", badcontainers)
 		ginkgo.Fail("Containers have been found without livenessProbe defined.")
+	}
+}
+
+func testContainersStartupProbe(env *provider.TestEnvironment) {
+	badcontainers := []string{}
+	for _, cut := range env.Containers {
+		logrus.Debugln("check container ", cut.String(), " startup probe ")
+		if cut.Data.StartupProbe == nil {
+			badcontainers = append(badcontainers, cut.String())
+			logrus.Errorln("container ", cut.Data.Name, " does not have startupProbe defined")
+		}
+	}
+	if len(badcontainers) > 0 {
+		tnf.ClaimFilePrintf("Containers have been found without startupProbe defined: %v", badcontainers)
+		ginkgo.Fail("Containers have been found without startupProbe defined.")
 	}
 }
 

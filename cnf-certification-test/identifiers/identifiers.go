@@ -312,11 +312,15 @@ var (
 		Version: versionOne,
 	}
 	TestLivenessProbeIdentifier = claim.Identifier{
-		Url:     formTestURL(common.LifecycleTestKey, "liveness"),
+		Url:     formTestURL(common.LifecycleTestKey, "liveness-probe"),
 		Version: versionOne,
 	}
 	TestReadinessProbeIdentifier = claim.Identifier{
-		Url:     formTestURL(common.LifecycleTestKey, "readiness"),
+		Url:     formTestURL(common.LifecycleTestKey, "readiness-probe"),
+		Version: versionOne,
+	}
+	TestStartupProbeIdentifier = claim.Identifier{
+		Url:     formTestURL(common.LifecycleTestKey, "startup-probe"),
 		Version: versionOne,
 	}
 	// TestOneProcessPerContainerIdentifier ensures that only one process per container is running
@@ -898,21 +902,27 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 12.7",
 	},
 	TestLivenessProbeIdentifier: {
-		Identifier: TestLivenessProbeIdentifier,
-		Type:       normativeResult,
-		Description: formDescription(TestLivenessProbeIdentifier, `check that all containers under test
-		have liveness probe defined`),
+		Identifier:            TestLivenessProbeIdentifier,
+		Type:                  normativeResult,
+		Description:           formDescription(TestLivenessProbeIdentifier, `check that all containers under test a have liveness probe defined`),
 		Remediation:           LivenessProbeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.16, 12.1 and 12.5",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 	TestReadinessProbeIdentifier: {
-		Identifier: TestReadinessProbeIdentifier,
-		Type:       normativeResult,
-		Description: formDescription(TestReadinessProbeIdentifier, `check that all containers under test
-		have readiness probe defined`),
+		Identifier:            TestReadinessProbeIdentifier,
+		Type:                  normativeResult,
+		Description:           formDescription(TestReadinessProbeIdentifier, `check that all containers under test a have readiness probe defined`),
 		Remediation:           ReadinessProbeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.16, 12.1 and 12.5",
+		ExceptionProcess:      NoDocumentedProcess,
+	},
+	TestStartupProbeIdentifier: {
+		Identifier:            TestStartupProbeIdentifier,
+		Type:                  normativeResult,
+		Description:           formDescription(TestStartupProbeIdentifier, `check that all containers under test a have startup probe defined`),
+		Remediation:           StartupProbeRemediation,
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 	TestOneProcessPerContainerIdentifier: {
