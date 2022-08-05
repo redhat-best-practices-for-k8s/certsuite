@@ -3,8 +3,8 @@ package daemonset
 import (
 	"context"
 	"fmt"
-	"time"
 	"os"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
@@ -20,6 +20,8 @@ const (
 	nodeExporter                       = "node-exporter"
 	containerName                      = "container-00"
 	debug                              = "debug"
+	tnfPartnerRepoDef                  = "quay.io/testnetworkfunction"
+	supportImageDef                    = "debug-partner:latest"
 )
 
 // Delete daemon set
@@ -195,12 +197,12 @@ func buildImageWithVersion() string {
 	if os.Getenv("TNF_PARTNER_REPO") != "" {
 		tnfPartnerRepo = os.Getenv("TNF_PARTNER_REPO")
 	} else {
-		tnfPartnerRepo = "quay.io/testnetworkfunction"
+		tnfPartnerRepo = tnfPartnerRepoDef
 	}
 	if os.Getenv("SUPPORT_IMAGE") != "" {
 		supportImage = os.Getenv("SUPPORT_IMAGE")
 	} else {
-		supportImage = "debug-partner:latest"
+		supportImage = supportImageDef
 	}
 
 	return tnfPartnerRepo + "/" + supportImage
