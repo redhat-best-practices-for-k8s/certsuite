@@ -199,7 +199,10 @@ func buildImageWithVersion() string {
 		support_image := os.Getenv("SUPPORT_IMAGE")
 	}
 
-	return tnf_partner_repo + "/" + support_image
+	var imageWithVersion string
+	imageWithVersion = tnf_partner_repo + "/" + support_image
+
+	return imageWithVersion
 }
 
 // Deploy daemon set on repo partner
