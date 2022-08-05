@@ -193,10 +193,10 @@ func buildImageWithVersion() string {
 	support_image := "debug-partner:latest"
 
 	if os.Getenv("TNF_PARTNER_REPO") != "" {
-		tnf_partner_repo := os.Getenv("TNF_PARTNER_REPO")
+		tnf_partner_repo = os.Getenv("TNF_PARTNER_REPO")
 	}
 	if os.Getenv("SUPPORT_IMAGE") != "" {
-		support_image := os.Getenv("SUPPORT_IMAGE")
+		support_image = os.Getenv("SUPPORT_IMAGE")
 	}
 
 	var imageWithVersion string
