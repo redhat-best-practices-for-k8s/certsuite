@@ -189,22 +189,22 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 
 // Build image with version based on environment variables if provided, else use a default value
 func buildImageWithVersion() string {
-	var tnf_partner_repo string
-	var support_image string
-	
+	var tnfPartnerRepo string
+	var supportImage string
+
 	if os.Getenv("TNF_PARTNER_REPO") != "" {
-		tnf_partner_repo = os.Getenv("TNF_PARTNER_REPO")
+		tnfPartnerRepo = os.Getenv("TNF_PARTNER_REPO")
 	} else {
-		tnf_partner_repo = "quay.io/testnetworkfunction"
+		tnfPartnerRepo = "quay.io/testnetworkfunction"
 	}
 	if os.Getenv("SUPPORT_IMAGE") != "" {
-		support_image = os.Getenv("SUPPORT_IMAGE")
+		supportImage = os.Getenv("SUPPORT_IMAGE")
 	} else {
-		support_image = "debug-partner:latest"
+		supportImage = "debug-partner:latest"
 	}
 
 	var imageWithVersion string
-	imageWithVersion = tnf_partner_repo + "/" + support_image
+	imageWithVersion = tnfPartnerRepo + "/" + supportImage
 
 	return imageWithVersion
 }
