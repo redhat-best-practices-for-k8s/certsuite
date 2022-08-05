@@ -78,6 +78,14 @@ func TestIsTolerationModified(t *testing.T) {
 			},
 			expectedOutput: false,
 		},
+		{ // Test Case #6 - example from QE
+			testToleration: v1.Toleration{
+				Key:      "node.kubernetes.io/memory-pressure",
+				Operator: v1.TolerationOpExists,
+				Effect:   v1.TaintEffectNoSchedule,
+			},
+			expectedOutput: true,
+		},
 	}
 
 	for _, tc := range testCases {
