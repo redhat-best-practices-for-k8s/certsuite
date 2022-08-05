@@ -59,6 +59,19 @@ Result Type|informative
 Suggested Remediation|Apply a ResourceQuota to the namespace your CNF is running in
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.8
 Exception Process|There is no documented exception process for this.
+#### network-policy-deny-all
+
+Property|Description
+---|---
+Test Case Name|network-policy-deny-all
+Test Case Label|access-control-network-policy-deny-all
+Unique ID|http://test-network-function.com/testcases/access-control/network-policy-deny-all
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/network-policy-deny-all Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic
+Result Type|informative
+Suggested Remediation|Ensure that a NetworkPolicy with a default deny-all is applied. After the default is applied, apply a network policy to allow the traffic your application requires.
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 10.6
+Exception Process|There is no documented exception process for this.
 #### one-process-per-container
 
 Property|Description

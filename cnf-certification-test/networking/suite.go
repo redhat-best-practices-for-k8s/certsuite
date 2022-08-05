@@ -26,12 +26,15 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/icmp"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/policies"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/services"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
+	v1 "k8s.io/api/networking/v1"
 )
 
 const (
@@ -108,6 +111,16 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		testIsIPTablesConfigPresent(&env)
+	})
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceDualStackIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Services)
+		testDualStackServices(&env)
+	})
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetworkPolicyDenyAllIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		testNetworkPolicyDenyAll(&env)
 	})
 })
 
@@ -245,6 +258,7 @@ func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 		ginkgo.Fail(errMsg)
 	}
 }
+
 func testDualStackServices(env *provider.TestEnvironment) {
 	var nonCompliantServices []*corev1.Service
 	var errorServices []*corev1.Service
@@ -311,4 +325,59 @@ func testIsNFTablesConfigPresent(env *provider.TestEnvironment) {
 func testIsIPTablesConfigPresent(env *provider.TestEnvironment) {
 	testIsConfigPresent(env, ipTables)
 	testIsConfigPresent(env, ip6Tables)
+}
+
+//nolint:funlen
+func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
+	ginkgo.By("Test for Deny All in network policies")
+	var namespacesMissingDenyAllDefaultPolicies []string
+	var processedNamespaces []string
+
+	for _, put := range env.Pods {
+		denyAllEgressFound := false
+		denyAllIngressFound := false
+
+		// Short circuit if the namespace has already been processed
+		if stringhelper.StringInSlice(processedNamespaces, put.Data.Namespace, false) {
+			logrus.Debugf("Namespace: %s has already been processed for deny-all network policies.  Skipping.", put.Data.Namespace)
+			break
+		}
+
+		// Look through all of the network policies for a matching namespace.
+		for index := range env.NetworkPolicies {
+			// Match the pod namespace with the network policy namespace.
+			if put.Data.Namespace == env.NetworkPolicies[index].Namespace {
+				// Check to see if the network policy is deny-all (and contains ingress, egress, (or both) network policy types)
+				denyAllExists, foundPolicies := policies.IsNetworkPolicyDenyAll(&env.NetworkPolicies[index])
+
+				if denyAllExists {
+					// Look through the returned policies to make sure they include both ingress and egress.
+					for _, p := range foundPolicies {
+						if p == v1.PolicyTypeEgress {
+							denyAllEgressFound = true
+						}
+
+						if p == v1.PolicyTypeIngress {
+							denyAllIngressFound = true
+						}
+					}
+				}
+			}
+		}
+
+		// Network policy has not been found that contains a deny-all rule for both ingress and egress.
+		if !denyAllIngressFound || !denyAllEgressFound {
+			namespacesMissingDenyAllDefaultPolicies = append(namespacesMissingDenyAllDefaultPolicies, put.Data.Namespace)
+			tnf.ClaimFilePrintf("Namespace %s was found to not have a default deny-all network policy.", put.Data.Namespace)
+		}
+
+		// Add current namespace to the list of already processed namespaces to avoid duplicating work.
+		processedNamespaces = append(processedNamespaces, put.Data.Namespace)
+	}
+
+	if n := len(namespacesMissingDenyAllDefaultPolicies); n > 0 {
+		errMsg := fmt.Sprintf("Number of namespaces running CNF pods that do not have default deny-all network policies: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
+	}
 }

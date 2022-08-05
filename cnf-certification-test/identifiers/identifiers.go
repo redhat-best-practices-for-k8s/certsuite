@@ -495,6 +495,10 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "ssh-daemons"),
 		Version: versionOne,
 	}
+	TestNetworkPolicyDenyAllIdentifier = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "network-policy-deny-all"),
+		Version: versionOne,
+	}
 )
 
 func formDescription(identifier claim.Identifier, description string) string {
@@ -1172,6 +1176,14 @@ that there are no changes to the following directories:
 		Description:           formDescription(TestNoSSHDaemonsAllowedIdentifier, `Check that pods do not run SSH daemons.`),
 		Remediation:           NoSSHDaemonsAllowedRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
+		ExceptionProcess:      NoDocumentedProcess,
+	},
+	TestNetworkPolicyDenyAllIdentifier: {
+		Identifier:            TestNetworkPolicyDenyAllIdentifier,
+		Type:                  informativeResult,
+		Description:           formDescription(TestNetworkPolicyDenyAllIdentifier, `Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic`),
+		Remediation:           NetworkPolicyDenyAllRemediation,
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.6",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 }

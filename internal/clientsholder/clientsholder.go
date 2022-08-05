@@ -37,19 +37,21 @@ import (
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextv1fake "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/fake"
 	k8sFakeClient "k8s.io/client-go/kubernetes/fake"
+	networkingv1 "k8s.io/client-go/kubernetes/typed/networking/v1"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 )
 
 type ClientsHolder struct {
-	RestConfig    *rest.Config
-	DynamicClient dynamic.Interface
-	APIExtClient  apiextv1.Interface
-	OlmClient     olmClient.Interface
-	OcpClient     clientconfigv1.ConfigV1Interface
-	K8sClient     kubernetes.Interface
-	MachineCfg    ocpMachine.Interface
-	ready         bool
+	RestConfig          *rest.Config
+	DynamicClient       dynamic.Interface
+	APIExtClient        apiextv1.Interface
+	OlmClient           olmClient.Interface
+	OcpClient           clientconfigv1.ConfigV1Interface
+	K8sClient           kubernetes.Interface
+	K8sNetworkingClient networkingv1.NetworkingV1Interface
+	MachineCfg          ocpMachine.Interface
+	ready               bool
 }
 
 var clientsHolder = ClientsHolder{}
@@ -181,6 +183,10 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	clientsHolder.MachineCfg, err = ocpMachine.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate MachineCfg client: %s", err)
+	}
+	clientsHolder.K8sNetworkingClient, err = networkingv1.NewForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		return nil, fmt.Errorf("cannot instantiate k8s networking client: %s", err)
 	}
 	clientsHolder.ready = true
 	return &clientsHolder, nil
