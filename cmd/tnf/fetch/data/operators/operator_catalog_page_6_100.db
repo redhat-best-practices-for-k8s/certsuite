@@ -1,435 +1,6 @@
 {
   "data": [
     {
-      "_id": "607550a98268040ea70534a0",
-      "alm_examples": [
-        {
-          "api_version": "xray.nastel.com/v1alpha3",
-          "kind": "NastelXRay",
-          "metadata": {
-            "name": "nastelxray"
-          },
-          "spec": {
-            "active-mq": {
-              "image": "registry.connect.redhat.com/nastel/nastel-activemq",
-              "replicaCount": 1,
-              "resources": {
-                "limits": {
-                  "cpu": "400m",
-                  "memory": "1000Mi"
-                },
-                "requests": {
-                  "cpu": "200m",
-                  "memory": "500Mi"
-                }
-              },
-              "service": {
-                "amqpPort": 5672,
-                "httpPort": 8161,
-                "ingress": {
-                  "enabled": true
-                },
-                "mqttPort": 1883,
-                "servicePort": 61616,
-                "stopmPort": 61613,
-                "type": "ClusterIP",
-                "wsPort": 61614
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi",
-                "class": "ibmc-block-gold"
-              }
-            },
-            "ap-domain": {
-              "image": "registry.connect.redhat.com/nastel/nastel-ap-domain",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "debugPort": 5440,
-                "node": {},
-                "serverPort": 2323,
-                "type": "NodePort",
-                "userPort": 3000
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi",
-                "class": "ibmc-block-gold"
-              }
-            },
-            "global": {
-              "kafkaHost": "xray-cluster-kafka-bootstrap",
-              "kafkaPort": 9092,
-              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
-            },
-            "solr-keeper": {
-              "image": "registry.connect.redhat.com/nastel/nastel-zookeeper",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "clientPort": 2181,
-                "electionPort": 3888,
-                "serverPort": 2888,
-                "type": "ClusterIP"
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi",
-                "class": "ibmc-block-gold"
-              }
-            },
-            "solr-node": {
-              "affinity": {},
-              "exporter": {
-                "configFile": "/opt/solr/contrib/prometheus-exporter/conf/solr-exporter-config.xml",
-                "enabled": false,
-                "livenessProbe": {
-                  "initialDelaySeconds": 20,
-                  "periodSeconds": 10
-                },
-                "podAnnotations": {},
-                "port": 9983,
-                "readinessProbe": {
-                  "initialDelaySeconds": 15,
-                  "periodSeconds": 5
-                },
-                "resources": {},
-                "service": {
-                  "annotations": {},
-                  "type": "ClusterIP"
-                },
-                "threads": 7,
-                "updateStrategy": {}
-              },
-              "image": {
-                "pullPolicy": "Always",
-                "repository": "registry.connect.redhat.com/nastel/nastel-solr"
-              },
-              "javaMem": "-Xms2g -Xmx3g",
-              "livenessProbe": {
-                "initialDelaySeconds": 20,
-                "periodSeconds": 10
-              },
-              "logLevel": "INFO",
-              "podAnnotations": {},
-              "podDisruptionBudget": {
-                "maxUnavailable": 1
-              },
-              "port": 8983,
-              "readinessProbe": {
-                "initialDelaySeconds": 15,
-                "periodSeconds": 5
-              },
-              "replicaCount": 4,
-              "resources": {},
-              "service": {
-                "annotations": {},
-                "ingress": {
-                  "enabled": true
-                },
-                "type": "ClusterIP"
-              },
-              "terminationGracePeriodSeconds": 180,
-              "tls": {
-                "caSecret": {
-                  "bundlePath": "",
-                  "name": ""
-                },
-                "certSecret": {
-                  "certPath": "tls.crt",
-                  "keyPath": "tls.key",
-                  "name": ""
-                },
-                "checkPeerName": "false",
-                "enabled": false,
-                "importKubernetesCA": "false",
-                "keystorePassword": "changeit",
-                "needClientAuth": "false",
-                "wantClientAuth": "false"
-              },
-              "updateStrategy": {
-                "type": "OnDelete"
-              },
-              "volumeClaimTemplates": {
-                "accessModes": [
-                  "ReadWriteOnce"
-                ],
-                "storageClassName": "ibmc-block-gold",
-                "storageSize": "20Gi"
-              },
-              "zookeeper": {
-                "replicaCount": 1
-              }
-            },
-            "storm": {
-              "enabled": true,
-              "fullnameOverride": "storm",
-              "name": "storm",
-              "nameOverride": "storm",
-              "nimbus": {
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "replicaCount": 1,
-                "resources": {},
-                "service": {
-                  "name": "nimbus",
-                  "port": 6627,
-                  "type": "ClusterIP"
-                }
-              },
-              "supervisor": {
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "replicaCount": 3,
-                "resources": {},
-                "service": {
-                  "name": "supervisor",
-                  "port": 6700
-                }
-              },
-              "ui": {
-                "enabled": true,
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "ingress": {
-                  "annotations": {},
-                  "enabled": true,
-                  "tls": []
-                },
-                "replicaCount": 1,
-                "resources": {},
-                "service": {
-                  "name": "ui",
-                  "port": 8080,
-                  "type": "ClusterIP"
-                }
-              },
-              "zookeeper": {
-                "enabled": false,
-                "fullnameOverride": "storm-keeper",
-                "port": 2181,
-                "replicaCount": 1,
-                "servers": [
-                  "storm-keeper"
-                ]
-              }
-            },
-            "storm-keeper": {
-              "image": "registry.connect.redhat.com/nastel/nastel-zookeeper",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "clientPort": 2181,
-                "electionPort": 3888,
-                "serverPort": 2888,
-                "type": "ClusterIP"
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi",
-                "class": "ibmc-block-gold"
-              }
-            },
-            "xray": {
-              "image": "registry.connect.redhat.com/nastel/xray-ui",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "httpPort": 8080,
-                "node": {},
-                "type": "LoadBalancer"
-              }
-            },
-            "xray-cep": {
-              "image": "registry.connect.redhat.com/nastel/xray-cep",
-              "init": {
-                "dbapi-solr": {
-                  "image": "registry.connect.redhat.com/nastel/xray-dbapi-solr"
-                },
-                "kafka": {
-                  "image": "registry.redhat.io/openshift4/ose-cli"
-                }
-              },
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "cepServerPort": 3005,
-                "node": {},
-                "type": "LoadBalancer",
-                "xRayDataPort": 6580
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi",
-                "class": "ibmc-block-gold"
-              }
-            },
-            "xray-ml-persistance": {
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi",
-                "class": "ibmc-file-silver-gid"
-              }
-            },
-            "xray-ml-queries": {
-              "image": "registry.connect.redhat.com/nastel/xray-ml",
-              "replicaCount": 1,
-              "resources": {}
-            },
-            "xray-ml-train": {
-              "image": "registry.connect.redhat.com/nastel/xray-ml",
-              "replicaCount": 1,
-              "resources": {}
-            },
-            "xray-storm-topologies": {
-              "image": "registry.connect.redhat.com/nastel/xray-storm",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "httpPort": 8080,
-                "thriftPort": 6627
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nastel/xray-operator-bundle@sha256:6e5917cf4399c35ca88f512ba92f6612e13afdadc0efb2c47cb69b33871acf24",
-      "bundle_path_digest": "sha256:6e5917cf4399c35ca88f512ba92f6612e13afdadc0efb2c47cb69b33871acf24",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-04-13T08:04:57.739000+00:00",
-      "csv_description": "The operator deploys Nastel XRay component containers:\n  * Nastel Domain Server\n  * XRay Complex Event Processing (CEP)\n  * Solr indexing service\n  * Machine Learning (ML)\n  * XRay WebApp\n  * Strom Topologies\n\nin one go.\n\n[Nastel XRay](https://www.nastel.com/nastel-xray/) allows you to Track & Trace Transaction and Message Flows, Analyze, Visualize and Report your Big Data.\n",
-      "csv_display_name": "Nastel XRay Operator",
-      "csv_metadata_description": "Operator to deploy and run Nastel XRay",
-      "csv_name": "nastel-xray-operator.v1.323.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:29:09.859000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "nastel-xray-operator",
-      "provided_apis": [
-        {
-          "group": "xray.nastel.com",
-          "kind": "NastelXRay",
-          "plural": "nastelxrays",
-          "version": "v1alpha3"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:c05110c858fab5fbc0eff803b7a3ac931a55ae80c456030f0c2a929f3d16c05f",
-          "image": "registry.connect.redhat.com/nastel/xray-operator@sha256:c05110c858fab5fbc0eff803b7a3ac931a55ae80c456030f0c2a929f3d16c05f",
-          "name": "xray-operator-c05110c858fab5fbc0eff803b7a3ac931a55ae80c456030f0c2a929f3d16c05f-annotation"
-        },
-        {
-          "digest": "sha256:06e7e96f6840901a4e22056d6c8732c35c8fe771ab352910002887de5c6bc272",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:06e7e96f6840901a4e22056d6c8732c35c8fe771ab352910002887de5c6bc272",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:c05110c858fab5fbc0eff803b7a3ac931a55ae80c456030f0c2a929f3d16c05f",
-          "image": "registry.connect.redhat.com/nastel/xray-operator@sha256:c05110c858fab5fbc0eff803b7a3ac931a55ae80c456030f0c2a929f3d16c05f",
-          "name": "nastel-xray-operator"
-        },
-        {
-          "digest": "sha256:e37c791626e4606761803925a2c0fdfc3118764f1b91368f152a682e050b46f7",
-          "image": "registry.connect.redhat.com/nastel/nastel-ap-domain@sha256:e37c791626e4606761803925a2c0fdfc3118764f1b91368f152a682e050b46f7",
-          "name": "domain"
-        },
-        {
-          "digest": "sha256:a37760515dc161e1845117e0fafc0f1e863a8d149fab704602edcdf87b051fb2",
-          "image": "registry.connect.redhat.com/nastel/xray-cep@sha256:a37760515dc161e1845117e0fafc0f1e863a8d149fab704602edcdf87b051fb2",
-          "name": "cep"
-        },
-        {
-          "digest": "sha256:a7e5bb71af48a2b243a3c388b28f3cab0ad028711232c3db539a092b5080807c",
-          "image": "registry.redhat.io/openshift4/ose-cli@sha256:a7e5bb71af48a2b243a3c388b28f3cab0ad028711232c3db539a092b5080807c",
-          "name": "ose_cli"
-        },
-        {
-          "digest": "sha256:76b7dc758327e1337d5f14feff4ceef4dcc258c17513ec2fc49549b365f1107c",
-          "image": "registry.connect.redhat.com/nastel/xray-dbapi-solr@sha256:76b7dc758327e1337d5f14feff4ceef4dcc258c17513ec2fc49549b365f1107c",
-          "name": "solr_dbapi"
-        },
-        {
-          "digest": "sha256:78b50cc03b081fdb17abd2224a4fba85859349eddc34d7d6fd74ea6e33b6cc57",
-          "image": "registry.connect.redhat.com/nastel/xray-ml@sha256:78b50cc03b081fdb17abd2224a4fba85859349eddc34d7d6fd74ea6e33b6cc57",
-          "name": "ml"
-        },
-        {
-          "digest": "sha256:5601a70bc3f98c19f180a34c34bb2cf637b9ed2ba85b31f6421d43676d905caa",
-          "image": "registry.connect.redhat.com/nastel/xray-ui@sha256:5601a70bc3f98c19f180a34c34bb2cf637b9ed2ba85b31f6421d43676d905caa",
-          "name": "xray"
-        },
-        {
-          "digest": "sha256:fd8168d697ae40c5a3e1b7b5d0a23494381178929820de7d1cebb0e4d69cf9ec",
-          "image": "registry.connect.redhat.com/nastel/nastel-activemq@sha256:fd8168d697ae40c5a3e1b7b5d0a23494381178929820de7d1cebb0e4d69cf9ec",
-          "name": "active_mq"
-        },
-        {
-          "digest": "sha256:8e956cc9e631397128ef01b0a305a7c5b5fe3571b2077949c4e0849b1826188d",
-          "image": "registry.connect.redhat.com/nastel/nastel-zookeeper@sha256:8e956cc9e631397128ef01b0a305a7c5b5fe3571b2077949c4e0849b1826188d",
-          "name": "zookeeper"
-        },
-        {
-          "digest": "sha256:ec36c53f0a8ef88dfa357e3d4406032f6404ca6754ed874ba162436284d3e11c",
-          "image": "registry.connect.redhat.com/nastel/nastel-solr@sha256:ec36c53f0a8ef88dfa357e3d4406032f6404ca6754ed874ba162436284d3e11c",
-          "name": "solr"
-        },
-        {
-          "digest": "sha256:79b7ee65b9fd7e6ebe6c62e6a6c373ea54a745d09844972dcc61ae051d526a26",
-          "image": "registry.connect.redhat.com/nastel/nastel-storm@sha256:79b7ee65b9fd7e6ebe6c62e6a6c373ea54a745d09844972dcc61ae051d526a26",
-          "name": "storm"
-        },
-        {
-          "digest": "sha256:efa1bb544bf2f8f79a8d22c633bd835621ceac4f4829889c751e396c34d4f5e4",
-          "image": "registry.connect.redhat.com/nastel/xray-storm@sha256:efa1bb544bf2f8f79a8d22c633bd835621ceac4f4829889c751e396c34d4f5e4",
-          "name": "storm_topology"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.323.4",
-      "version_original": "1.323.4"
-    },
-    {
       "_id": "6075580414979904df57baca",
       "alm_examples": [
         {
@@ -15810,147 +15381,6 @@
       "version_original": "5.4.14-7"
     },
     {
-      "_id": "609aae4dd04af0e74bb05770",
-      "alm_examples": [
-        {
-          "api_version": "couchbase.com/v1",
-          "kind": "CouchbaseCluster",
-          "metadata": {
-            "name": "cb-example"
-          },
-          "spec": {
-            "adminConsoleServiceType": "NodePort",
-            "adminConsoleServices": [
-              "data"
-            ],
-            "antiAffinity": false,
-            "authSecret": "cb-example-auth",
-            "baseImage": "registry.connect.redhat.com/couchbase/server",
-            "buckets": [
-              {
-                "compressionMode": "passive",
-                "conflictResolution": "seqno",
-                "enableFlush": true,
-                "enableIndexReplica": false,
-                "evictionPolicy": "fullEviction",
-                "ioPriority": "high",
-                "memoryQuota": 128,
-                "name": "default",
-                "replicas": 1,
-                "type": "couchbase"
-              }
-            ],
-            "cluster": {
-              "analyticsServiceMemoryQuota": 1024,
-              "autoFailoverMaxCount": 3,
-              "autoFailoverOnDataDiskIssues": true,
-              "autoFailoverOnDataDiskIssuesTimePeriod": 120,
-              "autoFailoverServerGroup": false,
-              "autoFailoverTimeout": 120,
-              "dataServiceMemoryQuota": 256,
-              "eventingServiceMemoryQuota": 256,
-              "indexServiceMemoryQuota": 256,
-              "indexStorageSetting": "memory_optimized",
-              "searchServiceMemoryQuota": 256
-            },
-            "disableBucketManagement": false,
-            "exposeAdminConsole": true,
-            "exposedFeatureServiceType": "NodePort",
-            "paused": false,
-            "servers": [
-              {
-                "name": "all_services",
-                "services": [
-                  "data",
-                  "index",
-                  "query",
-                  "search",
-                  "eventing",
-                  "analytics"
-                ],
-                "size": 3
-              }
-            ],
-            "softwareUpdateNotifications": false,
-            "version": "6.0.4-1"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:a2c9323d78e4a2e83810eb9df6e2f364356cd5432cee9bbd98c94784fbc27468",
-      "bundle_path_digest": "sha256:a2c9323d78e4a2e83810eb9df6e2f364356cd5432cee9bbd98c94784fbc27468",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-05-11T16:18:21.967000+00:00",
-      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
-      "csv_display_name": "Couchbase Operator",
-      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
-      "csv_name": "couchbase-operator.v1.2.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:44:48.104000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "plural": "couchbaseclusters",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:b407ac05b1e226f4cacad338a6ad1e18a1de684a1c4b3defb755c1c049b8b584",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:b407ac05b1e226f4cacad338a6ad1e18a1de684a1c4b3defb755c1c049b8b584",
-          "name": "operator-b407ac05b1e226f4cacad338a6ad1e18a1de684a1c4b3defb755c1c049b8b584-annotation"
-        },
-        {
-          "digest": "sha256:b407ac05b1e226f4cacad338a6ad1e18a1de684a1c4b3defb755c1c049b8b584",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:b407ac05b1e226f4cacad338a6ad1e18a1de684a1c4b3defb755c1c049b8b584",
-          "name": "couchbase-operator"
-        },
-        {
-          "digest": "sha256:e83852666816dd0a0d86180a0867aa25458c21702f28e5903bb012e079ebe055",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:e83852666816dd0a0d86180a0867aa25458c21702f28e5903bb012e079ebe055",
-          "name": "couchbase_server"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.2.2",
-      "version_original": "1.2.2"
-    },
-    {
       "_id": "609aae4ed04af0e74bb05771",
       "alm_examples": [
         {
@@ -18591,9 +18021,109 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "0.0.2",
       "version_original": "0.0.2"
+    },
+    {
+      "_id": "609aae7a56933b164fe211ba",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:3ef303a68ac1ec0f5b6b8fcb4be8471180ee24e69ddb6e454ec00cac806fdfe6",
+      "bundle_path_digest": "sha256:3ef303a68ac1ec0f5b6b8fcb4be8471180ee24e69ddb6e454ec00cac806fdfe6",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2021-05-11T16:19:06.165000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "neuvector-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T02:18:40.207000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "609aae7b56933b164fe211bc",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:1f423936c3134391ba56414c05ece71e90347666f69a2193fe01370b21ce138f",
+      "bundle_path_digest": "sha256:1f423936c3134391ba56414c05ece71e90347666f69a2193fe01370b21ce138f",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:19:07.255000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "seldon-operator.v1.2.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T02:19:13.094000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "seldon-operator-certified",
+      "provided_apis": [
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha3"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.2.1",
+      "version_original": "1.2.1"
     }
   ],
   "page": 6,
   "page_size": 100,
-  "total": 4587
+  "total": 4520
 }

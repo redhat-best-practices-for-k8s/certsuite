@@ -1,481 +1,6 @@
 {
   "data": [
     {
-      "_id": "609ab008d04af0e74bb05885",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/memsql/operator-bundle@sha256:43d4b83cd44b220ff97974e49f5a451f93058bbf5ed52ef8a650f199bdc0ebdb",
-      "bundle_path_digest": "sha256:43d4b83cd44b220ff97974e49f5a451f93058bbf5ed52ef8a650f199bdc0ebdb",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-05-11T16:25:44.315000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "memsql-operator.v0.0.3",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:54:25.121000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "memql-certified",
-      "provided_apis": [
-        {
-          "group": "memsql.com",
-          "kind": "MemsqlCluster",
-          "plural": "memsqlclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.0.3",
-      "version_original": "0.0.3"
-    },
-    {
-      "_id": "609ab0093048c1ac9a6feafd",
-      "alm_examples": [
-        {
-          "api_version": "data-explorer.com/v1alpha1",
-          "kind": "DashboardWithJupyterHub",
-          "metadata": {
-            "name": "dashboard-jupyterhub-custom"
-          },
-          "spec": {
-            "resources": {
-              "limits": {
-                "cpu": "2",
-                "memory": "8Gi"
-              },
-              "requests": {
-                "cpu": "2",
-                "memory": "8Gi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:20211956d089d8958f08e103304eae586144cddddb5cf17f71fc749cbe6a4da7",
-      "bundle_path_digest": "sha256:20211956d089d8958f08e103304eae586144cddddb5cf17f71fc749cbe6a4da7",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-05-11T16:25:45.106000+00:00",
-      "csv_description": "Data Explorer provides ready to use pre-configured data science environment for experimentation.Bringing the promise of notebooks to Kubernetes and OpenShift as an Operator pattern.  Deploy in the cloud or your data center or local laptop with ready to use data and notebooks without burdening yourself with installation details. You can work as team or use your own project namespace.\n\nThe Operator deploys Data Explorer Dashbaord with **default** configuration of **2 CPU** and **8Gi Memory**.\n\nTo learn ***How to access the Data Explorer Dashboard*** and ***How to Deploy Data Explorer Dashboard with custom configuration*** visit <https://github.com/rhm-samples/data-explorer-operator/wiki>.\n",
-      "csv_display_name": "Data Explorer Operator",
-      "csv_metadata_description": "",
-      "csv_name": "data-explorer-operator.v0.0.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:22:46.406000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "data-explorer-operator-certified",
-      "provided_apis": [
-        {
-          "group": "data-explorer.com",
-          "kind": "DashboardWithJupyterHub",
-          "plural": "dashboardwithjupyterhubs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:4183a28cc9cbd3b2bbc83543c37b0341c0f76b5176f1ba210baae651869319af",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:4183a28cc9cbd3b2bbc83543c37b0341c0f76b5176f1ba210baae651869319af",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a63b545c70b5318ae2eb6aa20a6da9492a689db9dba508ecced0dc384da63a0a",
-          "image": "registry.connect.redhat.com/ibm-edge/data-explorer-operator@sha256:a63b545c70b5318ae2eb6aa20a6da9492a689db9dba508ecced0dc384da63a0a",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:5ee83b7deb12d92a115ed150922632745e5f9f3c5d6e925c7b20027b9716df63",
-          "image": "registry.redhat.io/openshift4/ose-cli@sha256:5ee83b7deb12d92a115ed150922632745e5f9f3c5d6e925c7b20027b9716df63",
-          "name": "dashboardinstaller"
-        },
-        {
-          "digest": "sha256:99d8ba8ef3c63ac94c3647ae390e2af4b1374f18d0b72707583c95aa87b7da18",
-          "image": "registry.connect.redhat.com/ibm-edge/data-explorer-dashboard@sha256:99d8ba8ef3c63ac94c3647ae390e2af4b1374f18d0b72707583c95aa87b7da18",
-          "name": "jupyterhub_dashboard"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.0.9",
-      "version_original": "0.0.9"
-    },
-    {
-      "_id": "609ab00956933b164fe21248",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/memsql/operator-bundle@sha256:abaf5a3965617a0555757344b802e6112317de9c343cc018f15c74a6843c55fd",
-      "bundle_path_digest": "sha256:abaf5a3965617a0555757344b802e6112317de9c343cc018f15c74a6843c55fd",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-05-11T16:25:45.383000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "memsql-operator.v1.0.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:49:11.505000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "memql-certified",
-      "provided_apis": [
-        {
-          "group": "memsql.com",
-          "kind": "MemsqlCluster",
-          "plural": "memsqlclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.0.0",
-      "version_original": "1.0.0"
-    },
-    {
-      "_id": "609ab00c56933b164fe2124b",
-      "alm_examples": [
-        {
-          "api_version": "elasticsearch.k8s.elastic.co/v1",
-          "kind": "Elasticsearch",
-          "metadata": {
-            "name": "elasticsearch-sample"
-          },
-          "spec": {
-            "nodeSets": [
-              {
-                "config": {
-                  "node.attr.attr_name": "attr_value",
-                  "node.roles": [
-                    "master",
-                    "data"
-                  ],
-                  "node.store.allow_mmap": false
-                },
-                "count": 3,
-                "name": "default",
-                "podTemplate": {
-                  "metadata": {
-                    "labels": {
-                      "foo": "bar"
-                    }
-                  },
-                  "spec": {
-                    "containers": [
-                      {
-                        "name": "elasticsearch",
-                        "resources": {
-                          "limits": {
-                            "cpu": 2,
-                            "memory": "4Gi"
-                          },
-                          "requests": {
-                            "cpu": 1,
-                            "memory": "4Gi"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            ],
-            "version": "7.10.1"
-          }
-        },
-        {
-          "api_version": "kibana.k8s.elastic.co/v1",
-          "kind": "Kibana",
-          "metadata": {
-            "name": "kibana-sample"
-          },
-          "spec": {
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "podTemplate": {
-              "metadata": {
-                "labels": {
-                  "foo": "bar"
-                }
-              },
-              "spec": {
-                "containers": [
-                  {
-                    "name": "kibana",
-                    "resources": {
-                      "limits": {
-                        "cpu": 2,
-                        "memory": "2Gi"
-                      },
-                      "requests": {
-                        "cpu": 0.5,
-                        "memory": "1Gi"
-                      }
-                    }
-                  }
-                ]
-              }
-            },
-            "version": "7.10.1"
-          }
-        },
-        {
-          "api_version": "apm.k8s.elastic.co/v1",
-          "kind": "ApmServer",
-          "metadata": {
-            "name": "apmserver-sample"
-          },
-          "spec": {
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "version": "7.10.1"
-          }
-        },
-        {
-          "api_version": "enterprisesearch.k8s.elastic.co/v1beta1",
-          "kind": "EnterpriseSearch",
-          "metadata": {
-            "name": "ent-sample"
-          },
-          "spec": {
-            "config": {
-              "ent_search.external_url": "https://localhost:3002"
-            },
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "version": "7.10.1"
-          }
-        },
-        {
-          "api_version": "beat.k8s.elastic.co/v1beta1",
-          "kind": "Beat",
-          "metadata": {
-            "name": "heartbeat-sample"
-          },
-          "spec": {
-            "config": {
-              "heartbeat.monitors": [
-                {
-                  "hosts": [
-                    "elasticsearch-sample-es-http.default.svc:9200"
-                  ],
-                  "schedule": "@every 5s",
-                  "type": "tcp"
-                }
-              ]
-            },
-            "deployment": {
-              "podTemplate": {
-                "spec": {
-                  "securityContext": {
-                    "runAsUser": 0
-                  }
-                }
-              },
-              "replicas": 1
-            },
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "type": "heartbeat",
-            "version": "7.10.1"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:c5cfca9f272137c630239676960afa07b64edab4ac2a7be5dc6cf27e17424bfd",
-      "bundle_path_digest": "sha256:c5cfca9f272137c630239676960afa07b64edab4ac2a7be5dc6cf27e17424bfd",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-05-11T16:25:48.215000+00:00",
-      "csv_description": "Elastic Cloud on Kubernetes (ECK) is the official operator by Elastic for automating the deployment, provisioning, management, and orchestration of Elasticsearch, Kibana, APM Server, Beats, and Enterprise Search on Kubernetes.\n\nCurrent features:\n\n*  Elasticsearch, Kibana, APM Server, Enterprise Search, and Beats deployments\n*  TLS Certificates management\n*  Safe Elasticsearch cluster configuration and topology changes\n*  Persistent volumes usage\n*  Custom node configuration and attributes\n*  Secure settings keystore updates\n\nSupported versions:\n\n* Kubernetes: 1.12+ or OpenShift 3.11+\n* Elasticsearch: 6.8+, 7.1+\n\nSee the [Quickstart](https://www.elastic.co/guide/en/cloud-on-k8s/1.3/k8s-quickstart.html) to get started with ECK.",
-      "csv_display_name": "Elasticsearch (ECK) Operator",
-      "csv_metadata_description": "Run Elasticsearch, Kibana, APM Server, Enterprise Search, and Beats on Kubernetes and OpenShift",
-      "csv_name": "elasticsearch-eck-operator-certified.v1.3.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:24:55.916000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "elasticsearch-eck-operator-certified",
-      "provided_apis": [
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1"
-        },
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1beta1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "beat.k8s.elastic.co",
-          "kind": "Beat",
-          "plural": "beats",
-          "version": "v1beta1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1beta1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "enterprisesearch.k8s.elastic.co",
-          "kind": "EnterpriseSearch",
-          "plural": "enterprisesearches",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:a5a1d516a80e5897a10bca346b720b6e20e4072e6d61bf28dd53f03f51d4be69",
-          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:a5a1d516a80e5897a10bca346b720b6e20e4072e6d61bf28dd53f03f51d4be69",
-          "name": "eck-operator-a5a1d516a80e5897a10bca346b720b6e20e4072e6d61bf28dd53f03f51d4be69-annotation"
-        },
-        {
-          "digest": "sha256:a5a1d516a80e5897a10bca346b720b6e20e4072e6d61bf28dd53f03f51d4be69",
-          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:a5a1d516a80e5897a10bca346b720b6e20e4072e6d61bf28dd53f03f51d4be69",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.3.1",
-      "version_original": "1.3.1"
-    },
-    {
       "_id": "609ab00fd04af0e74bb05888",
       "alm_examples": [],
       "annotations": {
@@ -4429,142 +3954,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "0.2.1",
       "version_original": "0.2.1"
-    },
-    {
-      "_id": "609ab05a3048c1ac9a6feb2f",
-      "alm_examples": [
-        {
-          "api_version": "couchbase.com/v1",
-          "kind": "CouchbaseCluster",
-          "metadata": {
-            "name": "cb-example"
-          },
-          "spec": {
-            "adminConsoleServiceType": "NodePort",
-            "adminConsoleServices": [
-              "data"
-            ],
-            "antiAffinity": false,
-            "authSecret": "cb-example-auth",
-            "baseImage": "registry.connect.redhat.com/couchbase/server",
-            "buckets": [
-              {
-                "compressionMode": "passive",
-                "conflictResolution": "seqno",
-                "enableFlush": true,
-                "enableIndexReplica": false,
-                "evictionPolicy": "fullEviction",
-                "ioPriority": "high",
-                "memoryQuota": 128,
-                "name": "default",
-                "replicas": 1,
-                "type": "couchbase"
-              }
-            ],
-            "cluster": {
-              "analyticsServiceMemoryQuota": 1024,
-              "autoFailoverMaxCount": 3,
-              "autoFailoverOnDataDiskIssues": true,
-              "autoFailoverOnDataDiskIssuesTimePeriod": 120,
-              "autoFailoverServerGroup": false,
-              "autoFailoverTimeout": 120,
-              "dataServiceMemoryQuota": 256,
-              "eventingServiceMemoryQuota": 256,
-              "indexServiceMemoryQuota": 256,
-              "indexStorageSetting": "memory_optimized",
-              "searchServiceMemoryQuota": 256
-            },
-            "disableBucketManagement": false,
-            "exposeAdminConsole": true,
-            "exposedFeatureServiceType": "NodePort",
-            "paused": false,
-            "servers": [
-              {
-                "name": "all_services",
-                "services": [
-                  "data",
-                  "index",
-                  "query",
-                  "search",
-                  "eventing",
-                  "analytics"
-                ],
-                "size": 3
-              }
-            ],
-            "softwareUpdateNotifications": false,
-            "version": "6.0.1-1"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:cf4a0448fa22963d711bb2d3af8b56e3c356073b76233f33421121403893a859",
-      "bundle_path_digest": "sha256:cf4a0448fa22963d711bb2d3af8b56e3c356073b76233f33421121403893a859",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-05-11T16:27:06.192000+00:00",
-      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
-      "csv_display_name": "Couchbase Operator",
-      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
-      "csv_name": "couchbase-operator.v1.2.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:13:25.026000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "plural": "couchbaseclusters",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:a3f4d3174d1c78db8a18a56758b26eb95006d4d344ab2a00358f1f0db4639379",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:a3f4d3174d1c78db8a18a56758b26eb95006d4d344ab2a00358f1f0db4639379",
-          "name": "operator-a3f4d3174d1c78db8a18a56758b26eb95006d4d344ab2a00358f1f0db4639379-annotation"
-        },
-        {
-          "digest": "sha256:a3f4d3174d1c78db8a18a56758b26eb95006d4d344ab2a00358f1f0db4639379",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:a3f4d3174d1c78db8a18a56758b26eb95006d4d344ab2a00358f1f0db4639379",
-          "name": "couchbase-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.2.1",
-      "version_original": "1.2.1"
     },
     {
       "_id": "609ab05b3048c1ac9a6feb30",
@@ -8924,9 +8313,334 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.2.1",
       "version_original": "1.2.1"
+    },
+    {
+      "_id": "609ab0a1e2b160d361d251cd",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/portshift/operator-bundle@sha256:3165cd171a5e046461a6b55011084ac293e92334983ef65acaf03ec5fc40c141",
+      "bundle_path_digest": "sha256:3165cd171a5e046461a6b55011084ac293e92334983ef65acaf03ec5fc40c141",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:28:17.864000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "portshift-operator.v0.1.5",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T02:25:36.771000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "portshift-controller-operator",
+      "provided_apis": [
+        {
+          "group": "portshift.io",
+          "kind": "PortshiftInstaller",
+          "plural": "portshiftinstallers",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.1.5",
+      "version_original": "0.1.5"
+    },
+    {
+      "_id": "609ab0a2e2b160d361d251cf",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-healthcare-hub-operator-bundle@sha256:27cb3851d88ee293c260e452670cad361800cc50b1c9ff98cd3617113b13d117",
+      "bundle_path_digest": "sha256:27cb3851d88ee293c260e452670cad361800cc50b1c9ff98cd3617113b13d117",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:28:18.331000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cortex-healthcare-hub-operator.v0.0.24",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:23:43.345000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "cortex-healthcare-hub-operator",
+      "provided_apis": [
+        {
+          "group": "hubs.cortex.cognitivescale.com",
+          "kind": "Hub",
+          "plural": "hubs",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.0.24",
+      "version_original": "0.0.24"
+    },
+    {
+      "_id": "609ab0a3d04af0e74bb058d1",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-certifai-operator-bundle@sha256:2ff2df4e61105cb9cc1905f504ed0e74907fcd43f85d200f729e464e824e928f",
+      "bundle_path_digest": "sha256:2ff2df4e61105cb9cc1905f504ed0e74907fcd43f85d200f729e464e824e928f",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:28:19.007000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cortex-certifai-operator.v1.3.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:53:43.533000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "cortex-certifai-operator",
+      "provided_apis": [
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "Certifai",
+          "plural": "certifais",
+          "version": "v1"
+        },
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "CertifaiScan",
+          "plural": "certifaiscans",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.3.2",
+      "version_original": "1.3.2"
+    },
+    {
+      "_id": "609ab0a3d04af0e74bb058d2",
+      "alm_examples": [
+        {
+          "api_version": "navigator.nastel.com/v1alpha6",
+          "kind": "NastelNavigator",
+          "metadata": {
+            "name": "nastelnavigator"
+          },
+          "spec": {
+            "cep-wgs": {
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "licenseName": "AutoPilotWMQ_MQM.lic"
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi",
+                "class": "ibmc-block-gold"
+              }
+            },
+            "domain": {
+              "replicaCount": 1,
+              "resources": {},
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi",
+                "class": "ibmc-block-gold"
+              }
+            },
+            "global": {
+              "dbPort": 3306,
+              "subDomain": "nastel-cluster-915b3b336cabec458a7c7ec2aa7c625f-0000.eu-gb.containers.appdomain.cloud",
+              "type": "ClusterIP"
+            },
+            "navigator": {
+              "replicaCount": 1,
+              "resources": {}
+            },
+            "nsqcm": {
+              "replicaCount": 1,
+              "resources": {}
+            },
+            "wgs-mysql": {
+              "replicaCount": 1,
+              "resources": {},
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi",
+                "class": "ibmc-block-gold"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:2d8738da44e668d4b04958e371120e20dddfcb5cfd2be2e3a988b6c3111e88f5",
+      "bundle_path_digest": "sha256:2d8738da44e668d4b04958e371120e20dddfcb5cfd2be2e3a988b6c3111e88f5",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:28:19.673000+00:00",
+      "csv_description": "The operator deploys Nastel Navigator component containers:\n  * Nastel Domain Server\n  * Nastel Workgroup Server\n  * MySQL database (MariaDB) instance\n  * Connection Manager\n  * Navigator WebApp\n\nin one go.\n\n[Nastel Navigator](https://www.nastel.com/nastel-navigator/) allows you to manage, audit and administrate instances of IBM MQ, EMS and\nKafka middleware.\n",
+      "csv_display_name": "Nastel Navigator Operator",
+      "csv_metadata_description": "Operator to deploy and run Nastel Navigator",
+      "csv_name": "nastel-navigator-operator.v0.0.16",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T02:01:34.594000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "nastel-navigator-operator-certified",
+      "provided_apis": [
+        {
+          "group": "navigator.nastel.com",
+          "kind": "NastelNavigator",
+          "plural": "nastelnavigators",
+          "version": "v1alpha6"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:d9597ad9677965bc7c8d6970151866394a40464857e722c4885519b8167da4f4",
+          "image": "registry.connect.redhat.com/nastel/navigator-operator@sha256:d9597ad9677965bc7c8d6970151866394a40464857e722c4885519b8167da4f4",
+          "name": "navigator-operator-d9597ad9677965bc7c8d6970151866394a40464857e722c4885519b8167da4f4-annotation"
+        },
+        {
+          "digest": "sha256:d9597ad9677965bc7c8d6970151866394a40464857e722c4885519b8167da4f4",
+          "image": "registry.connect.redhat.com/nastel/navigator-operator@sha256:d9597ad9677965bc7c8d6970151866394a40464857e722c4885519b8167da4f4",
+          "name": "nastel-navigator-operator"
+        },
+        {
+          "digest": "sha256:4a606ec3bcfa00f35f8859b904862930a72218240b7cbc197e5e811d8bf33f40",
+          "image": "registry.connect.redhat.com/nastel/nastel-domain@sha256:4a606ec3bcfa00f35f8859b904862930a72218240b7cbc197e5e811d8bf33f40",
+          "name": "domain"
+        },
+        {
+          "digest": "sha256:a968f28e69e2aed4125d27fcbe4365b671cc316321ddf7205541c30593afc9c3",
+          "image": "registry.connect.redhat.com/nastel/navigator-cm@sha256:a968f28e69e2aed4125d27fcbe4365b671cc316321ddf7205541c30593afc9c3",
+          "name": "cm"
+        },
+        {
+          "digest": "sha256:0bd13feca3a3362587a76f17f2df26651f4facdfad097b82a3d4cb361b5ff770",
+          "image": "registry.connect.redhat.com/nastel/navigator-wgs@sha256:0bd13feca3a3362587a76f17f2df26651f4facdfad097b82a3d4cb361b5ff770",
+          "name": "wgs"
+        },
+        {
+          "digest": "sha256:6a09a0349de4ef27730d265349b3a84c93593f42a1e2249f3c82b47b96c9b6eb",
+          "image": "registry.connect.redhat.com/nastel/navigator-ui@sha256:6a09a0349de4ef27730d265349b3a84c93593f42a1e2249f3c82b47b96c9b6eb",
+          "name": "navigator"
+        },
+        {
+          "digest": "sha256:3e1c5e4d19ab3b373a6b314d24b60981cddb301bf43a1fe232f14612a2957de4",
+          "image": "registry.redhat.io/rhel8/mariadb-103@sha256:3e1c5e4d19ab3b373a6b314d24b60981cddb301bf43a1fe232f14612a2957de4",
+          "name": "mysql"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.0.16",
+      "version_original": "0.0.16"
+    },
+    {
+      "_id": "609ab0a4e2b160d361d251d1",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:3a70920f1aca227ebe5b1db44125c4370bad00379a941f0bac301d61ee112ba2",
+      "bundle_path_digest": "sha256:3a70920f1aca227ebe5b1db44125c4370bad00379a941f0bac301d61ee112ba2",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:28:20.098000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "gpu-operator-certified.v1.3.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:55:52.042000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.3.0",
+      "version_original": "1.3.0"
     }
   ],
   "page": 9,
   "page_size": 100,
-  "total": 4587
+  "total": 4520
 }

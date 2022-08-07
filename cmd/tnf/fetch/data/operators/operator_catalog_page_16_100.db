@@ -1,2123 +1,6 @@
 {
   "data": [
     {
-      "_id": "616091005ac6c1250490208d",
-      "alm_examples": [
-        {
-          "api_version": "game.marketplace.redhat.com/v1",
-          "kind": "Arcade",
-          "metadata": {
-            "name": "arcade-sample"
-          },
-          "spec": {
-            "size": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/rhm-labs/arcade-operator-bundle@sha256:f5f025c7f56643fab9148bb5de8ee34a84d02b78a6abb4b5592306cf54296654",
-      "bundle_path_digest": "sha256:f5f025c7f56643fab9148bb5de8ee34a84d02b78a6abb4b5592306cf54296654",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-08T18:42:08.139000+00:00",
-      "csv_description": "RHM Arcade Operator - a simple operator used to showcase how to build an operator around an existing web application that can can run on Openshift, Vanilla k8s, or on-boarded to Red Hat Marketplace.",
-      "csv_display_name": "Arcade Operator",
-      "csv_metadata_description": "",
-      "csv_name": "marketplace-games-operator.v1.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:18:34.401000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "marketplace-games-operator",
-      "provided_apis": [
-        {
-          "group": "game.marketplace.redhat.com",
-          "kind": "Arcade",
-          "plural": "arcades",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:d6959be6693728d2dc4cd38b69251551d23c5002cb52db2684df31a0a8f7b0ab",
-          "image": "registry.connect.redhat.com/rhm-labs/arcade-operator@sha256:d6959be6693728d2dc4cd38b69251551d23c5002cb52db2684df31a0a8f7b0ab",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.0.0",
-      "version_original": "1.0.0"
-    },
-    {
-      "_id": "6160918190fb938ecf600a15",
-      "alm_examples": [
-        {
-          "api_version": "game.marketplace.redhat.com/v1",
-          "kind": "Arcade",
-          "metadata": {
-            "name": "arcade-sample"
-          },
-          "spec": {
-            "size": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/rhm-labs/arcade-operator-bundle@sha256:f5f025c7f56643fab9148bb5de8ee34a84d02b78a6abb4b5592306cf54296654",
-      "bundle_path_digest": "sha256:f5f025c7f56643fab9148bb5de8ee34a84d02b78a6abb4b5592306cf54296654",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-08T18:44:17.213000+00:00",
-      "csv_description": "RHM Arcade Operator - a simple operator used to showcase how to build an operator around an existing web application that can can run on Openshift, Vanilla k8s, or on-boarded to Red Hat Marketplace.",
-      "csv_display_name": "Arcade Operator",
-      "csv_metadata_description": "",
-      "csv_name": "marketplace-games-operator.v1.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:51:42.715000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "marketplace-games-operator",
-      "provided_apis": [
-        {
-          "group": "game.marketplace.redhat.com",
-          "kind": "Arcade",
-          "plural": "arcades",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:d6959be6693728d2dc4cd38b69251551d23c5002cb52db2684df31a0a8f7b0ab",
-          "image": "registry.connect.redhat.com/rhm-labs/arcade-operator@sha256:d6959be6693728d2dc4cd38b69251551d23c5002cb52db2684df31a0a8f7b0ab",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.0.0",
-      "version_original": "1.0.0"
-    },
-    {
-      "_id": "6160c7bf04fd1c67039dbd3a",
-      "alm_examples": [
-        {
-          "api_version": "openlegacy.com/v1alpha1",
-          "kind": "As400rpc",
-          "metadata": {
-            "name": "as400rpc-sample"
-          },
-          "spec": {
-            "image": "registry.connect.redhat.com/openlegacy-corp/nocode@sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-            "replicaCount": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/openlegacy-corp/as400-nocode@sha256:fc77255388a2e23c963c7cad91d0e845b080769e258bd50afb702a1225026d33",
-      "bundle_path_digest": "sha256:fc77255388a2e23c963c7cad91d0e845b080769e258bd50afb702a1225026d33",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-08T22:35:43.508000+00:00",
-      "csv_description": "no-code application that allows simple configuration-based integration to AS/400 systems.",
-      "csv_display_name": "OpenLegacy NoCode Integration with IBM i",
-      "csv_metadata_description": "This image contains an OpenLegacy no-code application that allows simple configuration-based integration to AS/400 systems.",
-      "csv_name": "as400rpc-operator.v1.1.16",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:48:18.731000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "as400rpc-operator",
-      "provided_apis": [
-        {
-          "group": "openlegacy.com",
-          "kind": "As400rpc",
-          "plural": "as400rpcs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "image": "registry.connect.redhat.com/openlegacy-corp/as400rpc-operator@sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "name": "as400rpc-operator-ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "image": "registry.connect.redhat.com/openlegacy-corp/as400rpc-operator@sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "name": "as400rpc-operator"
-        },
-        {
-          "digest": "sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "image": "registry.connect.redhat.com/openlegacy-corp/nocode@sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "name": "as400rpc"
-        },
-        {
-          "digest": "sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "image": "registry.connect.redhat.com/openlegacy-corp/nocode@sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "name": "nocode-66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.1.16",
-      "version_original": "1.1.16"
-    },
-    {
-      "_id": "6160ca065cfcf7adc247ac70",
-      "alm_examples": [
-        {
-          "api_version": "openlegacy.com/v1alpha1",
-          "kind": "As400rpc",
-          "metadata": {
-            "name": "as400rpc-sample"
-          },
-          "spec": {
-            "image": "registry.connect.redhat.com/openlegacy-corp/nocode@sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-            "replicaCount": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/openlegacy-corp/as400-nocode@sha256:fc77255388a2e23c963c7cad91d0e845b080769e258bd50afb702a1225026d33",
-      "bundle_path_digest": "sha256:fc77255388a2e23c963c7cad91d0e845b080769e258bd50afb702a1225026d33",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-08T22:45:26.338000+00:00",
-      "csv_description": "no-code application that allows simple configuration-based integration to AS/400 systems.",
-      "csv_display_name": "OpenLegacy NoCode Integration with IBM i",
-      "csv_metadata_description": "This image contains an OpenLegacy no-code application that allows simple configuration-based integration to AS/400 systems.",
-      "csv_name": "as400rpc-operator.v1.1.16",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:48:29.375000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "as400rpc-operator",
-      "provided_apis": [
-        {
-          "group": "openlegacy.com",
-          "kind": "As400rpc",
-          "plural": "as400rpcs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "image": "registry.connect.redhat.com/openlegacy-corp/as400rpc-operator@sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "name": "as400rpc-operator-ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "image": "registry.connect.redhat.com/openlegacy-corp/as400rpc-operator@sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "name": "as400rpc-operator"
-        },
-        {
-          "digest": "sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "image": "registry.connect.redhat.com/openlegacy-corp/nocode@sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "name": "as400rpc"
-        },
-        {
-          "digest": "sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "image": "registry.connect.redhat.com/openlegacy-corp/nocode@sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "name": "nocode-66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.1.16",
-      "version_original": "1.1.16"
-    },
-    {
-      "_id": "6160cfaf90fb938ecf600a28",
-      "alm_examples": [
-        {
-          "api_version": "openlegacy.com/v1alpha1",
-          "kind": "As400rpc",
-          "metadata": {
-            "name": "as400rpc-sample"
-          },
-          "spec": {
-            "image": "registry.connect.redhat.com/openlegacy-corp/nocode@sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-            "replicaCount": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/openlegacy-corp/as400-nocode@sha256:fc77255388a2e23c963c7cad91d0e845b080769e258bd50afb702a1225026d33",
-      "bundle_path_digest": "sha256:fc77255388a2e23c963c7cad91d0e845b080769e258bd50afb702a1225026d33",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-08T23:09:35.025000+00:00",
-      "csv_description": "no-code application that allows simple configuration-based integration to AS/400 systems.",
-      "csv_display_name": "OpenLegacy NoCode Integration with IBM i",
-      "csv_metadata_description": "This image contains an OpenLegacy no-code application that allows simple configuration-based integration to AS/400 systems.",
-      "csv_name": "as400rpc-operator.v1.1.16",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:57:13.636000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "as400rpc-operator",
-      "provided_apis": [
-        {
-          "group": "openlegacy.com",
-          "kind": "As400rpc",
-          "plural": "as400rpcs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "image": "registry.connect.redhat.com/openlegacy-corp/as400rpc-operator@sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "name": "as400rpc-operator-ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "image": "registry.connect.redhat.com/openlegacy-corp/as400rpc-operator@sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "name": "as400rpc-operator"
-        },
-        {
-          "digest": "sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "image": "registry.connect.redhat.com/openlegacy-corp/nocode@sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "name": "as400rpc"
-        },
-        {
-          "digest": "sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "image": "registry.connect.redhat.com/openlegacy-corp/nocode@sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "name": "nocode-66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.1.16",
-      "version_original": "1.1.16"
-    },
-    {
-      "_id": "6160cfd55cfcf7adc247ac71",
-      "alm_examples": [
-        {
-          "api_version": "openlegacy.com/v1alpha1",
-          "kind": "As400rpc",
-          "metadata": {
-            "name": "as400rpc-sample"
-          },
-          "spec": {
-            "image": "registry.connect.redhat.com/openlegacy-corp/nocode@sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-            "replicaCount": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/openlegacy-corp/as400-nocode@sha256:fc77255388a2e23c963c7cad91d0e845b080769e258bd50afb702a1225026d33",
-      "bundle_path_digest": "sha256:fc77255388a2e23c963c7cad91d0e845b080769e258bd50afb702a1225026d33",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-08T23:10:13.344000+00:00",
-      "csv_description": "no-code application that allows simple configuration-based integration to AS/400 systems.",
-      "csv_display_name": "OpenLegacy NoCode Integration with IBM i",
-      "csv_metadata_description": "This image contains an OpenLegacy no-code application that allows simple configuration-based integration to AS/400 systems.",
-      "csv_name": "as400rpc-operator.v1.1.16",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T02:22:41.511000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "as400rpc-operator",
-      "provided_apis": [
-        {
-          "group": "openlegacy.com",
-          "kind": "As400rpc",
-          "plural": "as400rpcs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "image": "registry.connect.redhat.com/openlegacy-corp/as400rpc-operator@sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "name": "as400rpc-operator-ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "image": "registry.connect.redhat.com/openlegacy-corp/as400rpc-operator@sha256:ad879b2c6e3ea3e95b96136efce7399aa9ae49c9e1e120dc8e6484299602364f",
-          "name": "as400rpc-operator"
-        },
-        {
-          "digest": "sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "image": "registry.connect.redhat.com/openlegacy-corp/nocode@sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "name": "as400rpc"
-        },
-        {
-          "digest": "sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "image": "registry.connect.redhat.com/openlegacy-corp/nocode@sha256:66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159",
-          "name": "nocode-66649323574f631ff9c66edfa9f976ab215497a8aa79e0db843be738dd8a7159-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.1.16",
-      "version_original": "1.1.16"
-    },
-    {
-      "_id": "6161b6745cfcf7adc247ac93",
-      "alm_examples": [
-        {
-          "api_version": "apm.neuvector.com/v1alpha1",
-          "kind": "Neuvector",
-          "metadata": {
-            "name": "neuvector"
-          },
-          "spec": {
-            "admissionwebhook": {
-              "type": "ClusterIP"
-            },
-            "bottlerocket": {
-              "enabled": false,
-              "runtimePath": "/run/dockershim.sock"
-            },
-            "containerd": {
-              "enabled": false,
-              "path": "/var/run/containerd/containerd.sock"
-            },
-            "controller": {
-              "apisvc": {
-                "annotations": {},
-                "route": {
-                  "enabled": false,
-                  "host": "",
-                  "termination": "passthrough"
-                },
-                "type": ""
-              },
-              "azureFileShare": {
-                "enabled": false,
-                "secretName": "",
-                "shareName": ""
-              },
-              "certificate": {
-                "keyFile": "tls.key",
-                "pemFile": "tls.pem",
-                "secret": ""
-              },
-              "configmap": {
-                "data": "",
-                "enabled": false
-              },
-              "disruptionbudget": 0,
-              "enabled": true,
-              "federation": {
-                "managedsvc": {
-                  "ingress": {
-                    "annotations": {
-                      "ingress.kubernetes.io/protocol": "https"
-                    },
-                    "enabled": false,
-                    "host": "",
-                    "path": "/",
-                    "secretName": "",
-                    "tls": false
-                  },
-                  "route": {
-                    "enabled": false,
-                    "host": "",
-                    "termination": "passthrough"
-                  },
-                  "type": ""
-                },
-                "mastersvc": {
-                  "ingress": {
-                    "annotations": {
-                      "ingress.kubernetes.io/protocol": "https"
-                    },
-                    "enabled": false,
-                    "host": "",
-                    "path": "/",
-                    "secretName": "",
-                    "tls": false
-                  },
-                  "route": {
-                    "enabled": false,
-                    "host": "",
-                    "termination": "passthrough"
-                  },
-                  "type": ""
-                }
-              },
-              "image": "registry.connect.redhat.com/neuvector/controller",
-              "ingress": {
-                "annotations": {
-                  "ingress.kubernetes.io/protocol": "https"
-                },
-                "enabled": false,
-                "host": "",
-                "path": "/",
-                "secretName": "",
-                "tls": false
-              },
-              "priorityClassName": "",
-              "pvc": {
-                "accessModes": [
-                  "ReadWriteMany"
-                ],
-                "capacity": "",
-                "enabled": false,
-                "storageClass": ""
-              },
-              "replicas": 3,
-              "resources": {},
-              "schedulerName": "",
-              "strategy": {
-                "rollingUpdate": {
-                  "maxSurge": 1,
-                  "maxUnavailable": 0
-                },
-                "type": "RollingUpdate"
-              }
-            },
-            "crdwebhook": {
-              "enabled": true,
-              "type": "ClusterIP"
-            },
-            "crio": {
-              "enabled": true,
-              "path": "/var/run/crio/crio.sock"
-            },
-            "cve": {
-              "scanner": {
-                "dockerPath": "",
-                "enabled": true,
-                "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-                "priorityClassName": "",
-                "replicas": 3,
-                "resources": {},
-                "strategy": {
-                  "rollingUpdate": {
-                    "maxSurge": 1,
-                    "maxUnavailable": 0
-                  },
-                  "type": "RollingUpdate"
-                }
-              },
-              "updater": {
-                "enabled": true,
-                "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-                "priorityClassName": "",
-                "schedule": "0 0 * * *",
-                "secure": false
-              }
-            },
-            "docker": {
-              "enabled": false,
-              "path": "/var/run/docker.sock"
-            },
-            "enforcer": {
-              "enabled": true,
-              "image": "registry.connect.redhat.com/neuvector/enforcer",
-              "priorityClassName": "",
-              "resources": {},
-              "tolerations": [
-                {
-                  "effect": "NoSchedule",
-                  "key": "node-role.kubernetes.io/master"
-                }
-              ]
-            },
-            "k3s": {
-              "enabled": false,
-              "runtimePath": "/run/k3s/containerd/containerd.sock"
-            },
-            "manager": {
-              "certificate": {
-                "keyFile": "tls.key",
-                "pemFile": "tls.pem",
-                "secret": ""
-              },
-              "enabled": true,
-              "env": {
-                "ssl": true
-              },
-              "image": "registry.connect.redhat.com/neuvector/manager",
-              "ingress": {
-                "annotations": {},
-                "enabled": false,
-                "host": "",
-                "path": "/",
-                "secretName": "",
-                "tls": false
-              },
-              "priorityClassName": "",
-              "resources": {},
-              "route": {
-                "enabled": true,
-                "host": "",
-                "termination": "passthrough"
-              },
-              "svc": {
-                "annotations": {},
-                "loadBalancerIP": "",
-                "type": "NodePort"
-              }
-            },
-            "openshift": true,
-            "psp": false,
-            "resources": {},
-            "serviceAccount": "default"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:29996196f2eba8f7662bdf1efeaac3a0ccf56bdfb2e522b340d9a239f7ca51e4",
-      "bundle_path_digest": "sha256:29996196f2eba8f7662bdf1efeaac3a0ccf56bdfb2e522b340d9a239f7ca51e4",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2021-10-09T15:34:12.329000+00:00",
-      "csv_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.\n\nThe NeuVector Operator runs  in the openshift container platform to deploy and manage the NeuVector Security cluster components. The NeuVector operator contains all necessary information to deploy NeuVector using helm charts. You simply need to install the NeuVector operator from the OpenShift embeded operator hub and create NeuVector instance. You can modify the NeuVector installation configuration by modifying yaml while creating the NeuVector instance such as imagePullSecrets, tag version, etc. Please refer to [github link](https://github.com/neuvector/neuvector-helm/tree/master/charts/core) for the values that can be modifed during installation. To upgrade to a newer version of NeuVector, just reapply the NeuVector instance with desired tag , which in turn pulls the specified NeuVector image tags and upgrades as per upgrade plan configured on the helm chart.  NeuVector Operator versions are tied to NeuVector product versions. Version 1.2.9 of the NeuVector Certified Operator deploys version 4.3.1 of NeuVector.\n\n**Complete below steps to Grant Service Account Access to the Privileged SCC before installation.**\n\nCreate the NeuVector namespace\n\n         oc new-project  neuvector\nLogin as system:admin account\n\n         oc login -u system:admin\n\nGrant Service Account Access to the Privileged SCC\n\n         oc -n neuvector adm policy add-scc-to-user privileged -z default\n\nThe following info will be added in the Privileged SCC users:\n\n         - system:serviceaccount:neuvector:default\n\nIn OpenShift 4.6+ use the following to check:\n\n         oc get rolebinding system:openshift:scc:privileged -n neuvector -o wide\n         NAME                              ROLE                                          AGE     USERS   GROUPS   SERVICEACCOUNTS\n         system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   9m22s                    neuvector/default\n\n\n**Add NeuVector license from NeuVector WebUI->setting**\n\n\n#Deploying the NeuVector Operator#\n\n\nPlease refer to the instructions [here](https://github.com/neuvector/neuvector-operator/blob/master/README.md)\n\n\n",
-      "csv_display_name": "NeuVector Operator",
-      "csv_metadata_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.",
-      "csv_name": "neuvector-operator.v1.2.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:51:07.457000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "neuvector-certified-operator",
-      "provided_apis": [
-        {
-          "group": "apm.neuvector.com",
-          "kind": "Neuvector",
-          "plural": "neuvectors",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "name": "neuvector-operator-487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1-annotation"
-        },
-        {
-          "digest": "sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "name": "neuvector-operator"
-        },
-        {
-          "digest": "sha256:55b3d9873846d0a8670b58e8a8a76c426d3aba74d4e5c4fca43d05c1dd296f10",
-          "image": "registry.connect.redhat.com/neuvector/controller@sha256:55b3d9873846d0a8670b58e8a8a76c426d3aba74d4e5c4fca43d05c1dd296f10",
-          "name": "controller"
-        },
-        {
-          "digest": "sha256:fdd66288454dd01f4f618c8cf04c7da501d4362773266ec6f448d63e26e3a35c",
-          "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:fdd66288454dd01f4f618c8cf04c7da501d4362773266ec6f448d63e26e3a35c",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:73445c18ea18f131b6fa630a97623a3043d05758205ef93fc02fa920abbedaa6",
-          "image": "registry.connect.redhat.com/neuvector/manager@sha256:73445c18ea18f131b6fa630a97623a3043d05758205ef93fc02fa920abbedaa6",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "name": "updater"
-        },
-        {
-          "digest": "sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "name": "scanner-a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06-annotation"
-        },
-        {
-          "digest": "sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "name": "ubi8-910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.2.9",
-      "version_original": "1.2.9"
-    },
-    {
-      "_id": "6161b83b5cfcf7adc247ac94",
-      "alm_examples": [
-        {
-          "api_version": "apm.neuvector.com/v1alpha1",
-          "kind": "Neuvector",
-          "metadata": {
-            "name": "neuvector"
-          },
-          "spec": {
-            "admissionwebhook": {
-              "type": "ClusterIP"
-            },
-            "bottlerocket": {
-              "enabled": false,
-              "runtimePath": "/run/dockershim.sock"
-            },
-            "containerd": {
-              "enabled": false,
-              "path": "/var/run/containerd/containerd.sock"
-            },
-            "controller": {
-              "apisvc": {
-                "annotations": {},
-                "route": {
-                  "enabled": false,
-                  "host": "",
-                  "termination": "passthrough"
-                },
-                "type": ""
-              },
-              "azureFileShare": {
-                "enabled": false,
-                "secretName": "",
-                "shareName": ""
-              },
-              "certificate": {
-                "keyFile": "tls.key",
-                "pemFile": "tls.pem",
-                "secret": ""
-              },
-              "configmap": {
-                "data": "",
-                "enabled": false
-              },
-              "disruptionbudget": 0,
-              "enabled": true,
-              "federation": {
-                "managedsvc": {
-                  "ingress": {
-                    "annotations": {
-                      "ingress.kubernetes.io/protocol": "https"
-                    },
-                    "enabled": false,
-                    "host": "",
-                    "path": "/",
-                    "secretName": "",
-                    "tls": false
-                  },
-                  "route": {
-                    "enabled": false,
-                    "host": "",
-                    "termination": "passthrough"
-                  },
-                  "type": ""
-                },
-                "mastersvc": {
-                  "ingress": {
-                    "annotations": {
-                      "ingress.kubernetes.io/protocol": "https"
-                    },
-                    "enabled": false,
-                    "host": "",
-                    "path": "/",
-                    "secretName": "",
-                    "tls": false
-                  },
-                  "route": {
-                    "enabled": false,
-                    "host": "",
-                    "termination": "passthrough"
-                  },
-                  "type": ""
-                }
-              },
-              "image": "registry.connect.redhat.com/neuvector/controller",
-              "ingress": {
-                "annotations": {
-                  "ingress.kubernetes.io/protocol": "https"
-                },
-                "enabled": false,
-                "host": "",
-                "path": "/",
-                "secretName": "",
-                "tls": false
-              },
-              "priorityClassName": "",
-              "pvc": {
-                "accessModes": [
-                  "ReadWriteMany"
-                ],
-                "capacity": "",
-                "enabled": false,
-                "storageClass": ""
-              },
-              "replicas": 3,
-              "resources": {},
-              "schedulerName": "",
-              "strategy": {
-                "rollingUpdate": {
-                  "maxSurge": 1,
-                  "maxUnavailable": 0
-                },
-                "type": "RollingUpdate"
-              }
-            },
-            "crdwebhook": {
-              "enabled": true,
-              "type": "ClusterIP"
-            },
-            "crio": {
-              "enabled": true,
-              "path": "/var/run/crio/crio.sock"
-            },
-            "cve": {
-              "scanner": {
-                "dockerPath": "",
-                "enabled": true,
-                "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-                "priorityClassName": "",
-                "replicas": 3,
-                "resources": {},
-                "strategy": {
-                  "rollingUpdate": {
-                    "maxSurge": 1,
-                    "maxUnavailable": 0
-                  },
-                  "type": "RollingUpdate"
-                }
-              },
-              "updater": {
-                "enabled": true,
-                "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-                "priorityClassName": "",
-                "schedule": "0 0 * * *",
-                "secure": false
-              }
-            },
-            "docker": {
-              "enabled": false,
-              "path": "/var/run/docker.sock"
-            },
-            "enforcer": {
-              "enabled": true,
-              "image": "registry.connect.redhat.com/neuvector/enforcer",
-              "priorityClassName": "",
-              "resources": {},
-              "tolerations": [
-                {
-                  "effect": "NoSchedule",
-                  "key": "node-role.kubernetes.io/master"
-                }
-              ]
-            },
-            "k3s": {
-              "enabled": false,
-              "runtimePath": "/run/k3s/containerd/containerd.sock"
-            },
-            "manager": {
-              "certificate": {
-                "keyFile": "tls.key",
-                "pemFile": "tls.pem",
-                "secret": ""
-              },
-              "enabled": true,
-              "env": {
-                "ssl": true
-              },
-              "image": "registry.connect.redhat.com/neuvector/manager",
-              "ingress": {
-                "annotations": {},
-                "enabled": false,
-                "host": "",
-                "path": "/",
-                "secretName": "",
-                "tls": false
-              },
-              "priorityClassName": "",
-              "resources": {},
-              "route": {
-                "enabled": true,
-                "host": "",
-                "termination": "passthrough"
-              },
-              "svc": {
-                "annotations": {},
-                "loadBalancerIP": "",
-                "type": "NodePort"
-              }
-            },
-            "openshift": true,
-            "psp": false,
-            "resources": {},
-            "serviceAccount": "default"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:29996196f2eba8f7662bdf1efeaac3a0ccf56bdfb2e522b340d9a239f7ca51e4",
-      "bundle_path_digest": "sha256:29996196f2eba8f7662bdf1efeaac3a0ccf56bdfb2e522b340d9a239f7ca51e4",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2021-10-09T15:41:47.560000+00:00",
-      "csv_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.\n\nThe NeuVector Operator runs  in the openshift container platform to deploy and manage the NeuVector Security cluster components. The NeuVector operator contains all necessary information to deploy NeuVector using helm charts. You simply need to install the NeuVector operator from the OpenShift embeded operator hub and create NeuVector instance. You can modify the NeuVector installation configuration by modifying yaml while creating the NeuVector instance such as imagePullSecrets, tag version, etc. Please refer to [github link](https://github.com/neuvector/neuvector-helm/tree/master/charts/core) for the values that can be modifed during installation. To upgrade to a newer version of NeuVector, just reapply the NeuVector instance with desired tag , which in turn pulls the specified NeuVector image tags and upgrades as per upgrade plan configured on the helm chart.  NeuVector Operator versions are tied to NeuVector product versions. Version 1.2.9 of the NeuVector Certified Operator deploys version 4.3.1 of NeuVector.\n\n**Complete below steps to Grant Service Account Access to the Privileged SCC before installation.**\n\nCreate the NeuVector namespace\n\n         oc new-project  neuvector\nLogin as system:admin account\n\n         oc login -u system:admin\n\nGrant Service Account Access to the Privileged SCC\n\n         oc -n neuvector adm policy add-scc-to-user privileged -z default\n\nThe following info will be added in the Privileged SCC users:\n\n         - system:serviceaccount:neuvector:default\n\nIn OpenShift 4.6+ use the following to check:\n\n         oc get rolebinding system:openshift:scc:privileged -n neuvector -o wide\n         NAME                              ROLE                                          AGE     USERS   GROUPS   SERVICEACCOUNTS\n         system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   9m22s                    neuvector/default\n\n\n**Add NeuVector license from NeuVector WebUI->setting**\n\n\n#Deploying the NeuVector Operator#\n\n\nPlease refer to the instructions [here](https://github.com/neuvector/neuvector-operator/blob/master/README.md)\n\n\n",
-      "csv_display_name": "NeuVector Operator",
-      "csv_metadata_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.",
-      "csv_name": "neuvector-operator.v1.2.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:54:12.537000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "neuvector-certified-operator",
-      "provided_apis": [
-        {
-          "group": "apm.neuvector.com",
-          "kind": "Neuvector",
-          "plural": "neuvectors",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "name": "neuvector-operator-487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1-annotation"
-        },
-        {
-          "digest": "sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "name": "neuvector-operator"
-        },
-        {
-          "digest": "sha256:55b3d9873846d0a8670b58e8a8a76c426d3aba74d4e5c4fca43d05c1dd296f10",
-          "image": "registry.connect.redhat.com/neuvector/controller@sha256:55b3d9873846d0a8670b58e8a8a76c426d3aba74d4e5c4fca43d05c1dd296f10",
-          "name": "controller"
-        },
-        {
-          "digest": "sha256:fdd66288454dd01f4f618c8cf04c7da501d4362773266ec6f448d63e26e3a35c",
-          "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:fdd66288454dd01f4f618c8cf04c7da501d4362773266ec6f448d63e26e3a35c",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:73445c18ea18f131b6fa630a97623a3043d05758205ef93fc02fa920abbedaa6",
-          "image": "registry.connect.redhat.com/neuvector/manager@sha256:73445c18ea18f131b6fa630a97623a3043d05758205ef93fc02fa920abbedaa6",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "name": "updater"
-        },
-        {
-          "digest": "sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "name": "scanner-a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06-annotation"
-        },
-        {
-          "digest": "sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "name": "ubi8-910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.2.9",
-      "version_original": "1.2.9"
-    },
-    {
-      "_id": "6161b8c004fd1c67039dbd59",
-      "alm_examples": [
-        {
-          "api_version": "apm.neuvector.com/v1alpha1",
-          "kind": "Neuvector",
-          "metadata": {
-            "name": "neuvector"
-          },
-          "spec": {
-            "admissionwebhook": {
-              "type": "ClusterIP"
-            },
-            "bottlerocket": {
-              "enabled": false,
-              "runtimePath": "/run/dockershim.sock"
-            },
-            "containerd": {
-              "enabled": false,
-              "path": "/var/run/containerd/containerd.sock"
-            },
-            "controller": {
-              "apisvc": {
-                "annotations": {},
-                "route": {
-                  "enabled": false,
-                  "host": "",
-                  "termination": "passthrough"
-                },
-                "type": ""
-              },
-              "azureFileShare": {
-                "enabled": false,
-                "secretName": "",
-                "shareName": ""
-              },
-              "certificate": {
-                "keyFile": "tls.key",
-                "pemFile": "tls.pem",
-                "secret": ""
-              },
-              "configmap": {
-                "data": "",
-                "enabled": false
-              },
-              "disruptionbudget": 0,
-              "enabled": true,
-              "federation": {
-                "managedsvc": {
-                  "ingress": {
-                    "annotations": {
-                      "ingress.kubernetes.io/protocol": "https"
-                    },
-                    "enabled": false,
-                    "host": "",
-                    "path": "/",
-                    "secretName": "",
-                    "tls": false
-                  },
-                  "route": {
-                    "enabled": false,
-                    "host": "",
-                    "termination": "passthrough"
-                  },
-                  "type": ""
-                },
-                "mastersvc": {
-                  "ingress": {
-                    "annotations": {
-                      "ingress.kubernetes.io/protocol": "https"
-                    },
-                    "enabled": false,
-                    "host": "",
-                    "path": "/",
-                    "secretName": "",
-                    "tls": false
-                  },
-                  "route": {
-                    "enabled": false,
-                    "host": "",
-                    "termination": "passthrough"
-                  },
-                  "type": ""
-                }
-              },
-              "image": "registry.connect.redhat.com/neuvector/controller",
-              "ingress": {
-                "annotations": {
-                  "ingress.kubernetes.io/protocol": "https"
-                },
-                "enabled": false,
-                "host": "",
-                "path": "/",
-                "secretName": "",
-                "tls": false
-              },
-              "priorityClassName": "",
-              "pvc": {
-                "accessModes": [
-                  "ReadWriteMany"
-                ],
-                "capacity": "",
-                "enabled": false,
-                "storageClass": ""
-              },
-              "replicas": 3,
-              "resources": {},
-              "schedulerName": "",
-              "strategy": {
-                "rollingUpdate": {
-                  "maxSurge": 1,
-                  "maxUnavailable": 0
-                },
-                "type": "RollingUpdate"
-              }
-            },
-            "crdwebhook": {
-              "enabled": true,
-              "type": "ClusterIP"
-            },
-            "crio": {
-              "enabled": true,
-              "path": "/var/run/crio/crio.sock"
-            },
-            "cve": {
-              "scanner": {
-                "dockerPath": "",
-                "enabled": true,
-                "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-                "priorityClassName": "",
-                "replicas": 3,
-                "resources": {},
-                "strategy": {
-                  "rollingUpdate": {
-                    "maxSurge": 1,
-                    "maxUnavailable": 0
-                  },
-                  "type": "RollingUpdate"
-                }
-              },
-              "updater": {
-                "enabled": true,
-                "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-                "priorityClassName": "",
-                "schedule": "0 0 * * *",
-                "secure": false
-              }
-            },
-            "docker": {
-              "enabled": false,
-              "path": "/var/run/docker.sock"
-            },
-            "enforcer": {
-              "enabled": true,
-              "image": "registry.connect.redhat.com/neuvector/enforcer",
-              "priorityClassName": "",
-              "resources": {},
-              "tolerations": [
-                {
-                  "effect": "NoSchedule",
-                  "key": "node-role.kubernetes.io/master"
-                }
-              ]
-            },
-            "k3s": {
-              "enabled": false,
-              "runtimePath": "/run/k3s/containerd/containerd.sock"
-            },
-            "manager": {
-              "certificate": {
-                "keyFile": "tls.key",
-                "pemFile": "tls.pem",
-                "secret": ""
-              },
-              "enabled": true,
-              "env": {
-                "ssl": true
-              },
-              "image": "registry.connect.redhat.com/neuvector/manager",
-              "ingress": {
-                "annotations": {},
-                "enabled": false,
-                "host": "",
-                "path": "/",
-                "secretName": "",
-                "tls": false
-              },
-              "priorityClassName": "",
-              "resources": {},
-              "route": {
-                "enabled": true,
-                "host": "",
-                "termination": "passthrough"
-              },
-              "svc": {
-                "annotations": {},
-                "loadBalancerIP": "",
-                "type": "NodePort"
-              }
-            },
-            "openshift": true,
-            "psp": false,
-            "resources": {},
-            "serviceAccount": "default"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:29996196f2eba8f7662bdf1efeaac3a0ccf56bdfb2e522b340d9a239f7ca51e4",
-      "bundle_path_digest": "sha256:29996196f2eba8f7662bdf1efeaac3a0ccf56bdfb2e522b340d9a239f7ca51e4",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2021-10-09T15:44:00.419000+00:00",
-      "csv_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.\n\nThe NeuVector Operator runs  in the openshift container platform to deploy and manage the NeuVector Security cluster components. The NeuVector operator contains all necessary information to deploy NeuVector using helm charts. You simply need to install the NeuVector operator from the OpenShift embeded operator hub and create NeuVector instance. You can modify the NeuVector installation configuration by modifying yaml while creating the NeuVector instance such as imagePullSecrets, tag version, etc. Please refer to [github link](https://github.com/neuvector/neuvector-helm/tree/master/charts/core) for the values that can be modifed during installation. To upgrade to a newer version of NeuVector, just reapply the NeuVector instance with desired tag , which in turn pulls the specified NeuVector image tags and upgrades as per upgrade plan configured on the helm chart.  NeuVector Operator versions are tied to NeuVector product versions. Version 1.2.9 of the NeuVector Certified Operator deploys version 4.3.1 of NeuVector.\n\n**Complete below steps to Grant Service Account Access to the Privileged SCC before installation.**\n\nCreate the NeuVector namespace\n\n         oc new-project  neuvector\nLogin as system:admin account\n\n         oc login -u system:admin\n\nGrant Service Account Access to the Privileged SCC\n\n         oc -n neuvector adm policy add-scc-to-user privileged -z default\n\nThe following info will be added in the Privileged SCC users:\n\n         - system:serviceaccount:neuvector:default\n\nIn OpenShift 4.6+ use the following to check:\n\n         oc get rolebinding system:openshift:scc:privileged -n neuvector -o wide\n         NAME                              ROLE                                          AGE     USERS   GROUPS   SERVICEACCOUNTS\n         system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   9m22s                    neuvector/default\n\n\n**Add NeuVector license from NeuVector WebUI->setting**\n\n\n#Deploying the NeuVector Operator#\n\n\nPlease refer to the instructions [here](https://github.com/neuvector/neuvector-operator/blob/master/README.md)\n\n\n",
-      "csv_display_name": "NeuVector Operator",
-      "csv_metadata_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.",
-      "csv_name": "neuvector-operator.v1.2.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:52:48.537000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "neuvector-certified-operator",
-      "provided_apis": [
-        {
-          "group": "apm.neuvector.com",
-          "kind": "Neuvector",
-          "plural": "neuvectors",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "name": "neuvector-operator-487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1-annotation"
-        },
-        {
-          "digest": "sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "name": "neuvector-operator"
-        },
-        {
-          "digest": "sha256:55b3d9873846d0a8670b58e8a8a76c426d3aba74d4e5c4fca43d05c1dd296f10",
-          "image": "registry.connect.redhat.com/neuvector/controller@sha256:55b3d9873846d0a8670b58e8a8a76c426d3aba74d4e5c4fca43d05c1dd296f10",
-          "name": "controller"
-        },
-        {
-          "digest": "sha256:fdd66288454dd01f4f618c8cf04c7da501d4362773266ec6f448d63e26e3a35c",
-          "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:fdd66288454dd01f4f618c8cf04c7da501d4362773266ec6f448d63e26e3a35c",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:73445c18ea18f131b6fa630a97623a3043d05758205ef93fc02fa920abbedaa6",
-          "image": "registry.connect.redhat.com/neuvector/manager@sha256:73445c18ea18f131b6fa630a97623a3043d05758205ef93fc02fa920abbedaa6",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "name": "updater"
-        },
-        {
-          "digest": "sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "name": "scanner-a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06-annotation"
-        },
-        {
-          "digest": "sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "name": "ubi8-910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.2.9",
-      "version_original": "1.2.9"
-    },
-    {
-      "_id": "6161bddb04fd1c67039dbd5a",
-      "alm_examples": [
-        {
-          "api_version": "apm.neuvector.com/v1alpha1",
-          "kind": "Neuvector",
-          "metadata": {
-            "name": "neuvector"
-          },
-          "spec": {
-            "admissionwebhook": {
-              "type": "ClusterIP"
-            },
-            "bottlerocket": {
-              "enabled": false,
-              "runtimePath": "/run/dockershim.sock"
-            },
-            "containerd": {
-              "enabled": false,
-              "path": "/var/run/containerd/containerd.sock"
-            },
-            "controller": {
-              "apisvc": {
-                "annotations": {},
-                "route": {
-                  "enabled": false,
-                  "host": "",
-                  "termination": "passthrough"
-                },
-                "type": ""
-              },
-              "azureFileShare": {
-                "enabled": false,
-                "secretName": "",
-                "shareName": ""
-              },
-              "certificate": {
-                "keyFile": "tls.key",
-                "pemFile": "tls.pem",
-                "secret": ""
-              },
-              "configmap": {
-                "data": "",
-                "enabled": false
-              },
-              "disruptionbudget": 0,
-              "enabled": true,
-              "federation": {
-                "managedsvc": {
-                  "ingress": {
-                    "annotations": {
-                      "ingress.kubernetes.io/protocol": "https"
-                    },
-                    "enabled": false,
-                    "host": "",
-                    "path": "/",
-                    "secretName": "",
-                    "tls": false
-                  },
-                  "route": {
-                    "enabled": false,
-                    "host": "",
-                    "termination": "passthrough"
-                  },
-                  "type": ""
-                },
-                "mastersvc": {
-                  "ingress": {
-                    "annotations": {
-                      "ingress.kubernetes.io/protocol": "https"
-                    },
-                    "enabled": false,
-                    "host": "",
-                    "path": "/",
-                    "secretName": "",
-                    "tls": false
-                  },
-                  "route": {
-                    "enabled": false,
-                    "host": "",
-                    "termination": "passthrough"
-                  },
-                  "type": ""
-                }
-              },
-              "image": "registry.connect.redhat.com/neuvector/controller",
-              "ingress": {
-                "annotations": {
-                  "ingress.kubernetes.io/protocol": "https"
-                },
-                "enabled": false,
-                "host": "",
-                "path": "/",
-                "secretName": "",
-                "tls": false
-              },
-              "priorityClassName": "",
-              "pvc": {
-                "accessModes": [
-                  "ReadWriteMany"
-                ],
-                "capacity": "",
-                "enabled": false,
-                "storageClass": ""
-              },
-              "replicas": 3,
-              "resources": {},
-              "schedulerName": "",
-              "strategy": {
-                "rollingUpdate": {
-                  "maxSurge": 1,
-                  "maxUnavailable": 0
-                },
-                "type": "RollingUpdate"
-              }
-            },
-            "crdwebhook": {
-              "enabled": true,
-              "type": "ClusterIP"
-            },
-            "crio": {
-              "enabled": true,
-              "path": "/var/run/crio/crio.sock"
-            },
-            "cve": {
-              "scanner": {
-                "dockerPath": "",
-                "enabled": true,
-                "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-                "priorityClassName": "",
-                "replicas": 3,
-                "resources": {},
-                "strategy": {
-                  "rollingUpdate": {
-                    "maxSurge": 1,
-                    "maxUnavailable": 0
-                  },
-                  "type": "RollingUpdate"
-                }
-              },
-              "updater": {
-                "enabled": true,
-                "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-                "priorityClassName": "",
-                "schedule": "0 0 * * *",
-                "secure": false
-              }
-            },
-            "docker": {
-              "enabled": false,
-              "path": "/var/run/docker.sock"
-            },
-            "enforcer": {
-              "enabled": true,
-              "image": "registry.connect.redhat.com/neuvector/enforcer",
-              "priorityClassName": "",
-              "resources": {},
-              "tolerations": [
-                {
-                  "effect": "NoSchedule",
-                  "key": "node-role.kubernetes.io/master"
-                }
-              ]
-            },
-            "k3s": {
-              "enabled": false,
-              "runtimePath": "/run/k3s/containerd/containerd.sock"
-            },
-            "manager": {
-              "certificate": {
-                "keyFile": "tls.key",
-                "pemFile": "tls.pem",
-                "secret": ""
-              },
-              "enabled": true,
-              "env": {
-                "ssl": true
-              },
-              "image": "registry.connect.redhat.com/neuvector/manager",
-              "ingress": {
-                "annotations": {},
-                "enabled": false,
-                "host": "",
-                "path": "/",
-                "secretName": "",
-                "tls": false
-              },
-              "priorityClassName": "",
-              "resources": {},
-              "route": {
-                "enabled": true,
-                "host": "",
-                "termination": "passthrough"
-              },
-              "svc": {
-                "annotations": {},
-                "loadBalancerIP": "",
-                "type": "NodePort"
-              }
-            },
-            "openshift": true,
-            "psp": false,
-            "resources": {},
-            "serviceAccount": "default"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:29996196f2eba8f7662bdf1efeaac3a0ccf56bdfb2e522b340d9a239f7ca51e4",
-      "bundle_path_digest": "sha256:29996196f2eba8f7662bdf1efeaac3a0ccf56bdfb2e522b340d9a239f7ca51e4",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2021-10-09T16:05:47.581000+00:00",
-      "csv_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.\n\nThe NeuVector Operator runs  in the openshift container platform to deploy and manage the NeuVector Security cluster components. The NeuVector operator contains all necessary information to deploy NeuVector using helm charts. You simply need to install the NeuVector operator from the OpenShift embeded operator hub and create NeuVector instance. You can modify the NeuVector installation configuration by modifying yaml while creating the NeuVector instance such as imagePullSecrets, tag version, etc. Please refer to [github link](https://github.com/neuvector/neuvector-helm/tree/master/charts/core) for the values that can be modifed during installation. To upgrade to a newer version of NeuVector, just reapply the NeuVector instance with desired tag , which in turn pulls the specified NeuVector image tags and upgrades as per upgrade plan configured on the helm chart.  NeuVector Operator versions are tied to NeuVector product versions. Version 1.2.9 of the NeuVector Certified Operator deploys version 4.3.1 of NeuVector.\n\n**Complete below steps to Grant Service Account Access to the Privileged SCC before installation.**\n\nCreate the NeuVector namespace\n\n         oc new-project  neuvector\nLogin as system:admin account\n\n         oc login -u system:admin\n\nGrant Service Account Access to the Privileged SCC\n\n         oc -n neuvector adm policy add-scc-to-user privileged -z default\n\nThe following info will be added in the Privileged SCC users:\n\n         - system:serviceaccount:neuvector:default\n\nIn OpenShift 4.6+ use the following to check:\n\n         oc get rolebinding system:openshift:scc:privileged -n neuvector -o wide\n         NAME                              ROLE                                          AGE     USERS   GROUPS   SERVICEACCOUNTS\n         system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   9m22s                    neuvector/default\n\n\n**Add NeuVector license from NeuVector WebUI->setting**\n\n\n#Deploying the NeuVector Operator#\n\n\nPlease refer to the instructions [here](https://github.com/neuvector/neuvector-operator/blob/master/README.md)\n\n\n",
-      "csv_display_name": "NeuVector Operator",
-      "csv_metadata_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.",
-      "csv_name": "neuvector-operator.v1.2.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:20:02.482000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "neuvector-certified-operator",
-      "provided_apis": [
-        {
-          "group": "apm.neuvector.com",
-          "kind": "Neuvector",
-          "plural": "neuvectors",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "name": "neuvector-operator-487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1-annotation"
-        },
-        {
-          "digest": "sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "name": "neuvector-operator"
-        },
-        {
-          "digest": "sha256:55b3d9873846d0a8670b58e8a8a76c426d3aba74d4e5c4fca43d05c1dd296f10",
-          "image": "registry.connect.redhat.com/neuvector/controller@sha256:55b3d9873846d0a8670b58e8a8a76c426d3aba74d4e5c4fca43d05c1dd296f10",
-          "name": "controller"
-        },
-        {
-          "digest": "sha256:fdd66288454dd01f4f618c8cf04c7da501d4362773266ec6f448d63e26e3a35c",
-          "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:fdd66288454dd01f4f618c8cf04c7da501d4362773266ec6f448d63e26e3a35c",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:73445c18ea18f131b6fa630a97623a3043d05758205ef93fc02fa920abbedaa6",
-          "image": "registry.connect.redhat.com/neuvector/manager@sha256:73445c18ea18f131b6fa630a97623a3043d05758205ef93fc02fa920abbedaa6",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "name": "updater"
-        },
-        {
-          "digest": "sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "name": "scanner-a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06-annotation"
-        },
-        {
-          "digest": "sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "name": "ubi8-910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.2.9",
-      "version_original": "1.2.9"
-    },
-    {
-      "_id": "6161be9a90fb938ecf600a53",
-      "alm_examples": [
-        {
-          "api_version": "apm.neuvector.com/v1alpha1",
-          "kind": "Neuvector",
-          "metadata": {
-            "name": "neuvector"
-          },
-          "spec": {
-            "admissionwebhook": {
-              "type": "ClusterIP"
-            },
-            "bottlerocket": {
-              "enabled": false,
-              "runtimePath": "/run/dockershim.sock"
-            },
-            "containerd": {
-              "enabled": false,
-              "path": "/var/run/containerd/containerd.sock"
-            },
-            "controller": {
-              "apisvc": {
-                "annotations": {},
-                "route": {
-                  "enabled": false,
-                  "host": "",
-                  "termination": "passthrough"
-                },
-                "type": ""
-              },
-              "azureFileShare": {
-                "enabled": false,
-                "secretName": "",
-                "shareName": ""
-              },
-              "certificate": {
-                "keyFile": "tls.key",
-                "pemFile": "tls.pem",
-                "secret": ""
-              },
-              "configmap": {
-                "data": "",
-                "enabled": false
-              },
-              "disruptionbudget": 0,
-              "enabled": true,
-              "federation": {
-                "managedsvc": {
-                  "ingress": {
-                    "annotations": {
-                      "ingress.kubernetes.io/protocol": "https"
-                    },
-                    "enabled": false,
-                    "host": "",
-                    "path": "/",
-                    "secretName": "",
-                    "tls": false
-                  },
-                  "route": {
-                    "enabled": false,
-                    "host": "",
-                    "termination": "passthrough"
-                  },
-                  "type": ""
-                },
-                "mastersvc": {
-                  "ingress": {
-                    "annotations": {
-                      "ingress.kubernetes.io/protocol": "https"
-                    },
-                    "enabled": false,
-                    "host": "",
-                    "path": "/",
-                    "secretName": "",
-                    "tls": false
-                  },
-                  "route": {
-                    "enabled": false,
-                    "host": "",
-                    "termination": "passthrough"
-                  },
-                  "type": ""
-                }
-              },
-              "image": "registry.connect.redhat.com/neuvector/controller",
-              "ingress": {
-                "annotations": {
-                  "ingress.kubernetes.io/protocol": "https"
-                },
-                "enabled": false,
-                "host": "",
-                "path": "/",
-                "secretName": "",
-                "tls": false
-              },
-              "priorityClassName": "",
-              "pvc": {
-                "accessModes": [
-                  "ReadWriteMany"
-                ],
-                "capacity": "",
-                "enabled": false,
-                "storageClass": ""
-              },
-              "replicas": 3,
-              "resources": {},
-              "schedulerName": "",
-              "strategy": {
-                "rollingUpdate": {
-                  "maxSurge": 1,
-                  "maxUnavailable": 0
-                },
-                "type": "RollingUpdate"
-              }
-            },
-            "crdwebhook": {
-              "enabled": true,
-              "type": "ClusterIP"
-            },
-            "crio": {
-              "enabled": true,
-              "path": "/var/run/crio/crio.sock"
-            },
-            "cve": {
-              "scanner": {
-                "dockerPath": "",
-                "enabled": true,
-                "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-                "priorityClassName": "",
-                "replicas": 3,
-                "resources": {},
-                "strategy": {
-                  "rollingUpdate": {
-                    "maxSurge": 1,
-                    "maxUnavailable": 0
-                  },
-                  "type": "RollingUpdate"
-                }
-              },
-              "updater": {
-                "enabled": true,
-                "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-                "priorityClassName": "",
-                "schedule": "0 0 * * *",
-                "secure": false
-              }
-            },
-            "docker": {
-              "enabled": false,
-              "path": "/var/run/docker.sock"
-            },
-            "enforcer": {
-              "enabled": true,
-              "image": "registry.connect.redhat.com/neuvector/enforcer",
-              "priorityClassName": "",
-              "resources": {},
-              "tolerations": [
-                {
-                  "effect": "NoSchedule",
-                  "key": "node-role.kubernetes.io/master"
-                }
-              ]
-            },
-            "k3s": {
-              "enabled": false,
-              "runtimePath": "/run/k3s/containerd/containerd.sock"
-            },
-            "manager": {
-              "certificate": {
-                "keyFile": "tls.key",
-                "pemFile": "tls.pem",
-                "secret": ""
-              },
-              "enabled": true,
-              "env": {
-                "ssl": true
-              },
-              "image": "registry.connect.redhat.com/neuvector/manager",
-              "ingress": {
-                "annotations": {},
-                "enabled": false,
-                "host": "",
-                "path": "/",
-                "secretName": "",
-                "tls": false
-              },
-              "priorityClassName": "",
-              "resources": {},
-              "route": {
-                "enabled": true,
-                "host": "",
-                "termination": "passthrough"
-              },
-              "svc": {
-                "annotations": {},
-                "loadBalancerIP": "",
-                "type": "NodePort"
-              }
-            },
-            "openshift": true,
-            "psp": false,
-            "resources": {},
-            "serviceAccount": "default"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:29996196f2eba8f7662bdf1efeaac3a0ccf56bdfb2e522b340d9a239f7ca51e4",
-      "bundle_path_digest": "sha256:29996196f2eba8f7662bdf1efeaac3a0ccf56bdfb2e522b340d9a239f7ca51e4",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2021-10-09T16:08:58.454000+00:00",
-      "csv_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.\n\nThe NeuVector Operator runs  in the openshift container platform to deploy and manage the NeuVector Security cluster components. The NeuVector operator contains all necessary information to deploy NeuVector using helm charts. You simply need to install the NeuVector operator from the OpenShift embeded operator hub and create NeuVector instance. You can modify the NeuVector installation configuration by modifying yaml while creating the NeuVector instance such as imagePullSecrets, tag version, etc. Please refer to [github link](https://github.com/neuvector/neuvector-helm/tree/master/charts/core) for the values that can be modifed during installation. To upgrade to a newer version of NeuVector, just reapply the NeuVector instance with desired tag , which in turn pulls the specified NeuVector image tags and upgrades as per upgrade plan configured on the helm chart.  NeuVector Operator versions are tied to NeuVector product versions. Version 1.2.9 of the NeuVector Certified Operator deploys version 4.3.1 of NeuVector.\n\n**Complete below steps to Grant Service Account Access to the Privileged SCC before installation.**\n\nCreate the NeuVector namespace\n\n         oc new-project  neuvector\nLogin as system:admin account\n\n         oc login -u system:admin\n\nGrant Service Account Access to the Privileged SCC\n\n         oc -n neuvector adm policy add-scc-to-user privileged -z default\n\nThe following info will be added in the Privileged SCC users:\n\n         - system:serviceaccount:neuvector:default\n\nIn OpenShift 4.6+ use the following to check:\n\n         oc get rolebinding system:openshift:scc:privileged -n neuvector -o wide\n         NAME                              ROLE                                          AGE     USERS   GROUPS   SERVICEACCOUNTS\n         system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   9m22s                    neuvector/default\n\n\n**Add NeuVector license from NeuVector WebUI->setting**\n\n\n#Deploying the NeuVector Operator#\n\n\nPlease refer to the instructions [here](https://github.com/neuvector/neuvector-operator/blob/master/README.md)\n\n\n",
-      "csv_display_name": "NeuVector Operator",
-      "csv_metadata_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.",
-      "csv_name": "neuvector-operator.v1.2.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:38:06.065000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "neuvector-certified-operator",
-      "provided_apis": [
-        {
-          "group": "apm.neuvector.com",
-          "kind": "Neuvector",
-          "plural": "neuvectors",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "name": "neuvector-operator-487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1-annotation"
-        },
-        {
-          "digest": "sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "name": "neuvector-operator"
-        },
-        {
-          "digest": "sha256:55b3d9873846d0a8670b58e8a8a76c426d3aba74d4e5c4fca43d05c1dd296f10",
-          "image": "registry.connect.redhat.com/neuvector/controller@sha256:55b3d9873846d0a8670b58e8a8a76c426d3aba74d4e5c4fca43d05c1dd296f10",
-          "name": "controller"
-        },
-        {
-          "digest": "sha256:fdd66288454dd01f4f618c8cf04c7da501d4362773266ec6f448d63e26e3a35c",
-          "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:fdd66288454dd01f4f618c8cf04c7da501d4362773266ec6f448d63e26e3a35c",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:73445c18ea18f131b6fa630a97623a3043d05758205ef93fc02fa920abbedaa6",
-          "image": "registry.connect.redhat.com/neuvector/manager@sha256:73445c18ea18f131b6fa630a97623a3043d05758205ef93fc02fa920abbedaa6",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "name": "updater"
-        },
-        {
-          "digest": "sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06",
-          "name": "scanner-a802c012eee80444d9deea8c4402a1d977cf57d7b2b2044f90c9acc0e7ca3e06-annotation"
-        },
-        {
-          "digest": "sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "image": "registry.access.redhat.com/ubi8@sha256:910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7",
-          "name": "ubi8-910f6bc0b5ae9b555eb91b88d28d568099b060088616eba2867b07ab6ea457c7-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.2.9",
-      "version_original": "1.2.9"
-    },
-    {
       "_id": "6163dc8e04fd1c67039dbd6d",
       "alm_examples": [
         {
@@ -25807,9 +23690,1231 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "2.0.9",
       "version_original": "2.0.9"
+    },
+    {
+      "_id": "61782942dd607bfc82e64f7b",
+      "alm_examples": [
+        {
+          "api_version": "tools.opdev.io/v1",
+          "kind": "DemoResource",
+          "metadata": {
+            "name": "demoresource-sample"
+          },
+          "spec": {
+            "message": "Hello, World!"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/opdev/simple-demo-operator@sha256:55bbff6eba8a74a9deb2f5a63a2d1e6f2b570cdf36e7f38f7d72cfd748554494",
+      "bundle_path_digest": "sha256:55bbff6eba8a74a9deb2f5a63a2d1e6f2b570cdf36e7f38f7d72cfd748554494",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-10-26T16:13:54.202000+00:00",
+      "csv_description": "A simple demo operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
+      "csv_display_name": "Simple Demo Operator",
+      "csv_metadata_description": "",
+      "csv_name": "simple-demo-operator.v0.0.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T02:18:35.559000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "simple-demo-operator",
+      "provided_apis": [
+        {
+          "group": "tools.opdev.io",
+          "kind": "DemoResource",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.4",
+      "version_original": "0.0.4"
+    },
+    {
+      "_id": "6178381d40a2d8e95c82d9de",
+      "alm_examples": [
+        {
+          "api_version": "tools.opdev.io/v1",
+          "kind": "DemoResource",
+          "metadata": {
+            "name": "demoresource-sample"
+          },
+          "spec": {
+            "message": "Hello, World!"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/opdev/simple-demo-operator@sha256:55bbff6eba8a74a9deb2f5a63a2d1e6f2b570cdf36e7f38f7d72cfd748554494",
+      "bundle_path_digest": "sha256:55bbff6eba8a74a9deb2f5a63a2d1e6f2b570cdf36e7f38f7d72cfd748554494",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-10-26T17:17:17.235000+00:00",
+      "csv_description": "A simple demo operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
+      "csv_display_name": "Simple Demo Operator",
+      "csv_metadata_description": "",
+      "csv_name": "simple-demo-operator.v0.0.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:49:54.422000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "simple-demo-operator",
+      "provided_apis": [
+        {
+          "group": "tools.opdev.io",
+          "kind": "DemoResource",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.0.4",
+      "version_original": "0.0.4"
+    },
+    {
+      "_id": "6179244e2066d11ba77629bd",
+      "alm_examples": [
+        {
+          "api_version": "tools.opdev.io/v1",
+          "kind": "DemoResource",
+          "metadata": {
+            "name": "demoresource-sample"
+          },
+          "spec": {
+            "message": "Hello, World!"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/bpm-test-registry-namespace/simple-demo-operator@sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
+      "bundle_path_digest": "sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-10-27T10:05:02.512000+00:00",
+      "csv_description": "A Hello World Operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
+      "csv_display_name": "Hello World Operator",
+      "csv_metadata_description": "",
+      "csv_name": "hello-world-operator.0.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:00:12.618000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "hello-world-operator",
+      "provided_apis": [
+        {
+          "group": "tools.opdev.io",
+          "kind": "DemoResource",
+          "plural": "demoresources",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "61792aa52066d11ba77629c1",
+      "alm_examples": [
+        {
+          "api_version": "tools.opdev.io/v1",
+          "kind": "DemoResource",
+          "metadata": {
+            "name": "demoresource-sample"
+          },
+          "spec": {
+            "message": "Hello, World!"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/bpm-test-registry-namespace/simple-demo-operator@sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
+      "bundle_path_digest": "sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-10-27T10:32:05.536000+00:00",
+      "csv_description": "A Hello World Operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
+      "csv_display_name": "Hello World Operator",
+      "csv_metadata_description": "",
+      "csv_name": "hello-world-operator.0.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:09:11.102000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "hello-world-operator",
+      "provided_apis": [
+        {
+          "group": "tools.opdev.io",
+          "kind": "DemoResource",
+          "plural": "demoresources",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "61792b772066d11ba77629c2",
+      "alm_examples": [
+        {
+          "api_version": "tools.opdev.io/v1",
+          "kind": "DemoResource",
+          "metadata": {
+            "name": "demoresource-sample"
+          },
+          "spec": {
+            "message": "Hello, World!"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/bpm-test-registry-namespace/simple-demo-operator@sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
+      "bundle_path_digest": "sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-10-27T10:35:35.072000+00:00",
+      "csv_description": "A Hello World Operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
+      "csv_display_name": "Hello World Operator",
+      "csv_metadata_description": "",
+      "csv_name": "hello-world-operator.0.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T02:11:07.148000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "hello-world-operator",
+      "provided_apis": [
+        {
+          "group": "tools.opdev.io",
+          "kind": "DemoResource",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "61792bbe2066d11ba77629c3",
+      "alm_examples": [
+        {
+          "api_version": "tools.opdev.io/v1",
+          "kind": "DemoResource",
+          "metadata": {
+            "name": "demoresource-sample"
+          },
+          "spec": {
+            "message": "Hello, World!"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/bpm-test-registry-namespace/simple-demo-operator@sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
+      "bundle_path_digest": "sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-10-27T10:36:46.617000+00:00",
+      "csv_description": "A Hello World Operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
+      "csv_display_name": "Hello World Operator",
+      "csv_metadata_description": "",
+      "csv_name": "hello-world-operator.0.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T05:01:26.758000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "hello-world-operator",
+      "provided_apis": [
+        {
+          "group": "tools.opdev.io",
+          "kind": "DemoResource",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "6179b07f2066d11ba77629cf",
+      "alm_examples": [
+        {
+          "api_version": "citrix.citrix.com/v1alpha1",
+          "kind": "Citrix-cpx-istio-sidecar-injector",
+          "metadata": {
+            "name": "cpx-sidecar-injector-sample"
+          },
+          "spec": {
+            "ADMSettings": {
+              "ADMIP": "",
+              "bandWidth": "",
+              "bandWidthLicense": false,
+              "licenseServerIP": "",
+              "licenseServerPort": 27000
+            },
+            "certProvider": {
+              "caAddr": "istiod.istio-system.svc",
+              "caPort": 15012,
+              "certTTLinHours": 720,
+              "clusterId": "Kubernetes",
+              "jwtPolicy": "",
+              "trustDomain": "cluster.local"
+            },
+            "coe": {
+              "coeTracing": false,
+              "coeURL": ""
+            },
+            "cpxProxy": {
+              "EULA": false,
+              "cpxDisableProbe": "YES",
+              "cpxSidecarMode": true,
+              "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+              "imagePullPolicy": "IfNotPresent",
+              "mgmtHttpPort": 10080,
+              "mgmtHttpsPort": 10443,
+              "netscalerUrl": "http://127.0.0.1"
+            },
+            "istioPilot": {
+              "SAN": "",
+              "insecureGrpcPort": 15010,
+              "name": "istiod",
+              "namespace": "istio-system",
+              "secureGrpcPort": 15012
+            },
+            "sidecarCertsGenerator": {
+              "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+              "imagePullPolicy": "IfNotPresent"
+            },
+            "sidecarWebHook": {
+              "imagePullPolicy": "IfNotPresent",
+              "webhookImage": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac"
+            },
+            "webhook": {
+              "injectionLabelName": "cpx-injection"
+            },
+            "xDSAdaptor": {
+              "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+              "imagePullPolicy": "IfNotPresent",
+              "jsonLog": false,
+              "logLevel": "DEBUG",
+              "proxyType": "sidecar",
+              "secureConnect": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/citrix/istiosidecarcitrix-bundle@sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
+      "bundle_path_digest": "sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-10-27T20:03:11.265000+00:00",
+      "csv_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
+      "csv_display_name": "Citrix ADC CPX Istio Sidecar Injector Operator",
+      "csv_metadata_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
+      "csv_name": "citrix-cpx-istio-sidecar-injector-operator.v0.9.9",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T03:57:14.814000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "citrix-cpx-istio-sidecar-injector-operator",
+      "provided_apis": [
+        {
+          "group": "citrix.citrix.com",
+          "kind": "Citrix-cpx-istio-sidecar-injector",
+          "plural": "citrix-cpx-istio-sidecar-injectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "name": "citrix-cpx-istio-sidecar-injector-ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899-annotation"
+        },
+        {
+          "digest": "sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+          "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+          "name": "citrix-xds-adaptor-b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6-annotation"
+        },
+        {
+          "digest": "sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
+          "image": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
+          "name": "cpx-istio-sidecar-injector-c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac-annotation"
+        },
+        {
+          "digest": "sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+          "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+          "name": "cpx-sidecar-injector-certgen-7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb-annotation"
+        },
+        {
+          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.9.9",
+      "version_original": "0.9.9"
+    },
+    {
+      "_id": "6179b0a02066d11ba77629d0",
+      "alm_examples": [
+        {
+          "api_version": "citrix.citrix.com/v1alpha1",
+          "kind": "Citrix-cpx-istio-sidecar-injector",
+          "metadata": {
+            "name": "cpx-sidecar-injector-sample"
+          },
+          "spec": {
+            "ADMSettings": {
+              "ADMIP": "",
+              "bandWidth": "",
+              "bandWidthLicense": false,
+              "licenseServerIP": "",
+              "licenseServerPort": 27000
+            },
+            "certProvider": {
+              "caAddr": "istiod.istio-system.svc",
+              "caPort": 15012,
+              "certTTLinHours": 720,
+              "clusterId": "Kubernetes",
+              "jwtPolicy": "",
+              "trustDomain": "cluster.local"
+            },
+            "coe": {
+              "coeTracing": false,
+              "coeURL": ""
+            },
+            "cpxProxy": {
+              "EULA": false,
+              "cpxDisableProbe": "YES",
+              "cpxSidecarMode": true,
+              "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+              "imagePullPolicy": "IfNotPresent",
+              "mgmtHttpPort": 10080,
+              "mgmtHttpsPort": 10443,
+              "netscalerUrl": "http://127.0.0.1"
+            },
+            "istioPilot": {
+              "SAN": "",
+              "insecureGrpcPort": 15010,
+              "name": "istiod",
+              "namespace": "istio-system",
+              "secureGrpcPort": 15012
+            },
+            "sidecarCertsGenerator": {
+              "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+              "imagePullPolicy": "IfNotPresent"
+            },
+            "sidecarWebHook": {
+              "imagePullPolicy": "IfNotPresent",
+              "webhookImage": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac"
+            },
+            "webhook": {
+              "injectionLabelName": "cpx-injection"
+            },
+            "xDSAdaptor": {
+              "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+              "imagePullPolicy": "IfNotPresent",
+              "jsonLog": false,
+              "logLevel": "DEBUG",
+              "proxyType": "sidecar",
+              "secureConnect": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/citrix/istiosidecarcitrix-bundle@sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
+      "bundle_path_digest": "sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-10-27T20:03:44.350000+00:00",
+      "csv_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
+      "csv_display_name": "Citrix ADC CPX Istio Sidecar Injector Operator",
+      "csv_metadata_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
+      "csv_name": "citrix-cpx-istio-sidecar-injector-operator.v0.9.9",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T02:17:51.784000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "citrix-cpx-istio-sidecar-injector-operator",
+      "provided_apis": [
+        {
+          "group": "citrix.citrix.com",
+          "kind": "Citrix-cpx-istio-sidecar-injector",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "name": "citrix-cpx-istio-sidecar-injector-ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899-annotation"
+        },
+        {
+          "digest": "sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+          "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+          "name": "citrix-xds-adaptor-b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6-annotation"
+        },
+        {
+          "digest": "sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
+          "image": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
+          "name": "cpx-istio-sidecar-injector-c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac-annotation"
+        },
+        {
+          "digest": "sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+          "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+          "name": "cpx-sidecar-injector-certgen-7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb-annotation"
+        },
+        {
+          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.9.9",
+      "version_original": "0.9.9"
+    },
+    {
+      "_id": "6179b1792066d11ba77629e0",
+      "alm_examples": [
+        {
+          "api_version": "citrix.citrix.com/v1alpha1",
+          "kind": "Citrix-cpx-istio-sidecar-injector",
+          "metadata": {
+            "name": "cpx-sidecar-injector-sample"
+          },
+          "spec": {
+            "ADMSettings": {
+              "ADMIP": "",
+              "bandWidth": "",
+              "bandWidthLicense": false,
+              "licenseServerIP": "",
+              "licenseServerPort": 27000
+            },
+            "certProvider": {
+              "caAddr": "istiod.istio-system.svc",
+              "caPort": 15012,
+              "certTTLinHours": 720,
+              "clusterId": "Kubernetes",
+              "jwtPolicy": "",
+              "trustDomain": "cluster.local"
+            },
+            "coe": {
+              "coeTracing": false,
+              "coeURL": ""
+            },
+            "cpxProxy": {
+              "EULA": false,
+              "cpxDisableProbe": "YES",
+              "cpxSidecarMode": true,
+              "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+              "imagePullPolicy": "IfNotPresent",
+              "mgmtHttpPort": 10080,
+              "mgmtHttpsPort": 10443,
+              "netscalerUrl": "http://127.0.0.1"
+            },
+            "istioPilot": {
+              "SAN": "",
+              "insecureGrpcPort": 15010,
+              "name": "istiod",
+              "namespace": "istio-system",
+              "secureGrpcPort": 15012
+            },
+            "sidecarCertsGenerator": {
+              "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+              "imagePullPolicy": "IfNotPresent"
+            },
+            "sidecarWebHook": {
+              "imagePullPolicy": "IfNotPresent",
+              "webhookImage": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac"
+            },
+            "webhook": {
+              "injectionLabelName": "cpx-injection"
+            },
+            "xDSAdaptor": {
+              "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+              "imagePullPolicy": "IfNotPresent",
+              "jsonLog": false,
+              "logLevel": "DEBUG",
+              "proxyType": "sidecar",
+              "secureConnect": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/citrix/istiosidecarcitrix-bundle@sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
+      "bundle_path_digest": "sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-10-27T20:07:21.844000+00:00",
+      "csv_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
+      "csv_display_name": "Citrix ADC CPX Istio Sidecar Injector Operator",
+      "csv_metadata_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
+      "csv_name": "citrix-cpx-istio-sidecar-injector-operator.v0.9.9",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:56:12.326000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "citrix-cpx-istio-sidecar-injector-operator",
+      "provided_apis": [
+        {
+          "group": "citrix.citrix.com",
+          "kind": "Citrix-cpx-istio-sidecar-injector",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "name": "citrix-cpx-istio-sidecar-injector-ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899-annotation"
+        },
+        {
+          "digest": "sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+          "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+          "name": "citrix-xds-adaptor-b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6-annotation"
+        },
+        {
+          "digest": "sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
+          "image": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
+          "name": "cpx-istio-sidecar-injector-c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac-annotation"
+        },
+        {
+          "digest": "sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+          "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+          "name": "cpx-sidecar-injector-certgen-7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb-annotation"
+        },
+        {
+          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.9.9",
+      "version_original": "0.9.9"
+    },
+    {
+      "_id": "6179c6412066d11ba77629f6",
+      "alm_examples": [
+        {
+          "api_version": "citrix.citrix.com/v1alpha1",
+          "kind": "Citrix-cpx-istio-sidecar-injector",
+          "metadata": {
+            "name": "cpx-sidecar-injector-sample"
+          },
+          "spec": {
+            "ADMSettings": {
+              "ADMIP": "",
+              "bandWidth": "",
+              "bandWidthLicense": false,
+              "licenseServerIP": "",
+              "licenseServerPort": 27000
+            },
+            "certProvider": {
+              "caAddr": "istiod.istio-system.svc",
+              "caPort": 15012,
+              "certTTLinHours": 720,
+              "clusterId": "Kubernetes",
+              "jwtPolicy": "",
+              "trustDomain": "cluster.local"
+            },
+            "coe": {
+              "coeTracing": false,
+              "coeURL": ""
+            },
+            "cpxProxy": {
+              "EULA": false,
+              "cpxDisableProbe": "YES",
+              "cpxSidecarMode": true,
+              "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+              "imagePullPolicy": "IfNotPresent",
+              "mgmtHttpPort": 10080,
+              "mgmtHttpsPort": 10443,
+              "netscalerUrl": "http://127.0.0.1"
+            },
+            "istioPilot": {
+              "SAN": "",
+              "insecureGrpcPort": 15010,
+              "name": "istiod",
+              "namespace": "istio-system",
+              "secureGrpcPort": 15012
+            },
+            "sidecarCertsGenerator": {
+              "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+              "imagePullPolicy": "IfNotPresent"
+            },
+            "sidecarWebHook": {
+              "imagePullPolicy": "IfNotPresent",
+              "webhookImage": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac"
+            },
+            "webhook": {
+              "injectionLabelName": "cpx-injection"
+            },
+            "xDSAdaptor": {
+              "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+              "imagePullPolicy": "IfNotPresent",
+              "jsonLog": false,
+              "logLevel": "DEBUG",
+              "proxyType": "sidecar",
+              "secureConnect": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/citrix/istiosidecarcitrix-bundle@sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
+      "bundle_path_digest": "sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-10-27T21:36:01.202000+00:00",
+      "csv_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
+      "csv_display_name": "Citrix ADC CPX Istio Sidecar Injector Operator",
+      "csv_metadata_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
+      "csv_name": "citrix-cpx-istio-sidecar-injector-operator.v0.9.9",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:16:40.620000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "citrix-cpx-istio-sidecar-injector-operator",
+      "provided_apis": [
+        {
+          "group": "citrix.citrix.com",
+          "kind": "Citrix-cpx-istio-sidecar-injector",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "name": "citrix-cpx-istio-sidecar-injector-ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899-annotation"
+        },
+        {
+          "digest": "sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+          "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+          "name": "citrix-xds-adaptor-b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6-annotation"
+        },
+        {
+          "digest": "sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
+          "image": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
+          "name": "cpx-istio-sidecar-injector-c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac-annotation"
+        },
+        {
+          "digest": "sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+          "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+          "name": "cpx-sidecar-injector-certgen-7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb-annotation"
+        },
+        {
+          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.9.9",
+      "version_original": "0.9.9"
+    },
+    {
+      "_id": "6184a674843af1624c4e450b",
+      "alm_examples": [
+        {
+          "api_version": "tools.opdev.io/v1",
+          "kind": "DemoResource",
+          "metadata": {
+            "name": "demoresource-sample"
+          },
+          "spec": {
+            "message": "Hello, World!"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/bcook/simple-demo-operator@sha256:027ff7a8f29ce525f1597a76faa6a264ca76029f244bf3b642e1e3f1bb80541c",
+      "bundle_path_digest": "sha256:027ff7a8f29ce525f1597a76faa6a264ca76029f244bf3b642e1e3f1bb80541c",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-11-05T03:35:16.064000+00:00",
+      "csv_description": "A simple demo operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
+      "csv_display_name": "Simple Demo Operator",
+      "csv_metadata_description": "",
+      "csv_name": "tc-simple-demo-operator.v0.0.8",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:34:04.190000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "tc-simple-demo-operator",
+      "provided_apis": [
+        {
+          "group": "tools.opdev.io",
+          "kind": "DemoResource",
+          "plural": "demoresources",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.0.8",
+      "version_original": "0.0.8"
     }
   ],
   "page": 16,
   "page_size": 100,
-  "total": 4587
+  "total": 4520
 }
