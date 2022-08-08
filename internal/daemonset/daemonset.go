@@ -191,18 +191,13 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 
 // Build image with version based on environment variables if provided, else use a default value
 func buildImageWithVersion() string {
-	var tnfPartnerRepo string
-	var supportImage string
-
-	if os.Getenv("TNF_PARTNER_REPO") != "" {
-		tnfPartnerRepo = os.Getenv("TNF_PARTNER_REPO")
-	} else {
-		tnfPartnerRepo = tnfPartnerRepoDef
+	tnfPartnerRepo := os.Getenv("TNF_PARTNER_REPO")
+	if tnfPartnerRepo == "" {
+	  tnfPartnerRepo = tnfPartnerRepoDef
 	}
-	if os.Getenv("SUPPORT_IMAGE") != "" {
-		supportImage = os.Getenv("SUPPORT_IMAGE")
-	} else {
-		supportImage = supportImageDef
+	supportImage := os.Getenv("SUPPORT_IMAGE")
+	if supportImage == "" {
+	  supportImage = supportImageDef
 	}
 
 	return tnfPartnerRepo + "/" + supportImage
