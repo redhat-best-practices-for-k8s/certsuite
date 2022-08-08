@@ -418,7 +418,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Identifier: TestDeploymentScalingIdentifier,
 		Type:       normativeResult,
 		Description: formDescription(TestDeploymentScalingIdentifier,
-			`tests that CNF deployments support scale in/out operations. 
+			`Tests that CNF deployments support scale in/out operations. 
 			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the 
 			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.
 		    In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the 
@@ -431,7 +431,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Identifier: TestStateFulSetScalingIdentifier,
 		Type:       normativeResult,
 		Description: formDescription(TestStateFulSetScalingIdentifier,
-			`tests that CNF statefulsets support scale in/out operations. 
+			`Tests that CNF statefulsets support scale in/out operations. 
 			First, The test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the 
 			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s.
 			In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the 
@@ -485,7 +485,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Type:        normativeResult,
 		Remediation: ContainerIsCertifiedRemediation,
 		Description: formDescription(TestContainerIsCertifiedIdentifier,
-			`tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).`),
+			`Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.7",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
@@ -539,7 +539,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Type:        normativeResult,
 		Remediation: HugepagesNotManuallyManipulatedRemediation,
 		Description: formDescription(TestHugepagesNotManuallyManipulated,
-			`checks to see that HugePage settings have been configured through MachineConfig, and not manually on the
+			`Checks to see that HugePage settings have been configured through MachineConfig, and not manually on the
 underlying Node.  This test case applies only to Nodes that are configured with the "worker" MachineConfigSet.  First,
 the "worker" MachineConfig is polled, and the Hugepage settings are extracted.  Next, the underlying Nodes are polled
 for configured HugePages through inspection of /proc/meminfo.  The results are compared, and the test passes only if
@@ -553,7 +553,7 @@ they are the same.`),
 		Type:        normativeResult,
 		Remediation: ICMPv4ConnectivityRemediation,
 		Description: formDescription(TestICMPv4ConnectivityIdentifier,
-			`checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network.  This
+			`Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network.  This
 test case requires the Deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -564,7 +564,7 @@ test case requires the Deployment of the debug daemonset.`),
 		Type:        normativeResult,
 		Remediation: ICMPv6ConnectivityRemediation,
 		Description: formDescription(TestICMPv6ConnectivityIdentifier,
-			`checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network.  This
+			`Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network.  This
 test case requires the Deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -575,7 +575,7 @@ test case requires the Deployment of the debug daemonset.`),
 		Type:        normativeResult,
 		Remediation: ICMPv4ConnectivityMultusRemediation,
 		Description: formDescription(TestICMPv4ConnectivityMultusIdentifier,
-			`checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s).  This
+			`Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s).  This
 test case requires the Deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -586,7 +586,7 @@ test case requires the Deployment of the debug daemonset.`),
 		Type:        normativeResult,
 		Remediation: ICMPv6ConnectivityMultusRemediation,
 		Description: formDescription(TestICMPv6ConnectivityMultusIdentifier,
-			`checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s).  This
+			`Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s).  This
 test case requires the Deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -597,7 +597,7 @@ test case requires the Deployment of the debug daemonset.`),
 		Type:        normativeResult,
 		Remediation: NamespaceBestPracticesRemediation,
 		Description: formDescription(TestNamespaceBestPracticesIdentifier,
-			`tests that all CNF's resources (PUTs and CRs) belong to valid namespaces. A valid namespace meets
+			`Tests that all CNF's resources (PUTs and CRs) belong to valid namespaces. A valid namespace meets
 the following conditions: (1) It was declared in the yaml config file under the targetNameSpaces
 tag. (2) It doesn't have any of the following prefixes: default, openshift-, istio- and aspenmesh-`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2, 16.3.8 and 16.3.9",
@@ -609,7 +609,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		Type:        normativeResult,
 		Remediation: NonTaintedNodeKernelsRemediation,
 		Description: formDescription(TestNonTaintedNodeKernelsIdentifier,
-			`ensures that the Node(s) hosting CNFs do not utilize tainted kernels. This test case is especially important
+			`Ensures that the Node(s) hosting CNFs do not utilize tainted kernels. This test case is especially important
 to support Highly Available CNFs, since when a CNF is re-instantiated on a backup Node, that Node's kernel may not have
 the same hacks.'`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.14",
@@ -642,7 +642,7 @@ with no resourceNames under its rules.`),
 		Type:        normativeResult,
 		Remediation: OperatorIsCertifiedRemediation,
 		Description: formDescription(TestOperatorIsCertifiedIdentifier,
-			`tests whether CNF Operators listed in the configuration file have passed the Red Hat Operator Certification Program (OCP).`),
+			`Tests whether CNF Operators listed in the configuration file have passed the Red Hat Operator Certification Program (OCP).`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.12 and 5.3.3",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
@@ -652,7 +652,7 @@ with no resourceNames under its rules.`),
 		Type:        normativeResult,
 		Remediation: HelmIsCertifiedRemediation,
 		Description: formDescription(TestHelmIsCertifiedIdentifier,
-			`tests whether helm charts listed in the cluster passed the Red Hat Helm Certification Program.`),
+			`Tests whether helm charts listed in the cluster passed the Red Hat Helm Certification Program.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.12 and 5.3.3",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
@@ -662,7 +662,7 @@ with no resourceNames under its rules.`),
 		Type:        normativeResult,
 		Remediation: OperatorIsInstalledViaOLMRemediation,
 		Description: formDescription(TestOperatorIsInstalledViaOLMIdentifier,
-			`tests whether a CNF Operator is installed via OLM.`),
+			`Tests whether a CNF Operator is installed via OLM.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.12 and 5.3.3",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
@@ -672,7 +672,7 @@ with no resourceNames under its rules.`),
 		Type:        informativeResult,
 		Remediation: PodNodeSelectorAndAffinityBestPracticesRemediation,
 		Description: formDescription(TestPodNodeSelectorAndAffinityBestPractices,
-			`ensures that CNF Pods do not specify nodeSelector or nodeAffinity.  In most cases, Pods should allow for
+			`Ensures that CNF Pods do not specify nodeSelector or nodeAffinity.  In most cases, Pods should allow for
 instantiation on any underlying Node.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -683,7 +683,7 @@ instantiation on any underlying Node.`),
 		Type:        informativeResult,
 		Remediation: PodHighAvailabilityBestPracticesRemediation,
 		Description: formDescription(TestPodHighAvailabilityBestPractices,
-			`ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.`),
+			`Ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
@@ -693,7 +693,7 @@ instantiation on any underlying Node.`),
 		Type:        normativeResult,
 		Remediation: PodClusterRoleBindingsBestPracticesRemediation,
 		Description: formDescription(TestPodClusterRoleBindingsBestPracticesIdentifier,
-			`tests that a Pod does not specify ClusterRoleBindings.`),
+			`Tests that a Pod does not specify ClusterRoleBindings.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.10 and 5.3.6",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
@@ -703,7 +703,7 @@ instantiation on any underlying Node.`),
 		Type:        normativeResult,
 		Remediation: PodDeploymentBestPracticesRemediation,
 		Description: formDescription(TestPodDeploymentBestPracticesIdentifier,
-			`tests that CNF Pod(s) are deployed as part of a ReplicaSet(s)/StatefulSet(s).`),
+			`Tests that CNF Pod(s) are deployed as part of a ReplicaSet(s)/StatefulSet(s).`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.3 and 5.3.8",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
@@ -722,7 +722,7 @@ instantiation on any underlying Node.`),
 		Type:        normativeResult,
 		Remediation: PodRoleBindingsBestPracticesRemediation,
 		Description: formDescription(TestPodRoleBindingsBestPracticesIdentifier,
-			`ensures that a CNF does not utilize RoleBinding(s) in a non-CNF Namespace.`),
+			`Ensures that a CNF does not utilize RoleBinding(s) in a non-CNF Namespace.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.3 and 5.3.5",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
@@ -732,7 +732,7 @@ instantiation on any underlying Node.`),
 		Type:        normativeResult,
 		Remediation: PodServiceAccountBestPracticesRemediation,
 		Description: formDescription(TestPodServiceAccountBestPracticesIdentifier,
-			`tests that each CNF Pod utilizes a valid Service Account.`),
+			`Tests that each CNF Pod utilizes a valid Service Account.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.3 and 5.2.7",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
@@ -742,7 +742,7 @@ instantiation on any underlying Node.`),
 		Type:        normativeResult,
 		Remediation: ServicesDoNotUseNodeportsRemediation,
 		Description: formDescription(TestServicesDoNotUseNodeportsIdentifier,
-			`tests that each CNF Service does not utilize NodePort(s).`),
+			`Tests that each CNF Service does not utilize NodePort(s).`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.1",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
@@ -752,7 +752,7 @@ instantiation on any underlying Node.`),
 		Type:        normativeResult,
 		Remediation: UnalteredBaseImageRemediation,
 		Description: formDescription(TestUnalteredBaseImageIdentifier,
-			`ensures that the Container Base Image is not altered post-startup.  This test is a heuristic, and ensures
+			`Ensures that the Container Base Image is not altered post-startup.  This test is a heuristic, and ensures
 that there are no changes to the following directories:
 1) /var/lib/rpm
 2) /var/lib/dpkg
@@ -773,7 +773,7 @@ that there are no changes to the following directories:
 		Type:        normativeResult,
 		Remediation: UnalteredStartupBootParamsRemediation,
 		Description: formDescription(TestUnalteredStartupBootParamsIdentifier,
-			`tests that boot parameters are set through the MachineConfigOperator, and not set manually on the Node.`),
+			`Tests that boot parameters are set through the MachineConfigOperator, and not set manually on the Node.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.13 and 5.2.14",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
@@ -790,7 +790,7 @@ that there are no changes to the following directories:
 		Identifier: TestPodRecreationIdentifier,
 		Type:       normativeResult,
 		Description: formDescription(TestPodRecreationIdentifier,
-			`tests that a CNF is configured to support High Availability.  
+			`Tests that a CNF is configured to support High Availability.  
 			First, this test cordons and drains a Node that hosts the CNF Pod.  
 			Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, 
 			and that the actual replica count matches the desired replica count.`),
@@ -802,7 +802,7 @@ that there are no changes to the following directories:
 		Identifier: TestSysctlConfigsIdentifier,
 		Type:       normativeResult,
 		Description: formDescription(TestPodRecreationIdentifier,
-			`tests that no one has changed the node's sysctl configs after the node
+			`Tests that no one has changed the node's sysctl configs after the node
 			was created, the tests works by checking if the sysctl configs are consistent with the
 			MachineConfig CR which defines how the node should be configured`),
 		Remediation:           SysctlConfigsRemediation,
@@ -822,7 +822,7 @@ that there are no changes to the following directories:
 		Identifier: TestScalingIdentifier,
 		Type:       normativeResult,
 		Description: formDescription(TestScalingIdentifier,
-			`tests that CNF deployments support scale in/out operations. 
+			`Tests that CNF deployments support scale in/out operations. 
 			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the 
 			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.`),
 		Remediation:           ScalingRemediation,
@@ -851,7 +851,7 @@ that there are no changes to the following directories:
 		Identifier: TestUndeclaredContainerPortsUsage,
 		Type:       normativeResult,
 		Description: formDescription(TestUndeclaredContainerPortsUsage,
-			`check that containers do not listen on ports that weren't declared in their specification`),
+			`Check that containers do not listen on ports that weren't declared in their specification`),
 		Remediation:           UndeclaredContainerPortsRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 16.3.1.1",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -860,7 +860,7 @@ that there are no changes to the following directories:
 		Identifier: TestOCPReservedPortsUsage,
 		Type:       normativeResult,
 		Description: formDescription(TestOCPReservedPortsUsage,
-			`check that containers do not listen on ports that are reserved by Openshift`),
+			`Check that containers do not listen on ports that are reserved by Openshift`),
 		Remediation:           OCPReservedPortsUsageRemediation,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.5.9",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -869,7 +869,7 @@ that there are no changes to the following directories:
 		Identifier: TestCrdsStatusSubresourceIdentifier,
 		Type:       informativeResult,
 		Description: formDescription(TestCrdsStatusSubresourceIdentifier,
-			`checks that all CRDs have a status subresource specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties["status"]).`),
+			`Checks that all CRDs have a status subresource specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties["status"]).`),
 		Remediation:           CrdsStatusSubresourceRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -878,7 +878,7 @@ that there are no changes to the following directories:
 		Identifier: TestLoggingIdentifier,
 		Type:       informativeResult,
 		Description: formDescription(TestLoggingIdentifier,
-			`check that all containers under test use standard input output and standard error when logging`),
+			`Check that all containers under test use standard input output and standard error when logging`),
 		Remediation:           LoggingRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.1",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -887,7 +887,7 @@ that there are no changes to the following directories:
 		Identifier: TestTerminationMessagePolicyIdentifier,
 		Type:       informativeResult,
 		Description: formDescription(TestTerminationMessagePolicyIdentifier,
-			`check that all containers are using terminationMessagePolicy: FallbackToLogsOnError`),
+			`Check that all containers are using terminationMessagePolicy: FallbackToLogsOnError`),
 		Remediation:           TerminationMessagePolicyRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 12.1",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -896,7 +896,7 @@ that there are no changes to the following directories:
 		Identifier: TestPodAutomountServiceAccountIdentifier,
 		Type:       normativeResult,
 		Description: formDescription(TestPodAutomountServiceAccountIdentifier,
-			`check that all pods under test have automountServiceAccountToken set to false`),
+			`Check that all pods under test have automountServiceAccountToken set to false`),
 		Remediation:           AutomountServiceTokenRemediation,
 		ExceptionProcess:      AutomountServiceTokenExceptionProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 12.7",
@@ -904,7 +904,7 @@ that there are no changes to the following directories:
 	TestLivenessProbeIdentifier: {
 		Identifier:            TestLivenessProbeIdentifier,
 		Type:                  normativeResult,
-		Description:           formDescription(TestLivenessProbeIdentifier, `check that all containers under test a have liveness probe defined`),
+		Description:           formDescription(TestLivenessProbeIdentifier, `Check that all containers under test a have liveness probe defined`),
 		Remediation:           LivenessProbeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.16, 12.1 and 12.5",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -912,7 +912,7 @@ that there are no changes to the following directories:
 	TestReadinessProbeIdentifier: {
 		Identifier:            TestReadinessProbeIdentifier,
 		Type:                  normativeResult,
-		Description:           formDescription(TestReadinessProbeIdentifier, `check that all containers under test a have readiness probe defined`),
+		Description:           formDescription(TestReadinessProbeIdentifier, `Check that all containers under test a have readiness probe defined`),
 		Remediation:           ReadinessProbeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.16, 12.1 and 12.5",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -920,16 +920,15 @@ that there are no changes to the following directories:
 	TestStartupProbeIdentifier: {
 		Identifier:            TestStartupProbeIdentifier,
 		Type:                  normativeResult,
-		Description:           formDescription(TestStartupProbeIdentifier, `check that all containers under test a have startup probe defined`),
+		Description:           formDescription(TestStartupProbeIdentifier, `Check that all containers under test a have startup probe defined`),
 		Remediation:           StartupProbeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 	TestOneProcessPerContainerIdentifier: {
-		Identifier: TestOneProcessPerContainerIdentifier,
-		Type:       informativeResult,
-		Description: formDescription(TestOneProcessPerContainerIdentifier, `check that all containers under test
-		have only one process running`),
+		Identifier:            TestOneProcessPerContainerIdentifier,
+		Type:                  informativeResult,
+		Description:           formDescription(TestOneProcessPerContainerIdentifier, `Check that all containers under test have only one process running`),
 		Remediation:           OneProcessPerContainerRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.8.3",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -945,7 +944,7 @@ that there are no changes to the following directories:
 	TestSysPtraceCapabilityIdentifier: {
 		Identifier:            TestSysPtraceCapabilityIdentifier,
 		Type:                  informativeResult,
-		Description:           formDescription(TestSysPtraceCapabilityIdentifier, `check that if process namespace sharing is enabled for a Pod then the SYS_PTRACE capability is allowed`),
+		Description:           formDescription(TestSysPtraceCapabilityIdentifier, `Check that if process namespace sharing is enabled for a Pod then the SYS_PTRACE capability is allowed`),
 		Remediation:           SysPtraceCapabilityRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 2.7.5",
 		ExceptionProcess:      NoDocumentedProcess,

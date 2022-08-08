@@ -529,7 +529,7 @@ func TestSysPtraceCapability(env *provider.TestEnvironment) {
 				}
 			}
 			if !sysPtraceEnabled {
-				logrus.Infof("Pod %s has process namespace sharing enabled but no container allowing the SYS_PTRACE capability.", put.String())
+				tnf.ClaimFilePrintf("Pod %s has process namespace sharing enabled but no container allowing the SYS_PTRACE capability.", put.String())
 				podsWithoutSysPtrace = append(podsWithoutSysPtrace, put.String())
 			}
 		}
@@ -562,7 +562,7 @@ func TestNamespaceResourceQuota(env *provider.TestEnvironment) {
 
 		if !foundPodNamespaceRQ {
 			namespacesMissingQuotas = append(namespacesMissingQuotas, put.String())
-			logrus.Debugf("Pod %s is running in a namespace that does not have a ResourceQuota applied.", put.String())
+			tnf.ClaimFilePrintf("Pod %s is running in a namespace that does not have a ResourceQuota applied.", put.String())
 		}
 	}
 
@@ -581,7 +581,7 @@ func TestPodTolerationBypass(env *provider.TestEnvironment) {
 			// Check if the tolerations fall outside the 'default' and are modified versions
 			if tolerations.IsTolerationModified(t) {
 				podsWithRestrictedTolerationsNotDefault = append(podsWithRestrictedTolerationsNotDefault, put.String())
-				logrus.Debugf("Pod: %s has been found with non-default %s toleration %s which is not allowed.", string(t.Effect), put.String(), t.Effect)
+				tnf.ClaimFilePrintf("Pod: %s has been found with non-default %s toleration %s which is not allowed.", string(t.Effect), put.String(), t.Effect)
 			}
 		}
 	}
