@@ -193,11 +193,11 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 func buildImageWithVersion() string {
 	tnfPartnerRepo := os.Getenv("TNF_PARTNER_REPO")
 	if tnfPartnerRepo == "" {
-	  tnfPartnerRepo = tnfPartnerRepoDef
+		tnfPartnerRepo = tnfPartnerRepoDef
 	}
 	supportImage := os.Getenv("SUPPORT_IMAGE")
 	if supportImage == "" {
-	  supportImage = supportImageDef
+		supportImage = supportImageDef
 	}
 
 	return tnfPartnerRepo + "/" + supportImage
