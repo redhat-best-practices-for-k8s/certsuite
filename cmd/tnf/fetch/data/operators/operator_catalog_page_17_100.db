@@ -1,1228 +1,6 @@
 {
   "data": [
     {
-      "_id": "61782942dd607bfc82e64f7b",
-      "alm_examples": [
-        {
-          "api_version": "tools.opdev.io/v1",
-          "kind": "DemoResource",
-          "metadata": {
-            "name": "demoresource-sample"
-          },
-          "spec": {
-            "message": "Hello, World!"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/opdev/simple-demo-operator@sha256:55bbff6eba8a74a9deb2f5a63a2d1e6f2b570cdf36e7f38f7d72cfd748554494",
-      "bundle_path_digest": "sha256:55bbff6eba8a74a9deb2f5a63a2d1e6f2b570cdf36e7f38f7d72cfd748554494",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-10-26T16:13:54.202000+00:00",
-      "csv_description": "A simple demo operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
-      "csv_display_name": "Simple Demo Operator",
-      "csv_metadata_description": "",
-      "csv_name": "simple-demo-operator.v0.0.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T02:18:35.559000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "simple-demo-operator",
-      "provided_apis": [
-        {
-          "group": "tools.opdev.io",
-          "kind": "DemoResource",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.0.4",
-      "version_original": "0.0.4"
-    },
-    {
-      "_id": "6178381d40a2d8e95c82d9de",
-      "alm_examples": [
-        {
-          "api_version": "tools.opdev.io/v1",
-          "kind": "DemoResource",
-          "metadata": {
-            "name": "demoresource-sample"
-          },
-          "spec": {
-            "message": "Hello, World!"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/opdev/simple-demo-operator@sha256:55bbff6eba8a74a9deb2f5a63a2d1e6f2b570cdf36e7f38f7d72cfd748554494",
-      "bundle_path_digest": "sha256:55bbff6eba8a74a9deb2f5a63a2d1e6f2b570cdf36e7f38f7d72cfd748554494",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-10-26T17:17:17.235000+00:00",
-      "csv_description": "A simple demo operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
-      "csv_display_name": "Simple Demo Operator",
-      "csv_metadata_description": "",
-      "csv_name": "simple-demo-operator.v0.0.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:49:54.422000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "simple-demo-operator",
-      "provided_apis": [
-        {
-          "group": "tools.opdev.io",
-          "kind": "DemoResource",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.0.4",
-      "version_original": "0.0.4"
-    },
-    {
-      "_id": "6179244e2066d11ba77629bd",
-      "alm_examples": [
-        {
-          "api_version": "tools.opdev.io/v1",
-          "kind": "DemoResource",
-          "metadata": {
-            "name": "demoresource-sample"
-          },
-          "spec": {
-            "message": "Hello, World!"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/bpm-test-registry-namespace/simple-demo-operator@sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
-      "bundle_path_digest": "sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-10-27T10:05:02.512000+00:00",
-      "csv_description": "A Hello World Operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
-      "csv_display_name": "Hello World Operator",
-      "csv_metadata_description": "",
-      "csv_name": "hello-world-operator.0.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:00:12.618000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "hello-world-operator",
-      "provided_apis": [
-        {
-          "group": "tools.opdev.io",
-          "kind": "DemoResource",
-          "plural": "demoresources",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.0.1",
-      "version_original": "0.0.1"
-    },
-    {
-      "_id": "61792aa52066d11ba77629c1",
-      "alm_examples": [
-        {
-          "api_version": "tools.opdev.io/v1",
-          "kind": "DemoResource",
-          "metadata": {
-            "name": "demoresource-sample"
-          },
-          "spec": {
-            "message": "Hello, World!"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/bpm-test-registry-namespace/simple-demo-operator@sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
-      "bundle_path_digest": "sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-10-27T10:32:05.536000+00:00",
-      "csv_description": "A Hello World Operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
-      "csv_display_name": "Hello World Operator",
-      "csv_metadata_description": "",
-      "csv_name": "hello-world-operator.0.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:09:11.102000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "hello-world-operator",
-      "provided_apis": [
-        {
-          "group": "tools.opdev.io",
-          "kind": "DemoResource",
-          "plural": "demoresources",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.0.1",
-      "version_original": "0.0.1"
-    },
-    {
-      "_id": "61792b772066d11ba77629c2",
-      "alm_examples": [
-        {
-          "api_version": "tools.opdev.io/v1",
-          "kind": "DemoResource",
-          "metadata": {
-            "name": "demoresource-sample"
-          },
-          "spec": {
-            "message": "Hello, World!"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/bpm-test-registry-namespace/simple-demo-operator@sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
-      "bundle_path_digest": "sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-10-27T10:35:35.072000+00:00",
-      "csv_description": "A Hello World Operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
-      "csv_display_name": "Hello World Operator",
-      "csv_metadata_description": "",
-      "csv_name": "hello-world-operator.0.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T02:11:07.148000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "hello-world-operator",
-      "provided_apis": [
-        {
-          "group": "tools.opdev.io",
-          "kind": "DemoResource",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.0.1",
-      "version_original": "0.0.1"
-    },
-    {
-      "_id": "61792bbe2066d11ba77629c3",
-      "alm_examples": [
-        {
-          "api_version": "tools.opdev.io/v1",
-          "kind": "DemoResource",
-          "metadata": {
-            "name": "demoresource-sample"
-          },
-          "spec": {
-            "message": "Hello, World!"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/bpm-test-registry-namespace/simple-demo-operator@sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
-      "bundle_path_digest": "sha256:51206d3dfee68e8085972c3068e642b67d1e283e3fadf6c8ae9dd55b15c7c9bb",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-10-27T10:36:46.617000+00:00",
-      "csv_description": "A Hello World Operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
-      "csv_display_name": "Hello World Operator",
-      "csv_metadata_description": "",
-      "csv_name": "hello-world-operator.0.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T05:01:26.758000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "hello-world-operator",
-      "provided_apis": [
-        {
-          "group": "tools.opdev.io",
-          "kind": "DemoResource",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.0.1",
-      "version_original": "0.0.1"
-    },
-    {
-      "_id": "6179b07f2066d11ba77629cf",
-      "alm_examples": [
-        {
-          "api_version": "citrix.citrix.com/v1alpha1",
-          "kind": "Citrix-cpx-istio-sidecar-injector",
-          "metadata": {
-            "name": "cpx-sidecar-injector-sample"
-          },
-          "spec": {
-            "ADMSettings": {
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "licenseServerIP": "",
-              "licenseServerPort": 27000
-            },
-            "certProvider": {
-              "caAddr": "istiod.istio-system.svc",
-              "caPort": 15012,
-              "certTTLinHours": 720,
-              "clusterId": "Kubernetes",
-              "jwtPolicy": "",
-              "trustDomain": "cluster.local"
-            },
-            "coe": {
-              "coeTracing": false,
-              "coeURL": ""
-            },
-            "cpxProxy": {
-              "EULA": false,
-              "cpxDisableProbe": "YES",
-              "cpxSidecarMode": true,
-              "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-              "imagePullPolicy": "IfNotPresent",
-              "mgmtHttpPort": 10080,
-              "mgmtHttpsPort": 10443,
-              "netscalerUrl": "http://127.0.0.1"
-            },
-            "istioPilot": {
-              "SAN": "",
-              "insecureGrpcPort": 15010,
-              "name": "istiod",
-              "namespace": "istio-system",
-              "secureGrpcPort": 15012
-            },
-            "sidecarCertsGenerator": {
-              "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-              "imagePullPolicy": "IfNotPresent"
-            },
-            "sidecarWebHook": {
-              "imagePullPolicy": "IfNotPresent",
-              "webhookImage": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac"
-            },
-            "webhook": {
-              "injectionLabelName": "cpx-injection"
-            },
-            "xDSAdaptor": {
-              "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-              "imagePullPolicy": "IfNotPresent",
-              "jsonLog": false,
-              "logLevel": "DEBUG",
-              "proxyType": "sidecar",
-              "secureConnect": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/istiosidecarcitrix-bundle@sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
-      "bundle_path_digest": "sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-27T20:03:11.265000+00:00",
-      "csv_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
-      "csv_display_name": "Citrix ADC CPX Istio Sidecar Injector Operator",
-      "csv_metadata_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
-      "csv_name": "citrix-cpx-istio-sidecar-injector-operator.v0.9.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T03:57:14.814000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "citrix-cpx-istio-sidecar-injector-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.citrix.com",
-          "kind": "Citrix-cpx-istio-sidecar-injector",
-          "plural": "citrix-cpx-istio-sidecar-injectors",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "name": "citrix-cpx-istio-sidecar-injector-ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899-annotation"
-        },
-        {
-          "digest": "sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-          "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-          "name": "citrix-xds-adaptor-b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6-annotation"
-        },
-        {
-          "digest": "sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
-          "image": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
-          "name": "cpx-istio-sidecar-injector-c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac-annotation"
-        },
-        {
-          "digest": "sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-          "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-          "name": "cpx-sidecar-injector-certgen-7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb-annotation"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.9.9",
-      "version_original": "0.9.9"
-    },
-    {
-      "_id": "6179b0a02066d11ba77629d0",
-      "alm_examples": [
-        {
-          "api_version": "citrix.citrix.com/v1alpha1",
-          "kind": "Citrix-cpx-istio-sidecar-injector",
-          "metadata": {
-            "name": "cpx-sidecar-injector-sample"
-          },
-          "spec": {
-            "ADMSettings": {
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "licenseServerIP": "",
-              "licenseServerPort": 27000
-            },
-            "certProvider": {
-              "caAddr": "istiod.istio-system.svc",
-              "caPort": 15012,
-              "certTTLinHours": 720,
-              "clusterId": "Kubernetes",
-              "jwtPolicy": "",
-              "trustDomain": "cluster.local"
-            },
-            "coe": {
-              "coeTracing": false,
-              "coeURL": ""
-            },
-            "cpxProxy": {
-              "EULA": false,
-              "cpxDisableProbe": "YES",
-              "cpxSidecarMode": true,
-              "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-              "imagePullPolicy": "IfNotPresent",
-              "mgmtHttpPort": 10080,
-              "mgmtHttpsPort": 10443,
-              "netscalerUrl": "http://127.0.0.1"
-            },
-            "istioPilot": {
-              "SAN": "",
-              "insecureGrpcPort": 15010,
-              "name": "istiod",
-              "namespace": "istio-system",
-              "secureGrpcPort": 15012
-            },
-            "sidecarCertsGenerator": {
-              "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-              "imagePullPolicy": "IfNotPresent"
-            },
-            "sidecarWebHook": {
-              "imagePullPolicy": "IfNotPresent",
-              "webhookImage": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac"
-            },
-            "webhook": {
-              "injectionLabelName": "cpx-injection"
-            },
-            "xDSAdaptor": {
-              "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-              "imagePullPolicy": "IfNotPresent",
-              "jsonLog": false,
-              "logLevel": "DEBUG",
-              "proxyType": "sidecar",
-              "secureConnect": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/istiosidecarcitrix-bundle@sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
-      "bundle_path_digest": "sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-27T20:03:44.350000+00:00",
-      "csv_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
-      "csv_display_name": "Citrix ADC CPX Istio Sidecar Injector Operator",
-      "csv_metadata_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
-      "csv_name": "citrix-cpx-istio-sidecar-injector-operator.v0.9.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T02:17:51.784000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "citrix-cpx-istio-sidecar-injector-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.citrix.com",
-          "kind": "Citrix-cpx-istio-sidecar-injector",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "name": "citrix-cpx-istio-sidecar-injector-ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899-annotation"
-        },
-        {
-          "digest": "sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-          "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-          "name": "citrix-xds-adaptor-b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6-annotation"
-        },
-        {
-          "digest": "sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
-          "image": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
-          "name": "cpx-istio-sidecar-injector-c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac-annotation"
-        },
-        {
-          "digest": "sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-          "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-          "name": "cpx-sidecar-injector-certgen-7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb-annotation"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.9.9",
-      "version_original": "0.9.9"
-    },
-    {
-      "_id": "6179b1792066d11ba77629e0",
-      "alm_examples": [
-        {
-          "api_version": "citrix.citrix.com/v1alpha1",
-          "kind": "Citrix-cpx-istio-sidecar-injector",
-          "metadata": {
-            "name": "cpx-sidecar-injector-sample"
-          },
-          "spec": {
-            "ADMSettings": {
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "licenseServerIP": "",
-              "licenseServerPort": 27000
-            },
-            "certProvider": {
-              "caAddr": "istiod.istio-system.svc",
-              "caPort": 15012,
-              "certTTLinHours": 720,
-              "clusterId": "Kubernetes",
-              "jwtPolicy": "",
-              "trustDomain": "cluster.local"
-            },
-            "coe": {
-              "coeTracing": false,
-              "coeURL": ""
-            },
-            "cpxProxy": {
-              "EULA": false,
-              "cpxDisableProbe": "YES",
-              "cpxSidecarMode": true,
-              "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-              "imagePullPolicy": "IfNotPresent",
-              "mgmtHttpPort": 10080,
-              "mgmtHttpsPort": 10443,
-              "netscalerUrl": "http://127.0.0.1"
-            },
-            "istioPilot": {
-              "SAN": "",
-              "insecureGrpcPort": 15010,
-              "name": "istiod",
-              "namespace": "istio-system",
-              "secureGrpcPort": 15012
-            },
-            "sidecarCertsGenerator": {
-              "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-              "imagePullPolicy": "IfNotPresent"
-            },
-            "sidecarWebHook": {
-              "imagePullPolicy": "IfNotPresent",
-              "webhookImage": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac"
-            },
-            "webhook": {
-              "injectionLabelName": "cpx-injection"
-            },
-            "xDSAdaptor": {
-              "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-              "imagePullPolicy": "IfNotPresent",
-              "jsonLog": false,
-              "logLevel": "DEBUG",
-              "proxyType": "sidecar",
-              "secureConnect": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/istiosidecarcitrix-bundle@sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
-      "bundle_path_digest": "sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-27T20:07:21.844000+00:00",
-      "csv_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
-      "csv_display_name": "Citrix ADC CPX Istio Sidecar Injector Operator",
-      "csv_metadata_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
-      "csv_name": "citrix-cpx-istio-sidecar-injector-operator.v0.9.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:56:12.326000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "citrix-cpx-istio-sidecar-injector-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.citrix.com",
-          "kind": "Citrix-cpx-istio-sidecar-injector",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "name": "citrix-cpx-istio-sidecar-injector-ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899-annotation"
-        },
-        {
-          "digest": "sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-          "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-          "name": "citrix-xds-adaptor-b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6-annotation"
-        },
-        {
-          "digest": "sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
-          "image": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
-          "name": "cpx-istio-sidecar-injector-c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac-annotation"
-        },
-        {
-          "digest": "sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-          "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-          "name": "cpx-sidecar-injector-certgen-7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb-annotation"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.9.9",
-      "version_original": "0.9.9"
-    },
-    {
-      "_id": "6179c6412066d11ba77629f6",
-      "alm_examples": [
-        {
-          "api_version": "citrix.citrix.com/v1alpha1",
-          "kind": "Citrix-cpx-istio-sidecar-injector",
-          "metadata": {
-            "name": "cpx-sidecar-injector-sample"
-          },
-          "spec": {
-            "ADMSettings": {
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "licenseServerIP": "",
-              "licenseServerPort": 27000
-            },
-            "certProvider": {
-              "caAddr": "istiod.istio-system.svc",
-              "caPort": 15012,
-              "certTTLinHours": 720,
-              "clusterId": "Kubernetes",
-              "jwtPolicy": "",
-              "trustDomain": "cluster.local"
-            },
-            "coe": {
-              "coeTracing": false,
-              "coeURL": ""
-            },
-            "cpxProxy": {
-              "EULA": false,
-              "cpxDisableProbe": "YES",
-              "cpxSidecarMode": true,
-              "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-              "imagePullPolicy": "IfNotPresent",
-              "mgmtHttpPort": 10080,
-              "mgmtHttpsPort": 10443,
-              "netscalerUrl": "http://127.0.0.1"
-            },
-            "istioPilot": {
-              "SAN": "",
-              "insecureGrpcPort": 15010,
-              "name": "istiod",
-              "namespace": "istio-system",
-              "secureGrpcPort": 15012
-            },
-            "sidecarCertsGenerator": {
-              "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-              "imagePullPolicy": "IfNotPresent"
-            },
-            "sidecarWebHook": {
-              "imagePullPolicy": "IfNotPresent",
-              "webhookImage": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac"
-            },
-            "webhook": {
-              "injectionLabelName": "cpx-injection"
-            },
-            "xDSAdaptor": {
-              "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-              "imagePullPolicy": "IfNotPresent",
-              "jsonLog": false,
-              "logLevel": "DEBUG",
-              "proxyType": "sidecar",
-              "secureConnect": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/istiosidecarcitrix-bundle@sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
-      "bundle_path_digest": "sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-27T21:36:01.202000+00:00",
-      "csv_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
-      "csv_display_name": "Citrix ADC CPX Istio Sidecar Injector Operator",
-      "csv_metadata_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
-      "csv_name": "citrix-cpx-istio-sidecar-injector-operator.v0.9.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:16:40.620000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "citrix-cpx-istio-sidecar-injector-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.citrix.com",
-          "kind": "Citrix-cpx-istio-sidecar-injector",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "name": "citrix-cpx-istio-sidecar-injector-ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899-annotation"
-        },
-        {
-          "digest": "sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-          "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-          "name": "citrix-xds-adaptor-b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6-annotation"
-        },
-        {
-          "digest": "sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
-          "image": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
-          "name": "cpx-istio-sidecar-injector-c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac-annotation"
-        },
-        {
-          "digest": "sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-          "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-          "name": "cpx-sidecar-injector-certgen-7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb-annotation"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.9.9",
-      "version_original": "0.9.9"
-    },
-    {
-      "_id": "6184a674843af1624c4e450b",
-      "alm_examples": [
-        {
-          "api_version": "tools.opdev.io/v1",
-          "kind": "DemoResource",
-          "metadata": {
-            "name": "demoresource-sample"
-          },
-          "spec": {
-            "message": "Hello, World!"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/bcook/simple-demo-operator@sha256:027ff7a8f29ce525f1597a76faa6a264ca76029f244bf3b642e1e3f1bb80541c",
-      "bundle_path_digest": "sha256:027ff7a8f29ce525f1597a76faa6a264ca76029f244bf3b642e1e3f1bb80541c",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-11-05T03:35:16.064000+00:00",
-      "csv_description": "A simple demo operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
-      "csv_display_name": "Simple Demo Operator",
-      "csv_metadata_description": "",
-      "csv_name": "tc-simple-demo-operator.v0.0.8",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:34:04.190000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "tc-simple-demo-operator",
-      "provided_apis": [
-        {
-          "group": "tools.opdev.io",
-          "kind": "DemoResource",
-          "plural": "demoresources",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.0.8",
-      "version_original": "0.0.8"
-    },
-    {
       "_id": "618c5921b876130c07c07022",
       "alm_examples": [
         {
@@ -14327,9 +13105,1410 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "6.0.20-4",
       "version_original": "6.0.20-4"
+    },
+    {
+      "_id": "619ffc0b27e166330707d779",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:d778e1d70bee8e4a17cac2ea9b04c82c747fd1d1f3859e846626f581f58f1ae3",
+      "bundle_path_digest": "sha256:d778e1d70bee8e4a17cac2ea9b04c82c747fd1d1f3859e846626f581f58f1ae3",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-25T21:11:39.626000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.22",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:43:33.014000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:f839152251e021fe0ae1d4bd9e5374c2a2fb3c01da4381ba4c01afcbaadbf8bd",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:f839152251e021fe0ae1d4bd9e5374c2a2fb3c01da4381ba4c01afcbaadbf8bd",
+          "name": "joget"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.0.22",
+      "version_original": "0.0.22"
+    },
+    {
+      "_id": "619ffc98c17162a20c1c65f4",
+      "alm_examples": [
+        {
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.12-57.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
+      "bundle_path_digest": "sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2021-11-25T21:14:00.359000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.12-5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-04-05T11:17:45.337000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "name": "redis-enterprise-operator-b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f-annotation"
+        },
+        {
+          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.12-5",
+      "version_original": "6.0.12-5"
+    },
+    {
+      "_id": "619ffdadc17162a20c1c65f5",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2021-11-25T21:18:37.067000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-04-16T17:05:49.703000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "619ffe62c17162a20c1c65f6",
+      "alm_examples": [
+        {
+          "api_version": "astra.netapp.io/v1",
+          "kind": "AstraControlCenter",
+          "metadata": {
+            "name": "astra"
+          },
+          "spec": {
+            "accountName": "Example",
+            "additionalValues": {},
+            "astraAddress": "astra.example.com",
+            "astraResourcesScaler": "Default",
+            "astraVersion": "ASTRA_VERSION",
+            "autoSupport": {
+              "enrolled": true,
+              "url": "https://stagesupport.netapp.com/asupprod/post/1.0/postAsup"
+            },
+            "crds": {
+              "externalCertManager": false,
+              "externalTraefik": false
+            },
+            "email": "admin@example.com",
+            "firstName": "SRE",
+            "imageRegistry": {
+              "name": "example.registry/astra",
+              "secret": "astra-registry-cred"
+            },
+            "lastName": "Admin",
+            "storageClass": "ontap-gold",
+            "volumeReclaimPolicy": "Retain"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/5e8d03cfac3db90370900b83/acc-operator-bundle@sha256:6b99d92f9d8de5380196a1b65ad12e8ea08adf9dfd8acc04158cc219d0100858",
+      "bundle_path_digest": "sha256:6b99d92f9d8de5380196a1b65ad12e8ea08adf9dfd8acc04158cc219d0100858",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-25T21:21:38.697000+00:00",
+      "csv_description": "Install, configure and monitor Astra Control Center",
+      "csv_display_name": "netapp-acc-operator",
+      "csv_metadata_description": "",
+      "csv_name": "acc-operator.v21.10.7",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T04:50:36.853000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "acc-operator",
+      "provided_apis": [
+        {
+          "group": "astra.netapp.io",
+          "kind": "AstraControlCenter",
+          "plural": "astracontrolcenters",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:a5c16c64229aac3564c66816c123e81a849ff93b8a443cd6ff14bd8d63c06644",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:a5c16c64229aac3564c66816c123e81a849ff93b8a443cd6ff14bd8d63c06644",
+          "name": "ose-kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:33d1dd15d0fcd40acbecadf824a99c611efce876ba73c5df9b9a8a2defc95214",
+          "image": "registry.connect.redhat.com/netapp/acc-operator@sha256:33d1dd15d0fcd40acbecadf824a99c611efce876ba73c5df9b9a8a2defc95214",
+          "name": "acc-operator"
+        },
+        {
+          "digest": "sha256:a5c16c64229aac3564c66816c123e81a849ff93b8a443cd6ff14bd8d63c06644",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:a5c16c64229aac3564c66816c123e81a849ff93b8a443cd6ff14bd8d63c06644",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:33d1dd15d0fcd40acbecadf824a99c611efce876ba73c5df9b9a8a2defc95214",
+          "image": "registry.connect.redhat.com/netapp/acc-operator@sha256:33d1dd15d0fcd40acbecadf824a99c611efce876ba73c5df9b9a8a2defc95214",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "21.10.7",
+      "version_original": "21.10.7"
+    },
+    {
+      "_id": "61a17e62c17162a20c1c6636",
+      "alm_examples": [
+        {
+          "api_version": "apps.docker.io/v1alpha1",
+          "kind": "CarbonetesAnalyzer",
+          "metadata": {
+            "name": "carbonetesanalyzer"
+          },
+          "spec": {
+            "affinity": {},
+            "autoscaling": {
+              "enabled": false,
+              "maxReplicas": 100,
+              "minReplicas": 1,
+              "targetCPUUtilizationPercentage": 80
+            },
+            "carbonetesCreds": {
+              "password": "",
+              "username": ""
+            },
+            "debugging": {
+              "enabled": false
+            },
+            "fullnameOverride": "",
+            "image": {
+              "pullPolicy": "Always",
+              "repository": "quay.carbonetes.com/carbonetes/carbonetes-analyzer@sha256:1b9b93c9a37f7138c6a6259d20a3cfe254a47b294adc48849008ecbb9917697f"
+            },
+            "imagePullSecrets": [],
+            "ingress": {
+              "annotations": {},
+              "enabled": false,
+              "hosts": [
+                {
+                  "host": "chart.local",
+                  "paths": []
+                }
+              ],
+              "tls": []
+            },
+            "nameOverride": "",
+            "nodeSelector": {},
+            "podAnnotations": {},
+            "podSecurityContext": {},
+            "replicaCount": 1,
+            "resources": {},
+            "securityContext": {},
+            "service": {
+              "port": 3000,
+              "type": "ClusterIP"
+            },
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": "carbonetes-analyzer"
+            },
+            "tolerations": []
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/carbonetes/operator-bundle@sha256:ba799a2e818d8efe1ed200e366984b1e61baa7ec781c782e74e230692b1f98a6",
+      "bundle_path_digest": "sha256:ba799a2e818d8efe1ed200e366984b1e61baa7ec781c782e74e230692b1f98a6",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-27T00:40:02.340000+00:00",
+      "csv_description": "A Kubernetes Operator for creating Carbonetes Analyzer instances that Provides complete container analysis and policy evaluation as a fully managed service.\n\nCarbonetes analyzes your container images for native code vulnerabilities, software composition analysis (SCA), license types, malware, secrets, and bill of materials.\n\n## Prerequisites\n\nTo start using the Operator, you will need to create a secret containing your Carbonetes username and password.\n\n```\nkubectl create namespace carbonetes-operator\nkubectl create secret generic carbonetes-secrets --from-literal=username=${CARBONETES_USERNAME}--from-literal=password=${CARBONETES_PASSWORD}\n```\nDon't have the account yet? [Sign up now](https://console.carbonetes.com).",
+      "csv_display_name": "Carbonetes Operator",
+      "csv_metadata_description": "A Kubernetes Operator for creating Carbonetes Analyzer instances.",
+      "csv_name": "carbonetes-operator.v1.0.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:46:53.157000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "carbonetes-operator",
+      "provided_apis": [
+        {
+          "group": "apps.docker.io",
+          "kind": "CarbonetesAnalyzer",
+          "plural": "carbonetesanalyzers",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "image": "quay.carbonetes.com/carbonetes/operator@sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "name": "carbonetes-operator"
+        },
+        {
+          "digest": "sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "image": "quay.carbonetes.com/carbonetes/operator@sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "name": "operator-82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772-annotation"
+        },
+        {
+          "digest": "sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "image": "quay.carbonetes.com/carbonetes/operator@sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:1b9b93c9a37f7138c6a6259d20a3cfe254a47b294adc48849008ecbb9917697f",
+          "image": "quay.carbonetes.com/carbonetes/carbonetes-analyzer@sha256:1b9b93c9a37f7138c6a6259d20a3cfe254a47b294adc48849008ecbb9917697f",
+          "name": "carbonetes-analyzer-1b9b93c9a37f7138c6a6259d20a3cfe254a47b294adc48849008ecbb9917697f-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.0.5",
+      "version_original": "1.0.5"
+    },
+    {
+      "_id": "61a17f1fbfd4a5234d595ec4",
+      "alm_examples": [
+        {
+          "api_version": "apps.docker.io/v1alpha1",
+          "kind": "CarbonetesAnalyzer",
+          "metadata": {
+            "name": "carbonetesanalyzer"
+          },
+          "spec": {
+            "affinity": {},
+            "autoscaling": {
+              "enabled": false,
+              "maxReplicas": 100,
+              "minReplicas": 1,
+              "targetCPUUtilizationPercentage": 80
+            },
+            "carbonetesCreds": {
+              "password": "",
+              "username": ""
+            },
+            "debugging": {
+              "enabled": false
+            },
+            "fullnameOverride": "",
+            "image": {
+              "pullPolicy": "Always",
+              "repository": "quay.carbonetes.com/carbonetes/carbonetes-analyzer@sha256:1b9b93c9a37f7138c6a6259d20a3cfe254a47b294adc48849008ecbb9917697f"
+            },
+            "imagePullSecrets": [],
+            "ingress": {
+              "annotations": {},
+              "enabled": false,
+              "hosts": [
+                {
+                  "host": "chart.local",
+                  "paths": []
+                }
+              ],
+              "tls": []
+            },
+            "nameOverride": "",
+            "nodeSelector": {},
+            "podAnnotations": {},
+            "podSecurityContext": {},
+            "replicaCount": 1,
+            "resources": {},
+            "securityContext": {},
+            "service": {
+              "port": 3000,
+              "type": "ClusterIP"
+            },
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": "carbonetes-analyzer"
+            },
+            "tolerations": []
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/carbonetes/operator-bundle@sha256:ba799a2e818d8efe1ed200e366984b1e61baa7ec781c782e74e230692b1f98a6",
+      "bundle_path_digest": "sha256:ba799a2e818d8efe1ed200e366984b1e61baa7ec781c782e74e230692b1f98a6",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-27T00:43:11.841000+00:00",
+      "csv_description": "A Kubernetes Operator for creating Carbonetes Analyzer instances that Provides complete container analysis and policy evaluation as a fully managed service.\n\nCarbonetes analyzes your container images for native code vulnerabilities, software composition analysis (SCA), license types, malware, secrets, and bill of materials.\n\n## Prerequisites\n\nTo start using the Operator, you will need to create a secret containing your Carbonetes username and password.\n\n```\nkubectl create namespace carbonetes-operator\nkubectl create secret generic carbonetes-secrets --from-literal=username=${CARBONETES_USERNAME}--from-literal=password=${CARBONETES_PASSWORD}\n```\nDon't have the account yet? [Sign up now](https://console.carbonetes.com).",
+      "csv_display_name": "Carbonetes Operator",
+      "csv_metadata_description": "A Kubernetes Operator for creating Carbonetes Analyzer instances.",
+      "csv_name": "carbonetes-operator.v1.0.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T02:17:01.592000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "carbonetes-operator",
+      "provided_apis": [
+        {
+          "group": "apps.docker.io",
+          "kind": "CarbonetesAnalyzer",
+          "plural": "carbonetesanalyzers",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "image": "quay.carbonetes.com/carbonetes/operator@sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "name": "carbonetes-operator"
+        },
+        {
+          "digest": "sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "image": "quay.carbonetes.com/carbonetes/operator@sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "name": "operator-82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772-annotation"
+        },
+        {
+          "digest": "sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "image": "quay.carbonetes.com/carbonetes/operator@sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:1b9b93c9a37f7138c6a6259d20a3cfe254a47b294adc48849008ecbb9917697f",
+          "image": "quay.carbonetes.com/carbonetes/carbonetes-analyzer@sha256:1b9b93c9a37f7138c6a6259d20a3cfe254a47b294adc48849008ecbb9917697f",
+          "name": "carbonetes-analyzer-1b9b93c9a37f7138c6a6259d20a3cfe254a47b294adc48849008ecbb9917697f-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.0.5",
+      "version_original": "1.0.5"
+    },
+    {
+      "_id": "61a20593bfd4a5234d595ecc",
+      "alm_examples": [
+        {
+          "api_version": "apps.docker.io/v1alpha1",
+          "kind": "CarbonetesAnalyzer",
+          "metadata": {
+            "name": "carbonetesanalyzer"
+          },
+          "spec": {
+            "affinity": {},
+            "autoscaling": {
+              "enabled": false,
+              "maxReplicas": 100,
+              "minReplicas": 1,
+              "targetCPUUtilizationPercentage": 80
+            },
+            "carbonetesCreds": {
+              "password": "",
+              "username": ""
+            },
+            "debugging": {
+              "enabled": false
+            },
+            "fullnameOverride": "",
+            "image": {
+              "pullPolicy": "Always",
+              "repository": "quay.carbonetes.com/carbonetes/carbonetes-analyzer@sha256:1b9b93c9a37f7138c6a6259d20a3cfe254a47b294adc48849008ecbb9917697f"
+            },
+            "imagePullSecrets": [],
+            "ingress": {
+              "annotations": {},
+              "enabled": false,
+              "hosts": [
+                {
+                  "host": "chart.local",
+                  "paths": []
+                }
+              ],
+              "tls": []
+            },
+            "nameOverride": "",
+            "nodeSelector": {},
+            "podAnnotations": {},
+            "podSecurityContext": {},
+            "replicaCount": 1,
+            "resources": {},
+            "securityContext": {},
+            "service": {
+              "port": 3000,
+              "type": "ClusterIP"
+            },
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": "carbonetes-analyzer"
+            },
+            "tolerations": []
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/carbonetes/operator-bundle@sha256:ba799a2e818d8efe1ed200e366984b1e61baa7ec781c782e74e230692b1f98a6",
+      "bundle_path_digest": "sha256:ba799a2e818d8efe1ed200e366984b1e61baa7ec781c782e74e230692b1f98a6",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-27T10:16:51.887000+00:00",
+      "csv_description": "A Kubernetes Operator for creating Carbonetes Analyzer instances that Provides complete container analysis and policy evaluation as a fully managed service.\n\nCarbonetes analyzes your container images for native code vulnerabilities, software composition analysis (SCA), license types, malware, secrets, and bill of materials.\n\n## Prerequisites\n\nTo start using the Operator, you will need to create a secret containing your Carbonetes username and password.\n\n```\nkubectl create namespace carbonetes-operator\nkubectl create secret generic carbonetes-secrets --from-literal=username=${CARBONETES_USERNAME}--from-literal=password=${CARBONETES_PASSWORD}\n```\nDon't have the account yet? [Sign up now](https://console.carbonetes.com).",
+      "csv_display_name": "Carbonetes Operator",
+      "csv_metadata_description": "A Kubernetes Operator for creating Carbonetes Analyzer instances.",
+      "csv_name": "carbonetes-operator.v1.0.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T03:55:02.230000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "carbonetes-operator",
+      "provided_apis": [
+        {
+          "group": "apps.docker.io",
+          "kind": "CarbonetesAnalyzer",
+          "plural": "carbonetesanalyzers",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "image": "quay.carbonetes.com/carbonetes/operator@sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "name": "carbonetes-operator"
+        },
+        {
+          "digest": "sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "image": "quay.carbonetes.com/carbonetes/operator@sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "name": "operator-82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772-annotation"
+        },
+        {
+          "digest": "sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "image": "quay.carbonetes.com/carbonetes/operator@sha256:82318372a716645503fe30ec0e81a8bffb25afd84a8a14e58e881573fcc81772",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:1b9b93c9a37f7138c6a6259d20a3cfe254a47b294adc48849008ecbb9917697f",
+          "image": "quay.carbonetes.com/carbonetes/carbonetes-analyzer@sha256:1b9b93c9a37f7138c6a6259d20a3cfe254a47b294adc48849008ecbb9917697f",
+          "name": "carbonetes-analyzer-1b9b93c9a37f7138c6a6259d20a3cfe254a47b294adc48849008ecbb9917697f-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.0.5",
+      "version_original": "1.0.5"
+    },
+    {
+      "_id": "61a418fcbfd4a5234d595ed5",
+      "alm_examples": [
+        {
+          "api_version": "rc.app.stacks/v1beta2",
+          "kind": "RuntimeComponent",
+          "metadata": {
+            "name": "runtimecomponent-sample"
+          },
+          "spec": {
+            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
+            "expose": true,
+            "replicas": 1,
+            "service": {
+              "port": 9080
+            }
+          }
+        },
+        {
+          "api_version": "rc.app.stacks/v1beta2",
+          "kind": "RuntimeOperation",
+          "metadata": {
+            "name": "runtimeoperation-sample"
+          },
+          "spec": {
+            "command": [
+              "./your_script.sh"
+            ],
+            "containerName": "app",
+            "podName": "Specify_Pod_Name_Here"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/runtime-component-operator-bundle@sha256:65cc8aa40608b76956ff8c19316b63f805d7a28e8d7697b9ea1d427888a2ccdf",
+      "bundle_path_digest": "sha256:65cc8aa40608b76956ff8c19316b63f805d7a28e8d7697b9ea1d427888a2ccdf",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "beta2",
+      "creation_date": "2021-11-29T00:04:12.004000+00:00",
+      "csv_description": "This advanced Operator is capable of deploying any runtime component image with consistent, production-grade QoS. It enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your runtime component container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.  Expiring Route certificates are re-issued.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and We will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where the user specifies a built-in PersistentVolumeClaim, allowing them to configure many details of the persistent volume, such as its storage class and access mode.\n\n#### Service Binding\nEasily bind to available services in your cluster.  Your runtime components can expose and consume other services by simply specifying the target endpoinds: we take care of the heavy lifting such as creating k8s Secrets, injecting them into your container and watching for any changes in configuration!  This way your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Exposing metrics to Prometheus\nThe Runtime Component Operator exposes the runtime container's metrics via the [Prometheus Operator](https://operatorhub.io/operator/prometheus).\nUsers can pick between a basic mode, where they simply specify the label that Prometheus is watching to scrape the metrics from the container, or they can specify the full `ServiceMonitor` spec embedded into the RuntimeComponent's `spec.monitoring` key controlling things like the poll internal and security credentials.\n\n#### Easily mount logs and transaction directories\nIf you need to mount the logs and transaction data from your runtime component to an external volume such as NFS (or any storage supported in your cluster), simply add the following (customizing the folder location and size) to your RuntimeComponent CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/application-stacks/runtime-component-operator/tree/main/doc/) for more information.\n",
+      "csv_display_name": "Runtime Component",
+      "csv_metadata_description": "Deploys any runtime component with dynamic and auto-tuning configuration",
+      "csv_name": "runtime-component.v0.8.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:31:16.200000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "runtime-component-operator-certified",
+      "provided_apis": [
+        {
+          "group": "rc.app.stacks",
+          "kind": "RuntimeComponent",
+          "plural": "runtimecomponents",
+          "version": "v1beta2"
+        },
+        {
+          "group": "rc.app.stacks",
+          "kind": "RuntimeOperation",
+          "plural": "runtimeoperations",
+          "version": "v1beta2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b",
+          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b",
+          "name": "runtime-component-operator-febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b-annotation"
+        },
+        {
+          "digest": "sha256:febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b",
+          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
+          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
+          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.8.0",
+      "version_original": "0.8.0"
+    },
+    {
+      "_id": "61a419db27e166330707d7bc",
+      "alm_examples": [
+        {
+          "api_version": "rc.app.stacks/v1beta2",
+          "kind": "RuntimeComponent",
+          "metadata": {
+            "name": "runtimecomponent-sample"
+          },
+          "spec": {
+            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
+            "expose": true,
+            "replicas": 1,
+            "service": {
+              "port": 9080
+            }
+          }
+        },
+        {
+          "api_version": "rc.app.stacks/v1beta2",
+          "kind": "RuntimeOperation",
+          "metadata": {
+            "name": "runtimeoperation-sample"
+          },
+          "spec": {
+            "command": [
+              "./your_script.sh"
+            ],
+            "containerName": "app",
+            "podName": "Specify_Pod_Name_Here"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/runtime-component-operator-bundle@sha256:65cc8aa40608b76956ff8c19316b63f805d7a28e8d7697b9ea1d427888a2ccdf",
+      "bundle_path_digest": "sha256:65cc8aa40608b76956ff8c19316b63f805d7a28e8d7697b9ea1d427888a2ccdf",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "beta2",
+      "creation_date": "2021-11-29T00:07:55.052000+00:00",
+      "csv_description": "This advanced Operator is capable of deploying any runtime component image with consistent, production-grade QoS. It enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your runtime component container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.  Expiring Route certificates are re-issued.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and We will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where the user specifies a built-in PersistentVolumeClaim, allowing them to configure many details of the persistent volume, such as its storage class and access mode.\n\n#### Service Binding\nEasily bind to available services in your cluster.  Your runtime components can expose and consume other services by simply specifying the target endpoinds: we take care of the heavy lifting such as creating k8s Secrets, injecting them into your container and watching for any changes in configuration!  This way your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Exposing metrics to Prometheus\nThe Runtime Component Operator exposes the runtime container's metrics via the [Prometheus Operator](https://operatorhub.io/operator/prometheus).\nUsers can pick between a basic mode, where they simply specify the label that Prometheus is watching to scrape the metrics from the container, or they can specify the full `ServiceMonitor` spec embedded into the RuntimeComponent's `spec.monitoring` key controlling things like the poll internal and security credentials.\n\n#### Easily mount logs and transaction directories\nIf you need to mount the logs and transaction data from your runtime component to an external volume such as NFS (or any storage supported in your cluster), simply add the following (customizing the folder location and size) to your RuntimeComponent CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/application-stacks/runtime-component-operator/tree/main/doc/) for more information.\n",
+      "csv_display_name": "Runtime Component",
+      "csv_metadata_description": "Deploys any runtime component with dynamic and auto-tuning configuration",
+      "csv_name": "runtime-component.v0.8.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:31:44.979000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "runtime-component-operator-certified",
+      "provided_apis": [
+        {
+          "group": "rc.app.stacks",
+          "kind": "RuntimeComponent",
+          "plural": "runtimecomponents",
+          "version": "v1beta2"
+        },
+        {
+          "group": "rc.app.stacks",
+          "kind": "RuntimeOperation",
+          "plural": "runtimeoperations",
+          "version": "v1beta2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b",
+          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b",
+          "name": "runtime-component-operator-febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b-annotation"
+        },
+        {
+          "digest": "sha256:febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b",
+          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
+          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
+          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.8.0",
+      "version_original": "0.8.0"
+    },
+    {
+      "_id": "61a419e1c17162a20c1c664e",
+      "alm_examples": [
+        {
+          "api_version": "rc.app.stacks/v1beta2",
+          "kind": "RuntimeComponent",
+          "metadata": {
+            "name": "runtimecomponent-sample"
+          },
+          "spec": {
+            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
+            "expose": true,
+            "replicas": 1,
+            "service": {
+              "port": 9080
+            }
+          }
+        },
+        {
+          "api_version": "rc.app.stacks/v1beta2",
+          "kind": "RuntimeOperation",
+          "metadata": {
+            "name": "runtimeoperation-sample"
+          },
+          "spec": {
+            "command": [
+              "./your_script.sh"
+            ],
+            "containerName": "app",
+            "podName": "Specify_Pod_Name_Here"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/runtime-component-operator-bundle@sha256:65cc8aa40608b76956ff8c19316b63f805d7a28e8d7697b9ea1d427888a2ccdf",
+      "bundle_path_digest": "sha256:65cc8aa40608b76956ff8c19316b63f805d7a28e8d7697b9ea1d427888a2ccdf",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "beta2",
+      "creation_date": "2021-11-29T00:08:01.904000+00:00",
+      "csv_description": "This advanced Operator is capable of deploying any runtime component image with consistent, production-grade QoS. It enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your runtime component container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.  Expiring Route certificates are re-issued.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and We will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where the user specifies a built-in PersistentVolumeClaim, allowing them to configure many details of the persistent volume, such as its storage class and access mode.\n\n#### Service Binding\nEasily bind to available services in your cluster.  Your runtime components can expose and consume other services by simply specifying the target endpoinds: we take care of the heavy lifting such as creating k8s Secrets, injecting them into your container and watching for any changes in configuration!  This way your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Exposing metrics to Prometheus\nThe Runtime Component Operator exposes the runtime container's metrics via the [Prometheus Operator](https://operatorhub.io/operator/prometheus).\nUsers can pick between a basic mode, where they simply specify the label that Prometheus is watching to scrape the metrics from the container, or they can specify the full `ServiceMonitor` spec embedded into the RuntimeComponent's `spec.monitoring` key controlling things like the poll internal and security credentials.\n\n#### Easily mount logs and transaction directories\nIf you need to mount the logs and transaction data from your runtime component to an external volume such as NFS (or any storage supported in your cluster), simply add the following (customizing the folder location and size) to your RuntimeComponent CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/application-stacks/runtime-component-operator/tree/main/doc/) for more information.\n",
+      "csv_display_name": "Runtime Component",
+      "csv_metadata_description": "Deploys any runtime component with dynamic and auto-tuning configuration",
+      "csv_name": "runtime-component.v0.8.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:42:52.070000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "runtime-component-operator-certified",
+      "provided_apis": [
+        {
+          "group": "rc.app.stacks",
+          "kind": "RuntimeComponent",
+          "plural": "runtimecomponents",
+          "version": "v1beta2"
+        },
+        {
+          "group": "rc.app.stacks",
+          "kind": "RuntimeOperation",
+          "plural": "runtimeoperations",
+          "version": "v1beta2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b",
+          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b",
+          "name": "runtime-component-operator-febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b-annotation"
+        },
+        {
+          "digest": "sha256:febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b",
+          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:febfbe4a75018bfdb1f3cb13caaa3e5e321bf9f8ac5ca1405dae96f9798bde2b",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
+          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
+          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.8.0",
+      "version_original": "0.8.0"
+    },
+    {
+      "_id": "61a49f6fbfd4a5234d595fc4",
+      "alm_examples": [
+        {
+          "api_version": "federatorai.containers.ai/v1alpha1",
+          "kind": "AlamedaService",
+          "metadata": {
+            "name": "my-alamedaservice"
+          },
+          "spec": {
+            "alamedaAi": {
+              "storages": [
+                {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "size": "10Gi",
+                  "type": "pvc",
+                  "usage": "data"
+                }
+              ]
+            },
+            "alamedaInfluxdb": {
+              "storages": [
+                {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "size": "100Gi",
+                  "type": "pvc",
+                  "usage": "data"
+                }
+              ]
+            },
+            "fedemeterInfluxdb": {
+              "storages": [
+                {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "size": "10Gi",
+                  "type": "pvc",
+                  "usage": "data"
+                }
+              ]
+            },
+            "imageLocation": "registry.connect.redhat.com/prophetstor",
+            "storages": [
+              {
+                "accessModes": [
+                  "ReadWriteOnce"
+                ],
+                "size": "2Gi",
+                "type": "pvc",
+                "usage": "log"
+              }
+            ],
+            "version": "v4.7.2-b1777"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/prophetstor/federatorai-operator-bundle@sha256:8fcbd648e2d8048c8a209e1aba7fa67a0651adeaec5c9523a7a8f3c1b51bd85a",
+      "bundle_path_digest": "sha256:8fcbd648e2d8048c8a209e1aba7fa67a0651adeaec5c9523a7a8f3c1b51bd85a",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-11-29T09:37:51.136000+00:00",
+      "csv_description": "Federator.ai helps enterprises optimize cloud resources, maximize application performance, and save significant cost without excessive over-provisioning or under-provisioning of resources, meeting the service-level requirements of their applications.\n\nEnterprises often lack understanding of the resources needed to support their applications. This leads to either excessive over-provisioning or under-provisioning of resources (CPU, memory, storage). Using machine learning, Federator.ai determines the optimal cloud resources needed to support any workload on OpenShift and helps users find the best-cost instances from cloud providers for their applications.\n\n\n**Multi-layer workload prediction**\n\nUsing machine learning and math-based algorithms, Federator.ai predicts containerized application and cluster node resource usage as the basis for resource recommendations at application level as well as at cluster node level. Federator.ai supports prediction for both physical/virtual CPUs and memories.\n\n\n**Auto-scaling via resource recommendation**\n\nFederator.ai utilizes the predicted resource usage to recommend the right number and size of pods for applications. Integrated with Datadog's WPA, applications are automatically scaled to meet the predicted resource usage.\n\n\n**Application-aware recommendation execution**\n\nOptimizing the resource usage and performance goals, Federator.ai uses application specific metrics for workload prediction and pod capacity estimation to auto-scale the right number of pods for best performance without overprovisioning.\n\n\n**Multi-cloud Cost Analysis**\n\nWith resource usage prediction, Federator.ai analyzes potential cost of a cluster on different public cloud providers. It also recommend appropriate cluster nodes and instance types based on resource usage.\n\n\n**Custom Datadog/Sysdig Dashboards**\n\nPredefined custom Datadog/Sysdig Dashboards for workload prediction/recommendation visualization for cluster nodes and applications.\n\n\n**Additional resources**\n\nWant more product information? Explore detailed information about using this product and where to find additional help.\n\n* [Federator.ai Datasheet](https://prophetstor.com/wp-content/uploads/datasheets/Federator.ai.pdf)\n* [Quick Start Guide](https://prophetstor.com/wp-content/uploads/documentation/Federator.ai/Latest%20Version/ProphetStor%20Federator.ai%20Quick%20Installation%20Guide.pdf)\n* [Installation Guide](https://prophetstor.com/wp-content/uploads/2021/08/ProphetStor-Federator.ai-v4.7.0-Installation-Guide-v1.0.pdf)\n* [User Guide](https://prophetstor.com/wp-content/uploads/2021/11/Federator.ai-User-Guide-4.7.2.pdf)\n* [Release Notes](https://prophetstor.com/wp-content/uploads/2021/11/Federator.ai-4.7.2-Release-Notes.pdf)\n* [Company Information](https://www.prophetstor.com/)\n\n\n### Prerequisite\n*  The [Openshift](https://www.openshift.com) version 4.6.x or later if using OpenShift platform.\n*  The [Kubernetes](https://kubernetes.io/) version 1.16 or later if using Kubernetes environment.",
+      "csv_display_name": "Federator.ai",
+      "csv_metadata_description": "Federator.ai Operator provides easy configuration and management of AI-based Kubernetes resource orchestrator",
+      "csv_name": "federatorai.v4.7.2-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:59:24.080000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "federatorai-certified",
+      "provided_apis": [
+        {
+          "group": "federatorai.containers.ai",
+          "kind": "AlamedaService",
+          "plural": "alamedaservices",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:b12df0a12196c1bf9fd036bfa64507b8469254c3ffbcbdd92333603576200e6c",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-ai-dispatcher@sha256:b12df0a12196c1bf9fd036bfa64507b8469254c3ffbcbdd92333603576200e6c",
+          "name": "ai-dispatcher"
+        },
+        {
+          "digest": "sha256:c4ca91f8b942f90141f3cacc2b80f4e123058447ae4ad880763360a42408e439",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-ai@sha256:c4ca91f8b942f90141f3cacc2b80f4e123058447ae4ad880763360a42408e439",
+          "name": "ai_engine"
+        },
+        {
+          "digest": "sha256:a9f8fa8224535f70a959f736aba992b2135018afd57184f4849e8739d1ea2a18",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-datahub-ubi@sha256:a9f8fa8224535f70a959f736aba992b2135018afd57184f4849e8739d1ea2a18",
+          "name": "datahub"
+        },
+        {
+          "digest": "sha256:d5c6fbd329f49100422a995a4e177ba76c0a49936f0a0c8139250bf1357e992e",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-executor-ubi@sha256:d5c6fbd329f49100422a995a4e177ba76c0a49936f0a0c8139250bf1357e992e",
+          "name": "executor"
+        },
+        {
+          "digest": "sha256:60328410dc4813c1285ade12533efba9acb602433be7cc1f256fb3ea6312d3c2",
+          "image": "registry.connect.redhat.com/prophetstor/fedemeter-api-ubi@sha256:60328410dc4813c1285ade12533efba9acb602433be7cc1f256fb3ea6312d3c2",
+          "name": "fedemeter-api"
+        },
+        {
+          "digest": "sha256:163e559a6c684cde953f3515f1df08ebe7e799c53b24add3b225fcd6a976bb12",
+          "image": "registry.connect.redhat.com/prophetstor/fedemeter-influxdb@sha256:163e559a6c684cde953f3515f1df08ebe7e799c53b24add3b225fcd6a976bb12",
+          "name": "fedemeter-influxdb"
+        },
+        {
+          "digest": "sha256:43641d57b7b694adb090e6377bfd6315aab6193e5637bab91221f076f205d819",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-ubi@sha256:43641d57b7b694adb090e6377bfd6315aab6193e5637bab91221f076f205d819",
+          "name": "federatorai-agent"
+        },
+        {
+          "digest": "sha256:8f6ee4e54297b6dadc51bd8dad4d9f67cfb5aa7c4e8de82ad0928d71e1d0d0f7",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-preloader@sha256:8f6ee4e54297b6dadc51bd8dad4d9f67cfb5aa7c4e8de82ad0928d71e1d0d0f7",
+          "name": "federatorai-agent-preloader"
+        },
+        {
+          "digest": "sha256:3bde9bb8f63c92619d28c80985e5e30ec4cc96dba8252dff6c3b5f10104db89d",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-frontend@sha256:3bde9bb8f63c92619d28c80985e5e30ec4cc96dba8252dff6c3b5f10104db89d",
+          "name": "federatorai-dashboard-frontend"
+        },
+        {
+          "digest": "sha256:fa443c901e06aad3780666a4d676b330c61d66d8ea52ae2850f382f68559154d",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-backend@sha256:fa443c901e06aad3780666a4d676b330c61d66d8ea52ae2850f382f68559154d",
+          "name": "federatorai-dashboard-backend"
+        },
+        {
+          "digest": "sha256:46b206bb1814b2b7d38e9e0d14ef1f0e3c51d7b3f18b32cc92515bffc5ca5b1f",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-data-adapter@sha256:46b206bb1814b2b7d38e9e0d14ef1f0e3c51d7b3f18b32cc92515bffc5ca5b1f",
+          "name": "federatorai-data-adapter"
+        },
+        {
+          "digest": "sha256:889136e2f82db71d4c7a5ab39472f578e12315c65bda1ab3dc3ef9adc9d4a6cc",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-rest-ubi@sha256:889136e2f82db71d4c7a5ab39472f578e12315c65bda1ab3dc3ef9adc9d4a6cc",
+          "name": "federatorai-restapi"
+        },
+        {
+          "digest": "sha256:75c7ac8323db161c3a37d1931c863bda21f224e67443543572d912b976ee3ff0",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-influxdb@sha256:75c7ac8323db161c3a37d1931c863bda21f224e67443543572d912b976ee3ff0",
+          "name": "influxdb"
+        },
+        {
+          "digest": "sha256:3738f97c0b50afcf9e6b78d1084e98a3c78e0fd6d10d0a3ae458c27604e395fd",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-notifier-ubi@sha256:3738f97c0b50afcf9e6b78d1084e98a3c78e0fd6d10d0a3ae458c27604e395fd",
+          "name": "notifier"
+        },
+        {
+          "digest": "sha256:c28e9740e6031f1db3274a3722e9682eb7708479187fcdc5799ae0c21141639b",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-operator-ubi@sha256:c28e9740e6031f1db3274a3722e9682eb7708479187fcdc5799ae0c21141639b",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:3db8b480b94452aa7211327ec4ec5382b9b94156dfc7c22e65b5cbf4d0e1140b",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-rabbitmq@sha256:3db8b480b94452aa7211327ec4ec5382b9b94156dfc7c22e65b5cbf4d0e1140b",
+          "name": "rabbitmq"
+        },
+        {
+          "digest": "sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
+          "name": "federatorai-recommend-dispatcher"
+        },
+        {
+          "digest": "sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
+          "name": "federatorai-recommend-worker"
+        },
+        {
+          "digest": "sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
+          "name": "federatorai-operator-23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3-annotation"
+        },
+        {
+          "digest": "sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
+          "name": "federatorai-operator"
+        },
+        {
+          "digest": "sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
+          "name": "upgrader"
+        },
+        {
+          "digest": "sha256:b12df0a12196c1bf9fd036bfa64507b8469254c3ffbcbdd92333603576200e6c",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-ai-dispatcher@sha256:b12df0a12196c1bf9fd036bfa64507b8469254c3ffbcbdd92333603576200e6c",
+          "name": "ai_dispatcher"
+        },
+        {
+          "digest": "sha256:60328410dc4813c1285ade12533efba9acb602433be7cc1f256fb3ea6312d3c2",
+          "image": "registry.connect.redhat.com/prophetstor/fedemeter-api-ubi@sha256:60328410dc4813c1285ade12533efba9acb602433be7cc1f256fb3ea6312d3c2",
+          "name": "fedemeter_api"
+        },
+        {
+          "digest": "sha256:163e559a6c684cde953f3515f1df08ebe7e799c53b24add3b225fcd6a976bb12",
+          "image": "registry.connect.redhat.com/prophetstor/fedemeter-influxdb@sha256:163e559a6c684cde953f3515f1df08ebe7e799c53b24add3b225fcd6a976bb12",
+          "name": "fedemeter_influxdb"
+        },
+        {
+          "digest": "sha256:43641d57b7b694adb090e6377bfd6315aab6193e5637bab91221f076f205d819",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-ubi@sha256:43641d57b7b694adb090e6377bfd6315aab6193e5637bab91221f076f205d819",
+          "name": "federatorai_agent"
+        },
+        {
+          "digest": "sha256:8f6ee4e54297b6dadc51bd8dad4d9f67cfb5aa7c4e8de82ad0928d71e1d0d0f7",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-preloader@sha256:8f6ee4e54297b6dadc51bd8dad4d9f67cfb5aa7c4e8de82ad0928d71e1d0d0f7",
+          "name": "federatorai_agent_preloader"
+        },
+        {
+          "digest": "sha256:3bde9bb8f63c92619d28c80985e5e30ec4cc96dba8252dff6c3b5f10104db89d",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-frontend@sha256:3bde9bb8f63c92619d28c80985e5e30ec4cc96dba8252dff6c3b5f10104db89d",
+          "name": "federatorai_dashboard_frontend"
+        },
+        {
+          "digest": "sha256:fa443c901e06aad3780666a4d676b330c61d66d8ea52ae2850f382f68559154d",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-backend@sha256:fa443c901e06aad3780666a4d676b330c61d66d8ea52ae2850f382f68559154d",
+          "name": "federatorai_dashboard_backend"
+        },
+        {
+          "digest": "sha256:46b206bb1814b2b7d38e9e0d14ef1f0e3c51d7b3f18b32cc92515bffc5ca5b1f",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-data-adapter@sha256:46b206bb1814b2b7d38e9e0d14ef1f0e3c51d7b3f18b32cc92515bffc5ca5b1f",
+          "name": "federatorai_data_adapter"
+        },
+        {
+          "digest": "sha256:889136e2f82db71d4c7a5ab39472f578e12315c65bda1ab3dc3ef9adc9d4a6cc",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-rest-ubi@sha256:889136e2f82db71d4c7a5ab39472f578e12315c65bda1ab3dc3ef9adc9d4a6cc",
+          "name": "federatorai_restapi"
+        },
+        {
+          "digest": "sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
+          "name": "federatorai_recommend_dispatcher"
+        },
+        {
+          "digest": "sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
+          "name": "federatorai_recommend_worker"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "4.7.2-1",
+      "version_original": "4.7.2-1"
     }
   ],
   "page": 17,
   "page_size": 100,
-  "total": 4587
+  "total": 4520
 }

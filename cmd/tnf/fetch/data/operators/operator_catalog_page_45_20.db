@@ -1,0 +1,1838 @@
+{
+  "data": [
+    {
+      "_id": "609ab00fd04af0e74bb05888",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.20",
+      "creation_date": "2021-05-11T16:25:51.266000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T01:39:20.408000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "609ab01356933b164fe2124d",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-certifai-operator-bundle@sha256:2ff2df4e61105cb9cc1905f504ed0e74907fcd43f85d200f729e464e824e928f",
+      "bundle_path_digest": "sha256:2ff2df4e61105cb9cc1905f504ed0e74907fcd43f85d200f729e464e824e928f",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:25:55.278000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cortex-certifai-operator.v1.3.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:23:22.458000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "cortex-certifai-operator",
+      "provided_apis": [
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "Certifai",
+          "version": "v1"
+        },
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "CertifaiScan",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.3.2",
+      "version_original": "1.3.2"
+    },
+    {
+      "_id": "609ab014e2b160d361d25174",
+      "alm_examples": [
+        {
+          "api_version": "apm.neuvector.com/v1alpha1",
+          "kind": "Neuvector",
+          "metadata": {
+            "name": "example-neuvector"
+          },
+          "spec": {
+            "admissionwebhook": {
+              "type": "ClusterIP"
+            },
+            "containerd": {
+              "enabled": false,
+              "path": "/var/run/containerd/containerd.sock"
+            },
+            "controller": {
+              "apisvc": {},
+              "azureFileShare": {
+                "enabled": false
+              },
+              "configmap": {
+                "enabled": false
+              },
+              "enabled": true,
+              "federation": {
+                "managedsvc": {},
+                "mastersvc": {}
+              },
+              "image": "registry.connect.redhat.com/neuvector/controller@sha256:c8d36c69c8e740d6cc9c1adc630d10b9b67639d45d5c103fdf8961151407af30",
+              "ingress": {
+                "annotations": {
+                  "ingress.kubernetes.io/protocol": "https"
+                },
+                "enabled": false,
+                "path": "/",
+                "tls": false
+              },
+              "pvc": {
+                "accessModes": [
+                  "ReadWriteMany"
+                ],
+                "enabled": false
+              },
+              "replicas": 3,
+              "strategy": {
+                "rollingUpdate": {
+                  "maxSurge": 1,
+                  "maxUnavailable": 0
+                },
+                "type": "RollingUpdate"
+              }
+            },
+            "crdwebhook": {
+              "type": "ClusterIP"
+            },
+            "crio": {
+              "enabled": true,
+              "path": "/var/run/crio/crio.sock"
+            },
+            "cve": {
+              "scanner": {
+                "dockerPath": "",
+                "enabled": true,
+                "image": "registry.connect.redhat.com/neuvector/scanner@sha256:ef5b441635be35e03a31c392363d6c7fb5a82aa8450e0f197d8b7769599877f7",
+                "replicas": 3,
+                "strategy": {
+                  "rollingUpdate": {
+                    "maxSurge": 1,
+                    "maxUnavailable": 0
+                  },
+                  "type": "RollingUpdate"
+                }
+              },
+              "updater": {
+                "enabled": true,
+                "image": "registry.access.redhat.com/ubi8@sha256:b58ead4c21ba774d3209956c761c354e906ad4ad9fb40b153240725b14aae458",
+                "schedule": "0 0 * * *"
+              }
+            },
+            "docker": {
+              "enabled": false,
+              "path": "/var/run/docker.sock"
+            },
+            "enforcer": {
+              "enabled": true,
+              "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:7d4788e2853ba23296bd06bdab92ba90c4d06f3a8a6de6e17d5becdec4c5f0a0",
+              "tolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "key": "node-role.kubernetes.io/master"
+                }
+              ]
+            },
+            "exporter": {
+              "CTRL_PASSWORD": "admin",
+              "CTRL_USERNAME": "admin",
+              "enabled": false,
+              "scrapping": true
+            },
+            "imagePullSecrets": "regsecret",
+            "manager": {
+              "enabled": true,
+              "env": {
+                "ssl": true
+              },
+              "image": "registry.connect.redhat.com/neuvector/manager@sha256:33588d66bd7a778bc65af23864256fb683625a1a08f6c814762f7fffbca7c1bc",
+              "ingress": {
+                "annotations": {},
+                "enabled": false,
+                "path": "/",
+                "tls": false
+              },
+              "svc": {
+                "type": "NodePort"
+              }
+            },
+            "openshift": true,
+            "resources": {}
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:863e2cbbd481dfe2c70fdfcf866c161c250b95e5e9a320fe211a805c456c7e9e",
+      "bundle_path_digest": "sha256:863e2cbbd481dfe2c70fdfcf866c161c250b95e5e9a320fe211a805c456c7e9e",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2021-05-11T16:25:56.201000+00:00",
+      "csv_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.\n\nThe NeuVector Operator runs  in the openshift container platform to deploy and manage the NeuVector Security cluster components. The NeuVector operator contains all necessary information to deploy NeuVector using helm charts. You simply need to install the NeuVector operator from the OpenShift embeded operator hub and create NeuVector instance. You can modify the NeuVector installation configuration by modifying yaml while creating the NeuVector instance such as imagePullSecrets, tag version, etc. Please refer to [NeuVector Helm Chart](https://github.com/neuvector/neuvector-helm) for the values that can be modifed during installation. To upgrade to a newer version of NeuVector, just reapply the NeuVector instance with desired tag , which in turn pulls the specified NeuVector image tags and upgrades as per upgrade plan configured on the helm chart. \n\n**Complete below steps to create secret for accessing Docker or similar registry and Grant Service Account Access to the Privileged SCC before installation.**\n\nCreate the NeuVector namespace\n\n         oc new-project  neuvector\nConfigure OpenShift to pull images from the private NeuVector registry on Docker Hub\n\n         oc create secret docker-registry regsecret -n neuvector --docker-server=https://index.docker.io/v1/ --docker-username=your-name --docker-password=your-pword --docker-email=your-email\n\t\t\t\t \n\nWhere \u2019your-name\u2019 is your Docker username, \u2019your-pword\u2019 is your Docker password, \u2019your-email\u2019 is your Docker email.\n\nLogin as system:admin account\n\n         oc login -u system:admin\n\nGrant Service Account Access to the Privileged SCC\n\n         oc -n neuvector adm policy add-scc-to-user privileged -z default\n\nThe following info will be added in the Privileged SCC users:\n\n         - system:serviceaccount:neuvector:default\n\n\n#Deploying the NeuVector Operator#\n\n\nPlease refer to the instructions [here](https://github.com/neuvector/neuvector-operator/blob/master/README.md)\n\n\n",
+      "csv_display_name": "Neuvector Operator",
+      "csv_metadata_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.",
+      "csv_name": "neuvector-operator.v1.2.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:51:13.972000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:a326d03787f5f5099f62e75549b4245e084ca9c6d5c68d07c339a47bde6d82a3",
+          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:a326d03787f5f5099f62e75549b4245e084ca9c6d5c68d07c339a47bde6d82a3",
+          "name": "neuvector-operator-a326d03787f5f5099f62e75549b4245e084ca9c6d5c68d07c339a47bde6d82a3-annotation"
+        },
+        {
+          "digest": "sha256:a326d03787f5f5099f62e75549b4245e084ca9c6d5c68d07c339a47bde6d82a3",
+          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:a326d03787f5f5099f62e75549b4245e084ca9c6d5c68d07c339a47bde6d82a3",
+          "name": "neuvector-operator"
+        },
+        {
+          "digest": "sha256:c8d36c69c8e740d6cc9c1adc630d10b9b67639d45d5c103fdf8961151407af30",
+          "image": "registry.connect.redhat.com/neuvector/controller@sha256:c8d36c69c8e740d6cc9c1adc630d10b9b67639d45d5c103fdf8961151407af30",
+          "name": "controller"
+        },
+        {
+          "digest": "sha256:7d4788e2853ba23296bd06bdab92ba90c4d06f3a8a6de6e17d5becdec4c5f0a0",
+          "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:7d4788e2853ba23296bd06bdab92ba90c4d06f3a8a6de6e17d5becdec4c5f0a0",
+          "name": "enforcer"
+        },
+        {
+          "digest": "sha256:33588d66bd7a778bc65af23864256fb683625a1a08f6c814762f7fffbca7c1bc",
+          "image": "registry.connect.redhat.com/neuvector/manager@sha256:33588d66bd7a778bc65af23864256fb683625a1a08f6c814762f7fffbca7c1bc",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:ef5b441635be35e03a31c392363d6c7fb5a82aa8450e0f197d8b7769599877f7",
+          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:ef5b441635be35e03a31c392363d6c7fb5a82aa8450e0f197d8b7769599877f7",
+          "name": "scanner"
+        },
+        {
+          "digest": "sha256:b58ead4c21ba774d3209956c761c354e906ad4ad9fb40b153240725b14aae458",
+          "image": "registry.access.redhat.com/ubi8@sha256:b58ead4c21ba774d3209956c761c354e906ad4ad9fb40b153240725b14aae458",
+          "name": "updater"
+        },
+        {
+          "digest": "sha256:33588d66bd7a778bc65af23864256fb683625a1a08f6c814762f7fffbca7c1bc",
+          "image": "registry.connect.redhat.com/neuvector/manager@sha256:33588d66bd7a778bc65af23864256fb683625a1a08f6c814762f7fffbca7c1bc",
+          "name": "manager-33588d66bd7a778bc65af23864256fb683625a1a08f6c814762f7fffbca7c1bc-annotation"
+        },
+        {
+          "digest": "sha256:7d4788e2853ba23296bd06bdab92ba90c4d06f3a8a6de6e17d5becdec4c5f0a0",
+          "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:7d4788e2853ba23296bd06bdab92ba90c4d06f3a8a6de6e17d5becdec4c5f0a0",
+          "name": "enforcer-7d4788e2853ba23296bd06bdab92ba90c4d06f3a8a6de6e17d5becdec4c5f0a0-annotation"
+        },
+        {
+          "digest": "sha256:ef5b441635be35e03a31c392363d6c7fb5a82aa8450e0f197d8b7769599877f7",
+          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:ef5b441635be35e03a31c392363d6c7fb5a82aa8450e0f197d8b7769599877f7",
+          "name": "scanner-ef5b441635be35e03a31c392363d6c7fb5a82aa8450e0f197d8b7769599877f7-annotation"
+        },
+        {
+          "digest": "sha256:b58ead4c21ba774d3209956c761c354e906ad4ad9fb40b153240725b14aae458",
+          "image": "registry.access.redhat.com/ubi8@sha256:b58ead4c21ba774d3209956c761c354e906ad4ad9fb40b153240725b14aae458",
+          "name": "ubi8-b58ead4c21ba774d3209956c761c354e906ad4ad9fb40b153240725b14aae458-annotation"
+        },
+        {
+          "digest": "sha256:c8d36c69c8e740d6cc9c1adc630d10b9b67639d45d5c103fdf8961151407af30",
+          "image": "registry.connect.redhat.com/neuvector/controller@sha256:c8d36c69c8e740d6cc9c1adc630d10b9b67639d45d5c103fdf8961151407af30",
+          "name": "controller-c8d36c69c8e740d6cc9c1adc630d10b9b67639d45d5c103fdf8961151407af30-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.2.0",
+      "version_original": "1.2.0"
+    },
+    {
+      "_id": "609ab014e2b160d361d25175",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.8",
+      "creation_date": "2021-05-11T16:25:56.719000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T02:23:00.071000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "609ab0153048c1ac9a6feb03",
+      "alm_examples": [
+        {
+          "api_version": "cortex.cognitivescale.com/v1",
+          "kind": "Certifai",
+          "metadata": {
+            "name": "default-certifai"
+          },
+          "spec": {
+            "console": {
+              "azure": {
+                "account-key": "your account key",
+                "account-name": "your account name",
+                "sas-token": "your SAS token"
+              },
+              "gcs": {
+                "application-credentials": "{\n  \"type\": \"\",\n  \"project_id\": \"\",\n  \"private_key_id\": \"\",\n  \"private_key\": \"\",\n  \"client_email\": \"\",\n  \"client_id\": \"\",\n  \"auth_uri\": \"\",\n  \"token_uri\": \"\",\n  \"auth_provider_x509_cert_url\": \"\",\n  \"client_x509_cert_url\": \"\"\n}\n"
+              },
+              "replicas": 1,
+              "route-type": "none",
+              "s3": {
+                "access-key": "your access key",
+                "endpoint": "https://s3.amazonaws.com",
+                "secret-key": "your secret key",
+                "verify-cert": false
+              },
+              "scan-dir": ""
+            },
+            "reference-model": {
+              "enabled": true
+            },
+            "reporting": {
+              "db-conn-str": "postgresql://user:password@service:port/db",
+              "enabled": true,
+              "period": "*/15 * * * *"
+            }
+          }
+        },
+        {
+          "api_version": "cortex.cognitivescale.com/v1",
+          "kind": "CertifaiScan",
+          "metadata": {
+            "name": "example-certifai-scan",
+            "namespace": "certifai"
+          },
+          "spec": {
+            "scanconfig": {
+              "concurrency": 4,
+              "scanargs": "command line args here",
+              "scandef": "definition file text here"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-certifai-operator-bundle@sha256:26199886640c352804df4a634f5ea3e45c3c4d4e41f241e9ef36cd4b3536be57",
+      "bundle_path_digest": "sha256:26199886640c352804df4a634f5ea3e45c3c4d4e41f241e9ef36cd4b3536be57",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2021-05-11T16:25:57.403000+00:00",
+      "csv_description": "Cortex Certifai empowers enterprises to identify and mitigate risk and vulnerabilities within AI and deploy trusted AI systems into production. It evaluates AI models and allows users to compare different models or model versions for the following qualities.\n* **Robustness:** measures how well models retain an outcome given changes to the data feature values. The more robust a model is, the greater the changes required to alter the outcome.\n* **Fairness by group:** measures the difference required to change the outcome for different groups implicit in a feature given the same model and dataset. For example, implicit groups male, female, and nonbinary belong to the feature, \u201cgender\u201d. A fair model shows that all 3 groups require a similar amount of change to alter the results.\n* **Explainability:** measures the average simplicity of counterfactual explanations provided for each model. An explanation that requires a single changed feature will score 100%. Explanations that require more changed features will score lower.\n* **Explanations:** display the prediction provided through the generation of counterfactuals for the change that must occur in a dataset with given restrictions to obtain a different outcome. Users can explore the entire dataset one observation at a time to understand what features changed and by how much to obtain a different result.\nSee our [documentation](https://cognitivescale.github.io/cortex-certifai/) for information about how to deploy the Certifai Operator and how to get started using our toolkit.\n## License Copyright 2020 Cognitive Scale, Inc. All Rights Reserved.\nBy downloading you agree to the terms of CognitiveScale's [End User License Agreement](https://www.cognitivescale.com/legal-information/).\n",
+      "csv_display_name": "Cortex Certifai Operator",
+      "csv_metadata_description": "Cortex Certifai empowers enterprises to identify and mitigate risk and vulnerabilities within AI and deploy trusted AI systems into production.",
+      "csv_name": "cortex-certifai-operator.v1.3.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T04:08:41.247000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "cortex-certifai-operator",
+      "provided_apis": [
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "Certifai",
+          "plural": "certifais",
+          "version": "v1"
+        },
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "CertifaiScan",
+          "plural": "certifaiscans",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:ffcdc1d2a404822227b6d2cde6d7476e1cee89383868c30b32840931e6d1d5f3",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-operator@sha256:ffcdc1d2a404822227b6d2cde6d7476e1cee89383868c30b32840931e6d1d5f3",
+          "name": "cortex-certifai-operator-ffcdc1d2a404822227b6d2cde6d7476e1cee89383868c30b32840931e6d1d5f3-annotation"
+        },
+        {
+          "digest": "sha256:9e58ef4360c83b8afc305a33f5255fa93ff900d14887e74b4dfd27b260fc84d8",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-operator@sha256:9e58ef4360c83b8afc305a33f5255fa93ff900d14887e74b4dfd27b260fc84d8",
+          "name": "cortex-certifai-operator"
+        },
+        {
+          "digest": "sha256:320b0077b4a9a6261f29b1bd081083fd5e63c91da0707dcd22071427a97e0c3b",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-reference-model-server@sha256:320b0077b4a9a6261f29b1bd081083fd5e63c91da0707dcd22071427a97e0c3b",
+          "name": "refmodel"
+        },
+        {
+          "digest": "sha256:60e9ec67f2be7ea38c89a4a98e5621a88138b1f64a941302ba41c648dab1d97a",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-console@sha256:60e9ec67f2be7ea38c89a4a98e5621a88138b1f64a941302ba41c648dab1d97a",
+          "name": "console"
+        },
+        {
+          "digest": "sha256:97ef18df20fa7addaaf21441d556ee4c3700513130f9b4ce686683085ae6244c",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-scanner@sha256:97ef18df20fa7addaaf21441d556ee4c3700513130f9b4ce686683085ae6244c",
+          "name": "scanner"
+        },
+        {
+          "digest": "sha256:4a7ae62a41f0434329f5e67f717e169a339bf8514458c01d8ad16c520b88923f",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-reporting-etl@sha256:4a7ae62a41f0434329f5e67f717e169a339bf8514458c01d8ad16c520b88923f",
+          "name": "reporting_etl"
+        },
+        {
+          "digest": "sha256:a6e75a40feea7b838071c4fcb7933eec29955bf5fe7d874400d6a00e2709031f",
+          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:a6e75a40feea7b838071c4fcb7933eec29955bf5fe7d874400d6a00e2709031f",
+          "name": "oauth_proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.3.3",
+      "version_original": "1.3.3"
+    },
+    {
+      "_id": "609ab01756933b164fe2124e",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:cdd24dd021bb730168eb11b796872975d84fdb471456b745d03a30392dc38d2d",
+      "bundle_path_digest": "sha256:cdd24dd021bb730168eb11b796872975d84fdb471456b745d03a30392dc38d2d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:25:59.583000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.0.3",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:46:10.063000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.0.3",
+      "version_original": "0.0.3"
+    },
+    {
+      "_id": "609ab018d04af0e74bb0588d",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:bf21e966e38761ab59e74271d1ca154f75e2a1c85d6f4eab418fb6d5261c9d1c",
+      "bundle_path_digest": "sha256:bf21e966e38761ab59e74271d1ca154f75e2a1c85d6f4eab418fb6d5261c9d1c",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:26:00.937000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.0.8",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:41:54.145000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.0.8",
+      "version_original": "0.0.8"
+    },
+    {
+      "_id": "609ab0193048c1ac9a6feb07",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:ff246089fecc3946921207dfd13eabfae67e2e6bb38909f11c078fee347adae3",
+      "bundle_path_digest": "sha256:ff246089fecc3946921207dfd13eabfae67e2e6bb38909f11c078fee347adae3",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:26:01.786000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nastel-navigator-operator.v0.0.18",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T02:15:23.004000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "nastel-navigator-operator-certified",
+      "provided_apis": [
+        {
+          "group": "navigator.nastel.com",
+          "kind": "NastelNavigator",
+          "plural": "nastelnavigators",
+          "version": "v1alpha6"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.18",
+      "version_original": "0.0.18"
+    },
+    {
+      "_id": "609ab01ae2b160d361d25177",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:9462f3735254b047f4b80b539797b83c31faa0ad923fe4a351dba693e51cadef",
+      "bundle_path_digest": "sha256:9462f3735254b047f4b80b539797b83c31faa0ad923fe4a351dba693e51cadef",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:26:02.001000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "couchbase-operator.v2.0.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:41:48.732000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "plural": "couchbaserolebindings",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "plural": "couchbaseusers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "plural": "couchbasebackups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "plural": "couchbasebuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "plural": "couchbaseclusters",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "plural": "couchbasegroups",
+          "version": "v2"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.0.0",
+      "version_original": "2.0.0"
+    },
+    {
+      "_id": "609ab01b3048c1ac9a6feb09",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:bf21e966e38761ab59e74271d1ca154f75e2a1c85d6f4eab418fb6d5261c9d1c",
+      "bundle_path_digest": "sha256:bf21e966e38761ab59e74271d1ca154f75e2a1c85d6f4eab418fb6d5261c9d1c",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:26:03.042000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.0.8",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T02:16:38.081000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.8",
+      "version_original": "0.0.8"
+    },
+    {
+      "_id": "609ab01e56933b164fe21250",
+      "alm_examples": [
+        {
+          "api_version": "machinelearning.seldon.io/v1",
+          "kind": "SeldonDeployment",
+          "metadata": {
+            "name": "seldon-model"
+          },
+          "spec": {
+            "name": "test-deployment",
+            "predictors": [
+              {
+                "componentSpecs": [
+                  {
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/seldonio/mock-classifier@sha256:482ee477c344badcaa80e850f4339db41957f9c2396ae24f9e398b67bd5c184e",
+                          "name": "classifier"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "graph": {
+                  "children": [],
+                  "endpoint": {
+                    "type": "REST"
+                  },
+                  "name": "classifier",
+                  "type": "MODEL"
+                },
+                "name": "example",
+                "replicas": 1
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:cb77b47b96bbdc309b17468b8f644bac7206be94125d43a1609f20637937876f",
+      "bundle_path_digest": "sha256:cb77b47b96bbdc309b17468b8f644bac7206be94125d43a1609f20637937876f",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:26:06.806000+00:00",
+      "csv_description": "The Seldon operator enables for native operation of production machine learning workloads, including monitoring and operations of language-agnostic models with the benefits of real-time metrics and log analysis.\n   \n## Overview\nSeldon Core is an open source platform for deploying machine learning models on a Kubernetes cluster.\n\n* Deploy machine learning models in the cloud or on-premise.\n* Get metrics and ensure proper governance and compliance for your running machine learning models.\n* Create powerful inference graphs made up of multiple components.\n* Provide a consistent serving layer for models built using heterogeneous ML toolkits.\n\nYou can get started by following the guides in our documentation at https://docs.seldon.io/projects/seldon-core/en/latest/workflow/README.html\n",
+      "csv_display_name": "Seldon Operator",
+      "csv_metadata_description": "The Seldon operator for management, monitoring and operations of machine learning systems through the Seldon Engine. Once installed, the Seldon Operator provides multiple functions which facilitate the productisation, monitoring and maintenance of machine learning systems at scale.",
+      "csv_name": "seldon-operator.v1.2.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T01:48:14.560000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "seldon-operator-certified",
+      "provided_apis": [
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:37ab647d517a22ab743e9fa7ffe730bbc26c171fb297d4ac36bca93d4e72a423",
+          "image": "registry.connect.redhat.com/seldonio/seldon-core-operator@sha256:37ab647d517a22ab743e9fa7ffe730bbc26c171fb297d4ac36bca93d4e72a423",
+          "name": "seldon-core-operator-37ab647d517a22ab743e9fa7ffe730bbc26c171fb297d4ac36bca93d4e72a423-annotation"
+        },
+        {
+          "digest": "sha256:37ab647d517a22ab743e9fa7ffe730bbc26c171fb297d4ac36bca93d4e72a423",
+          "image": "registry.connect.redhat.com/seldonio/seldon-core-operator@sha256:37ab647d517a22ab743e9fa7ffe730bbc26c171fb297d4ac36bca93d4e72a423",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:0f1cfd2df3f77c0d3c46c302a253223578a0732b538b10d3224a86458e2569e8",
+          "image": "registry.connect.redhat.com/seldonio/seldon-core-executor@sha256:0f1cfd2df3f77c0d3c46c302a253223578a0732b538b10d3224a86458e2569e8",
+          "name": "executor"
+        },
+        {
+          "digest": "sha256:fc9aed85fc1e425b5ec2f780c4ef15890e28393e324fde4cf2c2004500a091e0",
+          "image": "registry.connect.redhat.com/seldonio/seldon-engine@sha256:fc9aed85fc1e425b5ec2f780c4ef15890e28393e324fde4cf2c2004500a091e0",
+          "name": "engine"
+        },
+        {
+          "digest": "sha256:3bb9445c7964052c39b979f0e3720dc87ec61e93fb139f260200d2dfbc5c3004",
+          "image": "registry.connect.redhat.com/seldonio/storage-initializer@sha256:3bb9445c7964052c39b979f0e3720dc87ec61e93fb139f260200d2dfbc5c3004",
+          "name": "storage_initializer"
+        },
+        {
+          "digest": "sha256:6b4d49ff93108818fc1b366bba8d66ee54a501f86d8bb4e3826581bcd3b3029c",
+          "image": "registry.connect.redhat.com/seldonio/sklearnserver-rest@sha256:6b4d49ff93108818fc1b366bba8d66ee54a501f86d8bb4e3826581bcd3b3029c",
+          "name": "sklearnserver_rest"
+        },
+        {
+          "digest": "sha256:4149788fa15f47f5d740037ad7d253a78b1ffe9a421a28c03dedce88afdf3866",
+          "image": "registry.connect.redhat.com/seldonio/sklearnserver-grpc@sha256:4149788fa15f47f5d740037ad7d253a78b1ffe9a421a28c03dedce88afdf3866",
+          "name": "sklearnserver_grpc"
+        },
+        {
+          "digest": "sha256:c108993b81882f1a44883e7e5f73faf38d5668539dbb9d54ad81ac5d45882607",
+          "image": "registry.connect.redhat.com/seldonio/xgboostserver-rest@sha256:c108993b81882f1a44883e7e5f73faf38d5668539dbb9d54ad81ac5d45882607",
+          "name": "xgboostserver_rest"
+        },
+        {
+          "digest": "sha256:74f4ec113848ba3e77bee42e52fe3c5ec5f1c0c58bb5f95cdb2caacfc96d4243",
+          "image": "registry.connect.redhat.com/seldonio/xgboostserver-grpc@sha256:74f4ec113848ba3e77bee42e52fe3c5ec5f1c0c58bb5f95cdb2caacfc96d4243",
+          "name": "xgboostserver_grpc"
+        },
+        {
+          "digest": "sha256:8d4030490bb7e913b8c167e34c24555a6c6bf543ca3732e39d1acc4bddb003a1",
+          "image": "registry.connect.redhat.com/seldonio/mlflowserver-rest@sha256:8d4030490bb7e913b8c167e34c24555a6c6bf543ca3732e39d1acc4bddb003a1",
+          "name": "mlflowserver_rest"
+        },
+        {
+          "digest": "sha256:39d81f070ec9d231f20cd811909405c783893aaaefdccc343efa85580508f8c6",
+          "image": "registry.connect.redhat.com/seldonio/mlflowserver-grpc@sha256:39d81f070ec9d231f20cd811909405c783893aaaefdccc343efa85580508f8c6",
+          "name": "mlflowserver_grpc"
+        },
+        {
+          "digest": "sha256:5197548f6673dff389993ff2ac4f929f1d25f3add94db8f67e2a384afaaf3096",
+          "image": "registry.connect.redhat.com/seldonio/tfproxy-rest@sha256:5197548f6673dff389993ff2ac4f929f1d25f3add94db8f67e2a384afaaf3096",
+          "name": "tfproxy_rest"
+        },
+        {
+          "digest": "sha256:5a69cd82bcc25ccf1ab5fe40698e63f112bd8746e89415e08d164fe6d67630a1",
+          "image": "registry.connect.redhat.com/seldonio/tfproxy-grpc@sha256:5a69cd82bcc25ccf1ab5fe40698e63f112bd8746e89415e08d164fe6d67630a1",
+          "name": "tfproxy_grpc"
+        },
+        {
+          "digest": "sha256:1dc53edc5c8d1b151782f8386c0770d0358c6397eaf42ec55ebd18f331c5ef9e",
+          "image": "registry.connect.redhat.com/seldonio/tensorflow-serving@sha256:1dc53edc5c8d1b151782f8386c0770d0358c6397eaf42ec55ebd18f331c5ef9e",
+          "name": "tensorflow"
+        },
+        {
+          "digest": "sha256:7f3a8ca7f2865660caa124783290870fd5910b690f44b7c539af93c465f0d74a",
+          "image": "registry.connect.redhat.com/seldonio/alibiexplainer@sha256:7f3a8ca7f2865660caa124783290870fd5910b690f44b7c539af93c465f0d74a",
+          "name": "explainer"
+        },
+        {
+          "digest": "sha256:482ee477c344badcaa80e850f4339db41957f9c2396ae24f9e398b67bd5c184e",
+          "image": "registry.connect.redhat.com/seldonio/mock-classifier@sha256:482ee477c344badcaa80e850f4339db41957f9c2396ae24f9e398b67bd5c184e",
+          "name": "mock-classifier-482ee477c344badcaa80e850f4339db41957f9c2396ae24f9e398b67bd5c184e-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.2.0",
+      "version_original": "1.2.0"
+    },
+    {
+      "_id": "609ab0203048c1ac9a6feb0c",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:e426e5dad74e713683d535e97a4e586cb898da891e9e61177eefb2db5742398d",
+      "bundle_path_digest": "sha256:e426e5dad74e713683d535e97a4e586cb898da891e9e61177eefb2db5742398d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:26:08.434000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "mongodb-enterprise.v1.5.5",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:49:40.181000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.5.5",
+      "version_original": "1.5.5"
+    },
+    {
+      "_id": "609ab023d04af0e74bb05891",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.20",
+      "creation_date": "2021-05-11T16:26:11.726000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T05:04:54.038000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.8-1",
+      "version_original": "6.0.8-1"
+    },
+    {
+      "_id": "609ab026e2b160d361d2517f",
+      "alm_examples": [
+        {
+          "api_version": "machinelearning.seldon.io/v1",
+          "kind": "SeldonDeployment",
+          "metadata": {
+            "name": "seldon-model"
+          },
+          "spec": {
+            "name": "test-deployment",
+            "predictors": [
+              {
+                "componentSpecs": [
+                  {
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/seldonio/mock-classifier@sha256:482ee477c344badcaa80e850f4339db41957f9c2396ae24f9e398b67bd5c184e",
+                          "name": "classifier"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "graph": {
+                  "children": [],
+                  "endpoint": {
+                    "type": "REST"
+                  },
+                  "name": "classifier",
+                  "type": "MODEL"
+                },
+                "name": "example",
+                "replicas": 1
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:0f91afcdf6ef68f7a103834d6bf85938f457af36d3fab2fec164476ecb711cfa",
+      "bundle_path_digest": "sha256:0f91afcdf6ef68f7a103834d6bf85938f457af36d3fab2fec164476ecb711cfa",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:26:14.287000+00:00",
+      "csv_description": "The Seldon operator enables for native operation of production machine learning workloads, including monitoring and operations of language-agnostic models with the benefits of real-time metrics and log analysis.\n   \n## Overview\nSeldon Core is an open source platform for deploying machine learning models on a Kubernetes cluster.\n\n* Deploy machine learning models in the cloud or on-premise.\n* Get metrics and ensure proper governance and compliance for your running machine learning models.\n* Create powerful inference graphs made up of multiple components.\n* Provide a consistent serving layer for models built using heterogeneous ML toolkits.\n\nYou can get started by following the guides in our documentation at https://docs.seldon.io/projects/seldon-core/en/latest/workflow/README.html\n",
+      "csv_display_name": "Seldon Operator",
+      "csv_metadata_description": "The Seldon operator for management, monitoring and operations of machine learning systems through the Seldon Engine. Once installed, the Seldon Operator provides multiple functions which facilitate the productisation, monitoring and maintenance of machine learning systems at scale.",
+      "csv_name": "seldon-operator.v1.2.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:56:24.475000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "seldon-operator-certified",
+      "provided_apis": [
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha3"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:174abdbca57a34b0c102a3bf87f8640121ae28f2857411039d2fc9729f23efc0",
+          "image": "registry.connect.redhat.com/seldonio/seldon-core-operator@sha256:174abdbca57a34b0c102a3bf87f8640121ae28f2857411039d2fc9729f23efc0",
+          "name": "seldon-core-operator-174abdbca57a34b0c102a3bf87f8640121ae28f2857411039d2fc9729f23efc0-annotation"
+        },
+        {
+          "digest": "sha256:174abdbca57a34b0c102a3bf87f8640121ae28f2857411039d2fc9729f23efc0",
+          "image": "registry.connect.redhat.com/seldonio/seldon-core-operator@sha256:174abdbca57a34b0c102a3bf87f8640121ae28f2857411039d2fc9729f23efc0",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:f46297a51ca7b2087a7ee3d3de0312024f696474af6dec4764eeb6c2daca4247",
+          "image": "registry.connect.redhat.com/seldonio/seldon-core-executor@sha256:f46297a51ca7b2087a7ee3d3de0312024f696474af6dec4764eeb6c2daca4247",
+          "name": "executor"
+        },
+        {
+          "digest": "sha256:7560432beb443c9bcd1f72c765eff4b3c418faa6e22111eb0bb41f6e47182df6",
+          "image": "registry.connect.redhat.com/seldonio/seldon-engine@sha256:7560432beb443c9bcd1f72c765eff4b3c418faa6e22111eb0bb41f6e47182df6",
+          "name": "engine"
+        },
+        {
+          "digest": "sha256:eb2b47a2f8c96604665b3d1a18d7e39b6a69dd5b061e0f867ab093afc294285c",
+          "image": "registry.connect.redhat.com/seldonio/storage-initializer@sha256:eb2b47a2f8c96604665b3d1a18d7e39b6a69dd5b061e0f867ab093afc294285c",
+          "name": "storage_initializer"
+        },
+        {
+          "digest": "sha256:b370b068ea0ac1464e384549f45f9fb93da3b2970b60e0090829f384f5e9c5dc",
+          "image": "registry.connect.redhat.com/seldonio/sklearnserver-rest@sha256:b370b068ea0ac1464e384549f45f9fb93da3b2970b60e0090829f384f5e9c5dc",
+          "name": "sklearnserver_rest"
+        },
+        {
+          "digest": "sha256:c835baa699e6fb3f6c7b0016d075758ce4827520c04429b032920efb7df27011",
+          "image": "registry.connect.redhat.com/seldonio/sklearnserver-grpc@sha256:c835baa699e6fb3f6c7b0016d075758ce4827520c04429b032920efb7df27011",
+          "name": "sklearnserver_grpc"
+        },
+        {
+          "digest": "sha256:c8a95aae4b173db7991cbe83ca1ab1bc3165ad90fdd9de10f4998604c7dfc7a5",
+          "image": "registry.connect.redhat.com/seldonio/xgboostserver-rest@sha256:c8a95aae4b173db7991cbe83ca1ab1bc3165ad90fdd9de10f4998604c7dfc7a5",
+          "name": "xgboostserver_rest"
+        },
+        {
+          "digest": "sha256:3dd28690bfdf4b19d5429a26116534c3c5cd25973b12238cd0fb1dbae8c3b8ad",
+          "image": "registry.connect.redhat.com/seldonio/xgboostserver-grpc@sha256:3dd28690bfdf4b19d5429a26116534c3c5cd25973b12238cd0fb1dbae8c3b8ad",
+          "name": "xgboostserver_grpc"
+        },
+        {
+          "digest": "sha256:fa87b40b1268f12a1614762bbd83960ca13ebcf15dd4fbf0b414f33f33722719",
+          "image": "registry.connect.redhat.com/seldonio/mlflowserver-rest@sha256:fa87b40b1268f12a1614762bbd83960ca13ebcf15dd4fbf0b414f33f33722719",
+          "name": "mlflowserver_rest"
+        },
+        {
+          "digest": "sha256:e085e33c822b42901dcfc9e1740126bf5432aa879b870e02c8f6ebb2195f34d7",
+          "image": "registry.connect.redhat.com/seldonio/mlflowserver-grpc@sha256:e085e33c822b42901dcfc9e1740126bf5432aa879b870e02c8f6ebb2195f34d7",
+          "name": "mlflowserver_grpc"
+        },
+        {
+          "digest": "sha256:d38464683754a4c4f01f55b4bb8942df5f08429f41711638adeda82301745361",
+          "image": "registry.connect.redhat.com/seldonio/tfproxy-rest@sha256:d38464683754a4c4f01f55b4bb8942df5f08429f41711638adeda82301745361",
+          "name": "tfproxy_rest"
+        },
+        {
+          "digest": "sha256:2d713271dfb7bd056d1011ceef218c76806313ce2e9afb8f92e22238038c1888",
+          "image": "registry.connect.redhat.com/seldonio/tfproxy-grpc@sha256:2d713271dfb7bd056d1011ceef218c76806313ce2e9afb8f92e22238038c1888",
+          "name": "tfproxy_grpc"
+        },
+        {
+          "digest": "sha256:1dc53edc5c8d1b151782f8386c0770d0358c6397eaf42ec55ebd18f331c5ef9e",
+          "image": "registry.connect.redhat.com/seldonio/tensorflow-serving@sha256:1dc53edc5c8d1b151782f8386c0770d0358c6397eaf42ec55ebd18f331c5ef9e",
+          "name": "tensorflow"
+        },
+        {
+          "digest": "sha256:e08a45f335c2ef763ac10787e4718fb4a1067d6b69ff106e8eca298fc91c3616",
+          "image": "registry.connect.redhat.com/seldonio/alibiexplainer@sha256:e08a45f335c2ef763ac10787e4718fb4a1067d6b69ff106e8eca298fc91c3616",
+          "name": "explainer"
+        },
+        {
+          "digest": "sha256:350e900f1709c12c73fae170940b158e1d4ad6ce4ead9c884a763d8a27d770e2",
+          "image": "registry.connect.redhat.com/seldonio/mock-classifier@sha256:350e900f1709c12c73fae170940b158e1d4ad6ce4ead9c884a763d8a27d770e2",
+          "name": "mock_classifier"
+        },
+        {
+          "digest": "sha256:482ee477c344badcaa80e850f4339db41957f9c2396ae24f9e398b67bd5c184e",
+          "image": "registry.connect.redhat.com/seldonio/mock-classifier@sha256:482ee477c344badcaa80e850f4339db41957f9c2396ae24f9e398b67bd5c184e",
+          "name": "mock-classifier-482ee477c344badcaa80e850f4339db41957f9c2396ae24f9e398b67bd5c184e-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.2.2",
+      "version_original": "1.2.2"
+    },
+    {
+      "_id": "609ab0273048c1ac9a6feb0e",
+      "alm_examples": [
+        {
+          "api_version": "data-explorer.com/v1alpha1",
+          "kind": "DashboardWithJupyterLab",
+          "metadata": {
+            "name": "dashboard-with-jupyterlab"
+          },
+          "spec": {
+            "resources": {
+              "limits": {
+                "cpu": "2",
+                "memory": "8Gi"
+              },
+              "requests": {
+                "cpu": "2",
+                "memory": "8Gi"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:e66be49a23d2b01b81e76c49e7069ac549cb6d44293b94f8b5a2bf76a54054bd",
+      "bundle_path_digest": "sha256:e66be49a23d2b01b81e76c49e7069ac549cb6d44293b94f8b5a2bf76a54054bd",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:26:15.673000+00:00",
+      "csv_description": "Data Explorer provides ready to use pre-configured data science environment for experimentation.Bringing the promise of notebooks to Kubernetes and OpenShift as an Operator pattern.  Deploy in the cloud or your data center or local laptop with ready to use data and notebooks without burdening yourself with installation details. You can work as team or use your own project namespace.\n\nThe Operator deploys Data Explorer Dashbaord with **default** configuration of **2 CPU** and **8Gi Memory**.\n\nTo learn ***How to access the Data Explorer Dashboard*** and ***How to Deploy Data Explorer Dashboard with custom configuration*** visit <https://github.com/rhm-samples/data-explorer-operator/wiki>.\n",
+      "csv_display_name": "Data Explorer Operator",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.1.6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T02:21:29.613000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterLab",
+          "plural": "dashboardwithjupyterlabs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:4a84cb8c21b63b4c05fc9600b4ecbfee0d99bcf2541e6ba4a39c1d2de6ab8d5c",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:4a84cb8c21b63b4c05fc9600b4ecbfee0d99bcf2541e6ba4a39c1d2de6ab8d5c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:f6afc6f52b2d86d6def1420a2553941efacfbb321feae9ed4b5424f5fa42646d",
+          "image": "registry.connect.redhat.com/ibm-edge/data-explorer-operator@sha256:f6afc6f52b2d86d6def1420a2553941efacfbb321feae9ed4b5424f5fa42646d",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:c225832941b1d3b53faf74e7d6af668d41f5d1164661fbf3103635807f58f65a",
+          "image": "registry.redhat.io/openshift4/ose-cli@sha256:c225832941b1d3b53faf74e7d6af668d41f5d1164661fbf3103635807f58f65a",
+          "name": "dashboardinstaller"
+        },
+        {
+          "digest": "sha256:e95e47202eeb298b3d5856f441eb5e48f693ca25870c414b17b02e3e4b84e5e9",
+          "image": "registry.connect.redhat.com/ibm-edge/data-explorer-dashboard@sha256:e95e47202eeb298b3d5856f441eb5e48f693ca25870c414b17b02e3e4b84e5e9",
+          "name": "jupyterlab_dashboard"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.1.6",
+      "version_original": "0.1.6"
+    },
+    {
+      "_id": "609ab0293048c1ac9a6feb11",
+      "alm_examples": [
+        {
+          "api_version": "perceptilabs.com/v1",
+          "kind": "PerceptiLabs",
+          "metadata": {
+            "name": "example-perceptilabs"
+          },
+          "spec": {
+            "coreGpus": 0,
+            "corePvc": "perceptilabs-pvc",
+            "license_name": "demo",
+            "license_value": "demo"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/perceptilabs/perceptilabs-operator-bundle@sha256:30aed432c70f6bd3da4e6365e32da1877affa4b56458c17549b119de17eaa932",
+      "bundle_path_digest": "sha256:30aed432c70f6bd3da4e6365e32da1877affa4b56458c17549b119de17eaa932",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:26:17.947000+00:00",
+      "csv_description": "The PerceptiLabs operator creates and maintains PerceptiLabs, a visual tool for machine learning at warp speed.\n\nPerceptiLabs visual modeling tool provides a GUI for building,\ntraining, and assessing your models, while also enabling deeper\ndevelopment with code. You get faster iterations and better\nexplainability of your results.\n\nFor more information visit [http://perceptilabs.com](http://perceptilabs.com).\n\n# Features\n\n**Fast modeling**  \nMake changes, debug, and tune your model through the GUI of custom code\neditor where every component/layer is reprogrammable. Choose from\nmultiple neural network models as well as classical AI methods.\n\n\n**Transparency of Model Performance and Results**  \nGet instant feedback about your model's performance through the\nvisualization of the architecture, to better review and understand the\nresults. See real-time analytics in every operation and variable, and\ngranular previews of output from each model component.\n\n\n**Flexibility**  \nCustomize your environment and statistics dashboard. Use high-level\nabstractions or low-level code. Execute any custom Python code or export\na fully trained TensorFlow model to perform inference in your projects.\n\n\n\n# Installation Instructions  \nFor your convenience, we've included an example quickstart for running PerceptiLabs in demo mode.\n\n## Prepare your namespace  \nChoose or create the namespace into which you'd like install PerceptiLabs. For example:  \n```\noc create namespace REPLACE_NAMESPACE\n```\n\n## Prepare storage for your data\n\nYou'll need to have a place on your cluster for storing training data and models.\n\nHere's an example configuration for creating storage on a cluster hosted on AWS that you can tailor to your needs:\n\n```\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n  name: perceptilabs-example-sc\n  annotations:\n    description: Example Storage for PerceptiLabs\nprovisioner: kubernetes.io/aws-ebs\nparameters:\n  fsType: ext4\n  type: gp2\nreclaimPolicy: Delete\nvolumeBindingMode: Immediate\n---\nkind: PersistentVolumeClaim\napiVersion: v1\nmetadata:\n  name: REPLACE_PVC_NAME\n  namespace: REPLACE_NAMESPACE\nspec:\n  storageClassName: perceptilabs-example-sc\n  volumeMode: Filesystem\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 50Gi\n```\n\n## Subscribe to the PerceptiLabs operator in your namespace\n\nIf you're using the OpenShift console webpage, just click the Install button on this operator. If not, you can customize and apply this configuration:\n\n```\napiVersion: operators.coreos.com/v1\nkind: OperatorGroup\nmetadata:\n  name: REPLACE_NAMESPACE-operatorgroup\n  namespace: REPLACE_NAMESPACE\nspec:\n  targetNamespaces:\n  - REPLACE_NAMESPACE\n---\napiVersion: operators.coreos.com/v1alpha1\nkind: Subscription\nmetadata:\n  name: perceptilabs-operator\n  namespace: REPLACE_NAMESPACE\nspec:\n  channel: stable\n  name: perceptilabs-operator-package\n  source: perceptilabs-operators\n  sourceNamespace: openshift-marketplace\n  namespace: REPLACE_NAMESPACE\n```\n\nAfter this, you should see a `perceptilabs-operator` pod start up in your namespace. In that pod, the log for the `operator` container should eventually say \"starting to serve\".\n\n## Start a copy of PerceptiLabs\n\nThis is where you connect your storage and service account to a PerceptiLabs instance and run it. You can customize and apply the following configuration:\n\n```\napiVersion: perceptilabs.com/v1\nkind: PerceptiLabs\nmetadata:\n  name: example-perceptilabs\n  namespace: REPLACE_NAMESPACE\nspec:\n  corePvc: REPLACE_PVC_NAME\n```\n\nAt this point two pods named 'perceptilabs-core-...' and 'perceptilabs-frontend-...` will start up in your namespace.\n\n## Copy data files to your cluster\n\nIf you've used the persistent storage configuration from above, then you have a read-write volume mounted in the pod at `/mnt/plabs`. Copy your files there:\n\n```\noc cp REPLACE_FILENAME --namespace=REPLACE_NAMESPACE REPLACE_CORE_POD_NAME:/mnt/plabs --container=core\n```\n\n## Get the URL of your PerceptiLabs\n\nOnce everything is up and running, you'll have two new routes in your namespace. Go to the routes for your namespace and follow the link named `perceptilabs-frontend`. Your browser will be connected to your instance of PerceptiLabs! Alternatively, you can get the URL from the command line:\n\n```\noc get routes --namespace REPLACE_NAMESPACE perceptilabs-frontend\n```",
+      "csv_display_name": "PerceptiLabs Operator",
+      "csv_metadata_description": "AI platform which lets you Build, Train and Analyze",
+      "csv_name": "perceptilabs-operator.v1.0.20",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:47:41.368000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "perceptilabs-operator-package",
+      "provided_apis": [
+        {
+          "group": "perceptilabs.com",
+          "kind": "PerceptiLabs",
+          "plural": "perceptilabs",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "perceptilabs.com",
+          "kind": "PerceptiLabs",
+          "plural": "perceptilabs",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:f9edd049b06ac292f786177d7896703c6fed71e2aa87aecdb15217414506dc8f",
+          "image": "registry.connect.redhat.com/perceptilabs/perceptilabs-operator@sha256:f9edd049b06ac292f786177d7896703c6fed71e2aa87aecdb15217414506dc8f",
+          "name": "perceptilabs-operator-f9edd049b06ac292f786177d7896703c6fed71e2aa87aecdb15217414506dc8f-annotation"
+        },
+        {
+          "digest": "sha256:f9edd049b06ac292f786177d7896703c6fed71e2aa87aecdb15217414506dc8f",
+          "image": "registry.connect.redhat.com/perceptilabs/perceptilabs-operator@sha256:f9edd049b06ac292f786177d7896703c6fed71e2aa87aecdb15217414506dc8f",
+          "name": "ansible"
+        },
+        {
+          "digest": "sha256:f9edd049b06ac292f786177d7896703c6fed71e2aa87aecdb15217414506dc8f",
+          "image": "registry.connect.redhat.com/perceptilabs/perceptilabs-operator@sha256:f9edd049b06ac292f786177d7896703c6fed71e2aa87aecdb15217414506dc8f",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:02bd2e02e14f3031a428e09391390116741cad1812674b7d2b7d05331048695f",
+          "image": "registry.connect.redhat.com/perceptilabs/perceptilabs-frontend-1@sha256:02bd2e02e14f3031a428e09391390116741cad1812674b7d2b7d05331048695f",
+          "name": "frontend_image"
+        },
+        {
+          "digest": "sha256:2aac9ddfcb7a1341792dac703353d4a06bdfc8341b4e18e6b43b372629ebb4f0",
+          "image": "registry.connect.redhat.com/perceptilabs/perceptilabs-core-1@sha256:2aac9ddfcb7a1341792dac703353d4a06bdfc8341b4e18e6b43b372629ebb4f0",
+          "name": "core_image"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.0.20",
+      "version_original": "1.0.20"
+    },
+    {
+      "_id": "609ab02be2b160d361d25181",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.20",
+      "creation_date": "2021-05-11T16:26:19.963000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T01:47:00.463000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "609ab02fe2b160d361d25185",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:50d76299c5a36c9b3ab17d37b6999b9472c56a8f462ce0b92254970de64d16cc",
+      "bundle_path_digest": "sha256:50d76299c5a36c9b3ab17d37b6999b9472c56a8f462ce0b92254970de64d16cc",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:26:23.592000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nastel-navigator-operator.v1.100105.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T02:25:32.134000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "nastel-navigator-operator-certified",
+      "provided_apis": [
+        {
+          "group": "navigator.nastel.com",
+          "kind": "NastelNavigator",
+          "plural": "nastelnavigators",
+          "version": "v1alpha6"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.100105.0",
+      "version_original": "1.100105.0"
+    },
+    {
+      "_id": "609ab03356933b164fe21254",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-hub-operator-bundle@sha256:53ed857edafa5f90ad45ee3c67be454e8b42cc8a12fabdfcb87b93fcbb4bd1fc",
+      "bundle_path_digest": "sha256:53ed857edafa5f90ad45ee3c67be454e8b42cc8a12fabdfcb87b93fcbb4bd1fc",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:26:27.647000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cortex-hub-operator.v0.0.24",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:06:25.308000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "cortex-hub-operator",
+      "provided_apis": [
+        {
+          "group": "hubs.cortex.cognitivescale.com",
+          "kind": "Hub",
+          "plural": "hubs",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.0.24",
+      "version_original": "0.0.24"
+    },
+    {
+      "_id": "609ab0353048c1ac9a6feb16",
+      "alm_examples": [
+        {
+          "api_version": "apm.neuvector.com/v1alpha1",
+          "kind": "Neuvector",
+          "metadata": {
+            "name": "example-neuvector"
+          },
+          "spec": {
+            "admissionwebhook": {
+              "type": "ClusterIP"
+            },
+            "allinone": {
+              "apisvc": {},
+              "azureFileShare": {
+                "enabled": false
+              },
+              "configmap": {
+                "enabled": false
+              },
+              "enabled": true,
+              "federation": {
+                "managedsvc": {},
+                "mastersvc": {}
+              },
+              "ingress": {
+                "annotations": {
+                  "ingress.kubernetes.io/protocol": "https"
+                },
+                "enabled": false,
+                "path": "/",
+                "tls": false
+              },
+              "pvc": {
+                "accessModes": [
+                  "ReadWriteMany"
+                ],
+                "enabled": false
+              },
+              "replicas": 1,
+              "strategy": {
+                "rollingUpdate": {
+                  "maxSurge": 1,
+                  "maxUnavailable": 0
+                },
+                "type": "RollingUpdate"
+              }
+            },
+            "containerd": {
+              "enabled": false,
+              "path": "/var/run/containerd/containerd.sock"
+            },
+            "controller": {
+              "apisvc": {},
+              "azureFileShare": {
+                "enabled": false
+              },
+              "configmap": {
+                "enabled": false
+              },
+              "enabled": false,
+              "federation": {
+                "managedsvc": {},
+                "mastersvc": {}
+              },
+              "ingress": {
+                "annotations": {
+                  "ingress.kubernetes.io/protocol": "https"
+                },
+                "enabled": false,
+                "path": "/",
+                "tls": false
+              },
+              "pvc": {
+                "accessModes": [
+                  "ReadWriteMany"
+                ],
+                "enabled": false
+              },
+              "replicas": 3,
+              "strategy": {
+                "rollingUpdate": {
+                  "maxSurge": 1,
+                  "maxUnavailable": 0
+                },
+                "type": "RollingUpdate"
+              }
+            },
+            "crdwebhook": {
+              "type": "ClusterIP"
+            },
+            "crio": {
+              "enabled": true,
+              "path": "/var/run/crio/crio.sock"
+            },
+            "cve": {
+              "updater": {
+                "enabled": false,
+                "schedule": "0 0 * * *"
+              }
+            },
+            "docker": {
+              "enabled": false,
+              "path": "/var/run/docker.sock"
+            },
+            "enforcer": {
+              "enabled": false,
+              "tolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "key": "node-role.kubernetes.io/master"
+                }
+              ]
+            },
+            "exporter": {
+              "CTRL_PASSWORD": "admin",
+              "CTRL_USERNAME": "admin",
+              "enabled": false,
+              "scrapping": true
+            },
+            "imagePullSecrets": "regsecret-nvlab",
+            "manager": {
+              "enabled": false,
+              "env": {
+                "ssl": true
+              },
+              "ingress": {
+                "annotations": {},
+                "enabled": false,
+                "path": "/",
+                "tls": false
+              },
+              "svc": {
+                "type": "NodePort"
+              }
+            },
+            "openshift": true,
+            "registry": "docker.io",
+            "resources": {},
+            "tag": "latest"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:2c354e02f3ddfd9ef6ccac776b77603e60f907b10bac730e133845292500dd40",
+      "bundle_path_digest": "sha256:2c354e02f3ddfd9ef6ccac776b77603e60f907b10bac730e133845292500dd40",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2021-05-11T16:26:29.369000+00:00",
+      "csv_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.\n\nThe NeuVector Operator runs  in the openshift container platform to deploy and manage the NeuVector Security cluster components. The NeuVector operator contains all necessary information to deploy NeuVector using helm charts. You simply need to install the NeuVector operator from the OpenShift embeded operator hub and create NeuVector instance. You can modify the NeuVector installation configuration by modifying yaml while creating the NeuVector instance such as imagePullSecrets, tag version, etc. Please refer to https://github.com/neuvector/neuvector-helm for the values that can be modifed during installation. To upgrade to a newer version of NeuVector, just reapply the NeuVector instance with desired tag , which in turn pulls the specified NeuVector image tags and upgrades as per upgrade plan configured on the helm chart. \n\n**Complete below steps to create secret for accessing Docker or similar registry and Grant Service Account Access to the Privileged SCC before installation.**\n\nCreate the NeuVector namespace\n\n         oc new-project  neuvector\nConfigure OpenShift to pull images from the private NeuVector registry on Docker Hub\n\n         oc create secret docker-registry regsecret -n neuvector --docker-server=https://index.docker.io/v1/ --docker-username=your-name --docker-password=your-pword --docker-email=your-email\n\t\t\t\t \n\nWhere \u2019your-name\u2019 is your Docker username, \u2019your-pword\u2019 is your Docker password, \u2019your-email\u2019 is your Docker email.\n\nLogin as system:admin account\n\n         oc login -u system:admin\n\nGrant Service Account Access to the Privileged SCC\n\n         oc -n neuvector adm policy add-scc-to-user privileged -z default\n\nThe following info will be added in the Privileged SCC users:\n\n         - system:serviceaccount:neuvector:default\n\n\n**Add Neuvector license from NeuVector WebUI->setting**",
+      "csv_display_name": "Neuvector Operator",
+      "csv_metadata_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.",
+      "csv_name": "neuvector-operator.v1.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:41:06.978000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:36d0447bc9411204d2dfd38a550b8bcb9a18a02ad26cb27f033dd09be59771f8",
+          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:36d0447bc9411204d2dfd38a550b8bcb9a18a02ad26cb27f033dd09be59771f8",
+          "name": "neuvector-operator-36d0447bc9411204d2dfd38a550b8bcb9a18a02ad26cb27f033dd09be59771f8-annotation"
+        },
+        {
+          "digest": "sha256:36d0447bc9411204d2dfd38a550b8bcb9a18a02ad26cb27f033dd09be59771f8",
+          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:36d0447bc9411204d2dfd38a550b8bcb9a18a02ad26cb27f033dd09be59771f8",
+          "name": "neuvector-operator"
+        },
+        {
+          "digest": "sha256:36839e50e00662bf6926b91788478d0ddb7c8497f53b8b538cf7cfbca1591796",
+          "image": "registry.connect.redhat.com/neuvector/allinone@sha256:36839e50e00662bf6926b91788478d0ddb7c8497f53b8b538cf7cfbca1591796",
+          "name": "allinone"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.0.1",
+      "version_original": "1.0.1"
+    }
+  ],
+  "page": 45,
+  "page_size": 20,
+  "total": 4520
+}

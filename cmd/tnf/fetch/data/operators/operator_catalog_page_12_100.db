@@ -1,366 +1,6 @@
 {
   "data": [
     {
-      "_id": "60c22a1cba99c76846ab4a91",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "fast",
-      "creation_date": "2021-06-10T15:05:00.245000+00:00",
-      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
-      "csv_display_name": "Run:AI",
-      "csv_metadata_description": "",
-      "csv_name": "installkit-customer.v2.0.15",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:29:31.653000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "installkit-customer",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "name": "operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.1.5",
-      "version_original": "2.1.5"
-    },
-    {
-      "_id": "60c22a94e1f052817b72bcd0",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-06-10T15:07:00.878000+00:00",
-      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
-      "csv_display_name": "Run:AI",
-      "csv_metadata_description": "",
-      "csv_name": "installkit-customer.v2.0.15",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:44:33.406000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "installkit-customer",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "name": "operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.1.5",
-      "version_original": "2.1.5"
-    },
-    {
-      "_id": "60c22accadf15566a5a97d14",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "fast",
-      "creation_date": "2021-06-10T15:07:56.344000+00:00",
-      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
-      "csv_display_name": "Run:AI",
-      "csv_metadata_description": "",
-      "csv_name": "installkit-customer.v2.0.15",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T01:50:29.585000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "installkit-customer",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "name": "operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.1.5",
-      "version_original": "2.1.5"
-    },
-    {
-      "_id": "60c22ad0adf15566a5a97d15",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2021-06-10T15:08:00.909000+00:00",
-      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
-      "csv_display_name": "Run:AI",
-      "csv_metadata_description": "",
-      "csv_name": "installkit-customer.v2.0.15",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T01:44:42.937000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "installkit-customer",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "name": "operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.1.5",
-      "version_original": "2.1.5"
-    },
-    {
-      "_id": "60c22b10adf15566a5a97d16",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2021-06-10T15:09:04.450000+00:00",
-      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
-      "csv_display_name": "Run:AI",
-      "csv_metadata_description": "",
-      "csv_name": "installkit-customer.v2.0.15",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:02:49.415000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "installkit-customer",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "name": "operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.1.5",
-      "version_original": "2.1.5"
-    },
-    {
-      "_id": "60c22b9ae1f052817b72bcd1",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-06-10T15:11:22.590000+00:00",
-      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
-      "csv_display_name": "Run:AI",
-      "csv_metadata_description": "",
-      "csv_name": "installkit-customer.v2.0.15",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T03:58:10.523000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "installkit-customer",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "name": "operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.1.5",
-      "version_original": "2.1.5"
-    },
-    {
       "_id": "60c24659ba99c76846ab4ade",
       "alm_examples": [
         {
@@ -14890,9 +14530,2326 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "1.2.7",
       "version_original": "1.2.7"
+    },
+    {
+      "_id": "60dc885d4eeb9bde82ff5a63",
+      "alm_examples": [
+        {
+          "api_version": "cortex.cognitivescale.com/v1",
+          "kind": "Certifai",
+          "metadata": {
+            "name": "default-certifai"
+          },
+          "spec": {
+            "console": {
+              "authorization-type": "none",
+              "azure": {
+                "account-key": "your account key",
+                "account-name": "your account name",
+                "sas-token": "your SAS token"
+              },
+              "create-ingress": true,
+              "gcs": {
+                "application-credentials": "{\n  \"type\": \"\",\n  \"project_id\": \"\",\n  \"private_key_id\": \"\",\n  \"private_key\": \"\",\n  \"client_email\": \"\",\n  \"client_id\": \"\",\n  \"auth_uri\": \"\",\n  \"token_uri\": \"\",\n  \"auth_provider_x509_cert_url\": \"\",\n  \"client_x509_cert_url\": \"\"\n}\n"
+              },
+              "replicas": 1,
+              "route-type": "none",
+              "s3": {
+                "access-key": "your access key",
+                "endpoint": "https://s3.amazonaws.com",
+                "secret-key": "your secret key",
+                "verify-cert": false
+              },
+              "scan-dir": ""
+            },
+            "deployment-type": "openshift",
+            "dex": {
+              "connector": {
+                "add-config": "orgs:\n- name: my-org\n",
+                "client-id": "clientid",
+                "client-secret": "clientsecret",
+                "name": "Github",
+                "type": "github"
+              },
+              "create-ingress": true,
+              "enabled": false,
+              "replicas": 1
+            },
+            "policy": {
+              "authorization-type": "none",
+              "azure": {
+                "account-key": "your account key",
+                "account-name": "your account name",
+                "sas-token": "your SAS token"
+              },
+              "create-ingress": true,
+              "enabled": false,
+              "gcs": {
+                "application-credentials": "{\n  \"type\": \"\",\n  \"project_id\": \"\",\n  \"private_key_id\": \"\",\n  \"private_key\": \"\",\n  \"client_email\": \"\",\n  \"client_id\": \"\",\n  \"auth_uri\": \"\",\n  \"token_uri\": \"\",\n  \"auth_provider_x509_cert_url\": \"\",\n  \"client_x509_cert_url\": \"\"\n}\n"
+              },
+              "questionnaire-dir": "",
+              "replicas": 1,
+              "route-type": "none",
+              "s3": {
+                "access-key": "your access key",
+                "endpoint": "https://s3.amazonaws.com",
+                "secret-key": "your secret key",
+                "verify-cert": false
+              }
+            },
+            "reference-model": {
+              "enabled": true
+            },
+            "reporting": {
+              "db-conn-str": "postgresql://user:password@service:port/db",
+              "enabled": true,
+              "period": "*/15 * * * *"
+            }
+          }
+        },
+        {
+          "api_version": "cortex.cognitivescale.com/v1",
+          "kind": "CertifaiScan",
+          "metadata": {
+            "name": "example-certifai-scan",
+            "namespace": "certifai"
+          },
+          "spec": {
+            "scanconfig": {
+              "concurrency": 4,
+              "requests": {
+                "cpu": "800m",
+                "memory": "800Mi"
+              },
+              "scanargs": "command line args here",
+              "scandef": "definition file text here"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-certifai-operator-bundle@sha256:7beaacb9261b0ab823443b4f7c3f3c3bff8250caee7f1ca68887e2457e8f963b",
+      "bundle_path_digest": "sha256:7beaacb9261b0ab823443b4f7c3f3c3bff8250caee7f1ca68887e2457e8f963b",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-06-30T15:06:05.573000+00:00",
+      "csv_description": "Cortex Certifai empowers enterprises to identify and mitigate risk and vulnerabilities within AI and deploy trusted AI systems into production. It evaluates AI models and allows users to compare different models or model versions for the following qualities.\n* **Robustness:** measures how well models retain an outcome given changes to the data feature values. The more robust a model is, the greater the changes required to alter the outcome.\n* **Fairness by group:** measures the difference required to change the outcome for different groups implicit in a feature given the same model and dataset. For example, implicit groups male, female, and nonbinary belong to the feature, \u201cgender\u201d. A fair model shows that all 3 groups require a similar amount of change to alter the results.\n* **Explainability:** measures the average simplicity of counterfactual explanations provided for each model. An explanation that requires a single changed feature will score 100%. Explanations that require more changed features will score lower.\n* **Explanations:** display the prediction provided through the generation of counterfactuals for the change that must occur in a dataset with given restrictions to obtain a different outcome. Users can explore the entire dataset one observation at a time to understand what features changed and by how much to obtain a different result.\nSee our [documentation](https://cognitivescale.github.io/cortex-certifai/) for information about how to deploy the Certifai Operator and how to get started using our toolkit.\n## License Copyright 2020 Cognitive Scale, Inc. All Rights Reserved.\nBy downloading you agree to the terms of CognitiveScale's [End User License Agreement](https://www.cognitivescale.com/legal-information/).\n",
+      "csv_display_name": "Cortex Certifai Operator",
+      "csv_metadata_description": "Cortex Certifai empowers enterprises to identify and mitigate risk and vulnerabilities within AI and deploy trusted AI systems into production.",
+      "csv_name": "cortex-certifai-operator.v1.3.10",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:11:16.271000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "cortex-certifai-operator",
+      "provided_apis": [
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "Certifai",
+          "plural": "certifais",
+          "version": "v1"
+        },
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "CertifaiScan",
+          "plural": "certifaiscans",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:4ac0c60eaa087209a7944212a29b5b23bdb946b6139d28ae4f999c3440709879",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-operator@sha256:4ac0c60eaa087209a7944212a29b5b23bdb946b6139d28ae4f999c3440709879",
+          "name": "cortex-certifai-operator-4ac0c60eaa087209a7944212a29b5b23bdb946b6139d28ae4f999c3440709879-annotation"
+        },
+        {
+          "digest": "sha256:082cf0c8e1289a7e08bb324b512a737e0ea3f618ea5b6fd8cecbb415ff07a230",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-operator@sha256:082cf0c8e1289a7e08bb324b512a737e0ea3f618ea5b6fd8cecbb415ff07a230",
+          "name": "cortex-certifai-operator"
+        },
+        {
+          "digest": "sha256:e0b34632bffe7d9ea186e7412030e404d081adb4216145f676cddda46a8746fa",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-reference-model-server@sha256:e0b34632bffe7d9ea186e7412030e404d081adb4216145f676cddda46a8746fa",
+          "name": "refmodel"
+        },
+        {
+          "digest": "sha256:97209356148d10f8e1621ac5246c13ef7f4a6ccb62479e8bbfa3151a768f4f90",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-console@sha256:97209356148d10f8e1621ac5246c13ef7f4a6ccb62479e8bbfa3151a768f4f90",
+          "name": "console"
+        },
+        {
+          "digest": "sha256:f54857468f12e918d3b31144d9e63e3c497a408cd4b545c5ef2d60cd74c9a3ba",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-policy-chooser@sha256:f54857468f12e918d3b31144d9e63e3c497a408cd4b545c5ef2d60cd74c9a3ba",
+          "name": "policy_chooser"
+        },
+        {
+          "digest": "sha256:3e554f5baf161ec2297a452316045d20e628fd935c4a6584ba05043be574bf37",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-scanner@sha256:3e554f5baf161ec2297a452316045d20e628fd935c4a6584ba05043be574bf37",
+          "name": "scanner"
+        },
+        {
+          "digest": "sha256:88d0caeac7265cc1553c7f443cd7f8afddd8cfbb01c916381f8c1e8447a17497",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-reporting-etl@sha256:88d0caeac7265cc1553c7f443cd7f8afddd8cfbb01c916381f8c1e8447a17497",
+          "name": "reporting_etl"
+        },
+        {
+          "digest": "sha256:a6e75a40feea7b838071c4fcb7933eec29955bf5fe7d874400d6a00e2709031f",
+          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:a6e75a40feea7b838071c4fcb7933eec29955bf5fe7d874400d6a00e2709031f",
+          "name": "oauth_proxy"
+        },
+        {
+          "digest": "sha256:091e3df91531223aac50435fabc384b1d900aaaf2c5ce639a3e141e2fcb3eb8d",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-scan-manager@sha256:091e3df91531223aac50435fabc384b1d900aaaf2c5ce639a3e141e2fcb3eb8d",
+          "name": "scan_manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.3.10",
+      "version_original": "1.3.10"
+    },
+    {
+      "_id": "60dc88614eeb9bde82ff5a64",
+      "alm_examples": [
+        {
+          "api_version": "cortex.cognitivescale.com/v1",
+          "kind": "Certifai",
+          "metadata": {
+            "name": "default-certifai"
+          },
+          "spec": {
+            "console": {
+              "authorization-type": "none",
+              "azure": {
+                "account-key": "your account key",
+                "account-name": "your account name",
+                "sas-token": "your SAS token"
+              },
+              "create-ingress": true,
+              "gcs": {
+                "application-credentials": "{\n  \"type\": \"\",\n  \"project_id\": \"\",\n  \"private_key_id\": \"\",\n  \"private_key\": \"\",\n  \"client_email\": \"\",\n  \"client_id\": \"\",\n  \"auth_uri\": \"\",\n  \"token_uri\": \"\",\n  \"auth_provider_x509_cert_url\": \"\",\n  \"client_x509_cert_url\": \"\"\n}\n"
+              },
+              "replicas": 1,
+              "route-type": "none",
+              "s3": {
+                "access-key": "your access key",
+                "endpoint": "https://s3.amazonaws.com",
+                "secret-key": "your secret key",
+                "verify-cert": false
+              },
+              "scan-dir": ""
+            },
+            "deployment-type": "openshift",
+            "dex": {
+              "connector": {
+                "add-config": "orgs:\n- name: my-org\n",
+                "client-id": "clientid",
+                "client-secret": "clientsecret",
+                "name": "Github",
+                "type": "github"
+              },
+              "create-ingress": true,
+              "enabled": false,
+              "replicas": 1
+            },
+            "policy": {
+              "authorization-type": "none",
+              "azure": {
+                "account-key": "your account key",
+                "account-name": "your account name",
+                "sas-token": "your SAS token"
+              },
+              "create-ingress": true,
+              "enabled": false,
+              "gcs": {
+                "application-credentials": "{\n  \"type\": \"\",\n  \"project_id\": \"\",\n  \"private_key_id\": \"\",\n  \"private_key\": \"\",\n  \"client_email\": \"\",\n  \"client_id\": \"\",\n  \"auth_uri\": \"\",\n  \"token_uri\": \"\",\n  \"auth_provider_x509_cert_url\": \"\",\n  \"client_x509_cert_url\": \"\"\n}\n"
+              },
+              "questionnaire-dir": "",
+              "replicas": 1,
+              "route-type": "none",
+              "s3": {
+                "access-key": "your access key",
+                "endpoint": "https://s3.amazonaws.com",
+                "secret-key": "your secret key",
+                "verify-cert": false
+              }
+            },
+            "reference-model": {
+              "enabled": true
+            },
+            "reporting": {
+              "db-conn-str": "postgresql://user:password@service:port/db",
+              "enabled": true,
+              "period": "*/15 * * * *"
+            }
+          }
+        },
+        {
+          "api_version": "cortex.cognitivescale.com/v1",
+          "kind": "CertifaiScan",
+          "metadata": {
+            "name": "example-certifai-scan",
+            "namespace": "certifai"
+          },
+          "spec": {
+            "scanconfig": {
+              "concurrency": 4,
+              "requests": {
+                "cpu": "800m",
+                "memory": "800Mi"
+              },
+              "scanargs": "command line args here",
+              "scandef": "definition file text here"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-certifai-operator-bundle@sha256:7beaacb9261b0ab823443b4f7c3f3c3bff8250caee7f1ca68887e2457e8f963b",
+      "bundle_path_digest": "sha256:7beaacb9261b0ab823443b4f7c3f3c3bff8250caee7f1ca68887e2457e8f963b",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2021-06-30T15:06:09.442000+00:00",
+      "csv_description": "Cortex Certifai empowers enterprises to identify and mitigate risk and vulnerabilities within AI and deploy trusted AI systems into production. It evaluates AI models and allows users to compare different models or model versions for the following qualities.\n* **Robustness:** measures how well models retain an outcome given changes to the data feature values. The more robust a model is, the greater the changes required to alter the outcome.\n* **Fairness by group:** measures the difference required to change the outcome for different groups implicit in a feature given the same model and dataset. For example, implicit groups male, female, and nonbinary belong to the feature, \u201cgender\u201d. A fair model shows that all 3 groups require a similar amount of change to alter the results.\n* **Explainability:** measures the average simplicity of counterfactual explanations provided for each model. An explanation that requires a single changed feature will score 100%. Explanations that require more changed features will score lower.\n* **Explanations:** display the prediction provided through the generation of counterfactuals for the change that must occur in a dataset with given restrictions to obtain a different outcome. Users can explore the entire dataset one observation at a time to understand what features changed and by how much to obtain a different result.\nSee our [documentation](https://cognitivescale.github.io/cortex-certifai/) for information about how to deploy the Certifai Operator and how to get started using our toolkit.\n## License Copyright 2020 Cognitive Scale, Inc. All Rights Reserved.\nBy downloading you agree to the terms of CognitiveScale's [End User License Agreement](https://www.cognitivescale.com/legal-information/).\n",
+      "csv_display_name": "Cortex Certifai Operator",
+      "csv_metadata_description": "Cortex Certifai empowers enterprises to identify and mitigate risk and vulnerabilities within AI and deploy trusted AI systems into production.",
+      "csv_name": "cortex-certifai-operator.v1.3.10",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T04:07:36.335000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "cortex-certifai-operator",
+      "provided_apis": [
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "Certifai",
+          "plural": "certifais",
+          "version": "v1"
+        },
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "CertifaiScan",
+          "plural": "certifaiscans",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:4ac0c60eaa087209a7944212a29b5b23bdb946b6139d28ae4f999c3440709879",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-operator@sha256:4ac0c60eaa087209a7944212a29b5b23bdb946b6139d28ae4f999c3440709879",
+          "name": "cortex-certifai-operator-4ac0c60eaa087209a7944212a29b5b23bdb946b6139d28ae4f999c3440709879-annotation"
+        },
+        {
+          "digest": "sha256:082cf0c8e1289a7e08bb324b512a737e0ea3f618ea5b6fd8cecbb415ff07a230",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-operator@sha256:082cf0c8e1289a7e08bb324b512a737e0ea3f618ea5b6fd8cecbb415ff07a230",
+          "name": "cortex-certifai-operator"
+        },
+        {
+          "digest": "sha256:e0b34632bffe7d9ea186e7412030e404d081adb4216145f676cddda46a8746fa",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-reference-model-server@sha256:e0b34632bffe7d9ea186e7412030e404d081adb4216145f676cddda46a8746fa",
+          "name": "refmodel"
+        },
+        {
+          "digest": "sha256:97209356148d10f8e1621ac5246c13ef7f4a6ccb62479e8bbfa3151a768f4f90",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-console@sha256:97209356148d10f8e1621ac5246c13ef7f4a6ccb62479e8bbfa3151a768f4f90",
+          "name": "console"
+        },
+        {
+          "digest": "sha256:f54857468f12e918d3b31144d9e63e3c497a408cd4b545c5ef2d60cd74c9a3ba",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-policy-chooser@sha256:f54857468f12e918d3b31144d9e63e3c497a408cd4b545c5ef2d60cd74c9a3ba",
+          "name": "policy_chooser"
+        },
+        {
+          "digest": "sha256:3e554f5baf161ec2297a452316045d20e628fd935c4a6584ba05043be574bf37",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-scanner@sha256:3e554f5baf161ec2297a452316045d20e628fd935c4a6584ba05043be574bf37",
+          "name": "scanner"
+        },
+        {
+          "digest": "sha256:88d0caeac7265cc1553c7f443cd7f8afddd8cfbb01c916381f8c1e8447a17497",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-reporting-etl@sha256:88d0caeac7265cc1553c7f443cd7f8afddd8cfbb01c916381f8c1e8447a17497",
+          "name": "reporting_etl"
+        },
+        {
+          "digest": "sha256:a6e75a40feea7b838071c4fcb7933eec29955bf5fe7d874400d6a00e2709031f",
+          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:a6e75a40feea7b838071c4fcb7933eec29955bf5fe7d874400d6a00e2709031f",
+          "name": "oauth_proxy"
+        },
+        {
+          "digest": "sha256:091e3df91531223aac50435fabc384b1d900aaaf2c5ce639a3e141e2fcb3eb8d",
+          "image": "registry.connect.redhat.com/c12e/cortex-certifai-scan-manager@sha256:091e3df91531223aac50435fabc384b1d900aaaf2c5ce639a3e141e2fcb3eb8d",
+          "name": "scan_manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.3.10",
+      "version_original": "1.3.10"
+    },
+    {
+      "_id": "60dc89044f8f52ae1202876c",
+      "alm_examples": [
+        {
+          "api_version": "apm.neuvector.com/v1alpha1",
+          "kind": "Neuvector",
+          "metadata": {
+            "name": "example-neuvector"
+          },
+          "spec": {
+            "admissionwebhook": {
+              "type": "ClusterIP"
+            },
+            "bottlerocket": {
+              "enabled": false,
+              "runtimePath": "/run/dockershim.sock"
+            },
+            "containerd": {
+              "enabled": false,
+              "path": "/var/run/containerd/containerd.sock"
+            },
+            "controller": {
+              "apisvc": {
+                "annotations": {},
+                "route": {
+                  "enabled": false,
+                  "termination": "passthrough"
+                },
+                "type": ""
+              },
+              "azureFileShare": {
+                "enabled": false,
+                "secretName": "",
+                "shareName": ""
+              },
+              "certificate": {
+                "keyFile": "tls.key",
+                "pemFile": "tls.pem",
+                "secret": ""
+              },
+              "configmap": {
+                "data": "",
+                "enabled": false
+              },
+              "enabled": true,
+              "federation": {
+                "managedsvc": {
+                  "route": {
+                    "enabled": false,
+                    "termination": "passthrough"
+                  },
+                  "type": ""
+                },
+                "mastersvc": {
+                  "route": {
+                    "enabled": false,
+                    "termination": "passthrough"
+                  },
+                  "type": ""
+                }
+              },
+              "image": "registry.connect.redhat.com/neuvector/controller@sha256:063f753d6a07bf5b6e69b11f65e99920fa5921d9ab1f9317c91dbc4a8fd2f083",
+              "ingress": {
+                "annotations": {
+                  "ingress.kubernetes.io/protocol": "https"
+                },
+                "enabled": false,
+                "host": "",
+                "path": "/",
+                "secretName": "",
+                "tls": false
+              },
+              "pvc": {
+                "accessModes": [
+                  "ReadWriteMany"
+                ],
+                "capacity": "",
+                "enabled": false,
+                "storageClass": ""
+              },
+              "replicas": 3,
+              "resources": {},
+              "strategy": {
+                "rollingUpdate": {
+                  "maxSurge": 1,
+                  "maxUnavailable": 0
+                },
+                "type": "RollingUpdate"
+              }
+            },
+            "crdwebhook": {
+              "type": "ClusterIP"
+            },
+            "crio": {
+              "enabled": true,
+              "path": "/var/run/crio/crio.sock"
+            },
+            "cve": {
+              "scanner": {
+                "dockerPath": "",
+                "enabled": true,
+                "image": "registry.connect.redhat.com/neuvector/scanner@sha256:2b6d5c012e43ae0599603128d0f8a585596b319b6de0e337158066649d8e9544",
+                "replicas": 3,
+                "resources": {},
+                "strategy": {
+                  "rollingUpdate": {
+                    "maxSurge": 1,
+                    "maxUnavailable": 0
+                  },
+                  "type": "RollingUpdate"
+                }
+              },
+              "updater": {
+                "enabled": true,
+                "image": "registry.access.redhat.com/ubi8@sha256:2349c135a60dea58776c48a78af490b97f0eb52c501b396fcd65e717c0be3cf5",
+                "schedule": "0 0 * * *"
+              }
+            },
+            "docker": {
+              "enabled": false,
+              "path": "/var/run/docker.sock"
+            },
+            "enforcer": {
+              "enabled": true,
+              "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:5944774f3ccc6a0db0a26c520cb86f87bee0a80c61fac2c8ae4e2beca9ecb4e1",
+              "resources": {},
+              "tolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "key": "node-role.kubernetes.io/master"
+                }
+              ]
+            },
+            "exporter": {
+              "CTRL_PASSWORD": "admin",
+              "CTRL_USERNAME": "admin",
+              "enabled": false,
+              "scrapping": true
+            },
+            "imagePullSecrets": "regsecret",
+            "k3s": {
+              "enabled": false,
+              "runtimePath": "/run/k3s/containerd/containerd.sock"
+            },
+            "manager": {
+              "certificate": {
+                "keyFile": "tls.key",
+                "pemFile": "tls.pem",
+                "secret": ""
+              },
+              "enabled": true,
+              "env": {
+                "ssl": true
+              },
+              "image": "registry.connect.redhat.com/neuvector/manager@sha256:0c825c3c3724a2cf6f0826febc275280c3163c23c6d0f9c007b195849a80a57d",
+              "ingress": {
+                "annotations": {},
+                "enabled": false,
+                "host": "",
+                "path": "/",
+                "secretName": "",
+                "tls": false
+              },
+              "svc": {
+                "annotations": {},
+                "loadBalancerIP": "",
+                "route": {
+                  "enabled": true,
+                  "termination": "passthrough"
+                },
+                "type": "NodePort"
+              }
+            },
+            "openshift": true,
+            "resources": {}
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:a8c0bb66bd911a2720df2cf08391b768e719c2e23344d58913e681066fbbb556",
+      "bundle_path_digest": "sha256:a8c0bb66bd911a2720df2cf08391b768e719c2e23344d58913e681066fbbb556",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2021-06-30T15:08:52.404000+00:00",
+      "csv_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.\n\nThe NeuVector Operator runs  in the openshift container platform to deploy and manage the NeuVector Security cluster components. The NeuVector operator contains all necessary information to deploy NeuVector using helm charts. You simply need to install the NeuVector operator from the OpenShift embeded operator hub and create NeuVector instance. You can modify the NeuVector installation configuration by modifying yaml while creating the NeuVector instance such as imagePullSecrets, tag version, etc. Please refer to [NeuVector Helm Chart](https://github.com/neuvector/neuvector-helm) for the values that can be modifed during installation. To upgrade to a newer version of NeuVector, just reapply the NeuVector instance with desired tag , which in turn pulls the specified NeuVector image tags and upgrades as per upgrade plan configured on the helm chart. \n\n**Complete below steps to create secret for accessing Docker or similar registry and Grant Service Account Access to the Privileged SCC before installation.**\n\nCreate the NeuVector namespace\n\n         oc new-project  neuvector\nConfigure OpenShift to pull images from the private NeuVector registry on Docker Hub\n\n         oc create secret docker-registry regsecret -n neuvector --docker-server=https://index.docker.io/v1/ --docker-username=your-name --docker-password=your-pword --docker-email=your-email\n\t\t\t\t \n\nWhere \u2019your-name\u2019 is your Docker username, \u2019your-pword\u2019 is your Docker password, \u2019your-email\u2019 is your Docker email.\n\nLogin as system:admin account\n\n         oc login -u system:admin\n\nGrant Service Account Access to the Privileged SCC\n\n         oc -n neuvector adm policy add-scc-to-user privileged -z default\n\nThe following info will be added in the Privileged SCC users:\n\n         - system:serviceaccount:neuvector:default\n\n\n#Deploying the NeuVector Operator#\n\n\nPlease refer to the instructions [here](https://github.com/neuvector/neuvector-operator/blob/master/README.md)\n\n\n",
+      "csv_display_name": "Neuvector Operator",
+      "csv_metadata_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.",
+      "csv_name": "neuvector-operator.v1.2.7",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T02:14:49.747000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:c81a77c533a3461137859060cadde4672599b0c886102128f5ebc43f47cc24a3",
+          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:c81a77c533a3461137859060cadde4672599b0c886102128f5ebc43f47cc24a3",
+          "name": "neuvector-operator-c81a77c533a3461137859060cadde4672599b0c886102128f5ebc43f47cc24a3-annotation"
+        },
+        {
+          "digest": "sha256:c81a77c533a3461137859060cadde4672599b0c886102128f5ebc43f47cc24a3",
+          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:c81a77c533a3461137859060cadde4672599b0c886102128f5ebc43f47cc24a3",
+          "name": "neuvector-operator"
+        },
+        {
+          "digest": "sha256:063f753d6a07bf5b6e69b11f65e99920fa5921d9ab1f9317c91dbc4a8fd2f083",
+          "image": "registry.connect.redhat.com/neuvector/controller@sha256:063f753d6a07bf5b6e69b11f65e99920fa5921d9ab1f9317c91dbc4a8fd2f083",
+          "name": "controller"
+        },
+        {
+          "digest": "sha256:5944774f3ccc6a0db0a26c520cb86f87bee0a80c61fac2c8ae4e2beca9ecb4e1",
+          "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:5944774f3ccc6a0db0a26c520cb86f87bee0a80c61fac2c8ae4e2beca9ecb4e1",
+          "name": "enforcer"
+        },
+        {
+          "digest": "sha256:0c825c3c3724a2cf6f0826febc275280c3163c23c6d0f9c007b195849a80a57d",
+          "image": "registry.connect.redhat.com/neuvector/manager@sha256:0c825c3c3724a2cf6f0826febc275280c3163c23c6d0f9c007b195849a80a57d",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:2b6d5c012e43ae0599603128d0f8a585596b319b6de0e337158066649d8e9544",
+          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:2b6d5c012e43ae0599603128d0f8a585596b319b6de0e337158066649d8e9544",
+          "name": "scanner"
+        },
+        {
+          "digest": "sha256:2349c135a60dea58776c48a78af490b97f0eb52c501b396fcd65e717c0be3cf5",
+          "image": "registry.access.redhat.com/ubi8@sha256:2349c135a60dea58776c48a78af490b97f0eb52c501b396fcd65e717c0be3cf5",
+          "name": "updater"
+        },
+        {
+          "digest": "sha256:0c825c3c3724a2cf6f0826febc275280c3163c23c6d0f9c007b195849a80a57d",
+          "image": "registry.connect.redhat.com/neuvector/manager@sha256:0c825c3c3724a2cf6f0826febc275280c3163c23c6d0f9c007b195849a80a57d",
+          "name": "manager-0c825c3c3724a2cf6f0826febc275280c3163c23c6d0f9c007b195849a80a57d-annotation"
+        },
+        {
+          "digest": "sha256:5944774f3ccc6a0db0a26c520cb86f87bee0a80c61fac2c8ae4e2beca9ecb4e1",
+          "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:5944774f3ccc6a0db0a26c520cb86f87bee0a80c61fac2c8ae4e2beca9ecb4e1",
+          "name": "enforcer-5944774f3ccc6a0db0a26c520cb86f87bee0a80c61fac2c8ae4e2beca9ecb4e1-annotation"
+        },
+        {
+          "digest": "sha256:2b6d5c012e43ae0599603128d0f8a585596b319b6de0e337158066649d8e9544",
+          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:2b6d5c012e43ae0599603128d0f8a585596b319b6de0e337158066649d8e9544",
+          "name": "scanner-2b6d5c012e43ae0599603128d0f8a585596b319b6de0e337158066649d8e9544-annotation"
+        },
+        {
+          "digest": "sha256:2349c135a60dea58776c48a78af490b97f0eb52c501b396fcd65e717c0be3cf5",
+          "image": "registry.access.redhat.com/ubi8@sha256:2349c135a60dea58776c48a78af490b97f0eb52c501b396fcd65e717c0be3cf5",
+          "name": "ubi8-2349c135a60dea58776c48a78af490b97f0eb52c501b396fcd65e717c0be3cf5-annotation"
+        },
+        {
+          "digest": "sha256:063f753d6a07bf5b6e69b11f65e99920fa5921d9ab1f9317c91dbc4a8fd2f083",
+          "image": "registry.connect.redhat.com/neuvector/controller@sha256:063f753d6a07bf5b6e69b11f65e99920fa5921d9ab1f9317c91dbc4a8fd2f083",
+          "name": "controller-063f753d6a07bf5b6e69b11f65e99920fa5921d9ab1f9317c91dbc4a8fd2f083-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.2.7",
+      "version_original": "1.2.7"
+    },
+    {
+      "_id": "60de1a824eeb9bde82ff5dd5",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:8dea6665a8cd0a40b0ad7daa52f22ff341ae29c5b592636bfac25e4767224324",
+      "bundle_path_digest": "sha256:8dea6665a8cd0a40b0ad7daa52f22ff341ae29c5b592636bfac25e4767224324",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-07-01T19:41:54.356000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.2.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:46:27.056000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "8.2.2",
+      "version_original": "8.2.2"
+    },
+    {
+      "_id": "60e47213db72db7d0fadcf1f",
+      "alm_examples": [
+        {
+          "api_version": "apik10.kasten.io/v1alpha1",
+          "kind": "K10",
+          "metadata": {
+            "name": "k10-sample"
+          },
+          "spec": {
+            "ambassadorImage": {
+              "image": "ambassador",
+              "registry": "quay.io",
+              "repository": "datawire"
+            },
+            "apigateway": {
+              "serviceResolver": "dns"
+            },
+            "apiservices": {
+              "deployed": true
+            },
+            "auth": {
+              "basicAuth": {
+                "enabled": false,
+                "htpasswd": "",
+                "secretName": ""
+              },
+              "dex": {
+                "enabled": false,
+                "providerURL": "",
+                "redirectURL": ""
+              },
+              "groupAllowList": [],
+              "k10AdminGroups": [],
+              "k10AdminUsers": [],
+              "ldap": {
+                "bindDN": "",
+                "bindPW": "",
+                "bindPWSecretName": "",
+                "dashboardURL": "",
+                "enabled": false,
+                "groupSearch": {
+                  "baseDN": "",
+                  "filter": "",
+                  "nameAttr": "",
+                  "userMatchers": []
+                },
+                "groupnameClaim": "groups",
+                "groupnamePrefix": "",
+                "host": "",
+                "insecureNoSSL": false,
+                "insecureSkipVerifySSL": false,
+                "restartPod": false,
+                "secretName": "",
+                "startTLS": false,
+                "userSearch": {
+                  "baseDN": "",
+                  "emailAttr": "",
+                  "filter": "",
+                  "idAttr": "",
+                  "nameAttr": "",
+                  "preferredUsernameAttr": "",
+                  "username": ""
+                },
+                "usernameClaim": "email",
+                "usernamePrefix": ""
+              },
+              "oidcAuth": {
+                "clientID": "",
+                "clientSecret": "",
+                "enabled": false,
+                "groupClaim": "",
+                "groupPrefix": "",
+                "logoutURL": "",
+                "prompt": "",
+                "providerURL": "",
+                "redirectURL": "",
+                "scopes": "",
+                "secretName": "",
+                "usernameClaim": "",
+                "usernamePrefix": ""
+              },
+              "openshift": {
+                "clientSecret": "",
+                "dashboardURL": "",
+                "enabled": false,
+                "groupnameClaim": "groups",
+                "groupnamePrefix": "",
+                "insecureCA": false,
+                "openshiftURL": "",
+                "secretName": "",
+                "serviceAccount": "",
+                "useServiceAccountCA": false,
+                "usernameClaim": "email",
+                "usernamePrefix": ""
+              },
+              "tokenAuth": {
+                "enabled": false
+              }
+            },
+            "cacertconfigmap": {
+              "name": ""
+            },
+            "cluster": {
+              "domainName": "cluster.local"
+            },
+            "clusterName": "",
+            "dexImage": {
+              "image": "dex",
+              "registry": "quay.io",
+              "repository": "dexidp"
+            },
+            "eula": {
+              "accept": false
+            },
+            "executorReplicas": 3,
+            "externalGateway": {
+              "annotations": {},
+              "awsSSLCertARN": "",
+              "create": false,
+              "fqdn": {
+                "name": "",
+                "type": ""
+              }
+            },
+            "gateway": {
+              "insecureDisableSSLVerify": false
+            },
+            "genericVolumeSnapshot": {
+              "resources": {
+                "limits": {
+                  "cpu": "",
+                  "memory": ""
+                },
+                "requests": {
+                  "cpu": "",
+                  "memory": ""
+                }
+              }
+            },
+            "global": {
+              "airgapped": {
+                "repository": ""
+              },
+              "images": {
+                "aggregatedapis": "",
+                "ambassador": "",
+                "auth": "",
+                "catalog": "",
+                "cephtool": "",
+                "config": "",
+                "configmap-reload": "",
+                "crypto": "",
+                "dashboardbff": "",
+                "datamover": "",
+                "dex": "",
+                "executor": "",
+                "frontend": "",
+                "jobs": "",
+                "kanister": "",
+                "kanister-tools": "",
+                "logging": "",
+                "metering": "",
+                "prometheus": "",
+                "state": "",
+                "upgrade": ""
+              },
+              "persistence": {
+                "accessMode": "ReadWriteOnce",
+                "catalog": {
+                  "size": ""
+                },
+                "enabled": true,
+                "jobs": {
+                  "size": ""
+                },
+                "logging": {
+                  "size": ""
+                },
+                "metering": {
+                  "size": "2Gi"
+                },
+                "mountPath": "/mnt/k10state",
+                "size": "20Gi",
+                "storageClass": ""
+              },
+              "rhMarketPlace": true,
+              "upstreamCertifiedImages": true
+            },
+            "image": {
+              "image": "",
+              "pullPolicy": "Always",
+              "registry": "gcr.io",
+              "repository": "kasten-images",
+              "tag": ""
+            },
+            "ingress": {
+              "class": "",
+              "create": false,
+              "host": "",
+              "tls": {
+                "enabled": false
+              },
+              "urlPath": ""
+            },
+            "injectKanisterSidecar": {
+              "enabled": false,
+              "namespaceSelector": {
+                "matchLabels": {}
+              },
+              "objectSelector": {
+                "matchLabels": {}
+              },
+              "webhookServer": {
+                "port": 8080
+              }
+            },
+            "jaeger": {
+              "agentDNS": "",
+              "enabled": false
+            },
+            "kanisterPodCustomAnnotations": "",
+            "kanisterPodCustomLabels": "",
+            "kanisterToolsImage": {
+              "image": "kanister-tools",
+              "pullPolicy": "Always",
+              "registry": "ghcr.io",
+              "repository": "kanisterio"
+            },
+            "license": "",
+            "limiter": {
+              "csiSnapshots": 10,
+              "genericVolumeCopies": 10,
+              "genericVolumeRestores": 10,
+              "genericVolumeSnapshots": 10,
+              "providerSnapshots": 10
+            },
+            "logLevel": "info",
+            "metering": {
+              "awsMarketPlaceIamRole": "",
+              "consumerId": "",
+              "reportingKey": "",
+              "serviceAccount": {
+                "create": false,
+                "name": ""
+              }
+            },
+            "networkPolicy": {
+              "create": true
+            },
+            "prometheus": {
+              "alertmanager": {
+                "affinity": {},
+                "baseURL": "/",
+                "configFileName": "alertmanager.yml",
+                "configFromSecret": "",
+                "configMapOverrideName": "",
+                "deploymentAnnotations": {},
+                "dnsConfig": {},
+                "emptyDir": {
+                  "sizeLimit": ""
+                },
+                "enabled": false,
+                "extraArgs": {},
+                "extraEnv": {},
+                "extraInitContainers": [],
+                "extraSecretMounts": [],
+                "image": {
+                  "pullPolicy": "IfNotPresent",
+                  "repository": "quay.io/prometheus/alertmanager",
+                  "tag": "v0.21.0"
+                },
+                "ingress": {
+                  "annotations": {},
+                  "enabled": false,
+                  "extraLabels": {},
+                  "extraPaths": [],
+                  "hosts": [],
+                  "tls": []
+                },
+                "name": "alertmanager",
+                "nodeSelector": {},
+                "persistentVolume": {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "annotations": {},
+                  "enabled": true,
+                  "existingClaim": "",
+                  "mountPath": "/data",
+                  "size": "2Gi",
+                  "subPath": ""
+                },
+                "podAnnotations": {},
+                "podDisruptionBudget": {
+                  "enabled": false,
+                  "maxUnavailable": 1
+                },
+                "podLabels": {},
+                "podSecurityPolicy": {
+                  "annotations": {}
+                },
+                "prefixURL": "",
+                "priorityClassName": "",
+                "replicaCount": 1,
+                "resources": {},
+                "securityContext": {
+                  "fsGroup": 65534,
+                  "runAsGroup": 65534,
+                  "runAsNonRoot": true,
+                  "runAsUser": 65534
+                },
+                "service": {
+                  "annotations": {},
+                  "clusterIP": "",
+                  "externalIPs": [],
+                  "labels": {},
+                  "loadBalancerIP": "",
+                  "loadBalancerSourceRanges": [],
+                  "servicePort": 80,
+                  "sessionAffinity": "None",
+                  "type": "ClusterIP"
+                },
+                "statefulSet": {
+                  "annotations": {},
+                  "enabled": false,
+                  "headless": {
+                    "annotations": {},
+                    "enableMeshPeer": false,
+                    "labels": {},
+                    "servicePort": 80
+                  },
+                  "labels": {},
+                  "podManagementPolicy": "OrderedReady"
+                },
+                "tolerations": [],
+                "useClusterRole": true,
+                "useExistingRole": false
+              },
+              "alertmanagerFiles": {
+                "alertmanager.yml": {
+                  "global": {},
+                  "receivers": [
+                    {
+                      "name": "default-receiver"
+                    }
+                  ],
+                  "route": {
+                    "group_interval": "5m",
+                    "group_wait": "10s",
+                    "receiver": "default-receiver",
+                    "repeat_interval": "3h"
+                  }
+                }
+              },
+              "configmapReload": {
+                "alertmanager": {
+                  "enabled": true,
+                  "extraArgs": {},
+                  "extraConfigmapMounts": [],
+                  "extraVolumeDirs": [],
+                  "image": {
+                    "pullPolicy": "IfNotPresent",
+                    "repository": "jimmidyson/configmap-reload"
+                  },
+                  "name": "configmap-reload",
+                  "resources": {}
+                },
+                "prometheus": {
+                  "enabled": true,
+                  "extraArgs": {},
+                  "extraConfigmapMounts": [],
+                  "extraVolumeDirs": [],
+                  "image": {
+                    "pullPolicy": "IfNotPresent",
+                    "repository": "jimmidyson/configmap-reload"
+                  },
+                  "name": "configmap-reload",
+                  "resources": {}
+                }
+              },
+              "global": {
+                "airgapped": {
+                  "repository": ""
+                },
+                "images": {
+                  "aggregatedapis": "",
+                  "ambassador": "",
+                  "auth": "",
+                  "catalog": "",
+                  "cephtool": "",
+                  "config": "",
+                  "configmap-reload": "",
+                  "crypto": "",
+                  "dashboardbff": "",
+                  "datamover": "",
+                  "dex": "",
+                  "executor": "",
+                  "frontend": "",
+                  "jobs": "",
+                  "kanister": "",
+                  "kanister-tools": "",
+                  "logging": "",
+                  "metering": "",
+                  "prometheus": "",
+                  "state": "",
+                  "upgrade": ""
+                },
+                "persistence": {
+                  "accessMode": "ReadWriteOnce",
+                  "catalog": {
+                    "size": ""
+                  },
+                  "enabled": true,
+                  "jobs": {
+                    "size": ""
+                  },
+                  "logging": {
+                    "size": ""
+                  },
+                  "metering": {
+                    "size": "2Gi"
+                  },
+                  "mountPath": "/mnt/k10state",
+                  "size": "20Gi",
+                  "storageClass": ""
+                },
+                "rhMarketPlace": true,
+                "upstreamCertifiedImages": true
+              },
+              "initChownData": {
+                "enabled": false
+              },
+              "k10image": {
+                "registry": "gcr.io",
+                "repository": "kasten-images"
+              },
+              "kubeStateMetrics": {
+                "enabled": false
+              },
+              "networkPolicy": {
+                "enabled": true
+              },
+              "nodeExporter": {
+                "dnsConfig": {},
+                "enabled": false,
+                "extraArgs": {},
+                "extraConfigmapMounts": [],
+                "extraHostPathMounts": [],
+                "extraInitContainers": [],
+                "hostNetwork": true,
+                "hostPID": true,
+                "hostRootfs": true,
+                "image": {
+                  "pullPolicy": "IfNotPresent",
+                  "repository": "quay.io/prometheus/node-exporter",
+                  "tag": "v1.1.2"
+                },
+                "name": "node-exporter",
+                "nodeSelector": {},
+                "pod": {
+                  "labels": {}
+                },
+                "podAnnotations": {},
+                "podDisruptionBudget": {
+                  "enabled": false,
+                  "maxUnavailable": 1
+                },
+                "podSecurityPolicy": {
+                  "annotations": {}
+                },
+                "priorityClassName": "",
+                "resources": {},
+                "securityContext": {
+                  "fsGroup": 65534,
+                  "runAsGroup": 65534,
+                  "runAsNonRoot": true,
+                  "runAsUser": 65534
+                },
+                "service": {
+                  "annotations": {
+                    "prometheus.io/scrape": "true"
+                  },
+                  "clusterIP": "None",
+                  "externalIPs": [],
+                  "hostPort": 9100,
+                  "labels": {},
+                  "loadBalancerIP": "",
+                  "loadBalancerSourceRanges": [],
+                  "servicePort": 9100,
+                  "type": "ClusterIP"
+                },
+                "tolerations": [],
+                "updateStrategy": {
+                  "type": "RollingUpdate"
+                }
+              },
+              "podSecurityPolicy": {
+                "enabled": false
+              },
+              "pushgateway": {
+                "deploymentAnnotations": {},
+                "dnsConfig": {},
+                "enabled": false,
+                "extraArgs": {},
+                "extraInitContainers": [],
+                "image": {
+                  "pullPolicy": "IfNotPresent",
+                  "repository": "prom/pushgateway",
+                  "tag": "v1.3.1"
+                },
+                "ingress": {
+                  "annotations": {},
+                  "enabled": false,
+                  "extraPaths": [],
+                  "hosts": [],
+                  "tls": []
+                },
+                "name": "pushgateway",
+                "nodeSelector": {},
+                "persistentVolume": {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "annotations": {},
+                  "enabled": false,
+                  "existingClaim": "",
+                  "mountPath": "/data",
+                  "size": "2Gi",
+                  "subPath": ""
+                },
+                "podAnnotations": {},
+                "podDisruptionBudget": {
+                  "enabled": false,
+                  "maxUnavailable": 1
+                },
+                "podLabels": {},
+                "podSecurityPolicy": {
+                  "annotations": {}
+                },
+                "priorityClassName": "",
+                "replicaCount": 1,
+                "resources": {},
+                "securityContext": {
+                  "runAsNonRoot": true,
+                  "runAsUser": 65534
+                },
+                "service": {
+                  "annotations": {
+                    "prometheus.io/probe": "pushgateway"
+                  },
+                  "clusterIP": "",
+                  "externalIPs": [],
+                  "labels": {},
+                  "loadBalancerIP": "",
+                  "loadBalancerSourceRanges": [],
+                  "servicePort": 9091,
+                  "type": "ClusterIP"
+                },
+                "tolerations": []
+              },
+              "rbac": {
+                "create": false
+              },
+              "scrapeCAdvisor": false,
+              "server": {
+                "affinity": {},
+                "alertmanagers": [],
+                "baseURL": "/k10/prometheus/",
+                "configMapOverrideName": "k10-prometheus-config",
+                "configPath": "/etc/config/prometheus.yml",
+                "deploymentAnnotations": {},
+                "dnsConfig": {},
+                "dnsPolicy": "ClusterFirst",
+                "emptyDir": {
+                  "sizeLimit": ""
+                },
+                "enableServiceLinks": true,
+                "enabled": true,
+                "env": [],
+                "extraArgs": {},
+                "extraConfigmapMounts": [],
+                "extraFlags": [
+                  "web.enable-lifecycle"
+                ],
+                "extraHostPathMounts": [],
+                "extraInitContainers": [],
+                "extraSecretMounts": [],
+                "extraVolumeMounts": [],
+                "extraVolumes": [],
+                "fullnameOverride": "prometheus-server",
+                "global": {
+                  "evaluation_interval": "1m",
+                  "scrape_interval": "1m",
+                  "scrape_timeout": "10s"
+                },
+                "hostAliases": [],
+                "hostNetwork": false,
+                "image": {
+                  "pullPolicy": "IfNotPresent",
+                  "repository": "quay.io/prometheus/prometheus"
+                },
+                "ingress": {
+                  "annotations": {},
+                  "enabled": false,
+                  "extraLabels": {},
+                  "extraPaths": [],
+                  "hosts": [],
+                  "tls": []
+                },
+                "livenessProbeFailureThreshold": 3,
+                "livenessProbeInitialDelay": 30,
+                "livenessProbePeriodSeconds": 15,
+                "livenessProbeSuccessThreshold": 1,
+                "livenessProbeTimeout": 10,
+                "name": "server",
+                "nodeSelector": {},
+                "persistentVolume": {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "annotations": {},
+                  "enabled": true,
+                  "existingClaim": "",
+                  "mountPath": "/data",
+                  "size": "8Gi",
+                  "storageClass": "",
+                  "subPath": ""
+                },
+                "podAnnotations": {},
+                "podDisruptionBudget": {
+                  "enabled": false,
+                  "maxUnavailable": 1
+                },
+                "podLabels": {},
+                "podSecurityPolicy": {
+                  "annotations": {}
+                },
+                "prefixURL": "/k10/prometheus/",
+                "priorityClassName": "",
+                "readinessProbeFailureThreshold": 3,
+                "readinessProbeInitialDelay": 30,
+                "readinessProbePeriodSeconds": 5,
+                "readinessProbeSuccessThreshold": 1,
+                "readinessProbeTimeout": 4,
+                "remoteRead": [],
+                "remoteWrite": [],
+                "replicaCount": 1,
+                "resources": {},
+                "retention": "30d",
+                "securityContext": {
+                  "fsGroup": 65534,
+                  "runAsGroup": 65534,
+                  "runAsNonRoot": true,
+                  "runAsUser": 65534
+                },
+                "service": {
+                  "annotations": {},
+                  "clusterIP": "",
+                  "externalIPs": [],
+                  "gRPC": {
+                    "enabled": false,
+                    "servicePort": 10901
+                  },
+                  "labels": {},
+                  "loadBalancerIP": "",
+                  "loadBalancerSourceRanges": [],
+                  "servicePort": 80,
+                  "sessionAffinity": "None",
+                  "statefulsetReplica": {
+                    "enabled": false,
+                    "replica": 0
+                  },
+                  "type": "ClusterIP"
+                },
+                "sidecarContainers": {},
+                "statefulSet": {
+                  "annotations": {},
+                  "enabled": false,
+                  "headless": {
+                    "annotations": {},
+                    "gRPC": {
+                      "enabled": false,
+                      "servicePort": 10901
+                    },
+                    "labels": {},
+                    "servicePort": 80
+                  },
+                  "labels": {},
+                  "podManagementPolicy": "OrderedReady"
+                },
+                "storagePath": "",
+                "strategy": {
+                  "rollingUpdate": {
+                    "maxSurge": "100%",
+                    "maxUnavailable": "100%"
+                  },
+                  "type": "RollingUpdate"
+                },
+                "terminationGracePeriodSeconds": 300,
+                "tolerations": [],
+                "verticalAutoscaler": {
+                  "enabled": false
+                }
+              },
+              "serverFiles": {
+                "alerting_rules.yml": {},
+                "alerts": {},
+                "prometheus.yml": {
+                  "rule_files": [
+                    "/etc/config/recording_rules.yml",
+                    "/etc/config/alerting_rules.yml",
+                    "/etc/config/rules",
+                    "/etc/config/alerts"
+                  ],
+                  "scrape_configs": [
+                    {
+                      "job_name": "prometheus",
+                      "static_configs": [
+                        {
+                          "targets": [
+                            "localhost:9090"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "bearer_token_file": "/var/run/secrets/kubernetes.io/serviceaccount/token",
+                      "job_name": "kubernetes-apiservers",
+                      "kubernetes_sd_configs": [
+                        {
+                          "role": "endpoints"
+                        }
+                      ],
+                      "relabel_configs": [
+                        {
+                          "action": "keep",
+                          "regex": "default;kubernetes;https",
+                          "source_labels": [
+                            "__meta_kubernetes_namespace",
+                            "__meta_kubernetes_service_name",
+                            "__meta_kubernetes_endpoint_port_name"
+                          ]
+                        }
+                      ],
+                      "scheme": "https",
+                      "tls_config": {
+                        "ca_file": "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
+                        "insecure_skip_verify": true
+                      }
+                    },
+                    {
+                      "bearer_token_file": "/var/run/secrets/kubernetes.io/serviceaccount/token",
+                      "job_name": "kubernetes-nodes",
+                      "kubernetes_sd_configs": [
+                        {
+                          "role": "node"
+                        }
+                      ],
+                      "relabel_configs": [
+                        {
+                          "action": "labelmap",
+                          "regex": "__meta_kubernetes_node_label_(.+)"
+                        },
+                        {
+                          "replacement": "kubernetes.default.svc:443",
+                          "target_label": "__address__"
+                        },
+                        {
+                          "regex": "(.+)",
+                          "replacement": "/api/v1/nodes/$1/proxy/metrics",
+                          "source_labels": [
+                            "__meta_kubernetes_node_name"
+                          ],
+                          "target_label": "__metrics_path__"
+                        }
+                      ],
+                      "scheme": "https",
+                      "tls_config": {
+                        "ca_file": "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
+                        "insecure_skip_verify": true
+                      }
+                    },
+                    {
+                      "bearer_token_file": "/var/run/secrets/kubernetes.io/serviceaccount/token",
+                      "job_name": "kubernetes-nodes-cadvisor",
+                      "kubernetes_sd_configs": [
+                        {
+                          "role": "node"
+                        }
+                      ],
+                      "relabel_configs": [
+                        {
+                          "action": "labelmap",
+                          "regex": "__meta_kubernetes_node_label_(.+)"
+                        },
+                        {
+                          "replacement": "kubernetes.default.svc:443",
+                          "target_label": "__address__"
+                        },
+                        {
+                          "regex": "(.+)",
+                          "replacement": "/api/v1/nodes/$1/proxy/metrics/cadvisor",
+                          "source_labels": [
+                            "__meta_kubernetes_node_name"
+                          ],
+                          "target_label": "__metrics_path__"
+                        }
+                      ],
+                      "scheme": "https",
+                      "tls_config": {
+                        "ca_file": "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
+                        "insecure_skip_verify": true
+                      }
+                    },
+                    {
+                      "job_name": "kubernetes-service-endpoints",
+                      "kubernetes_sd_configs": [
+                        {
+                          "role": "endpoints"
+                        }
+                      ],
+                      "relabel_configs": [
+                        {
+                          "action": "keep",
+                          "regex": true,
+                          "source_labels": [
+                            "__meta_kubernetes_service_annotation_prometheus_io_scrape"
+                          ]
+                        },
+                        {
+                          "action": "replace",
+                          "regex": "(https?)",
+                          "source_labels": [
+                            "__meta_kubernetes_service_annotation_prometheus_io_scheme"
+                          ],
+                          "target_label": "__scheme__"
+                        },
+                        {
+                          "action": "replace",
+                          "regex": "(.+)",
+                          "source_labels": [
+                            "__meta_kubernetes_service_annotation_prometheus_io_path"
+                          ],
+                          "target_label": "__metrics_path__"
+                        },
+                        {
+                          "action": "replace",
+                          "regex": "([^:]+)(?::\\d+)?;(\\d+)",
+                          "replacement": "$1:$2",
+                          "source_labels": [
+                            "__address__",
+                            "__meta_kubernetes_service_annotation_prometheus_io_port"
+                          ],
+                          "target_label": "__address__"
+                        },
+                        {
+                          "action": "labelmap",
+                          "regex": "__meta_kubernetes_service_label_(.+)"
+                        },
+                        {
+                          "action": "replace",
+                          "source_labels": [
+                            "__meta_kubernetes_namespace"
+                          ],
+                          "target_label": "kubernetes_namespace"
+                        },
+                        {
+                          "action": "replace",
+                          "source_labels": [
+                            "__meta_kubernetes_service_name"
+                          ],
+                          "target_label": "kubernetes_name"
+                        },
+                        {
+                          "action": "replace",
+                          "source_labels": [
+                            "__meta_kubernetes_pod_node_name"
+                          ],
+                          "target_label": "kubernetes_node"
+                        }
+                      ]
+                    },
+                    {
+                      "job_name": "kubernetes-service-endpoints-slow",
+                      "kubernetes_sd_configs": [
+                        {
+                          "role": "endpoints"
+                        }
+                      ],
+                      "relabel_configs": [
+                        {
+                          "action": "keep",
+                          "regex": true,
+                          "source_labels": [
+                            "__meta_kubernetes_service_annotation_prometheus_io_scrape_slow"
+                          ]
+                        },
+                        {
+                          "action": "replace",
+                          "regex": "(https?)",
+                          "source_labels": [
+                            "__meta_kubernetes_service_annotation_prometheus_io_scheme"
+                          ],
+                          "target_label": "__scheme__"
+                        },
+                        {
+                          "action": "replace",
+                          "regex": "(.+)",
+                          "source_labels": [
+                            "__meta_kubernetes_service_annotation_prometheus_io_path"
+                          ],
+                          "target_label": "__metrics_path__"
+                        },
+                        {
+                          "action": "replace",
+                          "regex": "([^:]+)(?::\\d+)?;(\\d+)",
+                          "replacement": "$1:$2",
+                          "source_labels": [
+                            "__address__",
+                            "__meta_kubernetes_service_annotation_prometheus_io_port"
+                          ],
+                          "target_label": "__address__"
+                        },
+                        {
+                          "action": "labelmap",
+                          "regex": "__meta_kubernetes_service_label_(.+)"
+                        },
+                        {
+                          "action": "replace",
+                          "source_labels": [
+                            "__meta_kubernetes_namespace"
+                          ],
+                          "target_label": "kubernetes_namespace"
+                        },
+                        {
+                          "action": "replace",
+                          "source_labels": [
+                            "__meta_kubernetes_service_name"
+                          ],
+                          "target_label": "kubernetes_name"
+                        },
+                        {
+                          "action": "replace",
+                          "source_labels": [
+                            "__meta_kubernetes_pod_node_name"
+                          ],
+                          "target_label": "kubernetes_node"
+                        }
+                      ],
+                      "scrape_interval": "5m",
+                      "scrape_timeout": "30s"
+                    },
+                    {
+                      "honor_labels": true,
+                      "job_name": "prometheus-pushgateway",
+                      "kubernetes_sd_configs": [
+                        {
+                          "role": "service"
+                        }
+                      ],
+                      "relabel_configs": [
+                        {
+                          "action": "keep",
+                          "regex": "pushgateway",
+                          "source_labels": [
+                            "__meta_kubernetes_service_annotation_prometheus_io_probe"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "job_name": "kubernetes-services",
+                      "kubernetes_sd_configs": [
+                        {
+                          "role": "service"
+                        }
+                      ],
+                      "metrics_path": "/probe",
+                      "params": {
+                        "module": [
+                          "http_2xx"
+                        ]
+                      },
+                      "relabel_configs": [
+                        {
+                          "action": "keep",
+                          "regex": true,
+                          "source_labels": [
+                            "__meta_kubernetes_service_annotation_prometheus_io_probe"
+                          ]
+                        },
+                        {
+                          "source_labels": [
+                            "__address__"
+                          ],
+                          "target_label": "__param_target"
+                        },
+                        {
+                          "replacement": "blackbox",
+                          "target_label": "__address__"
+                        },
+                        {
+                          "source_labels": [
+                            "__param_target"
+                          ],
+                          "target_label": "instance"
+                        },
+                        {
+                          "action": "labelmap",
+                          "regex": "__meta_kubernetes_service_label_(.+)"
+                        },
+                        {
+                          "source_labels": [
+                            "__meta_kubernetes_namespace"
+                          ],
+                          "target_label": "kubernetes_namespace"
+                        },
+                        {
+                          "source_labels": [
+                            "__meta_kubernetes_service_name"
+                          ],
+                          "target_label": "kubernetes_name"
+                        }
+                      ]
+                    },
+                    {
+                      "job_name": "kubernetes-pods",
+                      "kubernetes_sd_configs": [
+                        {
+                          "role": "pod"
+                        }
+                      ],
+                      "relabel_configs": [
+                        {
+                          "action": "keep",
+                          "regex": true,
+                          "source_labels": [
+                            "__meta_kubernetes_pod_annotation_prometheus_io_scrape"
+                          ]
+                        },
+                        {
+                          "action": "replace",
+                          "regex": "(https?)",
+                          "source_labels": [
+                            "__meta_kubernetes_pod_annotation_prometheus_io_scheme"
+                          ],
+                          "target_label": "__scheme__"
+                        },
+                        {
+                          "action": "replace",
+                          "regex": "(.+)",
+                          "source_labels": [
+                            "__meta_kubernetes_pod_annotation_prometheus_io_path"
+                          ],
+                          "target_label": "__metrics_path__"
+                        },
+                        {
+                          "action": "replace",
+                          "regex": "([^:]+)(?::\\d+)?;(\\d+)",
+                          "replacement": "$1:$2",
+                          "source_labels": [
+                            "__address__",
+                            "__meta_kubernetes_pod_annotation_prometheus_io_port"
+                          ],
+                          "target_label": "__address__"
+                        },
+                        {
+                          "action": "labelmap",
+                          "regex": "__meta_kubernetes_pod_label_(.+)"
+                        },
+                        {
+                          "action": "replace",
+                          "source_labels": [
+                            "__meta_kubernetes_namespace"
+                          ],
+                          "target_label": "kubernetes_namespace"
+                        },
+                        {
+                          "action": "replace",
+                          "source_labels": [
+                            "__meta_kubernetes_pod_name"
+                          ],
+                          "target_label": "kubernetes_pod_name"
+                        },
+                        {
+                          "action": "drop",
+                          "regex": "Pending|Succeeded|Failed",
+                          "source_labels": [
+                            "__meta_kubernetes_pod_phase"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "job_name": "kubernetes-pods-slow",
+                      "kubernetes_sd_configs": [
+                        {
+                          "role": "pod"
+                        }
+                      ],
+                      "relabel_configs": [
+                        {
+                          "action": "keep",
+                          "regex": true,
+                          "source_labels": [
+                            "__meta_kubernetes_pod_annotation_prometheus_io_scrape_slow"
+                          ]
+                        },
+                        {
+                          "action": "replace",
+                          "regex": "(https?)",
+                          "source_labels": [
+                            "__meta_kubernetes_pod_annotation_prometheus_io_scheme"
+                          ],
+                          "target_label": "__scheme__"
+                        },
+                        {
+                          "action": "replace",
+                          "regex": "(.+)",
+                          "source_labels": [
+                            "__meta_kubernetes_pod_annotation_prometheus_io_path"
+                          ],
+                          "target_label": "__metrics_path__"
+                        },
+                        {
+                          "action": "replace",
+                          "regex": "([^:]+)(?::\\d+)?;(\\d+)",
+                          "replacement": "$1:$2",
+                          "source_labels": [
+                            "__address__",
+                            "__meta_kubernetes_pod_annotation_prometheus_io_port"
+                          ],
+                          "target_label": "__address__"
+                        },
+                        {
+                          "action": "labelmap",
+                          "regex": "__meta_kubernetes_pod_label_(.+)"
+                        },
+                        {
+                          "action": "replace",
+                          "source_labels": [
+                            "__meta_kubernetes_namespace"
+                          ],
+                          "target_label": "kubernetes_namespace"
+                        },
+                        {
+                          "action": "replace",
+                          "source_labels": [
+                            "__meta_kubernetes_pod_name"
+                          ],
+                          "target_label": "kubernetes_pod_name"
+                        },
+                        {
+                          "action": "drop",
+                          "regex": "Pending|Succeeded|Failed",
+                          "source_labels": [
+                            "__meta_kubernetes_pod_phase"
+                          ]
+                        }
+                      ],
+                      "scrape_interval": "5m",
+                      "scrape_timeout": "30s"
+                    }
+                  ]
+                },
+                "recording_rules.yml": {},
+                "rules": {}
+              },
+              "serviceAccounts": {
+                "alertmanager": {
+                  "annotations": {},
+                  "create": false
+                },
+                "kubeStateMetrics": {
+                  "create": false
+                },
+                "nodeExporter": {
+                  "annotations": {},
+                  "create": false
+                },
+                "pushgateway": {
+                  "annotations": {},
+                  "create": false
+                },
+                "server": {
+                  "annotations": {},
+                  "create": true
+                }
+              }
+            },
+            "rbac": {
+              "create": true
+            },
+            "resources": {},
+            "route": {
+              "annotations": {},
+              "enabled": false,
+              "host": "",
+              "labels": {},
+              "path": "/",
+              "tls": {
+                "enabled": false,
+                "insecureEdgeTerminationPolicy": "Redirect",
+                "termination": "edge"
+              }
+            },
+            "scc": {
+              "create": true
+            },
+            "secrets": {
+              "apiTlsCrt": "",
+              "apiTlsKey": "",
+              "awsAccessKeyId": "",
+              "awsIamRole": "",
+              "awsSecretAccessKey": "",
+              "azureADEndpoint": "",
+              "azureADResourceID": "",
+              "azureClientId": "",
+              "azureClientSecret": "",
+              "azureResourceGroup": "",
+              "azureResourceMgrEndpoint": "",
+              "azureSubscriptionID": "",
+              "azureTenantId": "",
+              "dockerConfig": "",
+              "dockerConfigPath": "",
+              "googleApiKey": "",
+              "ibmSoftLayerApiKey": "",
+              "ibmSoftLayerApiUsername": "",
+              "vsphereEndpoint": "",
+              "vspherePassword": "",
+              "vsphereUsername": ""
+            },
+            "service": {
+              "aggregatedApiPort": 10250,
+              "externalPort": 8000,
+              "gatewayAdminPort": 8877,
+              "internalPort": 8000
+            },
+            "serviceAccount": {
+              "create": true,
+              "name": ""
+            },
+            "services": {
+              "dashboardbff": {
+                "hostNetwork": false
+              },
+              "executor": {
+                "hostNetwork": false
+              },
+              "securityContext": {
+                "fsGroup": 1000,
+                "runAsUser": 1000
+              }
+            },
+            "toolsImage": {
+              "enabled": true,
+              "pullPolicy": "Always"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/kasten/kasten-bundle@sha256:aca1212f1ffd5d2b76817b0f29a76fef27501cdf5c44798cb5363da9b6397051",
+      "bundle_path_digest": "sha256:aca1212f1ffd5d2b76817b0f29a76fef27501cdf5c44798cb5363da9b6397051",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-07-06T15:09:07.414000+00:00",
+      "csv_description": "K10 data management platform for OpenShift, The Market Leader for Kubernetes Backup and DR",
+      "csv_display_name": "K10 Helm Operator",
+      "csv_metadata_description": "K10 data management platform for OpenShift, The Market Leader for Kubernetes Backup and DR",
+      "csv_name": "k10-kasten-operator.4.0.5003",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T01:38:36.377000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "k10-kasten-operator",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:298c6b0f529604ea78321619c7ad2e116f2c86787960a03a201edb706a37ec0b",
+          "image": "registry.connect.redhat.com/kasten/k10-operator@sha256:298c6b0f529604ea78321619c7ad2e116f2c86787960a03a201edb706a37ec0b",
+          "name": "k10-operator-298c6b0f529604ea78321619c7ad2e116f2c86787960a03a201edb706a37ec0b-annotation"
+        },
+        {
+          "digest": "sha256:6d0286b8a8f6f3cd9d6cd8319400acf27b70fbb52df5808ec6fe2d9849be7d8c",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:6d0286b8a8f6f3cd9d6cd8319400acf27b70fbb52df5808ec6fe2d9849be7d8c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:298c6b0f529604ea78321619c7ad2e116f2c86787960a03a201edb706a37ec0b",
+          "image": "registry.connect.redhat.com/kasten/k10-operator@sha256:298c6b0f529604ea78321619c7ad2e116f2c86787960a03a201edb706a37ec0b",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:fd1958a016b874869adaa864ee07401bc1c55dd6a334929e6db38380b7f56543",
+          "image": "registry.connect.redhat.com/kasten/aggregatedapis@sha256:fd1958a016b874869adaa864ee07401bc1c55dd6a334929e6db38380b7f56543",
+          "name": "aggregatedapis"
+        },
+        {
+          "digest": "sha256:a4acda5ee385396464e943c11380e6ed4cee55d1388f924d4983bf3a8ef59dbc",
+          "image": "registry.connect.redhat.com/kasten/auth@sha256:a4acda5ee385396464e943c11380e6ed4cee55d1388f924d4983bf3a8ef59dbc",
+          "name": "auth"
+        },
+        {
+          "digest": "sha256:0c602e22c528dd271617e090827b240e9811e3e430a3ed1c5f0bb3cbc0ff449a",
+          "image": "registry.connect.redhat.com/kasten/catalog@sha256:0c602e22c528dd271617e090827b240e9811e3e430a3ed1c5f0bb3cbc0ff449a",
+          "name": "catalog"
+        },
+        {
+          "digest": "sha256:6634c555a2d63f8a683e017f83fcaa91934b6d90b28fa8c6d6e81887b153d8ab",
+          "image": "registry.connect.redhat.com/kasten/config@sha256:6634c555a2d63f8a683e017f83fcaa91934b6d90b28fa8c6d6e81887b153d8ab",
+          "name": "config"
+        },
+        {
+          "digest": "sha256:51514e0db8f672b91a2ec66fb39170bcdcac7d4ec5f76744c7f9d12e1fec7209",
+          "image": "registry.connect.redhat.com/kasten/crypto@sha256:51514e0db8f672b91a2ec66fb39170bcdcac7d4ec5f76744c7f9d12e1fec7209",
+          "name": "crypto"
+        },
+        {
+          "digest": "sha256:7ae8f647b44494a687922c423dff8d8b63125df17a55e2952fe9e2625438cc1a",
+          "image": "registry.connect.redhat.com/kasten/dashboardbff@sha256:7ae8f647b44494a687922c423dff8d8b63125df17a55e2952fe9e2625438cc1a",
+          "name": "dashboardbff"
+        },
+        {
+          "digest": "sha256:69d899fdb06a963b29bd3281e84e44022587f9bcd5be29bc406b6fd8b4357592",
+          "image": "registry.connect.redhat.com/kasten/executor@sha256:69d899fdb06a963b29bd3281e84e44022587f9bcd5be29bc406b6fd8b4357592",
+          "name": "executor"
+        },
+        {
+          "digest": "sha256:287a2d8fc20d6ac0d7c35b962d14a70d4057286e48f5d428a5f252cfc6c669f6",
+          "image": "registry.connect.redhat.com/kasten/frontend@sha256:287a2d8fc20d6ac0d7c35b962d14a70d4057286e48f5d428a5f252cfc6c669f6",
+          "name": "frontend"
+        },
+        {
+          "digest": "sha256:d11d4becac2bf961bbaa25577d9a4fc1d8b23efe85cb6ccbc9b9328cb177c59b",
+          "image": "registry.connect.redhat.com/kasten/jobs@sha256:d11d4becac2bf961bbaa25577d9a4fc1d8b23efe85cb6ccbc9b9328cb177c59b",
+          "name": "jobs"
+        },
+        {
+          "digest": "sha256:ee74eb557c4b4ecdca57830416ce7af09ef7d4a3bd853da73fc8b3e06da7027f",
+          "image": "registry.connect.redhat.com/kasten/kanister@sha256:ee74eb557c4b4ecdca57830416ce7af09ef7d4a3bd853da73fc8b3e06da7027f",
+          "name": "kanister"
+        },
+        {
+          "digest": "sha256:a5f3aab57929ef590899d225c67ff5039a635654fae8fe4a873154a36e3fb341",
+          "image": "registry.connect.redhat.com/kasten/logging@sha256:a5f3aab57929ef590899d225c67ff5039a635654fae8fe4a873154a36e3fb341",
+          "name": "logging"
+        },
+        {
+          "digest": "sha256:ba2fb55bc7f7e5d2fd18d7cc5711ac3104a96c746180205beb9c550259132b2f",
+          "image": "registry.connect.redhat.com/kasten/metering@sha256:ba2fb55bc7f7e5d2fd18d7cc5711ac3104a96c746180205beb9c550259132b2f",
+          "name": "metering"
+        },
+        {
+          "digest": "sha256:f39c1822afd602fbfec3a5b47bae106c13bd096dc3e0782dc83d39db4db970e8",
+          "image": "registry.connect.redhat.com/kasten/state@sha256:f39c1822afd602fbfec3a5b47bae106c13bd096dc3e0782dc83d39db4db970e8",
+          "name": "state"
+        },
+        {
+          "digest": "sha256:adebb0e44b451773465345d518c7470851ff0c88408d079532e5398152da54ea",
+          "image": "registry.connect.redhat.com/kasten/ambassador@sha256:adebb0e44b451773465345d518c7470851ff0c88408d079532e5398152da54ea",
+          "name": "ambassador"
+        },
+        {
+          "digest": "sha256:72546dde6d69358ba01260361abb8474958fe63c4b717a4504ecc74b306fc670",
+          "image": "registry.connect.redhat.com/kasten/prometheus@sha256:72546dde6d69358ba01260361abb8474958fe63c4b717a4504ecc74b306fc670",
+          "name": "prometheus"
+        },
+        {
+          "digest": "sha256:a320d6893b7b7ef006d0c4ee51bc223ecd07d845e8ec633e3485c7d1cc700395",
+          "image": "registry.connect.redhat.com/kasten/configmap-reload@sha256:a320d6893b7b7ef006d0c4ee51bc223ecd07d845e8ec633e3485c7d1cc700395",
+          "name": "configmapreload"
+        },
+        {
+          "digest": "sha256:6c1e284cdc03f4e0888653a90edef7d541a9e7eae87ce181b81e2b69edebfda1",
+          "image": "registry.connect.redhat.com/kasten/dex@sha256:6c1e284cdc03f4e0888653a90edef7d541a9e7eae87ce181b81e2b69edebfda1",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:e33203b51a1905204b9a6b474641a1b82a0db71e4cca55ddb10b5f390babeb29",
+          "image": "registry.connect.redhat.com/kasten/kanister-tools@sha256:e33203b51a1905204b9a6b474641a1b82a0db71e4cca55ddb10b5f390babeb29",
+          "name": "kanistertools"
+        },
+        {
+          "digest": "sha256:216fcd6c27f9372518051ce20ceb8b887f5e7a62338a82fba25ff912305ce718",
+          "image": "registry.connect.redhat.com/kasten/upgrade@sha256:216fcd6c27f9372518051ce20ceb8b887f5e7a62338a82fba25ff912305ce718",
+          "name": "upgrade"
+        },
+        {
+          "digest": "sha256:741a44bb4482e0c25f3680acd8fa02899ea9e41b44b46ff6aa3877a3180c6e07",
+          "image": "registry.connect.redhat.com/kasten/cephtool@sha256:741a44bb4482e0c25f3680acd8fa02899ea9e41b44b46ff6aa3877a3180c6e07",
+          "name": "cephtool"
+        },
+        {
+          "digest": "sha256:19e04b7db994cb4e0b0626620d11b4d7f6a930e81d3de9c17ff8b06449c96a98",
+          "image": "registry.connect.redhat.com/kasten/datamover@sha256:19e04b7db994cb4e0b0626620d11b4d7f6a930e81d3de9c17ff8b06449c96a98",
+          "name": "datamover"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "4.0.5003",
+      "version_original": "4.0.5003"
+    },
+    {
+      "_id": "60e4db8fdb72db7d0fadcf37",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta2",
+          "kind": "Runner",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": {
+            "gitlabUrl": "https://gitlab.com",
+            "imagePullPolicy": "Always",
+            "tags": "openshift, test",
+            "token": "gitlab-dev-runner-secret"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-runner-operator-bundle@sha256:abe1504fedbf38bc1cb45e5393216bae9cca95066ca84fa730c7e8b129930074",
+      "bundle_path_digest": "sha256:abe1504fedbf38bc1cb45e5393216bae9cca95066ca84fa730c7e8b129930074",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-07-06T22:39:11.154000+00:00",
+      "csv_description": "GitLab Runner is the lightweight, highly-scalable agent that runs your build jobs and sends the results back to a GitLab instance. GitLab Runner works in conjunction with GitLab CI/CD, the open-source continuous integration service included with GitLab.\n\nThe GitLab Runner operator manages the lifecycle of GitLab Runner in Kubernetes or Openshift clusters. The operator aims to automate the tasks needed to run your CI/CD jobs in your container orchestration platform.\n\n## Usage\n\n To link a GitLab Runner instance to a self-hosted GitLab instance or the hosted [GitLab](https://gitlab.com), you first need to:\n\n 1. create a secret containing the `runner-registration-token` from your GitLab project.\n\n   ```\n  cat > gitlab-runner-secret.yml << EOF\n  apiVersion: v1\n  kind: Secret\n  metadata:\n    name: gitlab-runner-secret\n  type: Opaque\n  stringData:\n    runner-registration-token: REPLACE_ME # your project runner secret\n  EOF\n  ```\n\n  ```\n  oc apply -f gitlab-runner-secret.yml\n  ```\n\n 2. Create the Custom Resource Definition (CRD) file and include the following information. The tags value must be openshift for the job to run.\n\n   ```\n   cat > gitlab-runner.yml << EOF\n   apiVersion: apps.gitlab.com/v1beta2\n   kind: Runner\n   metadata:\n     name: gitlab-runner\n   spec:\n     gitlabUrl: https://gitlab.example.com\n     buildImage: alpine\n     token: gitlab-runner-secret\n     tags: openshift\n   EOF\n   ```\n\n  ```\n  oc apply -f gitlab-runner.yml\n  ```\n\n## Full documentation\n\nVisit [Install GitLab Runner on Red Hat OpenShift](https://docs.gitlab.com/runner/install/openshift.html)\n",
+      "csv_display_name": "GitLab Runner",
+      "csv_metadata_description": "GitLab Runner operator manages lifecycle of GitLab Runner instances",
+      "csv_name": "gitlab-runner-operator.v1.2.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:48:33.448000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "gitlab-runner-operator",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:f48d93d89905284a35a72ec312ad4313bb1a42deaaab662eb181a65d34a89cd9",
+          "image": "registry.connect.redhat.com/gitlab/gitlab-runner@sha256:f48d93d89905284a35a72ec312ad4313bb1a42deaaab662eb181a65d34a89cd9",
+          "name": "gitlab-runner"
+        },
+        {
+          "digest": "sha256:9148c4c10685871e3bbed037d9c36e85f0603da38e721c5db2a85b9c6defeac9",
+          "image": "registry.connect.redhat.com/gitlab/gitlab-runner-helper@sha256:9148c4c10685871e3bbed037d9c36e85f0603da38e721c5db2a85b9c6defeac9",
+          "name": "gitlab-runner-helper"
+        },
+        {
+          "digest": "sha256:6ac79da50858f82949e1dae4a016cbe86b75de977fe747a958d28dcd5c8e4080",
+          "image": "registry.connect.redhat.com/gitlab/gitlab-runner-operator@sha256:6ac79da50858f82949e1dae4a016cbe86b75de977fe747a958d28dcd5c8e4080",
+          "name": "gitlab-runner-operator"
+        },
+        {
+          "digest": "sha256:dc0f91e256c86c3f7cb930d0e4d48eb68576425bc4bd288fb76decb0577c7e9e",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:dc0f91e256c86c3f7cb930d0e4d48eb68576425bc4bd288fb76decb0577c7e9e",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.2.0",
+      "version_original": "1.2.0"
     }
   ],
   "page": 12,
   "page_size": 100,
-  "total": 4587
+  "total": 4520
 }
