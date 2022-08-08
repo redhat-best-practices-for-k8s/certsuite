@@ -3,6 +3,7 @@ package daemonset
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -14,12 +15,13 @@ import (
 )
 
 const (
-	imageWithVersion                   = "quay.io/testnetworkfunction/debug-partner:latest"
 	timeout                            = 5 * time.Minute
 	daemonsetDeletionCheckRetryInteval = 5 * time.Second
 	nodeExporter                       = "node-exporter"
 	containerName                      = "container-00"
 	debug                              = "debug"
+	tnfPartnerRepoDef                  = "quay.io/testnetworkfunction"
+	supportImageDef                    = "debug-partner:latest"
 )
 
 // Delete daemon set
@@ -187,8 +189,23 @@ func CreateDaemonSet(daemonSetName, namespace, containerName, imageWithVersion s
 	return daemonsetPods, nil
 }
 
+// Build image with version based on environment variables if provided, else use a default value
+func buildImageWithVersion() string {
+	tnfPartnerRepo := os.Getenv("TNF_PARTNER_REPO")
+	if tnfPartnerRepo == "" {
+		tnfPartnerRepo = tnfPartnerRepoDef
+	}
+	supportImage := os.Getenv("SUPPORT_IMAGE")
+	if supportImage == "" {
+		supportImage = supportImageDef
+	}
+
+	return tnfPartnerRepo + "/" + supportImage
+}
+
 // Deploy daemon set on repo partner
 func DeployPartnerTestDaemonset() error {
+	imageWithVersion := buildImageWithVersion()
 	_, err := CreateDaemonSet(provider.DaemonSetName, provider.DaemonSetNamespace, containerName, imageWithVersion, timeout)
 	if err != nil {
 		logrus.Errorf("Error deploying partner daemonset %s", err)
