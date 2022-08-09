@@ -300,6 +300,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.OCPStatus = data.OCPStatus
 	env.K8sVersion = data.K8sVersion
 	env.ResourceQuotas = data.ResourceQuotaItems
+	env.PersistentVolumes = data.PersistentVolumes
 	for _, nsHelmChartReleases := range data.HelmChartReleases {
 		for _, helmChartRelease := range nsHelmChartReleases {
 			if !isSkipHelmChart(helmChartRelease.Name, data.TestData.SkipHelmChartList) {
