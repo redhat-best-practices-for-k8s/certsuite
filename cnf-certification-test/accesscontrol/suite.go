@@ -581,7 +581,7 @@ func TestPodTolerationBypass(env *provider.TestEnvironment) {
 			// Check if the tolerations fall outside the 'default' and are modified versions
 			if tolerations.IsTolerationModified(t) {
 				podsWithRestrictedTolerationsNotDefault = append(podsWithRestrictedTolerationsNotDefault, put.String())
-				tnf.ClaimFilePrintf("Pod: %s has been found with non-default %s toleration %s which is not allowed.", string(t.Effect), put.String(), t.Effect)
+				tnf.ClaimFilePrintf("%s has been found with non-default toleration %s which is not allowed.", put.String(), t.Effect)
 			}
 		}
 	}
