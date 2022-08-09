@@ -68,7 +68,7 @@ func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container
 	return claimsLog, nil
 }
 
-func GetMcKernelArguments(env *provider.TestEnvironment, nodeName string) aMap map[string]string {
+func GetMcKernelArguments(env *provider.TestEnvironment, nodeName string) (aMap map[string]string) {
 	mcKernelArgumentsMap := arrayhelper.ArgListToMap(env.Nodes[nodeName].Mc.Spec.KernelArguments)
 	return mcKernelArgumentsMap
 }

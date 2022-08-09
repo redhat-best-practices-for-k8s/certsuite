@@ -416,7 +416,6 @@ func testUnalteredBootParams(env *provider.TestEnvironment) {
 	}
 }
 
-//nolint:funlen
 func testSysctlConfigs(env *provider.TestEnvironment) {
 	badContainers := []string{}
 
