@@ -439,12 +439,7 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 			continue
 		}
 
-		mcKernelArgumentsMap, err := bootparams.GetMcKernelArguments(env, cut.NodeName)
-		if err != nil {
-			tnf.ClaimFilePrintf("Failed to get the machine config kernel arguments for node %s, error: %s", cut.NodeName, err)
-			badContainers = append(badContainers, cut.String())
-			continue
-		}
+		mcKernelArgumentsMap := bootparams.GetMcKernelArguments(env, cut.NodeName)
 
 		for key, sysctlConfigVal := range sysctlSettings {
 			if mcVal, ok := mcKernelArgumentsMap[key]; ok {
