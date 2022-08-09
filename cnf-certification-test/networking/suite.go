@@ -188,7 +188,7 @@ func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommon
 
 //nolint:funlen
 func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
-	// List of all ports reserved by Openshift
+	// List of all ports reserved by OpenShift
 	OCPReservedPorts := map[int32]bool{22623: true, 22624: true}
 
 	var failedContainers int
@@ -199,7 +199,7 @@ func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		for _, port := range cut.Data.Ports {
 			if OCPReservedPorts[port.ContainerPort] {
-				tnf.ClaimFilePrintf("%s has declared a port (%d) reserved by Openshift", cut, port.ContainerPort)
+				tnf.ClaimFilePrintf("%s has declared a port (%d) reserved by OpenShift", cut, port.ContainerPort)
 				rogueContainers = append(rogueContainers, cut.String())
 				break
 			}
@@ -218,7 +218,7 @@ func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 		}
 		for port := range listeningPorts {
 			if OCPReservedPorts[int32(port.PortNumber)] {
-				tnf.ClaimFilePrintf("%s has one container listening on port %d reserved by Openshift", put, port.PortNumber)
+				tnf.ClaimFilePrintf("%s has one container listening on port %d reserved by OpenShift", put, port.PortNumber)
 				roguePods = append(roguePods, put.String())
 				break
 			}
@@ -226,13 +226,13 @@ func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 	}
 
 	if n := len(rogueContainers); n > 0 {
-		errMsg := fmt.Sprintf("Number of containers declaring ports reserved by Openshift: %d", n)
+		errMsg := fmt.Sprintf("Number of containers declaring ports reserved by OpenShift: %d", n)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
 	}
 
 	if n := len(roguePods); n > 0 {
-		errMsg := fmt.Sprintf("Number of pods having one or more containers listening on ports reserved by Openshift: %d", n)
+		errMsg := fmt.Sprintf("Number of pods having one or more containers listening on ports reserved by OpenShift: %d", n)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
 	}
