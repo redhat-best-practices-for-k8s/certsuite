@@ -351,6 +351,19 @@ Result Type|normative
 Suggested Remediation|Add a liveness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
 Exception Process|There is no documented exception process for this.
+#### persistent-volume-reclaim-policy
+
+Property|Description
+---|---
+Test Case Name|persistent-volume-reclaim-policy
+Test Case Label|lifecycle-persistent-volume-reclaim-policy
+Unique ID|http://test-network-function.com/testcases/lifecycle/persistent-volume-reclaim-policy
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/persistent-volume-reclaim-policy Check that the persistent volumes the CNF pods are using have a reclaim policy of delete.
+Result Type|informative
+Suggested Remediation|Ensure that all persistent volumes are using the reclaim policy: delete
+Best Practice Reference|https://TODO Section 3.3.4
+Exception Process|There is no documented exception process for this.
 #### pod-high-availability
 
 Property|Description

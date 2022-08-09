@@ -54,7 +54,6 @@ linters:
     - deadcode
     - depguard
     - dogsled
-    - dupl
     - errcheck
     - exhaustive
     - exportloopref
@@ -73,7 +72,6 @@ linters:
     - lll
     - misspell
     - nakedret
-    - noctx
     - nolintlint
     - revive
     - rowserrcheck
@@ -87,6 +85,7 @@ linters:
     - whitespace
   # do not enable:
   # - asciicheck
+  # - dupl
   # - gochecknoglobals
   # - gochecknoinits
   # - gocognit
@@ -95,6 +94,7 @@ linters:
   # - goerr113
   # - maligned
   # - nestif
+  # - noctx
   # - prealloc
   # - exportloopref
   # - structcheck
