@@ -864,7 +864,7 @@ that there are no changes to the following directories:
 		Identifier: TestOCPReservedPortsUsage,
 		Type:       normativeResult,
 		Description: formDescription(TestOCPReservedPortsUsage,
-			`Check that containers do not listen on ports that are reserved by Openshift`),
+			`Check that containers do not listen on ports that are reserved by OpenShift`),
 		Remediation:           OCPReservedPortsUsageRemediation,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.5.9",
 		ExceptionProcess:      NoDocumentedProcess,
