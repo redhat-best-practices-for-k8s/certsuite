@@ -107,7 +107,6 @@ func TestIsTolerationModified(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		// Testing with Guaranteed qosClass
 		assert.Equal(t, tc.expectedOutput, IsTolerationModified(tc.testToleration, tc.qosClass))
 	}
 }
