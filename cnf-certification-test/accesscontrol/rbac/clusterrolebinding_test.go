@@ -20,7 +20,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/autodiscover/pkg/clientsholder"
 )
 
 func TestGetClusterRoleBinding(t *testing.T) {

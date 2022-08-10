@@ -22,7 +22,7 @@ import (
 
 	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/autodiscover/pkg/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
 

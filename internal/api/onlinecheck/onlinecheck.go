@@ -25,8 +25,8 @@ import (
 
 	"github.com/go-yaml/yaml"
 	log "github.com/sirupsen/logrus"
+	"github.com/test-network-function/autodiscover/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/internal/api/offlinecheck"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"helm.sh/helm/v3/pkg/release"
 )
 

@@ -22,8 +22,8 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
-	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/compatibility"
+	clientsholder "github.com/test-network-function/autodiscover/pkg/clientsholder"
+	"github.com/test-network-function/autodiscover/pkg/compatibility"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"

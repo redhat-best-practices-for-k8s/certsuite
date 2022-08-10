@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/autodiscover/pkg/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	v1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"

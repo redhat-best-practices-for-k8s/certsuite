@@ -22,8 +22,8 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/autodiscover/pkg/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	v1app "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"

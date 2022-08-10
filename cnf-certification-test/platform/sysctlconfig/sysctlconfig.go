@@ -21,7 +21,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/autodiscover/pkg/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 

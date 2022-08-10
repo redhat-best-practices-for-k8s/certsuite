@@ -25,10 +25,10 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 
+	"github.com/test-network-function/autodiscover/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification/certtool"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	api "github.com/test-network-function/cnf-certification-test/internal/api"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"

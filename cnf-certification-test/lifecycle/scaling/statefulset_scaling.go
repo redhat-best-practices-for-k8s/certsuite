@@ -23,8 +23,8 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/autodiscover/pkg/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 
 	v1app "k8s.io/api/apps/v1"
 	v1autoscaling "k8s.io/api/autoscaling/v1"

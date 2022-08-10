@@ -20,7 +20,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/autodiscover/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )

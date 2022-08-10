@@ -31,6 +31,8 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
+	"github.com/test-network-function/autodiscover/pkg/clientsholder"
+	"github.com/test-network-function/autodiscover/pkg/configuration"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/chaostesting"
@@ -39,9 +41,7 @@ import (
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	daemonset "github.com/test-network-function/cnf-certification-test/internal/daemonset"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
 )
 
