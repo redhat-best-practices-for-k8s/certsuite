@@ -4386,188 +4386,6 @@
       "version_original": "1.6.0"
     },
     {
-      "_id": "62313f134b7f7a371093085b",
-      "alm_examples": [
-        {
-          "api_version": "csi.hitachi.com/v1",
-          "kind": "HSPC",
-          "metadata": {
-            "name": "hspc",
-            "namespace": "kube-system"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hitachi/hspc-operator-bundle@sha256:8c27039726005a30f2e60afc7d72a7eea4ffd6ec1802c393e7d2d891d131674e",
-      "bundle_path_digest": "sha256:8c27039726005a30f2e60afc7d72a7eea4ffd6ec1802c393e7d2d891d131674e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-16T01:36:19.685000+00:00",
-      "csv_description": "## About\nHitachi Storage Plug-in for Containers (HSPC) is a plugin that integrates Hitachi VSP storage into Kubernetes based clusters.\nHSPC provides dynamic persistent volume provisioning capabilities from Hitachi's block storage arrays.\n\nFor full documentation, go to our [Knowledge Base](https://knowledge.hitachivantara.com/Documents/Adapters_and_Drivers/Storage_Adapters_and_Drivers/Containers) and refer to the reference guide for HSPC v3.9.0.\n\n## Requirements\n\n### Supported Driver Version\n\n* HSPC v3.9.0\n\n### Supported Platforms\n\n* OpenShift v4.7, v4.8, v4.9\n\n### Supported Operating Systems\n\n* RHEL 7.x\n* RHEL 8.x",
-      "csv_display_name": "Hitachi Storage Plug-in for Containers",
-      "csv_metadata_description": "An operator for managing Hitachi Storage Plug-in for Containers CSI driver",
-      "csv_name": "hspc-operator.v1.9.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:09:38.609000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "hspc-operator",
-      "provided_apis": [
-        {
-          "group": "csi.hitachi.com",
-          "kind": "HSPC",
-          "plural": "hspcs",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:550d2e1f01167fde1de4e1625b7eaa021518a8a6c99a1fd4821e20a5df8de933",
-          "image": "registry.connect.redhat.com/hitachi/hspc-csi-driver@sha256:550d2e1f01167fde1de4e1625b7eaa021518a8a6c99a1fd4821e20a5df8de933",
-          "name": "hspc-csi-driver"
-        },
-        {
-          "digest": "sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
-          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
-          "name": "hspc-operator"
-        },
-        {
-          "digest": "sha256:e4ce5adf0abe5add640b166bc9f658d069ca4783ed37fcd8774f20da89a7cad1",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:e4ce5adf0abe5add640b166bc9f658d069ca4783ed37fcd8774f20da89a7cad1",
-          "name": "ose-csi-external-attacher-v4.7"
-        },
-        {
-          "digest": "sha256:d99597158ef4baf204e0fe7ed24c1dbc7b0218305077cdaf22c3899a1b3988c7",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:d99597158ef4baf204e0fe7ed24c1dbc7b0218305077cdaf22c3899a1b3988c7",
-          "name": "ose-csi-external-provisioner-v4.7"
-        },
-        {
-          "digest": "sha256:2c7bb13d648a5048584530fddc62deb4b2e47bb7d389b77992e1077b920867e8",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:2c7bb13d648a5048584530fddc62deb4b2e47bb7d389b77992e1077b920867e8",
-          "name": "ose-csi-node-driver-registrar-v4.7"
-        },
-        {
-          "digest": "sha256:221cda173d5ad2be44655dd8ab697a80bd94149358183b3375b09280ba025f92",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:221cda173d5ad2be44655dd8ab697a80bd94149358183b3375b09280ba025f92",
-          "name": "ose-csi-livenessprobe-v4.7"
-        },
-        {
-          "digest": "sha256:890729e261e87ad12bf7c523f9c2c39a20fb07e18aa269cd015f86ed23ac22b7",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:890729e261e87ad12bf7c523f9c2c39a20fb07e18aa269cd015f86ed23ac22b7",
-          "name": "ose-csi-external-resizer-rhel8-v4.7"
-        },
-        {
-          "digest": "sha256:727b6317ef2575c905cd87c9d6d14b7c45886c4f20f0d75904641c55bb1e1814",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:727b6317ef2575c905cd87c9d6d14b7c45886c4f20f0d75904641c55bb1e1814",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.7"
-        },
-        {
-          "digest": "sha256:89e05898626e7689113d46ffb98c98e95a2a49b71c6a8b32409699eab8f32ea4",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:89e05898626e7689113d46ffb98c98e95a2a49b71c6a8b32409699eab8f32ea4",
-          "name": "ose-csi-external-attacher-v4.8"
-        },
-        {
-          "digest": "sha256:f91ba2c92c97f9b4c4afe789040250c9a6cb675fbe24cbae3ad381e58bc3b83a",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:f91ba2c92c97f9b4c4afe789040250c9a6cb675fbe24cbae3ad381e58bc3b83a",
-          "name": "ose-csi-external-provisioner-v4.8"
-        },
-        {
-          "digest": "sha256:2e01a77235d1b692b87ec7e3e842dab52762032fbf3988f258960e2cece04225",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:2e01a77235d1b692b87ec7e3e842dab52762032fbf3988f258960e2cece04225",
-          "name": "ose-csi-node-driver-registrar-v4.8"
-        },
-        {
-          "digest": "sha256:2f0c069bd085951f864c268ebbb28d5044e912327cf1de13cb40e082a2aaf4db",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:2f0c069bd085951f864c268ebbb28d5044e912327cf1de13cb40e082a2aaf4db",
-          "name": "ose-csi-livenessprobe-v4.8"
-        },
-        {
-          "digest": "sha256:e55efd04b15565bfcfcb8bd64b4da3a58461d8a6e2cfbbf1b1ac4bc537cf307b",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:e55efd04b15565bfcfcb8bd64b4da3a58461d8a6e2cfbbf1b1ac4bc537cf307b",
-          "name": "ose-csi-external-resizer-rhel8-v4.8"
-        },
-        {
-          "digest": "sha256:bca38e3c695cf2bbb338b4933982f6892782b7fec14a1c835cb5a08c1cc7a14c",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:bca38e3c695cf2bbb338b4933982f6892782b7fec14a1c835cb5a08c1cc7a14c",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.8"
-        },
-        {
-          "digest": "sha256:9ffed943cdc9597803faedfac8891b963e08ec86f4cb21a59ae7c37adc5ce349",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:9ffed943cdc9597803faedfac8891b963e08ec86f4cb21a59ae7c37adc5ce349",
-          "name": "ose-csi-external-attacher-v4.9"
-        },
-        {
-          "digest": "sha256:ea0797b04595d1bf46ca5d3b205cead25c70e8c252e844551944079000a3fbe1",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:ea0797b04595d1bf46ca5d3b205cead25c70e8c252e844551944079000a3fbe1",
-          "name": "ose-csi-external-provisioner-v4.9"
-        },
-        {
-          "digest": "sha256:4ca6d4d2f88eb0435084e1e0703330181e69e9c5c205ce21071d30fce864efde",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:4ca6d4d2f88eb0435084e1e0703330181e69e9c5c205ce21071d30fce864efde",
-          "name": "ose-csi-node-driver-registrar-v4.9"
-        },
-        {
-          "digest": "sha256:7c9816e9265dcc83af534a61175814e174ec10c1b411e71baf5d379ceeca1ecd",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:7c9816e9265dcc83af534a61175814e174ec10c1b411e71baf5d379ceeca1ecd",
-          "name": "ose-csi-livenessprobe-v4.9"
-        },
-        {
-          "digest": "sha256:49ed3001a156015c3acbe5ef058f9acbb471b456535e7d56f6baec742527de74",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:49ed3001a156015c3acbe5ef058f9acbb471b456535e7d56f6baec742527de74",
-          "name": "ose-csi-external-resizer-rhel8-v4.9"
-        },
-        {
-          "digest": "sha256:3ce747b7e19c5d0fa095fdeb29db3c9133575d24d941bad8ef6e71130c3f3883",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:3ce747b7e19c5d0fa095fdeb29db3c9133575d24d941bad8ef6e71130c3f3883",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.9"
-        },
-        {
-          "digest": "sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
-          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
-          "name": "hspc-operator-ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f-annotation"
-        },
-        {
-          "digest": "sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
-          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.9.0",
-      "version_original": "1.9.0"
-    },
-    {
       "_id": "623140d75f071f8d039e335b",
       "alm_examples": [
         {
@@ -4746,188 +4564,6 @@
       "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.9.0",
-      "version_original": "1.9.0"
-    },
-    {
-      "_id": "6231434d55defc084591ae87",
-      "alm_examples": [
-        {
-          "api_version": "csi.hitachi.com/v1",
-          "kind": "HSPC",
-          "metadata": {
-            "name": "hspc",
-            "namespace": "kube-system"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hitachi/hspc-operator-bundle@sha256:8c27039726005a30f2e60afc7d72a7eea4ffd6ec1802c393e7d2d891d131674e",
-      "bundle_path_digest": "sha256:8c27039726005a30f2e60afc7d72a7eea4ffd6ec1802c393e7d2d891d131674e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-16T01:54:21.661000+00:00",
-      "csv_description": "## About\nHitachi Storage Plug-in for Containers (HSPC) is a plugin that integrates Hitachi VSP storage into Kubernetes based clusters.\nHSPC provides dynamic persistent volume provisioning capabilities from Hitachi's block storage arrays.\n\nFor full documentation, go to our [Knowledge Base](https://knowledge.hitachivantara.com/Documents/Adapters_and_Drivers/Storage_Adapters_and_Drivers/Containers) and refer to the reference guide for HSPC v3.9.0.\n\n## Requirements\n\n### Supported Driver Version\n\n* HSPC v3.9.0\n\n### Supported Platforms\n\n* OpenShift v4.7, v4.8, v4.9\n\n### Supported Operating Systems\n\n* RHEL 7.x\n* RHEL 8.x",
-      "csv_display_name": "Hitachi Storage Plug-in for Containers",
-      "csv_metadata_description": "An operator for managing Hitachi Storage Plug-in for Containers CSI driver",
-      "csv_name": "hspc-operator.v1.9.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:55:33.024000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "hspc-operator",
-      "provided_apis": [
-        {
-          "group": "csi.hitachi.com",
-          "kind": "HSPC",
-          "plural": "hspcs",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:550d2e1f01167fde1de4e1625b7eaa021518a8a6c99a1fd4821e20a5df8de933",
-          "image": "registry.connect.redhat.com/hitachi/hspc-csi-driver@sha256:550d2e1f01167fde1de4e1625b7eaa021518a8a6c99a1fd4821e20a5df8de933",
-          "name": "hspc-csi-driver"
-        },
-        {
-          "digest": "sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
-          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
-          "name": "hspc-operator"
-        },
-        {
-          "digest": "sha256:e4ce5adf0abe5add640b166bc9f658d069ca4783ed37fcd8774f20da89a7cad1",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:e4ce5adf0abe5add640b166bc9f658d069ca4783ed37fcd8774f20da89a7cad1",
-          "name": "ose-csi-external-attacher-v4.7"
-        },
-        {
-          "digest": "sha256:d99597158ef4baf204e0fe7ed24c1dbc7b0218305077cdaf22c3899a1b3988c7",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:d99597158ef4baf204e0fe7ed24c1dbc7b0218305077cdaf22c3899a1b3988c7",
-          "name": "ose-csi-external-provisioner-v4.7"
-        },
-        {
-          "digest": "sha256:2c7bb13d648a5048584530fddc62deb4b2e47bb7d389b77992e1077b920867e8",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:2c7bb13d648a5048584530fddc62deb4b2e47bb7d389b77992e1077b920867e8",
-          "name": "ose-csi-node-driver-registrar-v4.7"
-        },
-        {
-          "digest": "sha256:221cda173d5ad2be44655dd8ab697a80bd94149358183b3375b09280ba025f92",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:221cda173d5ad2be44655dd8ab697a80bd94149358183b3375b09280ba025f92",
-          "name": "ose-csi-livenessprobe-v4.7"
-        },
-        {
-          "digest": "sha256:890729e261e87ad12bf7c523f9c2c39a20fb07e18aa269cd015f86ed23ac22b7",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:890729e261e87ad12bf7c523f9c2c39a20fb07e18aa269cd015f86ed23ac22b7",
-          "name": "ose-csi-external-resizer-rhel8-v4.7"
-        },
-        {
-          "digest": "sha256:727b6317ef2575c905cd87c9d6d14b7c45886c4f20f0d75904641c55bb1e1814",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:727b6317ef2575c905cd87c9d6d14b7c45886c4f20f0d75904641c55bb1e1814",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.7"
-        },
-        {
-          "digest": "sha256:89e05898626e7689113d46ffb98c98e95a2a49b71c6a8b32409699eab8f32ea4",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:89e05898626e7689113d46ffb98c98e95a2a49b71c6a8b32409699eab8f32ea4",
-          "name": "ose-csi-external-attacher-v4.8"
-        },
-        {
-          "digest": "sha256:f91ba2c92c97f9b4c4afe789040250c9a6cb675fbe24cbae3ad381e58bc3b83a",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:f91ba2c92c97f9b4c4afe789040250c9a6cb675fbe24cbae3ad381e58bc3b83a",
-          "name": "ose-csi-external-provisioner-v4.8"
-        },
-        {
-          "digest": "sha256:2e01a77235d1b692b87ec7e3e842dab52762032fbf3988f258960e2cece04225",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:2e01a77235d1b692b87ec7e3e842dab52762032fbf3988f258960e2cece04225",
-          "name": "ose-csi-node-driver-registrar-v4.8"
-        },
-        {
-          "digest": "sha256:2f0c069bd085951f864c268ebbb28d5044e912327cf1de13cb40e082a2aaf4db",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:2f0c069bd085951f864c268ebbb28d5044e912327cf1de13cb40e082a2aaf4db",
-          "name": "ose-csi-livenessprobe-v4.8"
-        },
-        {
-          "digest": "sha256:e55efd04b15565bfcfcb8bd64b4da3a58461d8a6e2cfbbf1b1ac4bc537cf307b",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:e55efd04b15565bfcfcb8bd64b4da3a58461d8a6e2cfbbf1b1ac4bc537cf307b",
-          "name": "ose-csi-external-resizer-rhel8-v4.8"
-        },
-        {
-          "digest": "sha256:bca38e3c695cf2bbb338b4933982f6892782b7fec14a1c835cb5a08c1cc7a14c",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:bca38e3c695cf2bbb338b4933982f6892782b7fec14a1c835cb5a08c1cc7a14c",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.8"
-        },
-        {
-          "digest": "sha256:9ffed943cdc9597803faedfac8891b963e08ec86f4cb21a59ae7c37adc5ce349",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:9ffed943cdc9597803faedfac8891b963e08ec86f4cb21a59ae7c37adc5ce349",
-          "name": "ose-csi-external-attacher-v4.9"
-        },
-        {
-          "digest": "sha256:ea0797b04595d1bf46ca5d3b205cead25c70e8c252e844551944079000a3fbe1",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:ea0797b04595d1bf46ca5d3b205cead25c70e8c252e844551944079000a3fbe1",
-          "name": "ose-csi-external-provisioner-v4.9"
-        },
-        {
-          "digest": "sha256:4ca6d4d2f88eb0435084e1e0703330181e69e9c5c205ce21071d30fce864efde",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:4ca6d4d2f88eb0435084e1e0703330181e69e9c5c205ce21071d30fce864efde",
-          "name": "ose-csi-node-driver-registrar-v4.9"
-        },
-        {
-          "digest": "sha256:7c9816e9265dcc83af534a61175814e174ec10c1b411e71baf5d379ceeca1ecd",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:7c9816e9265dcc83af534a61175814e174ec10c1b411e71baf5d379ceeca1ecd",
-          "name": "ose-csi-livenessprobe-v4.9"
-        },
-        {
-          "digest": "sha256:49ed3001a156015c3acbe5ef058f9acbb471b456535e7d56f6baec742527de74",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:49ed3001a156015c3acbe5ef058f9acbb471b456535e7d56f6baec742527de74",
-          "name": "ose-csi-external-resizer-rhel8-v4.9"
-        },
-        {
-          "digest": "sha256:3ce747b7e19c5d0fa095fdeb29db3c9133575d24d941bad8ef6e71130c3f3883",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:3ce747b7e19c5d0fa095fdeb29db3c9133575d24d941bad8ef6e71130c3f3883",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.9"
-        },
-        {
-          "digest": "sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
-          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
-          "name": "hspc-operator-ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f-annotation"
-        },
-        {
-          "digest": "sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
-          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "1.9.0",
       "version_original": "1.9.0"
     },
@@ -20101,9 +19737,325 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "0.8.0",
       "version_original": "0.8.0"
+    },
+    {
+      "_id": "623460245593ce895a7b5366",
+      "alm_examples": [
+        {
+          "api_version": "anzo.cambridgesemantics.com/v1",
+          "kind": "Anzo",
+          "metadata": {
+            "name": "agent01"
+          },
+          "spec": {
+            "nodeConfig": {
+              "spec": {
+                "replicas": 1,
+                "selector": {
+                  "matchLabels": {
+                    "app": "anzo"
+                  }
+                },
+                "serviceName": "anzo-agent01",
+                "template": {
+                  "metadata": {
+                    "labels": {
+                      "app": "anzo"
+                    }
+                  },
+                  "spec": {
+                    "containers": [
+                      {
+                        "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+                        "name": "anzo",
+                        "resources": {
+                          "limits": {
+                            "cpu": "4000m",
+                            "memory": "12Gi"
+                          },
+                          "requests": {
+                            "cpu": "4000m",
+                            "memory": "12Gi"
+                          }
+                        }
+                      }
+                    ],
+                    "serviceAccountName": "anzo-operator"
+                  }
+                }
+              }
+            },
+            "role": "AnzoAgent"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzo-operator-bundle@sha256:28703523a1c160570fc23fb1236d2a02108b97e4423d42b0d3cde98c94d351cb",
+      "bundle_path_digest": "sha256:28703523a1c160570fc23fb1236d2a02108b97e4423d42b0d3cde98c94d351cb",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:34:12.674000+00:00",
+      "csv_description": "The Anzo Operator provides the way to install and configure an anzo agent setup on Red Hat K8S environment.\nCurrently, this is supported only through when deployed as an Anzo Agent as part of an Anzo Unstructured deployment.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzo/blob/v2.0.0/README.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzo/userdoc/cloud-deployments.htm )\n\n### Support\n\nWe offer Support to our customers through [ Cambridge Semantics Customer Center ]( https://customercenter.cambridgesemantics.com/ ).",
+      "csv_display_name": "Anzo Operator",
+      "csv_metadata_description": "kubernetes operator for Anzo",
+      "csv_name": "anzo-operator.v2.0.101",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:03:29.507000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "anzo-operator",
+      "provided_apis": [
+        {
+          "group": "anzo.cambridgesemantics.com",
+          "kind": "Anzo",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
+          "name": "anzo-operator-563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0-annotation"
+        },
+        {
+          "digest": "sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+          "name": "anzo"
+        },
+        {
+          "digest": "sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+          "name": "anzo-d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.0.0",
+      "version_original": "2.0.0"
+    },
+    {
+      "_id": "623460265593ce895a7b5367",
+      "alm_examples": [
+        {
+          "api_version": "anzograph.clusters.cambridgesemantics.com/v2",
+          "kind": "AnzoGraph",
+          "metadata": {
+            "name": "azg01"
+          },
+          "spec": {
+            "db": {
+              "nodeConfig": {
+                "spec": {
+                  "replicas": 1,
+                  "selector": {
+                    "matchLabels": {
+                      "app_data": "anzograph-data-grpc",
+                      "app_mgmt": "anzograph-mgmt-grpc"
+                    }
+                  },
+                  "serviceName": "anzograph-azg01",
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app_data": "anzograph-data-grpc",
+                        "app_mgmt": "anzograph-mgmt-grpc"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-db@sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+                          "name": "db",
+                          "resources": {
+                            "limits": {
+                              "cpu": "8000m",
+                              "memory": "8Gi"
+                            },
+                            "requests": {
+                              "cpu": "8000m",
+                              "memory": "8Gi"
+                            }
+                          }
+                        }
+                      ],
+                      "serviceAccountName": "anzograph-operator"
+                    }
+                  }
+                }
+              }
+            },
+            "deployFrontend": false,
+            "frontend": {
+              "nodeConfig": {
+                "spec": {
+                  "replicas": 1,
+                  "selector": {
+                    "matchLabels": {
+                      "app_mgmt": "anzograph-frontend"
+                    }
+                  },
+                  "serviceName": "anzograph-azg01",
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app_mgmt": "anzograph-frontend"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-frontend@sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+                          "name": "frontend",
+                          "resources": {
+                            "limits": {
+                              "cpu": "2000m",
+                              "memory": "4Gi"
+                            },
+                            "requests": {
+                              "cpu": "2000m",
+                              "memory": "4Gi"
+                            }
+                          }
+                        }
+                      ],
+                      "serviceAccountName": "anzograph-operator"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzograph-operator-bundle@sha256:9418a3505873ac387f2b5455ec7e696739a2bb6f03232f8c0f59489c605b96f2",
+      "bundle_path_digest": "sha256:9418a3505873ac387f2b5455ec7e696739a2bb6f03232f8c0f59489c605b96f2",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:34:14.980000+00:00",
+      "csv_description": "The AnzoGraph Operator provides the way to install and configure an AnzoGraph\ncluster on Red Hat K8S environment.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzograph/blob/v2.0.1/README_openshift_marketplace.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzograph/userdoc/ )\n\n### Support\n\nWe offer Support to our customers with the AnzoGraph db Enterprise Edition License [here]( https://customercenter.cambridgesemantics.com/ ). For AnzoGraph db Free Edition questions, get help from our Anzograph User Community at Stack Overflow. When submitting a question, include the tag 'anzograph'.",
+      "csv_display_name": "AnzoGraph Operator",
+      "csv_metadata_description": "kubernetes operator for AnzoGraph DB",
+      "csv_name": "anzograph-operator.v2.0.102",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T03:49:35.757000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "anzograph-operator",
+      "provided_apis": [
+        {
+          "group": "anzograph.clusters.cambridgesemantics.com",
+          "kind": "AnzoGraph",
+          "version": "v2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-operator@sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "name": "anzograph-operator-a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732-annotation"
+        },
+        {
+          "digest": "sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-operator@sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e3bdddf811b5ba69f388d023aea1ba538edd00e9f415c33ec555321d39129a36",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph@sha256:e3bdddf811b5ba69f388d023aea1ba538edd00e9f415c33ec555321d39129a36",
+          "name": "anzograph_allinone"
+        },
+        {
+          "digest": "sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-db@sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "name": "anzograph_db"
+        },
+        {
+          "digest": "sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-frontend@sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "name": "anzograph_frontend"
+        },
+        {
+          "digest": "sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-frontend@sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "name": "anzograph-frontend-c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3-annotation"
+        },
+        {
+          "digest": "sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-db@sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "name": "anzograph-db-8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.0.1",
+      "version_original": "2.0.1"
     }
   ],
   "page": 22,
   "page_size": 100,
-  "total": 4531
+  "total": 4532
 }
