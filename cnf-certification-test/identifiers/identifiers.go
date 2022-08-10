@@ -25,18 +25,18 @@ import (
 )
 
 const (
-	informativeResult        = "informative"
-	normativeResult          = "normative"
+	InformativeResult        = "informative"
+	NormativeResult          = "normative"
 	url                      = "http://test-network-function.com/testcases"
-	versionOne               = "v1.0.0"
+	VersionOne               = "v1.0.0"
 	bestPracticeDocV1dot3URL = "https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf"
 	bestPracticeDocV1dot4URL = "https://TODO" // TODO: Fill in this variable with the new v1.4 document when available.
 )
 
 const (
-	tagCommon   = "common"
-	tagExtended = "extended"
-	tagOnline   = "online"
+	TagCommon   = "common"
+	TagExtended = "extended"
+	TagOnline   = "online"
 )
 
 // TestCaseDescription describes a JUnit test case.
@@ -108,33 +108,33 @@ This test case requires the Deployment of the debug daemonset.`,
 CNFs may require routing table changes in order to communicate over the Default network. To exclude
 a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.
 The label value is not important, only its presence.`,
-		normativeResult,
+		NormativeResult,
 		NoDocumentedProcess,
-		versionOne,
+		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 5.2",
-		tagCommon)
+		TagCommon)
 
 	TestNetworkPolicyDenyAllIdentifier = AddCatalogEntry(
 		"network-policy-deny-all",
 		common.NetworkingTestKey,
 		`Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic`,
 		NetworkPolicyDenyAllRemediation,
-		informativeResult,
+		InformativeResult,
 		NoDocumentedProcess,
-		versionOne,
+		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 10.6",
-		tagCommon)
+		TagCommon)
 
 	Test1337UIDIdentifier = AddCatalogEntry(
 		"no-1337-uid",
 		common.AccessControlTestKey,
 		`Checks that all pods are not using the securityContext UID 1337`,
 		UID1337Remediation,
-		informativeResult,
+		InformativeResult,
 		NoDocumentedProcess,
-		versionOne,
+		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
-		tagExtended)
+		TagExtended)
 
 	return Catalog
 }
@@ -145,9 +145,9 @@ var (
 
 	// TestPodDeleteIdentifier tests for delete pod test
 	TestPodDeleteIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.ChaosTesting, "pod-delete"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 
 	// BaseDomain for the test cases
@@ -155,375 +155,375 @@ var (
 
 	// TestSecConCapabilitiesIdentifier tests for non compliant security context capabilities
 	TestSecConCapabilitiesIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "security-context-capabilities-check"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestSecConNonRootUserIdentifier tests that pods or containers are not running with root permissions
 	TestSecConNonRootUserIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "security-context-non-root-user-check"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestSecPrivilegedEscalation tests that containers are not allowed privilege escalation
 	TestSecConPrivilegeEscalation = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "security-context-privilege-escalation"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestSecPrivilegedEscalation tests that containers are not configured with host port privileges
 	TestContainerHostPort = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "container-host-port"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestPodHostNetwork tests that pods do not configure hostnetwork to true
 	TestPodHostNetwork = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-host-network"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestPodHostPath tests that pods do not configure a hostpath volume
 	TestPodHostPath = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-host-path"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestPodHostPath tests that pods do not configure a hostpath volume
 	TestPodHostIPC = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-host-ipc"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestPodHostPath tests that pods do not configure a hostpath volume
 	TestPodHostPID = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-host-pid"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestContainerIsCertifiedIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon, tagOnline),
+		Tags:    formTestTags(TagCommon, TagOnline),
 		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestHugepagesNotManuallyManipulated represents the test identifier testing hugepages have not been manipulated.
 	TestHugepagesNotManuallyManipulated = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "hugepages-config"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestICMPv6ConnectivityIdentifier tests icmpv6 connectivity.
 	TestICMPv6ConnectivityIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.NetworkingTestKey, "icmpv6-connectivity"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestICMPv4ConnectivityIdentifier tests icmpv4 Multus connectivity.
 	TestICMPv4ConnectivityMultusIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.NetworkingTestKey, "icmpv4-connectivity-multus"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestICMPv6ConnectivityIdentifier tests icmpv6 Multus connectivity.
 	TestICMPv6ConnectivityMultusIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.NetworkingTestKey, "icmpv6-connectivity-multus"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestServiceDualStack verifies that all services under test are either ipv6 single stack or dual-stack
 	TestServiceDualStackIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.NetworkingTestKey, "dual-stack-service"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestNFTablesIdentifier verifies that there is no nftable configuration in any containers of the CNF
 	TestNFTablesIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.NetworkingTestKey, "nftables"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestIPTablesIdentifier verifies that there is no iptables configuration in any containers of the CNF
 	TestIPTablesIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.NetworkingTestKey, "iptables"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestNamespaceBestPracticesIdentifier ensures the namespace has followed best namespace practices.
 	TestNamespaceBestPracticesIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "namespace"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestNonTaintedNodeKernelsIdentifier is the identifier for the test checking tainted nodes.
 	TestNonTaintedNodeKernelsIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "tainted-node-kernel"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestOperatorInstallStatusSucceededIdentifier tests Operator best practices.
 	TestOperatorInstallStatusSucceededIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.OperatorTestKey, "install-status-succeeded"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestOperatorNoPrivileges tests Operator has no privileges on resources.
 	TestOperatorNoPrivileges = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.OperatorTestKey, "install-status-no-privileges"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestOperatorIsCertifiedIdentifier tests that an Operator has passed Operator certification.
 	TestOperatorIsCertifiedIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon, tagOnline),
+		Tags:    formTestTags(TagCommon, TagOnline),
 		Url:     formTestURL(common.AffiliatedCertTestKey, "operator-is-certified"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestHelmIsCertifiedIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon, tagOnline),
+		Tags:    formTestTags(TagCommon, TagOnline),
 		Url:     formTestURL(common.AffiliatedCertTestKey, "helmchart-is-certified"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestOperatorIsInstalledViaOLMIdentifier tests that an Operator is installed via OLM.
 	TestOperatorIsInstalledViaOLMIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.OperatorTestKey, "install-source"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestPodNodeSelectorAndAffinityBestPractices is the test ensuring nodeSelector and nodeAffinity are not used by a
 	// Pod.
 	TestPodNodeSelectorAndAffinityBestPractices = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "pod-scheduling"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestPodHighAvailabilityBestPractices is the test ensuring podAntiAffinity are used by a
 	// Pod when pod replica # are great than 1
 	TestPodHighAvailabilityBestPractices = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "pod-high-availability"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 
 	// TestPodClusterRoleBindingsBestPracticesIdentifier ensures Pod crb best practices.
 	TestPodClusterRoleBindingsBestPracticesIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "cluster-role-bindings"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestPodDeploymentBestPracticesIdentifier ensures a CNF follows best Deployment practices.
 	TestPodDeploymentBestPracticesIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "pod-owner-type"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestDeploymentScalingIdentifier ensures deployment scale in/out operations work correctly.
 	TestDeploymentScalingIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "deployment-scaling"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestStateFulSetScalingIdentifier ensures statefulset scale in/out operations work correctly.
 	TestStateFulSetScalingIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "statefulset-scaling"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestImagePullPolicyIdentifier ensures represent image pull policy practices.
 	TestImagePullPolicyIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "image-pull-policy"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestPodRecreationIdentifier ensures recreation best practices.
 	TestPodRecreationIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "pod-recreation"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestPodRoleBindingsBestPracticesIdentifier represents rb best practices.
 	TestPodRoleBindingsBestPracticesIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-role-bindings"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestPodServiceAccountBestPracticesIdentifier tests Pod SA best practices.
 	TestPodServiceAccountBestPracticesIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-service-account"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	//
 	TestPodAutomountServiceAccountIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-automount-service-account-token"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestServicesDoNotUseNodeportsIdentifier ensures Services do not utilize NodePorts.
 	TestServicesDoNotUseNodeportsIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.NetworkingTestKey, "service-type"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestUnalteredBaseImageIdentifier ensures the base image is not altered.
 	TestUnalteredBaseImageIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "base-image"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestUnalteredStartupBootParamsIdentifier ensures startup boot params are not altered.
 	TestUnalteredStartupBootParamsIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "boot-params"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestLoggingIdentifier ensures stderr/stdout are used
 	TestLoggingIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.ObservabilityTestKey, "container-logging"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestTerminationMessagePolicy ensures pods have FallbackToLogsOnError set
 	TestTerminationMessagePolicyIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.ObservabilityTestKey, "termination-policy"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestCrdsStatusSubresourceIdentifier ensures all CRDs have a valid status subresource
 	TestCrdsStatusSubresourceIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.ObservabilityTestKey, "crd-status"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestShutdownIdentifier ensures pre-stop lifecycle is defined
 	TestShutdownIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "container-shutdown"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestSysctlConfigsIdentifier ensures that the node's sysctl configs are consistent with the MachineConfig CR
 	TestSysctlConfigsIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "sysctl-config"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestServiceMesh checks if service mesh is exist.
 	TestServiceMeshIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "service-mesh-usage"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestOCPLifecycleIdentifier ensures the OCP version of the cluster is within the valid lifecycle status
 	TestOCPLifecycleIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "ocp-lifecycle"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestNodeOperatingSystemIdentifier ensures workers in the cluster have an operating system that is compatible with the installed version of OpenShift
 	TestNodeOperatingSystemIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "ocp-node-os-lifecycle"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestScalingIdentifier ensures deployment scale in/out operations work correctly.
 	TestScalingIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "scaling"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestIsRedHatReleaseIdentifier ensures platform is defined
 	TestIsRedHatReleaseIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "isredhat-release"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestIsSELinuxEnforcingIdentifier ensures selinux is in enforcing mode
 	TestIsSELinuxEnforcingIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "is-selinux-enforcing"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestUndeclaredContainerPortsUsage = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.NetworkingTestKey, "undeclared-container-ports-usage"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestOCPReservedPortsUsage = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.NetworkingTestKey, "ocp-reserved-ports-usage"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestLivenessProbeIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "liveness-probe"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestReadinessProbeIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "readiness-probe"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestStartupProbeIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "startup-probe"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestOneProcessPerContainerIdentifier ensures that only one process per container is running
 	TestOneProcessPerContainerIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "one-process-per-container"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestSYSNiceRealtimeCapabilityIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "sys-nice-realtime-capability"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	// TestSysPtraceCapabilityIdentifier ensures that if process namespace sharing is enabled then the SYS_PTRACE capability is allowed
 	TestSysPtraceCapabilityIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "sys-ptrace-capability"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestPodRequestsAndLimitsIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "requests-and-limits"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestNamespaceResourceQuotaIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "namespace-resource-quota"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestPodDisruptionBudgetIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.ObservabilityTestKey, "pod-disruption-budget"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestPodTolerationBypassIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-toleration-bypass"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestPersistentVolumeReclaimPolicyIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "persistent-volume-reclaim-policy"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestContainersImageTag = claim.Identifier{
-		Tags:    formTestTags(tagExtended),
+		Tags:    formTestTags(TagExtended),
 		Url:     formTestURL(common.ManageabilityTestKey, "containers-image-tag"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestNoSSHDaemonsAllowedIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "ssh-daemons"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 	TestCPUIsolationIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "cpu-isolation"),
-		Version: versionOne,
+		Version: VersionOne,
 	}
 )
 
@@ -571,7 +571,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 
 	TestNodeOperatingSystemIdentifier: {
 		Identifier: TestNodeOperatingSystemIdentifier,
-		Type:       normativeResult,
+		Type:       NormativeResult,
 		Description: formDescription(TestNodeOperatingSystemIdentifier, `Tests that the nodes running in the cluster have operating systems
 			that are compatible with the deployed version of OpenShift.`),
 		Remediation:           NodeOperatingSystemRemediation,
@@ -581,7 +581,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 
 	TestOCPLifecycleIdentifier: {
 		Identifier:            TestOCPLifecycleIdentifier,
-		Type:                  normativeResult,
+		Type:                  NormativeResult,
 		Description:           formDescription(TestOCPLifecycleIdentifier, `Tests that the running OCP version is not end of life.`),
 		Remediation:           OCPLifecycleRemediation,
 		ExceptionProcess:      NoDocumentedProcess,
@@ -590,7 +590,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 
 	TestDeploymentScalingIdentifier: {
 		Identifier: TestDeploymentScalingIdentifier,
-		Type:       normativeResult,
+		Type:       NormativeResult,
 		Description: formDescription(TestDeploymentScalingIdentifier,
 			`Tests that CNF deployments support scale in/out operations. 
 			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the 
@@ -603,7 +603,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestStateFulSetScalingIdentifier: {
 		Identifier: TestStateFulSetScalingIdentifier,
-		Type:       normativeResult,
+		Type:       NormativeResult,
 		Description: formDescription(TestStateFulSetScalingIdentifier,
 			`Tests that CNF statefulsets support scale in/out operations. 
 			First, The test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the 
@@ -616,7 +616,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestSecConCapabilitiesIdentifier: {
 		Identifier:       TestSecConCapabilitiesIdentifier,
-		Type:             normativeResult,
+		Type:             NormativeResult,
 		Remediation:      SecConCapabilitiesRemediation,
 		ExceptionProcess: SecConCapabilitiesExceptionProcess,
 		Description: formDescription(TestSecConCapabilitiesIdentifier,
@@ -630,7 +630,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	// TestPodDeleteIdentifier: {
 	// 	Identifier:  TestPodDeleteIdentifier,
-	// 	Type:        normativeResult,
+	// 	Type:        NormativeResult,
 	// 	Remediation: `Make sure that the pods can be recreated successfully after deleting them`,
 	// 	Description: formDescription(TestPodDeleteIdentifier,
 	// 		`Using the litmus chaos operator, this test checks that pods are recreated successfully after deleting them.`),
@@ -638,7 +638,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	// },
 	TestSecConNonRootUserIdentifier: {
 		Identifier:       TestSecConNonRootUserIdentifier,
-		Type:             normativeResult,
+		Type:             NormativeResult,
 		Remediation:      SecConNonRootUserRemediation,
 		ExceptionProcess: SecConNonRootUserExceptionProcess,
 		Description: formDescription(TestSecConNonRootUserIdentifier,
@@ -647,7 +647,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestSecConPrivilegeEscalation: {
 		Identifier:       TestSecConPrivilegeEscalation,
-		Type:             normativeResult,
+		Type:             NormativeResult,
 		Remediation:      SecConPrivilegeRemediation,
 		ExceptionProcess: NoDocumentedProcess,
 		Description: formDescription(TestSecConPrivilegeEscalation,
@@ -656,7 +656,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestContainerIsCertifiedIdentifier: {
 		Identifier:  TestContainerIsCertifiedIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: ContainerIsCertifiedRemediation,
 		Description: formDescription(TestContainerIsCertifiedIdentifier,
 			`Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).`),
@@ -665,7 +665,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestContainerHostPort: {
 		Identifier:  TestContainerHostPort,
-		Type:        informativeResult,
+		Type:        InformativeResult,
 		Remediation: ContainerHostPortRemediation,
 		Description: formDescription(TestContainerHostPort,
 			`Verifies if containers define a hostPort.`),
@@ -674,7 +674,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestPodHostNetwork: {
 		Identifier:  TestPodHostNetwork,
-		Type:        informativeResult,
+		Type:        InformativeResult,
 		Remediation: PodHostNetworkRemediation,
 		Description: formDescription(TestPodHostNetwork,
 			`Verifies that the spec.HostNetwork parameter is set to false`),
@@ -683,7 +683,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestPodHostPath: {
 		Identifier:  TestPodHostPath,
-		Type:        informativeResult,
+		Type:        InformativeResult,
 		Remediation: PodHostNetworkRemediation,
 		Description: formDescription(TestPodHostPath,
 			`Verifies that the spec.HostPath parameter is not set (not present)`),
@@ -692,7 +692,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestPodHostIPC: {
 		Identifier:  TestPodHostIPC,
-		Type:        informativeResult,
+		Type:        InformativeResult,
 		Remediation: PodHostIPCRemediation,
 		Description: formDescription(TestPodHostIPC,
 			`Verifies that the spec.HostIpc parameter is set to false`),
@@ -701,7 +701,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestPodHostPID: {
 		Identifier:  TestPodHostPID,
-		Type:        informativeResult,
+		Type:        InformativeResult,
 		Remediation: PodHostPIDRemediation,
 		Description: formDescription(TestPodHostPID,
 			`Verifies that the spec.HostPid parameter is set to false`),
@@ -710,7 +710,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestHugepagesNotManuallyManipulated: {
 		Identifier:  TestHugepagesNotManuallyManipulated,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: HugepagesNotManuallyManipulatedRemediation,
 		Description: formDescription(TestHugepagesNotManuallyManipulated,
 			`Checks to see that HugePage settings have been configured through MachineConfig, and not manually on the
@@ -723,7 +723,7 @@ they are the same.`),
 	},
 	TestICMPv6ConnectivityIdentifier: {
 		Identifier:  TestICMPv6ConnectivityIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: ICMPv6ConnectivityRemediation,
 		Description: formDescription(TestICMPv6ConnectivityIdentifier,
 			`Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network.  This
@@ -734,7 +734,7 @@ test case requires the Deployment of the debug daemonset.`),
 
 	TestICMPv4ConnectivityMultusIdentifier: {
 		Identifier:  TestICMPv4ConnectivityMultusIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: ICMPv4ConnectivityMultusRemediation,
 		Description: formDescription(TestICMPv4ConnectivityMultusIdentifier,
 			`Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s).  This
@@ -745,7 +745,7 @@ test case requires the Deployment of the debug daemonset.`),
 
 	TestICMPv6ConnectivityMultusIdentifier: {
 		Identifier:  TestICMPv6ConnectivityMultusIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: ICMPv6ConnectivityMultusRemediation,
 		Description: formDescription(TestICMPv6ConnectivityMultusIdentifier,
 			`Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s).  This
@@ -756,7 +756,7 @@ test case requires the Deployment of the debug daemonset.`),
 
 	TestServiceDualStackIdentifier: {
 		Identifier:  TestServiceDualStackIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: TestServiceDualStackRemediation,
 		Description: formDescription(TestServiceDualStackIdentifier,
 			`Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This
@@ -767,7 +767,7 @@ test case requires the deployment of the debug daemonset.`),
 
 	TestNFTablesIdentifier: {
 		Identifier:  TestNFTablesIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: TestNFTablesRemediation,
 		Description: formDescription(TestNFTablesIdentifier,
 			`Checks that the output of "nft list ruleset" is empty, e.g. there is no nftables configuration on any CNF containers.`),
@@ -777,7 +777,7 @@ test case requires the deployment of the debug daemonset.`),
 
 	TestIPTablesIdentifier: {
 		Identifier:  TestIPTablesIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: TestIPTablesRemediation,
 		Description: formDescription(TestIPTablesIdentifier,
 			`Checks that the output of "iptables-save" is empty, e.g. there is no iptables configuration on any CNF containers.`),
@@ -787,7 +787,7 @@ test case requires the deployment of the debug daemonset.`),
 
 	TestNamespaceBestPracticesIdentifier: {
 		Identifier:  TestNamespaceBestPracticesIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: NamespaceBestPracticesRemediation,
 		Description: formDescription(TestNamespaceBestPracticesIdentifier,
 			`Tests that all CNF's resources (PUTs and CRs) belong to valid namespaces. A valid namespace meets
@@ -799,7 +799,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 
 	TestNonTaintedNodeKernelsIdentifier: {
 		Identifier:  TestNonTaintedNodeKernelsIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: NonTaintedNodeKernelsRemediation,
 		Description: formDescription(TestNonTaintedNodeKernelsIdentifier,
 			`Ensures that the Node(s) hosting CNFs do not utilize tainted kernels. This test case is especially important
@@ -811,7 +811,7 @@ the same hacks.'`),
 
 	TestOperatorInstallStatusSucceededIdentifier: {
 		Identifier:  TestOperatorInstallStatusSucceededIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: OperatorInstallStatusSucceededRemediation,
 		Description: formDescription(TestOperatorInstallStatusSucceededIdentifier,
 			`Ensures that the target CNF operators report "Succeeded" as their installation status.`),
@@ -821,7 +821,7 @@ the same hacks.'`),
 
 	TestOperatorNoPrivileges: {
 		Identifier:  TestOperatorNoPrivileges,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: OperatorNoPrivilegesRemediation,
 		Description: formDescription(TestOperatorNoPrivileges,
 			`The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present 
@@ -832,7 +832,7 @@ with no resourceNames under its rules.`),
 
 	TestOperatorIsCertifiedIdentifier: {
 		Identifier:  TestOperatorIsCertifiedIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: OperatorIsCertifiedRemediation,
 		Description: formDescription(TestOperatorIsCertifiedIdentifier,
 			`Tests whether CNF Operators listed in the configuration file have passed the Red Hat Operator Certification Program (OCP).`),
@@ -842,7 +842,7 @@ with no resourceNames under its rules.`),
 
 	TestHelmIsCertifiedIdentifier: {
 		Identifier:  TestHelmIsCertifiedIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: HelmIsCertifiedRemediation,
 		Description: formDescription(TestHelmIsCertifiedIdentifier,
 			`Tests whether helm charts listed in the cluster passed the Red Hat Helm Certification Program.`),
@@ -852,7 +852,7 @@ with no resourceNames under its rules.`),
 
 	TestOperatorIsInstalledViaOLMIdentifier: {
 		Identifier:  TestOperatorIsInstalledViaOLMIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: OperatorIsInstalledViaOLMRemediation,
 		Description: formDescription(TestOperatorIsInstalledViaOLMIdentifier,
 			`Tests whether a CNF Operator is installed via OLM.`),
@@ -862,7 +862,7 @@ with no resourceNames under its rules.`),
 
 	TestPodNodeSelectorAndAffinityBestPractices: {
 		Identifier:  TestPodNodeSelectorAndAffinityBestPractices,
-		Type:        informativeResult,
+		Type:        InformativeResult,
 		Remediation: PodNodeSelectorAndAffinityBestPracticesRemediation,
 		Description: formDescription(TestPodNodeSelectorAndAffinityBestPractices,
 			`Ensures that CNF Pods do not specify nodeSelector or nodeAffinity.  In most cases, Pods should allow for
@@ -873,7 +873,7 @@ instantiation on any underlying Node.`),
 
 	TestPodHighAvailabilityBestPractices: {
 		Identifier:  TestPodHighAvailabilityBestPractices,
-		Type:        informativeResult,
+		Type:        InformativeResult,
 		Remediation: PodHighAvailabilityBestPracticesRemediation,
 		Description: formDescription(TestPodHighAvailabilityBestPractices,
 			`Ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.`),
@@ -883,7 +883,7 @@ instantiation on any underlying Node.`),
 
 	TestPodClusterRoleBindingsBestPracticesIdentifier: {
 		Identifier:  TestPodClusterRoleBindingsBestPracticesIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: PodClusterRoleBindingsBestPracticesRemediation,
 		Description: formDescription(TestPodClusterRoleBindingsBestPracticesIdentifier,
 			`Tests that a Pod does not specify ClusterRoleBindings.`),
@@ -893,7 +893,7 @@ instantiation on any underlying Node.`),
 
 	TestPodDeploymentBestPracticesIdentifier: {
 		Identifier:  TestPodDeploymentBestPracticesIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: PodDeploymentBestPracticesRemediation,
 		Description: formDescription(TestPodDeploymentBestPracticesIdentifier,
 			`Tests that CNF Pod(s) are deployed as part of a ReplicaSet(s)/StatefulSet(s).`),
@@ -902,7 +902,7 @@ instantiation on any underlying Node.`),
 	},
 	TestImagePullPolicyIdentifier: {
 		Identifier:  TestImagePullPolicyIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: ImagePullPolicyRemediation,
 		Description: formDescription(TestImagePullPolicyIdentifier,
 			`Ensure that the containers under test are using IfNotPresent as Image Pull Policy..`),
@@ -912,7 +912,7 @@ instantiation on any underlying Node.`),
 
 	TestPodRoleBindingsBestPracticesIdentifier: {
 		Identifier:  TestPodRoleBindingsBestPracticesIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: PodRoleBindingsBestPracticesRemediation,
 		Description: formDescription(TestPodRoleBindingsBestPracticesIdentifier,
 			`Ensures that a CNF does not utilize RoleBinding(s) in a non-CNF Namespace.`),
@@ -922,7 +922,7 @@ instantiation on any underlying Node.`),
 
 	TestPodServiceAccountBestPracticesIdentifier: {
 		Identifier:  TestPodServiceAccountBestPracticesIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: PodServiceAccountBestPracticesRemediation,
 		Description: formDescription(TestPodServiceAccountBestPracticesIdentifier,
 			`Tests that each CNF Pod utilizes a valid Service Account.`),
@@ -932,7 +932,7 @@ instantiation on any underlying Node.`),
 
 	TestServicesDoNotUseNodeportsIdentifier: {
 		Identifier:  TestServicesDoNotUseNodeportsIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: ServicesDoNotUseNodeportsRemediation,
 		Description: formDescription(TestServicesDoNotUseNodeportsIdentifier,
 			`Tests that each CNF Service does not utilize NodePort(s).`),
@@ -942,7 +942,7 @@ instantiation on any underlying Node.`),
 
 	TestUnalteredBaseImageIdentifier: {
 		Identifier:  TestUnalteredBaseImageIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: UnalteredBaseImageRemediation,
 		Description: formDescription(TestUnalteredBaseImageIdentifier,
 			`Ensures that the Container Base Image is not altered post-startup.  This test is a heuristic, and ensures
@@ -963,7 +963,7 @@ that there are no changes to the following directories:
 
 	TestUnalteredStartupBootParamsIdentifier: {
 		Identifier:  TestUnalteredStartupBootParamsIdentifier,
-		Type:        normativeResult,
+		Type:        NormativeResult,
 		Remediation: UnalteredStartupBootParamsRemediation,
 		Description: formDescription(TestUnalteredStartupBootParamsIdentifier,
 			`Tests that boot parameters are set through the MachineConfigOperator, and not set manually on the Node.`),
@@ -972,7 +972,7 @@ that there are no changes to the following directories:
 	},
 	TestShutdownIdentifier: {
 		Identifier: TestShutdownIdentifier,
-		Type:       normativeResult,
+		Type:       NormativeResult,
 		Description: formDescription(TestShutdownIdentifier,
 			`Ensure that the containers lifecycle pre-stop management feature is configured.`),
 		Remediation:           ShutdownRemediation,
@@ -981,7 +981,7 @@ that there are no changes to the following directories:
 	},
 	TestPodRecreationIdentifier: {
 		Identifier: TestPodRecreationIdentifier,
-		Type:       normativeResult,
+		Type:       NormativeResult,
 		Description: formDescription(TestPodRecreationIdentifier,
 			`Tests that a CNF is configured to support High Availability.  
 			First, this test cordons and drains a Node that hosts the CNF Pod.  
@@ -993,7 +993,7 @@ that there are no changes to the following directories:
 	},
 	TestSysctlConfigsIdentifier: {
 		Identifier: TestSysctlConfigsIdentifier,
-		Type:       normativeResult,
+		Type:       NormativeResult,
 		Description: formDescription(TestPodRecreationIdentifier,
 			`Tests that no one has changed the node's sysctl configs after the node
 			was created, the tests works by checking if the sysctl configs are consistent with the
@@ -1004,7 +1004,7 @@ that there are no changes to the following directories:
 	},
 	TestServiceMeshIdentifier: {
 		Identifier: TestServiceMeshIdentifier,
-		Type:       normativeResult,
+		Type:       NormativeResult,
 		Description: formDescription(TestServiceMeshIdentifier,
 			`verifies whether, if available, service mesh is actually being used by the CNF pods`),
 		Remediation:           ServiceMeshRemediation,
@@ -1013,7 +1013,7 @@ that there are no changes to the following directories:
 	},
 	TestScalingIdentifier: {
 		Identifier: TestScalingIdentifier,
-		Type:       normativeResult,
+		Type:       NormativeResult,
 		Description: formDescription(TestScalingIdentifier,
 			`Tests that CNF deployments support scale in/out operations. 
 			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the 
@@ -1024,7 +1024,7 @@ that there are no changes to the following directories:
 	},
 	TestIsRedHatReleaseIdentifier: {
 		Identifier: TestIsRedHatReleaseIdentifier,
-		Type:       normativeResult,
+		Type:       NormativeResult,
 		Description: formDescription(TestIsRedHatReleaseIdentifier,
 			`verifies if the container base image is redhat.`),
 		Remediation:           IsRedHatReleaseRemediation,
@@ -1033,7 +1033,7 @@ that there are no changes to the following directories:
 	},
 	TestIsSELinuxEnforcingIdentifier: {
 		Identifier: TestIsSELinuxEnforcingIdentifier,
-		Type:       normativeResult,
+		Type:       NormativeResult,
 		Description: formDescription(TestIsSELinuxEnforcingIdentifier,
 			`verifies that all openshift platform/cluster nodes have selinux in "Enforcing" mode.`),
 		Remediation:           IsSELinuxEnforcingRemediation,
@@ -1042,7 +1042,7 @@ that there are no changes to the following directories:
 	},
 	TestUndeclaredContainerPortsUsage: {
 		Identifier: TestUndeclaredContainerPortsUsage,
-		Type:       normativeResult,
+		Type:       NormativeResult,
 		Description: formDescription(TestUndeclaredContainerPortsUsage,
 			`Check that containers do not listen on ports that weren't declared in their specification`),
 		Remediation:           UndeclaredContainerPortsRemediation,
@@ -1051,7 +1051,7 @@ that there are no changes to the following directories:
 	},
 	TestOCPReservedPortsUsage: {
 		Identifier: TestOCPReservedPortsUsage,
-		Type:       normativeResult,
+		Type:       NormativeResult,
 		Description: formDescription(TestOCPReservedPortsUsage,
 			`Check that containers do not listen on ports that are reserved by OpenShift`),
 		Remediation:           OCPReservedPortsUsageRemediation,
@@ -1060,7 +1060,7 @@ that there are no changes to the following directories:
 	},
 	TestCrdsStatusSubresourceIdentifier: {
 		Identifier: TestCrdsStatusSubresourceIdentifier,
-		Type:       informativeResult,
+		Type:       InformativeResult,
 		Description: formDescription(TestCrdsStatusSubresourceIdentifier,
 			`Checks that all CRDs have a status subresource specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties["status"]).`),
 		Remediation:           CrdsStatusSubresourceRemediation,
@@ -1069,7 +1069,7 @@ that there are no changes to the following directories:
 	},
 	TestLoggingIdentifier: {
 		Identifier: TestLoggingIdentifier,
-		Type:       informativeResult,
+		Type:       InformativeResult,
 		Description: formDescription(TestLoggingIdentifier,
 			`Check that all containers under test use standard input output and standard error when logging`),
 		Remediation:           LoggingRemediation,
@@ -1078,7 +1078,7 @@ that there are no changes to the following directories:
 	},
 	TestTerminationMessagePolicyIdentifier: {
 		Identifier: TestTerminationMessagePolicyIdentifier,
-		Type:       informativeResult,
+		Type:       InformativeResult,
 		Description: formDescription(TestTerminationMessagePolicyIdentifier,
 			`Check that all containers are using terminationMessagePolicy: FallbackToLogsOnError`),
 		Remediation:           TerminationMessagePolicyRemediation,
@@ -1087,7 +1087,7 @@ that there are no changes to the following directories:
 	},
 	TestPodAutomountServiceAccountIdentifier: {
 		Identifier: TestPodAutomountServiceAccountIdentifier,
-		Type:       normativeResult,
+		Type:       NormativeResult,
 		Description: formDescription(TestPodAutomountServiceAccountIdentifier,
 			`Check that all pods under test have automountServiceAccountToken set to false`),
 		Remediation:           AutomountServiceTokenRemediation,
@@ -1096,7 +1096,7 @@ that there are no changes to the following directories:
 	},
 	TestLivenessProbeIdentifier: {
 		Identifier:            TestLivenessProbeIdentifier,
-		Type:                  normativeResult,
+		Type:                  NormativeResult,
 		Description:           formDescription(TestLivenessProbeIdentifier, `Check that all containers under test a have liveness probe defined`),
 		Remediation:           LivenessProbeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.16, 12.1 and 12.5",
@@ -1104,7 +1104,7 @@ that there are no changes to the following directories:
 	},
 	TestReadinessProbeIdentifier: {
 		Identifier:            TestReadinessProbeIdentifier,
-		Type:                  normativeResult,
+		Type:                  NormativeResult,
 		Description:           formDescription(TestReadinessProbeIdentifier, `Check that all containers under test a have readiness probe defined`),
 		Remediation:           ReadinessProbeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.16, 12.1 and 12.5",
@@ -1112,7 +1112,7 @@ that there are no changes to the following directories:
 	},
 	TestStartupProbeIdentifier: {
 		Identifier:            TestStartupProbeIdentifier,
-		Type:                  normativeResult,
+		Type:                  NormativeResult,
 		Description:           formDescription(TestStartupProbeIdentifier, `Check that all containers under test a have startup probe defined`),
 		Remediation:           StartupProbeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
@@ -1120,7 +1120,7 @@ that there are no changes to the following directories:
 	},
 	TestOneProcessPerContainerIdentifier: {
 		Identifier:            TestOneProcessPerContainerIdentifier,
-		Type:                  informativeResult,
+		Type:                  InformativeResult,
 		Description:           formDescription(TestOneProcessPerContainerIdentifier, `Check that all containers under test have only one process running`),
 		Remediation:           OneProcessPerContainerRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.8.3",
@@ -1128,7 +1128,7 @@ that there are no changes to the following directories:
 	},
 	TestSYSNiceRealtimeCapabilityIdentifier: {
 		Identifier:            TestSYSNiceRealtimeCapabilityIdentifier,
-		Type:                  informativeResult,
+		Type:                  InformativeResult,
 		Description:           formDescription(TestSYSNiceRealtimeCapabilityIdentifier, `Check that pods running on nodes with realtime kernel enabled have the SYS_NICE capability enabled in their spec.`),
 		Remediation:           SYSNiceRealtimeCapabilityRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 2.7.4",
@@ -1136,7 +1136,7 @@ that there are no changes to the following directories:
 	},
 	TestSysPtraceCapabilityIdentifier: {
 		Identifier:            TestSysPtraceCapabilityIdentifier,
-		Type:                  informativeResult,
+		Type:                  InformativeResult,
 		Description:           formDescription(TestSysPtraceCapabilityIdentifier, `Check that if process namespace sharing is enabled for a Pod then the SYS_PTRACE capability is allowed`),
 		Remediation:           SysPtraceCapabilityRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 2.7.5",
@@ -1144,7 +1144,7 @@ that there are no changes to the following directories:
 	},
 	TestPodRequestsAndLimitsIdentifier: {
 		Identifier:            TestPodRequestsAndLimitsIdentifier,
-		Type:                  informativeResult,
+		Type:                  InformativeResult,
 		Description:           formDescription(TestPodRequestsAndLimitsIdentifier, `Check that containers have resource requests and limits specified in their spec.`),
 		Remediation:           RequestsAndLimitsRemediation,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.11",
@@ -1152,7 +1152,7 @@ that there are no changes to the following directories:
 	},
 	TestPersistentVolumeReclaimPolicyIdentifier: {
 		Identifier:            TestPersistentVolumeReclaimPolicyIdentifier,
-		Type:                  informativeResult,
+		Type:                  InformativeResult,
 		Description:           formDescription(TestPersistentVolumeReclaimPolicyIdentifier, `Check that the persistent volumes the CNF pods are using have a reclaim policy of delete.`),
 		Remediation:           PersistentVolumeReclaimPolicyRemediation,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.3.4",
@@ -1160,7 +1160,7 @@ that there are no changes to the following directories:
 	},
 	TestContainersImageTag: {
 		Identifier:            TestContainersImageTag,
-		Type:                  informativeResult,
+		Type:                  InformativeResult,
 		Description:           formDescription(TestContainersImageTag, `Check that image tag exists on containers.`),
 		Remediation:           ContainersImageTag,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.12",
@@ -1168,7 +1168,7 @@ that there are no changes to the following directories:
 	},
 	TestNamespaceResourceQuotaIdentifier: {
 		Identifier:            TestNamespaceResourceQuotaIdentifier,
-		Type:                  informativeResult,
+		Type:                  InformativeResult,
 		Description:           formDescription(TestNamespaceResourceQuotaIdentifier, `Checks to see if CNF workload pods are running in namespaces that have resource quotas applied.`),
 		Remediation:           NamespaceResourceQuotaRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.8", // TODO Change this to v1.4 when available
@@ -1176,7 +1176,7 @@ that there are no changes to the following directories:
 	},
 	TestPodDisruptionBudgetIdentifier: {
 		Identifier:            TestPodDisruptionBudgetIdentifier,
-		Type:                  normativeResult,
+		Type:                  NormativeResult,
 		Description:           formDescription(TestPodDisruptionBudgetIdentifier, `Checks to see if pod disruption budgets have allowed values for minAvailable and maxUnavailable`),
 		Remediation:           PodDisruptionBudgetRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.20", // TODO Change this to v1.4 when available
@@ -1184,7 +1184,7 @@ that there are no changes to the following directories:
 	},
 	TestPodTolerationBypassIdentifier: {
 		Identifier:            TestPodTolerationBypassIdentifier,
-		Type:                  informativeResult,
+		Type:                  InformativeResult,
 		Description:           formDescription(TestPodTolerationBypassIdentifier, `Check that pods do not have NoExecute, PreferNoSchedule, or NoSchedule tolerations that have been modified from the default.`),
 		Remediation:           PodTolerationBypassRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.6",
@@ -1192,7 +1192,7 @@ that there are no changes to the following directories:
 	},
 	TestNoSSHDaemonsAllowedIdentifier: {
 		Identifier:            TestNoSSHDaemonsAllowedIdentifier,
-		Type:                  normativeResult,
+		Type:                  NormativeResult,
 		Description:           formDescription(TestNoSSHDaemonsAllowedIdentifier, `Check that pods do not run SSH daemons.`),
 		Remediation:           NoSSHDaemonsAllowedRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
@@ -1200,7 +1200,7 @@ that there are no changes to the following directories:
 	},
 	TestCPUIsolationIdentifier: {
 		Identifier: TestCPUIsolationIdentifier,
-		Type:       informativeResult,
+		Type:       InformativeResult,
 		Description: formDescription(TestCPUIsolationIdentifier, `CPU isolation requires: For each container within the pod, resource requests and limits must be identical.
 		Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.`),
 		Remediation:           CPUIsolationRemediation,
