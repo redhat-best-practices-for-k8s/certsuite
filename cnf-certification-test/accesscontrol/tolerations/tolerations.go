@@ -50,11 +50,13 @@ func IsTolerationModified(t v1.Toleration, qosClass v1.PodQOSClass) bool {
 		if t.Key == notReadyStr || t.Key == unreachableStr &&
 			(t.Operator == v1.TolerationOpExists && t.TolerationSeconds != nil && *t.TolerationSeconds == int64(tolerationSecondsDefault)) {
 			return false
-		} else if (t.Key == memoryPressureStr) &&
+		}
+	} else if t.Effect == v1.TaintEffectNoSchedule {
+		// If toleration is NoSchedule - node.kubernetes.io/memory-pressure - Exists and the QoS class for
+		// the pod is different than BestEffort, it is also a default toleration added by k8s
+		if (t.Key == memoryPressureStr) &&
 			(t.Operator == v1.TolerationOpExists && t.TolerationSeconds == nil) &&
 			(qosClass != v1.PodQOSBestEffort) {
-			// If toleration is NoSchedule - node.kubernetes.io/memory-pressure - Exists and the QoS class for
-			// the pod is different than BestEffort, it is also a default toleration added by k8s
 			return false
 		}
 	}
