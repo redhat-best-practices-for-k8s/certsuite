@@ -578,6 +578,19 @@ Result Type|informative
 Suggested Remediation|Ensure that all the CRDs have a meaningful status specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties["status"]).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
+#### pod-disruption-budget
+
+Property|Description
+---|---
+Test Case Name|pod-disruption-budget
+Test Case Label|observability-pod-disruption-budget
+Unique ID|http://test-network-function.com/testcases/observability/pod-disruption-budget
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/observability/pod-disruption-budget Checks to see if pod disruption budgets have allowed values for minAvailable and maxUnavailable
+Result Type|normative
+Suggested Remediation|Ensure minAvailable is not zero and maxUnavailable does not equal the number of pods in the replica
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.20
+Exception Process|There is no documented exception process for this.
 #### termination-policy
 
 Property|Description

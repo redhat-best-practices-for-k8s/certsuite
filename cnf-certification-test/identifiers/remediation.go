@@ -173,6 +173,8 @@ const (
 
 	NamespaceResourceQuotaRemediation = `Apply a ResourceQuota to the namespace your CNF is running in`
 
+	PodDisruptionBudgetRemediation = `Ensure minAvailable is not zero and maxUnavailable does not equal the number of pods in the replica`
+
 	//nolint:gosec
 	PodTolerationBypassRemediation = `Do not allow pods to bypass the NoExecute, PreferNoSchedule, or NoSchedule tolerations that are default applied by Kubernetes.`
 )

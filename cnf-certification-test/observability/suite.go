@@ -32,6 +32,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
+	policyv1 "k8s.io/api/policy/v1"
 )
 
 //
@@ -60,6 +61,12 @@ var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		testTerminationMessagePolicy(&env)
+	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodDisruptionBudgetIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.PodDisruptionBudgets)
+		testPodDisruptionBudgets(&env)
 	})
 })
 
@@ -147,5 +154,56 @@ func testTerminationMessagePolicy(env *provider.TestEnvironment) {
 	}
 	if n := len(failedContainers); n > 0 {
 		ginkgo.Fail("Containers were found to not have a termination message policy set to FallbackToLogsOnError")
+	}
+}
+
+func checkPDBIsValid(pdb *policyv1.PodDisruptionBudget, replicas *int32) (bool, error) {
+	var replicaCount int32
+	if replicas != nil {
+		replicaCount = *replicas
+	} else {
+		replicaCount = 1 // default value
+	}
+
+	if pdb.Spec.MinAvailable != nil && pdb.Spec.MinAvailable.IntValue() == 0 {
+		return false, fmt.Errorf("field .spec.minAvailable cannot be zero")
+	}
+
+	if pdb.Spec.MaxUnavailable != nil && pdb.Spec.MaxUnavailable.IntValue() == int(replicaCount) {
+		return false, fmt.Errorf("field .spec.maxUnavailable cannot be equal to the number of pods in the replica")
+	}
+
+	return true, nil
+}
+
+func testPodDisruptionBudgets(env *provider.TestEnvironment) {
+	failedPDBs := []string{}
+	for i := range env.PodDisruptionBudgets {
+		pdb := &env.PodDisruptionBudgets[i]
+		for pdbLabelKey, pdbLabelValue := range pdb.Spec.Selector.MatchLabels {
+			// Go through all deployments and statefulsets, objects for which PDBs apply
+			for _, deployment := range env.Deployments {
+				if deployment.Spec.Template.Labels[pdbLabelKey] == pdbLabelValue {
+					if ok, err := checkPDBIsValid(pdb, deployment.Spec.Replicas); !ok {
+						failedPDBs = append(failedPDBs, pdb.Name)
+						tnf.ClaimFilePrintf("PDB %s is not valid for deployment %s, err: %s", pdb.Name, deployment.Name, err)
+					}
+				}
+			}
+			for _, statefulSet := range env.StatetfulSets {
+				if statefulSet.Spec.Template.Labels[pdbLabelKey] == pdbLabelValue {
+					if ok, err := checkPDBIsValid(pdb, statefulSet.Spec.Replicas); !ok {
+						failedPDBs = append(failedPDBs, pdb.Name)
+						tnf.ClaimFilePrintf("PDB %s is not valid for statefulset %s, err: %s", pdb.Name, statefulSet.Name, err)
+					}
+				}
+			}
+		}
+	}
+
+	if n := len(failedPDBs); n > 0 {
+		errMsg := fmt.Sprintf("Number of PDBs with invalid configuration: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
 	}
 }
