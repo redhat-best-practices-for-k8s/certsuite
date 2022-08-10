@@ -1,1230 +1,6 @@
 {
   "data": [
     {
-      "_id": "62a83c3edd92c1f1f128e236",
-      "alm_examples": [
-        {
-          "api_version": "ca.broadcom.com/v1alpha1",
-          "kind": "UniversalMonitoringAgent",
-          "metadata": {
-            "name": "uma-monitor"
-          },
-          "spec": {
-            "agentManager": {
-              "credential": "",
-              "tenantID": "",
-              "url": "localhost:5001"
-            },
-            "cloudmonitoring": {
-              "aws": {
-                "accessKey": "",
-                "enabled": false,
-                "secretKey": "",
-                "servicesList": ""
-              }
-            },
-            "clusterName": "DevelopmentCluster",
-            "daemonset": {
-              "apmia": {
-                "epagent": {
-                  "port": 8889
-                }
-              },
-              "privileged": true
-            },
-            "monitor": {
-              "application": {
-                "autoattach": {
-                  "dotnet": {
-                    "enabled": true
-                  },
-                  "dynamicPropertyResolution": {
-                    "agentName": "",
-                    "hostName": "{k8s_deployment_name},{k8s_daemonset_name},{k8s_deploymentconfig_name},{k8s_pod_name},ContainerHost"
-                  },
-                  "filterType": "whitelist",
-                  "java": {
-                    "customJdkTools": {
-                      "enabled": false,
-                      "imageName": ""
-                    },
-                    "enabled": true
-                  },
-                  "probe": {
-                    "enabled": true
-                  }
-                },
-                "jmx": {
-                  "enabled": true
-                },
-                "opentracing": {
-                  "correlation": {
-                    "enabled": false
-                  },
-                  "enabled": true,
-                  "grpc": {
-                    "hostport": ""
-                  }
-                },
-                "zipkinTracing": {
-                  "enabled": true,
-                  "zipkinServer": {}
-                }
-              },
-              "clusterPerformance": {
-                "dataReporter": {
-                  "vertex": {
-                    "refreshInterval": 360,
-                    "ttl": 720
-                  }
-                },
-                "enabled": true,
-                "node": {
-                  "noscheduleTaint": {
-                    "allowed": {
-                      "tolerations": ""
-                    },
-                    "skipMetricAggregation": {
-                      "enabled": true
-                    }
-                  }
-                }
-              },
-              "container": {
-                "dockerstats": {
-                  "enabled": true
-                },
-                "prometheus": {
-                  "backend": {
-                    "custom": {
-                      "promqlConfigMap": "custom-promql-config"
-                    },
-                    "enabled": false,
-                    "endPoint": {
-                      "configFiles": "",
-                      "metricAlias": "container_name=container,pod_name=pod",
-                      "password": "",
-                      "token": "",
-                      "url": "",
-                      "username": ""
-                    },
-                    "filter": {
-                      "name": "",
-                      "value": ""
-                    }
-                  },
-                  "exporter": {
-                    "enabled": true
-                  }
-                }
-              },
-              "events": {
-                "clamp": {
-                  "perDayLimit": 15000
-                },
-                "elasticDocTypeId": "itoa_events_apm",
-                "elasticDocTypeVersion": 1,
-                "elasticProduct": "ao",
-                "enabled": false,
-                "filter": {
-                  "fieldselector": "type!=Normal"
-                }
-              },
-              "httpCollector": {
-                "enabled": true,
-                "ingress": {
-                  "enabled": false,
-                  "ssl": {
-                    "enabled": false
-                  }
-                },
-                "memoryGrid": {},
-                "replicas": 1,
-                "server": {
-                  "host": "0.0.0.0",
-                  "maxMemory": "",
-                  "minMemory": "",
-                  "port": 8085
-                }
-              },
-              "kafka": {
-                "consumergroups": {
-                  "filter": "",
-                  "metrics": true
-                },
-                "debug": false,
-                "deployAsDaemonSet": false,
-                "enabled": false,
-                "jmx": {
-                  "MBeans": {
-                    "exclude": "",
-                    "include": ""
-                  },
-                  "modules": "kafka,jvm,memory"
-                },
-                "ssl": {
-                  "client": {
-                    "enabled": false,
-                    "endpointIdentificationEnabled": false,
-                    "keystoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "keystoreKeyPassword": {
-                      "value": ""
-                    },
-                    "keystorePassword": {
-                      "value": ""
-                    },
-                    "truststoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "truststorePassword": {
-                      "value": ""
-                    }
-                  },
-                  "jmx": {
-                    "enabled": false,
-                    "keystoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "keystorePassword": {
-                      "value": ""
-                    },
-                    "truststoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "truststorePassword": {
-                      "value": ""
-                    }
-                  }
-                }
-              },
-              "node": {
-                "enabled": true
-              }
-            },
-            "role": "common",
-            "type": "Openshift"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ca/uma-operator-bundle@sha256:e0e611af7c927055cadd8bc21f02eb03083924a385b3a22ac417e9dbf9ca8b96",
-      "bundle_path_digest": "sha256:e0e611af7c927055cadd8bc21f02eb03083924a385b3a22ac417e9dbf9ca8b96",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-06-14T07:43:58.071000+00:00",
-      "csv_description": "The **DX APM Universal Monitoring Agent** for Kubernetes (UMA for Kubernetes) acts as a single deployment that automatically discovers and monitors cloud and container infrastructures and containerized application processes. UMA for Kubernetes discovers and monitors all the containers on a host. This capability allows to monitor both the Kubernetes Infrastructure ( like Node, Pods, Containers, Cluster Services etc ) and applications running on this infrastructure & correlate them together which can help the triager to isolate if the the problem is related to the application or infrastructure\n\n**Usage**:\n```\n apiVersion: ca.broadcom.com/v1alpha1\n kind: UniversalMonitoringAgent\n metadata:\n   name: uma-monitor\n spec:\n   # The agent and Enterprise Manager connection details.\n   agentManager:\n     url: localhost:5001\n     # Agent/EM login credentials.\n     credential:\n     # tenantID is Cohort ID of DX SaaS tenant.\n     # After logging into DX SaaS, Cohort ID is available at \"Launch Pad -> Settings -> Connector Parameters\"\n     # tenantID is only required if Kubernetes/OpenShift events monitoring is enabled in UMA.\n     tenantID: \"\"\n\n   clusterName: DevelopmentCluster\n   # type should be Kubernetes or Openshift depending on the environment\n   type: Openshift\n   role: common\n   monitor:\n     application:\n       # autoattach properties\n       autoattach:\n         filterType: whitelist\n         probe:\n           enabled: true\n         # this feature leverages container metadata to resolve agent host name and agent name\n         dynamicPropertyResolution:\n           hostName: \"{k8s_deployment_name},{k8s_daemonset_name},{k8s_deploymentconfig_name},{k8s_pod_name},ContainerHost\"\n           agentName: \"\"\n         # java autoattach properties\n         java:\n           enabled: true\n           propertiesOverride:\n           customJdkTools:\n             enabled: false\n             # Provide your custom created jdk tools jar image name below.\n             imageName: \"\"\n         # dotnet autoattach properties\n         dotnet:\n           enabled: true\n           propertiesOverride:\n       jmx:\n         enabled: true\n       opentracing:\n         enabled: true\n         grpc:\n           hostport: \"\"\n         correlation:\n           enabled: false\n       zipkinTracing:\n         enabled: true\n         zipkinServer:\n           hostport:\n     events:\n       enabled: true\n       filter:\n         # fieldselector property can be used to filter the Kubernetes events based on the value of one or more resource fields.\n         # Here are some examples of field selector queries: metadata.namespace!=default, metadata.name=my-service etc.\n         fieldselector: type!=Normal\n         namespace:\n       clamp:\n         perDayLimit: 15000\n       elasticDocTypeId: itoa_events_apm\n       elasticDocTypeVersion: 1\n       elasticProduct: ao\n     httpCollector:\n       enabled: true\n       replicas: 1\n       server:\n         host: 0.0.0.0\n         port: 8085\n         minMemory:\n         maxMemory:\n       memoryGrid:\n         enabled:\n       # Enable this ingress resource creation if there is Ingress Controller deployed\n       # It requires session affinity using HTTP Headers by LB Ingress Controller\n       ingress:\n         enabled: false\n         host:\n         ssl:\n           enabled: false\n     container:\n       prometheus:\n         exporter:\n           enabled: true\n         backend:\n           enabled: false\n           endPoint:\n             # Defines the URL endpoint of the Prometheus backend.\n             url:\n             # Username (if any) for connecting to the Prometheus backend URL.\n             username:\n             password:\n             # Token (if any) for connecting to the Prometheus backend URL.\n             token:\n             configFiles:\n             metricAlias: container_name=container,pod_name=pod\n           filter:\n             name:\n             value:\n           custom:\n             promqlConfigMap: custom-promql-config\n\n       dockerstats:\n         enabled: true\n     clusterPerformance:\n       enabled: true\n       node:\n         noscheduleTaint:\n           skipMetricAggregation:\n             enabled: true\n           allowed:\n             tolerations: \"\"\n       dataReporter:\n          vertex:\n            ttl: 720\n            refreshInterval: 360\n     node:\n       enabled: true\n     kafka:\n       enabled: false\n       consumergroups:\n         metrics: true\n         filter: \"\"\n       jmx:\n         modules: \"kafka,jvm,memory\"\n         MBeans:\n         # A semi-colon separated list of managed bean object names. JMX metrics will be automatically reported for matching beans.\n           include: \"\"\n         # A semi-colon separated list of managed bean object names. Matching beans will be ignored for Kafka JMX metrics reporting. This property overrides \"include\" configuration.\n           exclude: \"\"\n       deployAsDaemonSet: false\n       debug: false\n       ssl:\n         client:\n           enabled: false\n           truststoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           truststorePassword:\n             value: \"\"\n           keystoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           keystorePassword:\n             value: \"\"\n           keystoreKeyPassword:\n             value: \"\"\n           endpointIdentificationEnabled: false\n         jmx:\n           enabled: false\n           truststoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           truststorePassword:\n             value: \"\"\n           keystoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           keystorePassword:\n             value: \"\"\n\n   # Default epagent port of the UMA daemonset pod deployment (app-container-monitor)\n   daemonset:\n     privileged: true\n     apmia:\n       epagent:\n         port: 8889\n   cloudmonitoring:\n     aws:\n       enabled: false\n       accessKey:\n       secretKey:\n       # services supported are rds,ec2,ebs,lambda,dynamodb,s3,sns,ecs,sqs,kinesis,clb,nlb,alb,redshift,elasticache,autoScaling,billing,apiGateway\n       # provide comma separated services to monitor\n       servicesList:\n\n```\n",
-      "csv_display_name": "DX APM Universal Monitoring Agent",
-      "csv_metadata_description": "The Universal Monitoring Agent for Kubernetes (UMA for Kubernetes) acts as single deployment that automatically discovers and monitors cloud and container infrastructures and containerized application processes.",
-      "csv_name": "uma-operator.v2022.6.0-6",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T01:59:33.604000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "uma-operator",
-      "provided_apis": [
-        {
-          "group": "ca.broadcom.com",
-          "kind": "UniversalMonitoringAgent",
-          "plural": "universalmonitoringagents",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "image": "registry.connect.redhat.com/ca/uma-operator@sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "name": "uma-operator-a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d-annotation"
-        },
-        {
-          "digest": "sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "image": "registry.connect.redhat.com/ca/uma-operator@sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "name": "uma-operator"
-        },
-        {
-          "digest": "sha256:2c37187f89406d5dd00cb5bc113e504835d42f2c3590db5fe13520f75e8c0159",
-          "image": "registry.connect.redhat.com/ca/universalmonitoragent@sha256:2c37187f89406d5dd00cb5bc113e504835d42f2c3590db5fe13520f75e8c0159",
-          "name": "uma"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=2022.1.0 <2022.6.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2022.6.0-6",
-      "version_original": "2022.6.0-6"
-    },
-    {
-      "_id": "62a83c48dd92c1f1f128e23b",
-      "alm_examples": [
-        {
-          "api_version": "ca.broadcom.com/v1alpha1",
-          "kind": "UniversalMonitoringAgent",
-          "metadata": {
-            "name": "uma-monitor"
-          },
-          "spec": {
-            "agentManager": {
-              "credential": "",
-              "tenantID": "",
-              "url": "localhost:5001"
-            },
-            "cloudmonitoring": {
-              "aws": {
-                "accessKey": "",
-                "enabled": false,
-                "secretKey": "",
-                "servicesList": ""
-              }
-            },
-            "clusterName": "DevelopmentCluster",
-            "daemonset": {
-              "apmia": {
-                "epagent": {
-                  "port": 8889
-                }
-              },
-              "privileged": true
-            },
-            "monitor": {
-              "application": {
-                "autoattach": {
-                  "dotnet": {
-                    "enabled": true
-                  },
-                  "dynamicPropertyResolution": {
-                    "agentName": "",
-                    "hostName": "{k8s_deployment_name},{k8s_daemonset_name},{k8s_deploymentconfig_name},{k8s_pod_name},ContainerHost"
-                  },
-                  "filterType": "whitelist",
-                  "java": {
-                    "customJdkTools": {
-                      "enabled": false,
-                      "imageName": ""
-                    },
-                    "enabled": true
-                  },
-                  "probe": {
-                    "enabled": true
-                  }
-                },
-                "jmx": {
-                  "enabled": true
-                },
-                "opentracing": {
-                  "correlation": {
-                    "enabled": false
-                  },
-                  "enabled": true,
-                  "grpc": {
-                    "hostport": ""
-                  }
-                },
-                "zipkinTracing": {
-                  "enabled": true,
-                  "zipkinServer": {}
-                }
-              },
-              "clusterPerformance": {
-                "dataReporter": {
-                  "vertex": {
-                    "refreshInterval": 360,
-                    "ttl": 720
-                  }
-                },
-                "enabled": true,
-                "node": {
-                  "noscheduleTaint": {
-                    "allowed": {
-                      "tolerations": ""
-                    },
-                    "skipMetricAggregation": {
-                      "enabled": true
-                    }
-                  }
-                }
-              },
-              "container": {
-                "dockerstats": {
-                  "enabled": true
-                },
-                "prometheus": {
-                  "backend": {
-                    "custom": {
-                      "promqlConfigMap": "custom-promql-config"
-                    },
-                    "enabled": false,
-                    "endPoint": {
-                      "configFiles": "",
-                      "metricAlias": "container_name=container,pod_name=pod",
-                      "password": "",
-                      "token": "",
-                      "url": "",
-                      "username": ""
-                    },
-                    "filter": {
-                      "name": "",
-                      "value": ""
-                    }
-                  },
-                  "exporter": {
-                    "enabled": true
-                  }
-                }
-              },
-              "events": {
-                "clamp": {
-                  "perDayLimit": 15000
-                },
-                "elasticDocTypeId": "itoa_events_apm",
-                "elasticDocTypeVersion": 1,
-                "elasticProduct": "ao",
-                "enabled": false,
-                "filter": {
-                  "fieldselector": "type!=Normal"
-                }
-              },
-              "httpCollector": {
-                "enabled": true,
-                "ingress": {
-                  "enabled": false,
-                  "ssl": {
-                    "enabled": false
-                  }
-                },
-                "memoryGrid": {},
-                "replicas": 1,
-                "server": {
-                  "host": "0.0.0.0",
-                  "maxMemory": "",
-                  "minMemory": "",
-                  "port": 8085
-                }
-              },
-              "kafka": {
-                "consumergroups": {
-                  "filter": "",
-                  "metrics": true
-                },
-                "debug": false,
-                "deployAsDaemonSet": false,
-                "enabled": false,
-                "jmx": {
-                  "MBeans": {
-                    "exclude": "",
-                    "include": ""
-                  },
-                  "modules": "kafka,jvm,memory"
-                },
-                "ssl": {
-                  "client": {
-                    "enabled": false,
-                    "endpointIdentificationEnabled": false,
-                    "keystoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "keystoreKeyPassword": {
-                      "value": ""
-                    },
-                    "keystorePassword": {
-                      "value": ""
-                    },
-                    "truststoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "truststorePassword": {
-                      "value": ""
-                    }
-                  },
-                  "jmx": {
-                    "enabled": false,
-                    "keystoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "keystorePassword": {
-                      "value": ""
-                    },
-                    "truststoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "truststorePassword": {
-                      "value": ""
-                    }
-                  }
-                }
-              },
-              "node": {
-                "enabled": true
-              }
-            },
-            "role": "common",
-            "type": "Openshift"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ca/uma-operator-bundle@sha256:e0e611af7c927055cadd8bc21f02eb03083924a385b3a22ac417e9dbf9ca8b96",
-      "bundle_path_digest": "sha256:e0e611af7c927055cadd8bc21f02eb03083924a385b3a22ac417e9dbf9ca8b96",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-06-14T07:44:08.454000+00:00",
-      "csv_description": "The **DX APM Universal Monitoring Agent** for Kubernetes (UMA for Kubernetes) acts as a single deployment that automatically discovers and monitors cloud and container infrastructures and containerized application processes. UMA for Kubernetes discovers and monitors all the containers on a host. This capability allows to monitor both the Kubernetes Infrastructure ( like Node, Pods, Containers, Cluster Services etc ) and applications running on this infrastructure & correlate them together which can help the triager to isolate if the the problem is related to the application or infrastructure\n\n**Usage**:\n```\n apiVersion: ca.broadcom.com/v1alpha1\n kind: UniversalMonitoringAgent\n metadata:\n   name: uma-monitor\n spec:\n   # The agent and Enterprise Manager connection details.\n   agentManager:\n     url: localhost:5001\n     # Agent/EM login credentials.\n     credential:\n     # tenantID is Cohort ID of DX SaaS tenant.\n     # After logging into DX SaaS, Cohort ID is available at \"Launch Pad -> Settings -> Connector Parameters\"\n     # tenantID is only required if Kubernetes/OpenShift events monitoring is enabled in UMA.\n     tenantID: \"\"\n\n   clusterName: DevelopmentCluster\n   # type should be Kubernetes or Openshift depending on the environment\n   type: Openshift\n   role: common\n   monitor:\n     application:\n       # autoattach properties\n       autoattach:\n         filterType: whitelist\n         probe:\n           enabled: true\n         # this feature leverages container metadata to resolve agent host name and agent name\n         dynamicPropertyResolution:\n           hostName: \"{k8s_deployment_name},{k8s_daemonset_name},{k8s_deploymentconfig_name},{k8s_pod_name},ContainerHost\"\n           agentName: \"\"\n         # java autoattach properties\n         java:\n           enabled: true\n           propertiesOverride:\n           customJdkTools:\n             enabled: false\n             # Provide your custom created jdk tools jar image name below.\n             imageName: \"\"\n         # dotnet autoattach properties\n         dotnet:\n           enabled: true\n           propertiesOverride:\n       jmx:\n         enabled: true\n       opentracing:\n         enabled: true\n         grpc:\n           hostport: \"\"\n         correlation:\n           enabled: false\n       zipkinTracing:\n         enabled: true\n         zipkinServer:\n           hostport:\n     events:\n       enabled: true\n       filter:\n         # fieldselector property can be used to filter the Kubernetes events based on the value of one or more resource fields.\n         # Here are some examples of field selector queries: metadata.namespace!=default, metadata.name=my-service etc.\n         fieldselector: type!=Normal\n         namespace:\n       clamp:\n         perDayLimit: 15000\n       elasticDocTypeId: itoa_events_apm\n       elasticDocTypeVersion: 1\n       elasticProduct: ao\n     httpCollector:\n       enabled: true\n       replicas: 1\n       server:\n         host: 0.0.0.0\n         port: 8085\n         minMemory:\n         maxMemory:\n       memoryGrid:\n         enabled:\n       # Enable this ingress resource creation if there is Ingress Controller deployed\n       # It requires session affinity using HTTP Headers by LB Ingress Controller\n       ingress:\n         enabled: false\n         host:\n         ssl:\n           enabled: false\n     container:\n       prometheus:\n         exporter:\n           enabled: true\n         backend:\n           enabled: false\n           endPoint:\n             # Defines the URL endpoint of the Prometheus backend.\n             url:\n             # Username (if any) for connecting to the Prometheus backend URL.\n             username:\n             password:\n             # Token (if any) for connecting to the Prometheus backend URL.\n             token:\n             configFiles:\n             metricAlias: container_name=container,pod_name=pod\n           filter:\n             name:\n             value:\n           custom:\n             promqlConfigMap: custom-promql-config\n\n       dockerstats:\n         enabled: true\n     clusterPerformance:\n       enabled: true\n       node:\n         noscheduleTaint:\n           skipMetricAggregation:\n             enabled: true\n           allowed:\n             tolerations: \"\"\n       dataReporter:\n          vertex:\n            ttl: 720\n            refreshInterval: 360\n     node:\n       enabled: true\n     kafka:\n       enabled: false\n       consumergroups:\n         metrics: true\n         filter: \"\"\n       jmx:\n         modules: \"kafka,jvm,memory\"\n         MBeans:\n         # A semi-colon separated list of managed bean object names. JMX metrics will be automatically reported for matching beans.\n           include: \"\"\n         # A semi-colon separated list of managed bean object names. Matching beans will be ignored for Kafka JMX metrics reporting. This property overrides \"include\" configuration.\n           exclude: \"\"\n       deployAsDaemonSet: false\n       debug: false\n       ssl:\n         client:\n           enabled: false\n           truststoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           truststorePassword:\n             value: \"\"\n           keystoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           keystorePassword:\n             value: \"\"\n           keystoreKeyPassword:\n             value: \"\"\n           endpointIdentificationEnabled: false\n         jmx:\n           enabled: false\n           truststoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           truststorePassword:\n             value: \"\"\n           keystoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           keystorePassword:\n             value: \"\"\n\n   # Default epagent port of the UMA daemonset pod deployment (app-container-monitor)\n   daemonset:\n     privileged: true\n     apmia:\n       epagent:\n         port: 8889\n   cloudmonitoring:\n     aws:\n       enabled: false\n       accessKey:\n       secretKey:\n       # services supported are rds,ec2,ebs,lambda,dynamodb,s3,sns,ecs,sqs,kinesis,clb,nlb,alb,redshift,elasticache,autoScaling,billing,apiGateway\n       # provide comma separated services to monitor\n       servicesList:\n\n```\n",
-      "csv_display_name": "DX APM Universal Monitoring Agent",
-      "csv_metadata_description": "The Universal Monitoring Agent for Kubernetes (UMA for Kubernetes) acts as single deployment that automatically discovers and monitors cloud and container infrastructures and containerized application processes.",
-      "csv_name": "uma-operator.v2022.6.0-6",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T02:01:23.849000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "uma-operator",
-      "provided_apis": [
-        {
-          "group": "ca.broadcom.com",
-          "kind": "UniversalMonitoringAgent",
-          "plural": "universalmonitoringagents",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "image": "registry.connect.redhat.com/ca/uma-operator@sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "name": "uma-operator-a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d-annotation"
-        },
-        {
-          "digest": "sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "image": "registry.connect.redhat.com/ca/uma-operator@sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "name": "uma-operator"
-        },
-        {
-          "digest": "sha256:2c37187f89406d5dd00cb5bc113e504835d42f2c3590db5fe13520f75e8c0159",
-          "image": "registry.connect.redhat.com/ca/universalmonitoragent@sha256:2c37187f89406d5dd00cb5bc113e504835d42f2c3590db5fe13520f75e8c0159",
-          "name": "uma"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=2022.1.0 <2022.6.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2022.6.0-6",
-      "version_original": "2022.6.0-6"
-    },
-    {
-      "_id": "62a83c49240dc134424ab4ae",
-      "alm_examples": [
-        {
-          "api_version": "ca.broadcom.com/v1alpha1",
-          "kind": "UniversalMonitoringAgent",
-          "metadata": {
-            "name": "uma-monitor"
-          },
-          "spec": {
-            "agentManager": {
-              "credential": "",
-              "tenantID": "",
-              "url": "localhost:5001"
-            },
-            "cloudmonitoring": {
-              "aws": {
-                "accessKey": "",
-                "enabled": false,
-                "secretKey": "",
-                "servicesList": ""
-              }
-            },
-            "clusterName": "DevelopmentCluster",
-            "daemonset": {
-              "apmia": {
-                "epagent": {
-                  "port": 8889
-                }
-              },
-              "privileged": true
-            },
-            "monitor": {
-              "application": {
-                "autoattach": {
-                  "dotnet": {
-                    "enabled": true
-                  },
-                  "dynamicPropertyResolution": {
-                    "agentName": "",
-                    "hostName": "{k8s_deployment_name},{k8s_daemonset_name},{k8s_deploymentconfig_name},{k8s_pod_name},ContainerHost"
-                  },
-                  "filterType": "whitelist",
-                  "java": {
-                    "customJdkTools": {
-                      "enabled": false,
-                      "imageName": ""
-                    },
-                    "enabled": true
-                  },
-                  "probe": {
-                    "enabled": true
-                  }
-                },
-                "jmx": {
-                  "enabled": true
-                },
-                "opentracing": {
-                  "correlation": {
-                    "enabled": false
-                  },
-                  "enabled": true,
-                  "grpc": {
-                    "hostport": ""
-                  }
-                },
-                "zipkinTracing": {
-                  "enabled": true,
-                  "zipkinServer": {}
-                }
-              },
-              "clusterPerformance": {
-                "dataReporter": {
-                  "vertex": {
-                    "refreshInterval": 360,
-                    "ttl": 720
-                  }
-                },
-                "enabled": true,
-                "node": {
-                  "noscheduleTaint": {
-                    "allowed": {
-                      "tolerations": ""
-                    },
-                    "skipMetricAggregation": {
-                      "enabled": true
-                    }
-                  }
-                }
-              },
-              "container": {
-                "dockerstats": {
-                  "enabled": true
-                },
-                "prometheus": {
-                  "backend": {
-                    "custom": {
-                      "promqlConfigMap": "custom-promql-config"
-                    },
-                    "enabled": false,
-                    "endPoint": {
-                      "configFiles": "",
-                      "metricAlias": "container_name=container,pod_name=pod",
-                      "password": "",
-                      "token": "",
-                      "url": "",
-                      "username": ""
-                    },
-                    "filter": {
-                      "name": "",
-                      "value": ""
-                    }
-                  },
-                  "exporter": {
-                    "enabled": true
-                  }
-                }
-              },
-              "events": {
-                "clamp": {
-                  "perDayLimit": 15000
-                },
-                "elasticDocTypeId": "itoa_events_apm",
-                "elasticDocTypeVersion": 1,
-                "elasticProduct": "ao",
-                "enabled": false,
-                "filter": {
-                  "fieldselector": "type!=Normal"
-                }
-              },
-              "httpCollector": {
-                "enabled": true,
-                "ingress": {
-                  "enabled": false,
-                  "ssl": {
-                    "enabled": false
-                  }
-                },
-                "memoryGrid": {},
-                "replicas": 1,
-                "server": {
-                  "host": "0.0.0.0",
-                  "maxMemory": "",
-                  "minMemory": "",
-                  "port": 8085
-                }
-              },
-              "kafka": {
-                "consumergroups": {
-                  "filter": "",
-                  "metrics": true
-                },
-                "debug": false,
-                "deployAsDaemonSet": false,
-                "enabled": false,
-                "jmx": {
-                  "MBeans": {
-                    "exclude": "",
-                    "include": ""
-                  },
-                  "modules": "kafka,jvm,memory"
-                },
-                "ssl": {
-                  "client": {
-                    "enabled": false,
-                    "endpointIdentificationEnabled": false,
-                    "keystoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "keystoreKeyPassword": {
-                      "value": ""
-                    },
-                    "keystorePassword": {
-                      "value": ""
-                    },
-                    "truststoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "truststorePassword": {
-                      "value": ""
-                    }
-                  },
-                  "jmx": {
-                    "enabled": false,
-                    "keystoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "keystorePassword": {
-                      "value": ""
-                    },
-                    "truststoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "truststorePassword": {
-                      "value": ""
-                    }
-                  }
-                }
-              },
-              "node": {
-                "enabled": true
-              }
-            },
-            "role": "common",
-            "type": "Openshift"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ca/uma-operator-bundle@sha256:e0e611af7c927055cadd8bc21f02eb03083924a385b3a22ac417e9dbf9ca8b96",
-      "bundle_path_digest": "sha256:e0e611af7c927055cadd8bc21f02eb03083924a385b3a22ac417e9dbf9ca8b96",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-06-14T07:44:09.020000+00:00",
-      "csv_description": "The **DX APM Universal Monitoring Agent** for Kubernetes (UMA for Kubernetes) acts as a single deployment that automatically discovers and monitors cloud and container infrastructures and containerized application processes. UMA for Kubernetes discovers and monitors all the containers on a host. This capability allows to monitor both the Kubernetes Infrastructure ( like Node, Pods, Containers, Cluster Services etc ) and applications running on this infrastructure & correlate them together which can help the triager to isolate if the the problem is related to the application or infrastructure\n\n**Usage**:\n```\n apiVersion: ca.broadcom.com/v1alpha1\n kind: UniversalMonitoringAgent\n metadata:\n   name: uma-monitor\n spec:\n   # The agent and Enterprise Manager connection details.\n   agentManager:\n     url: localhost:5001\n     # Agent/EM login credentials.\n     credential:\n     # tenantID is Cohort ID of DX SaaS tenant.\n     # After logging into DX SaaS, Cohort ID is available at \"Launch Pad -> Settings -> Connector Parameters\"\n     # tenantID is only required if Kubernetes/OpenShift events monitoring is enabled in UMA.\n     tenantID: \"\"\n\n   clusterName: DevelopmentCluster\n   # type should be Kubernetes or Openshift depending on the environment\n   type: Openshift\n   role: common\n   monitor:\n     application:\n       # autoattach properties\n       autoattach:\n         filterType: whitelist\n         probe:\n           enabled: true\n         # this feature leverages container metadata to resolve agent host name and agent name\n         dynamicPropertyResolution:\n           hostName: \"{k8s_deployment_name},{k8s_daemonset_name},{k8s_deploymentconfig_name},{k8s_pod_name},ContainerHost\"\n           agentName: \"\"\n         # java autoattach properties\n         java:\n           enabled: true\n           propertiesOverride:\n           customJdkTools:\n             enabled: false\n             # Provide your custom created jdk tools jar image name below.\n             imageName: \"\"\n         # dotnet autoattach properties\n         dotnet:\n           enabled: true\n           propertiesOverride:\n       jmx:\n         enabled: true\n       opentracing:\n         enabled: true\n         grpc:\n           hostport: \"\"\n         correlation:\n           enabled: false\n       zipkinTracing:\n         enabled: true\n         zipkinServer:\n           hostport:\n     events:\n       enabled: true\n       filter:\n         # fieldselector property can be used to filter the Kubernetes events based on the value of one or more resource fields.\n         # Here are some examples of field selector queries: metadata.namespace!=default, metadata.name=my-service etc.\n         fieldselector: type!=Normal\n         namespace:\n       clamp:\n         perDayLimit: 15000\n       elasticDocTypeId: itoa_events_apm\n       elasticDocTypeVersion: 1\n       elasticProduct: ao\n     httpCollector:\n       enabled: true\n       replicas: 1\n       server:\n         host: 0.0.0.0\n         port: 8085\n         minMemory:\n         maxMemory:\n       memoryGrid:\n         enabled:\n       # Enable this ingress resource creation if there is Ingress Controller deployed\n       # It requires session affinity using HTTP Headers by LB Ingress Controller\n       ingress:\n         enabled: false\n         host:\n         ssl:\n           enabled: false\n     container:\n       prometheus:\n         exporter:\n           enabled: true\n         backend:\n           enabled: false\n           endPoint:\n             # Defines the URL endpoint of the Prometheus backend.\n             url:\n             # Username (if any) for connecting to the Prometheus backend URL.\n             username:\n             password:\n             # Token (if any) for connecting to the Prometheus backend URL.\n             token:\n             configFiles:\n             metricAlias: container_name=container,pod_name=pod\n           filter:\n             name:\n             value:\n           custom:\n             promqlConfigMap: custom-promql-config\n\n       dockerstats:\n         enabled: true\n     clusterPerformance:\n       enabled: true\n       node:\n         noscheduleTaint:\n           skipMetricAggregation:\n             enabled: true\n           allowed:\n             tolerations: \"\"\n       dataReporter:\n          vertex:\n            ttl: 720\n            refreshInterval: 360\n     node:\n       enabled: true\n     kafka:\n       enabled: false\n       consumergroups:\n         metrics: true\n         filter: \"\"\n       jmx:\n         modules: \"kafka,jvm,memory\"\n         MBeans:\n         # A semi-colon separated list of managed bean object names. JMX metrics will be automatically reported for matching beans.\n           include: \"\"\n         # A semi-colon separated list of managed bean object names. Matching beans will be ignored for Kafka JMX metrics reporting. This property overrides \"include\" configuration.\n           exclude: \"\"\n       deployAsDaemonSet: false\n       debug: false\n       ssl:\n         client:\n           enabled: false\n           truststoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           truststorePassword:\n             value: \"\"\n           keystoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           keystorePassword:\n             value: \"\"\n           keystoreKeyPassword:\n             value: \"\"\n           endpointIdentificationEnabled: false\n         jmx:\n           enabled: false\n           truststoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           truststorePassword:\n             value: \"\"\n           keystoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           keystorePassword:\n             value: \"\"\n\n   # Default epagent port of the UMA daemonset pod deployment (app-container-monitor)\n   daemonset:\n     privileged: true\n     apmia:\n       epagent:\n         port: 8889\n   cloudmonitoring:\n     aws:\n       enabled: false\n       accessKey:\n       secretKey:\n       # services supported are rds,ec2,ebs,lambda,dynamodb,s3,sns,ecs,sqs,kinesis,clb,nlb,alb,redshift,elasticache,autoScaling,billing,apiGateway\n       # provide comma separated services to monitor\n       servicesList:\n\n```\n",
-      "csv_display_name": "DX APM Universal Monitoring Agent",
-      "csv_metadata_description": "The Universal Monitoring Agent for Kubernetes (UMA for Kubernetes) acts as single deployment that automatically discovers and monitors cloud and container infrastructures and containerized application processes.",
-      "csv_name": "uma-operator.v2022.6.0-6",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T01:51:51.303000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "uma-operator",
-      "provided_apis": [
-        {
-          "group": "ca.broadcom.com",
-          "kind": "UniversalMonitoringAgent",
-          "plural": "universalmonitoringagents",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "image": "registry.connect.redhat.com/ca/uma-operator@sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "name": "uma-operator-a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d-annotation"
-        },
-        {
-          "digest": "sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "image": "registry.connect.redhat.com/ca/uma-operator@sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "name": "uma-operator"
-        },
-        {
-          "digest": "sha256:2c37187f89406d5dd00cb5bc113e504835d42f2c3590db5fe13520f75e8c0159",
-          "image": "registry.connect.redhat.com/ca/universalmonitoragent@sha256:2c37187f89406d5dd00cb5bc113e504835d42f2c3590db5fe13520f75e8c0159",
-          "name": "uma"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=2022.1.0 <2022.6.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2022.6.0-6",
-      "version_original": "2022.6.0-6"
-    },
-    {
-      "_id": "62a83c49dd92c1f1f128e23d",
-      "alm_examples": [
-        {
-          "api_version": "ca.broadcom.com/v1alpha1",
-          "kind": "UniversalMonitoringAgent",
-          "metadata": {
-            "name": "uma-monitor"
-          },
-          "spec": {
-            "agentManager": {
-              "credential": "",
-              "tenantID": "",
-              "url": "localhost:5001"
-            },
-            "cloudmonitoring": {
-              "aws": {
-                "accessKey": "",
-                "enabled": false,
-                "secretKey": "",
-                "servicesList": ""
-              }
-            },
-            "clusterName": "DevelopmentCluster",
-            "daemonset": {
-              "apmia": {
-                "epagent": {
-                  "port": 8889
-                }
-              },
-              "privileged": true
-            },
-            "monitor": {
-              "application": {
-                "autoattach": {
-                  "dotnet": {
-                    "enabled": true
-                  },
-                  "dynamicPropertyResolution": {
-                    "agentName": "",
-                    "hostName": "{k8s_deployment_name},{k8s_daemonset_name},{k8s_deploymentconfig_name},{k8s_pod_name},ContainerHost"
-                  },
-                  "filterType": "whitelist",
-                  "java": {
-                    "customJdkTools": {
-                      "enabled": false,
-                      "imageName": ""
-                    },
-                    "enabled": true
-                  },
-                  "probe": {
-                    "enabled": true
-                  }
-                },
-                "jmx": {
-                  "enabled": true
-                },
-                "opentracing": {
-                  "correlation": {
-                    "enabled": false
-                  },
-                  "enabled": true,
-                  "grpc": {
-                    "hostport": ""
-                  }
-                },
-                "zipkinTracing": {
-                  "enabled": true,
-                  "zipkinServer": {}
-                }
-              },
-              "clusterPerformance": {
-                "dataReporter": {
-                  "vertex": {
-                    "refreshInterval": 360,
-                    "ttl": 720
-                  }
-                },
-                "enabled": true,
-                "node": {
-                  "noscheduleTaint": {
-                    "allowed": {
-                      "tolerations": ""
-                    },
-                    "skipMetricAggregation": {
-                      "enabled": true
-                    }
-                  }
-                }
-              },
-              "container": {
-                "dockerstats": {
-                  "enabled": true
-                },
-                "prometheus": {
-                  "backend": {
-                    "custom": {
-                      "promqlConfigMap": "custom-promql-config"
-                    },
-                    "enabled": false,
-                    "endPoint": {
-                      "configFiles": "",
-                      "metricAlias": "container_name=container,pod_name=pod",
-                      "password": "",
-                      "token": "",
-                      "url": "",
-                      "username": ""
-                    },
-                    "filter": {
-                      "name": "",
-                      "value": ""
-                    }
-                  },
-                  "exporter": {
-                    "enabled": true
-                  }
-                }
-              },
-              "events": {
-                "clamp": {
-                  "perDayLimit": 15000
-                },
-                "elasticDocTypeId": "itoa_events_apm",
-                "elasticDocTypeVersion": 1,
-                "elasticProduct": "ao",
-                "enabled": false,
-                "filter": {
-                  "fieldselector": "type!=Normal"
-                }
-              },
-              "httpCollector": {
-                "enabled": true,
-                "ingress": {
-                  "enabled": false,
-                  "ssl": {
-                    "enabled": false
-                  }
-                },
-                "memoryGrid": {},
-                "replicas": 1,
-                "server": {
-                  "host": "0.0.0.0",
-                  "maxMemory": "",
-                  "minMemory": "",
-                  "port": 8085
-                }
-              },
-              "kafka": {
-                "consumergroups": {
-                  "filter": "",
-                  "metrics": true
-                },
-                "debug": false,
-                "deployAsDaemonSet": false,
-                "enabled": false,
-                "jmx": {
-                  "MBeans": {
-                    "exclude": "",
-                    "include": ""
-                  },
-                  "modules": "kafka,jvm,memory"
-                },
-                "ssl": {
-                  "client": {
-                    "enabled": false,
-                    "endpointIdentificationEnabled": false,
-                    "keystoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "keystoreKeyPassword": {
-                      "value": ""
-                    },
-                    "keystorePassword": {
-                      "value": ""
-                    },
-                    "truststoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "truststorePassword": {
-                      "value": ""
-                    }
-                  },
-                  "jmx": {
-                    "enabled": false,
-                    "keystoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "keystorePassword": {
-                      "value": ""
-                    },
-                    "truststoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "truststorePassword": {
-                      "value": ""
-                    }
-                  }
-                }
-              },
-              "node": {
-                "enabled": true
-              }
-            },
-            "role": "common",
-            "type": "Openshift"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ca/uma-operator-bundle@sha256:e0e611af7c927055cadd8bc21f02eb03083924a385b3a22ac417e9dbf9ca8b96",
-      "bundle_path_digest": "sha256:e0e611af7c927055cadd8bc21f02eb03083924a385b3a22ac417e9dbf9ca8b96",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-06-14T07:44:09.519000+00:00",
-      "csv_description": "The **DX APM Universal Monitoring Agent** for Kubernetes (UMA for Kubernetes) acts as a single deployment that automatically discovers and monitors cloud and container infrastructures and containerized application processes. UMA for Kubernetes discovers and monitors all the containers on a host. This capability allows to monitor both the Kubernetes Infrastructure ( like Node, Pods, Containers, Cluster Services etc ) and applications running on this infrastructure & correlate them together which can help the triager to isolate if the the problem is related to the application or infrastructure\n\n**Usage**:\n```\n apiVersion: ca.broadcom.com/v1alpha1\n kind: UniversalMonitoringAgent\n metadata:\n   name: uma-monitor\n spec:\n   # The agent and Enterprise Manager connection details.\n   agentManager:\n     url: localhost:5001\n     # Agent/EM login credentials.\n     credential:\n     # tenantID is Cohort ID of DX SaaS tenant.\n     # After logging into DX SaaS, Cohort ID is available at \"Launch Pad -> Settings -> Connector Parameters\"\n     # tenantID is only required if Kubernetes/OpenShift events monitoring is enabled in UMA.\n     tenantID: \"\"\n\n   clusterName: DevelopmentCluster\n   # type should be Kubernetes or Openshift depending on the environment\n   type: Openshift\n   role: common\n   monitor:\n     application:\n       # autoattach properties\n       autoattach:\n         filterType: whitelist\n         probe:\n           enabled: true\n         # this feature leverages container metadata to resolve agent host name and agent name\n         dynamicPropertyResolution:\n           hostName: \"{k8s_deployment_name},{k8s_daemonset_name},{k8s_deploymentconfig_name},{k8s_pod_name},ContainerHost\"\n           agentName: \"\"\n         # java autoattach properties\n         java:\n           enabled: true\n           propertiesOverride:\n           customJdkTools:\n             enabled: false\n             # Provide your custom created jdk tools jar image name below.\n             imageName: \"\"\n         # dotnet autoattach properties\n         dotnet:\n           enabled: true\n           propertiesOverride:\n       jmx:\n         enabled: true\n       opentracing:\n         enabled: true\n         grpc:\n           hostport: \"\"\n         correlation:\n           enabled: false\n       zipkinTracing:\n         enabled: true\n         zipkinServer:\n           hostport:\n     events:\n       enabled: true\n       filter:\n         # fieldselector property can be used to filter the Kubernetes events based on the value of one or more resource fields.\n         # Here are some examples of field selector queries: metadata.namespace!=default, metadata.name=my-service etc.\n         fieldselector: type!=Normal\n         namespace:\n       clamp:\n         perDayLimit: 15000\n       elasticDocTypeId: itoa_events_apm\n       elasticDocTypeVersion: 1\n       elasticProduct: ao\n     httpCollector:\n       enabled: true\n       replicas: 1\n       server:\n         host: 0.0.0.0\n         port: 8085\n         minMemory:\n         maxMemory:\n       memoryGrid:\n         enabled:\n       # Enable this ingress resource creation if there is Ingress Controller deployed\n       # It requires session affinity using HTTP Headers by LB Ingress Controller\n       ingress:\n         enabled: false\n         host:\n         ssl:\n           enabled: false\n     container:\n       prometheus:\n         exporter:\n           enabled: true\n         backend:\n           enabled: false\n           endPoint:\n             # Defines the URL endpoint of the Prometheus backend.\n             url:\n             # Username (if any) for connecting to the Prometheus backend URL.\n             username:\n             password:\n             # Token (if any) for connecting to the Prometheus backend URL.\n             token:\n             configFiles:\n             metricAlias: container_name=container,pod_name=pod\n           filter:\n             name:\n             value:\n           custom:\n             promqlConfigMap: custom-promql-config\n\n       dockerstats:\n         enabled: true\n     clusterPerformance:\n       enabled: true\n       node:\n         noscheduleTaint:\n           skipMetricAggregation:\n             enabled: true\n           allowed:\n             tolerations: \"\"\n       dataReporter:\n          vertex:\n            ttl: 720\n            refreshInterval: 360\n     node:\n       enabled: true\n     kafka:\n       enabled: false\n       consumergroups:\n         metrics: true\n         filter: \"\"\n       jmx:\n         modules: \"kafka,jvm,memory\"\n         MBeans:\n         # A semi-colon separated list of managed bean object names. JMX metrics will be automatically reported for matching beans.\n           include: \"\"\n         # A semi-colon separated list of managed bean object names. Matching beans will be ignored for Kafka JMX metrics reporting. This property overrides \"include\" configuration.\n           exclude: \"\"\n       deployAsDaemonSet: false\n       debug: false\n       ssl:\n         client:\n           enabled: false\n           truststoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           truststorePassword:\n             value: \"\"\n           keystoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           keystorePassword:\n             value: \"\"\n           keystoreKeyPassword:\n             value: \"\"\n           endpointIdentificationEnabled: false\n         jmx:\n           enabled: false\n           truststoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           truststorePassword:\n             value: \"\"\n           keystoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           keystorePassword:\n             value: \"\"\n\n   # Default epagent port of the UMA daemonset pod deployment (app-container-monitor)\n   daemonset:\n     privileged: true\n     apmia:\n       epagent:\n         port: 8889\n   cloudmonitoring:\n     aws:\n       enabled: false\n       accessKey:\n       secretKey:\n       # services supported are rds,ec2,ebs,lambda,dynamodb,s3,sns,ecs,sqs,kinesis,clb,nlb,alb,redshift,elasticache,autoScaling,billing,apiGateway\n       # provide comma separated services to monitor\n       servicesList:\n\n```\n",
-      "csv_display_name": "DX APM Universal Monitoring Agent",
-      "csv_metadata_description": "The Universal Monitoring Agent for Kubernetes (UMA for Kubernetes) acts as single deployment that automatically discovers and monitors cloud and container infrastructures and containerized application processes.",
-      "csv_name": "uma-operator.v2022.6.0-6",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T02:10:20+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "uma-operator",
-      "provided_apis": [
-        {
-          "group": "ca.broadcom.com",
-          "kind": "UniversalMonitoringAgent",
-          "plural": "universalmonitoringagents",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "image": "registry.connect.redhat.com/ca/uma-operator@sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "name": "uma-operator-a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d-annotation"
-        },
-        {
-          "digest": "sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "image": "registry.connect.redhat.com/ca/uma-operator@sha256:a9be2966adeb764edff9f371464d2ebb72f8203ad8bbef5785095c783c5c305d",
-          "name": "uma-operator"
-        },
-        {
-          "digest": "sha256:2c37187f89406d5dd00cb5bc113e504835d42f2c3590db5fe13520f75e8c0159",
-          "image": "registry.connect.redhat.com/ca/universalmonitoragent@sha256:2c37187f89406d5dd00cb5bc113e504835d42f2c3590db5fe13520f75e8c0159",
-          "name": "uma"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=2022.1.0 <2022.6.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2022.6.0-6",
-      "version_original": "2022.6.0-6"
-    },
-    {
       "_id": "62a83c57150d8182de8d12f6",
       "alm_examples": [
         {
@@ -14887,9 +13663,327 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "6.2.8-11",
       "version_original": "6.2.8-11"
+    },
+    {
+      "_id": "62abdcfebe1fd3a96e058425",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-06-17T01:46:38.776000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:46:38.776000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.8-1",
+      "version_original": "6.0.8-1"
+    },
+    {
+      "_id": "62abdd07240dc134424c6412",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.10",
+      "creation_date": "2022-06-17T01:46:47.783000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:46:47.783000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.8-1",
+      "version_original": "6.0.8-1"
+    },
+    {
+      "_id": "62abdd18dd92c1f1f12a91ae",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.6-35.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-06-17T01:47:04.262000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:47:04.262000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67",
+          "image": "redislabs/operator@sha256:6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67",
+          "name": "operator-6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67-annotation"
+        },
+        {
+          "digest": "sha256:6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "62abdd4d240dc134424c64f1",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.6-39.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-06-17T01:47:57.363000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:47:57.363000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:fcdcfbf38860a41a5c4a635cf74d8f421fe48b4180b51c511e5eb3f309c7f6e2",
+          "image": "redislabs/operator@sha256:fcdcfbf38860a41a5c4a635cf74d8f421fe48b4180b51c511e5eb3f309c7f6e2",
+          "name": "operator-fcdcfbf38860a41a5c4a635cf74d8f421fe48b4180b51c511e5eb3f309c7f6e2-annotation"
+        },
+        {
+          "digest": "sha256:fcdcfbf38860a41a5c4a635cf74d8f421fe48b4180b51c511e5eb3f309c7f6e2",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:fcdcfbf38860a41a5c4a635cf74d8f421fe48b4180b51c511e5eb3f309c7f6e2",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
     }
   ],
   "page": 34,
   "page_size": 100,
-  "total": 4531
+  "total": 4532
 }

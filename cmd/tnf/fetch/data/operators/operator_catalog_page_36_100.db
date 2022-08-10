@@ -1,501 +1,6 @@
 {
   "data": [
     {
-      "_id": "62b2b8a4409164f59aaf84f0",
-      "alm_examples": [
-        {
-          "api_version": "core.libopenstorage.org/v1",
-          "kind": "StorageCluster",
-          "metadata": {
-            "annotations": {
-              "portworx.io/is-openshift": "true"
-            },
-            "name": "portworx",
-            "namespace": "test-operator"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "core.libopenstorage.org/v1",
-          "kind": "StorageNode",
-          "metadata": {
-            "name": "example",
-            "namespace": "test-operator"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/portworx/portworx-certified-bundle@sha256:2a717d5d940a152105e8f5dd46b3e527c19132fec7eb0982955f52c46166dfca",
-      "bundle_path_digest": "sha256:2a717d5d940a152105e8f5dd46b3e527c19132fec7eb0982955f52c46166dfca",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-06-22T06:37:24.246000+00:00",
-      "csv_description": "Portworx-Enterprise is the most widely-used and reliable cloud-native\nstorage solution for production workloads and provides high-availability,\ndata protection and security for containerized applications.\n\nPortworx Enterprise enables you to migrate entire applications, including\ndata, between clusters in a single data center or cloud, or between clouds,\nwith a single kubectl command.\n\nThe cloud native storage and data management platform that enterprises trust\nto manage data in containers now has an operator which simplifies the install,\nconfiguration, upgrades and manages the Portworx Enterprise cluster lifecycle.\n\nLearn more about the Portworx Enterprise\n[the data platform for Kubernetes](https://portworx.com/products/introduction)\n\nTo learn more about the platform features, please visit our\n[product features page](https://portworx.com/products/features)\n\n### About Portworx\n\nPortworx is the solution for running stateful containers in production,\ndesigned with DevOps in mind. With Portworx, users can manage any database\nor stateful service on any infrastructure using any container scheduler,\nincluding Kubernetes, Mesosphere DC/OS, and Docker Swarm. Portworx solves\nthe five most common problems DevOps teams encounter when running stateful\nservices in production: persistence, high availability, data automation,\nsecurity, and support for multiple data stores and infrastructure.\n\n### How to install StorageCluster\n\nTo customize your cluster's configuration (specification), use the\n[Spec Generator](https://central.portworx.com/) from PX-Central.\n\n### Prerequisite\n\nEnsure ports 17001-17020 on worker nodes are reachable from master and other worker nodes.\n\n### Tutorials\n\n* [Portworx Enterprise on Openshift](https://portworx.com/openshift)\n\n* [Stateful applications on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes/application-install-with-kubernetes)\n\n* [Portworx Enterprise on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes)\n\n* [Kafka on Kubernetes](https://portworx.com/kafka-kubernetes)\n\n* [Elastisearch on Kubernetes](https://portworx.com/elasticsearch-kubernetes)\n\n* [PostgreSQL on Kubernetes](https://portworx.com/postgres-kubernetes/)\n\n* [MongoDB on Kubernetes](https://portworx.com/mongodb-kubernetes/)\n\n* [Cassandra on Kubernetes](https://portworx.com/cassandra-kubernetes/)\n\n* [Kubernetes backup and recovery](https://portworx.com/kubernetes-backup/)\n\n* [Disaster Recovery for Kubernetes](https://portworx.com/kubernetes-disaster-recovery/)\n\n### Uninstall\n\nDeleting the StorageCluster object for Portworx cluster does not stop Portworx\nservice running on the nodes, to avoid application downtime.\n\nTo uninstall Portworx completely without wiping the data, you should add the\nfollowing delete strategy to the StorageCluster spec:\n```\nspec:\n  deleteStrategy:\n    type: Uninstall\n```\n**Caution:** To uninstall Portworx and **wipe all the data**, you should use the following\ndelete strategy:\n```\nspec:\n  deleteStrategy:\n    type: UninstallAndWipe\n```\n",
-      "csv_display_name": "Portworx Enterprise",
-      "csv_metadata_description": "Cloud native storage solution for production workloads",
-      "csv_name": "portworx-operator.v1.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:35:07.821000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "portworx-certified",
-      "provided_apis": [
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageNode",
-          "plural": "storagenodes",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageCluster",
-          "plural": "storageclusters",
-          "version": "v1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageCluster",
-          "plural": "storageclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageNode",
-          "plural": "storagenodes",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:bb93cb53d57ed8277480f5cfb827b6b2041e639c8fceae2e501e91c201d7e0d9",
-          "image": "registry.connect.redhat.com/portworx/openstorage-operator@sha256:bb93cb53d57ed8277480f5cfb827b6b2041e639c8fceae2e501e91c201d7e0d9",
-          "name": "openstorage-operator-bb93cb53d57ed8277480f5cfb827b6b2041e639c8fceae2e501e91c201d7e0d9-annotation"
-        },
-        {
-          "digest": "sha256:bb93cb53d57ed8277480f5cfb827b6b2041e639c8fceae2e501e91c201d7e0d9",
-          "image": "registry.connect.redhat.com/portworx/openstorage-operator@sha256:bb93cb53d57ed8277480f5cfb827b6b2041e639c8fceae2e501e91c201d7e0d9",
-          "name": "portworx-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.8.1",
-      "version_original": "1.8.1"
-    },
-    {
-      "_id": "62b2b8a83b84323f9e3d73fc",
-      "alm_examples": [
-        {
-          "api_version": "core.libopenstorage.org/v1",
-          "kind": "StorageCluster",
-          "metadata": {
-            "annotations": {
-              "portworx.io/is-openshift": "true"
-            },
-            "name": "portworx",
-            "namespace": "test-operator"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "core.libopenstorage.org/v1",
-          "kind": "StorageNode",
-          "metadata": {
-            "name": "example",
-            "namespace": "test-operator"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/portworx/portworx-certified-bundle@sha256:2a717d5d940a152105e8f5dd46b3e527c19132fec7eb0982955f52c46166dfca",
-      "bundle_path_digest": "sha256:2a717d5d940a152105e8f5dd46b3e527c19132fec7eb0982955f52c46166dfca",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-06-22T06:37:28.062000+00:00",
-      "csv_description": "Portworx-Enterprise is the most widely-used and reliable cloud-native\nstorage solution for production workloads and provides high-availability,\ndata protection and security for containerized applications.\n\nPortworx Enterprise enables you to migrate entire applications, including\ndata, between clusters in a single data center or cloud, or between clouds,\nwith a single kubectl command.\n\nThe cloud native storage and data management platform that enterprises trust\nto manage data in containers now has an operator which simplifies the install,\nconfiguration, upgrades and manages the Portworx Enterprise cluster lifecycle.\n\nLearn more about the Portworx Enterprise\n[the data platform for Kubernetes](https://portworx.com/products/introduction)\n\nTo learn more about the platform features, please visit our\n[product features page](https://portworx.com/products/features)\n\n### About Portworx\n\nPortworx is the solution for running stateful containers in production,\ndesigned with DevOps in mind. With Portworx, users can manage any database\nor stateful service on any infrastructure using any container scheduler,\nincluding Kubernetes, Mesosphere DC/OS, and Docker Swarm. Portworx solves\nthe five most common problems DevOps teams encounter when running stateful\nservices in production: persistence, high availability, data automation,\nsecurity, and support for multiple data stores and infrastructure.\n\n### How to install StorageCluster\n\nTo customize your cluster's configuration (specification), use the\n[Spec Generator](https://central.portworx.com/) from PX-Central.\n\n### Prerequisite\n\nEnsure ports 17001-17020 on worker nodes are reachable from master and other worker nodes.\n\n### Tutorials\n\n* [Portworx Enterprise on Openshift](https://portworx.com/openshift)\n\n* [Stateful applications on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes/application-install-with-kubernetes)\n\n* [Portworx Enterprise on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes)\n\n* [Kafka on Kubernetes](https://portworx.com/kafka-kubernetes)\n\n* [Elastisearch on Kubernetes](https://portworx.com/elasticsearch-kubernetes)\n\n* [PostgreSQL on Kubernetes](https://portworx.com/postgres-kubernetes/)\n\n* [MongoDB on Kubernetes](https://portworx.com/mongodb-kubernetes/)\n\n* [Cassandra on Kubernetes](https://portworx.com/cassandra-kubernetes/)\n\n* [Kubernetes backup and recovery](https://portworx.com/kubernetes-backup/)\n\n* [Disaster Recovery for Kubernetes](https://portworx.com/kubernetes-disaster-recovery/)\n\n### Uninstall\n\nDeleting the StorageCluster object for Portworx cluster does not stop Portworx\nservice running on the nodes, to avoid application downtime.\n\nTo uninstall Portworx completely without wiping the data, you should add the\nfollowing delete strategy to the StorageCluster spec:\n```\nspec:\n  deleteStrategy:\n    type: Uninstall\n```\n**Caution:** To uninstall Portworx and **wipe all the data**, you should use the following\ndelete strategy:\n```\nspec:\n  deleteStrategy:\n    type: UninstallAndWipe\n```\n",
-      "csv_display_name": "Portworx Enterprise",
-      "csv_metadata_description": "Cloud native storage solution for production workloads",
-      "csv_name": "portworx-operator.v1.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:52:59.583000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "portworx-certified",
-      "provided_apis": [
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageNode",
-          "plural": "storagenodes",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageCluster",
-          "plural": "storageclusters",
-          "version": "v1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageCluster",
-          "plural": "storageclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageNode",
-          "plural": "storagenodes",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:bb93cb53d57ed8277480f5cfb827b6b2041e639c8fceae2e501e91c201d7e0d9",
-          "image": "registry.connect.redhat.com/portworx/openstorage-operator@sha256:bb93cb53d57ed8277480f5cfb827b6b2041e639c8fceae2e501e91c201d7e0d9",
-          "name": "openstorage-operator-bb93cb53d57ed8277480f5cfb827b6b2041e639c8fceae2e501e91c201d7e0d9-annotation"
-        },
-        {
-          "digest": "sha256:bb93cb53d57ed8277480f5cfb827b6b2041e639c8fceae2e501e91c201d7e0d9",
-          "image": "registry.connect.redhat.com/portworx/openstorage-operator@sha256:bb93cb53d57ed8277480f5cfb827b6b2041e639c8fceae2e501e91c201d7e0d9",
-          "name": "portworx-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.8.1",
-      "version_original": "1.8.1"
-    },
-    {
-      "_id": "62b34c0b150d8182de905f92",
-      "alm_examples": [
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "Hazelcast",
-          "metadata": {
-            "name": "hazelcast"
-          },
-          "spec": {
-            "clusterSize": 3,
-            "licenseKeySecret": "hazelcast-license-key",
-            "repository": "docker.io/hazelcast/hazelcast-enterprise",
-            "version": "5.1.2"
-          }
-        },
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "ManagementCenter",
-          "metadata": {
-            "name": "managementcenter"
-          },
-          "spec": {
-            "externalConnectivity": {
-              "type": "LoadBalancer"
-            },
-            "hazelcastClusters": [
-              {
-                "address": "hazelcast",
-                "name": "dev"
-              }
-            ],
-            "licenseKeySecret": "hazelcast-license-key",
-            "persistence": {
-              "enabled": true,
-              "size": "10Gi"
-            },
-            "repository": "hazelcast/management-center",
-            "version": "5.1.3"
-          }
-        },
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "Map",
-          "metadata": {
-            "name": "map"
-          },
-          "spec": {
-            "hazelcastResourceName": "hazelcast"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator-bundle@sha256:8f552230c2aada8f95564890e6d95f9ce75169c7cbf76cde8164719a2b181b8a",
-      "bundle_path_digest": "sha256:8f552230c2aada8f95564890e6d95f9ce75169c7cbf76cde8164719a2b181b8a",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-06-22T17:06:19.987000+00:00",
-      "csv_description": "# Hazelcast Platform Operator #\n\nEasily deploy Hazelcast clusters and Management Center into Kubernetes environments and manage their lifecycles.\n\n## Before You Start\n\nIf you are planning to create Hazelcast Platform Enterprise clusters, you need to [create a secret](https://docs.hazelcast.com/operator/latest/get-started#step-2-start-the-hazelcast-cluster) for the license. You can request a trial license key from [here](https://trialrequest.hazelcast.com).\n\nFor Hazelcast Platform clusters, you can simply continue.\n\n## Documentation\n\n1. [Get started](https://docs.hazelcast.com/operator/latest/get-started) with the Operator.\n2. [Connect to the cluster from outside Kubernetes](https://guides.hazelcast.org/hazelcast-platform-operator-expose-externally/main)\n  from the outside.\n\n## Features\n\nHazelcast Platform Operator supports the features below:\n\n* Custom resource for Hazelcast Platform (Open Source & Enterprise) and Management Center\n* Observe status of Hazelcast and Management Center clusters\n* Scale up and down Hazelcast clusters\n* Expose Hazelcast cluster to external\n  clients ([Smart & Unisocket](https://docs.hazelcast.com/hazelcast/latest/clients/java#java-client-operation-modes))\n",
-      "csv_display_name": "Hazelcast Platform Operator",
-      "csv_metadata_description": "Install Hazelcast clusters in Kubernetes environments.",
-      "csv_name": "hazelcast-platform-operator.v5.3.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:01:15.089000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "hazelcast-platform-operator",
-      "provided_apis": [
-        {
-          "group": "hazelcast.com",
-          "kind": "Map",
-          "plural": "maps",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "Hazelcast",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "HotBackup",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "ManagementCenter",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:594feef360880fff907ca6122c3bdc12a174121d2dad5c7edda9f661c362325b",
-          "image": "docker.io/hazelcast/hazelcast-platform-operator@sha256:594feef360880fff907ca6122c3bdc12a174121d2dad5c7edda9f661c362325b",
-          "name": "hazelcast-platform-operator-594feef360880fff907ca6122c3bdc12a174121d2dad5c7edda9f661c362325b-annotation"
-        },
-        {
-          "digest": "sha256:594feef360880fff907ca6122c3bdc12a174121d2dad5c7edda9f661c362325b",
-          "image": "docker.io/hazelcast/hazelcast-platform-operator@sha256:594feef360880fff907ca6122c3bdc12a174121d2dad5c7edda9f661c362325b",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "5.3.0",
-      "version_original": "5.3.0"
-    },
-    {
-      "_id": "62b34c7f240dc134424e027e",
-      "alm_examples": [
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "Hazelcast",
-          "metadata": {
-            "name": "hazelcast"
-          },
-          "spec": {
-            "clusterSize": 3,
-            "licenseKeySecret": "hazelcast-license-key",
-            "repository": "docker.io/hazelcast/hazelcast-enterprise",
-            "version": "5.1.2"
-          }
-        },
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "ManagementCenter",
-          "metadata": {
-            "name": "managementcenter"
-          },
-          "spec": {
-            "externalConnectivity": {
-              "type": "LoadBalancer"
-            },
-            "hazelcastClusters": [
-              {
-                "address": "hazelcast",
-                "name": "dev"
-              }
-            ],
-            "licenseKeySecret": "hazelcast-license-key",
-            "persistence": {
-              "enabled": true,
-              "size": "10Gi"
-            },
-            "repository": "hazelcast/management-center",
-            "version": "5.1.3"
-          }
-        },
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "Map",
-          "metadata": {
-            "name": "map"
-          },
-          "spec": {
-            "hazelcastResourceName": "hazelcast"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hazelcast/hazelcast-platform-operator-bundle@sha256:8f552230c2aada8f95564890e6d95f9ce75169c7cbf76cde8164719a2b181b8a",
-      "bundle_path_digest": "sha256:8f552230c2aada8f95564890e6d95f9ce75169c7cbf76cde8164719a2b181b8a",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-06-22T17:08:15.367000+00:00",
-      "csv_description": "# Hazelcast Platform Operator #\n\nEasily deploy Hazelcast clusters and Management Center into Kubernetes environments and manage their lifecycles.\n\n## Before You Start\n\nIf you are planning to create Hazelcast Platform Enterprise clusters, you need to [create a secret](https://docs.hazelcast.com/operator/latest/get-started#step-2-start-the-hazelcast-cluster) for the license. You can request a trial license key from [here](https://trialrequest.hazelcast.com).\n\nFor Hazelcast Platform clusters, you can simply continue.\n\n## Documentation\n\n1. [Get started](https://docs.hazelcast.com/operator/latest/get-started) with the Operator.\n2. [Connect to the cluster from outside Kubernetes](https://guides.hazelcast.org/hazelcast-platform-operator-expose-externally/main)\n  from the outside.\n\n## Features\n\nHazelcast Platform Operator supports the features below:\n\n* Custom resource for Hazelcast Platform (Open Source & Enterprise) and Management Center\n* Observe status of Hazelcast and Management Center clusters\n* Scale up and down Hazelcast clusters\n* Expose Hazelcast cluster to external\n  clients ([Smart & Unisocket](https://docs.hazelcast.com/hazelcast/latest/clients/java#java-client-operation-modes))\n",
-      "csv_display_name": "Hazelcast Platform Operator",
-      "csv_metadata_description": "Install Hazelcast clusters in Kubernetes environments.",
-      "csv_name": "hazelcast-platform-operator.v5.3.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T03:54:00.271000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "hazelcast-platform-operator",
-      "provided_apis": [
-        {
-          "group": "hazelcast.com",
-          "kind": "Hazelcast",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "HotBackup",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "ManagementCenter",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "hazelcast.com",
-          "kind": "Map",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:594feef360880fff907ca6122c3bdc12a174121d2dad5c7edda9f661c362325b",
-          "image": "docker.io/hazelcast/hazelcast-platform-operator@sha256:594feef360880fff907ca6122c3bdc12a174121d2dad5c7edda9f661c362325b",
-          "name": "hazelcast-platform-operator-594feef360880fff907ca6122c3bdc12a174121d2dad5c7edda9f661c362325b-annotation"
-        },
-        {
-          "digest": "sha256:594feef360880fff907ca6122c3bdc12a174121d2dad5c7edda9f661c362325b",
-          "image": "docker.io/hazelcast/hazelcast-platform-operator@sha256:594feef360880fff907ca6122c3bdc12a174121d2dad5c7edda9f661c362325b",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "5.3.0",
-      "version_original": "5.3.0"
-    },
-    {
       "_id": "62b34cfe240dc134424e0282",
       "alm_examples": [
         {
@@ -19503,9 +19008,1125 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "0.9.1",
       "version_original": "0.9.1"
+    },
+    {
+      "_id": "62c5fcdc0ad353df5d0114d7",
+      "alm_examples": [
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Certificate",
+          "metadata": {
+            "name": "gitlab-serving-cert",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "dnsNames": [
+              "gitlab-webhook-service.gitlab-system.svc",
+              "gitlab-webhook-service.gitlab-system.svc.cluster.local"
+            ],
+            "issuerRef": {
+              "kind": "Issuer",
+              "name": "gitlab-selfsigned-issuer"
+            },
+            "secretName": "webhook-server-cert"
+          }
+        },
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Issuer",
+          "metadata": {
+            "name": "gitlab-selfsigned-issuer",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "selfSigned": {}
+          }
+        },
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.1.1"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "bundle_path_digest": "sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "unstable",
+      "creation_date": "2022-07-06T21:21:32.154000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.9.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T03:59:53.090000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1"
+        },
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "cloud-native/gitlab-operator-477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663-annotation"
+        },
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.9.1",
+      "version_original": "0.9.1"
+    },
+    {
+      "_id": "62c5fd10655931047b69d799",
+      "alm_examples": [
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Certificate",
+          "metadata": {
+            "name": "gitlab-serving-cert",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "dnsNames": [
+              "gitlab-webhook-service.gitlab-system.svc",
+              "gitlab-webhook-service.gitlab-system.svc.cluster.local"
+            ],
+            "issuerRef": {
+              "kind": "Issuer",
+              "name": "gitlab-selfsigned-issuer"
+            },
+            "secretName": "webhook-server-cert"
+          }
+        },
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Issuer",
+          "metadata": {
+            "name": "gitlab-selfsigned-issuer",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "selfSigned": {}
+          }
+        },
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.1.1"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "bundle_path_digest": "sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-06T21:22:24.356000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.9.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:06:08.543000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "cloud-native/gitlab-operator-477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663-annotation"
+        },
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.9.1",
+      "version_original": "0.9.1"
+    },
+    {
+      "_id": "62c5fd10655931047b69d79b",
+      "alm_examples": [
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Certificate",
+          "metadata": {
+            "name": "gitlab-serving-cert",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "dnsNames": [
+              "gitlab-webhook-service.gitlab-system.svc",
+              "gitlab-webhook-service.gitlab-system.svc.cluster.local"
+            ],
+            "issuerRef": {
+              "kind": "Issuer",
+              "name": "gitlab-selfsigned-issuer"
+            },
+            "secretName": "webhook-server-cert"
+          }
+        },
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Issuer",
+          "metadata": {
+            "name": "gitlab-selfsigned-issuer",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "selfSigned": {}
+          }
+        },
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.1.1"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "bundle_path_digest": "sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "unstable",
+      "creation_date": "2022-07-06T21:22:24.856000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.9.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T04:06:17.862000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "cloud-native/gitlab-operator-477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663-annotation"
+        },
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.9.1",
+      "version_original": "0.9.1"
+    },
+    {
+      "_id": "62c5feaa655931047b69d7a3",
+      "alm_examples": [
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Certificate",
+          "metadata": {
+            "name": "gitlab-serving-cert",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "dnsNames": [
+              "gitlab-webhook-service.gitlab-system.svc",
+              "gitlab-webhook-service.gitlab-system.svc.cluster.local"
+            ],
+            "issuerRef": {
+              "kind": "Issuer",
+              "name": "gitlab-selfsigned-issuer"
+            },
+            "secretName": "webhook-server-cert"
+          }
+        },
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Issuer",
+          "metadata": {
+            "name": "gitlab-selfsigned-issuer",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "selfSigned": {}
+          }
+        },
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.1.1"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "bundle_path_digest": "sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-06T21:29:14.543000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.9.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T02:03:01.668000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1"
+        },
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "cloud-native/gitlab-operator-477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663-annotation"
+        },
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.9.1",
+      "version_original": "0.9.1"
     }
   ],
   "page": 36,
   "page_size": 100,
-  "total": 4531
+  "total": 4532
 }
