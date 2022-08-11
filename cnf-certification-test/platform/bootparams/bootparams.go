@@ -38,10 +38,7 @@ func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container
 		err = fmt.Errorf("debug pod for container %s not found on node %s", cut, cut.NodeName)
 		return claimsLog, err
 	}
-	mcKernelArgumentsMap, err := GetMcKernelArguments(env, cut.NodeName)
-	if err != nil {
-		return claimsLog, fmt.Errorf("error getting kernel arguments in node %s, err=%s", cut.NodeName, err)
-	}
+	mcKernelArgumentsMap := GetMcKernelArguments(env, cut.NodeName)
 	currentKernelArgsMap, err := getCurrentKernelCmdlineArgs(cut)
 	if err != nil {
 		return claimsLog, fmt.Errorf("error getting kernel cli arguments from container: %s, err=%s", cut, err)
@@ -71,9 +68,9 @@ func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container
 	return claimsLog, nil
 }
 
-func GetMcKernelArguments(env *provider.TestEnvironment, nodeName string) (aMap map[string]string, err error) {
+func GetMcKernelArguments(env *provider.TestEnvironment, nodeName string) (aMap map[string]string) {
 	mcKernelArgumentsMap := arrayhelper.ArgListToMap(env.Nodes[nodeName].Mc.Spec.KernelArguments)
-	return mcKernelArgumentsMap, nil
+	return mcKernelArgumentsMap
 }
 
 func getGrubKernelArgs(env *provider.TestEnvironment, nodeName string) (aMap map[string]string, er error) {

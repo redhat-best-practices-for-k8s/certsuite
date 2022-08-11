@@ -353,6 +353,10 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "pod-toleration-bypass"),
 		Version: versionOne,
 	}
+	TestPersistentVolumeReclaimPolicyIdentifier = claim.Identifier{
+		Url:     formTestURL(common.LifecycleTestKey, "persistent-volume-reclaim-policy"),
+		Version: versionOne,
+	}
 )
 
 func formDescription(identifier claim.Identifier, description string) string {
@@ -864,7 +868,7 @@ that there are no changes to the following directories:
 		Identifier: TestOCPReservedPortsUsage,
 		Type:       normativeResult,
 		Description: formDescription(TestOCPReservedPortsUsage,
-			`Check that containers do not listen on ports that are reserved by Openshift`),
+			`Check that containers do not listen on ports that are reserved by OpenShift`),
 		Remediation:           OCPReservedPortsUsageRemediation,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.5.9",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -959,6 +963,14 @@ that there are no changes to the following directories:
 		Description:           formDescription(TestPodRequestsAndLimitsIdentifier, `Check that containers have resource requests and limits specified in their spec.`),
 		Remediation:           RequestsAndLimitsRemediation,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.11",
+		ExceptionProcess:      NoDocumentedProcess,
+	},
+	TestPersistentVolumeReclaimPolicyIdentifier: {
+		Identifier:            TestPersistentVolumeReclaimPolicyIdentifier,
+		Type:                  informativeResult,
+		Description:           formDescription(TestPersistentVolumeReclaimPolicyIdentifier, `Check that the persistent volumes the CNF pods are using have a reclaim policy of delete.`),
+		Remediation:           PersistentVolumeReclaimPolicyRemediation,
+		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.3.4",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 	TestNamespaceResourceQuotaIdentifier: {

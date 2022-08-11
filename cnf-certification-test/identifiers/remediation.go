@@ -167,7 +167,7 @@ const (
 
 	SYSNiceRealtimeCapabilityRemediation = `If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec.`
 
-	OCPReservedPortsUsageRemediation = `Ensure that CNF apps do not listen on ports that are reserved by Openshift`
+	OCPReservedPortsUsageRemediation = `Ensure that CNF apps do not listen on ports that are reserved by OpenShift`
 
 	RequestsAndLimitsRemediation = `Add requests and limits to your container spec.  See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits`
 
@@ -177,4 +177,6 @@ const (
 
 	//nolint:gosec
 	PodTolerationBypassRemediation = `Do not allow pods to bypass the NoExecute, PreferNoSchedule, or NoSchedule tolerations that are default applied by Kubernetes.`
+
+	PersistentVolumeReclaimPolicyRemediation = `Ensure that all persistent volumes are using the reclaim policy: delete`
 )

@@ -105,6 +105,7 @@ type TestEnvironment struct { // rename this with testTarget
 	Pods                 []*Pod                 `json:"testPods"`
 	Containers           []*Container           `json:"testContainers"`
 	Operators            []Operator             `json:"testOperators"`
+	PersistentVolumes    []corev1.PersistentVolume
 	DebugPods            map[string]*corev1.Pod // map from nodename to debugPod
 	Config               configuration.TestConfiguration
 	variables            configuration.TestParameters
@@ -302,6 +303,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.K8sVersion = data.K8sVersion
 	env.ResourceQuotas = data.ResourceQuotaItems
 	env.PodDisruptionBudgets = data.PodDisruptionBudgets
+	env.PersistentVolumes = data.PersistentVolumes
 	for _, nsHelmChartReleases := range data.HelmChartReleases {
 		for _, helmChartRelease := range nsHelmChartReleases {
 			if !isSkipHelmChart(helmChartRelease.Name, data.TestData.SkipHelmChartList) {

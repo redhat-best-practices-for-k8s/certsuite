@@ -60,6 +60,7 @@ type DiscoveredTestData struct {
 	Csvs                 []olmv1Alpha.ClusterServiceVersion
 	Deployments          []appsv1.Deployment
 	StatefulSet          []appsv1.StatefulSet
+	PersistentVolumes    []corev1.PersistentVolume
 	Hpas                 map[string]*scalingv1.HorizontalPodAutoscaler
 	Subscriptions        []olmv1Alpha.Subscription
 	HelmChartReleases    map[string][]*release.Release
@@ -140,6 +141,10 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.Nodes, err = oc.K8sClient.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		logrus.Fatalln("Cannot get list of nodes")
+	}
+	data.PersistentVolumes, err = getPersistentVolumes(oc.K8sClient.CoreV1())
+	if err != nil {
+		logrus.Fatalln("Cannot get list of persistent volumes")
 	}
 	return data
 }

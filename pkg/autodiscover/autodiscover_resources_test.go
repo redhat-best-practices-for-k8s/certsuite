@@ -31,7 +31,6 @@ func TestGetResourceQuotas(t *testing.T) {
 		return &corev1.ResourceQuota{
 			ObjectMeta: metav1.ObjectMeta{
 				Name: name,
-				// Namespace: "testNamespace",
 			},
 			Spec: corev1.ResourceQuotaSpec{},
 		}
