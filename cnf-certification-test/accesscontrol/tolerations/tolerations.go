@@ -55,7 +55,7 @@ func IsTolerationModified(t v1.Toleration, qosClass v1.PodQOSClass) bool {
 		// If toleration is NoSchedule - node.kubernetes.io/memory-pressure - Exists and the QoS class for
 		// the pod is different than BestEffort, it is also a default toleration added by k8s
 		if (t.Key == memoryPressureStr) &&
-			(t.Operator == v1.TolerationOpExists && t.TolerationSeconds == nil) &&
+			(t.Operator == v1.TolerationOpExists) &&
 			(qosClass != v1.PodQOSBestEffort) {
 			return false
 		}
