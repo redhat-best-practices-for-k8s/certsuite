@@ -114,7 +114,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	if err != nil {
 		logrus.Fatalln("Cannot get resource quotas")
 	}
-	data.PodDisruptionBudgets, err = getPodDisruptionBudgets(oc.K8sClient.PolicyV1())
+	data.PodDisruptionBudgets, err = getPodDisruptionBudgets(oc.K8sClient.PolicyV1(), data.Namespaces)
 	if err != nil {
 		logrus.Fatalln("Cannot get pod disruption budgets")
 	}

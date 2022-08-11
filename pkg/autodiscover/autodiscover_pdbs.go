@@ -24,10 +24,15 @@ import (
 	policyv1client "k8s.io/client-go/kubernetes/typed/policy/v1"
 )
 
-func getPodDisruptionBudgets(oc policyv1client.PolicyV1Interface) ([]policyv1.PodDisruptionBudget, error) {
-	pdbs, err := oc.PodDisruptionBudgets("").List(context.TODO(), metav1.ListOptions{})
-	if err != nil {
-		return nil, err
+func getPodDisruptionBudgets(oc policyv1client.PolicyV1Interface, namespaces []string) ([]policyv1.PodDisruptionBudget, error) {
+	podDisruptionBudgets := []policyv1.PodDisruptionBudget{}
+	for _, ns := range namespaces {
+		pdbs, err := oc.PodDisruptionBudgets(ns).List(context.TODO(), metav1.ListOptions{})
+		if err != nil {
+			return nil, err
+		}
+		podDisruptionBudgets = append(podDisruptionBudgets, pdbs.Items...)
 	}
-	return pdbs.Items, nil
+
+	return podDisruptionBudgets, nil
 }
