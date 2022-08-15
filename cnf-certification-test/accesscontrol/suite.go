@@ -579,7 +579,8 @@ func TestPodTolerationBypass(env *provider.TestEnvironment) {
 	for _, put := range env.Pods {
 		for _, t := range put.Data.Spec.Tolerations {
 			// Check if the tolerations fall outside the 'default' and are modified versions
-			if tolerations.IsTolerationModified(t) {
+			// Take also into account the qosClass applied to the pod
+			if tolerations.IsTolerationModified(t, put.Data.Status.QOSClass) {
 				podsWithRestrictedTolerationsNotDefault = append(podsWithRestrictedTolerationsNotDefault, put.String())
 				tnf.ClaimFilePrintf("%s has been found with non-default toleration %s which is not allowed.", put.String(), t.Effect)
 			}

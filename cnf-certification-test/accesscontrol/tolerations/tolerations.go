@@ -25,10 +25,11 @@ var (
 	tolerationSecondsDefault = 300
 )
 
-func IsTolerationModified(t v1.Toleration) bool {
+func IsTolerationModified(t v1.Toleration, qosClass v1.PodQOSClass) bool {
 	const (
-		notReadyStr    = "node.kubernetes.io/not-ready"
-		unreachableStr = "node.kubernetes.io/unreachable"
+		notReadyStr       = "node.kubernetes.io/not-ready"
+		unreachableStr    = "node.kubernetes.io/unreachable"
+		memoryPressureStr = "node.kubernetes.io/memory-pressure"
 	)
 	// Check each of the tolerations to make sure they are the default tolerations added by k8s:
 	// tolerations:
@@ -40,10 +41,22 @@ func IsTolerationModified(t v1.Toleration) bool {
 	//   key: node.kubernetes.io/unreachable
 	//   operator: Exists
 	//   tolerationSeconds: 300
+	// # this last one, only if QoS class for the pod is different than BestEffort
+	// - effect: NoSchedule
+	//   key: node.kubernetes.io/memory-pressure
+	//   operator: Exists
 
 	if t.Effect == v1.TaintEffectNoExecute {
 		if t.Key == notReadyStr || t.Key == unreachableStr &&
 			(t.Operator == v1.TolerationOpExists && t.TolerationSeconds != nil && *t.TolerationSeconds == int64(tolerationSecondsDefault)) {
+			return false
+		}
+	} else if t.Effect == v1.TaintEffectNoSchedule {
+		// If toleration is NoSchedule - node.kubernetes.io/memory-pressure - Exists and the QoS class for
+		// the pod is different than BestEffort, it is also a default toleration added by k8s
+		if (t.Key == memoryPressureStr) &&
+			(t.Operator == v1.TolerationOpExists) &&
+			(qosClass != v1.PodQOSBestEffort) {
 			return false
 		}
 	}
