@@ -531,9 +531,9 @@ Test Case Name|ocp-reserved-ports-usage
 Test Case Label|networking-ocp-reserved-ports-usage
 Unique ID|http://test-network-function.com/testcases/networking/ocp-reserved-ports-usage
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/networking/ocp-reserved-ports-usage Check that containers do not listen on ports that are reserved by Openshift
+Description|http://test-network-function.com/testcases/networking/ocp-reserved-ports-usage Check that containers do not listen on ports that are reserved by OpenShift
 Result Type|normative
-Suggested Remediation|Ensure that CNF apps do not listen on ports that are reserved by Openshift
+Suggested Remediation|Ensure that CNF apps do not listen on ports that are reserved by OpenShift
 Best Practice Reference|https://TODO Section 3.5.9
 Exception Process|There is no documented exception process for this.
 #### service-type
