@@ -1,1821 +1,6 @@
 {
   "data": [
     {
-      "_id": "62c5feabb490e03bc2be1145",
-      "alm_examples": [
-        {
-          "api_version": "cert-manager.io/v1",
-          "kind": "Certificate",
-          "metadata": {
-            "name": "gitlab-serving-cert",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "dnsNames": [
-              "gitlab-webhook-service.gitlab-system.svc",
-              "gitlab-webhook-service.gitlab-system.svc.cluster.local"
-            ],
-            "issuerRef": {
-              "kind": "Issuer",
-              "name": "gitlab-selfsigned-issuer"
-            },
-            "secretName": "webhook-server-cert"
-          }
-        },
-        {
-          "api_version": "cert-manager.io/v1",
-          "kind": "Issuer",
-          "metadata": {
-            "name": "gitlab-selfsigned-issuer",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "selfSigned": {}
-          }
-        },
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.1.1"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
-      "bundle_path_digest": "sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "unstable",
-      "creation_date": "2022-07-06T21:29:15.114000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.9.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:04:15.509000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1"
-        },
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "plural": "gitlabs",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1alpha2"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "name": "cloud-native/gitlab-operator-477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663-annotation"
-        },
-        {
-          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.9.1",
-      "version_original": "0.9.1"
-    },
-    {
-      "_id": "62c600b90ad353df5d01150e",
-      "alm_examples": [
-        {
-          "api_version": "cert-manager.io/v1",
-          "kind": "Certificate",
-          "metadata": {
-            "name": "gitlab-serving-cert",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "dnsNames": [
-              "gitlab-webhook-service.gitlab-system.svc",
-              "gitlab-webhook-service.gitlab-system.svc.cluster.local"
-            ],
-            "issuerRef": {
-              "kind": "Issuer",
-              "name": "gitlab-selfsigned-issuer"
-            },
-            "secretName": "webhook-server-cert"
-          }
-        },
-        {
-          "api_version": "cert-manager.io/v1",
-          "kind": "Issuer",
-          "metadata": {
-            "name": "gitlab-selfsigned-issuer",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "selfSigned": {}
-          }
-        },
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.1.1"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
-      "bundle_path_digest": "sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "unstable",
-      "creation_date": "2022-07-06T21:38:01.077000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.9.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T02:08:51.759000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1"
-        },
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "plural": "gitlabs",
-          "version": "v1beta1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1beta1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1alpha3"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "name": "cloud-native/gitlab-operator-477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663-annotation"
-        },
-        {
-          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.9.1",
-      "version_original": "0.9.1"
-    },
-    {
-      "_id": "62c600b9655931047b69d7c8",
-      "alm_examples": [
-        {
-          "api_version": "cert-manager.io/v1",
-          "kind": "Certificate",
-          "metadata": {
-            "name": "gitlab-serving-cert",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "dnsNames": [
-              "gitlab-webhook-service.gitlab-system.svc",
-              "gitlab-webhook-service.gitlab-system.svc.cluster.local"
-            ],
-            "issuerRef": {
-              "kind": "Issuer",
-              "name": "gitlab-selfsigned-issuer"
-            },
-            "secretName": "webhook-server-cert"
-          }
-        },
-        {
-          "api_version": "cert-manager.io/v1",
-          "kind": "Issuer",
-          "metadata": {
-            "name": "gitlab-selfsigned-issuer",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "selfSigned": {}
-          }
-        },
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.1.1"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
-      "bundle_path_digest": "sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-06T21:38:01.677000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.9.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:54:02.919000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1"
-        },
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "plural": "gitlabs",
-          "version": "v1beta1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1beta1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1alpha3"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "name": "cloud-native/gitlab-operator-477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663-annotation"
-        },
-        {
-          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.9.1",
-      "version_original": "0.9.1"
-    },
-    {
-      "_id": "62c6016db490e03bc2be1169",
-      "alm_examples": [
-        {
-          "api_version": "cert-manager.io/v1",
-          "kind": "Certificate",
-          "metadata": {
-            "name": "gitlab-serving-cert",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "dnsNames": [
-              "gitlab-webhook-service.gitlab-system.svc",
-              "gitlab-webhook-service.gitlab-system.svc.cluster.local"
-            ],
-            "issuerRef": {
-              "kind": "Issuer",
-              "name": "gitlab-selfsigned-issuer"
-            },
-            "secretName": "webhook-server-cert"
-          }
-        },
-        {
-          "api_version": "cert-manager.io/v1",
-          "kind": "Issuer",
-          "metadata": {
-            "name": "gitlab-selfsigned-issuer",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "selfSigned": {}
-          }
-        },
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.1.1"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
-      "bundle_path_digest": "sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-06T21:41:01.360000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.9.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:07:01.468000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "plural": "gitlabs",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1alpha2"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "name": "cloud-native/gitlab-operator-477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663-annotation"
-        },
-        {
-          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.9.1",
-      "version_original": "0.9.1"
-    },
-    {
-      "_id": "62c6016f655931047b69d7d8",
-      "alm_examples": [
-        {
-          "api_version": "cert-manager.io/v1",
-          "kind": "Certificate",
-          "metadata": {
-            "name": "gitlab-serving-cert",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "dnsNames": [
-              "gitlab-webhook-service.gitlab-system.svc",
-              "gitlab-webhook-service.gitlab-system.svc.cluster.local"
-            ],
-            "issuerRef": {
-              "kind": "Issuer",
-              "name": "gitlab-selfsigned-issuer"
-            },
-            "secretName": "webhook-server-cert"
-          }
-        },
-        {
-          "api_version": "cert-manager.io/v1",
-          "kind": "Issuer",
-          "metadata": {
-            "name": "gitlab-selfsigned-issuer",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "selfSigned": {}
-          }
-        },
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.1.1"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
-      "bundle_path_digest": "sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "unstable",
-      "creation_date": "2022-07-06T21:41:03.245000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.9.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:44:27.495000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Challenge",
-          "plural": "challenges",
-          "version": "v1"
-        },
-        {
-          "group": "acme.cert-manager.io",
-          "kind": "Order",
-          "plural": "orders",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Certificate",
-          "plural": "certificates",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "plural": "gitlabs",
-          "version": "v1beta1"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "ClusterIssuer",
-          "plural": "clusterissuers",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "Issuer",
-          "plural": "issuers",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "cert-manager.io",
-          "kind": "CertificateRequest",
-          "plural": "certificaterequests",
-          "version": "v1alpha2"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "name": "cloud-native/gitlab-operator-477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663-annotation"
-        },
-        {
-          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.9.1",
-      "version_original": "0.9.1"
-    },
-    {
-      "_id": "62c60b10655931047b69d831",
-      "alm_examples": [
-        {
-          "api_version": "loggers.coralogix.com/v1",
-          "kind": "CoralogixLogger",
-          "metadata": {
-            "name": "coralogix-logger"
-          },
-          "spec": {
-            "cluster_name": "cluster.local",
-            "private_key": "00000000-0000-0000-0000-000000000000",
-            "region": "Europe"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/coralogix/coralogix-operator-manifests-bundle@sha256:9a7f126398b4947e2d18c7d9d6871b46582e3e147996c7d5cd88b46cde06ec30",
-      "bundle_path_digest": "sha256:9a7f126398b4947e2d18c7d9d6871b46582e3e147996c7d5cd88b46cde06ec30",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-06T22:22:08.989000+00:00",
-      "csv_description": "Coralogix is a machine data analytics SaaS platform that drastically improves the delivery & maintenance process for software providers. Using proprietary machine learning algorithms, Coralogix helps over 100 businesses reduce their issue resolution time, improve customer satisfaction and decrease maintenance costs.",
-      "csv_display_name": "Coralogix Operator",
-      "csv_metadata_description": "Coralogix is a machine data analytics SaaS platform that drastically improves the delivery & maintenance process for software providers. Using proprietary machine learning algorithms, Coralogix helps over 100 businesses reduce their issue resolution time, improve customer satisfaction and decrease maintenance costs.",
-      "csv_name": "coralogix-operator.v1.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:50:20.030000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "coralogix-operator",
-      "provided_apis": [
-        {
-          "group": "loggers.coralogix.com",
-          "kind": "CoralogixLogger",
-          "plural": "coralogixloggers",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-operator@sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "name": "coralogix-operator"
-        },
-        {
-          "digest": "sha256:925b2d97edd0681c10cc3cc61059e6fd17e68cb12f9386d4af50c1e380db422d",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-fluentd@sha256:925b2d97edd0681c10cc3cc61059e6fd17e68cb12f9386d4af50c1e380db422d",
-          "name": "coralogix-fluentd"
-        },
-        {
-          "digest": "sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-operator@sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "name": "coralogix-operator-4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389-annotation"
-        },
-        {
-          "digest": "sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-operator@sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.0.1",
-      "version_original": "1.0.1"
-    },
-    {
-      "_id": "62c60b2c09a31e27425972a4",
-      "alm_examples": [
-        {
-          "api_version": "loggers.coralogix.com/v1",
-          "kind": "CoralogixLogger",
-          "metadata": {
-            "name": "coralogix-logger"
-          },
-          "spec": {
-            "cluster_name": "cluster.local",
-            "private_key": "00000000-0000-0000-0000-000000000000",
-            "region": "Europe"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/coralogix/coralogix-operator-manifests-bundle@sha256:9a7f126398b4947e2d18c7d9d6871b46582e3e147996c7d5cd88b46cde06ec30",
-      "bundle_path_digest": "sha256:9a7f126398b4947e2d18c7d9d6871b46582e3e147996c7d5cd88b46cde06ec30",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-06T22:22:36.015000+00:00",
-      "csv_description": "Coralogix is a machine data analytics SaaS platform that drastically improves the delivery & maintenance process for software providers. Using proprietary machine learning algorithms, Coralogix helps over 100 businesses reduce their issue resolution time, improve customer satisfaction and decrease maintenance costs.",
-      "csv_display_name": "Coralogix Operator",
-      "csv_metadata_description": "Coralogix is a machine data analytics SaaS platform that drastically improves the delivery & maintenance process for software providers. Using proprietary machine learning algorithms, Coralogix helps over 100 businesses reduce their issue resolution time, improve customer satisfaction and decrease maintenance costs.",
-      "csv_name": "coralogix-operator.v1.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:00:02.152000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "coralogix-operator",
-      "provided_apis": [
-        {
-          "group": "loggers.coralogix.com",
-          "kind": "CoralogixLogger",
-          "plural": "coralogixloggers",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-operator@sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "name": "coralogix-operator"
-        },
-        {
-          "digest": "sha256:925b2d97edd0681c10cc3cc61059e6fd17e68cb12f9386d4af50c1e380db422d",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-fluentd@sha256:925b2d97edd0681c10cc3cc61059e6fd17e68cb12f9386d4af50c1e380db422d",
-          "name": "coralogix-fluentd"
-        },
-        {
-          "digest": "sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-operator@sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "name": "coralogix-operator-4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389-annotation"
-        },
-        {
-          "digest": "sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-operator@sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.0.1",
-      "version_original": "1.0.1"
-    },
-    {
-      "_id": "62c60cc609a31e27425972b8",
-      "alm_examples": [
-        {
-          "api_version": "loggers.coralogix.com/v1",
-          "kind": "CoralogixLogger",
-          "metadata": {
-            "name": "coralogix-logger"
-          },
-          "spec": {
-            "cluster_name": "cluster.local",
-            "private_key": "00000000-0000-0000-0000-000000000000",
-            "region": "Europe"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/coralogix/coralogix-operator-manifests-bundle@sha256:9a7f126398b4947e2d18c7d9d6871b46582e3e147996c7d5cd88b46cde06ec30",
-      "bundle_path_digest": "sha256:9a7f126398b4947e2d18c7d9d6871b46582e3e147996c7d5cd88b46cde06ec30",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-06T22:29:26.388000+00:00",
-      "csv_description": "Coralogix is a machine data analytics SaaS platform that drastically improves the delivery & maintenance process for software providers. Using proprietary machine learning algorithms, Coralogix helps over 100 businesses reduce their issue resolution time, improve customer satisfaction and decrease maintenance costs.",
-      "csv_display_name": "Coralogix Operator",
-      "csv_metadata_description": "Coralogix is a machine data analytics SaaS platform that drastically improves the delivery & maintenance process for software providers. Using proprietary machine learning algorithms, Coralogix helps over 100 businesses reduce their issue resolution time, improve customer satisfaction and decrease maintenance costs.",
-      "csv_name": "coralogix-operator.v1.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T03:58:24.308000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "coralogix-operator",
-      "provided_apis": [
-        {
-          "group": "loggers.coralogix.com",
-          "kind": "CoralogixLogger",
-          "plural": "coralogixloggers",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-operator@sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "name": "coralogix-operator"
-        },
-        {
-          "digest": "sha256:925b2d97edd0681c10cc3cc61059e6fd17e68cb12f9386d4af50c1e380db422d",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-fluentd@sha256:925b2d97edd0681c10cc3cc61059e6fd17e68cb12f9386d4af50c1e380db422d",
-          "name": "coralogix-fluentd"
-        },
-        {
-          "digest": "sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-operator@sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "name": "coralogix-operator-4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389-annotation"
-        },
-        {
-          "digest": "sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-operator@sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.0.1",
-      "version_original": "1.0.1"
-    },
-    {
-      "_id": "62c60ccf655931047b69d84a",
-      "alm_examples": [
-        {
-          "api_version": "loggers.coralogix.com/v1",
-          "kind": "CoralogixLogger",
-          "metadata": {
-            "name": "coralogix-logger"
-          },
-          "spec": {
-            "cluster_name": "cluster.local",
-            "private_key": "00000000-0000-0000-0000-000000000000",
-            "region": "Europe"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/coralogix/coralogix-operator-manifests-bundle@sha256:9a7f126398b4947e2d18c7d9d6871b46582e3e147996c7d5cd88b46cde06ec30",
-      "bundle_path_digest": "sha256:9a7f126398b4947e2d18c7d9d6871b46582e3e147996c7d5cd88b46cde06ec30",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-06T22:29:35.196000+00:00",
-      "csv_description": "Coralogix is a machine data analytics SaaS platform that drastically improves the delivery & maintenance process for software providers. Using proprietary machine learning algorithms, Coralogix helps over 100 businesses reduce their issue resolution time, improve customer satisfaction and decrease maintenance costs.",
-      "csv_display_name": "Coralogix Operator",
-      "csv_metadata_description": "Coralogix is a machine data analytics SaaS platform that drastically improves the delivery & maintenance process for software providers. Using proprietary machine learning algorithms, Coralogix helps over 100 businesses reduce their issue resolution time, improve customer satisfaction and decrease maintenance costs.",
-      "csv_name": "coralogix-operator.v1.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:24:33.961000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "coralogix-operator",
-      "provided_apis": [
-        {
-          "group": "loggers.coralogix.com",
-          "kind": "CoralogixLogger",
-          "plural": "coralogixloggers",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-operator@sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "name": "coralogix-operator"
-        },
-        {
-          "digest": "sha256:925b2d97edd0681c10cc3cc61059e6fd17e68cb12f9386d4af50c1e380db422d",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-fluentd@sha256:925b2d97edd0681c10cc3cc61059e6fd17e68cb12f9386d4af50c1e380db422d",
-          "name": "coralogix-fluentd"
-        },
-        {
-          "digest": "sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-operator@sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "name": "coralogix-operator-4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389-annotation"
-        },
-        {
-          "digest": "sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:bb54bc66185afa09853744545d52ea22f88b67756233a47b9f808fe59cda925e",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "image": "registry.connect.redhat.com/coralogix/coralogix-operator@sha256:4673e4db99fb76496479fa30f390c02c14018cdb13450a78efc6690c8420f389",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.0.1",
-      "version_original": "1.0.1"
-    },
-    {
       "_id": "62c6d988655931047b69e850",
       "alm_examples": [
         {
@@ -18115,9 +16300,1017 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "6.2.10-4",
       "version_original": "6.2.10-4"
+    },
+    {
+      "_id": "62cee2effe766184e15e98d8",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.6-39.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
+      "bundle_path_digest": "sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-07-13T15:21:19.760000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-24",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T01:46:26.570000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "image": "redislabs/operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "name": "operator-998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b-annotation"
+        },
+        {
+          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-24",
+      "version_original": "6.0.6-24"
+    },
+    {
+      "_id": "62cee2f0f403f71942667f73",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-07-13T15:21:20.176000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T01:56:47.816000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "62ceebeffe766184e15e9987",
+      "alm_examples": [
+        {
+          "api_version": "dynatrace.com/v1beta1",
+          "kind": "DynaKube",
+          "metadata": {
+            "name": "dynakube",
+            "namespace": "dynatrace"
+          },
+          "spec": {
+            "activeGate": {
+              "capabilities": [
+                "routing",
+                "kubernetes-monitoring",
+                "dynatrace-api"
+              ],
+              "image": "",
+              "resources": {
+                "limits": {
+                  "cpu": "1000m",
+                  "memory": "1.5Gi"
+                },
+                "requests": {
+                  "cpu": "500m",
+                  "memory": "512Mi"
+                }
+              }
+            },
+            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api",
+            "oneAgent": {
+              "classicFullStack": {
+                "image": "",
+                "tolerations": [
+                  {
+                    "effect": "NoSchedule",
+                    "key": "node-role.kubernetes.io/master",
+                    "operator": "Exists"
+                  },
+                  {
+                    "effect": "NoSchedule",
+                    "key": "node-role.kubernetes.io/control-plane",
+                    "operator": "Exists"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-operator-bundle@sha256:003c2f89a79491b03ec0be75e92e98f28dfe7d5f273c14eff3a07ba4887d5c13",
+      "bundle_path_digest": "sha256:003c2f89a79491b03ec0be75e92e98f28dfe7d5f273c14eff3a07ba4887d5c13",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-07-13T15:59:43.950000+00:00",
+      "csv_description": "The Dynatrace Operator supports rollout and lifecycle management of various Dynatrace components in Kubernetes and OpenShift.\n\nCurrently the Dynatrace Operator supports the following capabilities:\n\n### OneAgent\n  * `classicFullStack` rolls out one OneAgent pod per node to monitor its pods and the node itself\n  * `applicationMonitoring` is a webhook based injection mechanism for automatic app-only injection\n  * `hostMonitoring` monitors only the hosts, i.e., the nodes, in the cluster without app-only injection\n### ActiveGate\n  * `routing` routes OneAgent traffic through the ActiveGate\n  * `kubernetes-monitoring` allows monitoring the Kubernetes API\n  * `metrics-ingest` routes enriched metrics through an ActiveGate\n\nFor more information please refer to [our DynaKube Custom Resource examples](https://dt-url.net/dynakube-samples).\n\n### Installation\nOnce you've installed the Dynatrace Operator, you can create a DynaKube custom resource.\n\nFirst, please add a Secret within the Project you've deployed the Dynatrace Operator to, which would contain your API and PaaS tokens. Create tokens of type *Dynatrace API* (`API_TOKEN`) and *Platform as a Service* (`PAAS_TOKEN`) and use their values in the following commands respectively.\n\nFor assistance please refer to [Create user-generated access tokens](https://www.dynatrace.com/support/help/shortlink/token#create-user-generated-access-tokens).\n\n``` $ oc -n <project> create secret generic dynakube --from-literal=\"apiToken=API_TOKEN\" --from-literal=\"paasToken=PAAS_TOKEN\" ```\n\nYou may update this Secret at any time to rotate the tokens.\n\nAfter creation of the secret add the DynaKube object in the project where the Dynatrace Operator has been deployed, configured to your needs.\n\n### Required Parameters\n* `apiUrl` - provide the URL to the API of your Dynatrace environment. In Dynatrace SaaS it will look like `https://<ENVIRONMENTID>.live.dynatrace.com/api` . In Dynatrace Managed like `https://<YourDynatraceServerURL>/e/<ENVIRONMENTID>/api` .\n\n### Advanced Options\n* **Disable Certificate Checking** - disable any certificate validation that may interact poorly with proxies with in your cluster\n* **Image Override** - use a copy of the ActiveGate container image from a registry other than Docker's or Red Hat's\n\nFor a complete list of supported parameters please consult the [Operator Deploy Guide](https://www.dynatrace.com/support/help/shortlink/openshift-deploy).\n\n### Help\nYou can find more about our instructions in our [documentation](https://www.dynatrace.com/support/help/shortlink/openshift-deploy#install-dynatrace-operator).\n",
+      "csv_display_name": "Dynatrace Operator",
+      "csv_metadata_description": "",
+      "csv_name": "dynatrace-operator.v0.7.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T03:58:05.585000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "dynatrace-operator",
+      "provided_apis": [
+        {
+          "group": "dynatrace.com",
+          "kind": "DynaKube",
+          "version": "v1beta1"
+        },
+        {
+          "group": "dynatrace.com",
+          "kind": "DynaKube",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "name": "dynatrace-operator"
+        },
+        {
+          "digest": "sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "name": "dynatrace-operator-6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d-annotation"
+        },
+        {
+          "digest": "sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "name": "webhook"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.7.2",
+      "version_original": "0.7.2"
+    },
+    {
+      "_id": "62ceec0c6537ee32f3d77468",
+      "alm_examples": [
+        {
+          "api_version": "dynatrace.com/v1beta1",
+          "kind": "DynaKube",
+          "metadata": {
+            "name": "dynakube",
+            "namespace": "dynatrace"
+          },
+          "spec": {
+            "activeGate": {
+              "capabilities": [
+                "routing",
+                "kubernetes-monitoring",
+                "dynatrace-api"
+              ],
+              "image": "",
+              "resources": {
+                "limits": {
+                  "cpu": "1000m",
+                  "memory": "1.5Gi"
+                },
+                "requests": {
+                  "cpu": "500m",
+                  "memory": "512Mi"
+                }
+              }
+            },
+            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api",
+            "oneAgent": {
+              "classicFullStack": {
+                "image": "",
+                "tolerations": [
+                  {
+                    "effect": "NoSchedule",
+                    "key": "node-role.kubernetes.io/master",
+                    "operator": "Exists"
+                  },
+                  {
+                    "effect": "NoSchedule",
+                    "key": "node-role.kubernetes.io/control-plane",
+                    "operator": "Exists"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-operator-bundle@sha256:003c2f89a79491b03ec0be75e92e98f28dfe7d5f273c14eff3a07ba4887d5c13",
+      "bundle_path_digest": "sha256:003c2f89a79491b03ec0be75e92e98f28dfe7d5f273c14eff3a07ba4887d5c13",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-07-13T16:00:12.917000+00:00",
+      "csv_description": "The Dynatrace Operator supports rollout and lifecycle management of various Dynatrace components in Kubernetes and OpenShift.\n\nCurrently the Dynatrace Operator supports the following capabilities:\n\n### OneAgent\n  * `classicFullStack` rolls out one OneAgent pod per node to monitor its pods and the node itself\n  * `applicationMonitoring` is a webhook based injection mechanism for automatic app-only injection\n  * `hostMonitoring` monitors only the hosts, i.e., the nodes, in the cluster without app-only injection\n### ActiveGate\n  * `routing` routes OneAgent traffic through the ActiveGate\n  * `kubernetes-monitoring` allows monitoring the Kubernetes API\n  * `metrics-ingest` routes enriched metrics through an ActiveGate\n\nFor more information please refer to [our DynaKube Custom Resource examples](https://dt-url.net/dynakube-samples).\n\n### Installation\nOnce you've installed the Dynatrace Operator, you can create a DynaKube custom resource.\n\nFirst, please add a Secret within the Project you've deployed the Dynatrace Operator to, which would contain your API and PaaS tokens. Create tokens of type *Dynatrace API* (`API_TOKEN`) and *Platform as a Service* (`PAAS_TOKEN`) and use their values in the following commands respectively.\n\nFor assistance please refer to [Create user-generated access tokens](https://www.dynatrace.com/support/help/shortlink/token#create-user-generated-access-tokens).\n\n``` $ oc -n <project> create secret generic dynakube --from-literal=\"apiToken=API_TOKEN\" --from-literal=\"paasToken=PAAS_TOKEN\" ```\n\nYou may update this Secret at any time to rotate the tokens.\n\nAfter creation of the secret add the DynaKube object in the project where the Dynatrace Operator has been deployed, configured to your needs.\n\n### Required Parameters\n* `apiUrl` - provide the URL to the API of your Dynatrace environment. In Dynatrace SaaS it will look like `https://<ENVIRONMENTID>.live.dynatrace.com/api` . In Dynatrace Managed like `https://<YourDynatraceServerURL>/e/<ENVIRONMENTID>/api` .\n\n### Advanced Options\n* **Disable Certificate Checking** - disable any certificate validation that may interact poorly with proxies with in your cluster\n* **Image Override** - use a copy of the ActiveGate container image from a registry other than Docker's or Red Hat's\n\nFor a complete list of supported parameters please consult the [Operator Deploy Guide](https://www.dynatrace.com/support/help/shortlink/openshift-deploy).\n\n### Help\nYou can find more about our instructions in our [documentation](https://www.dynatrace.com/support/help/shortlink/openshift-deploy#install-dynatrace-operator).\n",
+      "csv_display_name": "Dynatrace Operator",
+      "csv_metadata_description": "",
+      "csv_name": "dynatrace-operator.v0.7.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:03:44.745000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "dynatrace-operator",
+      "provided_apis": [
+        {
+          "group": "dynatrace.com",
+          "kind": "DynaKube",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "dynatrace.com",
+          "kind": "DynaKube",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "name": "dynatrace-operator"
+        },
+        {
+          "digest": "sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "name": "dynatrace-operator-6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d-annotation"
+        },
+        {
+          "digest": "sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "name": "webhook"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.7.2",
+      "version_original": "0.7.2"
+    },
+    {
+      "_id": "62ceedb56537ee32f3d77487",
+      "alm_examples": [
+        {
+          "api_version": "dynatrace.com/v1beta1",
+          "kind": "DynaKube",
+          "metadata": {
+            "name": "dynakube",
+            "namespace": "dynatrace"
+          },
+          "spec": {
+            "activeGate": {
+              "capabilities": [
+                "routing",
+                "kubernetes-monitoring",
+                "dynatrace-api"
+              ],
+              "image": "",
+              "resources": {
+                "limits": {
+                  "cpu": "1000m",
+                  "memory": "1.5Gi"
+                },
+                "requests": {
+                  "cpu": "500m",
+                  "memory": "512Mi"
+                }
+              }
+            },
+            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api",
+            "oneAgent": {
+              "classicFullStack": {
+                "image": "",
+                "tolerations": [
+                  {
+                    "effect": "NoSchedule",
+                    "key": "node-role.kubernetes.io/master",
+                    "operator": "Exists"
+                  },
+                  {
+                    "effect": "NoSchedule",
+                    "key": "node-role.kubernetes.io/control-plane",
+                    "operator": "Exists"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-operator-bundle@sha256:003c2f89a79491b03ec0be75e92e98f28dfe7d5f273c14eff3a07ba4887d5c13",
+      "bundle_path_digest": "sha256:003c2f89a79491b03ec0be75e92e98f28dfe7d5f273c14eff3a07ba4887d5c13",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-07-13T16:07:17.537000+00:00",
+      "csv_description": "The Dynatrace Operator supports rollout and lifecycle management of various Dynatrace components in Kubernetes and OpenShift.\n\nCurrently the Dynatrace Operator supports the following capabilities:\n\n### OneAgent\n  * `classicFullStack` rolls out one OneAgent pod per node to monitor its pods and the node itself\n  * `applicationMonitoring` is a webhook based injection mechanism for automatic app-only injection\n  * `hostMonitoring` monitors only the hosts, i.e., the nodes, in the cluster without app-only injection\n### ActiveGate\n  * `routing` routes OneAgent traffic through the ActiveGate\n  * `kubernetes-monitoring` allows monitoring the Kubernetes API\n  * `metrics-ingest` routes enriched metrics through an ActiveGate\n\nFor more information please refer to [our DynaKube Custom Resource examples](https://dt-url.net/dynakube-samples).\n\n### Installation\nOnce you've installed the Dynatrace Operator, you can create a DynaKube custom resource.\n\nFirst, please add a Secret within the Project you've deployed the Dynatrace Operator to, which would contain your API and PaaS tokens. Create tokens of type *Dynatrace API* (`API_TOKEN`) and *Platform as a Service* (`PAAS_TOKEN`) and use their values in the following commands respectively.\n\nFor assistance please refer to [Create user-generated access tokens](https://www.dynatrace.com/support/help/shortlink/token#create-user-generated-access-tokens).\n\n``` $ oc -n <project> create secret generic dynakube --from-literal=\"apiToken=API_TOKEN\" --from-literal=\"paasToken=PAAS_TOKEN\" ```\n\nYou may update this Secret at any time to rotate the tokens.\n\nAfter creation of the secret add the DynaKube object in the project where the Dynatrace Operator has been deployed, configured to your needs.\n\n### Required Parameters\n* `apiUrl` - provide the URL to the API of your Dynatrace environment. In Dynatrace SaaS it will look like `https://<ENVIRONMENTID>.live.dynatrace.com/api` . In Dynatrace Managed like `https://<YourDynatraceServerURL>/e/<ENVIRONMENTID>/api` .\n\n### Advanced Options\n* **Disable Certificate Checking** - disable any certificate validation that may interact poorly with proxies with in your cluster\n* **Image Override** - use a copy of the ActiveGate container image from a registry other than Docker's or Red Hat's\n\nFor a complete list of supported parameters please consult the [Operator Deploy Guide](https://www.dynatrace.com/support/help/shortlink/openshift-deploy).\n\n### Help\nYou can find more about our instructions in our [documentation](https://www.dynatrace.com/support/help/shortlink/openshift-deploy#install-dynatrace-operator).\n",
+      "csv_display_name": "Dynatrace Operator",
+      "csv_metadata_description": "",
+      "csv_name": "dynatrace-operator.v0.7.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:47:26.836000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "dynatrace-operator",
+      "provided_apis": [
+        {
+          "group": "dynatrace.com",
+          "kind": "DynaKube",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "dynatrace.com",
+          "kind": "DynaKube",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "name": "dynatrace-operator"
+        },
+        {
+          "digest": "sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "name": "dynatrace-operator-6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d-annotation"
+        },
+        {
+          "digest": "sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:6a7d570742a8e2a409245e74128e5812703f02f0df8e692ce075afd235392c8d",
+          "name": "webhook"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.7.2",
+      "version_original": "0.7.2"
+    },
+    {
+      "_id": "62cefa01fe766184e15e9d76",
+      "alm_examples": [
+        {
+          "api_version": "charts.konghq.com/v1alpha1",
+          "kind": "Kong",
+          "metadata": {
+            "name": "example-kong"
+          },
+          "spec": {
+            "env": {
+              "prefix": "/kong_prefix/"
+            },
+            "ingressController": {
+              "enabled": true,
+              "installCRDs": false
+            },
+            "proxy": {
+              "type": "NodePort"
+            },
+            "resources": {
+              "limits": {
+                "cpu": "500m",
+                "memory": "2G"
+              },
+              "requests": {
+                "cpu": "100m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/kong/kong-offline-operator1-bundle@sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
+      "bundle_path_digest": "sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-07-13T16:59:45.100000+00:00",
+      "csv_description": "Kong is a popular open-source cloud-native API gateway. Kong Operator is a Kubernetes operator which manages [Kong](https://konghq.com/kong/) and [Kong Enterprise](https://konghq.com/products/kong-enterprise/) clusters.\n\nKong Operator can deploy Kong in various configurations, for example:\n* as a [Kubernetes ingress controller](https://github.com/Kong/kubernetes-ingress-controller), enabling you to expose Kubernetes `Service`s via Kong,\n* a standalone Kong gateway (without the ingress controller; either DB-enabled or DB-less)\n* a standalone Ingress Controller (configuring an external instance of Kong)\n\nThose configurations are further described in the [_Deployment Options_](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md#deployment-options) section of documentation.\n\n### Quick Start\n\nThe [Quick Start guide](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#quick-start) uses Kong Operator to deploy\nour recommended Kong setup for Kubernetes users (Kong DB-less with Ingress Controller), which includes an instance of Kong\nserving as a proxy to an example Kubernetes service.\n\n### Documentation\n\nThe primary documentation site for Kong Operator is located [in its GitHub repository](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md).\n\nKong Operator provides the same configuration flexibility as the Kong Helm chart.\nRefer to the [Helm chart documentation](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md),\nthe [Configuration](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#configuration) section of Kong Operator docs, and the example `Kong` resource below.\n\n### Upgrading from versions 0.8.0 and earlier\n\n0.10.0 changes the operator CRD to comply with Kubernetes requirements. Upgrades require manual work to move configuration into the new CRs.\nSee the [0.10.0 upgrade guide](https://github.com/Kong/kong-operator/blob/main/CHANGELOG.md#upgrading-from-previous-versions)\nfor steps to upgrade past 0.8.0.\n",
+      "csv_display_name": "Kong Operator",
+      "csv_metadata_description": "The world\u2019s most popular open source API gateway. Built for multi-cloud and hybrid, optimized for microservices and distributed architectures.",
+      "csv_name": "kong.v0.10.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:07:25.906000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "kong-offline-operator",
+      "provided_apis": [
+        {
+          "group": "charts.konghq.com",
+          "kind": "Kong",
+          "plural": "kongs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "name": "kong-offline-operator1-df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d-annotation"
+        },
+        {
+          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "name": "kong-operator"
+        },
+        {
+          "digest": "sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
+          "image": "registry.connect.redhat.com/kong/kong@sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
+          "name": "kong"
+        },
+        {
+          "digest": "sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
+          "image": "registry.connect.redhat.com/kong/kong-ingress-controller@sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
+          "name": "kong_controller"
+        },
+        {
+          "digest": "sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
+          "image": "registry.access.redhat.com/ubi8/ubi@sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
+          "name": "utility"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.10.1",
+      "version_original": "0.10.1"
+    },
+    {
+      "_id": "62cefd626537ee32f3d7789f",
+      "alm_examples": [
+        {
+          "api_version": "charts.konghq.com/v1alpha1",
+          "kind": "Kong",
+          "metadata": {
+            "name": "example-kong"
+          },
+          "spec": {
+            "env": {
+              "prefix": "/kong_prefix/"
+            },
+            "ingressController": {
+              "enabled": true,
+              "installCRDs": false
+            },
+            "proxy": {
+              "type": "NodePort"
+            },
+            "resources": {
+              "limits": {
+                "cpu": "500m",
+                "memory": "2G"
+              },
+              "requests": {
+                "cpu": "100m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/kong/kong-offline-operator1-bundle@sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
+      "bundle_path_digest": "sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-07-13T17:14:10.048000+00:00",
+      "csv_description": "Kong is a popular open-source cloud-native API gateway. Kong Operator is a Kubernetes operator which manages [Kong](https://konghq.com/kong/) and [Kong Enterprise](https://konghq.com/products/kong-enterprise/) clusters.\n\nKong Operator can deploy Kong in various configurations, for example:\n* as a [Kubernetes ingress controller](https://github.com/Kong/kubernetes-ingress-controller), enabling you to expose Kubernetes `Service`s via Kong,\n* a standalone Kong gateway (without the ingress controller; either DB-enabled or DB-less)\n* a standalone Ingress Controller (configuring an external instance of Kong)\n\nThose configurations are further described in the [_Deployment Options_](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md#deployment-options) section of documentation.\n\n### Quick Start\n\nThe [Quick Start guide](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#quick-start) uses Kong Operator to deploy\nour recommended Kong setup for Kubernetes users (Kong DB-less with Ingress Controller), which includes an instance of Kong\nserving as a proxy to an example Kubernetes service.\n\n### Documentation\n\nThe primary documentation site for Kong Operator is located [in its GitHub repository](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md).\n\nKong Operator provides the same configuration flexibility as the Kong Helm chart.\nRefer to the [Helm chart documentation](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md),\nthe [Configuration](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#configuration) section of Kong Operator docs, and the example `Kong` resource below.\n\n### Upgrading from versions 0.8.0 and earlier\n\n0.10.0 changes the operator CRD to comply with Kubernetes requirements. Upgrades require manual work to move configuration into the new CRs.\nSee the [0.10.0 upgrade guide](https://github.com/Kong/kong-operator/blob/main/CHANGELOG.md#upgrading-from-previous-versions)\nfor steps to upgrade past 0.8.0.\n",
+      "csv_display_name": "Kong Operator",
+      "csv_metadata_description": "The world\u2019s most popular open source API gateway. Built for multi-cloud and hybrid, optimized for microservices and distributed architectures.",
+      "csv_name": "kong.v0.10.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:58:30.380000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "kong-offline-operator",
+      "provided_apis": [
+        {
+          "group": "charts.konghq.com",
+          "kind": "Kong",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "name": "kong-offline-operator1-df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d-annotation"
+        },
+        {
+          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "name": "kong-operator"
+        },
+        {
+          "digest": "sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
+          "image": "registry.connect.redhat.com/kong/kong@sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
+          "name": "kong"
+        },
+        {
+          "digest": "sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
+          "image": "registry.connect.redhat.com/kong/kong-ingress-controller@sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
+          "name": "kong_controller"
+        },
+        {
+          "digest": "sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
+          "image": "registry.access.redhat.com/ubi8/ubi@sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
+          "name": "utility"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.10.1",
+      "version_original": "0.10.1"
+    },
+    {
+      "_id": "62cefeecc942619c6bc54225",
+      "alm_examples": [
+        {
+          "api_version": "charts.konghq.com/v1alpha1",
+          "kind": "Kong",
+          "metadata": {
+            "name": "example-kong"
+          },
+          "spec": {
+            "env": {
+              "prefix": "/kong_prefix/"
+            },
+            "ingressController": {
+              "enabled": true,
+              "installCRDs": false
+            },
+            "proxy": {
+              "type": "NodePort"
+            },
+            "resources": {
+              "limits": {
+                "cpu": "500m",
+                "memory": "2G"
+              },
+              "requests": {
+                "cpu": "100m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/kong/kong-offline-operator1-bundle@sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
+      "bundle_path_digest": "sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-07-13T17:20:44.941000+00:00",
+      "csv_description": "Kong is a popular open-source cloud-native API gateway. Kong Operator is a Kubernetes operator which manages [Kong](https://konghq.com/kong/) and [Kong Enterprise](https://konghq.com/products/kong-enterprise/) clusters.\n\nKong Operator can deploy Kong in various configurations, for example:\n* as a [Kubernetes ingress controller](https://github.com/Kong/kubernetes-ingress-controller), enabling you to expose Kubernetes `Service`s via Kong,\n* a standalone Kong gateway (without the ingress controller; either DB-enabled or DB-less)\n* a standalone Ingress Controller (configuring an external instance of Kong)\n\nThose configurations are further described in the [_Deployment Options_](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md#deployment-options) section of documentation.\n\n### Quick Start\n\nThe [Quick Start guide](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#quick-start) uses Kong Operator to deploy\nour recommended Kong setup for Kubernetes users (Kong DB-less with Ingress Controller), which includes an instance of Kong\nserving as a proxy to an example Kubernetes service.\n\n### Documentation\n\nThe primary documentation site for Kong Operator is located [in its GitHub repository](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md).\n\nKong Operator provides the same configuration flexibility as the Kong Helm chart.\nRefer to the [Helm chart documentation](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md),\nthe [Configuration](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#configuration) section of Kong Operator docs, and the example `Kong` resource below.\n\n### Upgrading from versions 0.8.0 and earlier\n\n0.10.0 changes the operator CRD to comply with Kubernetes requirements. Upgrades require manual work to move configuration into the new CRs.\nSee the [0.10.0 upgrade guide](https://github.com/Kong/kong-operator/blob/main/CHANGELOG.md#upgrading-from-previous-versions)\nfor steps to upgrade past 0.8.0.\n",
+      "csv_display_name": "Kong Operator",
+      "csv_metadata_description": "The world\u2019s most popular open source API gateway. Built for multi-cloud and hybrid, optimized for microservices and distributed architectures.",
+      "csv_name": "kong.v0.10.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:16:06.767000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "kong-offline-operator",
+      "provided_apis": [
+        {
+          "group": "charts.konghq.com",
+          "kind": "Kong",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "name": "kong-offline-operator1-df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d-annotation"
+        },
+        {
+          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "name": "kong-operator"
+        },
+        {
+          "digest": "sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
+          "image": "registry.connect.redhat.com/kong/kong@sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
+          "name": "kong"
+        },
+        {
+          "digest": "sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
+          "image": "registry.connect.redhat.com/kong/kong-ingress-controller@sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
+          "name": "kong_controller"
+        },
+        {
+          "digest": "sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
+          "image": "registry.access.redhat.com/ubi8/ubi@sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
+          "name": "utility"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.10.1",
+      "version_original": "0.10.1"
+    },
+    {
+      "_id": "62ceff7cfe766184e15e9de1",
+      "alm_examples": [
+        {
+          "api_version": "charts.konghq.com/v1alpha1",
+          "kind": "Kong",
+          "metadata": {
+            "name": "example-kong"
+          },
+          "spec": {
+            "env": {
+              "prefix": "/kong_prefix/"
+            },
+            "ingressController": {
+              "enabled": true,
+              "installCRDs": false
+            },
+            "proxy": {
+              "type": "NodePort"
+            },
+            "resources": {
+              "limits": {
+                "cpu": "500m",
+                "memory": "2G"
+              },
+              "requests": {
+                "cpu": "100m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/kong/kong-offline-operator1-bundle@sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
+      "bundle_path_digest": "sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-07-13T17:23:08.107000+00:00",
+      "csv_description": "Kong is a popular open-source cloud-native API gateway. Kong Operator is a Kubernetes operator which manages [Kong](https://konghq.com/kong/) and [Kong Enterprise](https://konghq.com/products/kong-enterprise/) clusters.\n\nKong Operator can deploy Kong in various configurations, for example:\n* as a [Kubernetes ingress controller](https://github.com/Kong/kubernetes-ingress-controller), enabling you to expose Kubernetes `Service`s via Kong,\n* a standalone Kong gateway (without the ingress controller; either DB-enabled or DB-less)\n* a standalone Ingress Controller (configuring an external instance of Kong)\n\nThose configurations are further described in the [_Deployment Options_](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md#deployment-options) section of documentation.\n\n### Quick Start\n\nThe [Quick Start guide](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#quick-start) uses Kong Operator to deploy\nour recommended Kong setup for Kubernetes users (Kong DB-less with Ingress Controller), which includes an instance of Kong\nserving as a proxy to an example Kubernetes service.\n\n### Documentation\n\nThe primary documentation site for Kong Operator is located [in its GitHub repository](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md).\n\nKong Operator provides the same configuration flexibility as the Kong Helm chart.\nRefer to the [Helm chart documentation](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md),\nthe [Configuration](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#configuration) section of Kong Operator docs, and the example `Kong` resource below.\n\n### Upgrading from versions 0.8.0 and earlier\n\n0.10.0 changes the operator CRD to comply with Kubernetes requirements. Upgrades require manual work to move configuration into the new CRs.\nSee the [0.10.0 upgrade guide](https://github.com/Kong/kong-operator/blob/main/CHANGELOG.md#upgrading-from-previous-versions)\nfor steps to upgrade past 0.8.0.\n",
+      "csv_display_name": "Kong Operator",
+      "csv_metadata_description": "The world\u2019s most popular open source API gateway. Built for multi-cloud and hybrid, optimized for microservices and distributed architectures.",
+      "csv_name": "kong.v0.10.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:54:56.102000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "kong-offline-operator",
+      "provided_apis": [
+        {
+          "group": "charts.konghq.com",
+          "kind": "Kong",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "name": "kong-offline-operator1-df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d-annotation"
+        },
+        {
+          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
+          "name": "kong-operator"
+        },
+        {
+          "digest": "sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
+          "image": "registry.connect.redhat.com/kong/kong@sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
+          "name": "kong"
+        },
+        {
+          "digest": "sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
+          "image": "registry.connect.redhat.com/kong/kong-ingress-controller@sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
+          "name": "kong_controller"
+        },
+        {
+          "digest": "sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
+          "image": "registry.access.redhat.com/ubi8/ubi@sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
+          "name": "utility"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.10.1",
+      "version_original": "0.10.1"
     }
   ],
   "page": 37,
   "page_size": 100,
-  "total": 4532
+  "total": 4545
 }

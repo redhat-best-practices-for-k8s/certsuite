@@ -5338,1671 +5338,6 @@
       "version_original": "1.11.0"
     },
     {
-      "_id": "62bc3e1fa516f7019713a229",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "route": true,
-            "runAsNonRoot": false,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false,
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "2022.4"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:7c8ba13be103ecc45304a304fc62576d1bdadd27ff318af5f78eae23c7ce64bc",
-      "bundle_path_digest": "sha256:7c8ba13be103ecc45304a304fc62576d1bdadd27ff318af5f78eae23c7ce64bc",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "2022.4",
-      "creation_date": "2022-06-29T11:57:19.097000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This maps to the Aqua version 6.5.0\n* 2022.4: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/2022.4.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v2022.4.81",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T03:52:21.820000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "AquaStarboard",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ClusterConfigAuditReport",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ConfigAuditReport",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "name": "aquasec-b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750-annotation"
-        },
-        {
-          "digest": "sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:30384d618e31f7650014746ffc1832a8cd4e8da089e3b4ed445b48c5e9dac66a",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:30384d618e31f7650014746ffc1832a8cd4e8da089e3b4ed445b48c5e9dac66a",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:b5f94fb8d85f3ac03f45cd2f7806f237a560a5353cf2491491ec94fceb9699a7",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:b5f94fb8d85f3ac03f45cd2f7806f237a560a5353cf2491491ec94fceb9699a7",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:12054e1b766f5c3b79fd3f7d9cbc715381db3c738adfeb60db6273c155a7a35c",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:12054e1b766f5c3b79fd3f7d9cbc715381db3c738adfeb60db6273c155a7a35c",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:89aea3960bb1bcda2766240759c59cc169df41f494cc49fe03e9b544c2533873",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:89aea3960bb1bcda2766240759c59cc169df41f494cc49fe03e9b544c2533873",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:f10f67165b52ebfc34f393b44962d53e01fd874e6db13927d754cee6f817fcfa",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:f10f67165b52ebfc34f393b44962d53e01fd874e6db13927d754cee6f817fcfa",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.2 <2022.4.81",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2022.4.81",
-      "version_original": "2022.4.81"
-    },
-    {
-      "_id": "62bc4032d8bdcafd21735a99",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "route": true,
-            "runAsNonRoot": false,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false,
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "2022.4"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:7c8ba13be103ecc45304a304fc62576d1bdadd27ff318af5f78eae23c7ce64bc",
-      "bundle_path_digest": "sha256:7c8ba13be103ecc45304a304fc62576d1bdadd27ff318af5f78eae23c7ce64bc",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "2022.4",
-      "creation_date": "2022-06-29T12:06:10.883000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This maps to the Aqua version 6.5.0\n* 2022.4: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/2022.4.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v2022.4.81",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T03:53:40.082000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ClusterConfigAuditReport",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ConfigAuditReport",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "AquaStarboard",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "name": "aquasec-b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750-annotation"
-        },
-        {
-          "digest": "sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:30384d618e31f7650014746ffc1832a8cd4e8da089e3b4ed445b48c5e9dac66a",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:30384d618e31f7650014746ffc1832a8cd4e8da089e3b4ed445b48c5e9dac66a",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:b5f94fb8d85f3ac03f45cd2f7806f237a560a5353cf2491491ec94fceb9699a7",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:b5f94fb8d85f3ac03f45cd2f7806f237a560a5353cf2491491ec94fceb9699a7",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:12054e1b766f5c3b79fd3f7d9cbc715381db3c738adfeb60db6273c155a7a35c",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:12054e1b766f5c3b79fd3f7d9cbc715381db3c738adfeb60db6273c155a7a35c",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:89aea3960bb1bcda2766240759c59cc169df41f494cc49fe03e9b544c2533873",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:89aea3960bb1bcda2766240759c59cc169df41f494cc49fe03e9b544c2533873",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:f10f67165b52ebfc34f393b44962d53e01fd874e6db13927d754cee6f817fcfa",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:f10f67165b52ebfc34f393b44962d53e01fd874e6db13927d754cee6f817fcfa",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.2 <2022.4.81",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "2022.4.81",
-      "version_original": "2022.4.81"
-    },
-    {
-      "_id": "62bc418db2c931ee53e5cbd4",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "route": true,
-            "runAsNonRoot": false,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false,
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "2022.4"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:7c8ba13be103ecc45304a304fc62576d1bdadd27ff318af5f78eae23c7ce64bc",
-      "bundle_path_digest": "sha256:7c8ba13be103ecc45304a304fc62576d1bdadd27ff318af5f78eae23c7ce64bc",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "2022.4",
-      "creation_date": "2022-06-29T12:11:57.831000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This maps to the Aqua version 6.5.0\n* 2022.4: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/2022.4.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v2022.4.81",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T02:02:12.213000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ClusterConfigAuditReport",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "AquaStarboard",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ConfigAuditReport",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "name": "aquasec-b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750-annotation"
-        },
-        {
-          "digest": "sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:30384d618e31f7650014746ffc1832a8cd4e8da089e3b4ed445b48c5e9dac66a",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:30384d618e31f7650014746ffc1832a8cd4e8da089e3b4ed445b48c5e9dac66a",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:b5f94fb8d85f3ac03f45cd2f7806f237a560a5353cf2491491ec94fceb9699a7",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:b5f94fb8d85f3ac03f45cd2f7806f237a560a5353cf2491491ec94fceb9699a7",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:12054e1b766f5c3b79fd3f7d9cbc715381db3c738adfeb60db6273c155a7a35c",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:12054e1b766f5c3b79fd3f7d9cbc715381db3c738adfeb60db6273c155a7a35c",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:89aea3960bb1bcda2766240759c59cc169df41f494cc49fe03e9b544c2533873",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:89aea3960bb1bcda2766240759c59cc169df41f494cc49fe03e9b544c2533873",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:f10f67165b52ebfc34f393b44962d53e01fd874e6db13927d754cee6f817fcfa",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:f10f67165b52ebfc34f393b44962d53e01fd874e6db13927d754cee6f817fcfa",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.2 <2022.4.81",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2022.4.81",
-      "version_original": "2022.4.81"
-    },
-    {
-      "_id": "62bc4284a516f7019713a24a",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "route": true,
-            "runAsNonRoot": false,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false,
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "2022.4"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:7c8ba13be103ecc45304a304fc62576d1bdadd27ff318af5f78eae23c7ce64bc",
-      "bundle_path_digest": "sha256:7c8ba13be103ecc45304a304fc62576d1bdadd27ff318af5f78eae23c7ce64bc",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "2022.4",
-      "creation_date": "2022-06-29T12:16:04.102000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This maps to the Aqua version 6.5.0\n* 2022.4: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/2022.4.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v2022.4.81",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:26:08.188000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ConfigAuditReport",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "AquaStarboard",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ClusterConfigAuditReport",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "name": "aquasec-b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750-annotation"
-        },
-        {
-          "digest": "sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:30384d618e31f7650014746ffc1832a8cd4e8da089e3b4ed445b48c5e9dac66a",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:30384d618e31f7650014746ffc1832a8cd4e8da089e3b4ed445b48c5e9dac66a",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:b5f94fb8d85f3ac03f45cd2f7806f237a560a5353cf2491491ec94fceb9699a7",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:b5f94fb8d85f3ac03f45cd2f7806f237a560a5353cf2491491ec94fceb9699a7",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:12054e1b766f5c3b79fd3f7d9cbc715381db3c738adfeb60db6273c155a7a35c",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:12054e1b766f5c3b79fd3f7d9cbc715381db3c738adfeb60db6273c155a7a35c",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:89aea3960bb1bcda2766240759c59cc169df41f494cc49fe03e9b544c2533873",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:89aea3960bb1bcda2766240759c59cc169df41f494cc49fe03e9b544c2533873",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:f10f67165b52ebfc34f393b44962d53e01fd874e6db13927d754cee6f817fcfa",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:f10f67165b52ebfc34f393b44962d53e01fd874e6db13927d754cee6f817fcfa",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.2 <2022.4.81",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2022.4.81",
-      "version_original": "2022.4.81"
-    },
-    {
-      "_id": "62bc4399b2c931ee53e5cbe5",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "route": true,
-            "runAsNonRoot": false,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false,
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "2022.4"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:7c8ba13be103ecc45304a304fc62576d1bdadd27ff318af5f78eae23c7ce64bc",
-      "bundle_path_digest": "sha256:7c8ba13be103ecc45304a304fc62576d1bdadd27ff318af5f78eae23c7ce64bc",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "2022.4",
-      "creation_date": "2022-06-29T12:20:41.452000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This maps to the Aqua version 6.5.0\n* 2022.4: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/2022.4.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v2022.4.81",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-03T02:13:46.136000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ClusterConfigAuditReport",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "AquaStarboard",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ConfigAuditReport",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "name": "aquasec-b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750-annotation"
-        },
-        {
-          "digest": "sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:b48bb950b18c7c7656e58714aa9dae45dfab21983e879794f1c949eeb51b2750",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:30384d618e31f7650014746ffc1832a8cd4e8da089e3b4ed445b48c5e9dac66a",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:30384d618e31f7650014746ffc1832a8cd4e8da089e3b4ed445b48c5e9dac66a",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:b5f94fb8d85f3ac03f45cd2f7806f237a560a5353cf2491491ec94fceb9699a7",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:b5f94fb8d85f3ac03f45cd2f7806f237a560a5353cf2491491ec94fceb9699a7",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:12054e1b766f5c3b79fd3f7d9cbc715381db3c738adfeb60db6273c155a7a35c",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:12054e1b766f5c3b79fd3f7d9cbc715381db3c738adfeb60db6273c155a7a35c",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:89aea3960bb1bcda2766240759c59cc169df41f494cc49fe03e9b544c2533873",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:89aea3960bb1bcda2766240759c59cc169df41f494cc49fe03e9b544c2533873",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:f10f67165b52ebfc34f393b44962d53e01fd874e6db13927d754cee6f817fcfa",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:f10f67165b52ebfc34f393b44962d53e01fd874e6db13927d754cee6f817fcfa",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.2 <2022.4.81",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2022.4.81",
-      "version_original": "2022.4.81"
-    },
-    {
       "_id": "62bc6842b490e03bc2bcb1ff",
       "alm_examples": [
         {
@@ -20124,9 +18459,1404 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "0.9.1",
       "version_original": "0.9.1"
+    },
+    {
+      "_id": "62c5feabb490e03bc2be1145",
+      "alm_examples": [
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Certificate",
+          "metadata": {
+            "name": "gitlab-serving-cert",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "dnsNames": [
+              "gitlab-webhook-service.gitlab-system.svc",
+              "gitlab-webhook-service.gitlab-system.svc.cluster.local"
+            ],
+            "issuerRef": {
+              "kind": "Issuer",
+              "name": "gitlab-selfsigned-issuer"
+            },
+            "secretName": "webhook-server-cert"
+          }
+        },
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Issuer",
+          "metadata": {
+            "name": "gitlab-selfsigned-issuer",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "selfSigned": {}
+          }
+        },
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.1.1"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "bundle_path_digest": "sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "unstable",
+      "creation_date": "2022-07-06T21:29:15.114000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.9.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T04:04:15.509000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1"
+        },
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "cloud-native/gitlab-operator-477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663-annotation"
+        },
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.9.1",
+      "version_original": "0.9.1"
+    },
+    {
+      "_id": "62c600b90ad353df5d01150e",
+      "alm_examples": [
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Certificate",
+          "metadata": {
+            "name": "gitlab-serving-cert",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "dnsNames": [
+              "gitlab-webhook-service.gitlab-system.svc",
+              "gitlab-webhook-service.gitlab-system.svc.cluster.local"
+            ],
+            "issuerRef": {
+              "kind": "Issuer",
+              "name": "gitlab-selfsigned-issuer"
+            },
+            "secretName": "webhook-server-cert"
+          }
+        },
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Issuer",
+          "metadata": {
+            "name": "gitlab-selfsigned-issuer",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "selfSigned": {}
+          }
+        },
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.1.1"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "bundle_path_digest": "sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "unstable",
+      "creation_date": "2022-07-06T21:38:01.077000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.9.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T02:08:51.759000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1"
+        },
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha3"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "cloud-native/gitlab-operator-477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663-annotation"
+        },
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.9.1",
+      "version_original": "0.9.1"
+    },
+    {
+      "_id": "62c600b9655931047b69d7c8",
+      "alm_examples": [
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Certificate",
+          "metadata": {
+            "name": "gitlab-serving-cert",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "dnsNames": [
+              "gitlab-webhook-service.gitlab-system.svc",
+              "gitlab-webhook-service.gitlab-system.svc.cluster.local"
+            ],
+            "issuerRef": {
+              "kind": "Issuer",
+              "name": "gitlab-selfsigned-issuer"
+            },
+            "secretName": "webhook-server-cert"
+          }
+        },
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Issuer",
+          "metadata": {
+            "name": "gitlab-selfsigned-issuer",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "selfSigned": {}
+          }
+        },
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.1.1"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "bundle_path_digest": "sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-06T21:38:01.677000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.9.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T01:54:02.919000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1"
+        },
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha3"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "cloud-native/gitlab-operator-477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663-annotation"
+        },
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.9.1",
+      "version_original": "0.9.1"
+    },
+    {
+      "_id": "62c6016db490e03bc2be1169",
+      "alm_examples": [
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Certificate",
+          "metadata": {
+            "name": "gitlab-serving-cert",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "dnsNames": [
+              "gitlab-webhook-service.gitlab-system.svc",
+              "gitlab-webhook-service.gitlab-system.svc.cluster.local"
+            ],
+            "issuerRef": {
+              "kind": "Issuer",
+              "name": "gitlab-selfsigned-issuer"
+            },
+            "secretName": "webhook-server-cert"
+          }
+        },
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Issuer",
+          "metadata": {
+            "name": "gitlab-selfsigned-issuer",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "selfSigned": {}
+          }
+        },
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.1.1"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "bundle_path_digest": "sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-06T21:41:01.360000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.9.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-03T04:07:01.468000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "cloud-native/gitlab-operator-477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663-annotation"
+        },
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.9.1",
+      "version_original": "0.9.1"
+    },
+    {
+      "_id": "62c6016f655931047b69d7d8",
+      "alm_examples": [
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Certificate",
+          "metadata": {
+            "name": "gitlab-serving-cert",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "dnsNames": [
+              "gitlab-webhook-service.gitlab-system.svc",
+              "gitlab-webhook-service.gitlab-system.svc.cluster.local"
+            ],
+            "issuerRef": {
+              "kind": "Issuer",
+              "name": "gitlab-selfsigned-issuer"
+            },
+            "secretName": "webhook-server-cert"
+          }
+        },
+        {
+          "api_version": "cert-manager.io/v1",
+          "kind": "Issuer",
+          "metadata": {
+            "name": "gitlab-selfsigned-issuer",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "selfSigned": {}
+          }
+        },
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.1.1"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "bundle_path_digest": "sha256:4c11622a551d65a1f3cb87ccc55b05ba8912021048b136b79479a9ce856159fd",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "unstable",
+      "creation_date": "2022-07-06T21:41:03.245000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.9.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-03T04:44:27.495000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Challenge",
+          "plural": "challenges",
+          "version": "v1"
+        },
+        {
+          "group": "acme.cert-manager.io",
+          "kind": "Order",
+          "plural": "orders",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Certificate",
+          "plural": "certificates",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "ClusterIssuer",
+          "plural": "clusterissuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "Issuer",
+          "plural": "issuers",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "cert-manager.io",
+          "kind": "CertificateRequest",
+          "plural": "certificaterequests",
+          "version": "v1alpha2"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "cloud-native/gitlab-operator-477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663-annotation"
+        },
+        {
+          "digest": "sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:477e08afc29f802338a9b26f6cd2f04808a7495531cf81f6f7d693bff148d663",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.9.1",
+      "version_original": "0.9.1"
     }
   ],
   "page": 36,
   "page_size": 100,
-  "total": 4532
+  "total": 4545
 }
