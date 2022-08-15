@@ -144,6 +144,14 @@ func TestTest(t *testing.T) {
 	// Set clientsholder singleton with the filenames from the env vars.
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 
+	// Deploy the daemonset before getting the environment for the first time
+	if !diagnosticMode {
+		err := daemonset.DeployPartnerTestDaemonset()
+		if err != nil {
+			log.Errorf("Error deploying partner daemonset %s", err)
+		}
+	}
+
 	// Initialize the claim with the start time, tnf version, etc.
 	claimRoot := claimhelper.CreateClaimRoot()
 	claimData := claimRoot.Claim
@@ -162,10 +170,6 @@ func TestTest(t *testing.T) {
 	// Run tests specs only if not in diagnostic mode, otherwise all TSs would run.
 	var env provider.TestEnvironment
 	if !diagnosticMode {
-		err = daemonset.DeployPartnerTestDaemonset()
-		if err != nil {
-			log.Errorf("Error deploying partner daemonset %s", err)
-		}
 		env.SetNeedsRefresh()
 		provider.GetTestEnvironment()
 		ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)

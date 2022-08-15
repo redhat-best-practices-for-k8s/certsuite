@@ -471,6 +471,19 @@ Exception Process|There is no documented exception process for this.
 
 ### networking
 
+#### dual-stack-service
+
+Property|Description
+---|---
+Test Case Name|dual-stack-service
+Test Case Label|networking-dual-stack-service
+Unique ID|http://test-network-function.com/testcases/networking/dual-stack-service
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/networking/dual-stack-service Checks that all services in namespaces under test are either ipv6 single stack or dual stack . This test case requires the Deployment of the debug daemonset.
+Result Type|normative
+Suggested Remediation|Configure every CNF services with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 3.5.7
+Exception Process|There is no documented exception process for this.
 #### icmpv4-connectivity
 
 Property|Description

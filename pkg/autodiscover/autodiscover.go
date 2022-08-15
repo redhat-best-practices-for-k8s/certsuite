@@ -61,6 +61,7 @@ type DiscoveredTestData struct {
 	Deployments          []appsv1.Deployment
 	StatefulSet          []appsv1.StatefulSet
 	PersistentVolumes    []corev1.PersistentVolume
+	Services             []*corev1.Service
 	Hpas                 map[string]*scalingv1.HorizontalPodAutoscaler
 	Subscriptions        []olmv1Alpha.Subscription
 	HelmChartReleases    map[string][]*release.Release
@@ -145,6 +146,10 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.PersistentVolumes, err = getPersistentVolumes(oc.K8sClient.CoreV1())
 	if err != nil {
 		logrus.Fatalln("Cannot get list of persistent volumes")
+	}
+	data.Services, err = getServices(oc.K8sClient.CoreV1(), data.Namespaces...)
+	if err != nil {
+		logrus.Fatalln("Cannot get list of services")
 	}
 	return data
 }

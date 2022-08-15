@@ -141,6 +141,11 @@ var (
 		Url:     formTestURL(common.NetworkingTestKey, "icmpv6-connectivity-multus"),
 		Version: versionOne,
 	}
+	// TestServiceDualStack verifies that all services under test are either ipv6 single stack or dual-stack
+	TestServiceDualStackIdentifier = claim.Identifier{
+		Url:     formTestURL(common.NetworkingTestKey, "dual-stack-service"),
+		Version: versionOne,
+	}
 	// TestNamespaceBestPracticesIdentifier ensures the namespace has followed best namespace practices.
 	TestNamespaceBestPracticesIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AccessControlTestKey, "namespace"),
@@ -597,6 +602,17 @@ test case requires the Deployment of the debug daemonset.`),
 			`Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s).  This
 test case requires the Deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
+		ExceptionProcess:      NoDocumentedProcess,
+	},
+
+	TestServiceDualStackIdentifier: {
+		Identifier:  TestServiceDualStackIdentifier,
+		Type:        normativeResult,
+		Remediation: TestServiceDualStackRemediation,
+		Description: formDescription(TestServiceDualStackIdentifier,
+			`Checks that all services in namespaces under test are either ipv6 single stack or dual stack . This
+test case requires the Deployment of the debug daemonset.`),
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 3.5.7",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 
