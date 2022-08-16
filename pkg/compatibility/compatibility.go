@@ -54,16 +54,27 @@ var (
 		// update documentation.
 
 		// Full Support
+		"4.11": {
+			GADate:  time.Date(2022, 8, 10, 0, 0, 0, 0, time.UTC), // August 10, 2022
+			FSEDate: time.Date(2023, 4, 10, 0, 0, 0, 0, time.UTC), // April 10, 2023
+			MSEDate: time.Date(2024, 2, 10, 0, 0, 0, 0, time.UTC), // February 10, 2024
+			// Note: FSEDate (Release of 4.12 + 3 months) is currently a "guess".  Update when available.
+
+			// OS Compatibility
+			MinRHCOSVersion:      "4.11",
+			RHELVersionsAccepted: []string{"8.4", "8.5"},
+		},
 		"4.10": {
-			GADate:  time.Date(2022, 3, 10, 0, 0, 0, 0, time.UTC), // March 10, 2022
-			FSEDate: time.Date(2022, 9, 10, 0, 0, 0, 0, time.UTC), // September 10, 2022
-			MSEDate: time.Date(2023, 9, 10, 0, 0, 0, 0, time.UTC), // September 10, 2023
-			// Note: FSEDate (Release of 4.11 + 3 months) is currently a "guess".  Update when available.
+			GADate:  time.Date(2022, 3, 10, 0, 0, 0, 0, time.UTC),  // March 10, 2022
+			FSEDate: time.Date(2022, 11, 10, 0, 0, 0, 0, time.UTC), // November 10, 2022
+			MSEDate: time.Date(2023, 9, 10, 0, 0, 0, 0, time.UTC),  // September 10, 2023
 
 			// OS Compatibility
 			MinRHCOSVersion:      "4.10",
 			RHELVersionsAccepted: []string{"8.4", "8.5"},
 		},
+
+		// Maintenance Support
 		"4.9": {
 			GADate:  time.Date(2021, 10, 18, 0, 0, 0, 0, time.UTC), // October 18, 2021
 			FSEDate: time.Date(2022, 6, 10, 0, 0, 0, 0, time.UTC),  // June 10, 2022
@@ -73,8 +84,6 @@ var (
 			MinRHCOSVersion:      "4.9",
 			RHELVersionsAccepted: []string{"7.9", "8.4"},
 		},
-
-		// Maintenance Support
 		"4.8": {
 			GADate:  time.Date(2021, 7, 27, 0, 0, 0, 0, time.UTC), // July 27, 2021
 			FSEDate: time.Date(2022, 1, 27, 0, 0, 0, 0, time.UTC), // January 27, 2022
@@ -259,6 +268,10 @@ Note:
 You must use RHCOS machines for the control plane, and you can use either RHCOS or RHEL for compute machines.
 
 Compatibility information gathered from the release note pages of each release:
+
+4.11
+https://docs.openshift.com/container-platform/4.11/release_notes/ocp-4-11-release-notes.html
+OpenShift Container Platform 4.11 is supported on Red Hat Enterprise Linux (RHEL) 8.4 and 8.5, as well as on Red Hat Enterprise Linux CoreOS (RHCOS) 4.11.
 
 4.10
 https://docs.openshift.com/container-platform/4.10/release_notes/ocp-4-10-release-notes.html
