@@ -164,13 +164,13 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T01:55:28.499000+00:00",
+      "last_update_date": "2022-08-15T13:02:49.335000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "redhat-marketplace-operator",
       "provided_apis": [],
-      "provider": null,
+      "provider": "Red Hat Marketplace",
       "related_images": [
         {
           "digest": "sha256:d582454560f823f3f123fe10c801c14b8f59678c20cdaa877f3d97e715170ca4",
@@ -315,13 +315,13 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:44:07.592000+00:00",
+      "last_update_date": "2022-08-15T12:37:30.992000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "redis-enterprise-operator-cert",
       "provided_apis": [],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
@@ -531,7 +531,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:46:31.791000+00:00",
+      "last_update_date": "2022-08-15T12:36:38.701000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -544,7 +544,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "IBM",
       "related_images": [
         {
           "digest": "sha256:793d8ca7b5cd45ab66cf0e33af3dcf6c6fec89ebca9173b04f5e3e2c9d2df0c7",
@@ -685,13 +685,13 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:35:58.063000+00:00",
+      "last_update_date": "2022-08-15T13:04:13.606000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "uma-operator",
       "provided_apis": [],
-      "provider": null,
+      "provider": "Broadcom, Inc.",
       "related_images": [
         {
           "digest": "sha256:e2f059d3778fa8e88b3d7473e082e2680b0269f5ff34940f009d3d8a6410b59d",
@@ -786,7 +786,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T05:03:30.366000+00:00",
+      "last_update_date": "2022-08-15T12:54:39.017000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -803,7 +803,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
@@ -845,7 +845,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:37:36.449000+00:00",
+      "last_update_date": "2022-08-15T12:59:21.702000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -864,7 +864,7 @@
           "version": "v1beta1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -895,7 +895,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:40:23.106000+00:00",
+      "last_update_date": "2022-08-15T12:37:37.747000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -914,7 +914,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -945,7 +945,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:56:15.475000+00:00",
+      "last_update_date": "2022-08-15T12:49:17.556000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -958,7 +958,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -989,7 +989,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T05:04:16.113000+00:00",
+      "last_update_date": "2022-08-15T13:12:58.218000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -1001,7 +1001,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -1032,7 +1032,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:55:33.327000+00:00",
+      "last_update_date": "2022-08-15T12:58:31.070000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -1045,7 +1045,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -1076,7 +1076,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:46:29.692000+00:00",
+      "last_update_date": "2022-08-15T12:39:34.619000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -1089,7 +1089,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -1217,7 +1217,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:28:46.495000+00:00",
+      "last_update_date": "2022-08-15T13:05:16.184000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -1230,7 +1230,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "citrix",
       "related_images": [
         {
           "digest": "sha256:0acde734a562ec2bee2f2c3da2456a13b552ea368dc0ebf382f018979b1c5055",
@@ -1331,7 +1331,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T05:07:09.533000+00:00",
+      "last_update_date": "2022-08-15T12:53:39.310000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -1350,7 +1350,7 @@
           "version": "v1beta1"
         }
       ],
-      "provider": null,
+      "provider": "Instana",
       "related_images": [
         {
           "digest": "sha256:1e31376496d3aa418a380d9087e2eb159567a7e486dbf46b4a4f20e7af5d5f94",
@@ -1436,7 +1436,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:39:13.931000+00:00",
+      "last_update_date": "2022-08-15T12:36:00.465000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -1455,7 +1455,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Instana",
       "related_images": [
         {
           "digest": "sha256:1e31376496d3aa418a380d9087e2eb159567a7e486dbf46b4a4f20e7af5d5f94",
@@ -1529,7 +1529,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:01:13.370000+00:00",
+      "last_update_date": "2022-08-15T13:07:37.452000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -1542,7 +1542,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Jetstack",
       "related_images": [
         {
           "digest": "sha256:a41989d2b91e16d9ecc3f99dafd2a5f3f983587373d179adc579d2fda4978bf8",
@@ -1611,7 +1611,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T03:57:39.256000+00:00",
+      "last_update_date": "2022-08-15T12:42:32.096000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -1624,7 +1624,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Jetstack",
       "related_images": [
         {
           "digest": "sha256:a41989d2b91e16d9ecc3f99dafd2a5f3f983587373d179adc579d2fda4978bf8",
@@ -1693,7 +1693,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T01:37:31.076000+00:00",
+      "last_update_date": "2022-08-15T12:39:32.001000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -1706,7 +1706,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Jetstack",
       "related_images": [
         {
           "digest": "sha256:a41989d2b91e16d9ecc3f99dafd2a5f3f983587373d179adc579d2fda4978bf8",
@@ -1775,7 +1775,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:25:39.055000+00:00",
+      "last_update_date": "2022-08-15T12:46:03.104000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -1788,7 +1788,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Jetstack",
       "related_images": [
         {
           "digest": "sha256:a41989d2b91e16d9ecc3f99dafd2a5f3f983587373d179adc579d2fda4978bf8",
@@ -1830,7 +1830,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:44:26.562000+00:00",
+      "last_update_date": "2022-08-15T12:52:51.789000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -1855,7 +1855,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -1932,7 +1932,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:43:44.872000+00:00",
+      "last_update_date": "2022-08-15T12:36:05.519000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -1957,7 +1957,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Kubemq.io",
       "related_images": [
         {
           "digest": "sha256:6b8680bb34b335f0c5653bc38a4d1be174a91846176b1336ac166e32158b42c9",
@@ -2014,7 +2014,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:42:54.930000+00:00",
+      "last_update_date": "2022-08-15T12:38:56.897000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -2026,7 +2026,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -2057,13 +2057,13 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:48:09.757000+00:00",
+      "last_update_date": "2022-08-15T12:40:28.047000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "kubeturbo-certified",
       "provided_apis": [],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -2094,7 +2094,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:51:21.770000+00:00",
+      "last_update_date": "2022-08-15T12:36:40.780000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -2107,7 +2107,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -2325,7 +2325,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T05:03:11.384000+00:00",
+      "last_update_date": "2022-08-15T12:51:08.753000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -2374,7 +2374,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "IBM Digital Growth and Commerce",
       "related_images": [
         {
           "digest": "sha256:6b048ead1121a9ca2bcc0d5b2a198a01e889456d5069f303d2af4dcdf465a40f",
@@ -2683,7 +2683,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:52:08.101000+00:00",
+      "last_update_date": "2022-08-15T12:55:34.805000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -2732,7 +2732,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "IBM Digital Growth and Commerce",
       "related_images": [
         {
           "digest": "sha256:6b048ead1121a9ca2bcc0d5b2a198a01e889456d5069f303d2af4dcdf465a40f",
@@ -2891,7 +2891,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:36:54.683000+00:00",
+      "last_update_date": "2022-08-15T12:59:33.306000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -2904,7 +2904,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "IBM-Edge",
       "related_images": [
         {
           "digest": "sha256:9867fa585db94f7df90cbaf39961677b2aad6862a487ed6d8a2f6b9272069649",
@@ -2989,13 +2989,13 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:34:13.234000+00:00",
+      "last_update_date": "2022-08-15T12:37:38.856000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "kubeturbo-certified",
       "provided_apis": [],
-      "provider": null,
+      "provider": "Turbonomic, Inc.",
       "related_images": [
         {
           "digest": "sha256:204ad91c434c7179b316c1a190329c59dc41a0993f5f99d5f52d7f9e414373e0",
@@ -3162,13 +3162,13 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:56:41.354000+00:00",
+      "last_update_date": "2022-08-15T12:35:44.178000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "nxrm-operator-certified",
       "provided_apis": [],
-      "provider": null,
+      "provider": "Sonatype",
       "related_images": [
         {
           "digest": "sha256:89c48d5d4868391edc5b0d713d21a47c0305a4d0e8e94bd55eca0c019f2e3185",
@@ -3257,7 +3257,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:55:39.839000+00:00",
+      "last_update_date": "2022-08-15T13:00:08.517000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -3269,7 +3269,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "IBM-Edge",
       "related_images": [
         {
           "digest": "sha256:6b048ead1121a9ca2bcc0d5b2a198a01e889456d5069f303d2af4dcdf465a40f",
@@ -3358,7 +3358,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:52:04.940000+00:00",
+      "last_update_date": "2022-08-15T12:48:49.578000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -3371,7 +3371,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "IBM-Edge",
       "related_images": [
         {
           "digest": "sha256:6b048ead1121a9ca2bcc0d5b2a198a01e889456d5069f303d2af4dcdf465a40f",
@@ -3560,7 +3560,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:00:44.172000+00:00",
+      "last_update_date": "2022-08-15T12:49:47.052000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -3573,7 +3573,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "NeuVector",
       "related_images": [
         {
           "digest": "sha256:98cc0907736d3952984d72afb4e1039ac509218f8ab082f122129e5954904d6e",
@@ -3802,7 +3802,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:36:42.226000+00:00",
+      "last_update_date": "2022-08-15T12:44:22.016000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -3815,7 +3815,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "NeuVector",
       "related_images": [
         {
           "digest": "sha256:98cc0907736d3952984d72afb4e1039ac509218f8ab082f122129e5954904d6e",
@@ -3907,13 +3907,13 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:53:20.652000+00:00",
+      "last_update_date": "2022-08-15T12:44:43.185000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "oneagent-certified",
       "provided_apis": [],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -3944,7 +3944,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:53:26.197000+00:00",
+      "last_update_date": "2022-08-15T12:40:24.089000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -3961,7 +3961,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -4042,13 +4042,13 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:44:23.654000+00:00",
+      "last_update_date": "2022-08-15T12:39:37.332000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "oneagent-certified",
       "provided_apis": [],
-      "provider": null,
+      "provider": "Dynatrace LLC",
       "related_images": [
         {
           "digest": "sha256:4f626c6f83d93c7c6b6279fa48003ea5cf4ef972cc7831f1d2367f20f0c4afed",
@@ -4155,7 +4155,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:05:24.220000+00:00",
+      "last_update_date": "2022-08-15T12:53:29.499000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4172,7 +4172,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Dynatrace LLC",
       "related_images": [
         {
           "digest": "sha256:4f626c6f83d93c7c6b6279fa48003ea5cf4ef972cc7831f1d2367f20f0c4afed",
@@ -4302,7 +4302,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:36:03.923000+00:00",
+      "last_update_date": "2022-08-15T12:49:37.595000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -4315,7 +4315,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Citrix",
       "related_images": [
         {
           "digest": "sha256:5a619774b63dd7aa207205f0c7688ac756efff93dc8396f7e4ee1db5a16a0f52",
@@ -4410,7 +4410,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:41:18.105000+00:00",
+      "last_update_date": "2022-08-15T13:05:03.744000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -4429,7 +4429,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "Intel Corporation",
       "related_images": [
         {
           "digest": "sha256:e09594ee120b48064fd62d37ae25b9aebae12763224d9fff26400e5683cfac62",
@@ -4509,7 +4509,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T05:02:09.497000+00:00",
+      "last_update_date": "2022-08-15T13:01:08.087000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4528,7 +4528,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "Intel Corporation",
       "related_images": [
         {
           "digest": "sha256:e09594ee120b48064fd62d37ae25b9aebae12763224d9fff26400e5683cfac62",
@@ -4702,7 +4702,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:51:05.043000+00:00",
+      "last_update_date": "2022-08-15T12:42:10.999000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4721,7 +4721,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "Intel Corporation",
       "related_images": [
         {
           "digest": "sha256:e09594ee120b48064fd62d37ae25b9aebae12763224d9fff26400e5683cfac62",
@@ -4862,7 +4862,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:49:07.186000+00:00",
+      "last_update_date": "2022-08-15T12:42:30.918000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -4875,7 +4875,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Storware",
       "related_images": [
         {
           "digest": "sha256:5f3331b37cae862364a775e51eee381ea782c439768558779036f827485d74f8",
@@ -5051,7 +5051,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:37:22.772000+00:00",
+      "last_update_date": "2022-08-15T12:56:49.502000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5064,7 +5064,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Storware",
       "related_images": [
         {
           "digest": "sha256:5f3331b37cae862364a775e51eee381ea782c439768558779036f827485d74f8",
@@ -5141,7 +5141,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:56:45.992000+00:00",
+      "last_update_date": "2022-08-15T12:56:52.669000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -5154,7 +5154,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -5185,7 +5185,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:25:02.929000+00:00",
+      "last_update_date": "2022-08-15T13:02:58.794000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5198,7 +5198,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -5274,7 +5274,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:39:19.256000+00:00",
+      "last_update_date": "2022-08-15T12:36:14.418000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -5287,7 +5287,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Snyk Ltd.",
       "related_images": [
         {
           "digest": "sha256:d0e1d5e9069c90967082de97f5da4d31a8fab36a6913ae366869a4bfa87feef5",
@@ -5379,7 +5379,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:28:38.276000+00:00",
+      "last_update_date": "2022-08-15T12:41:52.840000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5392,7 +5392,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Snyk Ltd.",
       "related_images": [
         {
           "digest": "sha256:d0e1d5e9069c90967082de97f5da4d31a8fab36a6913ae366869a4bfa87feef5",
@@ -5496,7 +5496,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:47:39.153000+00:00",
+      "last_update_date": "2022-08-15T12:52:51.231000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5536,7 +5536,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "EnterpriseDB Corporation",
       "related_images": [
         {
           "digest": "sha256:3916a2ebd11c0a926d06d6ebfbd2cf6795ab01af598106ab7cb499ea26949879",
@@ -5635,7 +5635,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:31:46.809000+00:00",
+      "last_update_date": "2022-08-15T12:48:20.115000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5675,7 +5675,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "EnterpriseDB Corporation",
       "related_images": [
         {
           "digest": "sha256:3916a2ebd11c0a926d06d6ebfbd2cf6795ab01af598106ab7cb499ea26949879",
@@ -5774,13 +5774,13 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T01:41:12.004000+00:00",
+      "last_update_date": "2022-08-15T13:07:31.975000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "cloud-native-postgresql",
       "provided_apis": [],
-      "provider": null,
+      "provider": "EnterpriseDB Corporation",
       "related_images": [
         {
           "digest": "sha256:3916a2ebd11c0a926d06d6ebfbd2cf6795ab01af598106ab7cb499ea26949879",
@@ -5879,13 +5879,13 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T01:41:08.827000+00:00",
+      "last_update_date": "2022-08-15T12:40:41.346000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "cloud-native-postgresql",
       "provided_apis": [],
-      "provider": null,
+      "provider": "EnterpriseDB Corporation",
       "related_images": [
         {
           "digest": "sha256:3916a2ebd11c0a926d06d6ebfbd2cf6795ab01af598106ab7cb499ea26949879",
@@ -5989,7 +5989,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:59:44.815000+00:00",
+      "last_update_date": "2022-08-15T12:38:38.082000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -6002,7 +6002,7 @@
           "version": "v1beta1"
         }
       ],
-      "provider": null,
+      "provider": "DataStax",
       "related_images": [
         {
           "digest": "sha256:13031deaec8c729f9dcbf6721afbe31e482a69fa8d5ef40faa330a51a49f27d3",
@@ -6106,7 +6106,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:39:03.658000+00:00",
+      "last_update_date": "2022-08-15T12:37:43.174000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -6119,7 +6119,7 @@
           "version": "v1beta1"
         }
       ],
-      "provider": null,
+      "provider": "DataStax",
       "related_images": [
         {
           "digest": "sha256:13031deaec8c729f9dcbf6721afbe31e482a69fa8d5ef40faa330a51a49f27d3",
@@ -6161,7 +6161,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:35:08.242000+00:00",
+      "last_update_date": "2022-08-15T12:59:22.426000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -6174,7 +6174,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -6284,7 +6284,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:35:27.273000+00:00",
+      "last_update_date": "2022-08-15T12:38:47.772000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -6297,7 +6297,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "JFrog",
       "related_images": [
         {
           "digest": "sha256:0c4b75918185803c7e0a786ebfbd88256c6ce05a1d5ef6d5e419801b472c1062",
@@ -6466,7 +6466,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:19:46.886000+00:00",
+      "last_update_date": "2022-08-15T12:46:24.427000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -6479,7 +6479,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "NVIDIA Corporation",
       "related_images": [
         {
           "digest": "sha256:679fea62eb2c207d26354ac088fbe4625457a329dee080d90479a411603eb694",
@@ -6663,7 +6663,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:47:59.648000+00:00",
+      "last_update_date": "2022-08-15T13:03:25.975000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -6676,7 +6676,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "NVIDIA Corporation",
       "related_images": [
         {
           "digest": "sha256:679fea62eb2c207d26354ac088fbe4625457a329dee080d90479a411603eb694",
@@ -6794,7 +6794,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:41:20.104000+00:00",
+      "last_update_date": "2022-08-15T12:39:31.418000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -6807,7 +6807,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "bacula",
       "related_images": [
         {
           "digest": "sha256:d8c9adfb74adf0ccf91f833ca66083a079bbdce99bd9478b7c7d5cfdd2b480a3",
@@ -6900,7 +6900,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:38:31.810000+00:00",
+      "last_update_date": "2022-08-15T12:38:48.783000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -6913,7 +6913,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "bacula",
       "related_images": [
         {
           "digest": "sha256:d8c9adfb74adf0ccf91f833ca66083a079bbdce99bd9478b7c7d5cfdd2b480a3",
@@ -6960,13 +6960,13 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:50:16.781000+00:00",
+      "last_update_date": "2022-08-15T12:36:29.575000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "mongodb-enterprise",
       "provided_apis": [],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -7034,7 +7034,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T05:00:28.150000+00:00",
+      "last_update_date": "2022-08-15T13:23:25.847000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -7047,7 +7047,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "IBM Edge",
       "related_images": [
         {
           "digest": "sha256:4a84cb8c21b63b4c05fc9600b4ecbfee0d99bcf2541e6ba4a39c1d2de6ab8d5c",
@@ -7136,7 +7136,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:53:42.383000+00:00",
+      "last_update_date": "2022-08-15T12:39:48.172000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -7149,7 +7149,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "IBM Edge",
       "related_images": [
         {
           "digest": "sha256:4a84cb8c21b63b4c05fc9600b4ecbfee0d99bcf2541e6ba4a39c1d2de6ab8d5c",
@@ -7237,7 +7237,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:27:13.851000+00:00",
+      "last_update_date": "2022-08-15T12:52:12.916000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -7250,7 +7250,7 @@
           "version": "v1beta"
         }
       ],
-      "provider": null,
+      "provider": "H2O.ai",
       "related_images": [
         {
           "digest": "sha256:5dca5476c060b49cfc3e1e13b2c3c92920ae8789a092169a2c8457211895298d",
@@ -7333,7 +7333,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:40:53.644000+00:00",
+      "last_update_date": "2022-08-15T12:57:46.272000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -7346,7 +7346,7 @@
           "version": "v1beta"
         }
       ],
-      "provider": null,
+      "provider": "H2O.ai",
       "related_images": [
         {
           "digest": "sha256:5dca5476c060b49cfc3e1e13b2c3c92920ae8789a092169a2c8457211895298d",
@@ -7467,7 +7467,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:34:21.344000+00:00",
+      "last_update_date": "2022-08-15T13:20:03.486000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -7480,7 +7480,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Stonebranch",
       "related_images": [
         {
           "digest": "sha256:4ff32ec74c15095313263c8be4575343ab6fa7ab62b36e6691fbc5d685a5a33e",
@@ -7596,13 +7596,13 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:40:43.332000+00:00",
+      "last_update_date": "2022-08-15T12:44:29.592000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
       "package": "stonebranch-universalagent-operator-certified",
       "provided_apis": [],
-      "provider": null,
+      "provider": "Stonebranch",
       "related_images": [
         {
           "digest": "sha256:4ff32ec74c15095313263c8be4575343ab6fa7ab62b36e6691fbc5d685a5a33e",
@@ -7681,7 +7681,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:48:34.043000+00:00",
+      "last_update_date": "2022-08-15T13:19:50.316000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -7694,7 +7694,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "IBM Edge",
       "related_images": [
         {
           "digest": "sha256:4a84cb8c21b63b4c05fc9600b4ecbfee0d99bcf2541e6ba4a39c1d2de6ab8d5c",
@@ -7783,7 +7783,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:35:26.921000+00:00",
+      "last_update_date": "2022-08-15T12:46:33.718000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -7796,7 +7796,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "IBM Edge",
       "related_images": [
         {
           "digest": "sha256:4a84cb8c21b63b4c05fc9600b4ecbfee0d99bcf2541e6ba4a39c1d2de6ab8d5c",
@@ -7927,7 +7927,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:50:36.966000+00:00",
+      "last_update_date": "2022-08-15T12:39:33.383000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -7940,7 +7940,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "JFrog",
       "related_images": [
         {
           "digest": "sha256:ed99d237de5d80ca16fa4de0988e4c6488c111b15320e8e3394c12929f1a3ad7",
@@ -8027,7 +8027,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:47:05.189000+00:00",
+      "last_update_date": "2022-08-15T12:41:18.595000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -8046,7 +8046,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Turbonomic, Inc.",
       "related_images": [
         {
           "digest": "sha256:7a9e008f52d6cf55cacc9ffee78a133c1c86ea04b4e84bf6a5bb75c24d153d61",
@@ -8145,7 +8145,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:51:53.894000+00:00",
+      "last_update_date": "2022-08-15T13:00:26.695000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -8170,7 +8170,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "IBM-Edge",
       "related_images": [
         {
           "digest": "sha256:a565b8a6a058d0040873cc820b1950074c7bbcc84a9971d64a523b122f95eff4",
@@ -8517,7 +8517,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:27:12.966000+00:00",
+      "last_update_date": "2022-08-15T12:43:53.733000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -8530,7 +8530,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "HPE",
       "related_images": [
         {
           "digest": "sha256:d122a7e2423e2d10985427f1d2e946a1bde92c54634e135088c3bf81a20c5411",
@@ -8993,7 +8993,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T02:20:52.286000+00:00",
+      "last_update_date": "2022-08-15T13:07:34.888000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -9006,7 +9006,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "IBM",
       "related_images": [
         {
           "digest": "sha256:d5c1b8b6872e733076876ce89a4b56635156d0b6a1d1febd97f7117cef284712",
@@ -9203,7 +9203,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:54:10.230000+00:00",
+      "last_update_date": "2022-08-15T13:06:39.641000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -9216,7 +9216,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Synopsys, Inc",
       "related_images": [
         {
           "digest": "sha256:688d3d8d6380a4332c1df78cc0de521b8769b6518e9725a6943521d666c45a79",
@@ -9368,7 +9368,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:14:02.034000+00:00",
+      "last_update_date": "2022-08-15T12:44:07.257000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -9381,7 +9381,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "IBM",
       "related_images": [
         {
           "digest": "sha256:d5c1b8b6872e733076876ce89a4b56635156d0b6a1d1febd97f7117cef284712",
@@ -9578,7 +9578,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:43:02.139000+00:00",
+      "last_update_date": "2022-08-15T13:01:55.355000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -9591,7 +9591,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Synopsys, Inc",
       "related_images": [
         {
           "digest": "sha256:688d3d8d6380a4332c1df78cc0de521b8769b6518e9725a6943521d666c45a79",
@@ -9942,7 +9942,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:25:18.478000+00:00",
+      "last_update_date": "2022-08-15T12:36:21.212000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -10075,7 +10075,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "Couchbase",
       "related_images": [
         {
           "digest": "sha256:87f601a4fd68ba8a5fed9a610dc03661addc9db9b4e332bfc4907d754d91c496",
@@ -10329,7 +10329,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:42:27.491000+00:00",
+      "last_update_date": "2022-08-15T12:41:55.788000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -10396,7 +10396,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "Fujitsu",
       "related_images": [
         {
           "digest": "sha256:d9db6c798a20c7b969294f83e29c7fc82df60c8ebfabff93ad60f6b06e520b96",
@@ -10506,7 +10506,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T01:47:33.170000+00:00",
+      "last_update_date": "2022-08-15T13:02:53.584000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -10525,7 +10525,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
@@ -10615,7 +10615,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:42:12.401000+00:00",
+      "last_update_date": "2022-08-15T12:36:37.736000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.5",
       "organization": "certified-operators",
@@ -10634,7 +10634,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
@@ -10724,7 +10724,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:25:34.712000+00:00",
+      "last_update_date": "2022-08-15T12:50:51.989000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -10741,7 +10741,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
@@ -10831,7 +10831,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:47:19.253000+00:00",
+      "last_update_date": "2022-08-15T12:58:27.335000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -10848,7 +10848,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
@@ -11113,7 +11113,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:54:36.983000+00:00",
+      "last_update_date": "2022-08-15T12:44:27.287000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -11126,7 +11126,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "seldon",
       "related_images": [
         {
           "digest": "sha256:e54a3141d55b9d66fa58d8a326f0a9c711c61f8f9b144a3c730003dbdf4986f2",
@@ -11466,7 +11466,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T04:09:25.515000+00:00",
+      "last_update_date": "2022-08-15T13:22:23.725000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -11479,7 +11479,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "seldon",
       "related_images": [
         {
           "digest": "sha256:e54a3141d55b9d66fa58d8a326f0a9c711c61f8f9b144a3c730003dbdf4986f2",
@@ -12069,7 +12069,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T02:00:32.133000+00:00",
+      "last_update_date": "2022-08-15T13:11:22.022000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12078,35 +12078,41 @@
         {
           "group": "operator.aquasec.com",
           "kind": "AquaCsp",
+          "plural": "aquacsps",
           "version": "v1alpha1"
         },
         {
           "group": "operator.aquasec.com",
           "kind": "AquaDatabase",
+          "plural": "aquadatabases",
           "version": "v1alpha1"
         },
         {
           "group": "operator.aquasec.com",
           "kind": "AquaEnforcer",
+          "plural": "aquaenforcers",
           "version": "v1alpha1"
         },
         {
           "group": "operator.aquasec.com",
           "kind": "AquaGateway",
+          "plural": "aquagateways",
           "version": "v1alpha1"
         },
         {
           "group": "operator.aquasec.com",
           "kind": "AquaScanner",
+          "plural": "aquascanners",
           "version": "v1alpha1"
         },
         {
           "group": "operator.aquasec.com",
           "kind": "AquaServer",
+          "plural": "aquaservers",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Aqua Security, Inc.",
       "related_images": [
         {
           "digest": "sha256:498825a0deb6405ba9d92a447768f93961590616229688aba5161c639e9798c3",
@@ -12219,7 +12225,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:52:14.927000+00:00",
+      "last_update_date": "2022-08-15T12:43:50.943000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12232,7 +12238,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "bacula",
       "related_images": [
         {
           "digest": "sha256:d8c9adfb74adf0ccf91f833ca66083a079bbdce99bd9478b7c7d5cfdd2b480a3",
@@ -12466,7 +12472,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:52:38.677000+00:00",
+      "last_update_date": "2022-08-15T13:08:05.746000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12515,7 +12521,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "IBM Digital Growth and Commerce",
       "related_images": [
         {
           "digest": "sha256:6b048ead1121a9ca2bcc0d5b2a198a01e889456d5069f303d2af4dcdf465a40f",
@@ -12792,7 +12798,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T02:22:18.026000+00:00",
+      "last_update_date": "2022-08-15T13:38:05.392000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12805,7 +12811,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Synopsys, Inc",
       "related_images": [
         {
           "digest": "sha256:688d3d8d6380a4332c1df78cc0de521b8769b6518e9725a6943521d666c45a79",
@@ -12869,7 +12875,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T01:42:56.850000+00:00",
+      "last_update_date": "2022-08-15T12:54:24.751000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12882,7 +12888,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Jetstack",
       "related_images": [
         {
           "digest": "sha256:a41989d2b91e16d9ecc3f99dafd2a5f3f983587373d179adc579d2fda4978bf8",
@@ -12951,7 +12957,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T02:17:06.268000+00:00",
+      "last_update_date": "2022-08-15T12:49:12.137000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12964,7 +12970,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Jetstack",
       "related_images": [
         {
           "digest": "sha256:a41989d2b91e16d9ecc3f99dafd2a5f3f983587373d179adc579d2fda4978bf8",
@@ -13103,7 +13109,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T02:04:44.430000+00:00",
+      "last_update_date": "2022-08-15T12:59:11.482000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13116,7 +13122,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "citrix",
       "related_images": [
         {
           "digest": "sha256:0acde734a562ec2bee2f2c3da2456a13b552ea368dc0ebf382f018979b1c5055",
@@ -13235,7 +13241,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T02:06:03.428000+00:00",
+      "last_update_date": "2022-08-15T13:15:22.884000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13275,7 +13281,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "EnterpriseDB Corporation",
       "related_images": [
         {
           "digest": "sha256:3916a2ebd11c0a926d06d6ebfbd2cf6795ab01af598106ab7cb499ea26949879",
@@ -13374,7 +13380,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T01:52:19.641000+00:00",
+      "last_update_date": "2022-08-15T13:08:22.864000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13414,7 +13420,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "EnterpriseDB Corporation",
       "related_images": [
         {
           "digest": "sha256:3916a2ebd11c0a926d06d6ebfbd2cf6795ab01af598106ab7cb499ea26949879",
@@ -13770,7 +13776,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T02:10:48.396000+00:00",
+      "last_update_date": "2022-08-15T12:46:14.275000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13893,7 +13899,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "Couchbase",
       "related_images": [
         {
           "digest": "sha256:87f601a4fd68ba8a5fed9a610dc03661addc9db9b4e332bfc4907d754d91c496",
@@ -14048,7 +14054,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T02:19:22.629000+00:00",
+      "last_update_date": "2022-08-15T12:44:39.781000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -14097,7 +14103,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "IBM",
       "related_images": [
         {
           "digest": "sha256:b02b2addc64e09514e61fd27d713453be7b122a7cea862b291511167df69cedb",
@@ -14176,7 +14182,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T02:25:22.852000+00:00",
+      "last_update_date": "2022-08-15T12:54:28.374000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -14189,7 +14195,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "IBM Edge",
       "related_images": [
         {
           "digest": "sha256:4a84cb8c21b63b4c05fc9600b4ecbfee0d99bcf2541e6ba4a39c1d2de6ab8d5c",
@@ -14296,7 +14302,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-03T01:57:31.117000+00:00",
+      "last_update_date": "2022-08-15T13:28:18.637000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -14315,7 +14321,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Densify",
       "related_images": [
         {
           "digest": "sha256:47582660364156ea36279dd9fdcc43bdad7092f07ab8d79101fd6eca7da73ada",
@@ -14479,7 +14485,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-03T02:07:51.937000+00:00",
+      "last_update_date": "2022-08-15T12:43:55.621000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -14492,7 +14498,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "NVIDIA Corporation",
       "related_images": [
         {
           "digest": "sha256:679fea62eb2c207d26354ac088fbe4625457a329dee080d90479a411603eb694",
@@ -14545,5 +14551,5 @@
   ],
   "page": 3,
   "page_size": 100,
-  "total": 4545
+  "total": 4763
 }
