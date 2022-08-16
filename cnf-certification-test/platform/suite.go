@@ -47,9 +47,7 @@ const (
 	istioContainerName = "istio-proxy"
 )
 
-//
 // All actual test code belongs below here.  Utilities belong above.
-//
 var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	logrus.Debugf("Entering %s suite", common.PlatformAlterationTestKey)
 	var env provider.TestEnvironment

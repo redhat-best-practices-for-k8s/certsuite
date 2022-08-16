@@ -366,6 +366,7 @@ func TestPodServiceAccount(env *provider.TestEnvironment) {
 }
 
 // TestPodRoleBindings verifies that the pod utilizes a valid role binding that does not cross namespaces
+//
 //nolint:dupl
 func TestPodRoleBindings(env *provider.TestEnvironment) {
 	ginkgo.By("Should not have RoleBinding in other namespaces")
@@ -396,6 +397,7 @@ func TestPodRoleBindings(env *provider.TestEnvironment) {
 }
 
 // TestPodClusterRoleBindings verifies that the pod utilizes a valid cluster role binding that does not cross namespaces
+//
 //nolint:dupl
 func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 	ginkgo.By("Should not have ClusterRoleBinding in other namespaces")

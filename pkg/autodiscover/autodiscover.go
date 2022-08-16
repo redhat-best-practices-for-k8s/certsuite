@@ -93,8 +93,9 @@ func buildLabelKeyValue(label configuration.Label) (key, value string) {
 	return key, value
 }
 
-//nolint:funlen
 // DoAutoDiscover finds objects under test
+//
+//nolint:funlen
 func DoAutoDiscover() DiscoveredTestData {
 	data.Env = *configuration.GetTestParameters()
 

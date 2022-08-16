@@ -35,9 +35,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-//
 // All actual test code belongs below here.  Utilities belong above.
-//
 var _ = ginkgo.Describe(common.OperatorTestKey, func() {
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {

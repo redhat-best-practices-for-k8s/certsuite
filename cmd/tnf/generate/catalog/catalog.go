@@ -82,16 +82,17 @@ func emitTextFromFile(filename string) error {
 // createPrintableCatalogFromIdentifiers creates an structured catalogue.
 // Decompose claim.Identifier urls like http://test-network-function.com/testcases/SuiteName/TestName
 // to get SuiteNames and TestNames and build a "more printable" catalogue in the way of:
-// {
-//     suiteNameA: [
-//					{testName, identifier{url, version}},
-//					{testName2, identifier{url, version}}
-//                ]
-//     suiteNameB: [
-//					{testName3, identifier{url, version}},
-//					{testName4, identifier{url, version}}
-//                ]
-// }
+//
+//	{
+//	    suiteNameA: [
+//						{testName, identifier{url, version}},
+//						{testName2, identifier{url, version}}
+//	               ]
+//	    suiteNameB: [
+//						{testName3, identifier{url, version}},
+//						{testName4, identifier{url, version}}
+//	               ]
+//	}
 func createPrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][]catalogElement {
 	catalog := make(map[string][]catalogElement)
 	// we need the list of suite's names

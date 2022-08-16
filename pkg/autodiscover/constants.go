@@ -17,13 +17,7 @@ package autodiscover
 
 const (
 	defaultNamespace = "default"
-	// debugDaemonSet   = "debug"
 	debugLabelPrefix = "test-network-function.com"
 	debugLabelName   = "app"
 	debugLabelValue  = "debug"
-
-//  nodeLabelName      = "test-network-function.com/node"
-//  nodeLabelValue     = "target"
-//  addlabelCommand    = "oc label node %s %s=%s --overwrite=true"
-//  deletelabelCommand = "oc label node %s %s- --overwrite=true"
 )
