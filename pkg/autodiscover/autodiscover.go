@@ -33,6 +33,7 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
+	policyv1 "k8s.io/api/policy/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -48,25 +49,26 @@ const (
 )
 
 type DiscoveredTestData struct {
-	Env                configuration.TestParameters
-	TestData           configuration.TestConfiguration
-	Pods               []corev1.Pod
-	DebugPods          []corev1.Pod
-	ResourceQuotaItems []corev1.ResourceQuota
-	Crds               []*apiextv1.CustomResourceDefinition
-	Namespaces         []string
-	Csvs               []olmv1Alpha.ClusterServiceVersion
-	Deployments        []appsv1.Deployment
-	StatefulSet        []appsv1.StatefulSet
-	PersistentVolumes  []corev1.PersistentVolume
-	Hpas               map[string]*scalingv1.HorizontalPodAutoscaler
-	Subscriptions      []olmv1Alpha.Subscription
-	HelmChartReleases  map[string][]*release.Release
-	K8sVersion         string
-	OpenshiftVersion   string
-	OCPStatus          string
-	Nodes              *corev1.NodeList
-	Istio              bool
+	Env                  configuration.TestParameters
+	TestData             configuration.TestConfiguration
+	Pods                 []corev1.Pod
+	DebugPods            []corev1.Pod
+	ResourceQuotaItems   []corev1.ResourceQuota
+	PodDisruptionBudgets []policyv1.PodDisruptionBudget
+	Crds                 []*apiextv1.CustomResourceDefinition
+	Namespaces           []string
+	Csvs                 []olmv1Alpha.ClusterServiceVersion
+	Deployments          []appsv1.Deployment
+	StatefulSet          []appsv1.StatefulSet
+	PersistentVolumes    []corev1.PersistentVolume
+	Hpas                 map[string]*scalingv1.HorizontalPodAutoscaler
+	Subscriptions        []olmv1Alpha.Subscription
+	HelmChartReleases    map[string][]*release.Release
+	K8sVersion           string
+	OpenshiftVersion     string
+	OCPStatus            string
+	Nodes                *corev1.NodeList
+	Istio                bool
 }
 
 var data = DiscoveredTestData{}
@@ -112,6 +114,10 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.ResourceQuotaItems, err = getResourceQuotas(oc.K8sClient.CoreV1())
 	if err != nil {
 		logrus.Fatalln("Cannot get resource quotas")
+	}
+	data.PodDisruptionBudgets, err = getPodDisruptionBudgets(oc.K8sClient.PolicyV1(), data.Namespaces)
+	if err != nil {
+		logrus.Fatalln("Cannot get pod disruption budgets")
 	}
 	data.Crds = FindTestCrdNames(data.TestData.CrdFilters)
 	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)

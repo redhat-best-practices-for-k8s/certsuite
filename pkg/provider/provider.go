@@ -39,6 +39,7 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
+	policyv1 "k8s.io/api/policy/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
@@ -100,25 +101,26 @@ func ConvertArrayPods(pods []*corev1.Pod) (out []*Pod) {
 }
 
 type TestEnvironment struct { // rename this with testTarget
-	Namespaces        []string     `json:"testNamespaces"`
-	Pods              []*Pod       `json:"testPods"`
-	Containers        []*Container `json:"testContainers"`
-	Operators         []Operator   `json:"testOperators"`
-	PersistentVolumes []corev1.PersistentVolume
-	DebugPods         map[string]*corev1.Pod // map from nodename to debugPod
-	Config            configuration.TestConfiguration
-	variables         configuration.TestParameters
-	Crds              []*apiextv1.CustomResourceDefinition          `json:"testCrds"`
-	Deployments       []*appsv1.Deployment                          `json:"testDeployments"`
-	StatetfulSets     []*appsv1.StatefulSet                         `json:"testStatetfulSets"`
-	HorizontalScaler  map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
-	Nodes             map[string]Node                               `json:"-"`
-	K8sVersion        string                                        `json:"-"`
-	OpenshiftVersion  string                                        `json:"-"`
-	OCPStatus         string                                        `json:"-"`
-	HelmChartReleases []*release.Release                            `json:"testHelmChartReleases"`
-	ResourceQuotas    []corev1.ResourceQuota
-	IstioServiceMesh  bool
+	Namespaces           []string     `json:"testNamespaces"`
+	Pods                 []*Pod       `json:"testPods"`
+	Containers           []*Container `json:"testContainers"`
+	Operators            []Operator   `json:"testOperators"`
+	PersistentVolumes    []corev1.PersistentVolume
+	DebugPods            map[string]*corev1.Pod // map from nodename to debugPod
+	Config               configuration.TestConfiguration
+	variables            configuration.TestParameters
+	Crds                 []*apiextv1.CustomResourceDefinition          `json:"testCrds"`
+	Deployments          []*appsv1.Deployment                          `json:"testDeployments"`
+	StatetfulSets        []*appsv1.StatefulSet                         `json:"testStatetfulSets"`
+	HorizontalScaler     map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
+	Nodes                map[string]Node                               `json:"-"`
+	K8sVersion           string                                        `json:"-"`
+	OpenshiftVersion     string                                        `json:"-"`
+	OCPStatus            string                                        `json:"-"`
+	HelmChartReleases    []*release.Release                            `json:"testHelmChartReleases"`
+	ResourceQuotas       []corev1.ResourceQuota
+	PodDisruptionBudgets []policyv1.PodDisruptionBudget
+	IstioServiceMesh     bool
 }
 
 type CsvInstallPlan struct {
@@ -300,6 +302,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.OCPStatus = data.OCPStatus
 	env.K8sVersion = data.K8sVersion
 	env.ResourceQuotas = data.ResourceQuotaItems
+	env.PodDisruptionBudgets = data.PodDisruptionBudgets
 	env.PersistentVolumes = data.PersistentVolumes
 	for _, nsHelmChartReleases := range data.HelmChartReleases {
 		for _, helmChartRelease := range nsHelmChartReleases {

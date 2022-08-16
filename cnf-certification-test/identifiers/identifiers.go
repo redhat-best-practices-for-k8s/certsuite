@@ -345,6 +345,10 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "namespace-resource-quota"),
 		Version: versionOne,
 	}
+	TestPodDisruptionBudgetIdentifier = claim.Identifier{
+		Url:     formTestURL(common.ObservabilityTestKey, "pod-disruption-budget"),
+		Version: versionOne,
+	}
 	TestPodTolerationBypassIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AccessControlTestKey, "pod-toleration-bypass"),
 		Version: versionOne,
@@ -975,6 +979,14 @@ that there are no changes to the following directories:
 		Description:           formDescription(TestNamespaceResourceQuotaIdentifier, `Checks to see if CNF workload pods are running in namespaces that have resource quotas applied.`),
 		Remediation:           NamespaceResourceQuotaRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.8", // TODO Change this to v1.4 when available
+		ExceptionProcess:      NoDocumentedProcess,
+	},
+	TestPodDisruptionBudgetIdentifier: {
+		Identifier:            TestPodDisruptionBudgetIdentifier,
+		Type:                  normativeResult,
+		Description:           formDescription(TestPodDisruptionBudgetIdentifier, `Checks to see if pod disruption budgets have allowed values for minAvailable and maxUnavailable`),
+		Remediation:           PodDisruptionBudgetRemediation,
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.20", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 	TestPodTolerationBypassIdentifier: {
