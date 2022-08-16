@@ -35,37 +35,37 @@ func TestIsDualStack(t *testing.T) { //nolint:funlen
 		// TODO: Add test cases.
 		{
 			name:       "dual-stack-ok1",
-			args:       args{aService: createService2IPs("1.1.1.1", "fd00:10:96::d789", corev1.IPFamilyPolicyPreferDualStack)},
+			args:       args{aService: createService([]string{"1.1.1.1", "fd00:10:96::d789"}, corev1.IPFamilyPolicyPreferDualStack)},
 			wantResult: true,
 			wantErr:    false,
 		},
 		{
 			name:       "dual-stack-ok2",
-			args:       args{aService: createService2IPs("1.1.1.1", "fd00:10:96::d789", corev1.IPFamilyPolicyRequireDualStack)},
+			args:       args{aService: createService([]string{"1.1.1.1", "fd00:10:96::d789"}, corev1.IPFamilyPolicyRequireDualStack)},
 			wantResult: true,
 			wantErr:    false,
 		},
 		{
 			name:       "dual-stack-nok1",
-			args:       args{aService: createService1IP("1.1.1.1", corev1.IPFamilyPolicyPreferDualStack)},
+			args:       args{aService: createService([]string{"1.1.1.1"}, corev1.IPFamilyPolicyPreferDualStack)},
 			wantResult: false,
 			wantErr:    true,
 		},
 		{
 			name:       "dual-stack-nok2",
-			args:       args{aService: createService2IPs("1.1.1.1", "2.2.2.2", corev1.IPFamilyPolicyPreferDualStack)},
+			args:       args{aService: createService([]string{"1.1.1.1", "2.2.2.2"}, corev1.IPFamilyPolicyPreferDualStack)},
 			wantResult: false,
 			wantErr:    true,
 		},
 		{
 			name:       "single-stack-ok1",
-			args:       args{aService: createService1IP("fd00:10:96::d789", corev1.IPFamilyPolicySingleStack)},
+			args:       args{aService: createService([]string{"fd00:10:96::d789"}, corev1.IPFamilyPolicySingleStack)},
 			wantResult: true,
 			wantErr:    false,
 		},
 		{
 			name:       "single-stack-nok1",
-			args:       args{aService: createService1IP("1.1.1.1", corev1.IPFamilyPolicySingleStack)},
+			args:       args{aService: createService([]string{"1.1.1.1"}, corev1.IPFamilyPolicySingleStack)},
 			wantResult: false,
 			wantErr:    true,
 		},
@@ -84,22 +84,12 @@ func TestIsDualStack(t *testing.T) { //nolint:funlen
 	}
 }
 
-func createService2IPs(ip1, ip2 string, aFp corev1.IPFamilyPolicyType) (aService *corev1.Service) {
+func createService(ips []string, aFp corev1.IPFamilyPolicyType) (aService *corev1.Service) {
 	aService = &corev1.Service{}
 	aService.Name = "test-service"
 	aService.Namespace = "tnf"
-	aService.Spec.ClusterIP = ip1
-	aService.Spec.ClusterIPs = []string{ip1, ip2}
-	aService.Spec.IPFamilyPolicy = &aFp
-	return aService
-}
-
-func createService1IP(ip1 string, aFp corev1.IPFamilyPolicyType) (aService *corev1.Service) {
-	aService = &corev1.Service{}
-	aService.Name = "test-service"
-	aService.Namespace = "tnf"
-	aService.Spec.ClusterIP = ip1
-	aService.Spec.ClusterIPs = []string{ip1}
+	aService.Spec.ClusterIP = ips[0]
+	aService.Spec.ClusterIPs = ips
 	aService.Spec.IPFamilyPolicy = &aFp
 	return aService
 }
