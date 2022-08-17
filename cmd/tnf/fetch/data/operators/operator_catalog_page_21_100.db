@@ -1,144 +1,6 @@
 {
   "data": [
     {
-      "_id": "6218437110f4fb3122143824",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "OpenshiftArtifactoryHa",
-          "metadata": {
-            "name": "openshiftartifactoryha"
-          },
-          "spec": {
-            "artifactory-ha": {
-              "artifactory": {
-                "joinKey": "OVERRIDE",
-                "masterKey": "OVERRIDE",
-                "node": {
-                  "replicaCount": 2,
-                  "waitForPrimaryStartup": {
-                    "enabled": false
-                  }
-                },
-                "uid": "1000721030"
-              },
-              "database": {
-                "driver": "OVERRIDE",
-                "password": "OVERRIDE",
-                "type": "OVERRIDE",
-                "url": "OVERRIDE",
-                "user": "OVERRIDE"
-              },
-              "databaseUpgradeReady": true,
-              "nginx": {
-                "gid": "1000720107",
-                "http": {
-                  "externalPort": 80,
-                  "internalPort": 8080
-                },
-                "https": {
-                  "externalPort": 443,
-                  "internalPort": 8443
-                },
-                "service": {
-                  "ssloffload": false
-                },
-                "tlsSecretName": "OVERRIDE",
-                "uid": "1000720104"
-              },
-              "postgresql": {
-                "enabled": false
-              },
-              "waitForDatabase": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:2cf8a5f65b244573898224ccc73b230381b7141aa70f896b26927d2c1e68d84b",
-      "bundle_path_digest": "sha256:2cf8a5f65b244573898224ccc73b230381b7141aa70f896b26927d2c1e68d84b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-02-25T02:48:17.295000+00:00",
-      "csv_description": " ## Breaking change\nPlease update to version 1.1.10 of the operator.\nVersion 1.1.8 and 1.1.9 have issues. Please skip these versions.\nIf you are using operator version < 1.2.0 there is a issue with upgrade where artifactory version is not updated if you update operator version.As workaround you can update the Custom Resource OpenshiftArtifactoryHa which has hardcored image value.After upgrading to version 1.2.0 you can remove the below parameters from your CR so that future upgrade works without workaround. ``` artifactory-ha.artifactory.image.registry artifactory-ha.artifactory.image.repository artifactory-ha.artifactory.image.tag ```\n## Overview\nOpenshift Operator to deploy JFrog Artifactory Enterprise into your Openshift cluster.\n## Security Context Constraints\nTo deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc.\n```\noc adm policy add-scc-to-user anyuid -z artifactory-ha-operator -n openshift-operators\n```\nAdd the service account for the Artifactory chart to deploy successfully:\n``` oc adm policy add-scc-to-user anyuid -z openshiftartifactoryha-artifactory-ha -n artifactory ```\n### Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Artifactory Enterprise Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Artifactory Enterprise Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Artifactory HA.\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nDATABASE_TYPE\nDATABASE_DRIVER\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\nMaster key and Join key must be supplied. To generate a new key for each run the command below:\n\n```\n# Create a key\nexport JOIN_KEY=$(openssl rand -hex 32)\necho ${JOIN_KEY}\n```\n\nTo use TLS you will need to first create a k8s tls secret to store your .crt and .key file into.\nThen supply the value of this k8s secret into the TLS_SECRET field.\n``` oc create secret tls my_tls_secret --cert=tls.crt --key=tls.key --namespace=my_namespace ```\nClick Create for Artifactory Enterprise to deploy into OpenShift and connect to it on the external IP exposed by the load balancer.\n### Create a route\nTo expose Artifactory from Openshift we recommend you create a new route in Openshift.\nYou can either use the oc command line tool or the Openshift web console to generate a new route.\nDepending upon where you terminate TLS you will need to either specify pass through or edge.\nCommand Line (Edge):\n``` oc create route edge --service=openshiftartifactory-ha --cert=tls.crt --key=tls.key --ca-cert=ca.crt --hostname=www.example.com ```\nOr for more information visit the official Openshift documentation on routes here:\nhttps://docs.openshift.com/container-platform/4.6/networking/routes/route-configuration.html\n\n",
-      "csv_display_name": "JFrog Artifactory Enterprise Operator",
-      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
-      "csv_name": "artifactory-ha-operator.v1.2.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:47:11.044000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "openshiftartifactoryha-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "OpenshiftArtifactoryHa",
-          "plural": "openshiftartifactoryhas",
-          "version": "v1"
-        }
-      ],
-      "provider": "JFrog",
-      "related_images": [
-        {
-          "digest": "sha256:a29cf0f8df880ae7bc3b2551953be74a2b1a71f340a6c8a398511a65f625e752",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:a29cf0f8df880ae7bc3b2551953be74a2b1a71f340a6c8a398511a65f625e752",
-          "name": "artifactory-pro"
-        },
-        {
-          "digest": "sha256:05854bdbc13edbde15c7b9c5092e1e9c77c35bac4e38822b63205a291e87b620",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:05854bdbc13edbde15c7b9c5092e1e9c77c35bac4e38822b63205a291e87b620",
-          "name": "artifactory-operator"
-        },
-        {
-          "digest": "sha256:bce2fa53c4e5b913c707183f49ab9dcde9e601b22f9fb85b98ba56f2e163c1a8",
-          "image": "registry.redhat.io/rhel8/nginx-116@sha256:bce2fa53c4e5b913c707183f49ab9dcde9e601b22f9fb85b98ba56f2e163c1a8",
-          "name": "nginx"
-        },
-        {
-          "digest": "sha256:05854bdbc13edbde15c7b9c5092e1e9c77c35bac4e38822b63205a291e87b620",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:05854bdbc13edbde15c7b9c5092e1e9c77c35bac4e38822b63205a291e87b620",
-          "name": "artifactory-operator-05854bdbc13edbde15c7b9c5092e1e9c77c35bac4e38822b63205a291e87b620-annotation"
-        },
-        {
-          "digest": "sha256:05854bdbc13edbde15c7b9c5092e1e9c77c35bac4e38822b63205a291e87b620",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:05854bdbc13edbde15c7b9c5092e1e9c77c35bac4e38822b63205a291e87b620",
-          "name": "artifactory-ha-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.2.0",
-      "version_original": "1.2.0"
-    },
-    {
       "_id": "621c6e6b207e0eb391807ca4",
       "alm_examples": [
         {
@@ -14528,9 +14390,164 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "2.1.0",
       "version_original": "2.1.0"
+    },
+    {
+      "_id": "622a189ff19c93b02846c776",
+      "alm_examples": [
+        {
+          "api_version": "ako.vmware.com/v1alpha1",
+          "kind": "AKOConfig",
+          "metadata": {
+            "name": "ako-sample",
+            "namespace": "avi-system"
+          },
+          "spec": {
+            "akoSettings": {
+              "apiServerPort": 8080,
+              "clusterName": "my-cluster",
+              "cniPlugin": "openshift",
+              "deleteConfig": false,
+              "disableStaticRouteSync": false,
+              "enableEVH": false,
+              "enableEvents": "true",
+              "fullSyncFrequency": "1800",
+              "layer7Only": false,
+              "logLevel": "INFO",
+              "namespaceSelector": {
+                "labelKey": "",
+                "labelValue": ""
+              },
+              "servicesAPI": false,
+              "vipPerNamespace": "false"
+            },
+            "controllerSettings": {
+              "cloudName": "Default-Cloud",
+              "controllerHost": "",
+              "controllerVersion": "20.1.5",
+              "serviceEngineGroupName": "Default-Group",
+              "tenantName": "admin",
+              "tenantsPerCluster": "false"
+            },
+            "imagePullPolicy": "IfNotPresent",
+            "imageRepository": "projects.registry.vmware.com/ako/ako-operator@sha256:ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d",
+            "l4Settings": {
+              "advancedL4": false,
+              "autoFQDN": "default",
+              "defaultDomain": ""
+            },
+            "l7Settings": {
+              "defaultIngController": true,
+              "noPGForSNI": false,
+              "passthroughShardSize": "SMALL",
+              "serviceType": "ClusterIP",
+              "shardVSSize": "LARGE"
+            },
+            "logFile": "avi.log",
+            "mountPath": "/log",
+            "networkSettings": {
+              "bgpPeerLabels": [],
+              "enableRHI": false,
+              "nodeNetworkList": [
+                {
+                  "cidrs": [],
+                  "networkName": ""
+                }
+              ],
+              "nsxtT1LR": "",
+              "vipNetworkList": [
+                {
+                  "cidr": "",
+                  "networkName": ""
+                }
+              ]
+            },
+            "nodePortSelector": {
+              "key": "",
+              "value": ""
+            },
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "300Mi"
+              },
+              "requests": {
+                "cpu": "100m",
+                "memory": "200Mi"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/wavefronthq/ako-operator-bundle@sha256:7d9d22becafceef1428f9a2ed1cabb6cbf10ddfe27a5216a0ab477ba7fdce523",
+      "bundle_path_digest": "sha256:7d9d22becafceef1428f9a2ed1cabb6cbf10ddfe27a5216a0ab477ba7fdce523",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-10T15:26:23.960000+00:00",
+      "csv_description": "Operator to manage the artifacts of the AKO Controller",
+      "csv_display_name": "AKO Operator",
+      "csv_metadata_description": "",
+      "csv_name": "ako-operator.v1.6.2-alpha",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:59:52.725000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "ako-operator",
+      "provided_apis": [
+        {
+          "group": "ako.vmware.com",
+          "kind": "AKOConfig",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "VMware",
+      "related_images": [
+        {
+          "digest": "sha256:ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d",
+          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d",
+          "name": "ako-operator"
+        },
+        {
+          "digest": "sha256:ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d",
+          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d",
+          "name": "ako-operator-ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.6.2-alpha",
+      "version_original": "1.6.2-alpha"
     }
   ],
   "page": 21,
   "page_size": 100,
-  "total": 4763
+  "total": 4762
 }
