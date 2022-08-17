@@ -16663,7 +16663,7 @@
       "version_original": "1.8.1"
     },
     {
-      "_id": "61ec4b2ad2fa2f75ee9c0f56",
+      "_id": "61ec4b6ad2fa2f75ee9c0f57",
       "alm_examples": [
         {
           "api_version": "machinelearning.seldon.io/v1",
@@ -16716,7 +16716,7 @@
         "Seamless Upgrades"
       ],
       "channel_name": "stable",
-      "creation_date": "2022-01-22T18:21:30.814000+00:00",
+      "creation_date": "2022-01-22T18:22:34.129000+00:00",
       "csv_description": "The Seldon operator enables for native operation of production machine learning workloads, including monitoring and operations of language-agnostic models with the benefits of real-time metrics and log analysis.\n   \n## Overview\nSeldon Core is an open source platform for deploying machine learning models on a Kubernetes cluster.\n\n* Deploy machine learning models in the cloud or on-premise.\n* Get metrics and ensure proper governance and compliance for your running machine learning models.\n* Create powerful inference graphs made up of multiple components.\n* Provide a consistent serving layer for models built using heterogeneous ML toolkits.\n\nYou can get started by following the guides in our documentation at https://docs.seldon.io/projects/seldon-core/en/latest/workflow/README.html\n",
       "csv_display_name": "Seldon Operator",
       "csv_metadata_description": "The Seldon operator for management, monitoring and operations of machine learning systems through the Seldon Engine. Once installed, the Seldon Operator provides multiple functions which facilitate the productisation, monitoring and maintenance of machine learning systems at scale.",
@@ -16741,9 +16741,9 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:11:10.521000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
+      "last_update_date": "2022-08-15T13:10:51.092000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
       "organization": "certified-operators",
       "package": "seldon-operator-certified",
       "provided_apis": [
@@ -16820,12 +16820,12 @@
       "replaces": null,
       "skip_range": "<1.12.0",
       "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.12.0",
       "version_original": "1.12.0"
     }
   ],
   "page": 19,
   "page_size": 100,
-  "total": 4763
+  "total": 4762
 }
