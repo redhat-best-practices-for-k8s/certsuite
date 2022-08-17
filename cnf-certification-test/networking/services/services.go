@@ -24,7 +24,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-func IsDualStack(aService *corev1.Service) (result bool, err error) {
+func GetServiceIPVersion(aService *corev1.Service) (result netcommons.IPVersion, err error) {
 	ipver, err := netcommons.GetIPVersion(aService.Spec.ClusterIP)
 	if err != nil {
 		err = fmt.Errorf("%s cannot get aService clusterIP version", ToString(aService))
@@ -37,7 +37,12 @@ func IsDualStack(aService *corev1.Service) (result bool, err error) {
 	if *aService.Spec.IPFamilyPolicy == corev1.IPFamilyPolicySingleStack &&
 		ipver == netcommons.IPv6 {
 		logrus.Debugf("%s is single stack ipv6", ToString(aService))
-		return true, nil
+		return netcommons.IPv6, nil
+	}
+	if *aService.Spec.IPFamilyPolicy == corev1.IPFamilyPolicySingleStack &&
+		ipver == netcommons.IPv4 {
+		logrus.Debugf("%s is single stack ipv4", ToString(aService))
+		return netcommons.IPv4, nil
 	}
 	if (*aService.Spec.IPFamilyPolicy == corev1.IPFamilyPolicyPreferDualStack ||
 		*aService.Spec.IPFamilyPolicy == corev1.IPFamilyPolicyRequireDualStack) &&
@@ -46,14 +51,14 @@ func IsDualStack(aService *corev1.Service) (result bool, err error) {
 		return result, err
 	}
 
-	result, err = isClusterIPsDualStack(aService.Spec.ClusterIPs)
+	res, err := isClusterIPsDualStack(aService.Spec.ClusterIPs)
 	if err != nil {
 		err = fmt.Errorf("%s, err:%s", ToString(aService), err)
 		return result, err
 	}
-	if result {
+	if res {
 		logrus.Debugf("%s is dual-stack", ToString(aService))
-		return true, nil
+		return netcommons.IPv4v6, nil
 	}
 
 	err = fmt.Errorf("%s is not compliant, it is not single stack ipv6 or dual stack", ToString(aService))
@@ -90,6 +95,7 @@ func isClusterIPsDualStack(ips []string) (result bool, err error) {
 			hasIPv4 = true
 		case netcommons.IPv6:
 			hasIPv6 = true
+		case netcommons.IPv4v6, netcommons.Undefined:
 		}
 	}
 	if hasIPv4 && hasIPv6 {

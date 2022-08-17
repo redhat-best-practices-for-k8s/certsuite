@@ -610,8 +610,8 @@ test case requires the Deployment of the debug daemonset.`),
 		Type:        normativeResult,
 		Remediation: TestServiceDualStackRemediation,
 		Description: formDescription(TestServiceDualStackIdentifier,
-			`Checks that all services in namespaces under test are either ipv6 single stack or dual stack . This
-test case requires the Deployment of the debug daemonset.`),
+			`Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This
+test case requires the deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 3.5.7",
 		ExceptionProcess:      NoDocumentedProcess,
 	},

@@ -19,66 +19,67 @@ package services
 import (
 	"testing"
 
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
 	corev1 "k8s.io/api/core/v1"
 )
 
-func TestIsDualStack(t *testing.T) { //nolint:funlen
+func TestGetServiceIPVersion(t *testing.T) { //nolint:funlen
 	type args struct {
 		aService *corev1.Service
 	}
 	tests := []struct {
 		name       string
 		args       args
-		wantResult bool
+		wantResult netcommons.IPVersion
 		wantErr    bool
 	}{
 		// TODO: Add test cases.
 		{
 			name:       "dual-stack-ok1",
 			args:       args{aService: createService([]string{"1.1.1.1", "fd00:10:96::d789"}, corev1.IPFamilyPolicyPreferDualStack)},
-			wantResult: true,
+			wantResult: netcommons.IPv4v6,
 			wantErr:    false,
 		},
 		{
 			name:       "dual-stack-ok2",
 			args:       args{aService: createService([]string{"1.1.1.1", "fd00:10:96::d789"}, corev1.IPFamilyPolicyRequireDualStack)},
-			wantResult: true,
+			wantResult: netcommons.IPv4v6,
 			wantErr:    false,
 		},
 		{
 			name:       "dual-stack-nok1",
 			args:       args{aService: createService([]string{"1.1.1.1"}, corev1.IPFamilyPolicyPreferDualStack)},
-			wantResult: false,
+			wantResult: netcommons.Undefined,
 			wantErr:    true,
 		},
 		{
 			name:       "dual-stack-nok2",
 			args:       args{aService: createService([]string{"1.1.1.1", "2.2.2.2"}, corev1.IPFamilyPolicyPreferDualStack)},
-			wantResult: false,
+			wantResult: netcommons.Undefined,
 			wantErr:    true,
 		},
 		{
-			name:       "single-stack-ok1",
+			name:       "single-stack-ipv6",
 			args:       args{aService: createService([]string{"fd00:10:96::d789"}, corev1.IPFamilyPolicySingleStack)},
-			wantResult: true,
+			wantResult: netcommons.IPv6,
 			wantErr:    false,
 		},
 		{
-			name:       "single-stack-nok1",
+			name:       "single-stack-ipv4",
 			args:       args{aService: createService([]string{"1.1.1.1"}, corev1.IPFamilyPolicySingleStack)},
-			wantResult: false,
-			wantErr:    true,
+			wantResult: netcommons.IPv4,
+			wantErr:    false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotResult, err := IsDualStack(tt.args.aService)
+			gotResult, err := GetServiceIPVersion(tt.args.aService)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("IsDualStack() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("GetServiceIPVersion() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if gotResult != tt.wantResult {
-				t.Errorf("IsDualStack() = %v, want %v", gotResult, tt.wantResult)
+				t.Errorf("GetServiceIPVersion() = %v, want %v", gotResult, tt.wantResult)
 			}
 		})
 	}

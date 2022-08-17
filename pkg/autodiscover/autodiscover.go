@@ -147,7 +147,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	if err != nil {
 		logrus.Fatalln("Cannot get list of persistent volumes")
 	}
-	data.Services, err = getServices(oc.K8sClient.CoreV1(), data.Namespaces...)
+	data.Services, err = getServices(oc.K8sClient.CoreV1(), data.Namespaces)
 	if err != nil {
 		logrus.Fatalln("Cannot get list of services")
 	}

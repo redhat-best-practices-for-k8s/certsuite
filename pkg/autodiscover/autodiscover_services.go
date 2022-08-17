@@ -23,7 +23,7 @@ import (
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
-func getServices(oc corev1client.CoreV1Interface, namespaces ...string) (allServices []*corev1.Service, err error) {
+func getServices(oc corev1client.CoreV1Interface, namespaces []string) (allServices []*corev1.Service, err error) {
 	for _, ns := range namespaces {
 		s, err := oc.Services(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {

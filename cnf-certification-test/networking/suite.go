@@ -243,12 +243,12 @@ func testDualStackServices(env *provider.TestEnvironment) {
 	var errorServices []*corev1.Service
 	ginkgo.By("Testing services (should be either single stack ipv6 or dual-stack)")
 	for _, s := range env.Services {
-		result, err := services.IsDualStack(s)
+		result, err := services.GetServiceIPVersion(s)
 		if err != nil {
 			tnf.ClaimFilePrintf("%s", err)
 			errorServices = append(errorServices, s)
 		}
-		if !result {
+		if result == netcommons.Undefined || result == netcommons.IPv4 {
 			nonCompliantServices = append(nonCompliantServices, s)
 		}
 	}
@@ -257,7 +257,7 @@ func testDualStackServices(env *provider.TestEnvironment) {
 		ginkgo.Fail(fmt.Sprintf("Found %d non compliant services (either non single stack ipv6 or non dual-stack)", len(nonCompliantServices)))
 	}
 	if len(errorServices) > 0 {
-		tnf.ClaimFilePrintf("Non compliant services:\n %s", services.ToStringSlice(errorServices))
+		tnf.ClaimFilePrintf("Services in error:\n %s", services.ToStringSlice(errorServices))
 		ginkgo.Fail(fmt.Sprintf("Found %d services in error, check error log for details", len(errorServices)))
 	}
 }
