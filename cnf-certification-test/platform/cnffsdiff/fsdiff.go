@@ -45,7 +45,9 @@ var (
 
 // fsDiffJSON is a helper struct to unmarshall the "podman diff --format json" output: a slice of
 // folders/filepaths (strings) for each event type changed/added/deleted:
-//  {"changed": ["folder1, folder2"], added": ["folder5", "folder6"], "deleted": ["folder3", "folder4"]"}
+//
+//	{"changed": ["folder1, folder2"], added": ["folder5", "folder6"], "deleted": ["folder3", "folder4"]"}
+//
 // We'll only care about deleted and changed types, though, as in case a folder/file is created to any of them,
 // there will be two entries, one for the "added" and another for the "changed".
 type fsDiffJSON struct {

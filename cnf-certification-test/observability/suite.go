@@ -35,9 +35,7 @@ import (
 	policyv1 "k8s.io/api/policy/v1"
 )
 
-//
 // All actual test code belongs below here.  Utilities belong above.
-//
 var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {

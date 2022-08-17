@@ -32,6 +32,7 @@ type CuratedLogLines struct {
 }
 
 // AddLogLine checks a slice for a given string.
+//
 //nolint:goprintffuncname
 func (list *CuratedLogLines) AddLogLine(format string, args ...interface{}) {
 	message := fmt.Sprintf(format+"\n", args...)

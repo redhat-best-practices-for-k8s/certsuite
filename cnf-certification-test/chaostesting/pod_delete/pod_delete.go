@@ -244,7 +244,8 @@ func parseLitmusResult(crs *unstructured.UnstructuredList) bool {
 
 // createResource is a helper function that uses a yaml decoder to create in the cluster
 // all the resources defined in the underlying yaml file.
-//nolint:funlen //
+//
+//nolint:funlen
 func createResource(decoder *yamlutil.YAMLOrJSONDecoder) error {
 	oc := clientsholder.GetClientsHolder()
 	k8sClient := oc.K8sClient

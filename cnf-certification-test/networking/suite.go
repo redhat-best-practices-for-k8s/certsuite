@@ -46,9 +46,7 @@ type Port []struct {
 	Protocol      string
 }
 
-//
 // All actual test code belongs below here.  Utilities belong above.
-//
 var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	logrus.Debugf("Entering %s suite", common.NetworkingTestKey)
 

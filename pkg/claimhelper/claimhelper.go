@@ -119,7 +119,6 @@ func WriteClaimOutput(claimOutputFile string, payload []byte) {
 	}
 }
 
-//no-lint:commentedOutCode
 func GenerateNodes() map[string]interface{} {
 	const (
 		nodeSummaryField = "nodeSummary"
