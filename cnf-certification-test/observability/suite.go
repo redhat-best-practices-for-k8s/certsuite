@@ -169,8 +169,8 @@ func checkPDBIsValid(pdb *policyv1.PodDisruptionBudget, replicas *int32) (bool, 
 		return false, fmt.Errorf("field .spec.minAvailable cannot be zero")
 	}
 
-	if pdb.Spec.MaxUnavailable != nil && pdb.Spec.MaxUnavailable.IntValue() == int(replicaCount) {
-		return false, fmt.Errorf("field .spec.maxUnavailable cannot be equal to the number of pods in the replica")
+	if pdb.Spec.MaxUnavailable != nil && pdb.Spec.MaxUnavailable.IntValue() >= int(replicaCount) {
+		return false, fmt.Errorf("field .spec.maxUnavailable cannot be greater than or equal to the number of pods in the replica")
 	}
 
 	return true, nil
