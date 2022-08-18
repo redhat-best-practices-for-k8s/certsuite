@@ -1,166 +1,6 @@
 {
   "data": [
     {
-      "_id": "6262ae7f84481d5f52299b20",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-04-22T13:32:47.356000+00:00",
-      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
-      "csv_display_name": "Run:AI",
-      "csv_metadata_description": "",
-      "csv_name": "installkit-customer.v2.0.15",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:21:50.205000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "installkit-customer",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "name": "operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.1.5",
-      "version_original": "2.1.5"
-    },
-    {
-      "_id": "6262ae82cde83e2b177c22ad",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/perceptilabs/perceptilabs-operator-bundle@sha256:30aed432c70f6bd3da4e6365e32da1877affa4b56458c17549b119de17eaa932",
-      "bundle_path_digest": "sha256:30aed432c70f6bd3da4e6365e32da1877affa4b56458c17549b119de17eaa932",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T13:32:50.354000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "perceptilabs-operator.v1.0.20",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:01:02.327000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "perceptilabs-operator-package",
-      "provided_apis": [
-        {
-          "group": "perceptilabs.com",
-          "kind": "PerceptiLabs",
-          "plural": "perceptilabs",
-          "version": "v1"
-        },
-        {
-          "group": "perceptilabs.com",
-          "kind": "PerceptiLabs",
-          "plural": "perceptilabs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.0.20",
-      "version_original": "1.0.20"
-    },
-    {
-      "_id": "6262ae83173a0d36cf5d6b4c",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:a01cf756a40c09923a1f00a7516d83a46087731265dcc5ed10a7bbcd8bebd8e8",
-      "bundle_path_digest": "sha256:a01cf756a40c09923a1f00a7516d83a46087731265dcc5ed10a7bbcd8bebd8e8",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-04-22T13:32:51.881000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "instana-agent-operator.v0.3.7",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:31:09.889000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "instana-agent",
-      "provided_apis": [
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1beta1"
-        },
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.3.7",
-      "version_original": "0.3.7"
-    },
-    {
       "_id": "6262aea6cde83e2b177c22be",
       "alm_examples": [],
       "annotations": {
@@ -15074,9 +14914,321 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.0.0",
       "version_original": "1.0.0"
+    },
+    {
+      "_id": "627c6e39228d5769c5692a25",
+      "alm_examples": [
+        {
+          "api_version": "certification.redhat.com/v1alpha1",
+          "kind": "OperatorPipeline",
+          "metadata": {
+            "name": "operatorpipeline-sample"
+          },
+          "spec": {
+            "applyCIPipeline": true,
+            "applyHostedPipeline": false,
+            "applyReleasePipeline": false,
+            "gitHubSecretName": "github-api-token",
+            "kubeconfigSecretName": "kubeconfig",
+            "operatorPipelinesRelease": "main",
+            "pyxisSecretName": "pyxis-api-secret"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/opdev/operator-certification-operator-bundle@sha256:cc6b175cf30b5d70a45d6b3eca0994ea970d279544cd534a387c9aa92347bdfd",
+      "bundle_path_digest": "sha256:cc6b175cf30b5d70a45d6b3eca0994ea970d279544cd534a387c9aa92347bdfd",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:17:29.774000+00:00",
+      "csv_description": "A Kubernetes operator to provision resources for the operator certification pipeline. This operator is installed in all namespaces which can support multi-tenant scenarios. **Note:** This operator should only be used by Red Hat partners attempting to certify their operator(s).\n\n\n**Requirements**\n\n\nThe certification operator requires that you have the following tools installed, functional, and in your path.\n- [Install](https://docs.openshift.com/container-platform/4.8/cli_reference/openshift_cli/getting-started-cli.html#installing-openshift-cli) oc, the OpenShift CLI tool (tested with version 4.7.13)\n- [Install](https://tekton.dev/docs/cli/) tkn, the Tekton CLI tool (tested with version 0.19.1)\n- [Install](https://git-scm.com/downloads) git, the Git CLI tool (tested with 2.32.0)\n- The certification pipeline expects you to have the source files of your Operator bundle\n\n\n**Pre - Installation**\n\n\nThe below steps exist for simplicity and to make the installation clearer. The operator watches all namespaces, so if secrets/configs/etc already exist in another namespace, feel free to use the existing namespace when following the operator installation steps.\n\n\n**Create a new namespace where the following secrets will be applied.**\n```\noc new-project oco\n```\n\n\n**Add the kubeconfig secret which will be used to deploy the operator under test and run the certification checks.**\n* Open a terminal window\n* Set the `KUBECONFIG` environment variable\n```\nexport KUBECONFIG=/path/to/your/cluster/kubeconfig\n```\n> *This kubeconfig will be used to deploy the Operator under test and run the certification checks.*\n```\noc create secret generic kubeconfig --from-file=kubeconfig=$KUBECONFIG\n```\n\n\n**Configuring steps for submitting the results**\n- Add the github API token to the repo where the PR will be created\n```\noc create secret generic github-api-token --from-literal GITHUB_TOKEN=<github token>\n```\n- Add RedHat Container API access key\n\n  This API access key is specifically related to your unique partner account for Red Hat Connect portal. Instructions to obtain your API key can be found: [here](https://github.com/redhat-openshift-ecosystem/certification-releases/blob/main/4.9/ga/operator-cert-workflow.md#step-b---get-api-key)\n```\noc create secret generic pyxis-api-secret --from-literal pyxis_api_key=< API KEY >\n```\n\n- Optional pipeline configurations can be found [here](https://github.com/redhat-openshift-ecosystem/certification-releases/blob/main/4.9/ga/ci-pipeline.md#optional-configuration)\n\n\n**Execute the Pipeline (Development Iterations)**\n\n\nA pre-requisite to running a pipeline is that a `workspace-template.yaml` exists in the directory you want to execute the `tkn` commands from.\n\nTo create a workspace-template.yaml\n```\ncat <<EOF > workspace-template.yaml\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 5Gi\nEOF\n```\n\nThere are multiple ways to execute the Pipeline which can be found [here](https://github.com/redhat-openshift-ecosystem/certification-releases/blob/main/4.9/ga/ci-pipeline.md#execute-the-pipeline-development-iterations)",
+      "csv_display_name": "Operator Certification Operator",
+      "csv_metadata_description": "",
+      "csv_name": "operator-certification-operator.v1.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:06:55.170000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "operator-certification-operator",
+      "provided_apis": [
+        {
+          "group": "certification.redhat.com",
+          "kind": "OperatorPipeline",
+          "plural": "operatorpipelines",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Red Hat",
+      "related_images": [
+        {
+          "digest": "sha256:f000432f07cd187469f0310e3ed9dcf9a5db2be14b8bab9c5293dd1ee8518176",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:f000432f07cd187469f0310e3ed9dcf9a5db2be14b8bab9c5293dd1ee8518176",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:8eea368053c2f47e33fa73e9f9aebb49fe39d4501caf690a14a911738ca67c02",
+          "image": "quay.io/opdev/operator-certification-operator@sha256:8eea368053c2f47e33fa73e9f9aebb49fe39d4501caf690a14a911738ca67c02",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.0.2",
+      "version_original": "1.0.2"
+    },
+    {
+      "_id": "627c6e3b228d5769c5692a29",
+      "alm_examples": [
+        {
+          "api_version": "certification.redhat.com/v1alpha1",
+          "kind": "OperatorPipeline",
+          "metadata": {
+            "name": "operatorpipeline-sample"
+          },
+          "spec": {
+            "applyCIPipeline": true,
+            "applyHostedPipeline": false,
+            "applyReleasePipeline": false,
+            "gitHubSecretName": "github-api-token",
+            "kubeconfigSecretName": "kubeconfig",
+            "operatorPipelinesRelease": "main",
+            "pyxisSecretName": "pyxis-api-secret"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/opdev/operator-certification-operator-bundle@sha256:cc6b175cf30b5d70a45d6b3eca0994ea970d279544cd534a387c9aa92347bdfd",
+      "bundle_path_digest": "sha256:cc6b175cf30b5d70a45d6b3eca0994ea970d279544cd534a387c9aa92347bdfd",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:17:31.790000+00:00",
+      "csv_description": "A Kubernetes operator to provision resources for the operator certification pipeline. This operator is installed in all namespaces which can support multi-tenant scenarios. **Note:** This operator should only be used by Red Hat partners attempting to certify their operator(s).\n\n\n**Requirements**\n\n\nThe certification operator requires that you have the following tools installed, functional, and in your path.\n- [Install](https://docs.openshift.com/container-platform/4.8/cli_reference/openshift_cli/getting-started-cli.html#installing-openshift-cli) oc, the OpenShift CLI tool (tested with version 4.7.13)\n- [Install](https://tekton.dev/docs/cli/) tkn, the Tekton CLI tool (tested with version 0.19.1)\n- [Install](https://git-scm.com/downloads) git, the Git CLI tool (tested with 2.32.0)\n- The certification pipeline expects you to have the source files of your Operator bundle\n\n\n**Pre - Installation**\n\n\nThe below steps exist for simplicity and to make the installation clearer. The operator watches all namespaces, so if secrets/configs/etc already exist in another namespace, feel free to use the existing namespace when following the operator installation steps.\n\n\n**Create a new namespace where the following secrets will be applied.**\n```\noc new-project oco\n```\n\n\n**Add the kubeconfig secret which will be used to deploy the operator under test and run the certification checks.**\n* Open a terminal window\n* Set the `KUBECONFIG` environment variable\n```\nexport KUBECONFIG=/path/to/your/cluster/kubeconfig\n```\n> *This kubeconfig will be used to deploy the Operator under test and run the certification checks.*\n```\noc create secret generic kubeconfig --from-file=kubeconfig=$KUBECONFIG\n```\n\n\n**Configuring steps for submitting the results**\n- Add the github API token to the repo where the PR will be created\n```\noc create secret generic github-api-token --from-literal GITHUB_TOKEN=<github token>\n```\n- Add RedHat Container API access key\n\n  This API access key is specifically related to your unique partner account for Red Hat Connect portal. Instructions to obtain your API key can be found: [here](https://github.com/redhat-openshift-ecosystem/certification-releases/blob/main/4.9/ga/operator-cert-workflow.md#step-b---get-api-key)\n```\noc create secret generic pyxis-api-secret --from-literal pyxis_api_key=< API KEY >\n```\n\n- Optional pipeline configurations can be found [here](https://github.com/redhat-openshift-ecosystem/certification-releases/blob/main/4.9/ga/ci-pipeline.md#optional-configuration)\n\n\n**Execute the Pipeline (Development Iterations)**\n\n\nA pre-requisite to running a pipeline is that a `workspace-template.yaml` exists in the directory you want to execute the `tkn` commands from.\n\nTo create a workspace-template.yaml\n```\ncat <<EOF > workspace-template.yaml\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 5Gi\nEOF\n```\n\nThere are multiple ways to execute the Pipeline which can be found [here](https://github.com/redhat-openshift-ecosystem/certification-releases/blob/main/4.9/ga/ci-pipeline.md#execute-the-pipeline-development-iterations)",
+      "csv_display_name": "Operator Certification Operator",
+      "csv_metadata_description": "",
+      "csv_name": "operator-certification-operator.v1.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:05:16.181000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "operator-certification-operator",
+      "provided_apis": [
+        {
+          "group": "certification.redhat.com",
+          "kind": "OperatorPipeline",
+          "plural": "operatorpipelines",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Red Hat",
+      "related_images": [
+        {
+          "digest": "sha256:f000432f07cd187469f0310e3ed9dcf9a5db2be14b8bab9c5293dd1ee8518176",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:f000432f07cd187469f0310e3ed9dcf9a5db2be14b8bab9c5293dd1ee8518176",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:8eea368053c2f47e33fa73e9f9aebb49fe39d4501caf690a14a911738ca67c02",
+          "image": "quay.io/opdev/operator-certification-operator@sha256:8eea368053c2f47e33fa73e9f9aebb49fe39d4501caf690a14a911738ca67c02",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.0.2",
+      "version_original": "1.0.2"
+    },
+    {
+      "_id": "627c6e429b28cbab99bd0fb9",
+      "alm_examples": [
+        {
+          "api_version": "pcc.paloaltonetworks.com/v1alpha1",
+          "kind": "Console",
+          "metadata": {
+            "name": "pcc-console",
+            "namespace": "twistlock"
+          },
+          "spec": {
+            "consoleConfig": {
+              "serviceType": "ClusterIP"
+            },
+            "namespace": "twistlock",
+            "version": "21_08_520"
+          }
+        },
+        {
+          "api_version": "pcc.paloaltonetworks.com/v1alpha1",
+          "kind": "ConsoleDefender",
+          "metadata": {
+            "name": "pcc-consoledefender",
+            "namespace": "twistlock"
+          },
+          "spec": {
+            "consoleConfig": {
+              "serviceType": "ClusterIP"
+            },
+            "defenderConfig": {
+              "docker": false
+            },
+            "namespace": "twistlock",
+            "version": "21_08_520"
+          }
+        },
+        {
+          "api_version": "pcc.paloaltonetworks.com/v1alpha1",
+          "kind": "Defender",
+          "metadata": {
+            "name": "pcc-defender",
+            "namespace": "twistlock"
+          },
+          "spec": {
+            "defenderConfig": {
+              "clusterAddress": "twistlock-console.example.com",
+              "consoleAddress": "https://twistlock-console.example.com:8083",
+              "docker": false
+            },
+            "namespace": "twistlock",
+            "version": "21_08_520"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/paloalto/pcc-operator@sha256:cd2291126f3c56ed2001e6ca9157ac4c752ff0a1f6de2c0e920e06f83c84d17b",
+      "bundle_path_digest": "sha256:cd2291126f3c56ed2001e6ca9157ac4c752ff0a1f6de2c0e920e06f83c84d17b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:17:38.077000+00:00",
+      "csv_description": "## Features\n- Deploy Console\n    - Create initial local administrator user\n    - Add license\n- Deploy Defenders\n- Support for offline deployments\n- Upgrade Console\n- Upgrade Defenders\n\n## Installation\nSee the [Prisma Cloud Compute Operator documentation](https://github.com/PaloAltoNetworks/prisma-cloud-compute-operator) for installation guides.\n\n## Support\nThis operator is available \"as is,\" and should be seen as community-supported; however, Palo Alto Networks will continue contributing whenever possible.\nPalo Alto Networks does not provide technical support or help with using or troubleshooting the operator through normal support channels.\nWe encourage you to open GitHub [issues](https://github.com/PaloAltoNetworks/prisma-cloud-compute-operator/issues) and [pull requests](https://github.com/PaloAltoNetworks/prisma-cloud-compute-operator/pulls) to track bugs and feature requests.\n\n## Other links\n[Prisma Cloud Compute product documentation](https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin-compute.html)\n\n[Prisma Cloud Compute API documentation](https://prisma.pan.dev/api/cloud/cwpp)\n",
+      "csv_display_name": "Prisma Cloud Compute Operator",
+      "csv_metadata_description": "Deploy Prisma Cloud Compute for cloud-native security in your clusters",
+      "csv_name": "pcc-operator.v0.2.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:07:06.675000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "pcc-operator",
+      "provided_apis": [
+        {
+          "group": "pcc.paloaltonetworks.com",
+          "kind": "Console",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pcc.paloaltonetworks.com",
+          "kind": "Defender",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pcc.paloaltonetworks.com",
+          "kind": "ConsoleDefender",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Palo Alto Networks",
+      "related_images": [
+        {
+          "digest": "sha256:91469e90fb442d747a5dd462a3b8e80cea2c590881a685bc58c562f1382e2fec",
+          "image": "quay.io/prismacloud/pcc-operator@sha256:91469e90fb442d747a5dd462a3b8e80cea2c590881a685bc58c562f1382e2fec",
+          "name": "pcc-operator-91469e90fb442d747a5dd462a3b8e80cea2c590881a685bc58c562f1382e2fec-annotation"
+        },
+        {
+          "digest": "sha256:91469e90fb442d747a5dd462a3b8e80cea2c590881a685bc58c562f1382e2fec",
+          "image": "quay.io/prismacloud/pcc-operator@sha256:91469e90fb442d747a5dd462a3b8e80cea2c590881a685bc58c562f1382e2fec",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.2.2",
+      "version_original": "0.2.2"
     }
   ],
   "page": 28,
   "page_size": 100,
-  "total": 4762
+  "total": 4780
 }

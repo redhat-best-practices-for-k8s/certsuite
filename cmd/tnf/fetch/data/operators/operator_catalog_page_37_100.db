@@ -1,271 +1,6 @@
 {
   "data": [
     {
-      "_id": "62cd95511aa1526ac3279b91",
-      "alm_examples": [
-        {
-          "api_version": "crd.nutanix.com/v1alpha1",
-          "kind": "NutanixCsiStorage",
-          "metadata": {
-            "name": "nutanixcsistorage"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "csi",
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nutanix/nutanix-csi-operator-bundle@sha256:a68f0e097d347888dbe54d3c9df436ad69e9dec5a0e959b2c5387b72d19535ff",
-      "bundle_path_digest": "sha256:a68f0e097d347888dbe54d3c9df436ad69e9dec5a0e959b2c5387b72d19535ff",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-12T15:37:53.374000+00:00",
-      "csv_description": "# Overview \n\nThe Nutanix CSI Operator for Kubernetes packages, deploys, manages, upgrades the Nutanix CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on Nutanix Enterprise Cloud platform.\n\nThe Nutanix Container Storage Interface (CSI) Driver for Kubernetes leverages Nutanix Volumes and Nutanix Files to provide scalable and persistent storage for stateful applications.\n\nWith the Nutanix CSI Provider you can:\n\n*  **Provide persistent storage to your containers**\n    * Leverage PVC resources to consume dynamically Nutanix storage\n    * With Files storage classes, applications on multiple pods can access the same storage, and also have the benefit of multi-pod read and write access. \n\n## Warning\n\nIf you upgrade from a previous version take care to validate your existing StorageClass parameters against the corresponding [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5).\n\n## Supported Access mode\n\n| Storage Class mode | ReadWriteOnce | ReadOnlyMany | ReadWriteMany |\n|--------------------|---------------|--------------|---------------|\n| Nutanix Volumes    | yes           | yes          | no            |\n| Nutanix Files      | yes           | yes          | yes           |\n\n\n## Supported orchestration platforms\nThe following table details orchestration platforms suitable for deployment of the Nutanix CSI driver.\n\n| Orchestration platform | Version | Architecture |\n|------------------------|---------|--------------|\n| Red Hat OpenShift      | 4.6     | x86          |\n| Red Hat OpenShift      | 4.7     | x86          |\n| Red Hat OpenShift      | 4.8     | x86          |\n| Red Hat OpenShift      | 4.9     | x86          |\n| Red Hat OpenShift      | 4.10    | x86          |\n| Red Hat OpenShift      | 4.11    | x86          |\n\n## Configuring k8s secret and storage class\nIn order to use this driver, deploy your NutanixCsiStorage instance and create the relevant storage classes and secrets, by following the [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5) or the example in below section:\n\n1. Create a NutanixCsiStorage resource to deploy your driver\n\nYou can do it directly inside the Operator UI with the `Create instance` button or with the following ressource\n```yaml\napiVersion: crd.nutanix.com/v1alpha1\nkind: NutanixCsiStorage\nmetadata:\n  name: nutanixcsistorage\n  namespace: ntnx-system\nspec: {}\n```\n\n2. Create a Nutanix secret\n```yaml\napiVersion: v1\nkind: Secret\nmetadata:\n  name: ntnx-secret\n  namespace: openshift-cluster-csi-drivers\nstringData:\n  # prism-ip:prism-port:username:password.\n  key: 10.0.0.14:9440:admin:password\n```\n\n3. Create storage classes\n\n- volume mode example\n```yaml\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n  name: nutanix-volume\nprovisioner: csi.nutanix.com\nparameters:\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/fstype: ext4\n  storageContainer: default-container\n  storageType: NutanixVolumes\n  #description: \"description added to each storage object created by the driver\"\n  #isSegmentedIscsiNetwork: \"false\"\n  #whitelistIPMode: ENABLED\n  #chapAuth: ENABLED\n  #isLVMVolume: \"false\"\n  #numLVMDisks: 4\nallowVolumeExpansion: true\nreclaimPolicy: Delete\n```\n\n- dynamic files mode example\n\n```yaml\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n    name: nutanix-dynfiles\nprovisioner: csi.nutanix.com\nparameters:\n  dynamicProv: ENABLED\n  nfsServerName: fs\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: openshift-cluster-csi-drivers\n  storageType: NutanixFiles\n  #description: \"description added to each storage object created by the driver\"\nallowVolumeExpansion: true\n```",
-      "csv_display_name": "Nutanix CSI Operator",
-      "csv_metadata_description": "An Operator for deploying and managing the Nutanix CSI Driver",
-      "csv_name": "nutanixcsioperator.v2.5.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:06:03.273000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "nutanixcsioperator",
-      "provided_apis": [
-        {
-          "group": "crd.nutanix.com",
-          "kind": "NutanixCsiStorage",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Nutanix",
-      "related_images": [
-        {
-          "digest": "sha256:fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f",
-          "name": "nutanix-csi-operator-fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f-annotation"
-        },
-        {
-          "digest": "sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.5.4",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2.5.4",
-      "version_original": "2.5.4"
-    },
-    {
-      "_id": "62cd97514f09db93321ceaf7",
-      "alm_examples": [
-        {
-          "api_version": "crd.nutanix.com/v1alpha1",
-          "kind": "NutanixCsiStorage",
-          "metadata": {
-            "name": "nutanixcsistorage"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "csi",
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nutanix/nutanix-csi-operator-bundle@sha256:a68f0e097d347888dbe54d3c9df436ad69e9dec5a0e959b2c5387b72d19535ff",
-      "bundle_path_digest": "sha256:a68f0e097d347888dbe54d3c9df436ad69e9dec5a0e959b2c5387b72d19535ff",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-12T15:46:25.932000+00:00",
-      "csv_description": "# Overview \n\nThe Nutanix CSI Operator for Kubernetes packages, deploys, manages, upgrades the Nutanix CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on Nutanix Enterprise Cloud platform.\n\nThe Nutanix Container Storage Interface (CSI) Driver for Kubernetes leverages Nutanix Volumes and Nutanix Files to provide scalable and persistent storage for stateful applications.\n\nWith the Nutanix CSI Provider you can:\n\n*  **Provide persistent storage to your containers**\n    * Leverage PVC resources to consume dynamically Nutanix storage\n    * With Files storage classes, applications on multiple pods can access the same storage, and also have the benefit of multi-pod read and write access. \n\n## Warning\n\nIf you upgrade from a previous version take care to validate your existing StorageClass parameters against the corresponding [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5).\n\n## Supported Access mode\n\n| Storage Class mode | ReadWriteOnce | ReadOnlyMany | ReadWriteMany |\n|--------------------|---------------|--------------|---------------|\n| Nutanix Volumes    | yes           | yes          | no            |\n| Nutanix Files      | yes           | yes          | yes           |\n\n\n## Supported orchestration platforms\nThe following table details orchestration platforms suitable for deployment of the Nutanix CSI driver.\n\n| Orchestration platform | Version | Architecture |\n|------------------------|---------|--------------|\n| Red Hat OpenShift      | 4.6     | x86          |\n| Red Hat OpenShift      | 4.7     | x86          |\n| Red Hat OpenShift      | 4.8     | x86          |\n| Red Hat OpenShift      | 4.9     | x86          |\n| Red Hat OpenShift      | 4.10    | x86          |\n| Red Hat OpenShift      | 4.11    | x86          |\n\n## Configuring k8s secret and storage class\nIn order to use this driver, deploy your NutanixCsiStorage instance and create the relevant storage classes and secrets, by following the [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5) or the example in below section:\n\n1. Create a NutanixCsiStorage resource to deploy your driver\n\nYou can do it directly inside the Operator UI with the `Create instance` button or with the following ressource\n```yaml\napiVersion: crd.nutanix.com/v1alpha1\nkind: NutanixCsiStorage\nmetadata:\n  name: nutanixcsistorage\n  namespace: ntnx-system\nspec: {}\n```\n\n2. Create a Nutanix secret\n```yaml\napiVersion: v1\nkind: Secret\nmetadata:\n  name: ntnx-secret\n  namespace: openshift-cluster-csi-drivers\nstringData:\n  # prism-ip:prism-port:username:password.\n  key: 10.0.0.14:9440:admin:password\n```\n\n3. Create storage classes\n\n- volume mode example\n```yaml\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n  name: nutanix-volume\nprovisioner: csi.nutanix.com\nparameters:\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/fstype: ext4\n  storageContainer: default-container\n  storageType: NutanixVolumes\n  #description: \"description added to each storage object created by the driver\"\n  #isSegmentedIscsiNetwork: \"false\"\n  #whitelistIPMode: ENABLED\n  #chapAuth: ENABLED\n  #isLVMVolume: \"false\"\n  #numLVMDisks: 4\nallowVolumeExpansion: true\nreclaimPolicy: Delete\n```\n\n- dynamic files mode example\n\n```yaml\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n    name: nutanix-dynfiles\nprovisioner: csi.nutanix.com\nparameters:\n  dynamicProv: ENABLED\n  nfsServerName: fs\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: openshift-cluster-csi-drivers\n  storageType: NutanixFiles\n  #description: \"description added to each storage object created by the driver\"\nallowVolumeExpansion: true\n```",
-      "csv_display_name": "Nutanix CSI Operator",
-      "csv_metadata_description": "An Operator for deploying and managing the Nutanix CSI Driver",
-      "csv_name": "nutanixcsioperator.v2.5.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:00:19.711000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "nutanixcsioperator",
-      "provided_apis": [
-        {
-          "group": "crd.nutanix.com",
-          "kind": "NutanixCsiStorage",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Nutanix",
-      "related_images": [
-        {
-          "digest": "sha256:fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f",
-          "name": "nutanix-csi-operator-fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f-annotation"
-        },
-        {
-          "digest": "sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.5.4",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.5.4",
-      "version_original": "2.5.4"
-    },
-    {
-      "_id": "62cd98eeaae29e66d1b47427",
-      "alm_examples": [
-        {
-          "api_version": "crd.nutanix.com/v1alpha1",
-          "kind": "NutanixCsiStorage",
-          "metadata": {
-            "name": "nutanixcsistorage"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "csi",
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nutanix/nutanix-csi-operator-bundle@sha256:a68f0e097d347888dbe54d3c9df436ad69e9dec5a0e959b2c5387b72d19535ff",
-      "bundle_path_digest": "sha256:a68f0e097d347888dbe54d3c9df436ad69e9dec5a0e959b2c5387b72d19535ff",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-12T15:53:18.091000+00:00",
-      "csv_description": "# Overview \n\nThe Nutanix CSI Operator for Kubernetes packages, deploys, manages, upgrades the Nutanix CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on Nutanix Enterprise Cloud platform.\n\nThe Nutanix Container Storage Interface (CSI) Driver for Kubernetes leverages Nutanix Volumes and Nutanix Files to provide scalable and persistent storage for stateful applications.\n\nWith the Nutanix CSI Provider you can:\n\n*  **Provide persistent storage to your containers**\n    * Leverage PVC resources to consume dynamically Nutanix storage\n    * With Files storage classes, applications on multiple pods can access the same storage, and also have the benefit of multi-pod read and write access. \n\n## Warning\n\nIf you upgrade from a previous version take care to validate your existing StorageClass parameters against the corresponding [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5).\n\n## Supported Access mode\n\n| Storage Class mode | ReadWriteOnce | ReadOnlyMany | ReadWriteMany |\n|--------------------|---------------|--------------|---------------|\n| Nutanix Volumes    | yes           | yes          | no            |\n| Nutanix Files      | yes           | yes          | yes           |\n\n\n## Supported orchestration platforms\nThe following table details orchestration platforms suitable for deployment of the Nutanix CSI driver.\n\n| Orchestration platform | Version | Architecture |\n|------------------------|---------|--------------|\n| Red Hat OpenShift      | 4.6     | x86          |\n| Red Hat OpenShift      | 4.7     | x86          |\n| Red Hat OpenShift      | 4.8     | x86          |\n| Red Hat OpenShift      | 4.9     | x86          |\n| Red Hat OpenShift      | 4.10    | x86          |\n| Red Hat OpenShift      | 4.11    | x86          |\n\n## Configuring k8s secret and storage class\nIn order to use this driver, deploy your NutanixCsiStorage instance and create the relevant storage classes and secrets, by following the [documentation](https://portal.nutanix.com/page/documents/details?targetId=CSI-Volume-Driver-v2_5:CSI-Volume-Driver-v2_5) or the example in below section:\n\n1. Create a NutanixCsiStorage resource to deploy your driver\n\nYou can do it directly inside the Operator UI with the `Create instance` button or with the following ressource\n```yaml\napiVersion: crd.nutanix.com/v1alpha1\nkind: NutanixCsiStorage\nmetadata:\n  name: nutanixcsistorage\n  namespace: ntnx-system\nspec: {}\n```\n\n2. Create a Nutanix secret\n```yaml\napiVersion: v1\nkind: Secret\nmetadata:\n  name: ntnx-secret\n  namespace: openshift-cluster-csi-drivers\nstringData:\n  # prism-ip:prism-port:username:password.\n  key: 10.0.0.14:9440:admin:password\n```\n\n3. Create storage classes\n\n- volume mode example\n```yaml\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n  name: nutanix-volume\nprovisioner: csi.nutanix.com\nparameters:\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/fstype: ext4\n  storageContainer: default-container\n  storageType: NutanixVolumes\n  #description: \"description added to each storage object created by the driver\"\n  #isSegmentedIscsiNetwork: \"false\"\n  #whitelistIPMode: ENABLED\n  #chapAuth: ENABLED\n  #isLVMVolume: \"false\"\n  #numLVMDisks: 4\nallowVolumeExpansion: true\nreclaimPolicy: Delete\n```\n\n- dynamic files mode example\n\n```yaml\nkind: StorageClass\napiVersion: storage.k8s.io/v1\nmetadata:\n    name: nutanix-dynfiles\nprovisioner: csi.nutanix.com\nparameters:\n  dynamicProv: ENABLED\n  nfsServerName: fs\n  csi.storage.k8s.io/provisioner-secret-name: ntnx-secret\n  csi.storage.k8s.io/provisioner-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/node-publish-secret-name: ntnx-secret\n  csi.storage.k8s.io/node-publish-secret-namespace: openshift-cluster-csi-drivers\n  csi.storage.k8s.io/controller-expand-secret-name: ntnx-secret\n  csi.storage.k8s.io/controller-expand-secret-namespace: openshift-cluster-csi-drivers\n  storageType: NutanixFiles\n  #description: \"description added to each storage object created by the driver\"\nallowVolumeExpansion: true\n```",
-      "csv_display_name": "Nutanix CSI Operator",
-      "csv_metadata_description": "An Operator for deploying and managing the Nutanix CSI Driver",
-      "csv_name": "nutanixcsioperator.v2.5.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:04:33.340000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "nutanixcsioperator",
-      "provided_apis": [
-        {
-          "group": "crd.nutanix.com",
-          "kind": "NutanixCsiStorage",
-          "plural": "nutanixcsistorages",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Nutanix",
-      "related_images": [
-        {
-          "digest": "sha256:fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f",
-          "name": "nutanix-csi-operator-fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f-annotation"
-        },
-        {
-          "digest": "sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f",
-          "image": "registry.connect.redhat.com/nutanix/nutanix-csi-operator@sha256:fbb5204d196f84b2b38278ae411b1a2fa63919a194febe333fe5ed932b3a328f",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.5.4",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "2.5.4",
-      "version_original": "2.5.4"
-    },
-    {
       "_id": "62cd999de4ad541e1fa7ba44",
       "alm_examples": [
         {
@@ -16131,9 +15866,1036 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "2.2.8",
       "version_original": "2.2.8"
+    },
+    {
+      "_id": "62d0df3b683fcfd2f2d2025c",
+      "alm_examples": [
+        {
+          "api_version": "fep.fujitsu.io/v1",
+          "kind": "FEPAction",
+          "metadata": {
+            "name": "new-fep-action"
+          },
+          "spec": {
+            "fepAction": {
+              "args": [
+                "new-fep-sts-0",
+                "new-fep-sts-1"
+              ],
+              "type": "reload"
+            },
+            "sysExtraLogging": false,
+            "targetClusterName": "new-fep"
+          }
+        },
+        {
+          "api_version": "fep.fujitsu.io/v1",
+          "kind": "FEPPgpool2",
+          "metadata": {
+            "name": "new-fep-pgpool2"
+          },
+          "spec": {
+            "count": 2,
+            "customhba": "local   all         all                               trust\nhost    all         all         127.0.0.1/32          trust\nhost    all         all         ::1/128               trust\n",
+            "customlogsize": "128Mi",
+            "customparams": "listen_addresses = '*'\npcp_listen_addresses = '*'\nnum_init_children = 32\nreserved_connections = 0\nenable_pool_hba = off\nallow_clear_text_frontend_auth = off\nauthentication_timeout = 80\nbackend_weight0 = 1\nbackend_weight1 = 1\nbackend_flag0 = 'ALWAYS_MASTER'\nbackend_flag1 = 'ALLOW_TO_FAILOVER'\nconnection_cache = on\nmax_pool = 4\nlisten_backlog_multiplier = 2\nserialize_accept = off\nchild_life_time = 300\nclient_idle_limit = 0\nchild_max_connections = 0\nconnection_life_time = 0\nreset_query_list = 'ABORT; DISCARD ALL'\nclient_min_messages = info\nlog_min_messages = debug1\nlog_statement = on\nlog_per_node_statement = on\nlog_client_messages = on\nlog_hostname = on\nlog_connections = on\nlog_line_prefix = '%t: pid %p: '\nload_balance_mode = on\nignore_leading_white_space = on\nwhite_function_list = ''\nblack_function_list = 'currval,lastval,nextval,setval'\nblack_query_pattern_list = ''\ndatabase_redirect_preference_list = ''\napp_name_redirect_preference_list = ''\nallow_sql_comments = off\ndisable_load_balance_on_write = 'transaction'\nstatement_level_load_balance = on\nconnect_timeout = 10000\nsr_check_period = 0\nsr_check_user = 'postgres'\ndelay_threshold = 0\nlog_standby_delay = 'none'\nssl = on\nssl_ciphers = 'HIGH:MEDIUM:+3DES:!aNULL'\nssl_prefer_server_ciphers = off\nssl_ecdh_curve = 'prime256v1'\nssl_dh_params_file = ''\nrelcache_expire = 0\nrelcache_size = 256\ncheck_temp_table = catalog\ncheck_unlogged_table = on\nenable_shared_relcache = on\nrelcache_query_target = master\n",
+            "custompcp": "none",
+            "customsslcacert": "none",
+            "customsslcert": "-----BEGIN CERTIFICATE-----\nMIIDTzCCAjegAwIBAgIUYssQ8I74US5g+1+Z7CHuaDgkZnEwDQYJKoZIhvcNAQEL\nBQAwNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9y\nIEt1YmVybmV0ZXMwHhcNMjEwMjA2MDM1MjI4WhcNMzEwMjA0MDM1MjI4WjA3MRAw\nDgYDVQQKDAdGdWppdHN1MSMwIQYDVQQDDBpGRVAgUm9vdCBDQSBmb3IgS3ViZXJu\nZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMs97gUF0xkUzCgL\n7MiiDju9ySr/ziwjvcYU7jA9ML+SLmftMs3HtcYbAmSntqI+MDBSR/FAJTOoytuT\npV+mCFcGj2YAjDpliHPeNcUpbryy4YMChF3+MovkIwGCksxo5rhiWhGmoBYpA48P\n4Xe8SPlzqMzhFvNeKzyiUhvjutS2Y1Ss38lsTaurFPx64vQ2PaC54XzdwMptXtpb\ntYmWSzCpJWwxZ6lF3vitdA2w0tnBWNyctAd0+RIM/fvArxiIqseAux9t0uogm5to\nlRIhvekuxOpXBPEqtIYQ4j9XUW2JH8vUDnzPkPvjrq+A3Ug8OyyfGVrW7+VYXozu\nc4aP7P0CAwEAAaNTMFEwHQYDVR0OBBYEFBzCutQ7S74WEhS5V2sNEJBGyLpmMB8G\nA1UdIwQYMBaAFBzCutQ7S74WEhS5V2sNEJBGyLpmMA8GA1UdEwEB/wQFMAMBAf8w\nDQYJKoZIhvcNAQELBQADggEBAMDwD85RAaWEBptFgLzKw+9xEUy1vcZaonAuA1qc\nT342XTueyAugxkC11HwdCGgGS34VyctfMGqj4AW6pA2ez4tLrbOps4DmV4sw8uBL\n8pgRDgfly3ob9FEg2wa0hmrwX9jH5Bt4vySUE2785uPAqaspT2UNtTBxS85BUi1T\nsKId2Rtil6an281Z81wyWVI6Jm2D4MG0mbsiGcTPlCtdg/UljvDYymXlAvd4vNhl\nk9hDa13TgDqJKgKdTIcmZoNQdpEVgFcO0h9AEUy5AuLqxHq60dLfZ6ESGPlMI7Lm\ni4PzYbCnBmOe+7TnHcPSyrnehs66Ik+oifRd82eYS7vKjFw=\n-----END CERTIFICATE-----",
+            "customsslkey": "none",
+            "fepclustername": "new-fep",
+            "imagePullPolicy": "IfNotPresent",
+            "limits": {
+              "cpu": "400m",
+              "memory": "512Mi"
+            },
+            "requests": {
+              "cpu": "200m",
+              "memory": "256Mi"
+            },
+            "serviceport": 9999,
+            "statusport": 9898
+          }
+        },
+        {
+          "api_version": "fep.fujitsu.io/v1",
+          "kind": "FEPRestore",
+          "metadata": {
+            "name": "new-fep-restore"
+          },
+          "spec": {
+            "fromFEPcluster": "new-fep",
+            "imagePullPolicy": "IfNotPresent",
+            "mcSpec": {
+              "limits": {
+                "cpu": "200m",
+                "memory": "300Mi"
+              },
+              "requests": {
+                "cpu": "100m",
+                "memory": "200Mi"
+              }
+            },
+            "restoretype": "latest",
+            "sysExtraLogging": false,
+            "toFEPcluster": "new-fep-2"
+          }
+        },
+        {
+          "api_version": "fep.fujitsu.io/v2",
+          "kind": "FEPCluster",
+          "metadata": {
+            "name": "new-fep"
+          },
+          "spec": {
+            "fep": {
+              "customAnnotations": {
+                "allDeployments": {}
+              },
+              "forceSsl": true,
+              "image": {
+                "pullPolicy": "IfNotPresent"
+              },
+              "instances": 1,
+              "mcSpec": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "700Mi"
+                },
+                "requests": {
+                  "cpu": "200m",
+                  "memory": "512Mi"
+                }
+              },
+              "podAntiAffinity": false,
+              "podDisruptionBudget": false,
+              "servicePort": 27500,
+              "syncMode": "off",
+              "sysExtraLogging": false
+            },
+            "fepChildCrVal": {
+              "backup": {
+                "image": {
+                  "pullPolicy": "IfNotPresent"
+                },
+                "mcSpec": {
+                  "limits": {
+                    "cpu": 0.2,
+                    "memory": "300Mi"
+                  },
+                  "requests": {
+                    "cpu": 0.1,
+                    "memory": "200Mi"
+                  }
+                },
+                "pgbackrestParams": "# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\n[global]\nrepo1-retention-full=7\nrepo1-retention-full-type=time\nlog-path=/database/log/backup\n",
+                "postScript": " ",
+                "preScript": " ",
+                "schedule": {
+                  "num": 2
+                },
+                "schedule1": {
+                  "schedule": "15 0 * * 0",
+                  "type": "full"
+                },
+                "schedule2": {
+                  "schedule": "15 0 * * 1-6",
+                  "type": "incr"
+                },
+                "schedule3": {
+                  "schedule": " ",
+                  "type": " "
+                },
+                "schedule4": {
+                  "schedule": " ",
+                  "type": " "
+                },
+                "schedule5": {
+                  "schedule": " ",
+                  "type": " "
+                }
+              },
+              "customPgAudit": "# define pg audit custom params here to override defaults.\n# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\n[output]\nlog_truncate_on_rotation = on\nlog_filename = 'pgaudit-%a.log'\nlog_rotation_age = 1d\nlog_rotation_size = 0\n[rule]\n",
+              "customPgHba": "# define pg_hba custom rules here to be merged with default rules.\n# TYPE     DATABASE        USER        ADDRESS        METHOD\n",
+              "customPgParams": "# define custom postgresql.conf parameters below to override defaults.\n# Current values are as per default FEP deployment\nshared_preload_libraries='pgx_datamasking,pg_prewarm,pg_stat_statements'\nsession_preload_libraries='pg_prewarm'\nmax_prepared_transactions = 100\nmax_worker_processes = 20\nmax_connections = 100\nwork_mem = 1MB\nmaintenance_work_mem = 12MB\nshared_buffers = 128MB\neffective_cache_size = 384MB\ncheckpoint_completion_target = 0.8\n\n# tcp parameters\ntcp_keepalives_idle = 30\ntcp_keepalives_interval = 10\ntcp_keepalives_count = 3\n\n# logging parameters in default fep installation\n# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\nlog_directory = '/database/log'\nlog_filename = 'logfile-%a.log'\nlog_file_mode = 0600\nlog_truncate_on_rotation = on\nlog_rotation_age = 1d\nlog_rotation_size = 0\nlog_checkpoints = on\nlog_line_prefix = '%e %t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h'\nlog_lock_waits = on\nlog_autovacuum_min_duration = 60s\nlogging_collector = on\npgaudit.config_file='/opt/app-root/src/pgaudit-cfg/pgaudit.conf'\nlog_replication_commands = on\nlog_min_messages = WARNING\nlog_destination = stderr\n\n# wal_archive parameters in default fep installation\narchive_mode = on\narchive_command = 'pgbackrest --stanza=backupstanza --config=/database/userdata/pgbackrest.conf archive-push %p'\nwal_level = replica\nmax_wal_senders = 12\nwal_keep_segments = 64\n",
+              "storage": {
+                "archivewalVol": {
+                  "size": "1Gi"
+                },
+                "backupVol": {
+                  "size": "2Gi"
+                },
+                "dataVol": {
+                  "size": "2Gi"
+                },
+                "logVol": {
+                  "size": "1Gi"
+                },
+                "tablespaceVol": {
+                  "size": "512Mi"
+                },
+                "walVol": {
+                  "size": "1200Mi"
+                }
+              },
+              "sysUsers": {
+                "pgAdminPassword": "admin-password",
+                "pgdb": "mydb",
+                "pgpassword": "mydbpassword",
+                "pgreplpassword": "repluserpwd",
+                "pgrepluser": "repluser",
+                "pguser": "mydbuser",
+                "tdepassphrase": "tde-passphrase"
+              },
+              "systemCertificates": {
+                "cacrt": "-----BEGIN CERTIFICATE-----\nMIIDTzCCAjegAwIBAgIUYssQ8I74US5g+1+Z7CHuaDgkZnEwDQYJKoZIhvcNAQEL\nBQAwNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9y\nIEt1YmVybmV0ZXMwHhcNMjEwMjA2MDM1MjI4WhcNMzEwMjA0MDM1MjI4WjA3MRAw\nDgYDVQQKDAdGdWppdHN1MSMwIQYDVQQDDBpGRVAgUm9vdCBDQSBmb3IgS3ViZXJu\nZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMs97gUF0xkUzCgL\n7MiiDju9ySr/ziwjvcYU7jA9ML+SLmftMs3HtcYbAmSntqI+MDBSR/FAJTOoytuT\npV+mCFcGj2YAjDpliHPeNcUpbryy4YMChF3+MovkIwGCksxo5rhiWhGmoBYpA48P\n4Xe8SPlzqMzhFvNeKzyiUhvjutS2Y1Ss38lsTaurFPx64vQ2PaC54XzdwMptXtpb\ntYmWSzCpJWwxZ6lF3vitdA2w0tnBWNyctAd0+RIM/fvArxiIqseAux9t0uogm5to\nlRIhvekuxOpXBPEqtIYQ4j9XUW2JH8vUDnzPkPvjrq+A3Ug8OyyfGVrW7+VYXozu\nc4aP7P0CAwEAAaNTMFEwHQYDVR0OBBYEFBzCutQ7S74WEhS5V2sNEJBGyLpmMB8G\nA1UdIwQYMBaAFBzCutQ7S74WEhS5V2sNEJBGyLpmMA8GA1UdEwEB/wQFMAMBAf8w\nDQYJKoZIhvcNAQELBQADggEBAMDwD85RAaWEBptFgLzKw+9xEUy1vcZaonAuA1qc\nT342XTueyAugxkC11HwdCGgGS34VyctfMGqj4AW6pA2ez4tLrbOps4DmV4sw8uBL\n8pgRDgfly3ob9FEg2wa0hmrwX9jH5Bt4vySUE2785uPAqaspT2UNtTBxS85BUi1T\nsKId2Rtil6an281Z81wyWVI6Jm2D4MG0mbsiGcTPlCtdg/UljvDYymXlAvd4vNhl\nk9hDa13TgDqJKgKdTIcmZoNQdpEVgFcO0h9AEUy5AuLqxHq60dLfZ6ESGPlMI7Lm\ni4PzYbCnBmOe+7TnHcPSyrnehs66Ik+oifRd82eYS7vKjFw=\n-----END CERTIFICATE-----",
+                "crt": "-----BEGIN CERTIFICATE-----\nMIIDUTCCAjmgAwIBAgIRAMocW3qMoHrD6qRvMPppMkMwDQYJKoZIhvcNAQELBQAw\nNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9yIEt1\nYmVybmV0ZXMwHhcNMjEwMjA2MDQzMjM2WhcNMjYwMjA1MDQzMjM2WjA/MRAwDgYD\nVQQKEwdGdWppdHN1MSswKQYDVQQDEyJGVUpJVFNVIEVudGVycHJpc2UgUG9zdGdy\nZXMgU2VydmVyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4AI33yvH\nZws+jta6qpV6wzJqF8odIfTIpCfbrVcUUtLFKJ1I2e4SceTKi6O3C/I1XuvWlpng\n5IO65+fQQLO06z1/AuQT78YUn/Wlm9x1aHVsv4ANB5JWWqDOjrRT3o7nRPGXfila\nbP0rGE2mJJcVR9nExJ3IeaktgT3sb8YlXvtchyYpmjdbfxabTz07ig0+6/cwKoRR\nxOK8Uf7f5euE0cI/490J6r5Rs4lgD8sIQNCUFlTFYvmAH7gcdssSFBt8NPlUATHE\nsoFmlW0DKCJWNhTLOht+s6L/1zwTHLjPG2pdkG6Wdgmu5H2pDml8CDNLDv98Aj7i\n+I5SRKKcVPlnuQIDAQABo1AwTjAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUH\nAwIwDAYDVR0TAQH/BAIwADAfBgNVHSMEGDAWgBQcwrrUO0u+FhIUuVdrDRCQRsi6\nZjANBgkqhkiG9w0BAQsFAAOCAQEAm5dxBoI9pScOCvRAchg4CprdRDSJb9K6yB3O\nnCAxnM47iHeXnY3WlnI388kHu8DU7O4ba1tJbGs3KY9KzioPk43pU12jWkO1onoF\n+mTDjx/Ef1cYWA9r5q/LtgTa6Q2sxV4O2x67QW82aAnaxO34dV5zWCPIvAoovZBV\nHRT+BgCg3r2vD1RGKK2nl1aYJtWhO1SZubam+VttdZ/vbM9oOJctxmImsEtBXjkY\nKteePdQtLL5o03JhyXWyRshCq+HMmKf2KgyY8gvydGcP4eLQdBWcW40LcnVq6UjT\n0kJycJEKngMVademq1ZWHGaiYB7hyT6GhgIcHUJ2cKrPgbEh1Q==\n-----END CERTIFICATE-----",
+                "key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEA4AI33yvHZws+jta6qpV6wzJqF8odIfTIpCfbrVcUUtLFKJ1I\n2e4SceTKi6O3C/I1XuvWlpng5IO65+fQQLO06z1/AuQT78YUn/Wlm9x1aHVsv4AN\nB5JWWqDOjrRT3o7nRPGXfilabP0rGE2mJJcVR9nExJ3IeaktgT3sb8YlXvtchyYp\nmjdbfxabTz07ig0+6/cwKoRRxOK8Uf7f5euE0cI/490J6r5Rs4lgD8sIQNCUFlTF\nYvmAH7gcdssSFBt8NPlUATHEsoFmlW0DKCJWNhTLOht+s6L/1zwTHLjPG2pdkG6W\ndgmu5H2pDml8CDNLDv98Aj7i+I5SRKKcVPlnuQIDAQABAoIBAFPQYKlOzw/+BA0b\nyMIUpdctIMb/54CR/xR0mVw1DbSjigNVPjHUQvB8Y1B2FAITQObgJO06bAv0QdWN\nRb0/v/yYiNJDFjaLjaIAHlO/2+oWrXbFaZqgpVDJhB+e1xaZr2x7XGxm+p925k30\nl6pvIRY+I8JRKvZiV1VZHwL/R3JOtPr++xMZtLVjVOI+f+ySqJ+TZHuAjm49EKxj\ncEmmJ28b7QcziXsvKy00f+zbqLIBKXQdZAFU5eEr1BsDRXdRW+Kf0XIvftuy4BJZ\nvoKT+VGhEvF/qysswL4+6IAO6tpuYnnM0Y2d3sOGoWPkTcQK0MekYKzL/WmtCjNs\n9hodJtECgYEA5EWyhEOf4uOKe5TDp697UCUvXLoOR58FDe/S8XNvScn29jjOkqIg\nOMoqo9xAkJTNTzqn5UUdt1x/pgM2NxlPLFijrc0zQlX3SoOO2ryDd9WNi7YKtN16\nKJqa536WeZu2OEbuAZ+S3GALVy1RPeTNPnUOmKnF06DjDUGzLNCZy10CgYEA+zfw\n952DWuz1U0Z4wvAEqqcgUKXPKrkTXV/iUnjkDkrLYVr0ZofDNTXrdHl+UedFmaOC\ncieZn6DNhcdz5tKtyysGMH3g/qs9PfoGUngvcXsy0Egk04l3x1jc8TTCLqXZXYaQ\nHMsx51n+R58oncPtzYSUOr9qQ6PbC2CstTbFJA0CgYEAjGEsUliAB/jknfEzjXjG\nPdhQUxb8VyE864Az2lah9t/kJzFyIAziAeqZ5GE7t247AGFTBRTHHI8e1Qoemi3P\nWbc9GVIbFs1lIYbcIDpUIyrKPEP8O5QEXtoNLxXTFgAjRGKiVY87spjCAJ+W2ZhO\ne/1it5GYXfgQCYQA2yuBmOUCgYANRkR2YR1axaCk+NlSu6oTdmdPu6M5x7PNQE7O\nOtMaKjua9lppvIzFGAdMDUtueoEEAE7ZR1xnwfB6PDLUpJdIYAqgr1YfPt8qkjaZ\nTv56yZ7CwL0pbF8m6nwqRrZoDp1wwraEvvvxFKFKGY/k3kCHlpTakdjEoDjn3gDi\nRnWeVQKBgCEneMSzucei5LRppRtRaJw/Btll8qlPMlX3W7dxQ3cLwpmLOn0m51Fp\nPIZ44zYK8R6fu4+/sSrlfaIg86Ugeufp6YNxyNROKxUGza5vDIu5OftwWtBeg+UK\nZ8lLWNdX6pp7WMujmF3H1DrkBbauYMUKZ4UxUYtelgHERMePIxwb\n-----END RSA PRIVATE KEY-----"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/fujitsu-postgres/fujitsu-enterprise-postgres-bundle@sha256:e219a0340fd4a8b7451fc883feb828a2b34f0c0a21407951f8d97baadaa91a09",
+      "bundle_path_digest": "sha256:e219a0340fd4a8b7451fc883feb828a2b34f0c0a21407951f8d97baadaa91a09",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-15T03:30:03.286000+00:00",
+      "csv_description": "FUJITSU Enterprise Postgres 12 delivers an enterprise-grade PostgreSQL on OpenShift Container Platform.\n\nThis solution provides the flexibility of a hybrid cloud solution while delivering an enhanced distribution\nof PostgreSQL to support enterprise-level workloads and provide improved deployment and management,\navailability, performance, data governance and security.\n\nAvailable as a multi-architecture container built for both amd64 and s390x.\n\nThe download and Use of the Product is strictly subject to the terms of the End User License Agreement with Fujitsu Limited found at\nhttps://www.fast.fujitsu.com/fujitsu-enterprise-postgres-license-agreements\nWhere the Product that has been embedded as a whole or part into a third party program, only Authorised Customers may download and use the Product.\n",
+      "csv_display_name": "FUJITSU Enterprise Postgres 12 Operator",
+      "csv_metadata_description": "OpenShift Operator for Fujitsu Enterprise Postgres 12",
+      "csv_name": "fep-ansible-operator.v2.2.8",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:14:08.217000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "fep-ansible-operator",
+      "provided_apis": [
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPUser",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPRestore",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPVolume",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPConfig",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPPgpool2Cert",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPCert",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPAction",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPBackup",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPCluster",
+          "version": "v2"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPPgpool2",
+          "version": "v1"
+        }
+      ],
+      "provider": "Fujitsu",
+      "related_images": [
+        {
+          "digest": "sha256:210432e30c6b92712209be28d3cb983e40bd14e3e1c6ff15c3fa78b5ba1952d1",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-12-server@sha256:210432e30c6b92712209be28d3cb983e40bd14e3e1c6ff15c3fa78b5ba1952d1",
+          "name": "fep"
+        },
+        {
+          "digest": "sha256:16c12d3f71984eac2e242a98a67162f2b7de4b636083e65fa52ad74c58e86c38",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-12-backup@sha256:16c12d3f71984eac2e242a98a67162f2b7de4b636083e65fa52ad74c58e86c38",
+          "name": "backup"
+        },
+        {
+          "digest": "sha256:0701a3d27410e98aedc46e1874e25e0db472d81cd0829e8ad4d4e1800b95d0b5",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-12-restore@sha256:0701a3d27410e98aedc46e1874e25e0db472d81cd0829e8ad4d4e1800b95d0b5",
+          "name": "restore"
+        },
+        {
+          "digest": "sha256:60f6d15febf188de6e2a43c55d2f759169d32198b1a67e21d81f93d12fdc02f2",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-12-pgpool2@sha256:60f6d15febf188de6e2a43c55d2f759169d32198b1a67e21d81f93d12fdc02f2",
+          "name": "pgpool2"
+        },
+        {
+          "digest": "sha256:dbe10da6e653cf090d69cd8c9cc08fa2441dab516f9a8aeb8dbecf011575ce77",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-12-operator@sha256:dbe10da6e653cf090d69cd8c9cc08fa2441dab516f9a8aeb8dbecf011575ce77",
+          "name": "fujitsu-enterprise-postgres-12-operator-dbe10da6e653cf090d69cd8c9cc08fa2441dab516f9a8aeb8dbecf011575ce77-annotation"
+        },
+        {
+          "digest": "sha256:dbe10da6e653cf090d69cd8c9cc08fa2441dab516f9a8aeb8dbecf011575ce77",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-12-operator@sha256:dbe10da6e653cf090d69cd8c9cc08fa2441dab516f9a8aeb8dbecf011575ce77",
+          "name": "fep-ansible-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.2.8",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "2.2.8",
+      "version_original": "2.2.8"
+    },
+    {
+      "_id": "62d0df5fd30e2a410036039e",
+      "alm_examples": [
+        {
+          "api_version": "fep.fujitsu.io/v1",
+          "kind": "FEPAction",
+          "metadata": {
+            "name": "new-fep-action"
+          },
+          "spec": {
+            "fepAction": {
+              "args": [
+                "new-fep-sts-0",
+                "new-fep-sts-1"
+              ],
+              "type": "reload"
+            },
+            "sysExtraLogging": false,
+            "targetClusterName": "new-fep"
+          }
+        },
+        {
+          "api_version": "fep.fujitsu.io/v1",
+          "kind": "FEPPgpool2",
+          "metadata": {
+            "name": "new-fep-pgpool2"
+          },
+          "spec": {
+            "count": 2,
+            "customhba": "local   all         all                               trust\nhost    all         all         127.0.0.1/32          trust\nhost    all         all         ::1/128               trust\n",
+            "customlogsize": "128Mi",
+            "customparams": "listen_addresses = '*'\npcp_listen_addresses = '*'\nnum_init_children = 32\nreserved_connections = 0\nenable_pool_hba = off\nallow_clear_text_frontend_auth = off\nauthentication_timeout = 80\nbackend_weight0 = 1\nbackend_weight1 = 1\nbackend_flag0 = 'ALWAYS_MASTER'\nbackend_flag1 = 'ALLOW_TO_FAILOVER'\nconnection_cache = on\nmax_pool = 4\nlisten_backlog_multiplier = 2\nserialize_accept = off\nchild_life_time = 300\nclient_idle_limit = 0\nchild_max_connections = 0\nconnection_life_time = 0\nreset_query_list = 'ABORT; DISCARD ALL'\nclient_min_messages = info\nlog_min_messages = debug1\nlog_statement = on\nlog_per_node_statement = on\nlog_client_messages = on\nlog_hostname = on\nlog_connections = on\nlog_line_prefix = '%t: pid %p: '\nload_balance_mode = on\nignore_leading_white_space = on\nwhite_function_list = ''\nblack_function_list = 'currval,lastval,nextval,setval'\nblack_query_pattern_list = ''\ndatabase_redirect_preference_list = ''\napp_name_redirect_preference_list = ''\nallow_sql_comments = off\ndisable_load_balance_on_write = 'transaction'\nstatement_level_load_balance = on\nconnect_timeout = 10000\nsr_check_period = 0\nsr_check_user = 'postgres'\ndelay_threshold = 0\nlog_standby_delay = 'none'\nssl = on\nssl_ciphers = 'HIGH:MEDIUM:+3DES:!aNULL'\nssl_prefer_server_ciphers = off\nssl_ecdh_curve = 'prime256v1'\nssl_dh_params_file = ''\nrelcache_expire = 0\nrelcache_size = 256\ncheck_temp_table = catalog\ncheck_unlogged_table = on\nenable_shared_relcache = on\nrelcache_query_target = master\n",
+            "custompcp": "none",
+            "customsslcacert": "none",
+            "customsslcert": "-----BEGIN CERTIFICATE-----\nMIIDTzCCAjegAwIBAgIUYssQ8I74US5g+1+Z7CHuaDgkZnEwDQYJKoZIhvcNAQEL\nBQAwNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9y\nIEt1YmVybmV0ZXMwHhcNMjEwMjA2MDM1MjI4WhcNMzEwMjA0MDM1MjI4WjA3MRAw\nDgYDVQQKDAdGdWppdHN1MSMwIQYDVQQDDBpGRVAgUm9vdCBDQSBmb3IgS3ViZXJu\nZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMs97gUF0xkUzCgL\n7MiiDju9ySr/ziwjvcYU7jA9ML+SLmftMs3HtcYbAmSntqI+MDBSR/FAJTOoytuT\npV+mCFcGj2YAjDpliHPeNcUpbryy4YMChF3+MovkIwGCksxo5rhiWhGmoBYpA48P\n4Xe8SPlzqMzhFvNeKzyiUhvjutS2Y1Ss38lsTaurFPx64vQ2PaC54XzdwMptXtpb\ntYmWSzCpJWwxZ6lF3vitdA2w0tnBWNyctAd0+RIM/fvArxiIqseAux9t0uogm5to\nlRIhvekuxOpXBPEqtIYQ4j9XUW2JH8vUDnzPkPvjrq+A3Ug8OyyfGVrW7+VYXozu\nc4aP7P0CAwEAAaNTMFEwHQYDVR0OBBYEFBzCutQ7S74WEhS5V2sNEJBGyLpmMB8G\nA1UdIwQYMBaAFBzCutQ7S74WEhS5V2sNEJBGyLpmMA8GA1UdEwEB/wQFMAMBAf8w\nDQYJKoZIhvcNAQELBQADggEBAMDwD85RAaWEBptFgLzKw+9xEUy1vcZaonAuA1qc\nT342XTueyAugxkC11HwdCGgGS34VyctfMGqj4AW6pA2ez4tLrbOps4DmV4sw8uBL\n8pgRDgfly3ob9FEg2wa0hmrwX9jH5Bt4vySUE2785uPAqaspT2UNtTBxS85BUi1T\nsKId2Rtil6an281Z81wyWVI6Jm2D4MG0mbsiGcTPlCtdg/UljvDYymXlAvd4vNhl\nk9hDa13TgDqJKgKdTIcmZoNQdpEVgFcO0h9AEUy5AuLqxHq60dLfZ6ESGPlMI7Lm\ni4PzYbCnBmOe+7TnHcPSyrnehs66Ik+oifRd82eYS7vKjFw=\n-----END CERTIFICATE-----",
+            "customsslkey": "none",
+            "fepclustername": "new-fep",
+            "imagePullPolicy": "IfNotPresent",
+            "limits": {
+              "cpu": "400m",
+              "memory": "512Mi"
+            },
+            "requests": {
+              "cpu": "200m",
+              "memory": "256Mi"
+            },
+            "serviceport": 9999,
+            "statusport": 9898
+          }
+        },
+        {
+          "api_version": "fep.fujitsu.io/v1",
+          "kind": "FEPRestore",
+          "metadata": {
+            "name": "new-fep-restore"
+          },
+          "spec": {
+            "fromFEPcluster": "new-fep",
+            "imagePullPolicy": "IfNotPresent",
+            "mcSpec": {
+              "limits": {
+                "cpu": "200m",
+                "memory": "300Mi"
+              },
+              "requests": {
+                "cpu": "100m",
+                "memory": "200Mi"
+              }
+            },
+            "restoretype": "latest",
+            "sysExtraLogging": false,
+            "toFEPcluster": "new-fep-2"
+          }
+        },
+        {
+          "api_version": "fep.fujitsu.io/v2",
+          "kind": "FEPCluster",
+          "metadata": {
+            "name": "new-fep"
+          },
+          "spec": {
+            "fep": {
+              "customAnnotations": {
+                "allDeployments": {}
+              },
+              "forceSsl": true,
+              "image": {
+                "pullPolicy": "IfNotPresent"
+              },
+              "instances": 1,
+              "mcSpec": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "700Mi"
+                },
+                "requests": {
+                  "cpu": "200m",
+                  "memory": "512Mi"
+                }
+              },
+              "podAntiAffinity": false,
+              "podDisruptionBudget": false,
+              "servicePort": 27500,
+              "syncMode": "off",
+              "sysExtraLogging": false
+            },
+            "fepChildCrVal": {
+              "backup": {
+                "image": {
+                  "pullPolicy": "IfNotPresent"
+                },
+                "mcSpec": {
+                  "limits": {
+                    "cpu": 0.2,
+                    "memory": "300Mi"
+                  },
+                  "requests": {
+                    "cpu": 0.1,
+                    "memory": "200Mi"
+                  }
+                },
+                "pgbackrestParams": "# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\n[global]\nrepo1-retention-full=7\nrepo1-retention-full-type=time\nlog-path=/database/log/backup\n",
+                "postScript": " ",
+                "preScript": " ",
+                "schedule": {
+                  "num": 2
+                },
+                "schedule1": {
+                  "schedule": "15 0 * * 0",
+                  "type": "full"
+                },
+                "schedule2": {
+                  "schedule": "15 0 * * 1-6",
+                  "type": "incr"
+                },
+                "schedule3": {
+                  "schedule": " ",
+                  "type": " "
+                },
+                "schedule4": {
+                  "schedule": " ",
+                  "type": " "
+                },
+                "schedule5": {
+                  "schedule": " ",
+                  "type": " "
+                }
+              },
+              "customPgAudit": "# define pg audit custom params here to override defaults.\n# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\n[output]\nlog_truncate_on_rotation = on\nlog_filename = 'pgaudit-%a.log'\nlog_rotation_age = 1d\nlog_rotation_size = 0\n[rule]\n",
+              "customPgHba": "# define pg_hba custom rules here to be merged with default rules.\n# TYPE     DATABASE        USER        ADDRESS        METHOD\n",
+              "customPgParams": "# define custom postgresql.conf parameters below to override defaults.\n# Current values are as per default FEP deployment\nshared_preload_libraries='pgx_datamasking,pg_prewarm,pg_stat_statements'\nsession_preload_libraries='pg_prewarm'\nmax_prepared_transactions = 100\nmax_worker_processes = 20\nmax_connections = 100\nwork_mem = 1MB\nmaintenance_work_mem = 12MB\nshared_buffers = 128MB\neffective_cache_size = 384MB\ncheckpoint_completion_target = 0.8\n\n# tcp parameters\ntcp_keepalives_idle = 30\ntcp_keepalives_interval = 10\ntcp_keepalives_count = 3\n\n# logging parameters in default fep installation\n# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\nlog_directory = '/database/log'\nlog_filename = 'logfile-%a.log'\nlog_file_mode = 0600\nlog_truncate_on_rotation = on\nlog_rotation_age = 1d\nlog_rotation_size = 0\nlog_checkpoints = on\nlog_line_prefix = '%e %t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h'\nlog_lock_waits = on\nlog_autovacuum_min_duration = 60s\nlogging_collector = on\npgaudit.config_file='/opt/app-root/src/pgaudit-cfg/pgaudit.conf'\nlog_replication_commands = on\nlog_min_messages = WARNING\nlog_destination = stderr\n\n# wal_archive parameters in default fep installation\narchive_mode = on\narchive_command = 'pgbackrest --stanza=backupstanza --config=/database/userdata/pgbackrest.conf archive-push %p'\nwal_level = replica\nmax_wal_senders = 12\nwal_keep_segments = 64\n",
+              "storage": {
+                "archivewalVol": {
+                  "size": "1Gi"
+                },
+                "backupVol": {
+                  "size": "2Gi"
+                },
+                "dataVol": {
+                  "size": "2Gi"
+                },
+                "logVol": {
+                  "size": "1Gi"
+                },
+                "tablespaceVol": {
+                  "size": "512Mi"
+                },
+                "walVol": {
+                  "size": "1200Mi"
+                }
+              },
+              "sysUsers": {
+                "pgAdminPassword": "admin-password",
+                "pgdb": "mydb",
+                "pgpassword": "mydbpassword",
+                "pgreplpassword": "repluserpwd",
+                "pgrepluser": "repluser",
+                "pguser": "mydbuser",
+                "tdepassphrase": "tde-passphrase"
+              },
+              "systemCertificates": {
+                "cacrt": "-----BEGIN CERTIFICATE-----\nMIIDTzCCAjegAwIBAgIUYssQ8I74US5g+1+Z7CHuaDgkZnEwDQYJKoZIhvcNAQEL\nBQAwNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9y\nIEt1YmVybmV0ZXMwHhcNMjEwMjA2MDM1MjI4WhcNMzEwMjA0MDM1MjI4WjA3MRAw\nDgYDVQQKDAdGdWppdHN1MSMwIQYDVQQDDBpGRVAgUm9vdCBDQSBmb3IgS3ViZXJu\nZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMs97gUF0xkUzCgL\n7MiiDju9ySr/ziwjvcYU7jA9ML+SLmftMs3HtcYbAmSntqI+MDBSR/FAJTOoytuT\npV+mCFcGj2YAjDpliHPeNcUpbryy4YMChF3+MovkIwGCksxo5rhiWhGmoBYpA48P\n4Xe8SPlzqMzhFvNeKzyiUhvjutS2Y1Ss38lsTaurFPx64vQ2PaC54XzdwMptXtpb\ntYmWSzCpJWwxZ6lF3vitdA2w0tnBWNyctAd0+RIM/fvArxiIqseAux9t0uogm5to\nlRIhvekuxOpXBPEqtIYQ4j9XUW2JH8vUDnzPkPvjrq+A3Ug8OyyfGVrW7+VYXozu\nc4aP7P0CAwEAAaNTMFEwHQYDVR0OBBYEFBzCutQ7S74WEhS5V2sNEJBGyLpmMB8G\nA1UdIwQYMBaAFBzCutQ7S74WEhS5V2sNEJBGyLpmMA8GA1UdEwEB/wQFMAMBAf8w\nDQYJKoZIhvcNAQELBQADggEBAMDwD85RAaWEBptFgLzKw+9xEUy1vcZaonAuA1qc\nT342XTueyAugxkC11HwdCGgGS34VyctfMGqj4AW6pA2ez4tLrbOps4DmV4sw8uBL\n8pgRDgfly3ob9FEg2wa0hmrwX9jH5Bt4vySUE2785uPAqaspT2UNtTBxS85BUi1T\nsKId2Rtil6an281Z81wyWVI6Jm2D4MG0mbsiGcTPlCtdg/UljvDYymXlAvd4vNhl\nk9hDa13TgDqJKgKdTIcmZoNQdpEVgFcO0h9AEUy5AuLqxHq60dLfZ6ESGPlMI7Lm\ni4PzYbCnBmOe+7TnHcPSyrnehs66Ik+oifRd82eYS7vKjFw=\n-----END CERTIFICATE-----",
+                "crt": "-----BEGIN CERTIFICATE-----\nMIIDUTCCAjmgAwIBAgIRAMocW3qMoHrD6qRvMPppMkMwDQYJKoZIhvcNAQELBQAw\nNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9yIEt1\nYmVybmV0ZXMwHhcNMjEwMjA2MDQzMjM2WhcNMjYwMjA1MDQzMjM2WjA/MRAwDgYD\nVQQKEwdGdWppdHN1MSswKQYDVQQDEyJGVUpJVFNVIEVudGVycHJpc2UgUG9zdGdy\nZXMgU2VydmVyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4AI33yvH\nZws+jta6qpV6wzJqF8odIfTIpCfbrVcUUtLFKJ1I2e4SceTKi6O3C/I1XuvWlpng\n5IO65+fQQLO06z1/AuQT78YUn/Wlm9x1aHVsv4ANB5JWWqDOjrRT3o7nRPGXfila\nbP0rGE2mJJcVR9nExJ3IeaktgT3sb8YlXvtchyYpmjdbfxabTz07ig0+6/cwKoRR\nxOK8Uf7f5euE0cI/490J6r5Rs4lgD8sIQNCUFlTFYvmAH7gcdssSFBt8NPlUATHE\nsoFmlW0DKCJWNhTLOht+s6L/1zwTHLjPG2pdkG6Wdgmu5H2pDml8CDNLDv98Aj7i\n+I5SRKKcVPlnuQIDAQABo1AwTjAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUH\nAwIwDAYDVR0TAQH/BAIwADAfBgNVHSMEGDAWgBQcwrrUO0u+FhIUuVdrDRCQRsi6\nZjANBgkqhkiG9w0BAQsFAAOCAQEAm5dxBoI9pScOCvRAchg4CprdRDSJb9K6yB3O\nnCAxnM47iHeXnY3WlnI388kHu8DU7O4ba1tJbGs3KY9KzioPk43pU12jWkO1onoF\n+mTDjx/Ef1cYWA9r5q/LtgTa6Q2sxV4O2x67QW82aAnaxO34dV5zWCPIvAoovZBV\nHRT+BgCg3r2vD1RGKK2nl1aYJtWhO1SZubam+VttdZ/vbM9oOJctxmImsEtBXjkY\nKteePdQtLL5o03JhyXWyRshCq+HMmKf2KgyY8gvydGcP4eLQdBWcW40LcnVq6UjT\n0kJycJEKngMVademq1ZWHGaiYB7hyT6GhgIcHUJ2cKrPgbEh1Q==\n-----END CERTIFICATE-----",
+                "key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEA4AI33yvHZws+jta6qpV6wzJqF8odIfTIpCfbrVcUUtLFKJ1I\n2e4SceTKi6O3C/I1XuvWlpng5IO65+fQQLO06z1/AuQT78YUn/Wlm9x1aHVsv4AN\nB5JWWqDOjrRT3o7nRPGXfilabP0rGE2mJJcVR9nExJ3IeaktgT3sb8YlXvtchyYp\nmjdbfxabTz07ig0+6/cwKoRRxOK8Uf7f5euE0cI/490J6r5Rs4lgD8sIQNCUFlTF\nYvmAH7gcdssSFBt8NPlUATHEsoFmlW0DKCJWNhTLOht+s6L/1zwTHLjPG2pdkG6W\ndgmu5H2pDml8CDNLDv98Aj7i+I5SRKKcVPlnuQIDAQABAoIBAFPQYKlOzw/+BA0b\nyMIUpdctIMb/54CR/xR0mVw1DbSjigNVPjHUQvB8Y1B2FAITQObgJO06bAv0QdWN\nRb0/v/yYiNJDFjaLjaIAHlO/2+oWrXbFaZqgpVDJhB+e1xaZr2x7XGxm+p925k30\nl6pvIRY+I8JRKvZiV1VZHwL/R3JOtPr++xMZtLVjVOI+f+ySqJ+TZHuAjm49EKxj\ncEmmJ28b7QcziXsvKy00f+zbqLIBKXQdZAFU5eEr1BsDRXdRW+Kf0XIvftuy4BJZ\nvoKT+VGhEvF/qysswL4+6IAO6tpuYnnM0Y2d3sOGoWPkTcQK0MekYKzL/WmtCjNs\n9hodJtECgYEA5EWyhEOf4uOKe5TDp697UCUvXLoOR58FDe/S8XNvScn29jjOkqIg\nOMoqo9xAkJTNTzqn5UUdt1x/pgM2NxlPLFijrc0zQlX3SoOO2ryDd9WNi7YKtN16\nKJqa536WeZu2OEbuAZ+S3GALVy1RPeTNPnUOmKnF06DjDUGzLNCZy10CgYEA+zfw\n952DWuz1U0Z4wvAEqqcgUKXPKrkTXV/iUnjkDkrLYVr0ZofDNTXrdHl+UedFmaOC\ncieZn6DNhcdz5tKtyysGMH3g/qs9PfoGUngvcXsy0Egk04l3x1jc8TTCLqXZXYaQ\nHMsx51n+R58oncPtzYSUOr9qQ6PbC2CstTbFJA0CgYEAjGEsUliAB/jknfEzjXjG\nPdhQUxb8VyE864Az2lah9t/kJzFyIAziAeqZ5GE7t247AGFTBRTHHI8e1Qoemi3P\nWbc9GVIbFs1lIYbcIDpUIyrKPEP8O5QEXtoNLxXTFgAjRGKiVY87spjCAJ+W2ZhO\ne/1it5GYXfgQCYQA2yuBmOUCgYANRkR2YR1axaCk+NlSu6oTdmdPu6M5x7PNQE7O\nOtMaKjua9lppvIzFGAdMDUtueoEEAE7ZR1xnwfB6PDLUpJdIYAqgr1YfPt8qkjaZ\nTv56yZ7CwL0pbF8m6nwqRrZoDp1wwraEvvvxFKFKGY/k3kCHlpTakdjEoDjn3gDi\nRnWeVQKBgCEneMSzucei5LRppRtRaJw/Btll8qlPMlX3W7dxQ3cLwpmLOn0m51Fp\nPIZ44zYK8R6fu4+/sSrlfaIg86Ugeufp6YNxyNROKxUGza5vDIu5OftwWtBeg+UK\nZ8lLWNdX6pp7WMujmF3H1DrkBbauYMUKZ4UxUYtelgHERMePIxwb\n-----END RSA PRIVATE KEY-----"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/fujitsu-postgres/fujitsu-enterprise-postgres-bundle@sha256:e219a0340fd4a8b7451fc883feb828a2b34f0c0a21407951f8d97baadaa91a09",
+      "bundle_path_digest": "sha256:e219a0340fd4a8b7451fc883feb828a2b34f0c0a21407951f8d97baadaa91a09",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-15T03:30:39.282000+00:00",
+      "csv_description": "FUJITSU Enterprise Postgres 12 delivers an enterprise-grade PostgreSQL on OpenShift Container Platform.\n\nThis solution provides the flexibility of a hybrid cloud solution while delivering an enhanced distribution\nof PostgreSQL to support enterprise-level workloads and provide improved deployment and management,\navailability, performance, data governance and security.\n\nAvailable as a multi-architecture container built for both amd64 and s390x.\n\nThe download and Use of the Product is strictly subject to the terms of the End User License Agreement with Fujitsu Limited found at\nhttps://www.fast.fujitsu.com/fujitsu-enterprise-postgres-license-agreements\nWhere the Product that has been embedded as a whole or part into a third party program, only Authorised Customers may download and use the Product.\n",
+      "csv_display_name": "FUJITSU Enterprise Postgres 12 Operator",
+      "csv_metadata_description": "OpenShift Operator for Fujitsu Enterprise Postgres 12",
+      "csv_name": "fep-ansible-operator.v2.2.8",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:47:56.654000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "fep-ansible-operator",
+      "provided_apis": [
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPVolume",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPPgpool2Cert",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPCert",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPUser",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPBackup",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPAction",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPCluster",
+          "version": "v2"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPConfig",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPPgpool2",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPRestore",
+          "version": "v1"
+        }
+      ],
+      "provider": "Fujitsu",
+      "related_images": [
+        {
+          "digest": "sha256:210432e30c6b92712209be28d3cb983e40bd14e3e1c6ff15c3fa78b5ba1952d1",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-12-server@sha256:210432e30c6b92712209be28d3cb983e40bd14e3e1c6ff15c3fa78b5ba1952d1",
+          "name": "fep"
+        },
+        {
+          "digest": "sha256:16c12d3f71984eac2e242a98a67162f2b7de4b636083e65fa52ad74c58e86c38",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-12-backup@sha256:16c12d3f71984eac2e242a98a67162f2b7de4b636083e65fa52ad74c58e86c38",
+          "name": "backup"
+        },
+        {
+          "digest": "sha256:0701a3d27410e98aedc46e1874e25e0db472d81cd0829e8ad4d4e1800b95d0b5",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-12-restore@sha256:0701a3d27410e98aedc46e1874e25e0db472d81cd0829e8ad4d4e1800b95d0b5",
+          "name": "restore"
+        },
+        {
+          "digest": "sha256:60f6d15febf188de6e2a43c55d2f759169d32198b1a67e21d81f93d12fdc02f2",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-12-pgpool2@sha256:60f6d15febf188de6e2a43c55d2f759169d32198b1a67e21d81f93d12fdc02f2",
+          "name": "pgpool2"
+        },
+        {
+          "digest": "sha256:dbe10da6e653cf090d69cd8c9cc08fa2441dab516f9a8aeb8dbecf011575ce77",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-12-operator@sha256:dbe10da6e653cf090d69cd8c9cc08fa2441dab516f9a8aeb8dbecf011575ce77",
+          "name": "fujitsu-enterprise-postgres-12-operator-dbe10da6e653cf090d69cd8c9cc08fa2441dab516f9a8aeb8dbecf011575ce77-annotation"
+        },
+        {
+          "digest": "sha256:dbe10da6e653cf090d69cd8c9cc08fa2441dab516f9a8aeb8dbecf011575ce77",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-12-operator@sha256:dbe10da6e653cf090d69cd8c9cc08fa2441dab516f9a8aeb8dbecf011575ce77",
+          "name": "fep-ansible-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.2.8",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.2.8",
+      "version_original": "2.2.8"
+    },
+    {
+      "_id": "62d0e1e0683fcfd2f2d20289",
+      "alm_examples": [
+        {
+          "api_version": "fep.fujitsu.io/v1",
+          "kind": "FEPAction",
+          "metadata": {
+            "name": "new-fep-action"
+          },
+          "spec": {
+            "fepAction": {
+              "args": [
+                "new-fep-sts-0",
+                "new-fep-sts-1"
+              ],
+              "type": "reload"
+            },
+            "sysExtraLogging": false,
+            "targetClusterName": "new-fep"
+          }
+        },
+        {
+          "api_version": "fep.fujitsu.io/v1",
+          "kind": "FEPExporter",
+          "metadata": {
+            "name": "new-fep-exporter"
+          },
+          "spec": {
+            "fepExporter": {
+              "exporterLogLevel": "error",
+              "fepClusterList": [
+                "new-fep1"
+              ],
+              "image": {
+                "pullPolicy": "IfNotPresent"
+              },
+              "mcSpec": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "700Mi"
+                },
+                "requests": {
+                  "cpu": "200m",
+                  "memory": "512Mi"
+                }
+              },
+              "restartRequired": false,
+              "sysExtraLogging": false,
+              "userCustomQueries": "usr_example:\n  query: \"SELECT EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp())) as lag\"\n  master: true\n  metrics:\n    - lag:\n        usage: \"GAUGE\"\n        description: \"Replication lag behind master in seconds\""
+            }
+          }
+        },
+        {
+          "api_version": "fep.fujitsu.io/v1",
+          "kind": "FEPPgpool2",
+          "metadata": {
+            "name": "new-fep-pgpool2"
+          },
+          "spec": {
+            "count": 2,
+            "customhba": "local   all         all                               trust\nhost    all         all         127.0.0.1/32          trust\nhost    all         all         ::1/128               trust\n",
+            "customlogsize": "128Mi",
+            "customparams": "listen_addresses = '*'\npcp_listen_addresses = '*'\nnum_init_children = 32\nreserved_connections = 0\nenable_pool_hba = off\nallow_clear_text_frontend_auth = off\nauthentication_timeout = 80\nbackend_weight0 = 1\nbackend_weight1 = 1\nbackend_flag0 = 'ALWAYS_PRIMARY'\nbackend_flag1 = 'DISALLOW_TO_FAILOVER'\nconnection_cache = on\nmax_pool = 4\nlisten_backlog_multiplier = 2\nserialize_accept = off\nchild_life_time = 300\nclient_idle_limit = 0\nchild_max_connections = 0\nconnection_life_time = 0\nreset_query_list = 'ABORT; DISCARD ALL'\nclient_min_messages = info\nlog_min_messages = debug1\nlog_statement = on\nlog_per_node_statement = on\nlog_client_messages = on\nlog_hostname = on\nlog_connections = on\nlog_line_prefix = '%t: pid %p: '\nload_balance_mode = on\nignore_leading_white_space = on\nwhite_function_list = ''\nblack_function_list = 'currval,lastval,nextval,setval'\nblack_query_pattern_list = ''\ndatabase_redirect_preference_list = ''\napp_name_redirect_preference_list = ''\nallow_sql_comments = off\ndisable_load_balance_on_write = 'transaction'\nstatement_level_load_balance = on\nsr_check_period = 0\nsr_check_user = 'postgres'\ndelay_threshold = 0\nlog_standby_delay = 'none'\nssl = on\nssl_ciphers = 'HIGH:MEDIUM:+3DES:!aNULL'\nssl_prefer_server_ciphers = off\nssl_ecdh_curve = 'prime256v1'\nssl_dh_params_file = ''\nrelcache_expire = 0\nrelcache_size = 256\ncheck_temp_table = catalog\ncheck_unlogged_table = on\nenable_shared_relcache = on\nrelcache_query_target = primary\nwd_port0 = 9000\n",
+            "custompcp": "none",
+            "customsslcacert": "none",
+            "customsslcert": "-----BEGIN CERTIFICATE-----\nMIIDTzCCAjegAwIBAgIUYssQ8I74US5g+1+Z7CHuaDgkZnEwDQYJKoZIhvcNAQEL\nBQAwNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9y\nIEt1YmVybmV0ZXMwHhcNMjEwMjA2MDM1MjI4WhcNMzEwMjA0MDM1MjI4WjA3MRAw\nDgYDVQQKDAdGdWppdHN1MSMwIQYDVQQDDBpGRVAgUm9vdCBDQSBmb3IgS3ViZXJu\nZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMs97gUF0xkUzCgL\n7MiiDju9ySr/ziwjvcYU7jA9ML+SLmftMs3HtcYbAmSntqI+MDBSR/FAJTOoytuT\npV+mCFcGj2YAjDpliHPeNcUpbryy4YMChF3+MovkIwGCksxo5rhiWhGmoBYpA48P\n4Xe8SPlzqMzhFvNeKzyiUhvjutS2Y1Ss38lsTaurFPx64vQ2PaC54XzdwMptXtpb\ntYmWSzCpJWwxZ6lF3vitdA2w0tnBWNyctAd0+RIM/fvArxiIqseAux9t0uogm5to\nlRIhvekuxOpXBPEqtIYQ4j9XUW2JH8vUDnzPkPvjrq+A3Ug8OyyfGVrW7+VYXozu\nc4aP7P0CAwEAAaNTMFEwHQYDVR0OBBYEFBzCutQ7S74WEhS5V2sNEJBGyLpmMB8G\nA1UdIwQYMBaAFBzCutQ7S74WEhS5V2sNEJBGyLpmMA8GA1UdEwEB/wQFMAMBAf8w\nDQYJKoZIhvcNAQELBQADggEBAMDwD85RAaWEBptFgLzKw+9xEUy1vcZaonAuA1qc\nT342XTueyAugxkC11HwdCGgGS34VyctfMGqj4AW6pA2ez4tLrbOps4DmV4sw8uBL\n8pgRDgfly3ob9FEg2wa0hmrwX9jH5Bt4vySUE2785uPAqaspT2UNtTBxS85BUi1T\nsKId2Rtil6an281Z81wyWVI6Jm2D4MG0mbsiGcTPlCtdg/UljvDYymXlAvd4vNhl\nk9hDa13TgDqJKgKdTIcmZoNQdpEVgFcO0h9AEUy5AuLqxHq60dLfZ6ESGPlMI7Lm\ni4PzYbCnBmOe+7TnHcPSyrnehs66Ik+oifRd82eYS7vKjFw=\n-----END CERTIFICATE-----",
+            "customsslkey": "none",
+            "fepclustername": "new-fep",
+            "imagePullPolicy": "IfNotPresent",
+            "limits": {
+              "cpu": "400m",
+              "memory": "512Mi"
+            },
+            "requests": {
+              "cpu": "200m",
+              "memory": "256Mi"
+            },
+            "serviceport": 9999,
+            "statusport": 9898
+          }
+        },
+        {
+          "api_version": "fep.fujitsu.io/v1",
+          "kind": "FEPRestore",
+          "metadata": {
+            "name": "new-fep-restore"
+          },
+          "spec": {
+            "fromFEPcluster": "new-fep",
+            "imagePullPolicy": "IfNotPresent",
+            "mcSpec": {
+              "limits": {
+                "cpu": "200m",
+                "memory": "300Mi"
+              },
+              "requests": {
+                "cpu": "100m",
+                "memory": "200Mi"
+              }
+            },
+            "restoretype": "latest",
+            "sysExtraLogging": false,
+            "toFEPcluster": "new-fep-2"
+          }
+        },
+        {
+          "api_version": "fep.fujitsu.io/v2",
+          "kind": "FEPCluster",
+          "metadata": {
+            "name": "new-fep"
+          },
+          "spec": {
+            "fep": {
+              "customAnnotations": {
+                "allDeployments": {}
+              },
+              "forceSsl": true,
+              "image": {
+                "pullPolicy": "IfNotPresent"
+              },
+              "instances": 1,
+              "mcSpec": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "700Mi"
+                },
+                "requests": {
+                  "cpu": "200m",
+                  "memory": "512Mi"
+                }
+              },
+              "podAntiAffinity": false,
+              "podDisruptionBudget": false,
+              "servicePort": 27500,
+              "syncMode": "off",
+              "sysExtraLogging": false
+            },
+            "fepChildCrVal": {
+              "backup": {
+                "image": {
+                  "pullPolicy": "IfNotPresent"
+                },
+                "mcSpec": {
+                  "limits": {
+                    "cpu": 0.2,
+                    "memory": "300Mi"
+                  },
+                  "requests": {
+                    "cpu": 0.1,
+                    "memory": "200Mi"
+                  }
+                },
+                "pgbackrestParams": "# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\n[global]\nrepo1-retention-full=7\nrepo1-retention-full-type=time\nlog-path=/database/log/backup\n",
+                "postScript": " ",
+                "preScript": " ",
+                "schedule": {
+                  "num": 2
+                },
+                "schedule1": {
+                  "schedule": "15 0 * * 0",
+                  "type": "full"
+                },
+                "schedule2": {
+                  "schedule": "15 0 * * 1-6",
+                  "type": "incr"
+                },
+                "schedule3": {
+                  "schedule": " ",
+                  "type": " "
+                },
+                "schedule4": {
+                  "schedule": " ",
+                  "type": " "
+                },
+                "schedule5": {
+                  "schedule": " ",
+                  "type": " "
+                }
+              },
+              "customPgAudit": "# define pg audit custom params here to override defaults.\n# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\n[output]\nlogger = 'auditlog'\nlog_directory = '/database/log/audit'\nlog_truncate_on_rotation = on\nlog_filename = 'pgaudit-%a.log'\nlog_rotation_age = 1d\nlog_rotation_size = 0\n[rule]\n",
+              "customPgHba": "# define pg_hba custom rules here to be merged with default rules.\n# TYPE     DATABASE        USER        ADDRESS        METHOD\n",
+              "customPgParams": "# define custom postgresql.conf parameters below to override defaults.\n# Current values are as per default FEP deployment\nshared_preload_libraries='pgx_datamasking,pg_prewarm,pg_stat_statements'\nsession_preload_libraries='pg_prewarm'\nmax_prepared_transactions = 100\nmax_worker_processes = 30\nmax_connections = 100\nwork_mem = 1MB\nmaintenance_work_mem = 12MB\nshared_buffers = 128MB\neffective_cache_size = 384MB\ncheckpoint_completion_target = 0.8\n# tcp parameters\ntcp_keepalives_idle = 30\ntcp_keepalives_interval = 10\ntcp_keepalives_count = 3\n# logging parameters in default fep installation\n# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\nlog_directory = '/database/log'\nlog_filename = 'logfile-%a.log'\nlog_file_mode = 0600\nlog_truncate_on_rotation = on\nlog_rotation_age = 1d\nlog_rotation_size = 0\nlog_checkpoints = on\nlog_line_prefix = '%e %t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h'\nlog_lock_waits = on\nlog_autovacuum_min_duration = 60s\nlogging_collector = on\npgaudit.config_file='/opt/app-root/src/pgaudit-cfg/pgaudit.conf'\nlog_replication_commands = on\nlog_min_messages = WARNING\nlog_destination = stderr\n# wal_archive parameters in default fep installation\narchive_mode = on\narchive_command = 'pgbackrest --stanza=backupstanza --config=/database/userdata/pgbackrest.conf archive-push %p'\nwal_level = replica\nmax_wal_senders = 12\nwal_keep_segments = 64\ntrack_activities = on\ntrack_counts = on\n",
+              "storage": {
+                "archivewalVol": {
+                  "size": "1Gi"
+                },
+                "backupVol": {
+                  "size": "2Gi"
+                },
+                "dataVol": {
+                  "size": "2Gi"
+                },
+                "logVol": {
+                  "size": "1Gi"
+                },
+                "tablespaceVol": {
+                  "size": "512Mi"
+                },
+                "walVol": {
+                  "size": "1200Mi"
+                }
+              },
+              "sysUsers": {
+                "pgAdminPassword": "admin-password",
+                "pgRewindPassword": "rewind_password",
+                "pgRewindUser": "rewind_user",
+                "pgdb": "mydb",
+                "pgpassword": "mydbpassword",
+                "pgreplpassword": "repluserpwd",
+                "pgrepluser": "repluser",
+                "pguser": "mydbuser",
+                "tdepassphrase": "tde-passphrase"
+              },
+              "systemCertificates": {
+                "cacrt": "-----BEGIN CERTIFICATE-----\nMIIDTzCCAjegAwIBAgIUYssQ8I74US5g+1+Z7CHuaDgkZnEwDQYJKoZIhvcNAQEL\nBQAwNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9y\nIEt1YmVybmV0ZXMwHhcNMjEwMjA2MDM1MjI4WhcNMzEwMjA0MDM1MjI4WjA3MRAw\nDgYDVQQKDAdGdWppdHN1MSMwIQYDVQQDDBpGRVAgUm9vdCBDQSBmb3IgS3ViZXJu\nZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMs97gUF0xkUzCgL\n7MiiDju9ySr/ziwjvcYU7jA9ML+SLmftMs3HtcYbAmSntqI+MDBSR/FAJTOoytuT\npV+mCFcGj2YAjDpliHPeNcUpbryy4YMChF3+MovkIwGCksxo5rhiWhGmoBYpA48P\n4Xe8SPlzqMzhFvNeKzyiUhvjutS2Y1Ss38lsTaurFPx64vQ2PaC54XzdwMptXtpb\ntYmWSzCpJWwxZ6lF3vitdA2w0tnBWNyctAd0+RIM/fvArxiIqseAux9t0uogm5to\nlRIhvekuxOpXBPEqtIYQ4j9XUW2JH8vUDnzPkPvjrq+A3Ug8OyyfGVrW7+VYXozu\nc4aP7P0CAwEAAaNTMFEwHQYDVR0OBBYEFBzCutQ7S74WEhS5V2sNEJBGyLpmMB8G\nA1UdIwQYMBaAFBzCutQ7S74WEhS5V2sNEJBGyLpmMA8GA1UdEwEB/wQFMAMBAf8w\nDQYJKoZIhvcNAQELBQADggEBAMDwD85RAaWEBptFgLzKw+9xEUy1vcZaonAuA1qc\nT342XTueyAugxkC11HwdCGgGS34VyctfMGqj4AW6pA2ez4tLrbOps4DmV4sw8uBL\n8pgRDgfly3ob9FEg2wa0hmrwX9jH5Bt4vySUE2785uPAqaspT2UNtTBxS85BUi1T\nsKId2Rtil6an281Z81wyWVI6Jm2D4MG0mbsiGcTPlCtdg/UljvDYymXlAvd4vNhl\nk9hDa13TgDqJKgKdTIcmZoNQdpEVgFcO0h9AEUy5AuLqxHq60dLfZ6ESGPlMI7Lm\ni4PzYbCnBmOe+7TnHcPSyrnehs66Ik+oifRd82eYS7vKjFw=\n-----END CERTIFICATE-----",
+                "crt": "-----BEGIN CERTIFICATE-----\nMIIDUTCCAjmgAwIBAgIRAMocW3qMoHrD6qRvMPppMkMwDQYJKoZIhvcNAQELBQAw\nNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9yIEt1\nYmVybmV0ZXMwHhcNMjEwMjA2MDQzMjM2WhcNMjYwMjA1MDQzMjM2WjA/MRAwDgYD\nVQQKEwdGdWppdHN1MSswKQYDVQQDEyJGVUpJVFNVIEVudGVycHJpc2UgUG9zdGdy\nZXMgU2VydmVyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4AI33yvH\nZws+jta6qpV6wzJqF8odIfTIpCfbrVcUUtLFKJ1I2e4SceTKi6O3C/I1XuvWlpng\n5IO65+fQQLO06z1/AuQT78YUn/Wlm9x1aHVsv4ANB5JWWqDOjrRT3o7nRPGXfila\nbP0rGE2mJJcVR9nExJ3IeaktgT3sb8YlXvtchyYpmjdbfxabTz07ig0+6/cwKoRR\nxOK8Uf7f5euE0cI/490J6r5Rs4lgD8sIQNCUFlTFYvmAH7gcdssSFBt8NPlUATHE\nsoFmlW0DKCJWNhTLOht+s6L/1zwTHLjPG2pdkG6Wdgmu5H2pDml8CDNLDv98Aj7i\n+I5SRKKcVPlnuQIDAQABo1AwTjAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUH\nAwIwDAYDVR0TAQH/BAIwADAfBgNVHSMEGDAWgBQcwrrUO0u+FhIUuVdrDRCQRsi6\nZjANBgkqhkiG9w0BAQsFAAOCAQEAm5dxBoI9pScOCvRAchg4CprdRDSJb9K6yB3O\nnCAxnM47iHeXnY3WlnI388kHu8DU7O4ba1tJbGs3KY9KzioPk43pU12jWkO1onoF\n+mTDjx/Ef1cYWA9r5q/LtgTa6Q2sxV4O2x67QW82aAnaxO34dV5zWCPIvAoovZBV\nHRT+BgCg3r2vD1RGKK2nl1aYJtWhO1SZubam+VttdZ/vbM9oOJctxmImsEtBXjkY\nKteePdQtLL5o03JhyXWyRshCq+HMmKf2KgyY8gvydGcP4eLQdBWcW40LcnVq6UjT\n0kJycJEKngMVademq1ZWHGaiYB7hyT6GhgIcHUJ2cKrPgbEh1Q==\n-----END CERTIFICATE-----",
+                "key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEA4AI33yvHZws+jta6qpV6wzJqF8odIfTIpCfbrVcUUtLFKJ1I\n2e4SceTKi6O3C/I1XuvWlpng5IO65+fQQLO06z1/AuQT78YUn/Wlm9x1aHVsv4AN\nB5JWWqDOjrRT3o7nRPGXfilabP0rGE2mJJcVR9nExJ3IeaktgT3sb8YlXvtchyYp\nmjdbfxabTz07ig0+6/cwKoRRxOK8Uf7f5euE0cI/490J6r5Rs4lgD8sIQNCUFlTF\nYvmAH7gcdssSFBt8NPlUATHEsoFmlW0DKCJWNhTLOht+s6L/1zwTHLjPG2pdkG6W\ndgmu5H2pDml8CDNLDv98Aj7i+I5SRKKcVPlnuQIDAQABAoIBAFPQYKlOzw/+BA0b\nyMIUpdctIMb/54CR/xR0mVw1DbSjigNVPjHUQvB8Y1B2FAITQObgJO06bAv0QdWN\nRb0/v/yYiNJDFjaLjaIAHlO/2+oWrXbFaZqgpVDJhB+e1xaZr2x7XGxm+p925k30\nl6pvIRY+I8JRKvZiV1VZHwL/R3JOtPr++xMZtLVjVOI+f+ySqJ+TZHuAjm49EKxj\ncEmmJ28b7QcziXsvKy00f+zbqLIBKXQdZAFU5eEr1BsDRXdRW+Kf0XIvftuy4BJZ\nvoKT+VGhEvF/qysswL4+6IAO6tpuYnnM0Y2d3sOGoWPkTcQK0MekYKzL/WmtCjNs\n9hodJtECgYEA5EWyhEOf4uOKe5TDp697UCUvXLoOR58FDe/S8XNvScn29jjOkqIg\nOMoqo9xAkJTNTzqn5UUdt1x/pgM2NxlPLFijrc0zQlX3SoOO2ryDd9WNi7YKtN16\nKJqa536WeZu2OEbuAZ+S3GALVy1RPeTNPnUOmKnF06DjDUGzLNCZy10CgYEA+zfw\n952DWuz1U0Z4wvAEqqcgUKXPKrkTXV/iUnjkDkrLYVr0ZofDNTXrdHl+UedFmaOC\ncieZn6DNhcdz5tKtyysGMH3g/qs9PfoGUngvcXsy0Egk04l3x1jc8TTCLqXZXYaQ\nHMsx51n+R58oncPtzYSUOr9qQ6PbC2CstTbFJA0CgYEAjGEsUliAB/jknfEzjXjG\nPdhQUxb8VyE864Az2lah9t/kJzFyIAziAeqZ5GE7t247AGFTBRTHHI8e1Qoemi3P\nWbc9GVIbFs1lIYbcIDpUIyrKPEP8O5QEXtoNLxXTFgAjRGKiVY87spjCAJ+W2ZhO\ne/1it5GYXfgQCYQA2yuBmOUCgYANRkR2YR1axaCk+NlSu6oTdmdPu6M5x7PNQE7O\nOtMaKjua9lppvIzFGAdMDUtueoEEAE7ZR1xnwfB6PDLUpJdIYAqgr1YfPt8qkjaZ\nTv56yZ7CwL0pbF8m6nwqRrZoDp1wwraEvvvxFKFKGY/k3kCHlpTakdjEoDjn3gDi\nRnWeVQKBgCEneMSzucei5LRppRtRaJw/Btll8qlPMlX3W7dxQ3cLwpmLOn0m51Fp\nPIZ44zYK8R6fu4+/sSrlfaIg86Ugeufp6YNxyNROKxUGza5vDIu5OftwWtBeg+UK\nZ8lLWNdX6pp7WMujmF3H1DrkBbauYMUKZ4UxUYtelgHERMePIxwb\n-----END RSA PRIVATE KEY-----"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/fujitsu-postgres/fujitsu-enterprise-postgres-13-bundle@sha256:2655f2eb50e5ddd62c05a06e29d336835175fe3b5069febbb1845b919df1d743",
+      "bundle_path_digest": "sha256:2655f2eb50e5ddd62c05a06e29d336835175fe3b5069febbb1845b919df1d743",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable-13",
+      "creation_date": "2022-07-15T03:41:20.215000+00:00",
+      "csv_description": "FUJITSU Enterprise Postgres 13 delivers an enterprise-grade PostgreSQL on OpenShift Container Platform. \n\nThis solution provides the flexibility of a hybrid cloud solution while delivering an enhanced distribution of PostgreSQL to support enterprise-level workloads and provide improved deployment and management, availability, performance, data governance and security.  \n\nAvailable as a multi-architecture container built for both amd64 and s390x. \n\nThe download and Use of the Product is strictly subject to the terms of the End User License Agreement with Fujitsu Limited found at https://www.fast.fujitsu.com/fujitsu-enterprise-postgres-license-agreements. Where the Product that has been embedded as a whole or part into a third party program, only Authorised Customers may download and use the Product.\n",
+      "csv_display_name": "FUJITSU Enterprise Postgres 13 Operator",
+      "csv_metadata_description": "OpenShift Operator for Fujitsu Enterprise Postgres 13",
+      "csv_name": "fujitsu-enterprise-operator.v3.1.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:21:51.829000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "fujitsu-enterprise-operator",
+      "provided_apis": [
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPAction",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPAutoscale",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPBackup",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPCert",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPCluster",
+          "version": "v2"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPConfig",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPExporter",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPPgpool2",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPPgpool2Cert",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPRestore",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPUser",
+          "version": "v1"
+        },
+        {
+          "group": "fep.fujitsu.io",
+          "kind": "FEPVolume",
+          "version": "v1"
+        }
+      ],
+      "provider": "Fujitsu",
+      "related_images": [
+        {
+          "digest": "sha256:3019d5a7c20b732e5fb551b0943eb8b54d735deb227dd476c01e6bd4beba1517",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-server@sha256:3019d5a7c20b732e5fb551b0943eb8b54d735deb227dd476c01e6bd4beba1517",
+          "name": "fep"
+        },
+        {
+          "digest": "sha256:d42d1423dba28f6d1811023806542dce1e519c9cbf891e46aacec45190e26110",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-backup@sha256:d42d1423dba28f6d1811023806542dce1e519c9cbf891e46aacec45190e26110",
+          "name": "backup"
+        },
+        {
+          "digest": "sha256:d3b9215c0bdde9187c7cf4845aa27d0340441789f240534cf30d2f0d7ab31baa",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-restore@sha256:d3b9215c0bdde9187c7cf4845aa27d0340441789f240534cf30d2f0d7ab31baa",
+          "name": "restore"
+        },
+        {
+          "digest": "sha256:5ef4cc24300af0fef06efd5b098dbf8b3f1194672c098e4b1ba6656a1ce52022",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-pgpool2@sha256:5ef4cc24300af0fef06efd5b098dbf8b3f1194672c098e4b1ba6656a1ce52022",
+          "name": "pgpool2"
+        },
+        {
+          "digest": "sha256:561ed15c9de36901e0584c549c3e91a357a493e94f67f5a1c793325ebcd306c0",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-exporter@sha256:561ed15c9de36901e0584c549c3e91a357a493e94f67f5a1c793325ebcd306c0",
+          "name": "fepexporter"
+        },
+        {
+          "digest": "sha256:f6575b2464eb367dd4f6dcd42d06f95d43853163d128f1aaedf42040a46b64d7",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-operator@sha256:f6575b2464eb367dd4f6dcd42d06f95d43853163d128f1aaedf42040a46b64d7",
+          "name": "fujitsu-enterprise-postgres-13-operator-f6575b2464eb367dd4f6dcd42d06f95d43853163d128f1aaedf42040a46b64d7-annotation"
+        },
+        {
+          "digest": "sha256:f6575b2464eb367dd4f6dcd42d06f95d43853163d128f1aaedf42040a46b64d7",
+          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-operator@sha256:f6575b2464eb367dd4f6dcd42d06f95d43853163d128f1aaedf42040a46b64d7",
+          "name": "fep-ansible-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<3.1.5",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "3.1.5",
+      "version_original": "3.1.5"
     }
   ],
   "page": 37,
   "page_size": 100,
-  "total": 4762
+  "total": 4780
 }

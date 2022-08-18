@@ -1,405 +1,6 @@
 {
   "data": [
     {
-      "_id": "628674283fcd237f69725df8",
-      "alm_examples": [
-        {
-          "api_version": "instana.io/v1",
-          "kind": "InstanaAgent",
-          "metadata": {
-            "name": "instana-agent",
-            "namespace": "instana-agent"
-          },
-          "spec": {
-            "agent": {
-              "configuration_yaml": "# You can leave this empty, or use this to configure your instana agent.\n# See https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/\n",
-              "endpointHost": "ingress-red-saas.instana.io",
-              "endpointPort": "443",
-              "env": {},
-              "key": "replace-key"
-            },
-            "cluster": {
-              "name": "my-cluster"
-            },
-            "zone": {
-              "name": "edited-zone"
-            }
-          }
-        },
-        {
-          "api_version": "instana.io/v1beta1",
-          "kind": "InstanaAgent",
-          "metadata": {
-            "name": "instana-agent",
-            "namespace": "instana-agent"
-          },
-          "spec": {
-            "agent.endpoint.host": "ingress-red-saas.instana.io",
-            "agent.endpoint.port": 443,
-            "agent.env": {
-              "INSTANA_AGENT_TAGS": "example"
-            },
-            "agent.key": "replace-me",
-            "agent.zone.name": "my-zone",
-            "cluster.name": "replace-me",
-            "config.files": {
-              "configuration.yaml": "# You can leave this empty, or use this to configure your instana agent.\n# See https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/\n"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:2d61f1228ddb30ff1853ea95f0752fb9eed200ceba67e3a3d37b54f810a74976",
-      "bundle_path_digest": "sha256:2d61f1228ddb30ff1853ea95f0752fb9eed200ceba67e3a3d37b54f810a74976",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-19T16:45:28.475000+00:00",
-      "csv_description": "# Instana\n\nInstana is an [APM solution](https://www.instana.com/product-overview/) built for microservices that enables IT Ops to build applications faster and deliver higher quality services by automating monitoring, tracing and root cause analysis. The solution is optimized for [Kubernetes](https://www.instana.com/automatic-kubernetes-monitoring/) and [OpenShift](https://www.instana.com/blog/automatic-root-cause-analysis-for-openshift-applications/).\n\n## Instana Agent Operator\n\nThis is the Kubernetes Operator for installing the Instana Agent on Kubernetes or OpenShift.\n\n## Prerequisites for OpenShift\n\nBefore the agent will be able to run in OpenShift, you need to perform a couple of extra configuration steps.\n\nYou need to set up a project for the Instana Agent and configure it's permissions.\n\nThe project you create here needs to be the namespace where you create the Instana Agent custom resource that the operator will use to deploy the agent.\n\nFor example, create the `instana-agent` project:\n\n    oc new-project instana-agent\n\nThen, ensure the `instana-agent` service account is in the privileged security context:\n\n    oc adm policy add-scc-to-user privileged -z instana-agent\n\nThis service account will be created by the operator.\n\nNow you can proceed with installing the operator for the Instana agent.\n\n## Installation and Configuration\n\nFirst, install this operator from [OperatorHub.io](https://operatorhub.io/), [OpenShift Container Platform](https://www.openshift.com/), or [OKD](https://www.okd.io/).\n\nSecond, create a custom resource with the agent configuration in the target namespace (for now, this MUST always be the `instana-agent` namespace). The operator will pick up the custom resource and install the Instana agent accordingly.\n\nThe following is a minimal template of the custom resource:\n\n```yaml\napiVersion: instana.io/v1\nkind: InstanaAgent\nmetadata:\n  name: instana-agent\n  namespace: instana-agent\nspec:\n  zone:\n    name: my-zone # (optional) name of the zone of the host\n  cluster:\n    name: replace-me # replace with the name of your Kubernetes cluster\n  agent:\n    key: replace-me # replace with your Instana agent key\n    endpointHost: ingress-red-saas.instana.io # the monitoring ingress endpoint\n    endpointPort: \"443\" # the monitoring ingress endpoint port, wrapped in quotes\n    env:\n      INSTANA_AGENT_TAGS: example\n    configuration_yaml: |\n      # You can leave this empty, or use this to configure your instana agent.\n      # See https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/\n```\n\nSave the template in a file `instana-agent.yaml` and edit the following values:\n\n* If your target namespace is not `instana-agent`, replace the `namespace:` accordingly.\n* `agent.key` must be set with your Instana agent key.\n* `agent.endpointHost` must be set with the monitoring ingress endpoint, generally either `saas-us-west-2.instana.io` or `saas-eu-west-1.instana.io`.\n* `agent.endpointPort` must be set with the monitoring ingress port, generally \"443\" (wrapped in quotes).\n* `zone.name` should be set with the name of the Kubernetes cluster that is be displayed in Instana.\n\nFor advanced configuration, you can edit the contents of the `configuration.yaml` file. View documentation [here](https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/).\n\nApply the custom resource with `kubectl apply -f instana-agent.yaml`. After some time, you should see `instana-agent` Pods being created on each node of your cluster, and your cluster should show on the infrastructure map on your Instana Web interface.\n\n## Uninstalling\n\nIn order to uninstall the Instana agent, simply remove the custom resource with `kubectl delete -f instana-agent.yaml`.\n\n## Source Code\n\nThe Instana agent operator is an open source project hosted on [https://github.com/instana/instana-agent-operator](https://github.com/instana/instana-agent-operator/).\n",
-      "csv_display_name": "Instana Agent Operator",
-      "csv_metadata_description": "Fully automated Application Performance Monitoring (APM) for microservices.",
-      "csv_name": "instana-agent-operator.v2.0.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:01:43.490000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "instana-agent-operator",
-      "provided_apis": [
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1"
-        },
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Instana",
-      "related_images": [
-        {
-          "digest": "sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "image": "icr.io/instana/instana-agent-operator@sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "name": "instana-agent-operator"
-        },
-        {
-          "digest": "sha256:faaaa00d062b891e66438bce4317fd0b7fae3eb6be3d6a990beb4e891044bc09",
-          "image": "icr.io/instana/agent@sha256:faaaa00d062b891e66438bce4317fd0b7fae3eb6be3d6a990beb4e891044bc09",
-          "name": "instana-agent"
-        },
-        {
-          "digest": "sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "image": "icr.io/instana/instana-agent-operator@sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "name": "instana-agent-operator-2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11-annotation"
-        },
-        {
-          "digest": "sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "image": "icr.io/instana/instana-agent-operator@sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2.0.5",
-      "version_original": "2.0.5"
-    },
-    {
-      "_id": "628676b77aa88cb299062efc",
-      "alm_examples": [
-        {
-          "api_version": "instana.io/v1",
-          "kind": "InstanaAgent",
-          "metadata": {
-            "name": "instana-agent",
-            "namespace": "instana-agent"
-          },
-          "spec": {
-            "agent": {
-              "configuration_yaml": "# You can leave this empty, or use this to configure your instana agent.\n# See https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/\n",
-              "endpointHost": "ingress-red-saas.instana.io",
-              "endpointPort": "443",
-              "env": {},
-              "key": "replace-key"
-            },
-            "cluster": {
-              "name": "my-cluster"
-            },
-            "zone": {
-              "name": "edited-zone"
-            }
-          }
-        },
-        {
-          "api_version": "instana.io/v1beta1",
-          "kind": "InstanaAgent",
-          "metadata": {
-            "name": "instana-agent",
-            "namespace": "instana-agent"
-          },
-          "spec": {
-            "agent.endpoint.host": "ingress-red-saas.instana.io",
-            "agent.endpoint.port": 443,
-            "agent.env": {
-              "INSTANA_AGENT_TAGS": "example"
-            },
-            "agent.key": "replace-me",
-            "agent.zone.name": "my-zone",
-            "cluster.name": "replace-me",
-            "config.files": {
-              "configuration.yaml": "# You can leave this empty, or use this to configure your instana agent.\n# See https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/\n"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:2d61f1228ddb30ff1853ea95f0752fb9eed200ceba67e3a3d37b54f810a74976",
-      "bundle_path_digest": "sha256:2d61f1228ddb30ff1853ea95f0752fb9eed200ceba67e3a3d37b54f810a74976",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-19T16:56:23.410000+00:00",
-      "csv_description": "# Instana\n\nInstana is an [APM solution](https://www.instana.com/product-overview/) built for microservices that enables IT Ops to build applications faster and deliver higher quality services by automating monitoring, tracing and root cause analysis. The solution is optimized for [Kubernetes](https://www.instana.com/automatic-kubernetes-monitoring/) and [OpenShift](https://www.instana.com/blog/automatic-root-cause-analysis-for-openshift-applications/).\n\n## Instana Agent Operator\n\nThis is the Kubernetes Operator for installing the Instana Agent on Kubernetes or OpenShift.\n\n## Prerequisites for OpenShift\n\nBefore the agent will be able to run in OpenShift, you need to perform a couple of extra configuration steps.\n\nYou need to set up a project for the Instana Agent and configure it's permissions.\n\nThe project you create here needs to be the namespace where you create the Instana Agent custom resource that the operator will use to deploy the agent.\n\nFor example, create the `instana-agent` project:\n\n    oc new-project instana-agent\n\nThen, ensure the `instana-agent` service account is in the privileged security context:\n\n    oc adm policy add-scc-to-user privileged -z instana-agent\n\nThis service account will be created by the operator.\n\nNow you can proceed with installing the operator for the Instana agent.\n\n## Installation and Configuration\n\nFirst, install this operator from [OperatorHub.io](https://operatorhub.io/), [OpenShift Container Platform](https://www.openshift.com/), or [OKD](https://www.okd.io/).\n\nSecond, create a custom resource with the agent configuration in the target namespace (for now, this MUST always be the `instana-agent` namespace). The operator will pick up the custom resource and install the Instana agent accordingly.\n\nThe following is a minimal template of the custom resource:\n\n```yaml\napiVersion: instana.io/v1\nkind: InstanaAgent\nmetadata:\n  name: instana-agent\n  namespace: instana-agent\nspec:\n  zone:\n    name: my-zone # (optional) name of the zone of the host\n  cluster:\n    name: replace-me # replace with the name of your Kubernetes cluster\n  agent:\n    key: replace-me # replace with your Instana agent key\n    endpointHost: ingress-red-saas.instana.io # the monitoring ingress endpoint\n    endpointPort: \"443\" # the monitoring ingress endpoint port, wrapped in quotes\n    env:\n      INSTANA_AGENT_TAGS: example\n    configuration_yaml: |\n      # You can leave this empty, or use this to configure your instana agent.\n      # See https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/\n```\n\nSave the template in a file `instana-agent.yaml` and edit the following values:\n\n* If your target namespace is not `instana-agent`, replace the `namespace:` accordingly.\n* `agent.key` must be set with your Instana agent key.\n* `agent.endpointHost` must be set with the monitoring ingress endpoint, generally either `saas-us-west-2.instana.io` or `saas-eu-west-1.instana.io`.\n* `agent.endpointPort` must be set with the monitoring ingress port, generally \"443\" (wrapped in quotes).\n* `zone.name` should be set with the name of the Kubernetes cluster that is be displayed in Instana.\n\nFor advanced configuration, you can edit the contents of the `configuration.yaml` file. View documentation [here](https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/).\n\nApply the custom resource with `kubectl apply -f instana-agent.yaml`. After some time, you should see `instana-agent` Pods being created on each node of your cluster, and your cluster should show on the infrastructure map on your Instana Web interface.\n\n## Uninstalling\n\nIn order to uninstall the Instana agent, simply remove the custom resource with `kubectl delete -f instana-agent.yaml`.\n\n## Source Code\n\nThe Instana agent operator is an open source project hosted on [https://github.com/instana/instana-agent-operator](https://github.com/instana/instana-agent-operator/).\n",
-      "csv_display_name": "Instana Agent Operator",
-      "csv_metadata_description": "Fully automated Application Performance Monitoring (APM) for microservices.",
-      "csv_name": "instana-agent-operator.v2.0.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:59:51.183000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "instana-agent-operator",
-      "provided_apis": [
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1"
-        },
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Instana",
-      "related_images": [
-        {
-          "digest": "sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "image": "icr.io/instana/instana-agent-operator@sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "name": "instana-agent-operator"
-        },
-        {
-          "digest": "sha256:faaaa00d062b891e66438bce4317fd0b7fae3eb6be3d6a990beb4e891044bc09",
-          "image": "icr.io/instana/agent@sha256:faaaa00d062b891e66438bce4317fd0b7fae3eb6be3d6a990beb4e891044bc09",
-          "name": "instana-agent"
-        },
-        {
-          "digest": "sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "image": "icr.io/instana/instana-agent-operator@sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "name": "instana-agent-operator-2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11-annotation"
-        },
-        {
-          "digest": "sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "image": "icr.io/instana/instana-agent-operator@sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "2.0.5",
-      "version_original": "2.0.5"
-    },
-    {
-      "_id": "62867a055a88c04949a672b8",
-      "alm_examples": [
-        {
-          "api_version": "instana.io/v1",
-          "kind": "InstanaAgent",
-          "metadata": {
-            "name": "instana-agent",
-            "namespace": "instana-agent"
-          },
-          "spec": {
-            "agent": {
-              "configuration_yaml": "# You can leave this empty, or use this to configure your instana agent.\n# See https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/\n",
-              "endpointHost": "ingress-red-saas.instana.io",
-              "endpointPort": "443",
-              "env": {},
-              "key": "replace-key"
-            },
-            "cluster": {
-              "name": "my-cluster"
-            },
-            "zone": {
-              "name": "edited-zone"
-            }
-          }
-        },
-        {
-          "api_version": "instana.io/v1beta1",
-          "kind": "InstanaAgent",
-          "metadata": {
-            "name": "instana-agent",
-            "namespace": "instana-agent"
-          },
-          "spec": {
-            "agent.endpoint.host": "ingress-red-saas.instana.io",
-            "agent.endpoint.port": 443,
-            "agent.env": {
-              "INSTANA_AGENT_TAGS": "example"
-            },
-            "agent.key": "replace-me",
-            "agent.zone.name": "my-zone",
-            "cluster.name": "replace-me",
-            "config.files": {
-              "configuration.yaml": "# You can leave this empty, or use this to configure your instana agent.\n# See https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/\n"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:2d61f1228ddb30ff1853ea95f0752fb9eed200ceba67e3a3d37b54f810a74976",
-      "bundle_path_digest": "sha256:2d61f1228ddb30ff1853ea95f0752fb9eed200ceba67e3a3d37b54f810a74976",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-19T17:10:29.969000+00:00",
-      "csv_description": "# Instana\n\nInstana is an [APM solution](https://www.instana.com/product-overview/) built for microservices that enables IT Ops to build applications faster and deliver higher quality services by automating monitoring, tracing and root cause analysis. The solution is optimized for [Kubernetes](https://www.instana.com/automatic-kubernetes-monitoring/) and [OpenShift](https://www.instana.com/blog/automatic-root-cause-analysis-for-openshift-applications/).\n\n## Instana Agent Operator\n\nThis is the Kubernetes Operator for installing the Instana Agent on Kubernetes or OpenShift.\n\n## Prerequisites for OpenShift\n\nBefore the agent will be able to run in OpenShift, you need to perform a couple of extra configuration steps.\n\nYou need to set up a project for the Instana Agent and configure it's permissions.\n\nThe project you create here needs to be the namespace where you create the Instana Agent custom resource that the operator will use to deploy the agent.\n\nFor example, create the `instana-agent` project:\n\n    oc new-project instana-agent\n\nThen, ensure the `instana-agent` service account is in the privileged security context:\n\n    oc adm policy add-scc-to-user privileged -z instana-agent\n\nThis service account will be created by the operator.\n\nNow you can proceed with installing the operator for the Instana agent.\n\n## Installation and Configuration\n\nFirst, install this operator from [OperatorHub.io](https://operatorhub.io/), [OpenShift Container Platform](https://www.openshift.com/), or [OKD](https://www.okd.io/).\n\nSecond, create a custom resource with the agent configuration in the target namespace (for now, this MUST always be the `instana-agent` namespace). The operator will pick up the custom resource and install the Instana agent accordingly.\n\nThe following is a minimal template of the custom resource:\n\n```yaml\napiVersion: instana.io/v1\nkind: InstanaAgent\nmetadata:\n  name: instana-agent\n  namespace: instana-agent\nspec:\n  zone:\n    name: my-zone # (optional) name of the zone of the host\n  cluster:\n    name: replace-me # replace with the name of your Kubernetes cluster\n  agent:\n    key: replace-me # replace with your Instana agent key\n    endpointHost: ingress-red-saas.instana.io # the monitoring ingress endpoint\n    endpointPort: \"443\" # the monitoring ingress endpoint port, wrapped in quotes\n    env:\n      INSTANA_AGENT_TAGS: example\n    configuration_yaml: |\n      # You can leave this empty, or use this to configure your instana agent.\n      # See https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/\n```\n\nSave the template in a file `instana-agent.yaml` and edit the following values:\n\n* If your target namespace is not `instana-agent`, replace the `namespace:` accordingly.\n* `agent.key` must be set with your Instana agent key.\n* `agent.endpointHost` must be set with the monitoring ingress endpoint, generally either `saas-us-west-2.instana.io` or `saas-eu-west-1.instana.io`.\n* `agent.endpointPort` must be set with the monitoring ingress port, generally \"443\" (wrapped in quotes).\n* `zone.name` should be set with the name of the Kubernetes cluster that is be displayed in Instana.\n\nFor advanced configuration, you can edit the contents of the `configuration.yaml` file. View documentation [here](https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/).\n\nApply the custom resource with `kubectl apply -f instana-agent.yaml`. After some time, you should see `instana-agent` Pods being created on each node of your cluster, and your cluster should show on the infrastructure map on your Instana Web interface.\n\n## Uninstalling\n\nIn order to uninstall the Instana agent, simply remove the custom resource with `kubectl delete -f instana-agent.yaml`.\n\n## Source Code\n\nThe Instana agent operator is an open source project hosted on [https://github.com/instana/instana-agent-operator](https://github.com/instana/instana-agent-operator/).\n",
-      "csv_display_name": "Instana Agent Operator",
-      "csv_metadata_description": "Fully automated Application Performance Monitoring (APM) for microservices.",
-      "csv_name": "instana-agent-operator.v2.0.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:15:49.560000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "instana-agent-operator",
-      "provided_apis": [
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1"
-        },
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Instana",
-      "related_images": [
-        {
-          "digest": "sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "image": "icr.io/instana/instana-agent-operator@sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "name": "instana-agent-operator"
-        },
-        {
-          "digest": "sha256:faaaa00d062b891e66438bce4317fd0b7fae3eb6be3d6a990beb4e891044bc09",
-          "image": "icr.io/instana/agent@sha256:faaaa00d062b891e66438bce4317fd0b7fae3eb6be3d6a990beb4e891044bc09",
-          "name": "instana-agent"
-        },
-        {
-          "digest": "sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "image": "icr.io/instana/instana-agent-operator@sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "name": "instana-agent-operator-2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11-annotation"
-        },
-        {
-          "digest": "sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "image": "icr.io/instana/instana-agent-operator@sha256:2b36b6e98d7d96cb107e0d70ae9eaef2cde9138a77d9bb064043e8a444e05f11",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.0.5",
-      "version_original": "2.0.5"
-    },
-    {
       "_id": "62867bf231755c747c35f311",
       "alm_examples": [
         {
@@ -18764,9 +18365,731 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.10.10+x6adc6ff",
       "version_original": "1.10.10+x6adc6ff"
+    },
+    {
+      "_id": "62abcef8150d8182de8e9fd6",
+      "alm_examples": [
+        {
+          "api_version": "cilium.io/v1alpha1",
+          "kind": "CiliumConfig",
+          "metadata": {
+            "name": "cilium-openshift-default",
+            "namespace": "placeholder"
+          },
+          "spec": {
+            "cni": {
+              "binPath": "/var/lib/cni/bin",
+              "confPath": "/var/run/multus/cni/net.d"
+            },
+            "endpointRoutes": {
+              "enabled": true
+            },
+            "hubble": {
+              "tls": {
+                "enabled": false
+              }
+            },
+            "ipam": {
+              "mode": "cluster-pool",
+              "operator": {
+                "clusterPoolIPv4MaskSize": "23",
+                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
+              }
+            },
+            "kubeProxyReplacement": "probe",
+            "nativeRoutingCIDR": "10.128.0.0/14",
+            "prometheus": {
+              "serviceMonitor": {
+                "enabled": false
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:3f69a124f9c31ebc0c78f249872a69b1289622bf4f5aad4c739f6e8caf9cb85b",
+      "bundle_path_digest": "sha256:3f69a124f9c31ebc0c78f249872a69b1289622bf4f5aad4c739f6e8caf9cb85b",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "1.9",
+      "creation_date": "2022-06-17T00:46:48.980000+00:00",
+      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
+      "csv_display_name": "Cilium",
+      "csv_metadata_description": "",
+      "csv_name": "cilium.v1.9.14-x70dc065",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:46:48.980000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "cilium",
+      "provided_apis": [
+        {
+          "group": "cilium.io",
+          "kind": "CiliumConfig",
+          "plural": "ciliumconfigs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:2c6ce93fa7e625979043a387eb998c17ad57df8768d89facb9b715da42a4c51c",
+          "image": "quay.io/cilium/cilium@sha256:2c6ce93fa7e625979043a387eb998c17ad57df8768d89facb9b715da42a4c51c",
+          "name": "cilium"
+        },
+        {
+          "digest": "sha256:fd6ab1aea260abc5f64eca26c1b1e7009983e4aaa8e5d098e8d442f7659603fb",
+          "image": "quay.io/cilium/hubble-relay@sha256:fd6ab1aea260abc5f64eca26c1b1e7009983e4aaa8e5d098e8d442f7659603fb",
+          "name": "hubble-relay"
+        },
+        {
+          "digest": "sha256:bdcfd2eade99933f2fda55ef79ea697ddfad3512f65b15bcd0ba7702518c1ba3",
+          "image": "quay.io/cilium/operator-generic@sha256:bdcfd2eade99933f2fda55ef79ea697ddfad3512f65b15bcd0ba7702518c1ba3",
+          "name": "cilium-operator"
+        },
+        {
+          "digest": "sha256:2c6ce93fa7e625979043a387eb998c17ad57df8768d89facb9b715da42a4c51c",
+          "image": "quay.io/cilium/cilium@sha256:2c6ce93fa7e625979043a387eb998c17ad57df8768d89facb9b715da42a4c51c",
+          "name": "preflight"
+        },
+        {
+          "digest": "sha256:a0da5edf0372899647da51de1b277f0bab8e676d694aee7f939cddfdd3172010",
+          "image": "quay.io/cilium/clustermesh-apiserver@sha256:a0da5edf0372899647da51de1b277f0bab8e676d694aee7f939cddfdd3172010",
+          "name": "clustermesh"
+        },
+        {
+          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "name": "certgen"
+        },
+        {
+          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
+          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
+          "name": "hubble-ui-backend"
+        },
+        {
+          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
+          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
+          "name": "hubble-ui-frontend"
+        },
+        {
+          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
+          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
+          "name": "hubble-ui-proxy"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd-operator"
+        },
+        {
+          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "name": "nodeinit"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh-etcd"
+        },
+        {
+          "digest": "sha256:3a9ca9a4c2f78109f265c4758f5f693d01865f2d0e31bc5f1ecbc065e878628b",
+          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:3a9ca9a4c2f78109f265c4758f5f693d01865f2d0e31bc5f1ecbc065e878628b",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:fd6ab1aea260abc5f64eca26c1b1e7009983e4aaa8e5d098e8d442f7659603fb",
+          "image": "quay.io/cilium/hubble-relay@sha256:fd6ab1aea260abc5f64eca26c1b1e7009983e4aaa8e5d098e8d442f7659603fb",
+          "name": "hubble_relay"
+        },
+        {
+          "digest": "sha256:bdcfd2eade99933f2fda55ef79ea697ddfad3512f65b15bcd0ba7702518c1ba3",
+          "image": "quay.io/cilium/operator-generic@sha256:bdcfd2eade99933f2fda55ef79ea697ddfad3512f65b15bcd0ba7702518c1ba3",
+          "name": "cilium_operator"
+        },
+        {
+          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
+          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
+          "name": "hubble_ui_be"
+        },
+        {
+          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
+          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
+          "name": "hubble_ui_fe"
+        },
+        {
+          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
+          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
+          "name": "hubble_ui_proxy"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd_operator"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh_etcd"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.9.14+x70dc065",
+      "version_original": "1.9.14+x70dc065"
+    },
+    {
+      "_id": "62abcefb150d8182de8e9fd9",
+      "alm_examples": [
+        {
+          "api_version": "cilium.io/v1alpha1",
+          "kind": "CiliumConfig",
+          "metadata": {
+            "name": "cilium-openshift-default",
+            "namespace": "placeholder"
+          },
+          "spec": {
+            "cni": {
+              "binPath": "/var/lib/cni/bin",
+              "confPath": "/var/run/multus/cni/net.d"
+            },
+            "endpointRoutes": {
+              "enabled": true
+            },
+            "hubble": {
+              "tls": {
+                "enabled": false
+              }
+            },
+            "ipam": {
+              "mode": "cluster-pool",
+              "operator": {
+                "clusterPoolIPv4MaskSize": "23",
+                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
+              }
+            },
+            "kubeProxyReplacement": "probe",
+            "nativeRoutingCIDR": "10.128.0.0/14",
+            "prometheus": {
+              "serviceMonitor": {
+                "enabled": false
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:3885bdaf872a587a5f37abe04098785eef248834703020f8cd5004f9899d4d33",
+      "bundle_path_digest": "sha256:3885bdaf872a587a5f37abe04098785eef248834703020f8cd5004f9899d4d33",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "1.9",
+      "creation_date": "2022-06-17T00:46:51.520000+00:00",
+      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
+      "csv_display_name": "Cilium",
+      "csv_metadata_description": "",
+      "csv_name": "cilium.v1.9.15-x9f38f06",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:46:51.520000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "cilium",
+      "provided_apis": [
+        {
+          "group": "cilium.io",
+          "kind": "CiliumConfig",
+          "plural": "ciliumconfigs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:20c0f6cedc09a880d76695e7ac70755a662c4bddf6d5197cf609ffe499ab72ce",
+          "image": "quay.io/cilium/cilium@sha256:20c0f6cedc09a880d76695e7ac70755a662c4bddf6d5197cf609ffe499ab72ce",
+          "name": "cilium"
+        },
+        {
+          "digest": "sha256:748813e49877d66614d947495972f32b7f9675e9c327578c0ea81ca4f7adf322",
+          "image": "quay.io/cilium/hubble-relay@sha256:748813e49877d66614d947495972f32b7f9675e9c327578c0ea81ca4f7adf322",
+          "name": "hubble-relay"
+        },
+        {
+          "digest": "sha256:5f38912e638b96377f905369035e0afc89b45f24f7f27565b520f3573c4411f1",
+          "image": "quay.io/cilium/operator-generic@sha256:5f38912e638b96377f905369035e0afc89b45f24f7f27565b520f3573c4411f1",
+          "name": "cilium-operator"
+        },
+        {
+          "digest": "sha256:20c0f6cedc09a880d76695e7ac70755a662c4bddf6d5197cf609ffe499ab72ce",
+          "image": "quay.io/cilium/cilium@sha256:20c0f6cedc09a880d76695e7ac70755a662c4bddf6d5197cf609ffe499ab72ce",
+          "name": "preflight"
+        },
+        {
+          "digest": "sha256:59cabe18234077448b3410a1d9f0ffe9c78a41783e83cc3d80310ddd92b81822",
+          "image": "quay.io/cilium/clustermesh-apiserver@sha256:59cabe18234077448b3410a1d9f0ffe9c78a41783e83cc3d80310ddd92b81822",
+          "name": "clustermesh"
+        },
+        {
+          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "name": "certgen"
+        },
+        {
+          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
+          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
+          "name": "hubble-ui-backend"
+        },
+        {
+          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
+          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
+          "name": "hubble-ui-frontend"
+        },
+        {
+          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
+          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
+          "name": "hubble-ui-proxy"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd-operator"
+        },
+        {
+          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "name": "nodeinit"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh-etcd"
+        },
+        {
+          "digest": "sha256:ab64323afb77e70191a676210ec21f56bb125d4f0422a02d601fb53ca2e13fff",
+          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:ab64323afb77e70191a676210ec21f56bb125d4f0422a02d601fb53ca2e13fff",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:748813e49877d66614d947495972f32b7f9675e9c327578c0ea81ca4f7adf322",
+          "image": "quay.io/cilium/hubble-relay@sha256:748813e49877d66614d947495972f32b7f9675e9c327578c0ea81ca4f7adf322",
+          "name": "hubble_relay"
+        },
+        {
+          "digest": "sha256:5f38912e638b96377f905369035e0afc89b45f24f7f27565b520f3573c4411f1",
+          "image": "quay.io/cilium/operator-generic@sha256:5f38912e638b96377f905369035e0afc89b45f24f7f27565b520f3573c4411f1",
+          "name": "cilium_operator"
+        },
+        {
+          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
+          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
+          "name": "hubble_ui_be"
+        },
+        {
+          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
+          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
+          "name": "hubble_ui_fe"
+        },
+        {
+          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
+          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
+          "name": "hubble_ui_proxy"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd_operator"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh_etcd"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.9.15+x9f38f06",
+      "version_original": "1.9.15+x9f38f06"
+    },
+    {
+      "_id": "62abcf29dd92c1f1f12a6f07",
+      "alm_examples": [
+        {
+          "api_version": "platform.confluent.io/v1beta1",
+          "kind": "Zookeeper",
+          "metadata": {
+            "name": "zookeeper"
+          },
+          "spec": {
+            "dataVolumeCapacity": "10Gi",
+            "image": {
+              "application": "confluentinc/cp-zookeeper@sha256:254266ab0730cdacc49a57b7e98b23865942aa251c676c15297d70a3003b45e1",
+              "init": "confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d"
+            },
+            "logVolumeCapacity": "10Gi",
+            "replicas": 3
+          }
+        },
+        {
+          "api_version": "platform.confluent.io/v1beta1",
+          "kind": "Kafka",
+          "metadata": {
+            "name": "kafka"
+          },
+          "spec": {
+            "dataVolumeCapacity": "10Gi",
+            "image": {
+              "application": "confluentinc/cp-server@sha256:a590245bf3269c05a88e99d56a1e869c07f7d3fb76fa76370b8faaa673b0c8b1",
+              "init": "confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d"
+            },
+            "metricReporter": {
+              "enabled": true
+            },
+            "replicas": 3
+          }
+        },
+        {
+          "api_version": "platform.confluent.io/v1beta1",
+          "kind": "KafkaRestProxy",
+          "metadata": {
+            "name": "kafkarestproxy"
+          },
+          "spec": {
+            "image": {
+              "application": "confluentinc/cp-kafka-rest@sha256:80a3d41cc8a6989e556a0283e4ae31f7c80880f97bd235db4929f4df40dabb8f",
+              "init": "confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d"
+            },
+            "metricReporter": {
+              "enabled": true
+            },
+            "replicas": 3
+          }
+        },
+        {
+          "api_version": "platform.confluent.io/v1beta1",
+          "kind": "Connect",
+          "metadata": {
+            "name": "connect"
+          },
+          "spec": {
+            "dependencies": {
+              "kafka": {
+                "bootstrapEndpoint": "kafka:9071"
+              }
+            },
+            "image": {
+              "application": "confluentinc/cp-server-connect@sha256:bb847350302c636fb499509c29f355f77a6299c2b1d31a445882a74e0292463c",
+              "init": "confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d"
+            },
+            "replicas": 1
+          }
+        },
+        {
+          "api_version": "platform.confluent.io/v1beta1",
+          "kind": "KsqlDB",
+          "metadata": {
+            "name": "ksqldb"
+          },
+          "spec": {
+            "dataVolumeCapacity": "10Gi",
+            "image": {
+              "application": "confluentinc/cp-ksqldb-server@sha256:20b6ac87de3b00ff77f590118cbc9877d97c54d270a4846b60d165cdde2b0427",
+              "init": "confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d"
+            },
+            "replicas": 1
+          }
+        },
+        {
+          "api_version": "platform.confluent.io/v1beta1",
+          "kind": "ControlCenter",
+          "metadata": {
+            "name": "controlcenter"
+          },
+          "spec": {
+            "dataVolumeCapacity": "10Gi",
+            "dependencies": {
+              "connect": [
+                {
+                  "name": "connect",
+                  "url": "http://connect.confluent.svc.cluster.local:8083"
+                }
+              ],
+              "ksqldb": [
+                {
+                  "name": "ksqldb",
+                  "url": "http://ksqldb.confluent.svc.cluster.local:8088"
+                }
+              ],
+              "schemaRegistry": {
+                "url": "http://schemaregistry.confluent.svc.cluster.local:8081"
+              }
+            },
+            "image": {
+              "application": "confluentinc/cp-enterprise-control-center@sha256:eb2e977d41585dc3c6474d71af2bfb76fe885b4a6eb5a02cb3a18a5485db8d6a",
+              "init": "confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d"
+            },
+            "replicas": 1
+          }
+        },
+        {
+          "api_version": "platform.confluent.io/v1beta1",
+          "kind": "SchemaRegistry",
+          "metadata": {
+            "name": "schemaregistry"
+          },
+          "spec": {
+            "image": {
+              "application": "confluentinc/cp-schema-registry@sha256:c9c2528585d192f68e268521074964d37c14fca16f3bab568c57c68aca01b978",
+              "init": "confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d"
+            },
+            "replicas": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": [
+          "Confluent Platform License"
+        ]
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/confluentinc/confluent-for-kubernetes-v2@sha256:6fe6c0d639e1b0c2a6c701bedecb3cef0b30702fb9bc38544338bb73a287c5d2",
+      "bundle_path_digest": "sha256:6fe6c0d639e1b0c2a6c701bedecb3cef0b30702fb9bc38544338bb73a287c5d2",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "2.1",
+      "creation_date": "2022-06-17T00:47:37.041000+00:00",
+      "csv_description": "Confluent for Kubernetes (CFK) is a cloud-native control plane for deploying and managing Confluent in your private cloud environment. It provides standard and simple interface to customize, deploy, and manage Confluent Platform through declarative API.\nConfluent for Kubernetes runs on Kubernetes, the runtime for private cloud architectures.",
+      "csv_display_name": "Confluent for Kubernetes",
+      "csv_metadata_description": "",
+      "csv_name": "confluent-for-kubernetes.v2.1.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:47:37.041000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "confluent-for-kubernetes",
+      "provided_apis": [
+        {
+          "group": "platform.confluent.io",
+          "kind": "KafkaRestProxy",
+          "plural": "kafkarestproxies",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "Kafka",
+          "plural": "kafkas",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "Zookeeper",
+          "plural": "zookeepers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "Connector",
+          "plural": "connectors",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "Connect",
+          "plural": "connects",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "KafkaTopic",
+          "plural": "kafkatopics",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "Schema",
+          "plural": "schemas",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "ControlCenter",
+          "plural": "controlcenters",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "KsqlDB",
+          "plural": "ksqldbs",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "ConfluentRolebinding",
+          "plural": "confluentrolebindings",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "MigrationJob",
+          "plural": "migrationjobs",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "KafkaRestClass",
+          "plural": "kafkarestclasses",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "SchemaRegistry",
+          "plural": "schemaregistries",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:633dc1b217c2cfbb216781f5fa9b40a4170145273e89df85a27a7f0206090f5f",
+          "image": "docker.io/confluentinc/confluent-operator@sha256:633dc1b217c2cfbb216781f5fa9b40a4170145273e89df85a27a7f0206090f5f",
+          "name": "confluent-operator"
+        },
+        {
+          "digest": "sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d",
+          "image": "docker.io/confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d",
+          "name": "confluent-init-container"
+        },
+        {
+          "digest": "sha256:254266ab0730cdacc49a57b7e98b23865942aa251c676c15297d70a3003b45e1",
+          "image": "docker.io/confluentinc/cp-zookeeper@sha256:254266ab0730cdacc49a57b7e98b23865942aa251c676c15297d70a3003b45e1",
+          "name": "cp-zookeeper"
+        },
+        {
+          "digest": "sha256:a590245bf3269c05a88e99d56a1e869c07f7d3fb76fa76370b8faaa673b0c8b1",
+          "image": "docker.io/confluentinc/cp-server@sha256:a590245bf3269c05a88e99d56a1e869c07f7d3fb76fa76370b8faaa673b0c8b1",
+          "name": "cp-server"
+        },
+        {
+          "digest": "sha256:80a3d41cc8a6989e556a0283e4ae31f7c80880f97bd235db4929f4df40dabb8f",
+          "image": "docker.io/confluentinc/cp-kafka-rest@sha256:80a3d41cc8a6989e556a0283e4ae31f7c80880f97bd235db4929f4df40dabb8f",
+          "name": "cp-kafka-rest"
+        },
+        {
+          "digest": "sha256:20b6ac87de3b00ff77f590118cbc9877d97c54d270a4846b60d165cdde2b0427",
+          "image": "docker.io/confluentinc/cp-ksqldb-server@sha256:20b6ac87de3b00ff77f590118cbc9877d97c54d270a4846b60d165cdde2b0427",
+          "name": "cp-ksqldb-server"
+        },
+        {
+          "digest": "sha256:c9c2528585d192f68e268521074964d37c14fca16f3bab568c57c68aca01b978",
+          "image": "docker.io/confluentinc/cp-schema-registry@sha256:c9c2528585d192f68e268521074964d37c14fca16f3bab568c57c68aca01b978",
+          "name": "cp-schema-registry"
+        },
+        {
+          "digest": "sha256:bb847350302c636fb499509c29f355f77a6299c2b1d31a445882a74e0292463c",
+          "image": "docker.io/confluentinc/cp-server-connect@sha256:bb847350302c636fb499509c29f355f77a6299c2b1d31a445882a74e0292463c",
+          "name": "cp-server-connect"
+        },
+        {
+          "digest": "sha256:eb2e977d41585dc3c6474d71af2bfb76fe885b4a6eb5a02cb3a18a5485db8d6a",
+          "image": "docker.io/confluentinc/cp-enterprise-control-center@sha256:eb2e977d41585dc3c6474d71af2bfb76fe885b4a6eb5a02cb3a18a5485db8d6a",
+          "name": "cp-enterprise-control-center"
+        },
+        {
+          "digest": "sha256:633dc1b217c2cfbb216781f5fa9b40a4170145273e89df85a27a7f0206090f5f",
+          "image": "docker.io/confluentinc/confluent-operator@sha256:633dc1b217c2cfbb216781f5fa9b40a4170145273e89df85a27a7f0206090f5f",
+          "name": "confluent-operator-633dc1b217c2cfbb216781f5fa9b40a4170145273e89df85a27a7f0206090f5f-annotation"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=2.0.3 <2.1.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.1.1",
+      "version_original": "2.1.1"
     }
   ],
   "page": 33,
   "page_size": 100,
-  "total": 4762
+  "total": 4780
 }

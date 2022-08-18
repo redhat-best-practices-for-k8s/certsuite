@@ -1,517 +1,6 @@
 {
   "data": [
     {
-      "_id": "6234602e5593ce895a7b5368",
-      "alm_examples": [
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoDeBundle",
-          "metadata": {
-            "name": "my-bundle",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "details": {
-              "name": "my-bundle"
-            }
-          }
-        },
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoDatabaseService",
-          "metadata": {
-            "name": "my-entando-database-service",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "createDeployment": true,
-            "databaseName": "my_database",
-            "dbms": "postgresql"
-          }
-        },
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoKeycloakServer",
-          "metadata": {
-            "name": "my-keycloak",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "dbms": "postgresql",
-            "environmentVariables": [],
-            "replicas": 1,
-            "standardImage": "redhat-sso"
-          }
-        },
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoClusterInfrastructure",
-          "metadata": {
-            "name": "my-entando-cluster-infrastructure",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "environmentVariables": [],
-            "replicas": 1
-          }
-        },
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoPlugin",
-          "metadata": {
-            "name": "my-entando-plugin",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "dbms": "postgresql",
-            "healthCheckPath": "/management/health",
-            "image": "entando/entando-avatar-plugin:6.0.5",
-            "ingressHostName": "my-plugin.apps-crc.testing",
-            "ingressPath": "/avatarPlugin",
-            "replicas": 1,
-            "roles": [
-              {
-                "code": "admin",
-                "name": "user"
-              },
-              {
-                "code": "user",
-                "name": "user"
-              }
-            ],
-            "securityLevel": "strict"
-          }
-        },
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoApp",
-          "metadata": {
-            "name": "my-app",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "dbms": "postgresql",
-            "environmentVariables": [],
-            "ingressHostName": "my-app.apps-crc.testing",
-            "replicas": 1,
-            "standardServerImage": "eap"
-          }
-        },
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoAppPluginLink",
-          "metadata": {
-            "name": "my-link",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "entandoAppName": "my-app",
-            "entandoPluginName": "my-plugin"
-          }
-        },
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoCompositeApp",
-          "metadata": {
-            "name": "my-entando-composite-app",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "components": [
-              {
-                "kind": "EntandoDatabaseService",
-                "metadata": {
-                  "name": "inline-entando-database-service"
-                },
-                "spec": {
-                  "createDeployment": true
-                }
-              },
-              {
-                "kind": "EntandoKeycloakServer",
-                "metadata": {
-                  "name": "inline-keycloak"
-                },
-                "spec": {
-                  "standardImage": "redhat-sso"
-                }
-              },
-              {
-                "kind": "EntandoClusterInfrastructure",
-                "metadata": {
-                  "name": "inline-entando-cluster-infrastructure"
-                },
-                "spec": {}
-              },
-              {
-                "kind": "EntandoApp",
-                "metadata": {
-                  "name": "inline-app"
-                },
-                "spec": {
-                  "standardServerImage": "eap"
-                }
-              },
-              {
-                "kind": "EntandoPlugin",
-                "metadata": {
-                  "name": "inline-plugin"
-                },
-                "spec": {
-                  "healthCheckPath": "/management/health",
-                  "image": "entando/entando-avatar-plugin:6.0.5",
-                  "ingressPath": "/avatarPlugin",
-                  "roles": [
-                    {
-                      "code": "admin",
-                      "name": "admin"
-                    },
-                    {
-                      "code": "user",
-                      "name": "user"
-                    }
-                  ]
-                }
-              },
-              {
-                "kind": "EntandoAppPluginLink",
-                "metadata": {
-                  "name": "inline-link"
-                },
-                "spec": {
-                  "entandoAppName": "inline-app",
-                  "entandoPluginName": "inline-plugin"
-                }
-              }
-            ],
-            "dbmsOverride": "postgresql",
-            "ingressHostNameOverride": "entando.apps-crc.testing"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/entando/entando-operator@sha256:639e2d35738483c6c092ebe8636bbab50c0f2101bc06f2fe9a1c7f68b3ffc4a6",
-      "bundle_path_digest": "sha256:639e2d35738483c6c092ebe8636bbab50c0f2101bc06f2fe9a1c7f68b3ffc4a6",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:34:22.097000+00:00",
-      "csv_description": "## Entando\n\nThe Entando platform accelerates the development and lifecycle  management of fully modularized applications on Kubernetes. It  provides tools to help developers create and manage applications  using modular frontend and backend components.\nThe Entando Operator automates the installation, provisioning, and  configuration management of the components that make up an Entando  application. Specifically, the operator manages the following custom  resources:\n**EntandoKeycloakServers** for centralized authentication of frontend  and backend components. The operator can deploy Keycloak, or in certified  environments, Red Hat SSO servers that can then be used by subsequent  deployments as an OpenID Connect provider.\n**EntandoApps** for hosting an Entando application. EntandoApps are hosted on Wildfly or JBoss EAP containers, and can also be used to deploy custom  EntandoApp containers.\n**EntandoPlugins** for deploying microservices to customize or enhance your EntandoApp. Entando microservice plugins are deployed to your cluster, and  then linked to one or more EntandoApps.\n## Using the Operator\nThe Entando Operator can be deployed using the default settings without any  configuration. Once deployed, the operator can be customized by editing  the *configmap* and secrets.\n### ConfigMap: entando-operator-config\nThe 'entando-operator-config' ConfigMap can be added after deployment and any changes to it will be picked up by the operator on subsequent event processing. It supports the following keys:\n\n    entando.k8s.operator.gc.controller.pods: set this to \"false\" to keep controller pods after completion.\n    entando.k8s.operator.compliance.mode: set this to \"community\" if there is no requirement for Red Hat compliance.\n    entando.k8s.operator.image.pull.secrets: a comma separated list containing the names of pull secrets that will be linked to all service accounts.\n    entando.k8s.operator.disable.pvc.garbage.collection: set this to \"false\" if you want Persistent Volume Claims to be deleted with the custom resources they are associated with.\n    entando.k8s.operator.impose.default.limits: set this to \"false\" if there is no need to limit the resource consumption of pods on your cluster.\n    entando.k8s.operator.request.to.limit.ratio: a decimal number that default limits will be multiplied by to calculate default requests for resources.\n    entando.k8s.operator.force.db.password.reset: set this to \"true\" if you plan to delete Secrets from your namespace but you want to retain the Database they point to.\n    entando.k8s.operator.pull.policy.override: specify your preferred pullPolicy for images. The default is Always.\n    entando.tls.secret.name: The name of a standard TLS secret to use for HTTPS Ingresses. See the section entando-tls-secret.\n    entando.ca.secret.name: The name of a secret containing CA certificates. See the section entando-ca-cert-secret.\n    entando.assume.external.https.provider: Set this to \"true\" if your cloud provider handles HTTPS for you.\n    entando.use.auto.cert.generation: Set this to \"true\" to have Openshift use its internal CA to generate certificates for your Routes.\n    entando.default.routing.suffix: The domain name that can be suffixed to deployment names when the ingressHostName is omitted. Needs to be preconfigured on your DNS provider.\n    entando.pod.completion.timeout.seconds: The time it will take before Entando fails a run-to-completion Pod.\n    entando.pod.readiness.timeout.seconds: The time it will take before Entando fails a Service Pod.\n    entando.pod.shutdown.timeout.seconds: The time Entando will give a Pod to shutdown gracefully.\n\n\n### entando-pull-secret\nThe secret to be used to pull Entando images from the Red Hat container registry. The name of this secret is hard coded as it is required for the ClusterServiceVersion of this Operator\n### entando-tls-secret\nA standard Kubernetes TLS secret that will be used on all deployments where no custom TLS secret name is specified.\n### entando-ca-cert-secret\nThis is an opaque secret in the Entando Operator's namespace that contains the certificates of all trusted certificate authorities in your environment. This is generally used mainly for self signed certificates. As is generally the case for opaque secrets, there are no constraints on the keys in this secret. However, limit the files inside the secret to X509 certificates or certificate chains. The Entando Operator will load all of these files into a Java keystore that it then configures as the trust store for each container that uses Java.\n",
-      "csv_display_name": "Entando Operator",
-      "csv_metadata_description": "Processes EntandoKeycloakServer, EntandoApp and EntandoPlugin custom resources and deploys the relevant containers in the Kubernetes cluster.",
-      "csv_name": "entando-k8s-operator.v6.3.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:27:15.742000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "entando-k8s-operator",
-      "provided_apis": [
-        {
-          "group": "entando.org",
-          "kind": "EntandoApp",
-          "version": "v1"
-        },
-        {
-          "group": "entando.org",
-          "kind": "EntandoAppPluginLink",
-          "version": "v1"
-        },
-        {
-          "group": "entando.org",
-          "kind": "EntandoClusterInfrastructure",
-          "version": "v1"
-        },
-        {
-          "group": "entando.org",
-          "kind": "EntandoCompositeApp",
-          "version": "v1"
-        },
-        {
-          "group": "entando.org",
-          "kind": "EntandoDatabaseService",
-          "version": "v1"
-        },
-        {
-          "group": "entando.org",
-          "kind": "EntandoDeBundle",
-          "version": "v1"
-        },
-        {
-          "group": "entando.org",
-          "kind": "EntandoKeycloakServer",
-          "version": "v1"
-        },
-        {
-          "group": "entando.org",
-          "kind": "EntandoPlugin",
-          "version": "v1"
-        }
-      ],
-      "provider": "Entando, Inc",
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "6.3.2",
-      "version_original": "6.3.2"
-    },
-    {
-      "_id": "6234603106c5dada0193e089",
-      "alm_examples": [
-        {
-          "api_version": "ezmeral.hpe.com/v1",
-          "kind": "HPEEzmeralCSIDriver",
-          "metadata": {
-            "name": "hpeezmeralcsidriver"
-          },
-          "spec": {
-            "controllerImage": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
-            "nodeImage": "registry.connect.redhat.com/maprtech/csi-kdfplugin@sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
-            "pullPolicy": "Always"
-          }
-        },
-        {
-          "api_version": "ezmeral.hpe.com/v1",
-          "kind": "HPEEzmeralNFSCSIDriver",
-          "metadata": {
-            "name": "hpeezmeralnfscsidriver"
-          },
-          "spec": {
-            "controllerImage": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
-            "nodeImage": "registry.connect.redhat.com/maprtech/csi-nfsplugin@sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
-            "pullPolicy": "Always"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator-bundle@sha256:b23ef079d0bcbeaa227a0d759c900c103f97310ad2e00a566a74b100f95a37ff",
-      "bundle_path_digest": "sha256:b23ef079d0bcbeaa227a0d759c900c103f97310ad2e00a566a74b100f95a37ff",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:34:25.003000+00:00",
-      "csv_description": "The HPE Ezmeral CSI Operator for Kubernetes packages, deploys, manages, upgrades the HPE Ezmeral CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on HPE Ezmeral Data Fabric platform.\nThe HPE Ezmeral CSI Driver for Kubernetes leverages HPE Ezmeral Data Fabric platform to provide scalable and persistent storage for stateful applications. Please refer to our CSI driver [documentation](https://docs.datafabric.hpe.com/home/CSIdriver/csi_overview.html) for full list of supported CSI features.\n## Installation\nRefer to the HPE Ezmeral CSI Operator for Kubernetes [documentation](https://docs.datafabric.hpe.com/home/CSIdriver/csi_installing_operator.html)\n",
-      "csv_display_name": "HPE Ezmeral Data Fabric CSI Operator for Kubernetes",
-      "csv_metadata_description": "A Container Storage Interface (CSI) driver for HPE Ezmeral Data Fabric platform. The CSI driver allows you to use HPE Ezmeral Data Fabric with your preferred container orchestrator.",
-      "csv_name": "hpe-ezmeral-csi-operator.v1.0.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:19:12.795000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "hpe-ezmeral-csi-operator",
-      "provided_apis": [
-        {
-          "group": "ezmeral.hpe.com",
-          "kind": "HPEEzmeralCSIDriver",
-          "version": "v1"
-        },
-        {
-          "group": "ezmeral.hpe.com",
-          "kind": "HPEEzmeralNFSCSIDriver",
-          "version": "v1"
-        }
-      ],
-      "provider": "HPE Ezmeral",
-      "related_images": [
-        {
-          "digest": "sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
-          "image": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator@sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
-          "name": "hpe-ezmeral-csi-operator-82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f-annotation"
-        },
-        {
-          "digest": "sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
-          "image": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator@sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
-          "name": "hpe-ezmeral-csi-operator"
-        },
-        {
-          "digest": "sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
-          "image": "registry.connect.redhat.com/maprtech/csi-nfsplugin@sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
-          "name": "csi-nfsplugin-35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822-annotation"
-        },
-        {
-          "digest": "sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
-          "image": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
-          "name": "csi-kdfprovisioner-89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42-annotation"
-        },
-        {
-          "digest": "sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
-          "image": "registry.connect.redhat.com/maprtech/csi-kdfplugin@sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
-          "name": "csi-kdfplugin-480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.0.9",
-      "version_original": "1.0.9"
-    },
-    {
-      "_id": "62346034670f4cadbafad2b2",
-      "alm_examples": [
-        {
-          "api_version": "core.k8s.kubemq.io/v1beta1",
-          "kind": "KubemqCluster",
-          "metadata": {
-            "name": "kubemq-cluster"
-          },
-          "spec": {
-            "replicas": 3
-          }
-        },
-        {
-          "api_version": "core.k8s.kubemq.io/v1beta1",
-          "kind": "KubemqDashboard",
-          "metadata": {
-            "name": "kubemq-dashboard"
-          }
-        },
-        {
-          "api_version": "core.k8s.kubemq.io/v1beta1",
-          "kind": "KubemqConnector",
-          "metadata": {
-            "name": "kubemq-bridges"
-          },
-          "spec": {
-            "config": "bindings: null",
-            "type": "bridges"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/kubemq/kubemq-operator-bundle@sha256:9009198860c7a1e0de4f429261d442b75b5b2893a943bb77914b14d643db8829",
-      "bundle_path_digest": "sha256:9009198860c7a1e0de4f429261d442b75b5b2893a943bb77914b14d643db8829",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-18T10:34:28.394000+00:00",
-      "csv_description": "\n## Kubernetes Messaging Platform\nA message-based architecture for microservices providing flexible connectivity for hybrid environments: multi-cloud, on-premises, and at the edge. Powered by enterprise-grade message broker and message queue with ready to use connectors, bridges, and control center.\n\nMessaging platform components:\n  - **KubeMQ Cluster** - Enterprise-grade message broker and message queue, scalable, high available, and secured.\n  - **KubeMQ Targets Connector** - connects a KubeMQ cluster with external systems and cloud services.\n  - **KubeMQ Bridges Connector** - bridge, replicate, aggregate, and transform messages between KubeMQ clusters.\n  - **KubeMQ Sources Connector** - transform external systems and cloud services data to KubeMQ cluster messages.\n  - **KubeMQ Dashboard** - monitor KubeMQ cluster metrics.\n\n### Kubernetes Native\nInnovative and modern message queue and message broker in a lightweight container developed to run in Kubernetes, certified in the CNCF landscape, and connect natively to the cloud-native ecosystem.\n\n### Ease of use\n\nSimple deployment in Kubernetes in less than 1 minute. Developer friendly by simple to use SDKs and elimination of the many developers and DevOps-centered challenges to define exchanges, brokers, channels, routes, and predefined topics\n\n### All messaging patterns\n\nKubeMQ is available with all messaging patterns such as Queue, Stream, Pub/Sub, and RPC, Saving the need to maintain multiple messaging platforms for different use cases.\n\n### Hybrid Environments\n\nKubeMQ enables the microservices from multiple environments to communicate and build one hybrid infrastructure solution across clouds, on-prem, and at the edge.\n\n### KubeMQ Cluster key features\n\n- All-batteries included Messaging Queue Broker for the Kubernetes environment\n- Deployed with Operator for full life cycle operation\n- Blazing fast (written in Go), small and lightweight Docker container\n- Asynchronous and Synchronous messaging with support for  `At Most Once Delivery` and `At Least Once Delivery` models\n- Supports durable FIFO based Queue, Publish-Subscribe Events, Publish-Subscribe with Persistence (Events Store), RPC Command and Query messaging patterns\n- Supports gRPC, Rest and WebSocket Transport protocols with TLS support (both RPC and Stream modes)\n- Supports Access control Authorization and Authentication\n- Supports message masticating and smart routing\n- No Message broker configuration needed (i.e., queues, exchanges)\n- .Net, Java, Python, Go, and NodeJS SDKs\n\n### KubeMQ Targets Connector key features\n\n- Runs anywhere - Kubernetes, Cloud, on-prem, anywhere\n- Stand-alone - small docker container / binary\n- Single Interface - One interface all the services\n- Any Service - Support all major services types (databases, cache, messaging, serverless, HTTP, etc.)\n- Plug-in Architecture Easy to extend, easy to connect\n- Middleware Supports - Logs, Metrics, Retries, and Rate Limiters\n- Easy Configuration - simple yaml file builds your topology\n\n[Check out Github page](https://github.com/kubemq-io/kubemq-targets)\n\n### KubeMQ Bridges Connector key features\n\n- Runs anywhere - Kubernetes, Cloud, on-prem, anywhere\n- Stand-alone - small docker container / binary\n- Build Any Topology - connects KubeMQ clusters in 1:1, 1:n , n:1, n:n\n- Middleware Supports - Logs, Metrics, Retries, and Rate Limiters\n- Easy Configuration - simple yaml file builds your topology\n\n[Check out Github page](https://github.com/kubemq-io/kubemq-bridges)\n\n### KubeMQ Sources Connector key features\n\n- Runs anywhere - Kubernetes, Cloud, on-prem, anywhere\n- Stand-alone - small docker container / binary\n- Single Interface - One interface all the services\n- Any Service - Support all major messaging services such as Kafka, ActiveMQ, SQS, and more.\n- Plug-in Architecture Easy to extend, easy to connect\n- Middleware Supports - Logs, Metrics, Retries, and Rate Limiters\n- Easy Configuration - simple yaml file builds your topology\n\n[Check out Github page](https://github.com/kubemq-io/kubemq-sources)\n\n## Getting Started\n\n[Start with OpenShift](https://docs.kubemq.io/getting-started/create-cluster/openshift)\n\n## Get Enterprise Trial License\n\n[Register](https://account.kubemq.io/login/register)\n\n## Request a Demo\n\n[See KubeMQ in Action](https://kubemq.io/request-a-demo/)",
-      "csv_display_name": "Kubemq Enterprise Operator",
-      "csv_metadata_description": "Kubernetes Messaging Platform",
-      "csv_name": "kubemq-operator.v1.7.8",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:21:57.443000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "kubemq-operator-marketplace",
-      "provided_apis": [
-        {
-          "group": "core.k8s.kubemq.io",
-          "kind": "KubemqCluster",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "core.k8s.kubemq.io",
-          "kind": "KubemqCluster",
-          "version": "v1beta1"
-        },
-        {
-          "group": "core.k8s.kubemq.io",
-          "kind": "KubemqConnector",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "core.k8s.kubemq.io",
-          "kind": "KubemqConnector",
-          "version": "v1beta1"
-        },
-        {
-          "group": "core.k8s.kubemq.io",
-          "kind": "KubemqDashboard",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "core.k8s.kubemq.io",
-          "kind": "KubemqDashboard",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Kubemq.io",
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.7.8",
-      "version_original": "1.7.8"
-    },
-    {
       "_id": "6234603b314381d2b0756b43",
       "alm_examples": [
         {
@@ -13329,9 +12818,140 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.16",
       "version_original": "0.0.16"
+    },
+    {
+      "_id": "6262a5a5834f257293b60f68",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "production",
+      "creation_date": "2022-04-22T12:55:01.870000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:50:26.764000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "6262a5a9173a0d36cf5d6951",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/perceptilabs/perceptilabs-operator-bundle@sha256:90b5771978da944a76d790e3609d4523b82c1c4b75f86da3960fbf682a697fb3",
+      "bundle_path_digest": "sha256:90b5771978da944a76d790e3609d4523b82c1c4b75f86da3960fbf682a697fb3",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:55:05.732000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "perceptilabs-operator.v1.0.16",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:18:02.856000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "perceptilabs-operator-package",
+      "provided_apis": [
+        {
+          "group": "perceptilabs.com",
+          "kind": "PerceptiLabs",
+          "plural": "perceptilabs",
+          "version": "v1"
+        },
+        {
+          "group": "perceptilabs.com",
+          "kind": "PerceptiLabs",
+          "plural": "perceptilabs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.0.16",
+      "version_original": "1.0.16"
+    },
+    {
+      "_id": "6262a5ac84481d5f52299930",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:3ef303a68ac1ec0f5b6b8fcb4be8471180ee24e69ddb6e454ec00cac806fdfe6",
+      "bundle_path_digest": "sha256:3ef303a68ac1ec0f5b6b8fcb4be8471180ee24e69ddb6e454ec00cac806fdfe6",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T12:55:08.047000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "neuvector-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:10:14.268000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
     }
   ],
   "page": 23,
   "page_size": 100,
-  "total": 4762
+  "total": 4780
 }

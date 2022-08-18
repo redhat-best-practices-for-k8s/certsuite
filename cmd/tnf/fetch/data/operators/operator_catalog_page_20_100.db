@@ -1,344 +1,6 @@
 {
   "data": [
     {
-      "_id": "61ec4d36ecea99e5a95b686b",
-      "alm_examples": [
-        {
-          "api_version": "machinelearning.seldon.io/v1",
-          "kind": "SeldonDeployment",
-          "metadata": {
-            "labels": {
-              "app": "seldon",
-              "app.kubernetes.io/instance": "seldon1",
-              "app.kubernetes.io/name": "seldon",
-              "app.kubernetes.io/version": "v0.5"
-            },
-            "name": "seldon-model"
-          },
-          "spec": {
-            "name": "test-deployment",
-            "predictors": [
-              {
-                "componentSpecs": [
-                  {
-                    "spec": {
-                      "containers": [
-                        {
-                          "image": "seldonio/mock_classifier:1.6.0",
-                          "name": "classifier"
-                        }
-                      ]
-                    }
-                  }
-                ],
-                "graph": {
-                  "children": [],
-                  "name": "classifier",
-                  "type": "MODEL"
-                },
-                "name": "example",
-                "replicas": 1
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:4ff78537117948052d6e7414fec414ff8351601ec09e7a097a804298a831c11d",
-      "bundle_path_digest": "sha256:4ff78537117948052d6e7414fec414ff8351601ec09e7a097a804298a831c11d",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-01-22T18:30:14.417000+00:00",
-      "csv_description": "The Seldon operator enables for native operation of production machine learning workloads, including monitoring and operations of language-agnostic models with the benefits of real-time metrics and log analysis.\n   \n## Overview\nSeldon Core is an open source platform for deploying machine learning models on a Kubernetes cluster.\n\n* Deploy machine learning models in the cloud or on-premise.\n* Get metrics and ensure proper governance and compliance for your running machine learning models.\n* Create powerful inference graphs made up of multiple components.\n* Provide a consistent serving layer for models built using heterogeneous ML toolkits.\n\nYou can get started by following the guides in our documentation at https://docs.seldon.io/projects/seldon-core/en/latest/workflow/README.html\n",
-      "csv_display_name": "Seldon Operator",
-      "csv_metadata_description": "The Seldon operator for management, monitoring and operations of machine learning systems through the Seldon Engine. Once installed, the Seldon Operator provides multiple functions which facilitate the productisation, monitoring and maintenance of machine learning systems at scale.",
-      "csv_name": "seldon-operator.v1.12.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:31:50.725000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "seldon-operator-certified",
-      "provided_apis": [
-        {
-          "group": "machinelearning.seldon.io",
-          "kind": "SeldonDeployment",
-          "plural": "seldondeployments",
-          "version": "v1"
-        }
-      ],
-      "provider": "Seldon Technologies",
-      "related_images": [
-        {
-          "digest": "sha256:dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda",
-          "image": "registry.connect.redhat.com/seldonio/seldon-core-operator@sha256:dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda",
-          "name": "seldon-core-operator-dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda-annotation"
-        },
-        {
-          "digest": "sha256:dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda",
-          "image": "registry.connect.redhat.com/seldonio/seldon-core-operator@sha256:dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:4aab0706cef5ae37e3d62ba3cc4f92bc5d0b0e18d0d953143d25d745696ecc54",
-          "image": "registry.connect.redhat.com/seldonio/seldon-core-executor@sha256:4aab0706cef5ae37e3d62ba3cc4f92bc5d0b0e18d0d953143d25d745696ecc54",
-          "name": "executor"
-        },
-        {
-          "digest": "sha256:0abffc5f882b16a7ffa9ecfb7d1b362d8e8017b47e94b4b72b10dce74daeec65",
-          "image": "registry.connect.redhat.com/seldonio/seldon-engine@sha256:0abffc5f882b16a7ffa9ecfb7d1b362d8e8017b47e94b4b72b10dce74daeec65",
-          "name": "engine"
-        },
-        {
-          "digest": "sha256:554547229653bf1ebedb88c8eec40e63c8282146e0a0ea14f2d47f000004439f",
-          "image": "registry.connect.redhat.com/seldonio/storage-initializer@sha256:554547229653bf1ebedb88c8eec40e63c8282146e0a0ea14f2d47f000004439f",
-          "name": "storage_initializer"
-        },
-        {
-          "digest": "sha256:0a68b243b28d2dc273a3278393e9f986b6ed5fc29aea7b9f3f343bf9efc5ac8e",
-          "image": "registry.connect.redhat.com/seldonio/sklearnserver@sha256:0a68b243b28d2dc273a3278393e9f986b6ed5fc29aea7b9f3f343bf9efc5ac8e",
-          "name": "sklearnserver"
-        },
-        {
-          "digest": "sha256:0ee0001730d21ca636417824655d74d423d4492d7fed28befc74c23caf0cc4c8",
-          "image": "registry.connect.redhat.com/seldonio/xgboostserver@sha256:0ee0001730d21ca636417824655d74d423d4492d7fed28befc74c23caf0cc4c8",
-          "name": "xgboostserver"
-        },
-        {
-          "digest": "sha256:3381cad85a16434f48cd65afbcfc65f2693bee46a149aa143a4088c9f9d899a2",
-          "image": "registry.connect.redhat.com/seldonio/mlflowserver@sha256:3381cad85a16434f48cd65afbcfc65f2693bee46a149aa143a4088c9f9d899a2",
-          "name": "mlflowserver"
-        },
-        {
-          "digest": "sha256:407932f2d8e670bb4d3b9f6670a687039fae8d79312269d4da2677b73dc3e301",
-          "image": "registry.connect.redhat.com/seldonio/tfproxy@sha256:407932f2d8e670bb4d3b9f6670a687039fae8d79312269d4da2677b73dc3e301",
-          "name": "tfproxy"
-        },
-        {
-          "digest": "sha256:04d1eee0208ca0e64ae277197cb1ddff4c0ee143a712a7f7a30faec397239dfc",
-          "image": "registry.connect.redhat.com/seldonio/tensorflow-serving@sha256:04d1eee0208ca0e64ae277197cb1ddff4c0ee143a712a7f7a30faec397239dfc",
-          "name": "tensorflow"
-        },
-        {
-          "digest": "sha256:6ec697ad5187639712701454198a5f6afa1f662d3c127641c06b4322f391d6dd",
-          "image": "registry.connect.redhat.com/seldonio/alibiexplainer@sha256:6ec697ad5187639712701454198a5f6afa1f662d3c127641c06b4322f391d6dd",
-          "name": "explainer"
-        },
-        {
-          "digest": "sha256:ea78453871e656b71ec9ce4660623a58938d0492fb8b660cc36a1943c768ce4d",
-          "image": "registry.connect.redhat.com/seldonio/mock-classifier@sha256:ea78453871e656b71ec9ce4660623a58938d0492fb8b660cc36a1943c768ce4d",
-          "name": "mock_classifier"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<1.12.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.12.0",
-      "version_original": "1.12.0"
-    },
-    {
-      "_id": "61ee74d333f211c45407a768",
-      "alm_examples": [
-        {
-          "api_version": "app.joget.com/v1alpha1",
-          "kind": "JogetDX",
-          "metadata": {
-            "name": "example-joget"
-          },
-          "spec": {
-            "size": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
-      "bundle_path_digest": "sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-01-24T09:43:47.119000+00:00",
-      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
-      "csv_display_name": "Joget DX Operator",
-      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
-      "csv_name": "joget-dx-openshift-operator.v0.0.25",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:02:24.438000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "joget-dx-operator",
-      "provided_apis": [
-        {
-          "group": "app.joget.com",
-          "kind": "JogetDX",
-          "plural": "jogetdx",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Joget, Inc",
-      "related_images": [
-        {
-          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
-          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
-          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
-        },
-        {
-          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
-          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
-          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
-          "name": "joget"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.0.25",
-      "version_original": "0.0.25"
-    },
-    {
-      "_id": "61ee758c384a3eb331996a41",
-      "alm_examples": [
-        {
-          "api_version": "app.joget.com/v1alpha1",
-          "kind": "JogetDX",
-          "metadata": {
-            "name": "example-joget"
-          },
-          "spec": {
-            "size": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
-      "bundle_path_digest": "sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-01-24T09:46:52.308000+00:00",
-      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
-      "csv_display_name": "Joget DX Operator",
-      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
-      "csv_name": "joget-dx-openshift-operator.v0.0.25",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:00:33.515000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "joget-dx-operator",
-      "provided_apis": [
-        {
-          "group": "app.joget.com",
-          "kind": "JogetDX",
-          "plural": "jogetdx",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Joget, Inc",
-      "related_images": [
-        {
-          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
-          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
-          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
-        },
-        {
-          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
-          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
-          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
-          "name": "joget"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.0.25",
-      "version_original": "0.0.25"
-    },
-    {
       "_id": "61ee7681384a3eb331996a7c",
       "alm_examples": [
         {
@@ -20375,9 +20037,546 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.2.0",
       "version_original": "1.2.0"
+    },
+    {
+      "_id": "621c6e6b207e0eb391807ca4",
+      "alm_examples": [
+        {
+          "api_version": "storage.hpe.com/v1",
+          "kind": "HPECSIDriver",
+          "metadata": {
+            "name": "csi-driver"
+          },
+          "spec": {
+            "disable": {
+              "alletra6000": false,
+              "alletra9000": false,
+              "nimble": false,
+              "primera": false
+            },
+            "disableNodeConformance": false,
+            "disableNodeGetVolumeStats": false,
+            "imagePullPolicy": "IfNotPresent",
+            "iscsi": {
+              "chapPassword": "",
+              "chapUser": ""
+            },
+            "kubeletRootDir": "/var/lib/kubelet/",
+            "logLevel": "info",
+            "registry": "quay.io"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/hpestorage/csi-driver-operator-bundle@sha256:41964cfe3e810688188aee733dfba7367adac8fe7cda8a90ba4fc1b6aaf2121d",
+      "bundle_path_digest": "sha256:41964cfe3e810688188aee733dfba7367adac8fe7cda8a90ba4fc1b6aaf2121d",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-02-28T06:40:43.604000+00:00",
+      "csv_description": "The HPE CSI Operator for Kubernetes packages, deploys, manages, upgrades the HPE CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on HPE storage systems.\nThe HPE CSI Driver for Kubernetes leverages HPE storage platforms to provide scalable and persistent storage for stateful applications. Please refer to our CSI driver [documentation](https://scod.hpedev.io/csi_driver/index.html) for supported HPE platforms and full list of supported CSI features.\n## Installation\nRefer to the HPE CSI Operator for Kubernetes [documentation](https://scod.hpedev.io/csi_driver/deployment.html#operator).\n",
+      "csv_display_name": "HPE CSI Operator for Kubernetes",
+      "csv_metadata_description": "A Container Storage Interface (CSI) driver for HPE storage platforms. The CSI driver allows you to use HPE storage with your preferred container orchestrator.",
+      "csv_name": "hpe-csi-operator.v2.1.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:54:47.229000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "hpe-csi-operator",
+      "provided_apis": [
+        {
+          "group": "storage.hpe.com",
+          "kind": "HPECSIDriver",
+          "plural": "hpecsidrivers",
+          "version": "v1"
+        }
+      ],
+      "provider": "HPE",
+      "related_images": [
+        {
+          "digest": "sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
+          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
+          "name": "hpe-csi-operator-image"
+        },
+        {
+          "digest": "sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
+          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
+          "name": "csi-driver-operator-437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104-annotation"
+        },
+        {
+          "digest": "sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
+          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
+          "name": "hpe-csi-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.1.3",
+      "version_original": "2.1.3"
+    },
+    {
+      "_id": "621c6f275c4460caf3123f0a",
+      "alm_examples": [
+        {
+          "api_version": "storage.hpe.com/v1",
+          "kind": "HPECSIDriver",
+          "metadata": {
+            "name": "csi-driver"
+          },
+          "spec": {
+            "disable": {
+              "alletra6000": false,
+              "alletra9000": false,
+              "nimble": false,
+              "primera": false
+            },
+            "disableNodeConformance": false,
+            "disableNodeGetVolumeStats": false,
+            "imagePullPolicy": "IfNotPresent",
+            "iscsi": {
+              "chapPassword": "",
+              "chapUser": ""
+            },
+            "kubeletRootDir": "/var/lib/kubelet/",
+            "logLevel": "info",
+            "registry": "quay.io"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/hpestorage/csi-driver-operator-bundle@sha256:41964cfe3e810688188aee733dfba7367adac8fe7cda8a90ba4fc1b6aaf2121d",
+      "bundle_path_digest": "sha256:41964cfe3e810688188aee733dfba7367adac8fe7cda8a90ba4fc1b6aaf2121d",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-02-28T06:43:51.121000+00:00",
+      "csv_description": "The HPE CSI Operator for Kubernetes packages, deploys, manages, upgrades the HPE CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on HPE storage systems.\nThe HPE CSI Driver for Kubernetes leverages HPE storage platforms to provide scalable and persistent storage for stateful applications. Please refer to our CSI driver [documentation](https://scod.hpedev.io/csi_driver/index.html) for supported HPE platforms and full list of supported CSI features.\n## Installation\nRefer to the HPE CSI Operator for Kubernetes [documentation](https://scod.hpedev.io/csi_driver/deployment.html#operator).\n",
+      "csv_display_name": "HPE CSI Operator for Kubernetes",
+      "csv_metadata_description": "A Container Storage Interface (CSI) driver for HPE storage platforms. The CSI driver allows you to use HPE storage with your preferred container orchestrator.",
+      "csv_name": "hpe-csi-operator.v2.1.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:28:21.073000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "hpe-csi-operator",
+      "provided_apis": [
+        {
+          "group": "storage.hpe.com",
+          "kind": "HPECSIDriver",
+          "plural": "hpecsidrivers",
+          "version": "v1"
+        }
+      ],
+      "provider": "HPE",
+      "related_images": [
+        {
+          "digest": "sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
+          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
+          "name": "hpe-csi-operator-image"
+        },
+        {
+          "digest": "sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
+          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
+          "name": "csi-driver-operator-437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104-annotation"
+        },
+        {
+          "digest": "sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
+          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
+          "name": "hpe-csi-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.1.3",
+      "version_original": "2.1.3"
+    },
+    {
+      "_id": "621d2ecd9206cd6accd155ef",
+      "alm_examples": [
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "ppc64le"
+      ],
+      "bundle_path": "registry.connect.redhat.com/trilio/k8s-triliovault-ibm@sha256:85bdda572f98163d5e84adddb0ca47fb183ecd2cbeaa2ff0e905387c4d8f3d2d",
+      "bundle_path_digest": "sha256:85bdda572f98163d5e84adddb0ca47fb183ecd2cbeaa2ff0e905387c4d8f3d2d",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-02-28T20:21:33.219000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-ibm-stable.2.7.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:02:58.958000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault-ibm",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "plural": "clusterbackupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "plural": "clusterbackups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "plural": "clusterrestores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        }
+      ],
+      "provider": "Trilio",
+      "related_images": [
+        {
+          "digest": "sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
+          "image": "eu.gcr.io/amazing-chalice-243510/control-plane@sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
+          "name": "control-plane-1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a-annotation"
+        },
+        {
+          "digest": "sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
+          "image": "eu.gcr.io/amazing-chalice-243510/control-plane@sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:8a1f8d4ef507034e9210f49cf6d20a42e18a480bff9974ac73efd35438610ba8",
+          "image": "eu.gcr.io/amazing-chalice-243510/analyzer@sha256:8a1f8d4ef507034e9210f49cf6d20a42e18a480bff9974ac73efd35438610ba8",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:b1318b3e0ee719ae183a48a1876f158862f958e9c85fadb672ccab3de5593311",
+          "image": "eu.gcr.io/amazing-chalice-243510/trilio-admission-webhook@sha256:b1318b3e0ee719ae183a48a1876f158862f958e9c85fadb672ccab3de5593311",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:3900293f0afbd3c594136768b89b3233611b115918ede5834eb8eab7ac5c3f70",
+          "image": "eu.gcr.io/amazing-chalice-243510/exporter@sha256:3900293f0afbd3c594136768b89b3233611b115918ede5834eb8eab7ac5c3f70",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:0c0691485ff10b2318ce378fcb37a77130db556d8cba9f895a6bf6814774b604",
+          "image": "eu.gcr.io/amazing-chalice-243510/web@sha256:0c0691485ff10b2318ce378fcb37a77130db556d8cba9f895a6bf6814774b604",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:c66c43fde40f9bf910b56c519d09cea3509de03973c6962ae57ceb3e924a9542",
+          "image": "eu.gcr.io/amazing-chalice-243510/web-backend@sha256:c66c43fde40f9bf910b56c519d09cea3509de03973c6962ae57ceb3e924a9542",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
+          "image": "eu.gcr.io/amazing-chalice-243510/dex@sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
+          "image": "eu.gcr.io/amazing-chalice-243510/trilio-init@sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
+          "image": "eu.gcr.io/amazing-chalice-243510/trilio-init@sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:dc868ce5d6aa0f0fb194af84951f3e22922aa523f17ca1d7174441d72022cb77",
+          "image": "eu.gcr.io/amazing-chalice-243510/metamover@sha256:dc868ce5d6aa0f0fb194af84951f3e22922aa523f17ca1d7174441d72022cb77",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:222b9317935dd19e9a333520bdf0b1f68d9768880bce6f482cb1b2250806da76",
+          "image": "eu.gcr.io/amazing-chalice-243510/datamover@sha256:222b9317935dd19e9a333520bdf0b1f68d9768880bce6f482cb1b2250806da76",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:806090cc5ac8a65fcc5e90d82143dc7df230f742c29ff1c21e685bb49879aaa7",
+          "image": "eu.gcr.io/amazing-chalice-243510/datastore-attacher@sha256:806090cc5ac8a65fcc5e90d82143dc7df230f742c29ff1c21e685bb49879aaa7",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:8b3f03459aedfb7829dad4c2e9f731d2f11abf9ba38319c3d2f0d8303a642c5e",
+          "image": "eu.gcr.io/amazing-chalice-243510/backup-scheduler@sha256:8b3f03459aedfb7829dad4c2e9f731d2f11abf9ba38319c3d2f0d8303a642c5e",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:e687443babeb3b9850aa3050b6c6935976358bcdea66666fb79b487ee35c5c25",
+          "image": "eu.gcr.io/amazing-chalice-243510/backup-cleaner@sha256:e687443babeb3b9850aa3050b6c6935976358bcdea66666fb79b487ee35c5c25",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:3eb71f17b6b04a7207f3cc921f29cd070993402d951aa940a6c0be61733fe958",
+          "image": "eu.gcr.io/amazing-chalice-243510/backup-retention@sha256:3eb71f17b6b04a7207f3cc921f29cd070993402d951aa940a6c0be61733fe958",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:6729338fadd130c21e830fc9c5dacb4efae3ffb37427c415d377ee7c8f152872",
+          "image": "eu.gcr.io/amazing-chalice-243510/target-browser@sha256:6729338fadd130c21e830fc9c5dacb4efae3ffb37427c415d377ee7c8f152872",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:7a76cad51eab8ceb492426507cf6c92ed90047184ae2a8d0ce6c2e1a57762078",
+          "image": "eu.gcr.io/amazing-chalice-243510/hook-executor@sha256:7a76cad51eab8ceb492426507cf6c92ed90047184ae2a8d0ce6c2e1a57762078",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:08b4bb891506388fe6bc96490c3ee8117a2c4b7f99919e2e8a5333d2bc12ee5d",
+          "image": "eu.gcr.io/amazing-chalice-243510/resource-cleaner@sha256:08b4bb891506388fe6bc96490c3ee8117a2c4b7f99919e2e8a5333d2bc12ee5d",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:6015efd6fe0f935ee77588573d1f1e8c4a4d453d27e6925ef1c89fbab0aa1068",
+          "image": "eu.gcr.io/amazing-chalice-243510/minio@sha256:6015efd6fe0f935ee77588573d1f1e8c4a4d453d27e6925ef1c89fbab0aa1068",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
+          "image": "eu.gcr.io/amazing-chalice-243510/dex@sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
+          "image": "eu.gcr.io/amazing-chalice-243510/trilio-init@sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.7.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.7.0",
+      "version_original": "2.7.0"
     }
   ],
   "page": 20,
   "page_size": 100,
-  "total": 4762
+  "total": 4780
 }
