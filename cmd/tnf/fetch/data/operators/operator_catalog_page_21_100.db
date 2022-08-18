@@ -1,543 +1,6 @@
 {
   "data": [
     {
-      "_id": "621c6e6b207e0eb391807ca4",
-      "alm_examples": [
-        {
-          "api_version": "storage.hpe.com/v1",
-          "kind": "HPECSIDriver",
-          "metadata": {
-            "name": "csi-driver"
-          },
-          "spec": {
-            "disable": {
-              "alletra6000": false,
-              "alletra9000": false,
-              "nimble": false,
-              "primera": false
-            },
-            "disableNodeConformance": false,
-            "disableNodeGetVolumeStats": false,
-            "imagePullPolicy": "IfNotPresent",
-            "iscsi": {
-              "chapPassword": "",
-              "chapUser": ""
-            },
-            "kubeletRootDir": "/var/lib/kubelet/",
-            "logLevel": "info",
-            "registry": "quay.io"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hpestorage/csi-driver-operator-bundle@sha256:41964cfe3e810688188aee733dfba7367adac8fe7cda8a90ba4fc1b6aaf2121d",
-      "bundle_path_digest": "sha256:41964cfe3e810688188aee733dfba7367adac8fe7cda8a90ba4fc1b6aaf2121d",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-02-28T06:40:43.604000+00:00",
-      "csv_description": "The HPE CSI Operator for Kubernetes packages, deploys, manages, upgrades the HPE CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on HPE storage systems.\nThe HPE CSI Driver for Kubernetes leverages HPE storage platforms to provide scalable and persistent storage for stateful applications. Please refer to our CSI driver [documentation](https://scod.hpedev.io/csi_driver/index.html) for supported HPE platforms and full list of supported CSI features.\n## Installation\nRefer to the HPE CSI Operator for Kubernetes [documentation](https://scod.hpedev.io/csi_driver/deployment.html#operator).\n",
-      "csv_display_name": "HPE CSI Operator for Kubernetes",
-      "csv_metadata_description": "A Container Storage Interface (CSI) driver for HPE storage platforms. The CSI driver allows you to use HPE storage with your preferred container orchestrator.",
-      "csv_name": "hpe-csi-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:54:47.229000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "hpe-csi-operator",
-      "provided_apis": [
-        {
-          "group": "storage.hpe.com",
-          "kind": "HPECSIDriver",
-          "plural": "hpecsidrivers",
-          "version": "v1"
-        }
-      ],
-      "provider": "HPE",
-      "related_images": [
-        {
-          "digest": "sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
-          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
-          "name": "hpe-csi-operator-image"
-        },
-        {
-          "digest": "sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
-          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
-          "name": "csi-driver-operator-437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104-annotation"
-        },
-        {
-          "digest": "sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
-          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
-          "name": "hpe-csi-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
-    },
-    {
-      "_id": "621c6f275c4460caf3123f0a",
-      "alm_examples": [
-        {
-          "api_version": "storage.hpe.com/v1",
-          "kind": "HPECSIDriver",
-          "metadata": {
-            "name": "csi-driver"
-          },
-          "spec": {
-            "disable": {
-              "alletra6000": false,
-              "alletra9000": false,
-              "nimble": false,
-              "primera": false
-            },
-            "disableNodeConformance": false,
-            "disableNodeGetVolumeStats": false,
-            "imagePullPolicy": "IfNotPresent",
-            "iscsi": {
-              "chapPassword": "",
-              "chapUser": ""
-            },
-            "kubeletRootDir": "/var/lib/kubelet/",
-            "logLevel": "info",
-            "registry": "quay.io"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hpestorage/csi-driver-operator-bundle@sha256:41964cfe3e810688188aee733dfba7367adac8fe7cda8a90ba4fc1b6aaf2121d",
-      "bundle_path_digest": "sha256:41964cfe3e810688188aee733dfba7367adac8fe7cda8a90ba4fc1b6aaf2121d",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-02-28T06:43:51.121000+00:00",
-      "csv_description": "The HPE CSI Operator for Kubernetes packages, deploys, manages, upgrades the HPE CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on HPE storage systems.\nThe HPE CSI Driver for Kubernetes leverages HPE storage platforms to provide scalable and persistent storage for stateful applications. Please refer to our CSI driver [documentation](https://scod.hpedev.io/csi_driver/index.html) for supported HPE platforms and full list of supported CSI features.\n## Installation\nRefer to the HPE CSI Operator for Kubernetes [documentation](https://scod.hpedev.io/csi_driver/deployment.html#operator).\n",
-      "csv_display_name": "HPE CSI Operator for Kubernetes",
-      "csv_metadata_description": "A Container Storage Interface (CSI) driver for HPE storage platforms. The CSI driver allows you to use HPE storage with your preferred container orchestrator.",
-      "csv_name": "hpe-csi-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:28:21.073000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "hpe-csi-operator",
-      "provided_apis": [
-        {
-          "group": "storage.hpe.com",
-          "kind": "HPECSIDriver",
-          "plural": "hpecsidrivers",
-          "version": "v1"
-        }
-      ],
-      "provider": "HPE",
-      "related_images": [
-        {
-          "digest": "sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
-          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
-          "name": "hpe-csi-operator-image"
-        },
-        {
-          "digest": "sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
-          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
-          "name": "csi-driver-operator-437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104-annotation"
-        },
-        {
-          "digest": "sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
-          "image": "registry.connect.redhat.com/hpestorage/csi-driver-operator@sha256:437fd93f6120cdd60b3d143bd6c6ae2eea7d694920d5ff784513563d739f0104",
-          "name": "hpe-csi-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
-    },
-    {
-      "_id": "621d2ecd9206cd6accd155ef",
-      "alm_examples": [
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "License",
-          "metadata": {
-            "name": "tvk-license-one",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "Target",
-          "metadata": {
-            "labels": {
-              "app": "triliovault"
-            },
-            "name": "triliovault-target",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "nfsCredentials": {
-              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
-              "nfsOptions": "nfsvers=4"
-            },
-            "type": "NFS",
-            "vendor": "Other"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "BackupPlan",
-          "metadata": {
-            "name": "tvk-backupplan"
-          },
-          "spec": {
-            "backupConfig": {
-              "retentionPolicy": {
-                "name": "retention-policy",
-                "namespace": "openshift-marketplace"
-              },
-              "schedulePolicy": {
-                "fullBackupPolicy": {
-                  "name": "full-bp-policy",
-                  "namespace": "openshift-marketplace"
-                },
-                "incrementalBackupPolicy": {
-                  "name": "inc-bp-policy",
-                  "namespace": "openshift-marketplace"
-                }
-              },
-              "target": {
-                "name": "triliovault-target",
-                "namespace": "openshift-marketplace"
-              }
-            },
-            "backupPlanComponents": {
-              "custom": [
-                {
-                  "matchLabels": {
-                    "app": "nginx"
-                  }
-                }
-              ],
-              "helmReleases": [
-                "sample-release"
-              ],
-              "operators": [
-                {
-                  "applicationResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "app": "etcd"
-                      }
-                    }
-                  ],
-                  "customResources": [
-                    {
-                      "groupVersionKind": {
-                        "group": "etcd.database.coreos.com",
-                        "kind": "EtcdCluster",
-                        "version": "v1beta2"
-                      },
-                      "objects": [
-                        "demo-etcd-cluster"
-                      ]
-                    }
-                  ],
-                  "operatorId": "demo-etcd-cluster",
-                  "operatorResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "release": "demo-etcd-operator"
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "ppc64le"
-      ],
-      "bundle_path": "registry.connect.redhat.com/trilio/k8s-triliovault-ibm@sha256:85bdda572f98163d5e84adddb0ca47fb183ecd2cbeaa2ff0e905387c4d8f3d2d",
-      "bundle_path_digest": "sha256:85bdda572f98163d5e84adddb0ca47fb183ecd2cbeaa2ff0e905387c4d8f3d2d",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-02-28T20:21:33.219000+00:00",
-      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
-      "csv_display_name": "TrilioVault for Kubernetes",
-      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
-      "csv_name": "k8s-triliovault-ibm-stable.2.7.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:02:58.958000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "k8s-triliovault-ibm",
-      "provided_apis": [
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "License",
-          "plural": "licenses",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Hook",
-          "plural": "hooks",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Policy",
-          "plural": "policies",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Restore",
-          "plural": "restores",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "BackupPlan",
-          "plural": "backupplans",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackupPlan",
-          "plural": "clusterbackupplans",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackup",
-          "plural": "clusterbackups",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Target",
-          "plural": "targets",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterRestore",
-          "plural": "clusterrestores",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        }
-      ],
-      "provider": "Trilio",
-      "related_images": [
-        {
-          "digest": "sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
-          "image": "eu.gcr.io/amazing-chalice-243510/control-plane@sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
-          "name": "control-plane-1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a-annotation"
-        },
-        {
-          "digest": "sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
-          "image": "eu.gcr.io/amazing-chalice-243510/control-plane@sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
-          "name": "k8s-triliovault-control-plane"
-        },
-        {
-          "digest": "sha256:8a1f8d4ef507034e9210f49cf6d20a42e18a480bff9974ac73efd35438610ba8",
-          "image": "eu.gcr.io/amazing-chalice-243510/analyzer@sha256:8a1f8d4ef507034e9210f49cf6d20a42e18a480bff9974ac73efd35438610ba8",
-          "name": "k8s-triliovault-analyzer"
-        },
-        {
-          "digest": "sha256:b1318b3e0ee719ae183a48a1876f158862f958e9c85fadb672ccab3de5593311",
-          "image": "eu.gcr.io/amazing-chalice-243510/trilio-admission-webhook@sha256:b1318b3e0ee719ae183a48a1876f158862f958e9c85fadb672ccab3de5593311",
-          "name": "triliovault-admission-webhook"
-        },
-        {
-          "digest": "sha256:3900293f0afbd3c594136768b89b3233611b115918ede5834eb8eab7ac5c3f70",
-          "image": "eu.gcr.io/amazing-chalice-243510/exporter@sha256:3900293f0afbd3c594136768b89b3233611b115918ede5834eb8eab7ac5c3f70",
-          "name": "triliovault-exporter"
-        },
-        {
-          "digest": "sha256:0c0691485ff10b2318ce378fcb37a77130db556d8cba9f895a6bf6814774b604",
-          "image": "eu.gcr.io/amazing-chalice-243510/web@sha256:0c0691485ff10b2318ce378fcb37a77130db556d8cba9f895a6bf6814774b604",
-          "name": "triliovault-web"
-        },
-        {
-          "digest": "sha256:c66c43fde40f9bf910b56c519d09cea3509de03973c6962ae57ceb3e924a9542",
-          "image": "eu.gcr.io/amazing-chalice-243510/web-backend@sha256:c66c43fde40f9bf910b56c519d09cea3509de03973c6962ae57ceb3e924a9542",
-          "name": "triliovault-web-backend"
-        },
-        {
-          "digest": "sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
-          "image": "eu.gcr.io/amazing-chalice-243510/dex@sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
-          "name": "triliovault-dex"
-        },
-        {
-          "digest": "sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
-          "image": "eu.gcr.io/amazing-chalice-243510/trilio-init@sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
-          "name": "webhook-init"
-        },
-        {
-          "digest": "sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
-          "image": "eu.gcr.io/amazing-chalice-243510/trilio-init@sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
-          "name": "dex-init"
-        },
-        {
-          "digest": "sha256:dc868ce5d6aa0f0fb194af84951f3e22922aa523f17ca1d7174441d72022cb77",
-          "image": "eu.gcr.io/amazing-chalice-243510/metamover@sha256:dc868ce5d6aa0f0fb194af84951f3e22922aa523f17ca1d7174441d72022cb77",
-          "name": "metamover"
-        },
-        {
-          "digest": "sha256:222b9317935dd19e9a333520bdf0b1f68d9768880bce6f482cb1b2250806da76",
-          "image": "eu.gcr.io/amazing-chalice-243510/datamover@sha256:222b9317935dd19e9a333520bdf0b1f68d9768880bce6f482cb1b2250806da76",
-          "name": "datamover"
-        },
-        {
-          "digest": "sha256:806090cc5ac8a65fcc5e90d82143dc7df230f742c29ff1c21e685bb49879aaa7",
-          "image": "eu.gcr.io/amazing-chalice-243510/datastore-attacher@sha256:806090cc5ac8a65fcc5e90d82143dc7df230f742c29ff1c21e685bb49879aaa7",
-          "name": "datastore_attacher"
-        },
-        {
-          "digest": "sha256:8b3f03459aedfb7829dad4c2e9f731d2f11abf9ba38319c3d2f0d8303a642c5e",
-          "image": "eu.gcr.io/amazing-chalice-243510/backup-scheduler@sha256:8b3f03459aedfb7829dad4c2e9f731d2f11abf9ba38319c3d2f0d8303a642c5e",
-          "name": "backup_scheduler"
-        },
-        {
-          "digest": "sha256:e687443babeb3b9850aa3050b6c6935976358bcdea66666fb79b487ee35c5c25",
-          "image": "eu.gcr.io/amazing-chalice-243510/backup-cleaner@sha256:e687443babeb3b9850aa3050b6c6935976358bcdea66666fb79b487ee35c5c25",
-          "name": "backup_cleaner"
-        },
-        {
-          "digest": "sha256:3eb71f17b6b04a7207f3cc921f29cd070993402d951aa940a6c0be61733fe958",
-          "image": "eu.gcr.io/amazing-chalice-243510/backup-retention@sha256:3eb71f17b6b04a7207f3cc921f29cd070993402d951aa940a6c0be61733fe958",
-          "name": "backup_retention"
-        },
-        {
-          "digest": "sha256:6729338fadd130c21e830fc9c5dacb4efae3ffb37427c415d377ee7c8f152872",
-          "image": "eu.gcr.io/amazing-chalice-243510/target-browser@sha256:6729338fadd130c21e830fc9c5dacb4efae3ffb37427c415d377ee7c8f152872",
-          "name": "target_browser"
-        },
-        {
-          "digest": "sha256:7a76cad51eab8ceb492426507cf6c92ed90047184ae2a8d0ce6c2e1a57762078",
-          "image": "eu.gcr.io/amazing-chalice-243510/hook-executor@sha256:7a76cad51eab8ceb492426507cf6c92ed90047184ae2a8d0ce6c2e1a57762078",
-          "name": "hook"
-        },
-        {
-          "digest": "sha256:08b4bb891506388fe6bc96490c3ee8117a2c4b7f99919e2e8a5333d2bc12ee5d",
-          "image": "eu.gcr.io/amazing-chalice-243510/resource-cleaner@sha256:08b4bb891506388fe6bc96490c3ee8117a2c4b7f99919e2e8a5333d2bc12ee5d",
-          "name": "resource_cleaner"
-        },
-        {
-          "digest": "sha256:6015efd6fe0f935ee77588573d1f1e8c4a4d453d27e6925ef1c89fbab0aa1068",
-          "image": "eu.gcr.io/amazing-chalice-243510/minio@sha256:6015efd6fe0f935ee77588573d1f1e8c4a4d453d27e6925ef1c89fbab0aa1068",
-          "name": "minio"
-        },
-        {
-          "digest": "sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
-          "image": "eu.gcr.io/amazing-chalice-243510/dex@sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
-          "name": "dex"
-        },
-        {
-          "digest": "sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
-          "image": "eu.gcr.io/amazing-chalice-243510/trilio-init@sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
-          "name": "tvk_init"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.7.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2.7.0",
-      "version_original": "2.7.0"
-    },
-    {
       "_id": "621d2ece5c46c6464085f8b2",
       "alm_examples": [
         {
@@ -14545,9 +14008,1165 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.6.2-alpha",
       "version_original": "1.6.2-alpha"
+    },
+    {
+      "_id": "622a18a1a18c309e7fff88ae",
+      "alm_examples": [
+        {
+          "api_version": "elasticsearch.k8s.elastic.co/v1",
+          "kind": "Elasticsearch",
+          "metadata": {
+            "name": "elasticsearch-sample"
+          },
+          "spec": {
+            "nodeSets": [
+              {
+                "config": {
+                  "node.attr.attr_name": "attr_value",
+                  "node.roles": [
+                    "master",
+                    "data"
+                  ],
+                  "node.store.allow_mmap": false
+                },
+                "count": 3,
+                "name": "default",
+                "podTemplate": {
+                  "metadata": {
+                    "labels": {
+                      "foo": "bar"
+                    }
+                  },
+                  "spec": {
+                    "containers": [
+                      {
+                        "name": "elasticsearch",
+                        "resources": {
+                          "limits": {
+                            "cpu": 2,
+                            "memory": "4Gi"
+                          },
+                          "requests": {
+                            "cpu": 1,
+                            "memory": "4Gi"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "kibana.k8s.elastic.co/v1",
+          "kind": "Kibana",
+          "metadata": {
+            "name": "kibana-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "podTemplate": {
+              "metadata": {
+                "labels": {
+                  "foo": "bar"
+                }
+              },
+              "spec": {
+                "containers": [
+                  {
+                    "name": "kibana",
+                    "resources": {
+                      "limits": {
+                        "cpu": 2,
+                        "memory": "2Gi"
+                      },
+                      "requests": {
+                        "cpu": 0.5,
+                        "memory": "1Gi"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "apm.k8s.elastic.co/v1",
+          "kind": "ApmServer",
+          "metadata": {
+            "name": "apmserver-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "enterprisesearch.k8s.elastic.co/v1",
+          "kind": "EnterpriseSearch",
+          "metadata": {
+            "name": "ent-sample"
+          },
+          "spec": {
+            "config": {
+              "ent_search.external_url": "https://localhost:3002"
+            },
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "beat.k8s.elastic.co/v1beta1",
+          "kind": "Beat",
+          "metadata": {
+            "name": "heartbeat-sample"
+          },
+          "spec": {
+            "config": {
+              "heartbeat.monitors": [
+                {
+                  "hosts": [
+                    "elasticsearch-sample-es-http.default.svc:9200"
+                  ],
+                  "schedule": "@every 5s",
+                  "type": "tcp"
+                }
+              ]
+            },
+            "deployment": {
+              "podTemplate": {
+                "spec": {
+                  "securityContext": {
+                    "runAsUser": 0
+                  }
+                }
+              },
+              "replicas": 1
+            },
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "type": "heartbeat",
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "agent.k8s.elastic.co/v1alpha1",
+          "kind": "Agent",
+          "metadata": {
+            "name": "agent-sample"
+          },
+          "spec": {
+            "config": {
+              "inputs": [
+                {
+                  "data_stream": {
+                    "namespace": "default"
+                  },
+                  "meta": {
+                    "package": {
+                      "name": "system",
+                      "version": "0.9.1"
+                    }
+                  },
+                  "name": "system-1",
+                  "revision": 1,
+                  "streams": [
+                    {
+                      "cpu.metrics": [
+                        "percentages",
+                        "normalized_percentages"
+                      ],
+                      "data_stream": {
+                        "dataset": "system.cpu",
+                        "type": "metrics"
+                      },
+                      "id": "system/metrics-system.cpu",
+                      "metricsets": [
+                        "cpu"
+                      ],
+                      "period": "10s"
+                    }
+                  ],
+                  "type": "system/metrics",
+                  "use_output": "default"
+                }
+              ]
+            },
+            "daemonSet": {},
+            "elasticsearchRefs": [
+              {
+                "name": "elasticsearch-sample"
+              }
+            ],
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "maps.k8s.elastic.co/v1alpha1",
+          "kind": "ElasticMapsServer",
+          "metadata": {
+            "name": "ems-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.1.0"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:a386d9aefcfd7cfb9f7b2b5fd30733efac2e4ce8c265fcddaff9252398bfe821",
+      "bundle_path_digest": "sha256:a386d9aefcfd7cfb9f7b2b5fd30733efac2e4ce8c265fcddaff9252398bfe821",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-10T15:26:25.308000+00:00",
+      "csv_description": "Elastic Cloud on Kubernetes (ECK) is the official operator by Elastic for automating the deployment, provisioning, management, and orchestration of Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes.\n\nCurrent features:\n\n*  Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent and Elastic Maps Server deployments\n*  TLS Certificates management\n*  Safe Elasticsearch cluster configuration and topology changes\n*  Persistent volumes usage\n*  Custom node configuration and attributes\n*  Secure settings keystore updates\n\nSupported versions:\n\n* Kubernetes 1.19-1.23\n* OpenShift 4.6-4.10\n* Google Kubernetes Engine (GKE), Azure Kubernetes Service (AKS), and Amazon Elastic Kubernetes Service (EKS)\n* Elasticsearch, Kibana, APM Server: 7.10+\n* Enterprise Search: 7.10+\n* Beats: 7.10+\n* Elastic Agent: 7.10+\n* Elastic Maps Server: 7.11+\n\nECK should work with all conformant installers as listed in these [FAQs](https://github.com/cncf/k8s-conformance/blob/master/faq.md#what-is-a-distribution-hosted-platform-and-an-installer). Distributions include source patches and so may not work as-is with ECK.\nAlpha, beta, and stable API versions follow the same [conventions used by Kubernetes](https://kubernetes.io/docs/concepts/overview/kubernetes-api/#api-versioning).\nSee the full [Elastic support matrix](https://www.elastic.co/support/matrix#matrix_kubernetes) for more information.\nSee the [Quickstart](https://www.elastic.co/guide/en/cloud-on-k8s/2.1/k8s-quickstart.html) to get started with ECK.",
+      "csv_display_name": "Elasticsearch (ECK) Operator",
+      "csv_metadata_description": "Run Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes and OpenShift",
+      "csv_name": "elasticsearch-eck-operator-certified.v2.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:43:07.715000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "elasticsearch-eck-operator-certified",
+      "provided_apis": [
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1beta1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1"
+        },
+        {
+          "group": "beat.k8s.elastic.co",
+          "kind": "Beat",
+          "plural": "beats",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "plural": "enterprisesearches",
+          "version": "v1"
+        },
+        {
+          "group": "agent.k8s.elastic.co",
+          "kind": "Agent",
+          "plural": "agents",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "maps.k8s.elastic.co",
+          "kind": "ElasticMapsServer",
+          "plural": "elasticmapsservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "plural": "enterprisesearches",
+          "version": "v1beta1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Elastic",
+      "related_images": [
+        {
+          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "name": "eck-operator-465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb-annotation"
+        },
+        {
+          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.1.0",
+      "version_original": "2.1.0"
+    },
+    {
+      "_id": "622aa7982e84c15317c26d91",
+      "alm_examples": [
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIIsilon",
+          "metadata": {
+            "name": "isilon",
+            "namespace": "test-isilon"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VERBOSE",
+                    "value": "1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PORT",
+                    "value": "8080"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PATH",
+                    "value": "/ifs/data/csi"
+                  },
+                  {
+                    "name": "X_CSI_ISI_NO_PROBE_ON_START",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_ISI_AUTOPROBE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_SKIP_CERTIFICATE_VALIDATION",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_CUSTOM_TOPOLOGY_ENABLED",
+                    "value": "false"
+                  }
+                ],
+                "image": "dellemc/csi-isilon:v2.0.0",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.0.0",
+              "controller": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISI_QUOTA_ENABLED",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ACCESS_ZONE",
+                    "value": "System"
+                  },
+                  {
+                    "name": "X_CSI_ISI_VOLUME_PATH_PERMISSIONS",
+                    "value": "0777"
+                  }
+                ]
+              },
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_MAX_VOLUMES_PER_NODE",
+                    "value": "0"
+                  },
+                  {
+                    "name": "X_CSI_ALLOWED_NETWORKS",
+                    "value": ""
+                  }
+                ]
+              },
+              "replicas": 2,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csipscale"
+                  ],
+                  "name": "provisioner"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerMax",
+          "metadata": {
+            "name": "test-powermax",
+            "namespace": "test-powermax"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_MANAGED_ARRAYS",
+                    "value": "000000000000,000000000001"
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_ENDPOINT",
+                    "value": "https://0.0.0.0:8443/"
+                  },
+                  {
+                    "name": "X_CSI_K8S_CLUSTER_PREFIX",
+                    "value": "XYZ"
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_PORTGROUPS",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_TRANSPORT_PROTOCOL",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_PROXY_SERVICE_NAME",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_GRPC_MAX_THREADS",
+                    "value": "4"
+                  }
+                ],
+                "image": "dellemc/csi-powermax:v2.0.0",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.0.0",
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP",
+                    "value": "false"
+                  }
+                ]
+              },
+              "replicas": 2
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerMaxRevProxy",
+          "metadata": {
+            "name": "powermax-reverseproxy",
+            "namespace": "test-powermax"
+          },
+          "spec": {
+            "config": {
+              "linkConfig": {
+                "backup": {
+                  "skipCertificateValidation": true,
+                  "url": "https://0.0.0.0:8443"
+                },
+                "primary": {
+                  "certSecret": "",
+                  "skipCertificateValidation": true,
+                  "url": "https://0.0.0.0:8443"
+                }
+              },
+              "mode": "Linked"
+            },
+            "image": "dellemc/csipowermax-reverseproxy:v1.4.0",
+            "imagePullPolicy": "IfNotPresent",
+            "tlsSecret": "csirevproxy-tls-secret"
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerStore",
+          "metadata": {
+            "name": "test-powerstore",
+            "namespace": "test-powerstore"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
+                    "value": "csi"
+                  },
+                  {
+                    "name": "X_CSI_FC_PORTS_FILTER_FILE_PATH",
+                    "value": "/etc/fc-ports-filter"
+                  }
+                ],
+                "image": "dellemc/csi-powerstore:v2.0.0",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.0.0",
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERSTORE_ENABLE_CHAP",
+                    "value": "true"
+                  }
+                ]
+              },
+              "replicas": 2
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIUnity",
+          "metadata": {
+            "name": "test-unity",
+            "namespace": "test-unity"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "image": "dellemc/csi-unity:v2.0.0",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.0.0",
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "replicas": 2,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csiunity",
+                    "--default-fstype=ext4"
+                  ],
+                  "name": "provisioner"
+                },
+                {
+                  "args": [
+                    "--snapshot-name-prefix=csiunitysnap"
+                  ],
+                  "name": "snapshotter"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIVXFlexOS",
+          "metadata": {
+            "name": "test-vxflexos",
+            "namespace": "test-vxflexos"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ALLOW_RWO_MULTI_POD_ACCESS",
+                    "value": "false"
+                  }
+                ],
+                "image": "dellemc/csi-vxflexos:v2.0.0",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.0.0",
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "initContainers": [
+                {
+                  "envs": [
+                    {
+                      "name": "MDM",
+                      "value": "10.x.x.x,10.x.x.x"
+                    }
+                  ],
+                  "image": "dellemc/sdc:3.6",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "sdc"
+                }
+              ],
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "envs": [
+                    {
+                      "name": "HOST_PID",
+                      "value": "1"
+                    },
+                    {
+                      "name": "MDM",
+                      "value": ""
+                    }
+                  ],
+                  "name": "sdc-monitor"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/dell-emc/dell-csiop-bundle-110@sha256:5beda9cc9f2eb457e127b281b8c45280baa13d02720ac6886bb3655e21641d28",
+      "bundle_path_digest": "sha256:5beda9cc9f2eb457e127b281b8c45280baa13d02720ac6886bb3655e21641d28",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-11T01:36:24.542000+00:00",
+      "csv_description": "Dell CSI Operator for Dell EMC CSI Drivers",
+      "csv_display_name": "Dell CSI Operator",
+      "csv_metadata_description": "",
+      "csv_name": "dell-csi-operator-certified.v1.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:54:17.091000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "dell-csi-operator-certified",
+      "provided_apis": [
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIVXFlexOS",
+          "plural": "csivxflexoses",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIIsilon",
+          "plural": "csiisilons",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerMax",
+          "plural": "csipowermaxes",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerMaxRevProxy",
+          "plural": "csipowermaxrevproxies",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerStore",
+          "plural": "csipowerstores",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIUnity",
+          "plural": "csiunities",
+          "version": "v1"
+        }
+      ],
+      "provider": "Dell EMC",
+      "related_images": [
+        {
+          "digest": "sha256:b71a24658dc8dadbcb1613812c8cc3f92c24ed9130a85536efc90ff91982dd05",
+          "image": "dellemc/dell-csi-operator@sha256:b71a24658dc8dadbcb1613812c8cc3f92c24ed9130a85536efc90ff91982dd05",
+          "name": "dell-csi-operator-b71a24658dc8dadbcb1613812c8cc3f92c24ed9130a85536efc90ff91982dd05-annotation"
+        },
+        {
+          "digest": "sha256:b71a24658dc8dadbcb1613812c8cc3f92c24ed9130a85536efc90ff91982dd05",
+          "image": "dellemc/dell-csi-operator@sha256:b71a24658dc8dadbcb1613812c8cc3f92c24ed9130a85536efc90ff91982dd05",
+          "name": "dell-csi-operator-controller"
+        },
+        {
+          "digest": "sha256:bde48e1751173b709090c2539fdf12d6ba64e88ec7a4301591227ce925f3c678",
+          "image": "docker.io/busybox@sha256:bde48e1751173b709090c2539fdf12d6ba64e88ec7a4301591227ce925f3c678",
+          "name": "config-copy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.5.0",
+      "version_original": "1.5.0"
+    },
+    {
+      "_id": "622aa7994a14c05796114bba",
+      "alm_examples": [
+        {
+          "api_version": "elasticsearch.k8s.elastic.co/v1",
+          "kind": "Elasticsearch",
+          "metadata": {
+            "name": "elasticsearch-sample"
+          },
+          "spec": {
+            "nodeSets": [
+              {
+                "config": {
+                  "node.attr.attr_name": "attr_value",
+                  "node.roles": [
+                    "master",
+                    "data"
+                  ],
+                  "node.store.allow_mmap": false
+                },
+                "count": 3,
+                "name": "default",
+                "podTemplate": {
+                  "metadata": {
+                    "labels": {
+                      "foo": "bar"
+                    }
+                  },
+                  "spec": {
+                    "containers": [
+                      {
+                        "name": "elasticsearch",
+                        "resources": {
+                          "limits": {
+                            "cpu": 2,
+                            "memory": "4Gi"
+                          },
+                          "requests": {
+                            "cpu": 1,
+                            "memory": "4Gi"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "kibana.k8s.elastic.co/v1",
+          "kind": "Kibana",
+          "metadata": {
+            "name": "kibana-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "podTemplate": {
+              "metadata": {
+                "labels": {
+                  "foo": "bar"
+                }
+              },
+              "spec": {
+                "containers": [
+                  {
+                    "name": "kibana",
+                    "resources": {
+                      "limits": {
+                        "cpu": 2,
+                        "memory": "2Gi"
+                      },
+                      "requests": {
+                        "cpu": 0.5,
+                        "memory": "1Gi"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "apm.k8s.elastic.co/v1",
+          "kind": "ApmServer",
+          "metadata": {
+            "name": "apmserver-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "enterprisesearch.k8s.elastic.co/v1",
+          "kind": "EnterpriseSearch",
+          "metadata": {
+            "name": "ent-sample"
+          },
+          "spec": {
+            "config": {
+              "ent_search.external_url": "https://localhost:3002"
+            },
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "beat.k8s.elastic.co/v1beta1",
+          "kind": "Beat",
+          "metadata": {
+            "name": "heartbeat-sample"
+          },
+          "spec": {
+            "config": {
+              "heartbeat.monitors": [
+                {
+                  "hosts": [
+                    "elasticsearch-sample-es-http.default.svc:9200"
+                  ],
+                  "schedule": "@every 5s",
+                  "type": "tcp"
+                }
+              ]
+            },
+            "deployment": {
+              "podTemplate": {
+                "spec": {
+                  "securityContext": {
+                    "runAsUser": 0
+                  }
+                }
+              },
+              "replicas": 1
+            },
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "type": "heartbeat",
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "agent.k8s.elastic.co/v1alpha1",
+          "kind": "Agent",
+          "metadata": {
+            "name": "agent-sample"
+          },
+          "spec": {
+            "config": {
+              "inputs": [
+                {
+                  "data_stream": {
+                    "namespace": "default"
+                  },
+                  "meta": {
+                    "package": {
+                      "name": "system",
+                      "version": "0.9.1"
+                    }
+                  },
+                  "name": "system-1",
+                  "revision": 1,
+                  "streams": [
+                    {
+                      "cpu.metrics": [
+                        "percentages",
+                        "normalized_percentages"
+                      ],
+                      "data_stream": {
+                        "dataset": "system.cpu",
+                        "type": "metrics"
+                      },
+                      "id": "system/metrics-system.cpu",
+                      "metricsets": [
+                        "cpu"
+                      ],
+                      "period": "10s"
+                    }
+                  ],
+                  "type": "system/metrics",
+                  "use_output": "default"
+                }
+              ]
+            },
+            "daemonSet": {},
+            "elasticsearchRefs": [
+              {
+                "name": "elasticsearch-sample"
+              }
+            ],
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "maps.k8s.elastic.co/v1alpha1",
+          "kind": "ElasticMapsServer",
+          "metadata": {
+            "name": "ems-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.1.0"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:a386d9aefcfd7cfb9f7b2b5fd30733efac2e4ce8c265fcddaff9252398bfe821",
+      "bundle_path_digest": "sha256:a386d9aefcfd7cfb9f7b2b5fd30733efac2e4ce8c265fcddaff9252398bfe821",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-11T01:36:25.140000+00:00",
+      "csv_description": "Elastic Cloud on Kubernetes (ECK) is the official operator by Elastic for automating the deployment, provisioning, management, and orchestration of Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes.\n\nCurrent features:\n\n*  Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent and Elastic Maps Server deployments\n*  TLS Certificates management\n*  Safe Elasticsearch cluster configuration and topology changes\n*  Persistent volumes usage\n*  Custom node configuration and attributes\n*  Secure settings keystore updates\n\nSupported versions:\n\n* Kubernetes 1.19-1.23\n* OpenShift 4.6-4.10\n* Google Kubernetes Engine (GKE), Azure Kubernetes Service (AKS), and Amazon Elastic Kubernetes Service (EKS)\n* Elasticsearch, Kibana, APM Server: 7.10+\n* Enterprise Search: 7.10+\n* Beats: 7.10+\n* Elastic Agent: 7.10+\n* Elastic Maps Server: 7.11+\n\nECK should work with all conformant installers as listed in these [FAQs](https://github.com/cncf/k8s-conformance/blob/master/faq.md#what-is-a-distribution-hosted-platform-and-an-installer). Distributions include source patches and so may not work as-is with ECK.\nAlpha, beta, and stable API versions follow the same [conventions used by Kubernetes](https://kubernetes.io/docs/concepts/overview/kubernetes-api/#api-versioning).\nSee the full [Elastic support matrix](https://www.elastic.co/support/matrix#matrix_kubernetes) for more information.\nSee the [Quickstart](https://www.elastic.co/guide/en/cloud-on-k8s/2.1/k8s-quickstart.html) to get started with ECK.",
+      "csv_display_name": "Elasticsearch (ECK) Operator",
+      "csv_metadata_description": "Run Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes and OpenShift",
+      "csv_name": "elasticsearch-eck-operator-certified.v2.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:54:46.998000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "elasticsearch-eck-operator-certified",
+      "provided_apis": [
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1beta1"
+        },
+        {
+          "group": "maps.k8s.elastic.co",
+          "kind": "ElasticMapsServer",
+          "plural": "elasticmapsservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "plural": "enterprisesearches",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "plural": "enterprisesearches",
+          "version": "v1"
+        },
+        {
+          "group": "agent.k8s.elastic.co",
+          "kind": "Agent",
+          "plural": "agents",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1beta1"
+        },
+        {
+          "group": "beat.k8s.elastic.co",
+          "kind": "Beat",
+          "plural": "beats",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Elastic",
+      "related_images": [
+        {
+          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "name": "eck-operator-465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb-annotation"
+        },
+        {
+          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.1.0",
+      "version_original": "2.1.0"
     }
   ],
   "page": 21,
   "page_size": 100,
-  "total": 4762
+  "total": 4780
 }
