@@ -99,7 +99,16 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Services)
 		testDualStackServices(&env)
 	})
-
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNFTablesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		TestIsNFTablesConfigPresent(&env)
+	})
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestIPTablesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		TestIsIPTablesConfigPresent(&env)
+	})
 })
 
 //nolint:funlen
@@ -258,4 +267,53 @@ func testDualStackServices(env *provider.TestEnvironment) {
 		tnf.ClaimFilePrintf("Services in error:\n %s", services.ToStringSlice(errorServices))
 		ginkgo.Fail(fmt.Sprintf("Found %d services in error, check error log for details", len(errorServices)))
 	}
+}
+
+const (
+	NFTables = "nftables"
+	IPTables = "iptables"
+)
+
+func TestIsConfigPresent(env *provider.TestEnvironment, name string) {
+	var badContainers []*provider.Container
+	var errorContainers []*provider.Container
+	var function func(cut *provider.Container) (bool, error)
+	if name == NFTables {
+		function = netutil.IsNFTablesPresent
+	} else {
+		function = netutil.IsIPTablesPresent
+	}
+	for _, cut := range env.Containers {
+		result, err := function(cut)
+		if err != nil {
+			tnf.ClaimFilePrintf("Could not check %s config on: %s, error: %s", name, cut, err)
+			errorContainers = append(errorContainers, cut)
+			continue
+		}
+		if result {
+			badContainers = append(badContainers, cut)
+		}
+	}
+
+	if n := len(badContainers); n > 0 {
+		tnf.ClaimFilePrintf("Non-compliant containers: %v", badContainers)
+		errMsg := fmt.Sprintf("Number of containers with %s config present: %d", name, n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
+	}
+
+	if n := len(errorContainers); n > 0 {
+		tnf.ClaimFilePrintf("Containers where the test could not be performed due to an error: %v", errorContainers)
+		errMsg := fmt.Sprintf("Number of containers where the test could not be performed due to an error: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
+	}
+}
+
+func TestIsNFTablesConfigPresent(env *provider.TestEnvironment) {
+	TestIsConfigPresent(env, NFTables)
+}
+
+func TestIsIPTablesConfigPresent(env *provider.TestEnvironment) {
+	TestIsConfigPresent(env, IPTables)
 }
