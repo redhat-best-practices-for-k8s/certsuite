@@ -97,6 +97,8 @@ const (
 	CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod
 	from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is not important, only its presence.`
 
+	TestServiceDualStackRemediation = `Configure every CNF services with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer`
+
 	NamespaceBestPracticesRemediation = `Ensure that your CNF utilizes namespaces declared in the yaml config file. Additionally,
 	the namespaces should not start with "default, openshift-, istio- or aspenmesh-", except in rare cases.`
 

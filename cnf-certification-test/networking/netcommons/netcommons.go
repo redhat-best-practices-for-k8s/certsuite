@@ -25,15 +25,38 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-type IPVersion string
+type IPVersion int
 type IFType string
 
 const (
-	IPv4    IPVersion = "IPv4"
-	IPv6    IPVersion = "IPv6"
-	MULTUS  IFType    = "Multus"
-	DEFAULT IFType    = "Default"
+	Undefined IPVersion = iota
+	IPv4
+	IPv6
+	IPv4v6
 )
+
+const (
+	IPv4String             = "IPv4"
+	IPv6String             = "IPv6"
+	IPv4v6String           = "IPv4v6"
+	UndefinedString        = "undefined"
+	MULTUS          IFType = "Multus"
+	DEFAULT         IFType = "Default"
+)
+
+func (version IPVersion) String() string {
+	switch version {
+	case IPv4:
+		return IPv4String
+	case IPv6:
+		return IPv6String
+	case IPv4v6:
+		return IPv4v6String
+	case Undefined:
+		return UndefinedString
+	}
+	return UndefinedString
+}
 
 // netTestContext this is a data structure describing a network test context for a given subnet (e.g. network attachment)
 // The test context defines a tester or test initiator, that is initiating the pings. It is selected randomly (first container in the list)
@@ -101,7 +124,7 @@ func PodIPsToStringList(ips []corev1.PodIP) (ipList []string) {
 func GetIPVersion(aIP string) (IPVersion, error) {
 	ip := net.ParseIP(aIP)
 	if ip == nil {
-		return "", fmt.Errorf("%s is Not an IPv4 or an IPv6", aIP)
+		return Undefined, fmt.Errorf("%s is Not an IPv4 or an IPv6", aIP)
 	}
 	if ip.To4() != nil {
 		return IPv4, nil

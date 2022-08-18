@@ -17,7 +17,6 @@
 package networking
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/onsi/ginkgo/v2"
@@ -27,12 +26,12 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/icmp"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/services"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	corev1 "k8s.io/api/core/v1"
 )
 
 const (
@@ -95,6 +94,12 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testOCPReservedPortsUsage(&env)
 	})
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestServiceDualStackIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Services)
+		testDualStackServices(&env)
+	})
+
 })
 
 //nolint:funlen
@@ -143,27 +148,17 @@ func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
 }
 
 func testNodePort(env *provider.TestEnvironment) {
-	badNamespaces := []string{}
 	badServices := []string{}
-	client := clientsholder.GetClientsHolder()
-	for _, ns := range env.Namespaces {
-		ginkgo.By(fmt.Sprintf("Testing services in namespace %s", ns))
-		services, err := client.K8sClient.CoreV1().Services(ns).List(context.TODO(), metav1.ListOptions{})
-		if err != nil {
-			tnf.ClaimFilePrintf("Failed to list services on namespace %s, Error: %v", ns, err)
-			badNamespaces = append(badNamespaces, ns)
-			continue
-		}
-		for i := range services.Items {
-			service := &services.Items[i]
-			if service.Spec.Type == nodePort {
-				tnf.ClaimFilePrintf("FAILURE: Service %s (ns %s) type is nodePort", service.Name, service.Namespace)
-				badServices = append(badServices, fmt.Sprintf("ns: %s, name: %s", service.Namespace, service.Name))
-			}
+	for _, s := range env.Services {
+		ginkgo.By(fmt.Sprintf("Testing %s", services.ToString(s)))
+
+		if s.Spec.Type == nodePort {
+			tnf.ClaimFilePrintf("FAILURE: Service %s (ns %s) type is nodePort", s.Name, s.Namespace)
+			badServices = append(badServices, fmt.Sprintf("ns: %s, name: %s", s.Namespace, s.Name))
 		}
 	}
-	if ns, bs := len(badNamespaces), len(badServices); ns > 0 || bs > 0 {
-		ginkgo.Fail(fmt.Sprintf("Failed to get services on %d namespaces. %d services found of type nodePort.", ns, bs))
+	if bs := len(badServices); bs > 0 {
+		ginkgo.Fail(fmt.Sprintf("%d services found of type nodePort.", bs))
 	}
 }
 
@@ -239,5 +234,28 @@ func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 		errMsg := fmt.Sprintf("Number of containers in which the test could not be performed due to an error: %d", failedContainers)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
+	}
+}
+func testDualStackServices(env *provider.TestEnvironment) {
+	var nonCompliantServices []*corev1.Service
+	var errorServices []*corev1.Service
+	ginkgo.By("Testing services (should be either single stack ipv6 or dual-stack)")
+	for _, s := range env.Services {
+		result, err := services.GetServiceIPVersion(s)
+		if err != nil {
+			tnf.ClaimFilePrintf("%s", err)
+			errorServices = append(errorServices, s)
+		}
+		if result == netcommons.Undefined || result == netcommons.IPv4 {
+			nonCompliantServices = append(nonCompliantServices, s)
+		}
+	}
+	if len(nonCompliantServices) > 0 {
+		tnf.ClaimFilePrintf("Non compliant services:\n %s", services.ToStringSlice(nonCompliantServices))
+		ginkgo.Fail(fmt.Sprintf("Found %d non compliant services (either non single stack ipv6 or non dual-stack)", len(nonCompliantServices)))
+	}
+	if len(errorServices) > 0 {
+		tnf.ClaimFilePrintf("Services in error:\n %s", services.ToStringSlice(errorServices))
+		ginkgo.Fail(fmt.Sprintf("Found %d services in error, check error log for details", len(errorServices)))
 	}
 }
