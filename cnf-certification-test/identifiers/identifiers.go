@@ -357,6 +357,10 @@ var (
 		Url:     formTestURL(common.LifecycleTestKey, "persistent-volume-reclaim-policy"),
 		Version: versionOne,
 	}
+	TestNoSSHDaemonsAllowedIdentifier = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "ssh-daemons"),
+		Version: versionOne,
+	}
 )
 
 func formDescription(identifier claim.Identifier, description string) string {
@@ -995,6 +999,14 @@ that there are no changes to the following directories:
 		Description:           formDescription(TestPodTolerationBypassIdentifier, `Check that pods do not have NoExecute, PreferNoSchedule, or NoSchedule tolerations that have been modified from the default.`),
 		Remediation:           PodTolerationBypassRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.6",
+		ExceptionProcess:      NoDocumentedProcess,
+	},
+	TestNoSSHDaemonsAllowedIdentifier: {
+		Identifier:            TestNoSSHDaemonsAllowedIdentifier,
+		Type:                  normativeResult,
+		Description:           formDescription(TestNoSSHDaemonsAllowedIdentifier, `Check that pods do not SSH daemons.`),
+		Remediation:           NoSSHDaemonsAllowedRemediation,
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 }
