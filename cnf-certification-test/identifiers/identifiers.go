@@ -1004,7 +1004,7 @@ that there are no changes to the following directories:
 	TestNoSSHDaemonsAllowedIdentifier: {
 		Identifier:            TestNoSSHDaemonsAllowedIdentifier,
 		Type:                  normativeResult,
-		Description:           formDescription(TestNoSSHDaemonsAllowedIdentifier, `Check that pods do not SSH daemons.`),
+		Description:           formDescription(TestNoSSHDaemonsAllowedIdentifier, `Check that pods do not run SSH daemons.`),
 		Remediation:           NoSSHDaemonsAllowedRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,

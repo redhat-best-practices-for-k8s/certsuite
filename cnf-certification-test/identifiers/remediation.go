@@ -180,5 +180,5 @@ const (
 
 	PersistentVolumeReclaimPolicyRemediation = `Ensure that all persistent volumes are using the reclaim policy: delete`
 
-	NoSSHDaemonsAllowedRemediation = `Ensure that no SSH daemons are run inside a pod`
+	NoSSHDaemonsAllowedRemediation = `Ensure that no SSH daemons are running inside a pod`
 )
