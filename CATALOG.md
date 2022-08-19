@@ -559,7 +559,7 @@ Unique ID|http://test-network-function.com/testcases/networking/iptables
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/networking/dual-stack-service Checks that the output of "iptables-save" is empty, e.g. there is no iptables configuration on any CNF containers.
 Result Type|normative
-Suggested Remediation|Do not configure nftables on any CNF container.
+Suggested Remediation|Do not configure iptables on any CNF container.
 Best Practice Reference|https://TODO Section 4.6.23
 Exception Process|There is no documented exception process for this.
 #### nftables
