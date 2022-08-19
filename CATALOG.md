@@ -228,6 +228,19 @@ Result Type|normative
 Suggested Remediation|Configure privilege escalation to false
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
+#### ssh-daemons
+
+Property|Description
+---|---
+Test Case Name|ssh-daemons
+Test Case Label|access-control-ssh-daemons
+Unique ID|http://test-network-function.com/testcases/access-control/ssh-daemons
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/ssh-daemons Check that pods do not run SSH daemons.
+Result Type|normative
+Suggested Remediation|Ensure that no SSH daemons are running inside a pod
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.12
+Exception Process|There is no documented exception process for this.
 #### sys-nice-realtime-capability
 
 Property|Description

@@ -181,4 +181,6 @@ const (
 	PodTolerationBypassRemediation = `Do not allow pods to bypass the NoExecute, PreferNoSchedule, or NoSchedule tolerations that are default applied by Kubernetes.`
 
 	PersistentVolumeReclaimPolicyRemediation = `Ensure that all persistent volumes are using the reclaim policy: delete`
+
+	NoSSHDaemonsAllowedRemediation = `Ensure that no SSH daemons are running inside a pod`
 )
