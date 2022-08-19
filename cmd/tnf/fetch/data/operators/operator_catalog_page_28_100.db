@@ -1,160 +1,6 @@
 {
   "data": [
     {
-      "_id": "6262aea6cde83e2b177c22be",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:53569fdf8eecee215755dcd02d56cb906330f84e3bc1015652d9b7a1ddc01edd",
-      "bundle_path_digest": "sha256:53569fdf8eecee215755dcd02d56cb906330f84e3bc1015652d9b7a1ddc01edd",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T13:33:26.632000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "seldonoperator.v0.1.5",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:21:29.040000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "seldon-operator-certified",
-      "provided_apis": [
-        {
-          "group": "machinelearning.seldon.io",
-          "kind": "SeldonDeployment",
-          "plural": "seldondeployments",
-          "version": "v1alpha2"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.1.5",
-      "version_original": "0.1.5"
-    },
-    {
-      "_id": "6262aeaf173a0d36cf5d6b5b",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T13:33:35.433000+00:00",
-      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
-      "csv_display_name": "Run:AI",
-      "csv_metadata_description": "",
-      "csv_name": "installkit-customer.v2.0.15",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:59:25.935000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "installkit-customer",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "name": "operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.1.5",
-      "version_original": "2.1.5"
-    },
-    {
-      "_id": "6262aeb5cde83e2b177c22c4",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2022-04-22T13:33:41.682000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-04-22T13:33:41.682000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.8-1",
-      "version_original": "6.0.8-1"
-    },
-    {
       "_id": "6262aec1173a0d36cf5d6b61",
       "alm_examples": [],
       "annotations": {
@@ -15226,9 +15072,243 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "0.2.2",
       "version_original": "0.2.2"
+    },
+    {
+      "_id": "627c6e49228d5769c5692a44",
+      "alm_examples": [
+        {
+          "api_version": "pcc.paloaltonetworks.com/v1alpha1",
+          "kind": "Console",
+          "metadata": {
+            "name": "pcc-console",
+            "namespace": "twistlock"
+          },
+          "spec": {
+            "consoleConfig": {
+              "serviceType": "ClusterIP"
+            },
+            "namespace": "twistlock",
+            "version": "21_08_520"
+          }
+        },
+        {
+          "api_version": "pcc.paloaltonetworks.com/v1alpha1",
+          "kind": "ConsoleDefender",
+          "metadata": {
+            "name": "pcc-consoledefender",
+            "namespace": "twistlock"
+          },
+          "spec": {
+            "consoleConfig": {
+              "serviceType": "ClusterIP"
+            },
+            "defenderConfig": {
+              "docker": false
+            },
+            "namespace": "twistlock",
+            "version": "21_08_520"
+          }
+        },
+        {
+          "api_version": "pcc.paloaltonetworks.com/v1alpha1",
+          "kind": "Defender",
+          "metadata": {
+            "name": "pcc-defender",
+            "namespace": "twistlock"
+          },
+          "spec": {
+            "defenderConfig": {
+              "clusterAddress": "twistlock-console.example.com",
+              "consoleAddress": "https://twistlock-console.example.com:8083",
+              "docker": false
+            },
+            "namespace": "twistlock",
+            "version": "21_08_520"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/paloalto/pcc-operator@sha256:cd2291126f3c56ed2001e6ca9157ac4c752ff0a1f6de2c0e920e06f83c84d17b",
+      "bundle_path_digest": "sha256:cd2291126f3c56ed2001e6ca9157ac4c752ff0a1f6de2c0e920e06f83c84d17b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-12T02:17:45.487000+00:00",
+      "csv_description": "## Features\n- Deploy Console\n    - Create initial local administrator user\n    - Add license\n- Deploy Defenders\n- Support for offline deployments\n- Upgrade Console\n- Upgrade Defenders\n\n## Installation\nSee the [Prisma Cloud Compute Operator documentation](https://github.com/PaloAltoNetworks/prisma-cloud-compute-operator) for installation guides.\n\n## Support\nThis operator is available \"as is,\" and should be seen as community-supported; however, Palo Alto Networks will continue contributing whenever possible.\nPalo Alto Networks does not provide technical support or help with using or troubleshooting the operator through normal support channels.\nWe encourage you to open GitHub [issues](https://github.com/PaloAltoNetworks/prisma-cloud-compute-operator/issues) and [pull requests](https://github.com/PaloAltoNetworks/prisma-cloud-compute-operator/pulls) to track bugs and feature requests.\n\n## Other links\n[Prisma Cloud Compute product documentation](https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin-compute.html)\n\n[Prisma Cloud Compute API documentation](https://prisma.pan.dev/api/cloud/cwpp)\n",
+      "csv_display_name": "Prisma Cloud Compute Operator",
+      "csv_metadata_description": "Deploy Prisma Cloud Compute for cloud-native security in your clusters",
+      "csv_name": "pcc-operator.v0.2.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:05:34.467000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "pcc-operator",
+      "provided_apis": [
+        {
+          "group": "pcc.paloaltonetworks.com",
+          "kind": "ConsoleDefender",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pcc.paloaltonetworks.com",
+          "kind": "Console",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pcc.paloaltonetworks.com",
+          "kind": "Defender",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Palo Alto Networks",
+      "related_images": [
+        {
+          "digest": "sha256:91469e90fb442d747a5dd462a3b8e80cea2c590881a685bc58c562f1382e2fec",
+          "image": "quay.io/prismacloud/pcc-operator@sha256:91469e90fb442d747a5dd462a3b8e80cea2c590881a685bc58c562f1382e2fec",
+          "name": "pcc-operator-91469e90fb442d747a5dd462a3b8e80cea2c590881a685bc58c562f1382e2fec-annotation"
+        },
+        {
+          "digest": "sha256:91469e90fb442d747a5dd462a3b8e80cea2c590881a685bc58c562f1382e2fec",
+          "image": "quay.io/prismacloud/pcc-operator@sha256:91469e90fb442d747a5dd462a3b8e80cea2c590881a685bc58c562f1382e2fec",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.2.2",
+      "version_original": "0.2.2"
+    },
+    {
+      "_id": "627c6e4a228d5769c5692a46",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.10",
+      "creation_date": "2022-05-12T02:17:46.086000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-05-12T02:17:46.086000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.8-1",
+      "version_original": "6.0.8-1"
+    },
+    {
+      "_id": "627c6e549b28cbab99bd0fdb",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.4",
+      "creation_date": "2022-05-12T02:17:56.837000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-05-12T02:17:56.837000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
     }
   ],
   "page": 28,
   "page_size": 100,
-  "total": 4780
+  "total": 4784
 }
