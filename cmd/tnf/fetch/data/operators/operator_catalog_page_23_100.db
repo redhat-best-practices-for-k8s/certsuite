@@ -1,694 +1,6 @@
 {
   "data": [
     {
-      "_id": "6234603b314381d2b0756b43",
-      "alm_examples": [
-        {
-          "api_version": "charts.cloudbees.com/v1alpha1",
-          "kind": "CloudBeesCI",
-          "metadata": {
-            "name": "cloudbeesci-sample"
-          },
-          "spec": {
-            "Agents": {
-              "Enabled": true,
-              "Image": {
-                "dockerImage": "cloudbees/cloudbees-core-agent:2.289.3.2"
-              },
-              "SeparateNamespace": {
-                "Create": false,
-                "Enabled": false
-              }
-            },
-            "Hibernation": {
-              "Enabled": false,
-              "Image": {
-                "dockerImage": "cloudbees/managed-master-hibernation-monitor:247.c5dfce00a179"
-              },
-              "NodeSelector": {},
-              "Tolerations": []
-            },
-            "Master": {
-              "Enabled": true,
-              "Image": {
-                "dockerImage": "cloudbees/cloudbees-core-mm:2.289.3.2"
-              }
-            },
-            "NetworkPolicy": {
-              "Enabled": false,
-              "JMXSelectors": [],
-              "ingressControllerSelector": []
-            },
-            "OperationsCenter": {
-              "AgentListenerPort": 50000,
-              "Annotations": {},
-              "CSRF": {
-                "ProxyCompatibility": false
-              },
-              "CasC": {
-                "ConfigMapName": "oc-casc-bundle",
-                "Enabled": false
-              },
-              "ContainerPort": 8080,
-              "Enabled": true,
-              "ExtraConfigMaps": [],
-              "ExtraContainers": [],
-              "ExtraGroovyConfiguration": {},
-              "ExtraVolumeMounts": [],
-              "ExtraVolumes": [],
-              "HealthProbeLivenessFailureThreshold": 12,
-              "HealthProbes": true,
-              "Image": {
-                "dockerImage": "cloudbees/cloudbees-cloud-core-oc:2.289.3.2"
-              },
-              "Ingress": {
-                "Annotations": {
-                  "kubernetes.io/tls-acme": "false"
-                },
-                "Class": "nginx",
-                "tls": {
-                  "Enable": false
-                }
-              },
-              "LoadBalancerSourceRanges": [
-                "0.0.0.0/0"
-              ],
-              "Name": "cjoc",
-              "NodeSelector": {},
-              "Platform": "standard",
-              "Protocol": "http",
-              "Resources": {
-                "Limits": {
-                  "Cpu": 1,
-                  "Memory": "2G"
-                },
-                "Requests": {
-                  "Cpu": 1,
-                  "Memory": "2G"
-                }
-              },
-              "Route": {
-                "tls": {
-                  "Enable": false,
-                  "InsecureEdgeTerminationPolicy": "Redirect",
-                  "Termination": "edge"
-                }
-              },
-              "ServiceAgentListenerPort": 50000,
-              "ServiceAnnotations": {},
-              "ServicePort": 80,
-              "ServiceType": "ClusterIP",
-              "Tolerations": []
-            },
-            "Persistence": {
-              "AccessMode": "ReadWriteOnce",
-              "Annotations": {},
-              "Size": "20Gi"
-            },
-            "PodSecurityPolicy": {
-              "Annotations": {},
-              "Enabled": false
-            },
-            "Subdomain": false,
-            "ingress-nginx": {
-              "Enabled": false,
-              "controller": {
-                "admissionWebhooks": {
-                  "patch": {
-                    "nodeSelector": {
-                      "kubernetes.io/os": "linux"
-                    }
-                  }
-                },
-                "ingressClass": "nginx",
-                "nodeSelector": {
-                  "kubernetes.io/os": "linux"
-                },
-                "service": {
-                  "externalTrafficPolicy": "Local"
-                }
-              },
-              "defaultBackend": {
-                "nodeSelector": {
-                  "kubernetes.io/os": "linux"
-                }
-              }
-            },
-            "nginx-ingress": {
-              "Enabled": false,
-              "controller": {
-                "ingressClass": "nginx",
-                "nodeSelector": {
-                  "kubernetes.io/os": "linux"
-                },
-                "service": {
-                  "externalTrafficPolicy": "Local"
-                }
-              },
-              "defaultBackend": {
-                "nodeSelector": {
-                  "kubernetes.io/os": "linux"
-                }
-              }
-            },
-            "rbac": {
-              "agentsServiceAccountName": "jenkins-agents",
-              "hibernationMonitorServiceAccountName": "managed-master-hibernation-monitor",
-              "install": true,
-              "masterServiceAccountName": "jenkins",
-              "serviceAccountName": "cjoc"
-            },
-            "sidecarinjector": {
-              "Enabled": false
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cloudbees/cloudbees-core-modern@sha256:2cf058c819b40512094f84f4d374457455370ec4994d34cee6e39b9d87841f05",
-      "bundle_path_digest": "sha256:2cf058c819b40512094f84f4d374457455370ec4994d34cee6e39b9d87841f05",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-18T10:34:35.226000+00:00",
-      "csv_description": "CloudBees CI",
-      "csv_display_name": "CloudBees CI",
-      "csv_metadata_description": "",
-      "csv_name": "cloudbees-ci.v3.34.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:15:58.685000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "cloudbees-ci",
-      "provided_apis": [
-        {
-          "group": "charts.cloudbees.com",
-          "kind": "CloudBeesCI",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "CloudBees",
-      "related_images": [
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:bd0bd72e9e7807b0fa307de8a93a56967221fe2dd181bac02383f0f9be9120e4",
-          "image": "registry.connect.redhat.com/cloudbees/cloudbees-ci-operator@sha256:bd0bd72e9e7807b0fa307de8a93a56967221fe2dd181bac02383f0f9be9120e4",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "3.34.1",
-      "version_original": "3.34.1"
-    },
-    {
-      "_id": "6234603d5593ce895a7b5369",
-      "alm_examples": [
-        {
-          "api_version": "federatorai.containers.ai/v1alpha1",
-          "kind": "AlamedaService",
-          "metadata": {
-            "name": "my-alamedaservice"
-          },
-          "spec": {
-            "alamedaAi": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "10Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "alamedaInfluxdb": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "100Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "fedemeterInfluxdb": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "10Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "imageLocation": "registry.connect.redhat.com/prophetstor",
-            "keycode": {
-              "codeNumber": ""
-            },
-            "storages": [
-              {
-                "accessMode": [
-                  "ReadWriteOnce"
-                ],
-                "size": "2Gi",
-                "type": "pvc",
-                "usage": "log"
-              }
-            ],
-            "version": "v4.6.1-b1655-2"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/prophetstor/federatorai-operator-bundle@sha256:66fa5c8e525ce32eef696b286ba2278c0fca6be668bda76d28f5f78dc45c37e3",
-      "bundle_path_digest": "sha256:66fa5c8e525ce32eef696b286ba2278c0fca6be668bda76d28f5f78dc45c37e3",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:34:37.349000+00:00",
-      "csv_description": "Federator.ai helps enterprises optimize cloud resources, maximize application performance, and save significant cost without excessive over-provisioning or under-provisioning of resources, meeting the service-level requirements of their applications.\n\nEnterprises often lack understanding of the resources needed to support their applications. This leads to either excessive over-provisioning or under-provisioning of resources (CPU, memory, storage). Using machine learning, Federator.ai determines the optimal cloud resources needed to support any workload on OpenShift and helps users find the best-cost instances from cloud providers for their applications.\n\n\n**Multi-layer workload prediction**\n\nUsing machine learning and math-based algorithms, Federator.ai predicts containerized application and cluster node resource usage as the basis for resource recommendations at application level as well as at cluster node level. Federator.ai supports prediction for both physical/virtual CPUs and memories.\n\n\n**Auto-scaling via resource recommendation**\n\nFederator.ai utilizes the predicted resource usage to recommend the right number and size of pods for applications. Integrated with Datadog's WPA, applications are automatically scaled to meet the predicted resource usage.\n\n\n**Application-aware recommendation execution**\n\nOptimizing the resource usage and performance goals, Federator.ai uses application specific metrics for workload prediction and pod capacity estimation to auto-scale the right number of pods for best performance without overprovisioning.\n\n\n**Multi-cloud Cost Analysis**\n\nWith resource usage prediction, Federator.ai analyzes potential cost of a cluster on different public cloud providers. It also recommend appropriate cluster nodes and instance types based on resource usage.\n\n\n**Custom Datadog/Sysdig Dashboards**\n\nPredefined custom Datadog/Sysdig Dashboards for workload prediction/recommendation visualization for cluster nodes and applications.\n\n\n**Additional resources**\n\nWant more product information? Explore detailed information about using this product and where to find additional help.\n\n* [Federator.ai Datasheet](https://prophetstor.com/wp-content/uploads/datasheets/Federator.ai.pdf)\n* [Quick Start Guide](https://prophetstor.com/wp-content/uploads/documentation/Federator.ai/Latest%20Version/ProphetStor%20Federator.ai%20Quick%20Installation%20Guide.pdf)\n* [Installation Guide](https://prophetstor.com/wp-content/uploads/2021/07/ProphetStor-Federator.ai-v4.6.1-Installation-Guide-v1.0.pdf)\n* [User Guide](https://prophetstor.com/wp-content/uploads/2021/07/Federator.ai-4.6.1-User-Guide.pdf)\n* [Company Information](https://www.prophetstor.com/)\n\n\n### Prerequisite\n*  The [Openshift](https://www.openshift.com) version 4.4.x or later if using OpenShift platform.\n*  The [Kubernetes](https://kubernetes.io/) version 1.16 or later if using Kubernetes environment.",
-      "csv_display_name": "Federator.ai",
-      "csv_metadata_description": "Federator.ai Operator provides easy configuration and management of AI-based Kubernetes resource orchestrator",
-      "csv_name": "federatorai.v4.6.1-4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:12:59.740000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "federatorai-certified",
-      "provided_apis": [
-        {
-          "group": "federatorai.containers.ai",
-          "kind": "AlamedaService",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "ProphetStor Data Services, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
-          "name": "federatorai-operator-2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d-annotation"
-        },
-        {
-          "digest": "sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
-          "name": "federatorai-operator"
-        },
-        {
-          "digest": "sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
-          "name": "upgrader"
-        },
-        {
-          "digest": "sha256:17aed4cd6a97f8ee5655660d2d13911e7c99c9f304b2fa09de891e4bf3141c69",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-ai-dispatcher@sha256:17aed4cd6a97f8ee5655660d2d13911e7c99c9f304b2fa09de891e4bf3141c69",
-          "name": "ai_dispatcher"
-        },
-        {
-          "digest": "sha256:0f946dde5fcb2f631153ea778ea24cac3e53b052a6bc97d09a0d2c04a8860446",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-ai@sha256:0f946dde5fcb2f631153ea778ea24cac3e53b052a6bc97d09a0d2c04a8860446",
-          "name": "ai_engine"
-        },
-        {
-          "digest": "sha256:222f6166fef3c74f187446adf5ab6361a03231eabab88a54ebd8f6f2a0ebd5c4",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-analyzer-ubi@sha256:222f6166fef3c74f187446adf5ab6361a03231eabab88a54ebd8f6f2a0ebd5c4",
-          "name": "analyzer"
-        },
-        {
-          "digest": "sha256:7601000fdaf7b937847cea40c4ac1b60ab843b1439e8a0c7e9dc4723408055ba",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-datahub-ubi@sha256:7601000fdaf7b937847cea40c4ac1b60ab843b1439e8a0c7e9dc4723408055ba",
-          "name": "datahub"
-        },
-        {
-          "digest": "sha256:d59db2fa0cdf0b0a66955297174641bef668db1d010e306b2bb711756ca57c38",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-executor-ubi@sha256:d59db2fa0cdf0b0a66955297174641bef668db1d010e306b2bb711756ca57c38",
-          "name": "executor"
-        },
-        {
-          "digest": "sha256:ae1e6994e8e1414a117308d7fb24bccfb093aaa8492d1d357a26f9e2ab7acf7c",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-api-ubi@sha256:ae1e6994e8e1414a117308d7fb24bccfb093aaa8492d1d357a26f9e2ab7acf7c",
-          "name": "fedemeter_api"
-        },
-        {
-          "digest": "sha256:d3b5505dd4fe688071f2d685773ed691cebcb04ff35eaf41e4f7a0331ff6e688",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-influxdb@sha256:d3b5505dd4fe688071f2d685773ed691cebcb04ff35eaf41e4f7a0331ff6e688",
-          "name": "fedemeter_influxdb"
-        },
-        {
-          "digest": "sha256:c5c2794413aea8384e8325a8cd9d86b4ec29ee5652e6b3bd172f15269e1d8ae0",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-ubi@sha256:c5c2794413aea8384e8325a8cd9d86b4ec29ee5652e6b3bd172f15269e1d8ae0",
-          "name": "federatorai_agent"
-        },
-        {
-          "digest": "sha256:468dfd11a6877103809cb17f56165d06e00d93a3c89411307249f921289fc1e4",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-preloader@sha256:468dfd11a6877103809cb17f56165d06e00d93a3c89411307249f921289fc1e4",
-          "name": "federatorai_agent_preloader"
-        },
-        {
-          "digest": "sha256:5a552ec0a78ae167ad7ff8dbdb02ac3de49d60df49bcbe6ca11091077e744a12",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-frontend@sha256:5a552ec0a78ae167ad7ff8dbdb02ac3de49d60df49bcbe6ca11091077e744a12",
-          "name": "federatorai_dashboard_frontend"
-        },
-        {
-          "digest": "sha256:77709a35443202cffd2ef4df9daabd6a00ab4e536525ce99a9fd4203a0669e9a",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-backend@sha256:77709a35443202cffd2ef4df9daabd6a00ab4e536525ce99a9fd4203a0669e9a",
-          "name": "federatorai_dashboard_backend"
-        },
-        {
-          "digest": "sha256:9c4ce48758ea58003cd25351c440e9aa12664cd59ee75bed8063374815f4d4da",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-data-adapter@sha256:9c4ce48758ea58003cd25351c440e9aa12664cd59ee75bed8063374815f4d4da",
-          "name": "federatorai_data_adapter"
-        },
-        {
-          "digest": "sha256:801059280ae54de7eaa518f5701ea320696e5aa83b3cd7ef3ad82ba1e3e1d395",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-rest-ubi@sha256:801059280ae54de7eaa518f5701ea320696e5aa83b3cd7ef3ad82ba1e3e1d395",
-          "name": "federatorai_restapi"
-        },
-        {
-          "digest": "sha256:a20096b566e7dde77e7e5885a60d47e6c8824f8db896f20b90676d14f7d2bcc8",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-influxdb@sha256:a20096b566e7dde77e7e5885a60d47e6c8824f8db896f20b90676d14f7d2bcc8",
-          "name": "influxdb"
-        },
-        {
-          "digest": "sha256:87afe424d8d205b8a2f01262e3edac73e8f3eee0aa597610b8a4ee57e17f4ac0",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-notifier-ubi@sha256:87afe424d8d205b8a2f01262e3edac73e8f3eee0aa597610b8a4ee57e17f4ac0",
-          "name": "notifier"
-        },
-        {
-          "digest": "sha256:d4fceace6cc1f0e80b8b6abe870ec9722ea69e91c481246b13e3d50a2c3e1ffb",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-operator-ubi@sha256:d4fceace6cc1f0e80b8b6abe870ec9722ea69e91c481246b13e3d50a2c3e1ffb",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:2b61bfd1ba9186cc50b8f960f54d0ec94643715292bb874762009b3045477799",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-rabbitmq@sha256:2b61bfd1ba9186cc50b8f960f54d0ec94643715292bb874762009b3045477799",
-          "name": "rabbitmq"
-        },
-        {
-          "digest": "sha256:288cb6c29200d07451b8e2ab53b9a5112108cb5f2b6dc288026f9c2f12f5f9fd",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:288cb6c29200d07451b8e2ab53b9a5112108cb5f2b6dc288026f9c2f12f5f9fd",
-          "name": "recommender"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "4.6.1-4",
-      "version_original": "4.6.1-4"
-    },
-    {
-      "_id": "6234603f314381d2b0756b44",
-      "alm_examples": [
-        {
-          "api_version": "federatorai.containers.ai/v1alpha1",
-          "kind": "AlamedaService",
-          "metadata": {
-            "name": "my-alamedaservice"
-          },
-          "spec": {
-            "alamedaAi": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "10Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "alamedaInfluxdb": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "100Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "fedemeterInfluxdb": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "10Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "imageLocation": "registry.connect.redhat.com/prophetstor",
-            "storages": [
-              {
-                "accessMode": [
-                  "ReadWriteOnce"
-                ],
-                "size": "2Gi",
-                "type": "pvc",
-                "usage": "log"
-              }
-            ],
-            "version": "v4.7.1-b1760"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/prophetstor/federatorai-operator-bundle@sha256:d0ac978d749654ddf4cc20823805ba7d33ee62e9a7ec98fdd53d9926b697c347",
-      "bundle_path_digest": "sha256:d0ac978d749654ddf4cc20823805ba7d33ee62e9a7ec98fdd53d9926b697c347",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:34:39.845000+00:00",
-      "csv_description": "Federator.ai helps enterprises optimize cloud resources, maximize application performance, and save significant cost without excessive over-provisioning or under-provisioning of resources, meeting the service-level requirements of their applications.\n\nEnterprises often lack understanding of the resources needed to support their applications. This leads to either excessive over-provisioning or under-provisioning of resources (CPU, memory, storage). Using machine learning, Federator.ai determines the optimal cloud resources needed to support any workload on OpenShift and helps users find the best-cost instances from cloud providers for their applications.\n\n\n**Multi-layer workload prediction**\n\nUsing machine learning and math-based algorithms, Federator.ai predicts containerized application and cluster node resource usage as the basis for resource recommendations at application level as well as at cluster node level. Federator.ai supports prediction for both physical/virtual CPUs and memories.\n\n\n**Auto-scaling via resource recommendation**\n\nFederator.ai utilizes the predicted resource usage to recommend the right number and size of pods for applications. Integrated with Datadog's WPA, applications are automatically scaled to meet the predicted resource usage.\n\n\n**Application-aware recommendation execution**\n\nOptimizing the resource usage and performance goals, Federator.ai uses application specific metrics for workload prediction and pod capacity estimation to auto-scale the right number of pods for best performance without overprovisioning.\n\n\n**Multi-cloud Cost Analysis**\n\nWith resource usage prediction, Federator.ai analyzes potential cost of a cluster on different public cloud providers. It also recommend appropriate cluster nodes and instance types based on resource usage.\n\n\n**Custom Datadog/Sysdig Dashboards**\n\nPredefined custom Datadog/Sysdig Dashboards for workload prediction/recommendation visualization for cluster nodes and applications.\n\n\n**Additional resources**\n\nWant more product information? Explore detailed information about using this product and where to find additional help.\n\n* [Federator.ai Datasheet](https://prophetstor.com/wp-content/uploads/datasheets/Federator.ai.pdf)\n* [Quick Start Guide](https://prophetstor.com/wp-content/uploads/documentation/Federator.ai/Latest%20Version/ProphetStor%20Federator.ai%20Quick%20Installation%20Guide.pdf)\n* [Installation Guide](https://prophetstor.com/wp-content/uploads/2021/08/ProphetStor-Federator.ai-v4.7.0-Installation-Guide-v1.0.pdf)\n* [User Guide](https://prophetstor.com/wp-content/uploads/2021/08/Federator.ai-4.7.0-User-Guide.pdf)\n* [Release Notes](https://prophetstor.com/wp-content/uploads/2021/08/Federator.ai-4.7.0-Release-Notes.pdf)\n* [Company Information](https://www.prophetstor.com/)\n\n\n### Prerequisite\n*  The [Openshift](https://www.openshift.com) version 4.4.x or later if using OpenShift platform.\n*  The [Kubernetes](https://kubernetes.io/) version 1.16 or later if using Kubernetes environment.",
-      "csv_display_name": "Federator.ai",
-      "csv_metadata_description": "Federator.ai Operator provides easy configuration and management of AI-based Kubernetes resource orchestrator",
-      "csv_name": "federatorai.v4.7.1-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:13:06.131000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "federatorai-certified",
-      "provided_apis": [
-        {
-          "group": "federatorai.containers.ai",
-          "kind": "AlamedaService",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "ProphetStor Data Services, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
-          "name": "federatorai-operator-bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047-annotation"
-        },
-        {
-          "digest": "sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
-          "name": "federatorai-operator"
-        },
-        {
-          "digest": "sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
-          "name": "upgrader"
-        },
-        {
-          "digest": "sha256:6e0dc1136b0f8e5971d92b95ce0d6dfac475044c073bada50f23b315f4478ae4",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-ai-dispatcher@sha256:6e0dc1136b0f8e5971d92b95ce0d6dfac475044c073bada50f23b315f4478ae4",
-          "name": "ai_dispatcher"
-        },
-        {
-          "digest": "sha256:9293298bb2a72d0b0764050b6f6d8da707b46a83363a3b6aa7be60f512e2ec61",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-ai@sha256:9293298bb2a72d0b0764050b6f6d8da707b46a83363a3b6aa7be60f512e2ec61",
-          "name": "ai_engine"
-        },
-        {
-          "digest": "sha256:6117ac4692793d49bc0204f13091dec119bdbc7b169e9deb86c243aca00ded27",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-analyzer-ubi@sha256:6117ac4692793d49bc0204f13091dec119bdbc7b169e9deb86c243aca00ded27",
-          "name": "analyzer"
-        },
-        {
-          "digest": "sha256:3819d6acce8d376dbe3b12469be2528d0ce9ac95c2a86507aeb76b6e3a5f5f38",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-datahub-ubi@sha256:3819d6acce8d376dbe3b12469be2528d0ce9ac95c2a86507aeb76b6e3a5f5f38",
-          "name": "datahub"
-        },
-        {
-          "digest": "sha256:4512e3be7a89d0ca9f120b68f6ab9766d000bf2b01b279cd55b2dbc433aacfb6",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-executor-ubi@sha256:4512e3be7a89d0ca9f120b68f6ab9766d000bf2b01b279cd55b2dbc433aacfb6",
-          "name": "executor"
-        },
-        {
-          "digest": "sha256:451456207fe8d16b9824b3f64d00645766dcccbc8d685b6942e6c00d0d0c627e",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-api-ubi@sha256:451456207fe8d16b9824b3f64d00645766dcccbc8d685b6942e6c00d0d0c627e",
-          "name": "fedemeter_api"
-        },
-        {
-          "digest": "sha256:36904f003e8e29d4a9fd738655f401fbe840d60158d7d820cda79a09858dc2c2",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-influxdb@sha256:36904f003e8e29d4a9fd738655f401fbe840d60158d7d820cda79a09858dc2c2",
-          "name": "fedemeter_influxdb"
-        },
-        {
-          "digest": "sha256:cfadc84f31f3776ded15d4d8dda92e00b7d9b1bce0ff5440277176292f9304d3",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-ubi@sha256:cfadc84f31f3776ded15d4d8dda92e00b7d9b1bce0ff5440277176292f9304d3",
-          "name": "federatorai_agent"
-        },
-        {
-          "digest": "sha256:66daea6193e399f8363df5ba42e1fcd643db6df3a9075dbcd8c3464fdc91e776",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-preloader@sha256:66daea6193e399f8363df5ba42e1fcd643db6df3a9075dbcd8c3464fdc91e776",
-          "name": "federatorai_agent_preloader"
-        },
-        {
-          "digest": "sha256:1c1147425ca6302103363a1a3bcf27baeef13b10ec6780ef266b7f52fe27ffeb",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-frontend@sha256:1c1147425ca6302103363a1a3bcf27baeef13b10ec6780ef266b7f52fe27ffeb",
-          "name": "federatorai_dashboard_frontend"
-        },
-        {
-          "digest": "sha256:022dbf6696edb8eaf389fdbd1dff14c40a51c237c01f8a02a7ea65c60cd59f38",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-backend@sha256:022dbf6696edb8eaf389fdbd1dff14c40a51c237c01f8a02a7ea65c60cd59f38",
-          "name": "federatorai_dashboard_backend"
-        },
-        {
-          "digest": "sha256:adf5d655fa030dc05133516d45642d7282fdd66e0aa8e7a7331ed614a41d3fe0",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-data-adapter@sha256:adf5d655fa030dc05133516d45642d7282fdd66e0aa8e7a7331ed614a41d3fe0",
-          "name": "federatorai_data_adapter"
-        },
-        {
-          "digest": "sha256:3e92528615543ea900bf38387c4eb8439b60759be5be2ac5311a9dbaafc7026b",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-rest-ubi@sha256:3e92528615543ea900bf38387c4eb8439b60759be5be2ac5311a9dbaafc7026b",
-          "name": "federatorai_restapi"
-        },
-        {
-          "digest": "sha256:485c2119a6a56807e28ad03b2087129950118b55531126a66bb414063052ae76",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-influxdb@sha256:485c2119a6a56807e28ad03b2087129950118b55531126a66bb414063052ae76",
-          "name": "influxdb"
-        },
-        {
-          "digest": "sha256:1f75034fb78d62924a87cb4a5435661b4afa990d6960431e784029742fbae0da",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-notifier-ubi@sha256:1f75034fb78d62924a87cb4a5435661b4afa990d6960431e784029742fbae0da",
-          "name": "notifier"
-        },
-        {
-          "digest": "sha256:9a863394cb1c89228223b26addb0d12bb91a97233fe2d5d19ecd5998e0cfe0d6",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-operator-ubi@sha256:9a863394cb1c89228223b26addb0d12bb91a97233fe2d5d19ecd5998e0cfe0d6",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:b396d9aa0470e593a36f5799c04fc3c9e59b5723f703f4b019f7ef92528e6741",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-rabbitmq@sha256:b396d9aa0470e593a36f5799c04fc3c9e59b5723f703f4b019f7ef92528e6741",
-          "name": "rabbitmq"
-        },
-        {
-          "digest": "sha256:13e941df9252cea3024ecb5e2247a696b64928015c1a3a4a04ee4e362388b1e4",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:13e941df9252cea3024ecb5e2247a696b64928015c1a3a4a04ee4e362388b1e4",
-          "name": "federatorai_recommend_dispatcher"
-        },
-        {
-          "digest": "sha256:13e941df9252cea3024ecb5e2247a696b64928015c1a3a4a04ee4e362388b1e4",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:13e941df9252cea3024ecb5e2247a696b64928015c1a3a4a04ee4e362388b1e4",
-          "name": "federatorai_recommend_worker"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "4.7.1-1",
-      "version_original": "4.7.1-1"
-    },
-    {
       "_id": "623460415593ce895a7b536a",
       "alm_examples": [],
       "annotations": {
@@ -12949,9 +12261,127 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.0.1",
       "version_original": "0.0.1"
+    },
+    {
+      "_id": "6262a5ae834f257293b60f6a",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.20",
+      "creation_date": "2022-04-22T12:55:10.113000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:21:47.503000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "6262a5b0834f257293b60f6b",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:e0a36fbe70d56aa4faf878b3a2d8f4196008d87ea9057f8509eaf4334b0eb1c5",
+      "bundle_path_digest": "sha256:e0a36fbe70d56aa4faf878b3a2d8f4196008d87ea9057f8509eaf4334b0eb1c5",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:55:12.626000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "mongodb-enterprise.v1.4.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:09:51.026000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.4.2",
+      "version_original": "1.4.2"
+    },
+    {
+      "_id": "6262a5b2173a0d36cf5d6953",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:2c354e02f3ddfd9ef6ccac776b77603e60f907b10bac730e133845292500dd40",
+      "bundle_path_digest": "sha256:2c354e02f3ddfd9ef6ccac776b77603e60f907b10bac730e133845292500dd40",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T12:55:14.869000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "neuvector-operator.v1.0.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:00:01.079000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.0.1",
+      "version_original": "1.0.1"
     }
   ],
   "page": 23,
   "page_size": 100,
-  "total": 4780
+  "total": 4784
 }
