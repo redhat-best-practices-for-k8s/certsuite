@@ -157,7 +157,7 @@ jobs:
         with:
           repository: edcdavid/cnf-certification-test-partner
           path: cnf-certification-test-partner
-          ref: test-partner
+          ref: fix-cluster-break
 
       - name: Start the minikube cluster for `local-test-infra`
         uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
