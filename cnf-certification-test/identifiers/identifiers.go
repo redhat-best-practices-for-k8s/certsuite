@@ -357,6 +357,10 @@ var (
 		Url:     formTestURL(common.LifecycleTestKey, "persistent-volume-reclaim-policy"),
 		Version: versionOne,
 	}
+	TestContainersImageTag = claim.Identifier{
+		Url:     formTestURL(common.LifecycleTestKey, "test-Containers-Image-Tag"),
+		Version: versionOne,
+	}
 )
 
 func formDescription(identifier claim.Identifier, description string) string {
@@ -971,6 +975,14 @@ that there are no changes to the following directories:
 		Description:           formDescription(TestPersistentVolumeReclaimPolicyIdentifier, `Check that the persistent volumes the CNF pods are using have a reclaim policy of delete.`),
 		Remediation:           PersistentVolumeReclaimPolicyRemediation,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.3.4",
+		ExceptionProcess:      NoDocumentedProcess,
+	},
+	TestContainersImageTag: {
+		Identifier:            TestContainersImageTag,
+		Type:                  informativeResult,
+		Description:           formDescription(TestContainersImageTag, `Check that image tag exists on containers.`),
+		Remediation:           PersistentVolumeReclaimPolicyRemediation,
+		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.12",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 	TestNamespaceResourceQuotaIdentifier: {

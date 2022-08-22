@@ -18,6 +18,7 @@ package lifecycle
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/onsi/ginkgo/v2"
@@ -147,6 +148,12 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testPodPersistentVolumeReclaimPolicy(&env)
 	})
+
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestContainersImageTag)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testContainersImageTag(&env)
+	})
+
 })
 
 func testContainersPreStop(env *provider.TestEnvironment) {
@@ -481,5 +488,21 @@ func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
 		errMsg := fmt.Sprintf("Persistent Volumes found that are missing a reclaim policy of DELETE: %d. See logs for more detail.", n)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
+	}
+}
+func testContainersImageTag(env *provider.TestEnvironment) {
+	testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+	badcontainers := []string{}
+	for _, cut := range env.Containers {
+		logrus.Debugln("check container ", cut.String(), " image, should be tagged ")
+		image := strings.Split(cut.Data.Image, ":")
+		if len(image) <= 1 {
+			badcontainers = append(badcontainers, "{"+cut.String()+": is not having tag"+"}")
+			logrus.Errorln("container image", cut.Data.Name, " is not having tag ")
+		}
+	}
+	if len(badcontainers) > 0 {
+		tnf.ClaimFilePrintf("Containers have been found that missing tag on image: %v", badcontainers)
+		ginkgo.Fail("Containers have been found that missing tag on image.")
 	}
 }
