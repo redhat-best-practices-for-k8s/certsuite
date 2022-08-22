@@ -151,6 +151,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestContainersImageTag)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		testContainersImageTag(&env)
 	})
 
@@ -491,18 +492,17 @@ func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
 	}
 }
 func testContainersImageTag(env *provider.TestEnvironment) {
-	testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 	badcontainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " image, should be tagged ")
 		image := strings.Split(cut.Data.Image, ":")
 		if len(image) <= 1 {
 			badcontainers = append(badcontainers, "{"+cut.String()+": is not having tag"+"}")
-			logrus.Errorln("container image", cut.Data.Name, " is not having tag ")
+			logrus.Debugf("Container image for %s does not have a valid tag", cut.Data.Name)
 		}
 	}
 	if len(badcontainers) > 0 {
-		tnf.ClaimFilePrintf("Containers have been found that missing tag on image: %v", badcontainers)
-		ginkgo.Fail("Containers have been found that missing tag on image.")
+		tnf.ClaimFilePrintf("Containers have been found that are missing tag(s) on image: %v", badcontainers)
+		ginkgo.Fail("Containers have been found that are missing tag(s) on image.")
 	}
 }

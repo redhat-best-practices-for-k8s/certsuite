@@ -182,5 +182,7 @@ const (
 
 	PersistentVolumeReclaimPolicyRemediation = `Ensure that all persistent volumes are using the reclaim policy: delete`
 
+	ContainersImageTag = `Ensure that all the container iamge are tagged`
+
 	NoSSHDaemonsAllowedRemediation = `Ensure that no SSH daemons are running inside a pod`
 )

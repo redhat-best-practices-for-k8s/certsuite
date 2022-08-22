@@ -363,7 +363,7 @@ var (
 		Version: versionOne,
 	}
 	TestContainersImageTag = claim.Identifier{
-		Url:     formTestURL(common.LifecycleTestKey, "test-Containers-Image-Tag"),
+		Url:     formTestURL(common.LifecycleTestKey, "test-containers-image-tag"),
 		Version: versionOne,
 	}
 	TestNoSSHDaemonsAllowedIdentifier = claim.Identifier{
@@ -1001,7 +1001,7 @@ that there are no changes to the following directories:
 		Identifier:            TestContainersImageTag,
 		Type:                  informativeResult,
 		Description:           formDescription(TestContainersImageTag, `Check that image tag exists on containers.`),
-		Remediation:           PersistentVolumeReclaimPolicyRemediation,
+		Remediation:           ContainersImageTag,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.12",
 		ExceptionProcess:      NoDocumentedProcess,
 	},

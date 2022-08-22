@@ -481,17 +481,17 @@ Result Type|normative
 Suggested Remediation|Ensure CNF statefulsets/replica sets can scale in/out successfully.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-#### test-Containers-Image-Tag
+#### test-containers-image-tag
 
 Property|Description
 ---|---
-Test Case Name|test-Containers-Image-Tag
-Test Case Label|lifecycle-test-Containers-Image-Tag
-Unique ID|http://test-network-function.com/testcases/lifecycle/test-Containers-Image-Tag
+Test Case Name|test-containers-image-tag
+Test Case Label|lifecycle-test-containers-image-tag
+Unique ID|http://test-network-function.com/testcases/lifecycle/test-containers-image-tag
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/test-Containers-Image-Tag Check that image tag exists on containers.
+Description|http://test-network-function.com/testcases/lifecycle/test-containers-image-tag Check that image tag exists on containers.
 Result Type|informative
-Suggested Remediation|Ensure that all persistent volumes are using the reclaim policy: delete
+Suggested Remediation|Ensure that all the container iamge are tagged
 Best Practice Reference|https://TODO Section 4.6.12
 Exception Process|There is no documented exception process for this.
 
