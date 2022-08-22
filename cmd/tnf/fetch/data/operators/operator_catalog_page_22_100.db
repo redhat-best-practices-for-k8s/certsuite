@@ -1,1819 +1,6 @@
 {
   "data": [
     {
-      "_id": "622a18a1a18c309e7fff88ae",
-      "alm_examples": [
-        {
-          "api_version": "elasticsearch.k8s.elastic.co/v1",
-          "kind": "Elasticsearch",
-          "metadata": {
-            "name": "elasticsearch-sample"
-          },
-          "spec": {
-            "nodeSets": [
-              {
-                "config": {
-                  "node.attr.attr_name": "attr_value",
-                  "node.roles": [
-                    "master",
-                    "data"
-                  ],
-                  "node.store.allow_mmap": false
-                },
-                "count": 3,
-                "name": "default",
-                "podTemplate": {
-                  "metadata": {
-                    "labels": {
-                      "foo": "bar"
-                    }
-                  },
-                  "spec": {
-                    "containers": [
-                      {
-                        "name": "elasticsearch",
-                        "resources": {
-                          "limits": {
-                            "cpu": 2,
-                            "memory": "4Gi"
-                          },
-                          "requests": {
-                            "cpu": 1,
-                            "memory": "4Gi"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            ],
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "kibana.k8s.elastic.co/v1",
-          "kind": "Kibana",
-          "metadata": {
-            "name": "kibana-sample"
-          },
-          "spec": {
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "podTemplate": {
-              "metadata": {
-                "labels": {
-                  "foo": "bar"
-                }
-              },
-              "spec": {
-                "containers": [
-                  {
-                    "name": "kibana",
-                    "resources": {
-                      "limits": {
-                        "cpu": 2,
-                        "memory": "2Gi"
-                      },
-                      "requests": {
-                        "cpu": 0.5,
-                        "memory": "1Gi"
-                      }
-                    }
-                  }
-                ]
-              }
-            },
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "apm.k8s.elastic.co/v1",
-          "kind": "ApmServer",
-          "metadata": {
-            "name": "apmserver-sample"
-          },
-          "spec": {
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "enterprisesearch.k8s.elastic.co/v1",
-          "kind": "EnterpriseSearch",
-          "metadata": {
-            "name": "ent-sample"
-          },
-          "spec": {
-            "config": {
-              "ent_search.external_url": "https://localhost:3002"
-            },
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "beat.k8s.elastic.co/v1beta1",
-          "kind": "Beat",
-          "metadata": {
-            "name": "heartbeat-sample"
-          },
-          "spec": {
-            "config": {
-              "heartbeat.monitors": [
-                {
-                  "hosts": [
-                    "elasticsearch-sample-es-http.default.svc:9200"
-                  ],
-                  "schedule": "@every 5s",
-                  "type": "tcp"
-                }
-              ]
-            },
-            "deployment": {
-              "podTemplate": {
-                "spec": {
-                  "securityContext": {
-                    "runAsUser": 0
-                  }
-                }
-              },
-              "replicas": 1
-            },
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "type": "heartbeat",
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "agent.k8s.elastic.co/v1alpha1",
-          "kind": "Agent",
-          "metadata": {
-            "name": "agent-sample"
-          },
-          "spec": {
-            "config": {
-              "inputs": [
-                {
-                  "data_stream": {
-                    "namespace": "default"
-                  },
-                  "meta": {
-                    "package": {
-                      "name": "system",
-                      "version": "0.9.1"
-                    }
-                  },
-                  "name": "system-1",
-                  "revision": 1,
-                  "streams": [
-                    {
-                      "cpu.metrics": [
-                        "percentages",
-                        "normalized_percentages"
-                      ],
-                      "data_stream": {
-                        "dataset": "system.cpu",
-                        "type": "metrics"
-                      },
-                      "id": "system/metrics-system.cpu",
-                      "metricsets": [
-                        "cpu"
-                      ],
-                      "period": "10s"
-                    }
-                  ],
-                  "type": "system/metrics",
-                  "use_output": "default"
-                }
-              ]
-            },
-            "daemonSet": {},
-            "elasticsearchRefs": [
-              {
-                "name": "elasticsearch-sample"
-              }
-            ],
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "maps.k8s.elastic.co/v1alpha1",
-          "kind": "ElasticMapsServer",
-          "metadata": {
-            "name": "ems-sample"
-          },
-          "spec": {
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "version": "8.1.0"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:a386d9aefcfd7cfb9f7b2b5fd30733efac2e4ce8c265fcddaff9252398bfe821",
-      "bundle_path_digest": "sha256:a386d9aefcfd7cfb9f7b2b5fd30733efac2e4ce8c265fcddaff9252398bfe821",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-10T15:26:25.308000+00:00",
-      "csv_description": "Elastic Cloud on Kubernetes (ECK) is the official operator by Elastic for automating the deployment, provisioning, management, and orchestration of Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes.\n\nCurrent features:\n\n*  Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent and Elastic Maps Server deployments\n*  TLS Certificates management\n*  Safe Elasticsearch cluster configuration and topology changes\n*  Persistent volumes usage\n*  Custom node configuration and attributes\n*  Secure settings keystore updates\n\nSupported versions:\n\n* Kubernetes 1.19-1.23\n* OpenShift 4.6-4.10\n* Google Kubernetes Engine (GKE), Azure Kubernetes Service (AKS), and Amazon Elastic Kubernetes Service (EKS)\n* Elasticsearch, Kibana, APM Server: 7.10+\n* Enterprise Search: 7.10+\n* Beats: 7.10+\n* Elastic Agent: 7.10+\n* Elastic Maps Server: 7.11+\n\nECK should work with all conformant installers as listed in these [FAQs](https://github.com/cncf/k8s-conformance/blob/master/faq.md#what-is-a-distribution-hosted-platform-and-an-installer). Distributions include source patches and so may not work as-is with ECK.\nAlpha, beta, and stable API versions follow the same [conventions used by Kubernetes](https://kubernetes.io/docs/concepts/overview/kubernetes-api/#api-versioning).\nSee the full [Elastic support matrix](https://www.elastic.co/support/matrix#matrix_kubernetes) for more information.\nSee the [Quickstart](https://www.elastic.co/guide/en/cloud-on-k8s/2.1/k8s-quickstart.html) to get started with ECK.",
-      "csv_display_name": "Elasticsearch (ECK) Operator",
-      "csv_metadata_description": "Run Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes and OpenShift",
-      "csv_name": "elasticsearch-eck-operator-certified.v2.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:43:07.715000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "elasticsearch-eck-operator-certified",
-      "provided_apis": [
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1beta1"
-        },
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1"
-        },
-        {
-          "group": "beat.k8s.elastic.co",
-          "kind": "Beat",
-          "plural": "beats",
-          "version": "v1beta1"
-        },
-        {
-          "group": "enterprisesearch.k8s.elastic.co",
-          "kind": "EnterpriseSearch",
-          "plural": "enterprisesearches",
-          "version": "v1"
-        },
-        {
-          "group": "agent.k8s.elastic.co",
-          "kind": "Agent",
-          "plural": "agents",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "maps.k8s.elastic.co",
-          "kind": "ElasticMapsServer",
-          "plural": "elasticmapsservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1"
-        },
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "enterprisesearch.k8s.elastic.co",
-          "kind": "EnterpriseSearch",
-          "plural": "enterprisesearches",
-          "version": "v1beta1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Elastic",
-      "related_images": [
-        {
-          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
-          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
-          "name": "eck-operator-465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb-annotation"
-        },
-        {
-          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
-          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.1.0",
-      "version_original": "2.1.0"
-    },
-    {
-      "_id": "622aa7982e84c15317c26d91",
-      "alm_examples": [
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIIsilon",
-          "metadata": {
-            "name": "isilon",
-            "namespace": "test-isilon"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_VERBOSE",
-                    "value": "1"
-                  },
-                  {
-                    "name": "X_CSI_ISI_PORT",
-                    "value": "8080"
-                  },
-                  {
-                    "name": "X_CSI_ISI_PATH",
-                    "value": "/ifs/data/csi"
-                  },
-                  {
-                    "name": "X_CSI_ISI_NO_PROBE_ON_START",
-                    "value": "false"
-                  },
-                  {
-                    "name": "X_CSI_ISI_AUTOPROBE",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ISI_SKIP_CERTIFICATE_VALIDATION",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_CUSTOM_TOPOLOGY_ENABLED",
-                    "value": "false"
-                  }
-                ],
-                "image": "dellemc/csi-isilon:v2.0.0",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.0.0",
-              "controller": {
-                "envs": [
-                  {
-                    "name": "X_CSI_ISI_QUOTA_ENABLED",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ISI_ACCESS_ZONE",
-                    "value": "System"
-                  },
-                  {
-                    "name": "X_CSI_ISI_VOLUME_PATH_PERMISSIONS",
-                    "value": "0777"
-                  }
-                ]
-              },
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "node": {
-                "envs": [
-                  {
-                    "name": "X_CSI_MAX_VOLUMES_PER_NODE",
-                    "value": "0"
-                  },
-                  {
-                    "name": "X_CSI_ALLOWED_NETWORKS",
-                    "value": ""
-                  }
-                ]
-              },
-              "replicas": 2,
-              "sideCars": [
-                {
-                  "args": [
-                    "--volume-name-prefix=csipscale"
-                  ],
-                  "name": "provisioner"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIPowerMax",
-          "metadata": {
-            "name": "test-powermax",
-            "namespace": "test-powermax"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_MANAGED_ARRAYS",
-                    "value": "000000000000,000000000001"
-                  },
-                  {
-                    "name": "X_CSI_POWERMAX_ENDPOINT",
-                    "value": "https://0.0.0.0:8443/"
-                  },
-                  {
-                    "name": "X_CSI_K8S_CLUSTER_PREFIX",
-                    "value": "XYZ"
-                  },
-                  {
-                    "name": "X_CSI_POWERMAX_PORTGROUPS",
-                    "value": ""
-                  },
-                  {
-                    "name": "X_CSI_TRANSPORT_PROTOCOL",
-                    "value": ""
-                  },
-                  {
-                    "name": "X_CSI_POWERMAX_PROXY_SERVICE_NAME",
-                    "value": ""
-                  },
-                  {
-                    "name": "X_CSI_GRPC_MAX_THREADS",
-                    "value": "4"
-                  }
-                ],
-                "image": "dellemc/csi-powermax:v2.0.0",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.0.0",
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "node": {
-                "envs": [
-                  {
-                    "name": "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP",
-                    "value": "false"
-                  }
-                ]
-              },
-              "replicas": 2
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIPowerMaxRevProxy",
-          "metadata": {
-            "name": "powermax-reverseproxy",
-            "namespace": "test-powermax"
-          },
-          "spec": {
-            "config": {
-              "linkConfig": {
-                "backup": {
-                  "skipCertificateValidation": true,
-                  "url": "https://0.0.0.0:8443"
-                },
-                "primary": {
-                  "certSecret": "",
-                  "skipCertificateValidation": true,
-                  "url": "https://0.0.0.0:8443"
-                }
-              },
-              "mode": "Linked"
-            },
-            "image": "dellemc/csipowermax-reverseproxy:v1.4.0",
-            "imagePullPolicy": "IfNotPresent",
-            "tlsSecret": "csirevproxy-tls-secret"
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIPowerStore",
-          "metadata": {
-            "name": "test-powerstore",
-            "namespace": "test-powerstore"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
-                    "value": "csi"
-                  },
-                  {
-                    "name": "X_CSI_FC_PORTS_FILTER_FILE_PATH",
-                    "value": "/etc/fc-ports-filter"
-                  }
-                ],
-                "image": "dellemc/csi-powerstore:v2.0.0",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.0.0",
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "node": {
-                "envs": [
-                  {
-                    "name": "X_CSI_POWERSTORE_ENABLE_CHAP",
-                    "value": "true"
-                  }
-                ]
-              },
-              "replicas": 2
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIUnity",
-          "metadata": {
-            "name": "test-unity",
-            "namespace": "test-unity"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "image": "dellemc/csi-unity:v2.0.0",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.0.0",
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "replicas": 2,
-              "sideCars": [
-                {
-                  "args": [
-                    "--volume-name-prefix=csiunity",
-                    "--default-fstype=ext4"
-                  ],
-                  "name": "provisioner"
-                },
-                {
-                  "args": [
-                    "--snapshot-name-prefix=csiunitysnap"
-                  ],
-                  "name": "snapshotter"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIVXFlexOS",
-          "metadata": {
-            "name": "test-vxflexos",
-            "namespace": "test-vxflexos"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
-                    "value": "false"
-                  },
-                  {
-                    "name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
-                    "value": "false"
-                  },
-                  {
-                    "name": "X_CSI_DEBUG",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ALLOW_RWO_MULTI_POD_ACCESS",
-                    "value": "false"
-                  }
-                ],
-                "image": "dellemc/csi-vxflexos:v2.0.0",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.0.0",
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "initContainers": [
-                {
-                  "envs": [
-                    {
-                      "name": "MDM",
-                      "value": "10.x.x.x,10.x.x.x"
-                    }
-                  ],
-                  "image": "dellemc/sdc:3.6",
-                  "imagePullPolicy": "IfNotPresent",
-                  "name": "sdc"
-                }
-              ],
-              "replicas": 1,
-              "sideCars": [
-                {
-                  "envs": [
-                    {
-                      "name": "HOST_PID",
-                      "value": "1"
-                    },
-                    {
-                      "name": "MDM",
-                      "value": ""
-                    }
-                  ],
-                  "name": "sdc-monitor"
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/dell-emc/dell-csiop-bundle-110@sha256:5beda9cc9f2eb457e127b281b8c45280baa13d02720ac6886bb3655e21641d28",
-      "bundle_path_digest": "sha256:5beda9cc9f2eb457e127b281b8c45280baa13d02720ac6886bb3655e21641d28",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-11T01:36:24.542000+00:00",
-      "csv_description": "Dell CSI Operator for Dell EMC CSI Drivers",
-      "csv_display_name": "Dell CSI Operator",
-      "csv_metadata_description": "",
-      "csv_name": "dell-csi-operator-certified.v1.5.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:54:17.091000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "dell-csi-operator-certified",
-      "provided_apis": [
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIVXFlexOS",
-          "plural": "csivxflexoses",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIIsilon",
-          "plural": "csiisilons",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIPowerMax",
-          "plural": "csipowermaxes",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIPowerMaxRevProxy",
-          "plural": "csipowermaxrevproxies",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIPowerStore",
-          "plural": "csipowerstores",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIUnity",
-          "plural": "csiunities",
-          "version": "v1"
-        }
-      ],
-      "provider": "Dell EMC",
-      "related_images": [
-        {
-          "digest": "sha256:b71a24658dc8dadbcb1613812c8cc3f92c24ed9130a85536efc90ff91982dd05",
-          "image": "dellemc/dell-csi-operator@sha256:b71a24658dc8dadbcb1613812c8cc3f92c24ed9130a85536efc90ff91982dd05",
-          "name": "dell-csi-operator-b71a24658dc8dadbcb1613812c8cc3f92c24ed9130a85536efc90ff91982dd05-annotation"
-        },
-        {
-          "digest": "sha256:b71a24658dc8dadbcb1613812c8cc3f92c24ed9130a85536efc90ff91982dd05",
-          "image": "dellemc/dell-csi-operator@sha256:b71a24658dc8dadbcb1613812c8cc3f92c24ed9130a85536efc90ff91982dd05",
-          "name": "dell-csi-operator-controller"
-        },
-        {
-          "digest": "sha256:bde48e1751173b709090c2539fdf12d6ba64e88ec7a4301591227ce925f3c678",
-          "image": "docker.io/busybox@sha256:bde48e1751173b709090c2539fdf12d6ba64e88ec7a4301591227ce925f3c678",
-          "name": "config-copy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.5.0",
-      "version_original": "1.5.0"
-    },
-    {
-      "_id": "622aa7994a14c05796114bba",
-      "alm_examples": [
-        {
-          "api_version": "elasticsearch.k8s.elastic.co/v1",
-          "kind": "Elasticsearch",
-          "metadata": {
-            "name": "elasticsearch-sample"
-          },
-          "spec": {
-            "nodeSets": [
-              {
-                "config": {
-                  "node.attr.attr_name": "attr_value",
-                  "node.roles": [
-                    "master",
-                    "data"
-                  ],
-                  "node.store.allow_mmap": false
-                },
-                "count": 3,
-                "name": "default",
-                "podTemplate": {
-                  "metadata": {
-                    "labels": {
-                      "foo": "bar"
-                    }
-                  },
-                  "spec": {
-                    "containers": [
-                      {
-                        "name": "elasticsearch",
-                        "resources": {
-                          "limits": {
-                            "cpu": 2,
-                            "memory": "4Gi"
-                          },
-                          "requests": {
-                            "cpu": 1,
-                            "memory": "4Gi"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            ],
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "kibana.k8s.elastic.co/v1",
-          "kind": "Kibana",
-          "metadata": {
-            "name": "kibana-sample"
-          },
-          "spec": {
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "podTemplate": {
-              "metadata": {
-                "labels": {
-                  "foo": "bar"
-                }
-              },
-              "spec": {
-                "containers": [
-                  {
-                    "name": "kibana",
-                    "resources": {
-                      "limits": {
-                        "cpu": 2,
-                        "memory": "2Gi"
-                      },
-                      "requests": {
-                        "cpu": 0.5,
-                        "memory": "1Gi"
-                      }
-                    }
-                  }
-                ]
-              }
-            },
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "apm.k8s.elastic.co/v1",
-          "kind": "ApmServer",
-          "metadata": {
-            "name": "apmserver-sample"
-          },
-          "spec": {
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "enterprisesearch.k8s.elastic.co/v1",
-          "kind": "EnterpriseSearch",
-          "metadata": {
-            "name": "ent-sample"
-          },
-          "spec": {
-            "config": {
-              "ent_search.external_url": "https://localhost:3002"
-            },
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "beat.k8s.elastic.co/v1beta1",
-          "kind": "Beat",
-          "metadata": {
-            "name": "heartbeat-sample"
-          },
-          "spec": {
-            "config": {
-              "heartbeat.monitors": [
-                {
-                  "hosts": [
-                    "elasticsearch-sample-es-http.default.svc:9200"
-                  ],
-                  "schedule": "@every 5s",
-                  "type": "tcp"
-                }
-              ]
-            },
-            "deployment": {
-              "podTemplate": {
-                "spec": {
-                  "securityContext": {
-                    "runAsUser": 0
-                  }
-                }
-              },
-              "replicas": 1
-            },
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "type": "heartbeat",
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "agent.k8s.elastic.co/v1alpha1",
-          "kind": "Agent",
-          "metadata": {
-            "name": "agent-sample"
-          },
-          "spec": {
-            "config": {
-              "inputs": [
-                {
-                  "data_stream": {
-                    "namespace": "default"
-                  },
-                  "meta": {
-                    "package": {
-                      "name": "system",
-                      "version": "0.9.1"
-                    }
-                  },
-                  "name": "system-1",
-                  "revision": 1,
-                  "streams": [
-                    {
-                      "cpu.metrics": [
-                        "percentages",
-                        "normalized_percentages"
-                      ],
-                      "data_stream": {
-                        "dataset": "system.cpu",
-                        "type": "metrics"
-                      },
-                      "id": "system/metrics-system.cpu",
-                      "metricsets": [
-                        "cpu"
-                      ],
-                      "period": "10s"
-                    }
-                  ],
-                  "type": "system/metrics",
-                  "use_output": "default"
-                }
-              ]
-            },
-            "daemonSet": {},
-            "elasticsearchRefs": [
-              {
-                "name": "elasticsearch-sample"
-              }
-            ],
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "maps.k8s.elastic.co/v1alpha1",
-          "kind": "ElasticMapsServer",
-          "metadata": {
-            "name": "ems-sample"
-          },
-          "spec": {
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "version": "8.1.0"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:a386d9aefcfd7cfb9f7b2b5fd30733efac2e4ce8c265fcddaff9252398bfe821",
-      "bundle_path_digest": "sha256:a386d9aefcfd7cfb9f7b2b5fd30733efac2e4ce8c265fcddaff9252398bfe821",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-11T01:36:25.140000+00:00",
-      "csv_description": "Elastic Cloud on Kubernetes (ECK) is the official operator by Elastic for automating the deployment, provisioning, management, and orchestration of Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes.\n\nCurrent features:\n\n*  Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent and Elastic Maps Server deployments\n*  TLS Certificates management\n*  Safe Elasticsearch cluster configuration and topology changes\n*  Persistent volumes usage\n*  Custom node configuration and attributes\n*  Secure settings keystore updates\n\nSupported versions:\n\n* Kubernetes 1.19-1.23\n* OpenShift 4.6-4.10\n* Google Kubernetes Engine (GKE), Azure Kubernetes Service (AKS), and Amazon Elastic Kubernetes Service (EKS)\n* Elasticsearch, Kibana, APM Server: 7.10+\n* Enterprise Search: 7.10+\n* Beats: 7.10+\n* Elastic Agent: 7.10+\n* Elastic Maps Server: 7.11+\n\nECK should work with all conformant installers as listed in these [FAQs](https://github.com/cncf/k8s-conformance/blob/master/faq.md#what-is-a-distribution-hosted-platform-and-an-installer). Distributions include source patches and so may not work as-is with ECK.\nAlpha, beta, and stable API versions follow the same [conventions used by Kubernetes](https://kubernetes.io/docs/concepts/overview/kubernetes-api/#api-versioning).\nSee the full [Elastic support matrix](https://www.elastic.co/support/matrix#matrix_kubernetes) for more information.\nSee the [Quickstart](https://www.elastic.co/guide/en/cloud-on-k8s/2.1/k8s-quickstart.html) to get started with ECK.",
-      "csv_display_name": "Elasticsearch (ECK) Operator",
-      "csv_metadata_description": "Run Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes and OpenShift",
-      "csv_name": "elasticsearch-eck-operator-certified.v2.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:54:46.998000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "elasticsearch-eck-operator-certified",
-      "provided_apis": [
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1beta1"
-        },
-        {
-          "group": "maps.k8s.elastic.co",
-          "kind": "ElasticMapsServer",
-          "plural": "elasticmapsservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "enterprisesearch.k8s.elastic.co",
-          "kind": "EnterpriseSearch",
-          "plural": "enterprisesearches",
-          "version": "v1beta1"
-        },
-        {
-          "group": "enterprisesearch.k8s.elastic.co",
-          "kind": "EnterpriseSearch",
-          "plural": "enterprisesearches",
-          "version": "v1"
-        },
-        {
-          "group": "agent.k8s.elastic.co",
-          "kind": "Agent",
-          "plural": "agents",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1"
-        },
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1beta1"
-        },
-        {
-          "group": "beat.k8s.elastic.co",
-          "kind": "Beat",
-          "plural": "beats",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Elastic",
-      "related_images": [
-        {
-          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
-          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
-          "name": "eck-operator-465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb-annotation"
-        },
-        {
-          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
-          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "2.1.0",
-      "version_original": "2.1.0"
-    },
-    {
-      "_id": "622b53b54a14c05796114bd6",
-      "alm_examples": [
-        {
-          "api_version": "instana.io/v1",
-          "kind": "InstanaAgent",
-          "metadata": {
-            "name": "instana-agent",
-            "namespace": "instana-agent"
-          },
-          "spec": {
-            "agent": {
-              "configuration_yaml": "# You can leave this empty, or use this to configure your instana agent.\n# See https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/\n",
-              "endpointHost": "ingress-red-saas.instana.io",
-              "endpointPort": "443",
-              "env": {},
-              "key": "replace-key"
-            },
-            "cluster": {
-              "name": "my-cluster"
-            },
-            "zone": {
-              "name": "edited-zone"
-            }
-          }
-        },
-        {
-          "api_version": "instana.io/v1beta1",
-          "kind": "InstanaAgent",
-          "metadata": {
-            "name": "instana-agent",
-            "namespace": "instana-agent"
-          },
-          "spec": {
-            "agent.endpoint.host": "ingress-red-saas.instana.io",
-            "agent.endpoint.port": 443,
-            "agent.env": {
-              "INSTANA_AGENT_TAGS": "example"
-            },
-            "agent.key": "replace-me",
-            "agent.zone.name": "my-zone",
-            "cluster.name": "replace-me",
-            "config.files": {
-              "configuration.yaml": "# You can leave this empty, or use this to configure your instana agent.\n# See https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/\n"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:5aa72362012e1162708614b3dba4339797d757d04d22683f521328b63ed169d1",
-      "bundle_path_digest": "sha256:5aa72362012e1162708614b3dba4339797d757d04d22683f521328b63ed169d1",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-11T13:50:45.802000+00:00",
-      "csv_description": "# Instana\n\nInstana is an [APM solution](https://www.instana.com/product-overview/) built for microservices that enables IT Ops to build applications faster and deliver higher quality services by automating monitoring, tracing and root cause analysis. The solution is optimized for [Kubernetes](https://www.instana.com/automatic-kubernetes-monitoring/) and [OpenShift](https://www.instana.com/blog/automatic-root-cause-analysis-for-openshift-applications/).\n\n## Instana Agent Operator\n\nThis is the Kubernetes Operator for installing the Instana Agent on Kubernetes or OpenShift.\n\n## Prerequisites for OpenShift\n\nBefore the agent will be able to run in OpenShift, you need to perform a couple of extra configuration steps.\n\nYou need to set up a project for the Instana Agent and configure it's permissions.\n\nThe project you create here needs to be the namespace where you create the Instana Agent custom resource that the operator will use to deploy the agent.\n\nFor example, create the `instana-agent` project:\n\n    oc new-project instana-agent\n\nThen, ensure the `instana-agent` service account is in the privileged security context:\n\n    oc adm policy add-scc-to-user privileged -z instana-agent\n\nThis service account will be created by the operator.\n\nNow you can proceed with installing the operator for the Instana agent.\n\n## Installation and Configuration\n\nFirst, install this operator from [OperatorHub.io](https://operatorhub.io/), [OpenShift Container Platform](https://www.openshift.com/), or [OKD](https://www.okd.io/).\n\nSecond, create a custom resource with the agent configuration in the target namespace (for now, this MUST always be the `instana-agent` namespace). The operator will pick up the custom resource and install the Instana agent accordingly.\n\nThe following is a minimal template of the custom resource:\n\n```yaml\napiVersion: instana.io/v1\nkind: InstanaAgent\nmetadata:\n  name: instana-agent\n  namespace: instana-agent\nspec:\n  zone:\n    name: my-zone # (optional) name of the zone of the host\n  cluster:\n    name: replace-me # replace with the name of your Kubernetes cluster\n  agent:\n    key: replace-me # replace with your Instana agent key\n    endpointHost: ingress-red-saas.instana.io # the monitoring ingress endpoint\n    endpointPort: \"443\" # the monitoring ingress endpoint port, wrapped in quotes\n    env:\n      INSTANA_AGENT_TAGS: example\n    configuration_yaml: |\n      # You can leave this empty, or use this to configure your instana agent.\n      # See https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/\n```\n\nSave the template in a file `instana-agent.yaml` and edit the following values:\n\n* If your target namespace is not `instana-agent`, replace the `namespace:` accordingly.\n* `agent.key` must be set with your Instana agent key.\n* `agent.endpointHost` must be set with the monitoring ingress endpoint, generally either `saas-us-west-2.instana.io` or `saas-eu-west-1.instana.io`.\n* `agent.endpointPort` must be set with the monitoring ingress port, generally \"443\" (wrapped in quotes).\n* `zone.name` should be set with the name of the Kubernetes cluster that is be displayed in Instana.\n\nFor advanced configuration, you can edit the contents of the `configuration.yaml` file. View documentation [here](https://docs.instana.io/setup_and_manage/host_agent/on/kubernetes/).\n\nApply the custom resource with `kubectl apply -f instana-agent.yaml`. After some time, you should see `instana-agent` Pods being created on each node of your cluster, and your cluster should show on the infrastructure map on your Instana Web interface.\n\n## Uninstalling\n\nIn order to uninstall the Instana agent, simply remove the custom resource with `kubectl delete -f instana-agent.yaml`.\n\n## Source Code\n\nThe Instana agent operator is an open source project hosted on [https://github.com/instana/instana-agent-operator](https://github.com/instana/instana-agent-operator/).\n",
-      "csv_display_name": "Instana Agent Operator",
-      "csv_metadata_description": "Fully automated Application Performance Monitoring (APM) for microservices.",
-      "csv_name": "instana-agent-operator.v2.0.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:39:03.997000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "instana-agent-operator",
-      "provided_apis": [
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1"
-        },
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Instana",
-      "related_images": [
-        {
-          "digest": "sha256:abc4ae48ee97f907cee54b63130d07bfcdbc3223392db1abaad72c6c330893a2",
-          "image": "instana/instana-agent-operator@sha256:abc4ae48ee97f907cee54b63130d07bfcdbc3223392db1abaad72c6c330893a2",
-          "name": "instana-agent-operator"
-        },
-        {
-          "digest": "sha256:3076921ebb8d3ff127511cc7289eacc2e0835ea88500bd4a2798ff2fdbe8b26a",
-          "image": "instana/agent@sha256:3076921ebb8d3ff127511cc7289eacc2e0835ea88500bd4a2798ff2fdbe8b26a",
-          "name": "instana-agent"
-        },
-        {
-          "digest": "sha256:abc4ae48ee97f907cee54b63130d07bfcdbc3223392db1abaad72c6c330893a2",
-          "image": "instana/instana-agent-operator@sha256:abc4ae48ee97f907cee54b63130d07bfcdbc3223392db1abaad72c6c330893a2",
-          "name": "instana-agent-operator-abc4ae48ee97f907cee54b63130d07bfcdbc3223392db1abaad72c6c330893a2-annotation"
-        },
-        {
-          "digest": "sha256:abc4ae48ee97f907cee54b63130d07bfcdbc3223392db1abaad72c6c330893a2",
-          "image": "instana/instana-agent-operator@sha256:abc4ae48ee97f907cee54b63130d07bfcdbc3223392db1abaad72c6c330893a2",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.0.4",
-      "version_original": "2.0.4"
-    },
-    {
-      "_id": "622b53b74a14c05796114bd8",
-      "alm_examples": [
-        {
-          "api_version": "elasticsearch.k8s.elastic.co/v1",
-          "kind": "Elasticsearch",
-          "metadata": {
-            "name": "elasticsearch-sample"
-          },
-          "spec": {
-            "nodeSets": [
-              {
-                "config": {
-                  "node.attr.attr_name": "attr_value",
-                  "node.roles": [
-                    "master",
-                    "data"
-                  ],
-                  "node.store.allow_mmap": false
-                },
-                "count": 3,
-                "name": "default",
-                "podTemplate": {
-                  "metadata": {
-                    "labels": {
-                      "foo": "bar"
-                    }
-                  },
-                  "spec": {
-                    "containers": [
-                      {
-                        "name": "elasticsearch",
-                        "resources": {
-                          "limits": {
-                            "cpu": 2,
-                            "memory": "4Gi"
-                          },
-                          "requests": {
-                            "cpu": 1,
-                            "memory": "4Gi"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            ],
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "kibana.k8s.elastic.co/v1",
-          "kind": "Kibana",
-          "metadata": {
-            "name": "kibana-sample"
-          },
-          "spec": {
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "podTemplate": {
-              "metadata": {
-                "labels": {
-                  "foo": "bar"
-                }
-              },
-              "spec": {
-                "containers": [
-                  {
-                    "name": "kibana",
-                    "resources": {
-                      "limits": {
-                        "cpu": 2,
-                        "memory": "2Gi"
-                      },
-                      "requests": {
-                        "cpu": 0.5,
-                        "memory": "1Gi"
-                      }
-                    }
-                  }
-                ]
-              }
-            },
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "apm.k8s.elastic.co/v1",
-          "kind": "ApmServer",
-          "metadata": {
-            "name": "apmserver-sample"
-          },
-          "spec": {
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "enterprisesearch.k8s.elastic.co/v1",
-          "kind": "EnterpriseSearch",
-          "metadata": {
-            "name": "ent-sample"
-          },
-          "spec": {
-            "config": {
-              "ent_search.external_url": "https://localhost:3002"
-            },
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "beat.k8s.elastic.co/v1beta1",
-          "kind": "Beat",
-          "metadata": {
-            "name": "heartbeat-sample"
-          },
-          "spec": {
-            "config": {
-              "heartbeat.monitors": [
-                {
-                  "hosts": [
-                    "elasticsearch-sample-es-http.default.svc:9200"
-                  ],
-                  "schedule": "@every 5s",
-                  "type": "tcp"
-                }
-              ]
-            },
-            "deployment": {
-              "podTemplate": {
-                "spec": {
-                  "securityContext": {
-                    "runAsUser": 0
-                  }
-                }
-              },
-              "replicas": 1
-            },
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "type": "heartbeat",
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "agent.k8s.elastic.co/v1alpha1",
-          "kind": "Agent",
-          "metadata": {
-            "name": "agent-sample"
-          },
-          "spec": {
-            "config": {
-              "inputs": [
-                {
-                  "data_stream": {
-                    "namespace": "default"
-                  },
-                  "meta": {
-                    "package": {
-                      "name": "system",
-                      "version": "0.9.1"
-                    }
-                  },
-                  "name": "system-1",
-                  "revision": 1,
-                  "streams": [
-                    {
-                      "cpu.metrics": [
-                        "percentages",
-                        "normalized_percentages"
-                      ],
-                      "data_stream": {
-                        "dataset": "system.cpu",
-                        "type": "metrics"
-                      },
-                      "id": "system/metrics-system.cpu",
-                      "metricsets": [
-                        "cpu"
-                      ],
-                      "period": "10s"
-                    }
-                  ],
-                  "type": "system/metrics",
-                  "use_output": "default"
-                }
-              ]
-            },
-            "daemonSet": {},
-            "elasticsearchRefs": [
-              {
-                "name": "elasticsearch-sample"
-              }
-            ],
-            "version": "8.1.0"
-          }
-        },
-        {
-          "api_version": "maps.k8s.elastic.co/v1alpha1",
-          "kind": "ElasticMapsServer",
-          "metadata": {
-            "name": "ems-sample"
-          },
-          "spec": {
-            "count": 1,
-            "elasticsearchRef": {
-              "name": "elasticsearch-sample"
-            },
-            "version": "8.1.0"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:a386d9aefcfd7cfb9f7b2b5fd30733efac2e4ce8c265fcddaff9252398bfe821",
-      "bundle_path_digest": "sha256:a386d9aefcfd7cfb9f7b2b5fd30733efac2e4ce8c265fcddaff9252398bfe821",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-11T13:50:47.244000+00:00",
-      "csv_description": "Elastic Cloud on Kubernetes (ECK) is the official operator by Elastic for automating the deployment, provisioning, management, and orchestration of Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes.\n\nCurrent features:\n\n*  Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent and Elastic Maps Server deployments\n*  TLS Certificates management\n*  Safe Elasticsearch cluster configuration and topology changes\n*  Persistent volumes usage\n*  Custom node configuration and attributes\n*  Secure settings keystore updates\n\nSupported versions:\n\n* Kubernetes 1.19-1.23\n* OpenShift 4.6-4.10\n* Google Kubernetes Engine (GKE), Azure Kubernetes Service (AKS), and Amazon Elastic Kubernetes Service (EKS)\n* Elasticsearch, Kibana, APM Server: 7.10+\n* Enterprise Search: 7.10+\n* Beats: 7.10+\n* Elastic Agent: 7.10+\n* Elastic Maps Server: 7.11+\n\nECK should work with all conformant installers as listed in these [FAQs](https://github.com/cncf/k8s-conformance/blob/master/faq.md#what-is-a-distribution-hosted-platform-and-an-installer). Distributions include source patches and so may not work as-is with ECK.\nAlpha, beta, and stable API versions follow the same [conventions used by Kubernetes](https://kubernetes.io/docs/concepts/overview/kubernetes-api/#api-versioning).\nSee the full [Elastic support matrix](https://www.elastic.co/support/matrix#matrix_kubernetes) for more information.\nSee the [Quickstart](https://www.elastic.co/guide/en/cloud-on-k8s/2.1/k8s-quickstart.html) to get started with ECK.",
-      "csv_display_name": "Elasticsearch (ECK) Operator",
-      "csv_metadata_description": "Run Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes and OpenShift",
-      "csv_name": "elasticsearch-eck-operator-certified.v2.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:07:13.737000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "elasticsearch-eck-operator-certified",
-      "provided_apis": [
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1"
-        },
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1"
-        },
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "agent.k8s.elastic.co",
-          "kind": "Agent",
-          "plural": "agents",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "beat.k8s.elastic.co",
-          "kind": "Beat",
-          "plural": "beats",
-          "version": "v1beta1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "enterprisesearch.k8s.elastic.co",
-          "kind": "EnterpriseSearch",
-          "plural": "enterprisesearches",
-          "version": "v1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1beta1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "maps.k8s.elastic.co",
-          "kind": "ElasticMapsServer",
-          "plural": "elasticmapsservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "enterprisesearch.k8s.elastic.co",
-          "kind": "EnterpriseSearch",
-          "plural": "enterprisesearches",
-          "version": "v1beta1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Elastic",
-      "related_images": [
-        {
-          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
-          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
-          "name": "eck-operator-465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb-annotation"
-        },
-        {
-          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
-          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.1.0",
-      "version_original": "2.1.0"
-    },
-    {
-      "_id": "622b53b7ae289285d6fcda3d",
-      "alm_examples": [
-        {
-          "api_version": "ako.vmware.com/v1alpha1",
-          "kind": "AKOConfig",
-          "metadata": {
-            "name": "ako-sample",
-            "namespace": "avi-system"
-          },
-          "spec": {
-            "akoSettings": {
-              "apiServerPort": 8080,
-              "clusterName": "my-cluster",
-              "cniPlugin": "openshift",
-              "deleteConfig": false,
-              "disableStaticRouteSync": false,
-              "enableEVH": false,
-              "enableEvents": "true",
-              "fullSyncFrequency": "1800",
-              "layer7Only": false,
-              "logLevel": "INFO",
-              "namespaceSelector": {
-                "labelKey": "",
-                "labelValue": ""
-              },
-              "servicesAPI": false,
-              "vipPerNamespace": "false"
-            },
-            "controllerSettings": {
-              "cloudName": "Default-Cloud",
-              "controllerHost": "",
-              "controllerVersion": "20.1.5",
-              "serviceEngineGroupName": "Default-Group",
-              "tenantName": "admin",
-              "tenantsPerCluster": "false"
-            },
-            "imagePullPolicy": "IfNotPresent",
-            "imageRepository": "projects.registry.vmware.com/ako/ako-operator@sha256:ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d",
-            "l4Settings": {
-              "advancedL4": false,
-              "autoFQDN": "default",
-              "defaultDomain": ""
-            },
-            "l7Settings": {
-              "defaultIngController": true,
-              "noPGForSNI": false,
-              "passthroughShardSize": "SMALL",
-              "serviceType": "ClusterIP",
-              "shardVSSize": "LARGE"
-            },
-            "logFile": "avi.log",
-            "mountPath": "/log",
-            "networkSettings": {
-              "bgpPeerLabels": [],
-              "enableRHI": false,
-              "nodeNetworkList": [
-                {
-                  "cidrs": [],
-                  "networkName": ""
-                }
-              ],
-              "nsxtT1LR": "",
-              "vipNetworkList": [
-                {
-                  "cidr": "",
-                  "networkName": ""
-                }
-              ]
-            },
-            "nodePortSelector": {
-              "key": "",
-              "value": ""
-            },
-            "resources": {
-              "limits": {
-                "cpu": "250m",
-                "memory": "300Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "200Mi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/wavefronthq/ako-operator-bundle@sha256:7d9d22becafceef1428f9a2ed1cabb6cbf10ddfe27a5216a0ab477ba7fdce523",
-      "bundle_path_digest": "sha256:7d9d22becafceef1428f9a2ed1cabb6cbf10ddfe27a5216a0ab477ba7fdce523",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-11T13:50:47.741000+00:00",
-      "csv_description": "Operator to manage the artifacts of the AKO Controller",
-      "csv_display_name": "AKO Operator",
-      "csv_metadata_description": "",
-      "csv_name": "ako-operator.v1.6.2-alpha",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:31:17.888000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "ako-operator",
-      "provided_apis": [
-        {
-          "group": "ako.vmware.com",
-          "kind": "AKOConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "VMware",
-      "related_images": [
-        {
-          "digest": "sha256:ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d",
-          "name": "ako-operator"
-        },
-        {
-          "digest": "sha256:ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d",
-          "name": "ako-operator-ae215384004f6e13f0bfe184820a329400c49ef158d13ca6b308784c2589985d-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.6.2-alpha",
-      "version_original": "1.6.2-alpha"
-    },
-    {
       "_id": "622d07f6353810fe31bdf858",
       "alm_examples": [
         {
@@ -8151,1404 +6338,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "0.9.9",
       "version_original": "0.9.9"
-    },
-    {
-      "_id": "62345f615593ce895a7b534b",
-      "alm_examples": [
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseCluster",
-          "metadata": {
-            "name": "cb-example"
-          },
-          "spec": {
-            "backup": {
-              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              },
-              "serviceAccountName": "couchbase-backup"
-            },
-            "buckets": {
-              "managed": true,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            },
-            "cluster": {
-              "analyticsServiceMemoryQuota": "1Gi",
-              "autoCompaction": {
-                "databaseFragmentationThreshold": {
-                  "percent": 30,
-                  "size": "1Gi"
-                },
-                "parallelCompaction": false,
-                "timeWindow": {
-                  "abortCompactionOutsideWindow": true,
-                  "end": "06:00",
-                  "start": "02:00"
-                },
-                "tombstonePurgeInterval": "72h",
-                "viewFragmentationThreshold": {
-                  "percent": 30,
-                  "size": "1Gi"
-                }
-              },
-              "autoFailoverMaxCount": 3,
-              "autoFailoverOnDataDiskIssues": true,
-              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
-              "autoFailoverServerGroup": false,
-              "autoFailoverTimeout": "120s",
-              "clusterName": "cb-example",
-              "dataServiceMemoryQuota": "256Mi",
-              "eventingServiceMemoryQuota": "256Mi",
-              "indexServiceMemoryQuota": "256Mi",
-              "indexStorageSetting": "memory_optimized",
-              "searchServiceMemoryQuota": "256Mi"
-            },
-            "enablePreviewScaling": false,
-            "hibernate": false,
-            "hibernationStrategy": "Immediate",
-            "image": "registry.connect.redhat.com/couchbase/server@sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
-            "logRetentionCount": 20,
-            "logRetentionTime": "604800s",
-            "monitoring": {
-              "prometheus": {
-                "enabled": false,
-                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784"
-              }
-            },
-            "networking": {
-              "adminConsoleServiceType": "NodePort",
-              "adminConsoleServices": [
-                "data"
-              ],
-              "exposeAdminConsole": true,
-              "exposedFeatureServiceType": "NodePort",
-              "exposedFeatures": [
-                "xdcr"
-              ]
-            },
-            "recoveryPolicy": "PrioritizeDataIntegrity",
-            "security": {
-              "adminSecret": "cb-example-auth",
-              "rbac": {
-                "managed": true,
-                "selector": {
-                  "matchLabels": {
-                    "cluster": "cb-example"
-                  }
-                }
-              }
-            },
-            "servers": [
-              {
-                "name": "all_services",
-                "services": [
-                  "data",
-                  "index",
-                  "query",
-                  "search",
-                  "eventing",
-                  "analytics"
-                ],
-                "size": 3
-              }
-            ],
-            "upgradeStrategy": "RollingUpgrade",
-            "xdcr": {
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "default"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "enableIndexReplica": true,
-            "evictionPolicy": "valueOnly",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseEphemeralBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "ephemeral-bucket"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "evictionPolicy": "noEviction",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseMemcachedBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "memcached-bucket"
-          },
-          "spec": {
-            "enableFlush": false,
-            "memoryQuota": "100Mi"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseUser",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-user"
-          },
-          "spec": {
-            "authDomain": "local",
-            "authSecret": "cb-example-auth",
-            "fullName": "My User"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseGroup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-group"
-          },
-          "spec": {
-            "roles": [
-              {
-                "bucket": "default",
-                "name": "bucket_admin"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseRoleBinding",
-          "metadata": {
-            "name": "my-role-binding"
-          },
-          "spec": {
-            "roleRef": {
-              "kind": "CouchbaseGroup",
-              "name": "my-group"
-            },
-            "subjects": [
-              {
-                "kind": "CouchbaseUser",
-                "name": "my-user"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseReplication",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-replication"
-          },
-          "spec": {
-            "bucket": "default",
-            "compressionType": "Snappy",
-            "filterExpression": "",
-            "paused": false,
-            "remoteBucket": "default"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-backup"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backupRetention": "24h",
-            "failedJobsHistoryLimit": 3,
-            "full": {
-              "schedule": "0 3 * * 6"
-            },
-            "incremental": {
-              "schedule": "0 3 * * 1-6"
-            },
-            "logRetention": "24h",
-            "size": "5Gi",
-            "strategy": "full_incremental",
-            "successfulJobsHistoryLimit": 1
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackupRestore",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-restore"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backup": "cb-backup",
-            "end": {
-              "int": 1
-            },
-            "logRetention": "24h",
-            "repo": "cb-example-2020-10-29T19_00_03",
-            "start": {
-              "int": 1
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseAutoscaler",
-          "metadata": {
-            "name": "do.not.create.internal.only"
-          },
-          "spec": {
-            "servers": "internal",
-            "size": 2
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:69c9d29a8a5ba4eac037051a256a458d5772fca8b813c764ddbe02f80d89b76f",
-      "bundle_path_digest": "sha256:69c9d29a8a5ba4eac037051a256a458d5772fca8b813c764ddbe02f80d89b76f",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:30:57.468000+00:00",
-      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
-      "csv_display_name": "Couchbase Operator",
-      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
-      "csv_name": "couchbase-operator.v2.2.0-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:31:20.600000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseAutoscaler",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackupRestore",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseEphemeralBucket",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseMemcachedBucket",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseReplication",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "version": "v2"
-        }
-      ],
-      "provider": "Couchbase",
-      "related_images": [
-        {
-          "digest": "sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
-          "name": "operator-59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649-annotation"
-        },
-        {
-          "digest": "sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
-          "name": "couchbase-operator"
-        },
-        {
-          "digest": "sha256:187046a848f32233e7e92705c57fa864b1d373c2078a92b51c9706bec6e372e5",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:187046a848f32233e7e92705c57fa864b1d373c2078a92b51c9706bec6e372e5",
-          "name": "couchbase_server"
-        },
-        {
-          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "name": "couchbase_backup"
-        },
-        {
-          "digest": "sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
-          "name": "couchbase_metrics"
-        },
-        {
-          "digest": "sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
-          "name": "exporter-b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784-annotation"
-        },
-        {
-          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "name": "operator-backup-c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76-annotation"
-        },
-        {
-          "digest": "sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
-          "name": "server-c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2.2.0-1",
-      "version_original": "2.2.0-1"
-    },
-    {
-      "_id": "62345f64314381d2b0756b2d",
-      "alm_examples": [
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseCluster",
-          "metadata": {
-            "name": "cb-example"
-          },
-          "spec": {
-            "backup": {
-              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              },
-              "serviceAccountName": "couchbase-backup"
-            },
-            "buckets": {
-              "managed": true,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            },
-            "cluster": {
-              "analyticsServiceMemoryQuota": "1Gi",
-              "autoCompaction": {
-                "databaseFragmentationThreshold": {
-                  "percent": 30,
-                  "size": "1Gi"
-                },
-                "parallelCompaction": false,
-                "timeWindow": {
-                  "abortCompactionOutsideWindow": true,
-                  "end": "06:00",
-                  "start": "02:00"
-                },
-                "tombstonePurgeInterval": "72h",
-                "viewFragmentationThreshold": {
-                  "percent": 30,
-                  "size": "1Gi"
-                }
-              },
-              "autoFailoverMaxCount": 3,
-              "autoFailoverOnDataDiskIssues": true,
-              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
-              "autoFailoverServerGroup": false,
-              "autoFailoverTimeout": "120s",
-              "clusterName": "cb-example",
-              "dataServiceMemoryQuota": "256Mi",
-              "eventingServiceMemoryQuota": "256Mi",
-              "indexServiceMemoryQuota": "256Mi",
-              "indexStorageSetting": "memory_optimized",
-              "searchServiceMemoryQuota": "256Mi"
-            },
-            "enablePreviewScaling": false,
-            "hibernate": false,
-            "hibernationStrategy": "Immediate",
-            "image": "registry.connect.redhat.com/couchbase/server@sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
-            "logRetentionCount": 20,
-            "logRetentionTime": "604800s",
-            "monitoring": {
-              "prometheus": {
-                "enabled": false,
-                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784"
-              }
-            },
-            "networking": {
-              "adminConsoleServiceType": "NodePort",
-              "adminConsoleServices": [
-                "data"
-              ],
-              "exposeAdminConsole": true,
-              "exposedFeatureServiceType": "NodePort",
-              "exposedFeatures": [
-                "xdcr"
-              ]
-            },
-            "recoveryPolicy": "PrioritizeDataIntegrity",
-            "security": {
-              "adminSecret": "cb-example-auth",
-              "rbac": {
-                "managed": true,
-                "selector": {
-                  "matchLabels": {
-                    "cluster": "cb-example"
-                  }
-                }
-              }
-            },
-            "servers": [
-              {
-                "name": "all_services",
-                "services": [
-                  "data",
-                  "index",
-                  "query",
-                  "search",
-                  "eventing",
-                  "analytics"
-                ],
-                "size": 3
-              }
-            ],
-            "upgradeStrategy": "RollingUpgrade",
-            "xdcr": {
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "default"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "enableIndexReplica": true,
-            "evictionPolicy": "valueOnly",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseEphemeralBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "ephemeral-bucket"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "evictionPolicy": "noEviction",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseMemcachedBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "memcached-bucket"
-          },
-          "spec": {
-            "enableFlush": false,
-            "memoryQuota": "100Mi"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseUser",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-user"
-          },
-          "spec": {
-            "authDomain": "local",
-            "authSecret": "cb-example-auth",
-            "fullName": "My User"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseGroup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-group"
-          },
-          "spec": {
-            "roles": [
-              {
-                "bucket": "default",
-                "name": "bucket_admin"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseRoleBinding",
-          "metadata": {
-            "name": "my-role-binding"
-          },
-          "spec": {
-            "roleRef": {
-              "kind": "CouchbaseGroup",
-              "name": "my-group"
-            },
-            "subjects": [
-              {
-                "kind": "CouchbaseUser",
-                "name": "my-user"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseReplication",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-replication"
-          },
-          "spec": {
-            "bucket": "default",
-            "compressionType": "Snappy",
-            "filterExpression": "",
-            "paused": false,
-            "remoteBucket": "default"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-backup"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backupRetention": "24h",
-            "failedJobsHistoryLimit": 3,
-            "full": {
-              "schedule": "0 3 * * 6"
-            },
-            "incremental": {
-              "schedule": "0 3 * * 1-6"
-            },
-            "logRetention": "24h",
-            "size": "5Gi",
-            "strategy": "full_incremental",
-            "successfulJobsHistoryLimit": 1
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackupRestore",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-restore"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backup": "cb-backup",
-            "end": {
-              "int": 1
-            },
-            "logRetention": "24h",
-            "repo": "cb-example-2020-10-29T19_00_03",
-            "start": {
-              "int": 1
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseAutoscaler",
-          "metadata": {
-            "name": "do.not.create.internal.only"
-          },
-          "spec": {
-            "servers": "internal",
-            "size": 2
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:df774ff23ab5a517a99d2d6565144574a29566ea8120d27803767aaf7f1c3b7c",
-      "bundle_path_digest": "sha256:df774ff23ab5a517a99d2d6565144574a29566ea8120d27803767aaf7f1c3b7c",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:31:00.357000+00:00",
-      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
-      "csv_display_name": "Couchbase Operator",
-      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
-      "csv_name": "couchbase-operator.v2.2.1-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:31:27.189000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseAutoscaler",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackupRestore",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseEphemeralBucket",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseMemcachedBucket",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseReplication",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "version": "v2"
-        }
-      ],
-      "provider": "Couchbase",
-      "related_images": [
-        {
-          "digest": "sha256:81e281289f56a2634d337e7ed6ca75ee914748a8f00a1baac70c50694b39e11f",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:81e281289f56a2634d337e7ed6ca75ee914748a8f00a1baac70c50694b39e11f",
-          "name": "operator-81e281289f56a2634d337e7ed6ca75ee914748a8f00a1baac70c50694b39e11f-annotation"
-        },
-        {
-          "digest": "sha256:81e281289f56a2634d337e7ed6ca75ee914748a8f00a1baac70c50694b39e11f",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:81e281289f56a2634d337e7ed6ca75ee914748a8f00a1baac70c50694b39e11f",
-          "name": "couchbase-operator"
-        },
-        {
-          "digest": "sha256:187046a848f32233e7e92705c57fa864b1d373c2078a92b51c9706bec6e372e5",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:187046a848f32233e7e92705c57fa864b1d373c2078a92b51c9706bec6e372e5",
-          "name": "couchbase_server"
-        },
-        {
-          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "name": "couchbase_backup"
-        },
-        {
-          "digest": "sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
-          "name": "couchbase_metrics"
-        },
-        {
-          "digest": "sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
-          "name": "exporter-b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784-annotation"
-        },
-        {
-          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "name": "operator-backup-c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76-annotation"
-        },
-        {
-          "digest": "sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
-          "name": "server-c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2.2.1-1",
-      "version_original": "2.2.1-1"
-    },
-    {
-      "_id": "62345f695593ce895a7b534c",
-      "alm_examples": [
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseCluster",
-          "metadata": {
-            "name": "cb-example"
-          },
-          "spec": {
-            "backup": {
-              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:3d0a9de740110b924b1ad5e83bb1e36b308f1b53f9e76a50cffcbeda9d34ea78",
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              },
-              "serviceAccountName": "couchbase-backup"
-            },
-            "buckets": {
-              "managed": true,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            },
-            "cluster": {
-              "analyticsServiceMemoryQuota": "1Gi",
-              "autoCompaction": {
-                "databaseFragmentationThreshold": {
-                  "percent": 30,
-                  "size": "1Gi"
-                },
-                "parallelCompaction": false,
-                "timeWindow": {
-                  "abortCompactionOutsideWindow": true,
-                  "end": "06:00",
-                  "start": "02:00"
-                },
-                "tombstonePurgeInterval": "72h",
-                "viewFragmentationThreshold": {
-                  "percent": 30,
-                  "size": "1Gi"
-                }
-              },
-              "autoFailoverMaxCount": 3,
-              "autoFailoverOnDataDiskIssues": true,
-              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
-              "autoFailoverServerGroup": false,
-              "autoFailoverTimeout": "120s",
-              "clusterName": "cb-example",
-              "dataServiceMemoryQuota": "256Mi",
-              "eventingServiceMemoryQuota": "256Mi",
-              "indexServiceMemoryQuota": "256Mi",
-              "indexStorageSetting": "memory_optimized",
-              "searchServiceMemoryQuota": "256Mi"
-            },
-            "enablePreviewScaling": false,
-            "hibernate": false,
-            "hibernationStrategy": "Immediate",
-            "image": "registry.connect.redhat.com/couchbase/server@sha256:fd6d9c0ef033009e76d60dc36f55ce7f3aaa942a7be9c2b66c335eabc8f5b11e",
-            "logRetentionCount": 20,
-            "logRetentionTime": "604800s",
-            "monitoring": {
-              "prometheus": {
-                "enabled": false,
-                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:18015c72d17a33a21ea221d48fddf493848fc1ca5702007f289369c5815fb3df"
-              }
-            },
-            "networking": {
-              "adminConsoleServiceType": "NodePort",
-              "adminConsoleServices": [
-                "data"
-              ],
-              "exposeAdminConsole": true,
-              "exposedFeatureServiceType": "NodePort",
-              "exposedFeatures": [
-                "xdcr"
-              ]
-            },
-            "recoveryPolicy": "PrioritizeDataIntegrity",
-            "security": {
-              "adminSecret": "cb-example-auth",
-              "rbac": {
-                "managed": true,
-                "selector": {
-                  "matchLabels": {
-                    "cluster": "cb-example"
-                  }
-                }
-              }
-            },
-            "servers": [
-              {
-                "name": "all_services",
-                "services": [
-                  "data",
-                  "index",
-                  "query",
-                  "search",
-                  "eventing",
-                  "analytics"
-                ],
-                "size": 3
-              }
-            ],
-            "upgradeStrategy": "RollingUpgrade",
-            "xdcr": {
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "default"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "enableIndexReplica": true,
-            "evictionPolicy": "valueOnly",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseEphemeralBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "ephemeral-bucket"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "evictionPolicy": "noEviction",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseMemcachedBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "memcached-bucket"
-          },
-          "spec": {
-            "enableFlush": false,
-            "memoryQuota": "100Mi"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseUser",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-user"
-          },
-          "spec": {
-            "authDomain": "local",
-            "authSecret": "cb-example-auth",
-            "fullName": "My User"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseGroup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-group"
-          },
-          "spec": {
-            "roles": [
-              {
-                "bucket": "default",
-                "name": "bucket_admin"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseRoleBinding",
-          "metadata": {
-            "name": "my-role-binding"
-          },
-          "spec": {
-            "roleRef": {
-              "kind": "CouchbaseGroup",
-              "name": "my-group"
-            },
-            "subjects": [
-              {
-                "kind": "CouchbaseUser",
-                "name": "my-user"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseReplication",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-replication"
-          },
-          "spec": {
-            "bucket": "default",
-            "compressionType": "Snappy",
-            "filterExpression": "",
-            "paused": false,
-            "remoteBucket": "default"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-backup"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backupRetention": "24h",
-            "failedJobsHistoryLimit": 3,
-            "full": {
-              "schedule": "0 3 * * 6"
-            },
-            "incremental": {
-              "schedule": "0 3 * * 1-6"
-            },
-            "logRetention": "24h",
-            "size": "5Gi",
-            "strategy": "full_incremental",
-            "successfulJobsHistoryLimit": 1
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackupRestore",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-restore"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backup": "cb-backup",
-            "end": {
-              "int": 1
-            },
-            "logRetention": "24h",
-            "repo": "cb-example-2020-10-29T19_00_03",
-            "start": {
-              "int": 1
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseAutoscaler",
-          "metadata": {
-            "name": "do.not.create.internal.only"
-          },
-          "spec": {
-            "servers": "internal",
-            "size": 2
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:78656ed0df41696e67429609e3262ec31f5ca9f5ca946300e6a4a6503c1bbd18",
-      "bundle_path_digest": "sha256:78656ed0df41696e67429609e3262ec31f5ca9f5ca946300e6a4a6503c1bbd18",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:31:05.625000+00:00",
-      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
-      "csv_display_name": "Couchbase Operator",
-      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
-      "csv_name": "couchbase-operator.v2.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:31:15.042000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseAutoscaler",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackupRestore",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackupRestore",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseEphemeralBucket",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseEphemeralBucket",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseMemcachedBucket",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseMemcachedBucket",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseReplication",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseReplication",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "version": "v2"
-        }
-      ],
-      "provider": "Couchbase",
-      "related_images": [
-        {
-          "digest": "sha256:87f601a4fd68ba8a5fed9a610dc03661addc9db9b4e332bfc4907d754d91c496",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:87f601a4fd68ba8a5fed9a610dc03661addc9db9b4e332bfc4907d754d91c496",
-          "name": "operator-87f601a4fd68ba8a5fed9a610dc03661addc9db9b4e332bfc4907d754d91c496-annotation"
-        },
-        {
-          "digest": "sha256:87f601a4fd68ba8a5fed9a610dc03661addc9db9b4e332bfc4907d754d91c496",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:87f601a4fd68ba8a5fed9a610dc03661addc9db9b4e332bfc4907d754d91c496",
-          "name": "couchbase-operator"
-        },
-        {
-          "digest": "sha256:fd6d9c0ef033009e76d60dc36f55ce7f3aaa942a7be9c2b66c335eabc8f5b11e",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:fd6d9c0ef033009e76d60dc36f55ce7f3aaa942a7be9c2b66c335eabc8f5b11e",
-          "name": "couchbase_server"
-        },
-        {
-          "digest": "sha256:3d0a9de740110b924b1ad5e83bb1e36b308f1b53f9e76a50cffcbeda9d34ea78",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:3d0a9de740110b924b1ad5e83bb1e36b308f1b53f9e76a50cffcbeda9d34ea78",
-          "name": "couchbase_backup"
-        },
-        {
-          "digest": "sha256:18015c72d17a33a21ea221d48fddf493848fc1ca5702007f289369c5815fb3df",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:18015c72d17a33a21ea221d48fddf493848fc1ca5702007f289369c5815fb3df",
-          "name": "couchbase_metrics"
-        },
-        {
-          "digest": "sha256:18015c72d17a33a21ea221d48fddf493848fc1ca5702007f289369c5815fb3df",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:18015c72d17a33a21ea221d48fddf493848fc1ca5702007f289369c5815fb3df",
-          "name": "exporter-18015c72d17a33a21ea221d48fddf493848fc1ca5702007f289369c5815fb3df-annotation"
-        },
-        {
-          "digest": "sha256:3d0a9de740110b924b1ad5e83bb1e36b308f1b53f9e76a50cffcbeda9d34ea78",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:3d0a9de740110b924b1ad5e83bb1e36b308f1b53f9e76a50cffcbeda9d34ea78",
-          "name": "operator-backup-3d0a9de740110b924b1ad5e83bb1e36b308f1b53f9e76a50cffcbeda9d34ea78-annotation"
-        },
-        {
-          "digest": "sha256:fd6d9c0ef033009e76d60dc36f55ce7f3aaa942a7be9c2b66c335eabc8f5b11e",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:fd6d9c0ef033009e76d60dc36f55ce7f3aaa942a7be9c2b66c335eabc8f5b11e",
-          "name": "server-fd6d9c0ef033009e76d60dc36f55ce7f3aaa942a7be9c2b66c335eabc8f5b11e-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2.1.0",
-      "version_original": "2.1.0"
     },
     {
       "_id": "62345f70670f4cadbafad2a2",
@@ -20471,9 +17260,1388 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "6.3.2-pr4",
       "version_original": "6.3.2-pr4"
+    },
+    {
+      "_id": "6234602e5593ce895a7b5368",
+      "alm_examples": [
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoDeBundle",
+          "metadata": {
+            "name": "my-bundle",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "details": {
+              "name": "my-bundle"
+            }
+          }
+        },
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoDatabaseService",
+          "metadata": {
+            "name": "my-entando-database-service",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "createDeployment": true,
+            "databaseName": "my_database",
+            "dbms": "postgresql"
+          }
+        },
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoKeycloakServer",
+          "metadata": {
+            "name": "my-keycloak",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "dbms": "postgresql",
+            "environmentVariables": [],
+            "replicas": 1,
+            "standardImage": "redhat-sso"
+          }
+        },
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoClusterInfrastructure",
+          "metadata": {
+            "name": "my-entando-cluster-infrastructure",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "environmentVariables": [],
+            "replicas": 1
+          }
+        },
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoPlugin",
+          "metadata": {
+            "name": "my-entando-plugin",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "dbms": "postgresql",
+            "healthCheckPath": "/management/health",
+            "image": "entando/entando-avatar-plugin:6.0.5",
+            "ingressHostName": "my-plugin.apps-crc.testing",
+            "ingressPath": "/avatarPlugin",
+            "replicas": 1,
+            "roles": [
+              {
+                "code": "admin",
+                "name": "user"
+              },
+              {
+                "code": "user",
+                "name": "user"
+              }
+            ],
+            "securityLevel": "strict"
+          }
+        },
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoApp",
+          "metadata": {
+            "name": "my-app",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "dbms": "postgresql",
+            "environmentVariables": [],
+            "ingressHostName": "my-app.apps-crc.testing",
+            "replicas": 1,
+            "standardServerImage": "eap"
+          }
+        },
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoAppPluginLink",
+          "metadata": {
+            "name": "my-link",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "entandoAppName": "my-app",
+            "entandoPluginName": "my-plugin"
+          }
+        },
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoCompositeApp",
+          "metadata": {
+            "name": "my-entando-composite-app",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "components": [
+              {
+                "kind": "EntandoDatabaseService",
+                "metadata": {
+                  "name": "inline-entando-database-service"
+                },
+                "spec": {
+                  "createDeployment": true
+                }
+              },
+              {
+                "kind": "EntandoKeycloakServer",
+                "metadata": {
+                  "name": "inline-keycloak"
+                },
+                "spec": {
+                  "standardImage": "redhat-sso"
+                }
+              },
+              {
+                "kind": "EntandoClusterInfrastructure",
+                "metadata": {
+                  "name": "inline-entando-cluster-infrastructure"
+                },
+                "spec": {}
+              },
+              {
+                "kind": "EntandoApp",
+                "metadata": {
+                  "name": "inline-app"
+                },
+                "spec": {
+                  "standardServerImage": "eap"
+                }
+              },
+              {
+                "kind": "EntandoPlugin",
+                "metadata": {
+                  "name": "inline-plugin"
+                },
+                "spec": {
+                  "healthCheckPath": "/management/health",
+                  "image": "entando/entando-avatar-plugin:6.0.5",
+                  "ingressPath": "/avatarPlugin",
+                  "roles": [
+                    {
+                      "code": "admin",
+                      "name": "admin"
+                    },
+                    {
+                      "code": "user",
+                      "name": "user"
+                    }
+                  ]
+                }
+              },
+              {
+                "kind": "EntandoAppPluginLink",
+                "metadata": {
+                  "name": "inline-link"
+                },
+                "spec": {
+                  "entandoAppName": "inline-app",
+                  "entandoPluginName": "inline-plugin"
+                }
+              }
+            ],
+            "dbmsOverride": "postgresql",
+            "ingressHostNameOverride": "entando.apps-crc.testing"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/entando/entando-operator@sha256:639e2d35738483c6c092ebe8636bbab50c0f2101bc06f2fe9a1c7f68b3ffc4a6",
+      "bundle_path_digest": "sha256:639e2d35738483c6c092ebe8636bbab50c0f2101bc06f2fe9a1c7f68b3ffc4a6",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:34:22.097000+00:00",
+      "csv_description": "## Entando\n\nThe Entando platform accelerates the development and lifecycle  management of fully modularized applications on Kubernetes. It  provides tools to help developers create and manage applications  using modular frontend and backend components.\nThe Entando Operator automates the installation, provisioning, and  configuration management of the components that make up an Entando  application. Specifically, the operator manages the following custom  resources:\n**EntandoKeycloakServers** for centralized authentication of frontend  and backend components. The operator can deploy Keycloak, or in certified  environments, Red Hat SSO servers that can then be used by subsequent  deployments as an OpenID Connect provider.\n**EntandoApps** for hosting an Entando application. EntandoApps are hosted on Wildfly or JBoss EAP containers, and can also be used to deploy custom  EntandoApp containers.\n**EntandoPlugins** for deploying microservices to customize or enhance your EntandoApp. Entando microservice plugins are deployed to your cluster, and  then linked to one or more EntandoApps.\n## Using the Operator\nThe Entando Operator can be deployed using the default settings without any  configuration. Once deployed, the operator can be customized by editing  the *configmap* and secrets.\n### ConfigMap: entando-operator-config\nThe 'entando-operator-config' ConfigMap can be added after deployment and any changes to it will be picked up by the operator on subsequent event processing. It supports the following keys:\n\n    entando.k8s.operator.gc.controller.pods: set this to \"false\" to keep controller pods after completion.\n    entando.k8s.operator.compliance.mode: set this to \"community\" if there is no requirement for Red Hat compliance.\n    entando.k8s.operator.image.pull.secrets: a comma separated list containing the names of pull secrets that will be linked to all service accounts.\n    entando.k8s.operator.disable.pvc.garbage.collection: set this to \"false\" if you want Persistent Volume Claims to be deleted with the custom resources they are associated with.\n    entando.k8s.operator.impose.default.limits: set this to \"false\" if there is no need to limit the resource consumption of pods on your cluster.\n    entando.k8s.operator.request.to.limit.ratio: a decimal number that default limits will be multiplied by to calculate default requests for resources.\n    entando.k8s.operator.force.db.password.reset: set this to \"true\" if you plan to delete Secrets from your namespace but you want to retain the Database they point to.\n    entando.k8s.operator.pull.policy.override: specify your preferred pullPolicy for images. The default is Always.\n    entando.tls.secret.name: The name of a standard TLS secret to use for HTTPS Ingresses. See the section entando-tls-secret.\n    entando.ca.secret.name: The name of a secret containing CA certificates. See the section entando-ca-cert-secret.\n    entando.assume.external.https.provider: Set this to \"true\" if your cloud provider handles HTTPS for you.\n    entando.use.auto.cert.generation: Set this to \"true\" to have Openshift use its internal CA to generate certificates for your Routes.\n    entando.default.routing.suffix: The domain name that can be suffixed to deployment names when the ingressHostName is omitted. Needs to be preconfigured on your DNS provider.\n    entando.pod.completion.timeout.seconds: The time it will take before Entando fails a run-to-completion Pod.\n    entando.pod.readiness.timeout.seconds: The time it will take before Entando fails a Service Pod.\n    entando.pod.shutdown.timeout.seconds: The time Entando will give a Pod to shutdown gracefully.\n\n\n### entando-pull-secret\nThe secret to be used to pull Entando images from the Red Hat container registry. The name of this secret is hard coded as it is required for the ClusterServiceVersion of this Operator\n### entando-tls-secret\nA standard Kubernetes TLS secret that will be used on all deployments where no custom TLS secret name is specified.\n### entando-ca-cert-secret\nThis is an opaque secret in the Entando Operator's namespace that contains the certificates of all trusted certificate authorities in your environment. This is generally used mainly for self signed certificates. As is generally the case for opaque secrets, there are no constraints on the keys in this secret. However, limit the files inside the secret to X509 certificates or certificate chains. The Entando Operator will load all of these files into a Java keystore that it then configures as the trust store for each container that uses Java.\n",
+      "csv_display_name": "Entando Operator",
+      "csv_metadata_description": "Processes EntandoKeycloakServer, EntandoApp and EntandoPlugin custom resources and deploys the relevant containers in the Kubernetes cluster.",
+      "csv_name": "entando-k8s-operator.v6.3.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:27:15.742000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "entando-k8s-operator",
+      "provided_apis": [
+        {
+          "group": "entando.org",
+          "kind": "EntandoApp",
+          "version": "v1"
+        },
+        {
+          "group": "entando.org",
+          "kind": "EntandoAppPluginLink",
+          "version": "v1"
+        },
+        {
+          "group": "entando.org",
+          "kind": "EntandoClusterInfrastructure",
+          "version": "v1"
+        },
+        {
+          "group": "entando.org",
+          "kind": "EntandoCompositeApp",
+          "version": "v1"
+        },
+        {
+          "group": "entando.org",
+          "kind": "EntandoDatabaseService",
+          "version": "v1"
+        },
+        {
+          "group": "entando.org",
+          "kind": "EntandoDeBundle",
+          "version": "v1"
+        },
+        {
+          "group": "entando.org",
+          "kind": "EntandoKeycloakServer",
+          "version": "v1"
+        },
+        {
+          "group": "entando.org",
+          "kind": "EntandoPlugin",
+          "version": "v1"
+        }
+      ],
+      "provider": "Entando, Inc",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "6.3.2",
+      "version_original": "6.3.2"
+    },
+    {
+      "_id": "6234603106c5dada0193e089",
+      "alm_examples": [
+        {
+          "api_version": "ezmeral.hpe.com/v1",
+          "kind": "HPEEzmeralCSIDriver",
+          "metadata": {
+            "name": "hpeezmeralcsidriver"
+          },
+          "spec": {
+            "controllerImage": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
+            "nodeImage": "registry.connect.redhat.com/maprtech/csi-kdfplugin@sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
+            "pullPolicy": "Always"
+          }
+        },
+        {
+          "api_version": "ezmeral.hpe.com/v1",
+          "kind": "HPEEzmeralNFSCSIDriver",
+          "metadata": {
+            "name": "hpeezmeralnfscsidriver"
+          },
+          "spec": {
+            "controllerImage": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
+            "nodeImage": "registry.connect.redhat.com/maprtech/csi-nfsplugin@sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
+            "pullPolicy": "Always"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator-bundle@sha256:b23ef079d0bcbeaa227a0d759c900c103f97310ad2e00a566a74b100f95a37ff",
+      "bundle_path_digest": "sha256:b23ef079d0bcbeaa227a0d759c900c103f97310ad2e00a566a74b100f95a37ff",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:34:25.003000+00:00",
+      "csv_description": "The HPE Ezmeral CSI Operator for Kubernetes packages, deploys, manages, upgrades the HPE Ezmeral CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on HPE Ezmeral Data Fabric platform.\nThe HPE Ezmeral CSI Driver for Kubernetes leverages HPE Ezmeral Data Fabric platform to provide scalable and persistent storage for stateful applications. Please refer to our CSI driver [documentation](https://docs.datafabric.hpe.com/home/CSIdriver/csi_overview.html) for full list of supported CSI features.\n## Installation\nRefer to the HPE Ezmeral CSI Operator for Kubernetes [documentation](https://docs.datafabric.hpe.com/home/CSIdriver/csi_installing_operator.html)\n",
+      "csv_display_name": "HPE Ezmeral Data Fabric CSI Operator for Kubernetes",
+      "csv_metadata_description": "A Container Storage Interface (CSI) driver for HPE Ezmeral Data Fabric platform. The CSI driver allows you to use HPE Ezmeral Data Fabric with your preferred container orchestrator.",
+      "csv_name": "hpe-ezmeral-csi-operator.v1.0.9",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:19:12.795000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "hpe-ezmeral-csi-operator",
+      "provided_apis": [
+        {
+          "group": "ezmeral.hpe.com",
+          "kind": "HPEEzmeralCSIDriver",
+          "version": "v1"
+        },
+        {
+          "group": "ezmeral.hpe.com",
+          "kind": "HPEEzmeralNFSCSIDriver",
+          "version": "v1"
+        }
+      ],
+      "provider": "HPE Ezmeral",
+      "related_images": [
+        {
+          "digest": "sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
+          "image": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator@sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
+          "name": "hpe-ezmeral-csi-operator-82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f-annotation"
+        },
+        {
+          "digest": "sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
+          "image": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator@sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
+          "name": "hpe-ezmeral-csi-operator"
+        },
+        {
+          "digest": "sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
+          "image": "registry.connect.redhat.com/maprtech/csi-nfsplugin@sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
+          "name": "csi-nfsplugin-35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822-annotation"
+        },
+        {
+          "digest": "sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
+          "image": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
+          "name": "csi-kdfprovisioner-89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42-annotation"
+        },
+        {
+          "digest": "sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
+          "image": "registry.connect.redhat.com/maprtech/csi-kdfplugin@sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
+          "name": "csi-kdfplugin-480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.0.9",
+      "version_original": "1.0.9"
+    },
+    {
+      "_id": "62346034670f4cadbafad2b2",
+      "alm_examples": [
+        {
+          "api_version": "core.k8s.kubemq.io/v1beta1",
+          "kind": "KubemqCluster",
+          "metadata": {
+            "name": "kubemq-cluster"
+          },
+          "spec": {
+            "replicas": 3
+          }
+        },
+        {
+          "api_version": "core.k8s.kubemq.io/v1beta1",
+          "kind": "KubemqDashboard",
+          "metadata": {
+            "name": "kubemq-dashboard"
+          }
+        },
+        {
+          "api_version": "core.k8s.kubemq.io/v1beta1",
+          "kind": "KubemqConnector",
+          "metadata": {
+            "name": "kubemq-bridges"
+          },
+          "spec": {
+            "config": "bindings: null",
+            "type": "bridges"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/kubemq/kubemq-operator-bundle@sha256:9009198860c7a1e0de4f429261d442b75b5b2893a943bb77914b14d643db8829",
+      "bundle_path_digest": "sha256:9009198860c7a1e0de4f429261d442b75b5b2893a943bb77914b14d643db8829",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-18T10:34:28.394000+00:00",
+      "csv_description": "\n## Kubernetes Messaging Platform\nA message-based architecture for microservices providing flexible connectivity for hybrid environments: multi-cloud, on-premises, and at the edge. Powered by enterprise-grade message broker and message queue with ready to use connectors, bridges, and control center.\n\nMessaging platform components:\n  - **KubeMQ Cluster** - Enterprise-grade message broker and message queue, scalable, high available, and secured.\n  - **KubeMQ Targets Connector** - connects a KubeMQ cluster with external systems and cloud services.\n  - **KubeMQ Bridges Connector** - bridge, replicate, aggregate, and transform messages between KubeMQ clusters.\n  - **KubeMQ Sources Connector** - transform external systems and cloud services data to KubeMQ cluster messages.\n  - **KubeMQ Dashboard** - monitor KubeMQ cluster metrics.\n\n### Kubernetes Native\nInnovative and modern message queue and message broker in a lightweight container developed to run in Kubernetes, certified in the CNCF landscape, and connect natively to the cloud-native ecosystem.\n\n### Ease of use\n\nSimple deployment in Kubernetes in less than 1 minute. Developer friendly by simple to use SDKs and elimination of the many developers and DevOps-centered challenges to define exchanges, brokers, channels, routes, and predefined topics\n\n### All messaging patterns\n\nKubeMQ is available with all messaging patterns such as Queue, Stream, Pub/Sub, and RPC, Saving the need to maintain multiple messaging platforms for different use cases.\n\n### Hybrid Environments\n\nKubeMQ enables the microservices from multiple environments to communicate and build one hybrid infrastructure solution across clouds, on-prem, and at the edge.\n\n### KubeMQ Cluster key features\n\n- All-batteries included Messaging Queue Broker for the Kubernetes environment\n- Deployed with Operator for full life cycle operation\n- Blazing fast (written in Go), small and lightweight Docker container\n- Asynchronous and Synchronous messaging with support for  `At Most Once Delivery` and `At Least Once Delivery` models\n- Supports durable FIFO based Queue, Publish-Subscribe Events, Publish-Subscribe with Persistence (Events Store), RPC Command and Query messaging patterns\n- Supports gRPC, Rest and WebSocket Transport protocols with TLS support (both RPC and Stream modes)\n- Supports Access control Authorization and Authentication\n- Supports message masticating and smart routing\n- No Message broker configuration needed (i.e., queues, exchanges)\n- .Net, Java, Python, Go, and NodeJS SDKs\n\n### KubeMQ Targets Connector key features\n\n- Runs anywhere - Kubernetes, Cloud, on-prem, anywhere\n- Stand-alone - small docker container / binary\n- Single Interface - One interface all the services\n- Any Service - Support all major services types (databases, cache, messaging, serverless, HTTP, etc.)\n- Plug-in Architecture Easy to extend, easy to connect\n- Middleware Supports - Logs, Metrics, Retries, and Rate Limiters\n- Easy Configuration - simple yaml file builds your topology\n\n[Check out Github page](https://github.com/kubemq-io/kubemq-targets)\n\n### KubeMQ Bridges Connector key features\n\n- Runs anywhere - Kubernetes, Cloud, on-prem, anywhere\n- Stand-alone - small docker container / binary\n- Build Any Topology - connects KubeMQ clusters in 1:1, 1:n , n:1, n:n\n- Middleware Supports - Logs, Metrics, Retries, and Rate Limiters\n- Easy Configuration - simple yaml file builds your topology\n\n[Check out Github page](https://github.com/kubemq-io/kubemq-bridges)\n\n### KubeMQ Sources Connector key features\n\n- Runs anywhere - Kubernetes, Cloud, on-prem, anywhere\n- Stand-alone - small docker container / binary\n- Single Interface - One interface all the services\n- Any Service - Support all major messaging services such as Kafka, ActiveMQ, SQS, and more.\n- Plug-in Architecture Easy to extend, easy to connect\n- Middleware Supports - Logs, Metrics, Retries, and Rate Limiters\n- Easy Configuration - simple yaml file builds your topology\n\n[Check out Github page](https://github.com/kubemq-io/kubemq-sources)\n\n## Getting Started\n\n[Start with OpenShift](https://docs.kubemq.io/getting-started/create-cluster/openshift)\n\n## Get Enterprise Trial License\n\n[Register](https://account.kubemq.io/login/register)\n\n## Request a Demo\n\n[See KubeMQ in Action](https://kubemq.io/request-a-demo/)",
+      "csv_display_name": "Kubemq Enterprise Operator",
+      "csv_metadata_description": "Kubernetes Messaging Platform",
+      "csv_name": "kubemq-operator.v1.7.8",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:21:57.443000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "kubemq-operator-marketplace",
+      "provided_apis": [
+        {
+          "group": "core.k8s.kubemq.io",
+          "kind": "KubemqCluster",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "core.k8s.kubemq.io",
+          "kind": "KubemqCluster",
+          "version": "v1beta1"
+        },
+        {
+          "group": "core.k8s.kubemq.io",
+          "kind": "KubemqConnector",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "core.k8s.kubemq.io",
+          "kind": "KubemqConnector",
+          "version": "v1beta1"
+        },
+        {
+          "group": "core.k8s.kubemq.io",
+          "kind": "KubemqDashboard",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "core.k8s.kubemq.io",
+          "kind": "KubemqDashboard",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Kubemq.io",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.7.8",
+      "version_original": "1.7.8"
+    },
+    {
+      "_id": "6234603b314381d2b0756b43",
+      "alm_examples": [
+        {
+          "api_version": "charts.cloudbees.com/v1alpha1",
+          "kind": "CloudBeesCI",
+          "metadata": {
+            "name": "cloudbeesci-sample"
+          },
+          "spec": {
+            "Agents": {
+              "Enabled": true,
+              "Image": {
+                "dockerImage": "cloudbees/cloudbees-core-agent:2.289.3.2"
+              },
+              "SeparateNamespace": {
+                "Create": false,
+                "Enabled": false
+              }
+            },
+            "Hibernation": {
+              "Enabled": false,
+              "Image": {
+                "dockerImage": "cloudbees/managed-master-hibernation-monitor:247.c5dfce00a179"
+              },
+              "NodeSelector": {},
+              "Tolerations": []
+            },
+            "Master": {
+              "Enabled": true,
+              "Image": {
+                "dockerImage": "cloudbees/cloudbees-core-mm:2.289.3.2"
+              }
+            },
+            "NetworkPolicy": {
+              "Enabled": false,
+              "JMXSelectors": [],
+              "ingressControllerSelector": []
+            },
+            "OperationsCenter": {
+              "AgentListenerPort": 50000,
+              "Annotations": {},
+              "CSRF": {
+                "ProxyCompatibility": false
+              },
+              "CasC": {
+                "ConfigMapName": "oc-casc-bundle",
+                "Enabled": false
+              },
+              "ContainerPort": 8080,
+              "Enabled": true,
+              "ExtraConfigMaps": [],
+              "ExtraContainers": [],
+              "ExtraGroovyConfiguration": {},
+              "ExtraVolumeMounts": [],
+              "ExtraVolumes": [],
+              "HealthProbeLivenessFailureThreshold": 12,
+              "HealthProbes": true,
+              "Image": {
+                "dockerImage": "cloudbees/cloudbees-cloud-core-oc:2.289.3.2"
+              },
+              "Ingress": {
+                "Annotations": {
+                  "kubernetes.io/tls-acme": "false"
+                },
+                "Class": "nginx",
+                "tls": {
+                  "Enable": false
+                }
+              },
+              "LoadBalancerSourceRanges": [
+                "0.0.0.0/0"
+              ],
+              "Name": "cjoc",
+              "NodeSelector": {},
+              "Platform": "standard",
+              "Protocol": "http",
+              "Resources": {
+                "Limits": {
+                  "Cpu": 1,
+                  "Memory": "2G"
+                },
+                "Requests": {
+                  "Cpu": 1,
+                  "Memory": "2G"
+                }
+              },
+              "Route": {
+                "tls": {
+                  "Enable": false,
+                  "InsecureEdgeTerminationPolicy": "Redirect",
+                  "Termination": "edge"
+                }
+              },
+              "ServiceAgentListenerPort": 50000,
+              "ServiceAnnotations": {},
+              "ServicePort": 80,
+              "ServiceType": "ClusterIP",
+              "Tolerations": []
+            },
+            "Persistence": {
+              "AccessMode": "ReadWriteOnce",
+              "Annotations": {},
+              "Size": "20Gi"
+            },
+            "PodSecurityPolicy": {
+              "Annotations": {},
+              "Enabled": false
+            },
+            "Subdomain": false,
+            "ingress-nginx": {
+              "Enabled": false,
+              "controller": {
+                "admissionWebhooks": {
+                  "patch": {
+                    "nodeSelector": {
+                      "kubernetes.io/os": "linux"
+                    }
+                  }
+                },
+                "ingressClass": "nginx",
+                "nodeSelector": {
+                  "kubernetes.io/os": "linux"
+                },
+                "service": {
+                  "externalTrafficPolicy": "Local"
+                }
+              },
+              "defaultBackend": {
+                "nodeSelector": {
+                  "kubernetes.io/os": "linux"
+                }
+              }
+            },
+            "nginx-ingress": {
+              "Enabled": false,
+              "controller": {
+                "ingressClass": "nginx",
+                "nodeSelector": {
+                  "kubernetes.io/os": "linux"
+                },
+                "service": {
+                  "externalTrafficPolicy": "Local"
+                }
+              },
+              "defaultBackend": {
+                "nodeSelector": {
+                  "kubernetes.io/os": "linux"
+                }
+              }
+            },
+            "rbac": {
+              "agentsServiceAccountName": "jenkins-agents",
+              "hibernationMonitorServiceAccountName": "managed-master-hibernation-monitor",
+              "install": true,
+              "masterServiceAccountName": "jenkins",
+              "serviceAccountName": "cjoc"
+            },
+            "sidecarinjector": {
+              "Enabled": false
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cloudbees/cloudbees-core-modern@sha256:2cf058c819b40512094f84f4d374457455370ec4994d34cee6e39b9d87841f05",
+      "bundle_path_digest": "sha256:2cf058c819b40512094f84f4d374457455370ec4994d34cee6e39b9d87841f05",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-18T10:34:35.226000+00:00",
+      "csv_description": "CloudBees CI",
+      "csv_display_name": "CloudBees CI",
+      "csv_metadata_description": "",
+      "csv_name": "cloudbees-ci.v3.34.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:15:58.685000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "cloudbees-ci",
+      "provided_apis": [
+        {
+          "group": "charts.cloudbees.com",
+          "kind": "CloudBeesCI",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "CloudBees",
+      "related_images": [
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:bd0bd72e9e7807b0fa307de8a93a56967221fe2dd181bac02383f0f9be9120e4",
+          "image": "registry.connect.redhat.com/cloudbees/cloudbees-ci-operator@sha256:bd0bd72e9e7807b0fa307de8a93a56967221fe2dd181bac02383f0f9be9120e4",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "3.34.1",
+      "version_original": "3.34.1"
+    },
+    {
+      "_id": "6234603d5593ce895a7b5369",
+      "alm_examples": [
+        {
+          "api_version": "federatorai.containers.ai/v1alpha1",
+          "kind": "AlamedaService",
+          "metadata": {
+            "name": "my-alamedaservice"
+          },
+          "spec": {
+            "alamedaAi": {
+              "storages": [
+                {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "size": "10Gi",
+                  "type": "pvc",
+                  "usage": "data"
+                }
+              ]
+            },
+            "alamedaInfluxdb": {
+              "storages": [
+                {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "size": "100Gi",
+                  "type": "pvc",
+                  "usage": "data"
+                }
+              ]
+            },
+            "fedemeterInfluxdb": {
+              "storages": [
+                {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "size": "10Gi",
+                  "type": "pvc",
+                  "usage": "data"
+                }
+              ]
+            },
+            "imageLocation": "registry.connect.redhat.com/prophetstor",
+            "keycode": {
+              "codeNumber": ""
+            },
+            "storages": [
+              {
+                "accessMode": [
+                  "ReadWriteOnce"
+                ],
+                "size": "2Gi",
+                "type": "pvc",
+                "usage": "log"
+              }
+            ],
+            "version": "v4.6.1-b1655-2"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/prophetstor/federatorai-operator-bundle@sha256:66fa5c8e525ce32eef696b286ba2278c0fca6be668bda76d28f5f78dc45c37e3",
+      "bundle_path_digest": "sha256:66fa5c8e525ce32eef696b286ba2278c0fca6be668bda76d28f5f78dc45c37e3",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:34:37.349000+00:00",
+      "csv_description": "Federator.ai helps enterprises optimize cloud resources, maximize application performance, and save significant cost without excessive over-provisioning or under-provisioning of resources, meeting the service-level requirements of their applications.\n\nEnterprises often lack understanding of the resources needed to support their applications. This leads to either excessive over-provisioning or under-provisioning of resources (CPU, memory, storage). Using machine learning, Federator.ai determines the optimal cloud resources needed to support any workload on OpenShift and helps users find the best-cost instances from cloud providers for their applications.\n\n\n**Multi-layer workload prediction**\n\nUsing machine learning and math-based algorithms, Federator.ai predicts containerized application and cluster node resource usage as the basis for resource recommendations at application level as well as at cluster node level. Federator.ai supports prediction for both physical/virtual CPUs and memories.\n\n\n**Auto-scaling via resource recommendation**\n\nFederator.ai utilizes the predicted resource usage to recommend the right number and size of pods for applications. Integrated with Datadog's WPA, applications are automatically scaled to meet the predicted resource usage.\n\n\n**Application-aware recommendation execution**\n\nOptimizing the resource usage and performance goals, Federator.ai uses application specific metrics for workload prediction and pod capacity estimation to auto-scale the right number of pods for best performance without overprovisioning.\n\n\n**Multi-cloud Cost Analysis**\n\nWith resource usage prediction, Federator.ai analyzes potential cost of a cluster on different public cloud providers. It also recommend appropriate cluster nodes and instance types based on resource usage.\n\n\n**Custom Datadog/Sysdig Dashboards**\n\nPredefined custom Datadog/Sysdig Dashboards for workload prediction/recommendation visualization for cluster nodes and applications.\n\n\n**Additional resources**\n\nWant more product information? Explore detailed information about using this product and where to find additional help.\n\n* [Federator.ai Datasheet](https://prophetstor.com/wp-content/uploads/datasheets/Federator.ai.pdf)\n* [Quick Start Guide](https://prophetstor.com/wp-content/uploads/documentation/Federator.ai/Latest%20Version/ProphetStor%20Federator.ai%20Quick%20Installation%20Guide.pdf)\n* [Installation Guide](https://prophetstor.com/wp-content/uploads/2021/07/ProphetStor-Federator.ai-v4.6.1-Installation-Guide-v1.0.pdf)\n* [User Guide](https://prophetstor.com/wp-content/uploads/2021/07/Federator.ai-4.6.1-User-Guide.pdf)\n* [Company Information](https://www.prophetstor.com/)\n\n\n### Prerequisite\n*  The [Openshift](https://www.openshift.com) version 4.4.x or later if using OpenShift platform.\n*  The [Kubernetes](https://kubernetes.io/) version 1.16 or later if using Kubernetes environment.",
+      "csv_display_name": "Federator.ai",
+      "csv_metadata_description": "Federator.ai Operator provides easy configuration and management of AI-based Kubernetes resource orchestrator",
+      "csv_name": "federatorai.v4.6.1-4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:12:59.740000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "federatorai-certified",
+      "provided_apis": [
+        {
+          "group": "federatorai.containers.ai",
+          "kind": "AlamedaService",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "ProphetStor Data Services, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
+          "name": "federatorai-operator-2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d-annotation"
+        },
+        {
+          "digest": "sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
+          "name": "federatorai-operator"
+        },
+        {
+          "digest": "sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
+          "name": "upgrader"
+        },
+        {
+          "digest": "sha256:17aed4cd6a97f8ee5655660d2d13911e7c99c9f304b2fa09de891e4bf3141c69",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-ai-dispatcher@sha256:17aed4cd6a97f8ee5655660d2d13911e7c99c9f304b2fa09de891e4bf3141c69",
+          "name": "ai_dispatcher"
+        },
+        {
+          "digest": "sha256:0f946dde5fcb2f631153ea778ea24cac3e53b052a6bc97d09a0d2c04a8860446",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-ai@sha256:0f946dde5fcb2f631153ea778ea24cac3e53b052a6bc97d09a0d2c04a8860446",
+          "name": "ai_engine"
+        },
+        {
+          "digest": "sha256:222f6166fef3c74f187446adf5ab6361a03231eabab88a54ebd8f6f2a0ebd5c4",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-analyzer-ubi@sha256:222f6166fef3c74f187446adf5ab6361a03231eabab88a54ebd8f6f2a0ebd5c4",
+          "name": "analyzer"
+        },
+        {
+          "digest": "sha256:7601000fdaf7b937847cea40c4ac1b60ab843b1439e8a0c7e9dc4723408055ba",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-datahub-ubi@sha256:7601000fdaf7b937847cea40c4ac1b60ab843b1439e8a0c7e9dc4723408055ba",
+          "name": "datahub"
+        },
+        {
+          "digest": "sha256:d59db2fa0cdf0b0a66955297174641bef668db1d010e306b2bb711756ca57c38",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-executor-ubi@sha256:d59db2fa0cdf0b0a66955297174641bef668db1d010e306b2bb711756ca57c38",
+          "name": "executor"
+        },
+        {
+          "digest": "sha256:ae1e6994e8e1414a117308d7fb24bccfb093aaa8492d1d357a26f9e2ab7acf7c",
+          "image": "registry.connect.redhat.com/prophetstor/fedemeter-api-ubi@sha256:ae1e6994e8e1414a117308d7fb24bccfb093aaa8492d1d357a26f9e2ab7acf7c",
+          "name": "fedemeter_api"
+        },
+        {
+          "digest": "sha256:d3b5505dd4fe688071f2d685773ed691cebcb04ff35eaf41e4f7a0331ff6e688",
+          "image": "registry.connect.redhat.com/prophetstor/fedemeter-influxdb@sha256:d3b5505dd4fe688071f2d685773ed691cebcb04ff35eaf41e4f7a0331ff6e688",
+          "name": "fedemeter_influxdb"
+        },
+        {
+          "digest": "sha256:c5c2794413aea8384e8325a8cd9d86b4ec29ee5652e6b3bd172f15269e1d8ae0",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-ubi@sha256:c5c2794413aea8384e8325a8cd9d86b4ec29ee5652e6b3bd172f15269e1d8ae0",
+          "name": "federatorai_agent"
+        },
+        {
+          "digest": "sha256:468dfd11a6877103809cb17f56165d06e00d93a3c89411307249f921289fc1e4",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-preloader@sha256:468dfd11a6877103809cb17f56165d06e00d93a3c89411307249f921289fc1e4",
+          "name": "federatorai_agent_preloader"
+        },
+        {
+          "digest": "sha256:5a552ec0a78ae167ad7ff8dbdb02ac3de49d60df49bcbe6ca11091077e744a12",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-frontend@sha256:5a552ec0a78ae167ad7ff8dbdb02ac3de49d60df49bcbe6ca11091077e744a12",
+          "name": "federatorai_dashboard_frontend"
+        },
+        {
+          "digest": "sha256:77709a35443202cffd2ef4df9daabd6a00ab4e536525ce99a9fd4203a0669e9a",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-backend@sha256:77709a35443202cffd2ef4df9daabd6a00ab4e536525ce99a9fd4203a0669e9a",
+          "name": "federatorai_dashboard_backend"
+        },
+        {
+          "digest": "sha256:9c4ce48758ea58003cd25351c440e9aa12664cd59ee75bed8063374815f4d4da",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-data-adapter@sha256:9c4ce48758ea58003cd25351c440e9aa12664cd59ee75bed8063374815f4d4da",
+          "name": "federatorai_data_adapter"
+        },
+        {
+          "digest": "sha256:801059280ae54de7eaa518f5701ea320696e5aa83b3cd7ef3ad82ba1e3e1d395",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-rest-ubi@sha256:801059280ae54de7eaa518f5701ea320696e5aa83b3cd7ef3ad82ba1e3e1d395",
+          "name": "federatorai_restapi"
+        },
+        {
+          "digest": "sha256:a20096b566e7dde77e7e5885a60d47e6c8824f8db896f20b90676d14f7d2bcc8",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-influxdb@sha256:a20096b566e7dde77e7e5885a60d47e6c8824f8db896f20b90676d14f7d2bcc8",
+          "name": "influxdb"
+        },
+        {
+          "digest": "sha256:87afe424d8d205b8a2f01262e3edac73e8f3eee0aa597610b8a4ee57e17f4ac0",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-notifier-ubi@sha256:87afe424d8d205b8a2f01262e3edac73e8f3eee0aa597610b8a4ee57e17f4ac0",
+          "name": "notifier"
+        },
+        {
+          "digest": "sha256:d4fceace6cc1f0e80b8b6abe870ec9722ea69e91c481246b13e3d50a2c3e1ffb",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-operator-ubi@sha256:d4fceace6cc1f0e80b8b6abe870ec9722ea69e91c481246b13e3d50a2c3e1ffb",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:2b61bfd1ba9186cc50b8f960f54d0ec94643715292bb874762009b3045477799",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-rabbitmq@sha256:2b61bfd1ba9186cc50b8f960f54d0ec94643715292bb874762009b3045477799",
+          "name": "rabbitmq"
+        },
+        {
+          "digest": "sha256:288cb6c29200d07451b8e2ab53b9a5112108cb5f2b6dc288026f9c2f12f5f9fd",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:288cb6c29200d07451b8e2ab53b9a5112108cb5f2b6dc288026f9c2f12f5f9fd",
+          "name": "recommender"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "4.6.1-4",
+      "version_original": "4.6.1-4"
+    },
+    {
+      "_id": "6234603f314381d2b0756b44",
+      "alm_examples": [
+        {
+          "api_version": "federatorai.containers.ai/v1alpha1",
+          "kind": "AlamedaService",
+          "metadata": {
+            "name": "my-alamedaservice"
+          },
+          "spec": {
+            "alamedaAi": {
+              "storages": [
+                {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "size": "10Gi",
+                  "type": "pvc",
+                  "usage": "data"
+                }
+              ]
+            },
+            "alamedaInfluxdb": {
+              "storages": [
+                {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "size": "100Gi",
+                  "type": "pvc",
+                  "usage": "data"
+                }
+              ]
+            },
+            "fedemeterInfluxdb": {
+              "storages": [
+                {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "size": "10Gi",
+                  "type": "pvc",
+                  "usage": "data"
+                }
+              ]
+            },
+            "imageLocation": "registry.connect.redhat.com/prophetstor",
+            "storages": [
+              {
+                "accessMode": [
+                  "ReadWriteOnce"
+                ],
+                "size": "2Gi",
+                "type": "pvc",
+                "usage": "log"
+              }
+            ],
+            "version": "v4.7.1-b1760"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/prophetstor/federatorai-operator-bundle@sha256:d0ac978d749654ddf4cc20823805ba7d33ee62e9a7ec98fdd53d9926b697c347",
+      "bundle_path_digest": "sha256:d0ac978d749654ddf4cc20823805ba7d33ee62e9a7ec98fdd53d9926b697c347",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:34:39.845000+00:00",
+      "csv_description": "Federator.ai helps enterprises optimize cloud resources, maximize application performance, and save significant cost without excessive over-provisioning or under-provisioning of resources, meeting the service-level requirements of their applications.\n\nEnterprises often lack understanding of the resources needed to support their applications. This leads to either excessive over-provisioning or under-provisioning of resources (CPU, memory, storage). Using machine learning, Federator.ai determines the optimal cloud resources needed to support any workload on OpenShift and helps users find the best-cost instances from cloud providers for their applications.\n\n\n**Multi-layer workload prediction**\n\nUsing machine learning and math-based algorithms, Federator.ai predicts containerized application and cluster node resource usage as the basis for resource recommendations at application level as well as at cluster node level. Federator.ai supports prediction for both physical/virtual CPUs and memories.\n\n\n**Auto-scaling via resource recommendation**\n\nFederator.ai utilizes the predicted resource usage to recommend the right number and size of pods for applications. Integrated with Datadog's WPA, applications are automatically scaled to meet the predicted resource usage.\n\n\n**Application-aware recommendation execution**\n\nOptimizing the resource usage and performance goals, Federator.ai uses application specific metrics for workload prediction and pod capacity estimation to auto-scale the right number of pods for best performance without overprovisioning.\n\n\n**Multi-cloud Cost Analysis**\n\nWith resource usage prediction, Federator.ai analyzes potential cost of a cluster on different public cloud providers. It also recommend appropriate cluster nodes and instance types based on resource usage.\n\n\n**Custom Datadog/Sysdig Dashboards**\n\nPredefined custom Datadog/Sysdig Dashboards for workload prediction/recommendation visualization for cluster nodes and applications.\n\n\n**Additional resources**\n\nWant more product information? Explore detailed information about using this product and where to find additional help.\n\n* [Federator.ai Datasheet](https://prophetstor.com/wp-content/uploads/datasheets/Federator.ai.pdf)\n* [Quick Start Guide](https://prophetstor.com/wp-content/uploads/documentation/Federator.ai/Latest%20Version/ProphetStor%20Federator.ai%20Quick%20Installation%20Guide.pdf)\n* [Installation Guide](https://prophetstor.com/wp-content/uploads/2021/08/ProphetStor-Federator.ai-v4.7.0-Installation-Guide-v1.0.pdf)\n* [User Guide](https://prophetstor.com/wp-content/uploads/2021/08/Federator.ai-4.7.0-User-Guide.pdf)\n* [Release Notes](https://prophetstor.com/wp-content/uploads/2021/08/Federator.ai-4.7.0-Release-Notes.pdf)\n* [Company Information](https://www.prophetstor.com/)\n\n\n### Prerequisite\n*  The [Openshift](https://www.openshift.com) version 4.4.x or later if using OpenShift platform.\n*  The [Kubernetes](https://kubernetes.io/) version 1.16 or later if using Kubernetes environment.",
+      "csv_display_name": "Federator.ai",
+      "csv_metadata_description": "Federator.ai Operator provides easy configuration and management of AI-based Kubernetes resource orchestrator",
+      "csv_name": "federatorai.v4.7.1-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:13:06.131000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "federatorai-certified",
+      "provided_apis": [
+        {
+          "group": "federatorai.containers.ai",
+          "kind": "AlamedaService",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "ProphetStor Data Services, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
+          "name": "federatorai-operator-bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047-annotation"
+        },
+        {
+          "digest": "sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
+          "name": "federatorai-operator"
+        },
+        {
+          "digest": "sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
+          "name": "upgrader"
+        },
+        {
+          "digest": "sha256:6e0dc1136b0f8e5971d92b95ce0d6dfac475044c073bada50f23b315f4478ae4",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-ai-dispatcher@sha256:6e0dc1136b0f8e5971d92b95ce0d6dfac475044c073bada50f23b315f4478ae4",
+          "name": "ai_dispatcher"
+        },
+        {
+          "digest": "sha256:9293298bb2a72d0b0764050b6f6d8da707b46a83363a3b6aa7be60f512e2ec61",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-ai@sha256:9293298bb2a72d0b0764050b6f6d8da707b46a83363a3b6aa7be60f512e2ec61",
+          "name": "ai_engine"
+        },
+        {
+          "digest": "sha256:6117ac4692793d49bc0204f13091dec119bdbc7b169e9deb86c243aca00ded27",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-analyzer-ubi@sha256:6117ac4692793d49bc0204f13091dec119bdbc7b169e9deb86c243aca00ded27",
+          "name": "analyzer"
+        },
+        {
+          "digest": "sha256:3819d6acce8d376dbe3b12469be2528d0ce9ac95c2a86507aeb76b6e3a5f5f38",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-datahub-ubi@sha256:3819d6acce8d376dbe3b12469be2528d0ce9ac95c2a86507aeb76b6e3a5f5f38",
+          "name": "datahub"
+        },
+        {
+          "digest": "sha256:4512e3be7a89d0ca9f120b68f6ab9766d000bf2b01b279cd55b2dbc433aacfb6",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-executor-ubi@sha256:4512e3be7a89d0ca9f120b68f6ab9766d000bf2b01b279cd55b2dbc433aacfb6",
+          "name": "executor"
+        },
+        {
+          "digest": "sha256:451456207fe8d16b9824b3f64d00645766dcccbc8d685b6942e6c00d0d0c627e",
+          "image": "registry.connect.redhat.com/prophetstor/fedemeter-api-ubi@sha256:451456207fe8d16b9824b3f64d00645766dcccbc8d685b6942e6c00d0d0c627e",
+          "name": "fedemeter_api"
+        },
+        {
+          "digest": "sha256:36904f003e8e29d4a9fd738655f401fbe840d60158d7d820cda79a09858dc2c2",
+          "image": "registry.connect.redhat.com/prophetstor/fedemeter-influxdb@sha256:36904f003e8e29d4a9fd738655f401fbe840d60158d7d820cda79a09858dc2c2",
+          "name": "fedemeter_influxdb"
+        },
+        {
+          "digest": "sha256:cfadc84f31f3776ded15d4d8dda92e00b7d9b1bce0ff5440277176292f9304d3",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-ubi@sha256:cfadc84f31f3776ded15d4d8dda92e00b7d9b1bce0ff5440277176292f9304d3",
+          "name": "federatorai_agent"
+        },
+        {
+          "digest": "sha256:66daea6193e399f8363df5ba42e1fcd643db6df3a9075dbcd8c3464fdc91e776",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-preloader@sha256:66daea6193e399f8363df5ba42e1fcd643db6df3a9075dbcd8c3464fdc91e776",
+          "name": "federatorai_agent_preloader"
+        },
+        {
+          "digest": "sha256:1c1147425ca6302103363a1a3bcf27baeef13b10ec6780ef266b7f52fe27ffeb",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-frontend@sha256:1c1147425ca6302103363a1a3bcf27baeef13b10ec6780ef266b7f52fe27ffeb",
+          "name": "federatorai_dashboard_frontend"
+        },
+        {
+          "digest": "sha256:022dbf6696edb8eaf389fdbd1dff14c40a51c237c01f8a02a7ea65c60cd59f38",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-backend@sha256:022dbf6696edb8eaf389fdbd1dff14c40a51c237c01f8a02a7ea65c60cd59f38",
+          "name": "federatorai_dashboard_backend"
+        },
+        {
+          "digest": "sha256:adf5d655fa030dc05133516d45642d7282fdd66e0aa8e7a7331ed614a41d3fe0",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-data-adapter@sha256:adf5d655fa030dc05133516d45642d7282fdd66e0aa8e7a7331ed614a41d3fe0",
+          "name": "federatorai_data_adapter"
+        },
+        {
+          "digest": "sha256:3e92528615543ea900bf38387c4eb8439b60759be5be2ac5311a9dbaafc7026b",
+          "image": "registry.connect.redhat.com/prophetstor/federatorai-rest-ubi@sha256:3e92528615543ea900bf38387c4eb8439b60759be5be2ac5311a9dbaafc7026b",
+          "name": "federatorai_restapi"
+        },
+        {
+          "digest": "sha256:485c2119a6a56807e28ad03b2087129950118b55531126a66bb414063052ae76",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-influxdb@sha256:485c2119a6a56807e28ad03b2087129950118b55531126a66bb414063052ae76",
+          "name": "influxdb"
+        },
+        {
+          "digest": "sha256:1f75034fb78d62924a87cb4a5435661b4afa990d6960431e784029742fbae0da",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-notifier-ubi@sha256:1f75034fb78d62924a87cb4a5435661b4afa990d6960431e784029742fbae0da",
+          "name": "notifier"
+        },
+        {
+          "digest": "sha256:9a863394cb1c89228223b26addb0d12bb91a97233fe2d5d19ecd5998e0cfe0d6",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-operator-ubi@sha256:9a863394cb1c89228223b26addb0d12bb91a97233fe2d5d19ecd5998e0cfe0d6",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:b396d9aa0470e593a36f5799c04fc3c9e59b5723f703f4b019f7ef92528e6741",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-rabbitmq@sha256:b396d9aa0470e593a36f5799c04fc3c9e59b5723f703f4b019f7ef92528e6741",
+          "name": "rabbitmq"
+        },
+        {
+          "digest": "sha256:13e941df9252cea3024ecb5e2247a696b64928015c1a3a4a04ee4e362388b1e4",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:13e941df9252cea3024ecb5e2247a696b64928015c1a3a4a04ee4e362388b1e4",
+          "name": "federatorai_recommend_dispatcher"
+        },
+        {
+          "digest": "sha256:13e941df9252cea3024ecb5e2247a696b64928015c1a3a4a04ee4e362388b1e4",
+          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:13e941df9252cea3024ecb5e2247a696b64928015c1a3a4a04ee4e362388b1e4",
+          "name": "federatorai_recommend_worker"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "4.7.1-1",
+      "version_original": "4.7.1-1"
+    },
+    {
+      "_id": "623460415593ce895a7b536a",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "fast",
+      "creation_date": "2022-03-18T10:34:41.539000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:30:58.762000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": "Run:AI Labs",
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
+    },
+    {
+      "_id": "62346043314381d2b0756b45",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-03-18T10:34:43.572000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:31:03.685000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": "Run:AI Labs",
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
+    },
+    {
+      "_id": "62346045670f4cadbafad2b3",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-18T10:34:45.862000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:30:52.113000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": "Run:AI Labs",
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
     }
   ],
   "page": 22,
   "page_size": 100,
-  "total": 4762
+  "total": 4796
 }

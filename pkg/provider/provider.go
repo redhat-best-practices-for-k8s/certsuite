@@ -113,6 +113,7 @@ type TestEnvironment struct { // rename this with testTarget
 	Deployments          []*appsv1.Deployment                          `json:"testDeployments"`
 	StatetfulSets        []*appsv1.StatefulSet                         `json:"testStatetfulSets"`
 	HorizontalScaler     map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
+	Services             []*corev1.Service                             `json:"testServices"`
 	Nodes                map[string]Node                               `json:"-"`
 	K8sVersion           string                                        `json:"-"`
 	OpenshiftVersion     string                                        `json:"-"`
@@ -304,6 +305,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.ResourceQuotas = data.ResourceQuotaItems
 	env.PodDisruptionBudgets = data.PodDisruptionBudgets
 	env.PersistentVolumes = data.PersistentVolumes
+	env.Services = data.Services
 	for _, nsHelmChartReleases := range data.HelmChartReleases {
 		for _, helmChartRelease := range nsHelmChartReleases {
 			if !isSkipHelmChart(helmChartRelease.Name, data.TestData.SkipHelmChartList) {

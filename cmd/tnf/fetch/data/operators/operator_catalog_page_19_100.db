@@ -16169,408 +16169,6 @@
       "version_original": "0.0.1"
     },
     {
-      "_id": "61eab45381c433814d21a40d",
-      "alm_examples": [
-        {
-          "api_version": "anzo.cambridgesemantics.com/v1",
-          "kind": "Anzo",
-          "metadata": {
-            "name": "agent01"
-          },
-          "spec": {
-            "nodeConfig": {
-              "spec": {
-                "replicas": 1,
-                "selector": {
-                  "matchLabels": {
-                    "app": "anzo"
-                  }
-                },
-                "serviceName": "anzo-agent01",
-                "template": {
-                  "metadata": {
-                    "labels": {
-                      "app": "anzo"
-                    }
-                  },
-                  "spec": {
-                    "containers": [
-                      {
-                        "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-                        "name": "anzo",
-                        "resources": {
-                          "limits": {
-                            "cpu": "4000m",
-                            "memory": "12Gi"
-                          },
-                          "requests": {
-                            "cpu": "4000m",
-                            "memory": "12Gi"
-                          }
-                        }
-                      }
-                    ],
-                    "serviceAccountName": "anzo-operator"
-                  }
-                }
-              }
-            },
-            "role": "AnzoAgent"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzo-operator-bundle@sha256:bb64ea12a7c351a015dbb2486d2d9c6c7e9b2b64b8c5a3c235e2af36bccf6f63",
-      "bundle_path_digest": "sha256:bb64ea12a7c351a015dbb2486d2d9c6c7e9b2b64b8c5a3c235e2af36bccf6f63",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-01-21T13:25:39.486000+00:00",
-      "csv_description": "The Anzo Operator provides the way to install and configure an anzo agent setup on Red Hat K8S environment.\nCurrently, this is supported only through when deployed as an Anzo Agent as part of an Anzo Unstructured deployment.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzo/blob/v2.0.1/README.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzo/userdoc/cloud-deployments.htm )\n\n### Support\n\nWe offer Support to our customers through [ Cambridge Semantics Customer Center ]( https://customercenter.cambridgesemantics.com/ ).",
-      "csv_display_name": "Anzo Operator",
-      "csv_metadata_description": "kubernetes operator for Anzo",
-      "csv_name": "anzo-operator",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:34:23.320000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "anzo-operator",
-      "provided_apis": [
-        {
-          "group": "anzo.cambridgesemantics.com",
-          "kind": "Anzo",
-          "version": "v1"
-        }
-      ],
-      "provider": "Cambridge Semantics Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "name": "anzo-operator"
-        },
-        {
-          "digest": "sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-          "name": "anzo"
-        },
-        {
-          "digest": "sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "name": "anzo-operator-067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58-annotation"
-        },
-        {
-          "digest": "sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-          "name": "anzo-53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.0.1",
-      "version_original": "2.0.1"
-    },
-    {
-      "_id": "61eab475384a3eb331995996",
-      "alm_examples": [
-        {
-          "api_version": "anzo.cambridgesemantics.com/v1",
-          "kind": "Anzo",
-          "metadata": {
-            "name": "agent01"
-          },
-          "spec": {
-            "nodeConfig": {
-              "spec": {
-                "replicas": 1,
-                "selector": {
-                  "matchLabels": {
-                    "app": "anzo"
-                  }
-                },
-                "serviceName": "anzo-agent01",
-                "template": {
-                  "metadata": {
-                    "labels": {
-                      "app": "anzo"
-                    }
-                  },
-                  "spec": {
-                    "containers": [
-                      {
-                        "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-                        "name": "anzo",
-                        "resources": {
-                          "limits": {
-                            "cpu": "4000m",
-                            "memory": "12Gi"
-                          },
-                          "requests": {
-                            "cpu": "4000m",
-                            "memory": "12Gi"
-                          }
-                        }
-                      }
-                    ],
-                    "serviceAccountName": "anzo-operator"
-                  }
-                }
-              }
-            },
-            "role": "AnzoAgent"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzo-operator-bundle@sha256:bb64ea12a7c351a015dbb2486d2d9c6c7e9b2b64b8c5a3c235e2af36bccf6f63",
-      "bundle_path_digest": "sha256:bb64ea12a7c351a015dbb2486d2d9c6c7e9b2b64b8c5a3c235e2af36bccf6f63",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-01-21T13:26:13.529000+00:00",
-      "csv_description": "The Anzo Operator provides the way to install and configure an anzo agent setup on Red Hat K8S environment.\nCurrently, this is supported only through when deployed as an Anzo Agent as part of an Anzo Unstructured deployment.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzo/blob/v2.0.1/README.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzo/userdoc/cloud-deployments.htm )\n\n### Support\n\nWe offer Support to our customers through [ Cambridge Semantics Customer Center ]( https://customercenter.cambridgesemantics.com/ ).",
-      "csv_display_name": "Anzo Operator",
-      "csv_metadata_description": "kubernetes operator for Anzo",
-      "csv_name": "anzo-operator",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:00:25.138000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "anzo-operator",
-      "provided_apis": [
-        {
-          "group": "anzo.cambridgesemantics.com",
-          "kind": "Anzo",
-          "version": "v1"
-        }
-      ],
-      "provider": "Cambridge Semantics Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "name": "anzo-operator"
-        },
-        {
-          "digest": "sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-          "name": "anzo"
-        },
-        {
-          "digest": "sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "name": "anzo-operator-067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58-annotation"
-        },
-        {
-          "digest": "sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-          "name": "anzo-53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.0.1",
-      "version_original": "2.0.1"
-    },
-    {
-      "_id": "61eab573384a3eb3319959f8",
-      "alm_examples": [
-        {
-          "api_version": "anzo.cambridgesemantics.com/v1",
-          "kind": "Anzo",
-          "metadata": {
-            "name": "agent01"
-          },
-          "spec": {
-            "nodeConfig": {
-              "spec": {
-                "replicas": 1,
-                "selector": {
-                  "matchLabels": {
-                    "app": "anzo"
-                  }
-                },
-                "serviceName": "anzo-agent01",
-                "template": {
-                  "metadata": {
-                    "labels": {
-                      "app": "anzo"
-                    }
-                  },
-                  "spec": {
-                    "containers": [
-                      {
-                        "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-                        "name": "anzo",
-                        "resources": {
-                          "limits": {
-                            "cpu": "4000m",
-                            "memory": "12Gi"
-                          },
-                          "requests": {
-                            "cpu": "4000m",
-                            "memory": "12Gi"
-                          }
-                        }
-                      }
-                    ],
-                    "serviceAccountName": "anzo-operator"
-                  }
-                }
-              }
-            },
-            "role": "AnzoAgent"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzo-operator-bundle@sha256:bb64ea12a7c351a015dbb2486d2d9c6c7e9b2b64b8c5a3c235e2af36bccf6f63",
-      "bundle_path_digest": "sha256:bb64ea12a7c351a015dbb2486d2d9c6c7e9b2b64b8c5a3c235e2af36bccf6f63",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-01-21T13:30:27.220000+00:00",
-      "csv_description": "The Anzo Operator provides the way to install and configure an anzo agent setup on Red Hat K8S environment.\nCurrently, this is supported only through when deployed as an Anzo Agent as part of an Anzo Unstructured deployment.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzo/blob/v2.0.1/README.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzo/userdoc/cloud-deployments.htm )\n\n### Support\n\nWe offer Support to our customers through [ Cambridge Semantics Customer Center ]( https://customercenter.cambridgesemantics.com/ ).",
-      "csv_display_name": "Anzo Operator",
-      "csv_metadata_description": "kubernetes operator for Anzo",
-      "csv_name": "anzo-operator",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:48:56.186000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "anzo-operator",
-      "provided_apis": [
-        {
-          "group": "anzo.cambridgesemantics.com",
-          "kind": "Anzo",
-          "version": "v1"
-        }
-      ],
-      "provider": "Cambridge Semantics Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "name": "anzo-operator"
-        },
-        {
-          "digest": "sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-          "name": "anzo"
-        },
-        {
-          "digest": "sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "name": "anzo-operator-067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58-annotation"
-        },
-        {
-          "digest": "sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:067ee3e5f5dec2b23f593214f5fb65f809588a0e5ff5b55431ead0276092ad58",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a",
-          "name": "anzo-53fc4327aea46524697f4df9cfc58ae6282dfdaea406a418b8e612e553f80e6a-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.0.1",
-      "version_original": "2.0.1"
-    },
-    {
       "_id": "61eb29b2ed74b2ffb22b0155",
       "alm_examples": [
         {
@@ -16823,9 +16421,347 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.12.0",
       "version_original": "1.12.0"
+    },
+    {
+      "_id": "61ec4d36ecea99e5a95b686b",
+      "alm_examples": [
+        {
+          "api_version": "machinelearning.seldon.io/v1",
+          "kind": "SeldonDeployment",
+          "metadata": {
+            "labels": {
+              "app": "seldon",
+              "app.kubernetes.io/instance": "seldon1",
+              "app.kubernetes.io/name": "seldon",
+              "app.kubernetes.io/version": "v0.5"
+            },
+            "name": "seldon-model"
+          },
+          "spec": {
+            "name": "test-deployment",
+            "predictors": [
+              {
+                "componentSpecs": [
+                  {
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "seldonio/mock_classifier:1.6.0",
+                          "name": "classifier"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "graph": {
+                  "children": [],
+                  "name": "classifier",
+                  "type": "MODEL"
+                },
+                "name": "example",
+                "replicas": 1
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:4ff78537117948052d6e7414fec414ff8351601ec09e7a097a804298a831c11d",
+      "bundle_path_digest": "sha256:4ff78537117948052d6e7414fec414ff8351601ec09e7a097a804298a831c11d",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-01-22T18:30:14.417000+00:00",
+      "csv_description": "The Seldon operator enables for native operation of production machine learning workloads, including monitoring and operations of language-agnostic models with the benefits of real-time metrics and log analysis.\n   \n## Overview\nSeldon Core is an open source platform for deploying machine learning models on a Kubernetes cluster.\n\n* Deploy machine learning models in the cloud or on-premise.\n* Get metrics and ensure proper governance and compliance for your running machine learning models.\n* Create powerful inference graphs made up of multiple components.\n* Provide a consistent serving layer for models built using heterogeneous ML toolkits.\n\nYou can get started by following the guides in our documentation at https://docs.seldon.io/projects/seldon-core/en/latest/workflow/README.html\n",
+      "csv_display_name": "Seldon Operator",
+      "csv_metadata_description": "The Seldon operator for management, monitoring and operations of machine learning systems through the Seldon Engine. Once installed, the Seldon Operator provides multiple functions which facilitate the productisation, monitoring and maintenance of machine learning systems at scale.",
+      "csv_name": "seldon-operator.v1.12.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:31:50.725000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "seldon-operator-certified",
+      "provided_apis": [
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1"
+        }
+      ],
+      "provider": "Seldon Technologies",
+      "related_images": [
+        {
+          "digest": "sha256:dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda",
+          "image": "registry.connect.redhat.com/seldonio/seldon-core-operator@sha256:dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda",
+          "name": "seldon-core-operator-dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda-annotation"
+        },
+        {
+          "digest": "sha256:dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda",
+          "image": "registry.connect.redhat.com/seldonio/seldon-core-operator@sha256:dbea873072acda45863dabc94555d39b9f48670ac04fec3e835c90531f1a2eda",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:4aab0706cef5ae37e3d62ba3cc4f92bc5d0b0e18d0d953143d25d745696ecc54",
+          "image": "registry.connect.redhat.com/seldonio/seldon-core-executor@sha256:4aab0706cef5ae37e3d62ba3cc4f92bc5d0b0e18d0d953143d25d745696ecc54",
+          "name": "executor"
+        },
+        {
+          "digest": "sha256:0abffc5f882b16a7ffa9ecfb7d1b362d8e8017b47e94b4b72b10dce74daeec65",
+          "image": "registry.connect.redhat.com/seldonio/seldon-engine@sha256:0abffc5f882b16a7ffa9ecfb7d1b362d8e8017b47e94b4b72b10dce74daeec65",
+          "name": "engine"
+        },
+        {
+          "digest": "sha256:554547229653bf1ebedb88c8eec40e63c8282146e0a0ea14f2d47f000004439f",
+          "image": "registry.connect.redhat.com/seldonio/storage-initializer@sha256:554547229653bf1ebedb88c8eec40e63c8282146e0a0ea14f2d47f000004439f",
+          "name": "storage_initializer"
+        },
+        {
+          "digest": "sha256:0a68b243b28d2dc273a3278393e9f986b6ed5fc29aea7b9f3f343bf9efc5ac8e",
+          "image": "registry.connect.redhat.com/seldonio/sklearnserver@sha256:0a68b243b28d2dc273a3278393e9f986b6ed5fc29aea7b9f3f343bf9efc5ac8e",
+          "name": "sklearnserver"
+        },
+        {
+          "digest": "sha256:0ee0001730d21ca636417824655d74d423d4492d7fed28befc74c23caf0cc4c8",
+          "image": "registry.connect.redhat.com/seldonio/xgboostserver@sha256:0ee0001730d21ca636417824655d74d423d4492d7fed28befc74c23caf0cc4c8",
+          "name": "xgboostserver"
+        },
+        {
+          "digest": "sha256:3381cad85a16434f48cd65afbcfc65f2693bee46a149aa143a4088c9f9d899a2",
+          "image": "registry.connect.redhat.com/seldonio/mlflowserver@sha256:3381cad85a16434f48cd65afbcfc65f2693bee46a149aa143a4088c9f9d899a2",
+          "name": "mlflowserver"
+        },
+        {
+          "digest": "sha256:407932f2d8e670bb4d3b9f6670a687039fae8d79312269d4da2677b73dc3e301",
+          "image": "registry.connect.redhat.com/seldonio/tfproxy@sha256:407932f2d8e670bb4d3b9f6670a687039fae8d79312269d4da2677b73dc3e301",
+          "name": "tfproxy"
+        },
+        {
+          "digest": "sha256:04d1eee0208ca0e64ae277197cb1ddff4c0ee143a712a7f7a30faec397239dfc",
+          "image": "registry.connect.redhat.com/seldonio/tensorflow-serving@sha256:04d1eee0208ca0e64ae277197cb1ddff4c0ee143a712a7f7a30faec397239dfc",
+          "name": "tensorflow"
+        },
+        {
+          "digest": "sha256:6ec697ad5187639712701454198a5f6afa1f662d3c127641c06b4322f391d6dd",
+          "image": "registry.connect.redhat.com/seldonio/alibiexplainer@sha256:6ec697ad5187639712701454198a5f6afa1f662d3c127641c06b4322f391d6dd",
+          "name": "explainer"
+        },
+        {
+          "digest": "sha256:ea78453871e656b71ec9ce4660623a58938d0492fb8b660cc36a1943c768ce4d",
+          "image": "registry.connect.redhat.com/seldonio/mock-classifier@sha256:ea78453871e656b71ec9ce4660623a58938d0492fb8b660cc36a1943c768ce4d",
+          "name": "mock_classifier"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.12.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.12.0",
+      "version_original": "1.12.0"
+    },
+    {
+      "_id": "61ee74d333f211c45407a768",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
+      "bundle_path_digest": "sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-01-24T09:43:47.119000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.25",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:02:24.438000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Joget, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
+          "name": "joget"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.0.25",
+      "version_original": "0.0.25"
+    },
+    {
+      "_id": "61ee758c384a3eb331996a41",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
+      "bundle_path_digest": "sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-01-24T09:46:52.308000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.25",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:00:33.515000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Joget, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
+          "name": "joget"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.0.25",
+      "version_original": "0.0.25"
     }
   ],
   "page": 19,
   "page_size": 100,
-  "total": 4762
+  "total": 4796
 }

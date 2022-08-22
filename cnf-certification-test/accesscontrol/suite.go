@@ -18,6 +18,7 @@ package accesscontrol
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/onsi/ginkgo/v2"
@@ -158,6 +159,12 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodTolerationBypass(&env)
+	})
+	// ssh daemons
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNoSSHDaemonsAllowedIdentifier)
+	ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		TestNoSSHDaemonsAllowed(&env)
 	})
 })
 
@@ -591,6 +598,46 @@ func TestPodTolerationBypass(env *provider.TestEnvironment) {
 
 	if n := len(podsWithRestrictedTolerationsNotDefault); n > 0 {
 		errMsg := fmt.Sprintf("Number of pods found with non-compliant tolerations: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
+	}
+}
+
+const (
+	listProcessesCmd     = "ls -l /proc/*/exe"
+	sshDaemonProcessName = "sshd"
+)
+
+func TestNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
+	var badContainers []string
+	var errorContainers []string
+
+	o := clientsholder.GetClientsHolder()
+	r := regexp.MustCompile(sshDaemonProcessName)
+
+	for _, cut := range env.Containers {
+		ctx := clientsholder.Context{Namespace: cut.Namespace, Podname: cut.Podname, Containername: cut.Data.Name}
+		stdout, stderr, err := o.ExecCommandContainer(ctx, listProcessesCmd)
+		if err != nil || stderr != "" {
+			tnf.ClaimFilePrintf("Could not list processes on: %s, error: %s", cut, err)
+			errorContainers = append(errorContainers, cut.String())
+			continue
+		}
+
+		if r.MatchString(stdout) {
+			tnf.ClaimFilePrintf("Container %s is running an SSH daemon", cut)
+			badContainers = append(badContainers, cut.String())
+		}
+	}
+
+	if n := len(badContainers); n > 0 {
+		errMsg := fmt.Sprintf("Number of containers running an SSH daemon: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
+	}
+
+	if n := len(errorContainers); n > 0 {
+		errMsg := fmt.Sprintf("Number of containers where the test could not be performed due to an error: %d", n)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
 	}

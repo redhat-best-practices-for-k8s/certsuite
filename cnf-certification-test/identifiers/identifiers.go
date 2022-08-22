@@ -141,6 +141,11 @@ var (
 		Url:     formTestURL(common.NetworkingTestKey, "icmpv6-connectivity-multus"),
 		Version: versionOne,
 	}
+	// TestServiceDualStack verifies that all services under test are either ipv6 single stack or dual-stack
+	TestServiceDualStackIdentifier = claim.Identifier{
+		Url:     formTestURL(common.NetworkingTestKey, "dual-stack-service"),
+		Version: versionOne,
+	}
 	// TestNamespaceBestPracticesIdentifier ensures the namespace has followed best namespace practices.
 	TestNamespaceBestPracticesIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AccessControlTestKey, "namespace"),
@@ -357,8 +362,13 @@ var (
 		Url:     formTestURL(common.LifecycleTestKey, "persistent-volume-reclaim-policy"),
 		Version: versionOne,
 	}
+
 	TestContainersImageTag = claim.Identifier{
 		Url:     formTestURL(common.LifecycleTestKey, "test-Containers-Image-Tag"),
+    Version: versionOne,
+}
+	TestNoSSHDaemonsAllowedIdentifier = claim.Identifier{
+		Url:     formTestURL(common.AccessControlTestKey, "ssh-daemons"),
 		Version: versionOne,
 	}
 )
@@ -601,6 +611,17 @@ test case requires the Deployment of the debug daemonset.`),
 			`Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s).  This
 test case requires the Deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
+		ExceptionProcess:      NoDocumentedProcess,
+	},
+
+	TestServiceDualStackIdentifier: {
+		Identifier:  TestServiceDualStackIdentifier,
+		Type:        normativeResult,
+		Remediation: TestServiceDualStackRemediation,
+		Description: formDescription(TestServiceDualStackIdentifier,
+			`Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This
+test case requires the deployment of the debug daemonset.`),
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 3.5.7",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 
@@ -1007,6 +1028,14 @@ that there are no changes to the following directories:
 		Description:           formDescription(TestPodTolerationBypassIdentifier, `Check that pods do not have NoExecute, PreferNoSchedule, or NoSchedule tolerations that have been modified from the default.`),
 		Remediation:           PodTolerationBypassRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.6",
+		ExceptionProcess:      NoDocumentedProcess,
+	},
+	TestNoSSHDaemonsAllowedIdentifier: {
+		Identifier:            TestNoSSHDaemonsAllowedIdentifier,
+		Type:                  normativeResult,
+		Description:           formDescription(TestNoSSHDaemonsAllowedIdentifier, `Check that pods do not run SSH daemons.`),
+		Remediation:           NoSSHDaemonsAllowedRemediation,
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 }
