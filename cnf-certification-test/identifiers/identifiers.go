@@ -362,11 +362,10 @@ var (
 		Url:     formTestURL(common.LifecycleTestKey, "persistent-volume-reclaim-policy"),
 		Version: versionOne,
 	}
-
 	TestContainersImageTag = claim.Identifier{
 		Url:     formTestURL(common.LifecycleTestKey, "test-Containers-Image-Tag"),
-    Version: versionOne,
-}
+		Version: versionOne,
+	}
 	TestNoSSHDaemonsAllowedIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AccessControlTestKey, "ssh-daemons"),
 		Version: versionOne,
