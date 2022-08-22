@@ -1,2051 +1,6 @@
 {
   "data": [
     {
-      "_id": "6286b24931755c747c360652",
-      "alm_examples": [
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIIsilon",
-          "metadata": {
-            "name": "isilon",
-            "namespace": "test-isilon"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_VERBOSE",
-                    "value": "1"
-                  },
-                  {
-                    "name": "X_CSI_ISI_PORT",
-                    "value": "8080"
-                  },
-                  {
-                    "name": "X_CSI_ISI_PATH",
-                    "value": "/ifs/data/csi"
-                  },
-                  {
-                    "name": "X_CSI_ISI_NO_PROBE_ON_START",
-                    "value": "false"
-                  },
-                  {
-                    "name": "X_CSI_ISI_AUTOPROBE",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ISI_SKIP_CERTIFICATE_VALIDATION",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ISI_AUTH_TYPE",
-                    "value": "0"
-                  },
-                  {
-                    "name": "X_CSI_CUSTOM_TOPOLOGY_ENABLED",
-                    "value": "false"
-                  }
-                ],
-                "image": "docker.io/dellemc/csi-isilon@sha256:220dd73f1eaa4b927e53f3827109c126ad5108f6d37e68949b95cfce66206fbe",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "controller": {
-                "envs": [
-                  {
-                    "name": "X_CSI_ISI_QUOTA_ENABLED",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ISI_ACCESS_ZONE",
-                    "value": "System"
-                  },
-                  {
-                    "name": "X_CSI_ISI_VOLUME_PATH_PERMISSIONS",
-                    "value": "0777"
-                  }
-                ]
-              },
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "fsGroupPolicy": "ReadWriteOnceWithFSType",
-              "node": {
-                "envs": [
-                  {
-                    "name": "X_CSI_MAX_VOLUMES_PER_NODE",
-                    "value": "0"
-                  },
-                  {
-                    "name": "X_CSI_ALLOWED_NETWORKS",
-                    "value": ""
-                  }
-                ]
-              },
-              "replicas": 2,
-              "sideCars": [
-                {
-                  "args": [
-                    "--leader-election-lease-duration=15s",
-                    "--leader-election-renew-deadline=10s",
-                    "--leader-election-retry-period=5s"
-                  ],
-                  "name": "common"
-                },
-                {
-                  "args": [
-                    "--volume-name-prefix=csipscale"
-                  ],
-                  "name": "provisioner"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIPowerMax",
-          "metadata": {
-            "name": "test-powermax",
-            "namespace": "test-powermax"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_MANAGED_ARRAYS",
-                    "value": "000000000000,000000000001"
-                  },
-                  {
-                    "name": "X_CSI_POWERMAX_ENDPOINT",
-                    "value": "https://0.0.0.0:8443/"
-                  },
-                  {
-                    "name": "X_CSI_K8S_CLUSTER_PREFIX",
-                    "value": "XYZ"
-                  },
-                  {
-                    "name": "X_CSI_POWERMAX_PORTGROUPS",
-                    "value": ""
-                  },
-                  {
-                    "name": "X_CSI_TRANSPORT_PROTOCOL",
-                    "value": ""
-                  },
-                  {
-                    "name": "X_CSI_POWERMAX_PROXY_SERVICE_NAME",
-                    "value": ""
-                  },
-                  {
-                    "name": "X_CSI_GRPC_MAX_THREADS",
-                    "value": "4"
-                  }
-                ],
-                "image": "docker.io/dellemc/csi-powermax@sha256:2fc83456ec2fb2c0336725e039a3db699a0202468cd8e3fd12d7ef2423068fc8",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "node": {
-                "envs": [
-                  {
-                    "name": "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP",
-                    "value": "false"
-                  }
-                ]
-              },
-              "replicas": 2
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIPowerMaxRevProxy",
-          "metadata": {
-            "name": "powermax-reverseproxy",
-            "namespace": "test-powermax"
-          },
-          "spec": {
-            "config": {
-              "linkConfig": {
-                "backup": {
-                  "skipCertificateValidation": true,
-                  "url": "https://0.0.0.0:8443"
-                },
-                "primary": {
-                  "certSecret": "",
-                  "skipCertificateValidation": true,
-                  "url": "https://0.0.0.0:8443"
-                }
-              },
-              "mode": "Linked"
-            },
-            "image": "docker.io/dellemc/csipowermax-reverseproxy@sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
-            "imagePullPolicy": "IfNotPresent",
-            "tlsSecret": "csirevproxy-tls-secret"
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIPowerStore",
-          "metadata": {
-            "name": "test-powerstore",
-            "namespace": "test-powerstore"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
-                    "value": "csi"
-                  },
-                  {
-                    "name": "X_CSI_FC_PORTS_FILTER_FILE_PATH",
-                    "value": "/etc/fc-ports-filter"
-                  }
-                ],
-                "image": "docker.io/dellemc/csi-powerstore@sha256:08c5effefadf2e55103eb49ef2a5a325d9904e7391b6eeb72701dae6e682ad9e",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "controller": {
-                "envs": [
-                  {
-                    "name": "X_CSI_NFS_ACLS",
-                    "value": "0777"
-                  }
-                ]
-              },
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "fsGroupPolicy": "ReadWriteOnceWithFSType",
-              "node": {
-                "envs": [
-                  {
-                    "name": "X_CSI_POWERSTORE_ENABLE_CHAP",
-                    "value": "true"
-                  }
-                ]
-              },
-              "replicas": 2
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIUnity",
-          "metadata": {
-            "name": "test-unity",
-            "namespace": "test-unity"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "image": "docker.io/dellemc/csi-unity@sha256:9fddd37cf5a6af47e05c6c148a928524d278f505dc0de53109fab3682963b652",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "controller": {},
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "node": {},
-              "replicas": 2,
-              "sideCars": [
-                {
-                  "args": [
-                    "--volume-name-prefix=csiunity",
-                    "--default-fstype=ext4"
-                  ],
-                  "name": "provisioner"
-                },
-                {
-                  "args": [
-                    "--snapshot-name-prefix=csiunitysnap"
-                  ],
-                  "name": "snapshotter"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIVXFlexOS",
-          "metadata": {
-            "name": "test-vxflexos",
-            "namespace": "test-vxflexos"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
-                    "value": "false"
-                  },
-                  {
-                    "name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
-                    "value": "false"
-                  },
-                  {
-                    "name": "X_CSI_DEBUG",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ALLOW_RWO_MULTI_POD_ACCESS",
-                    "value": "false"
-                  }
-                ],
-                "image": "docker.io/dellemc/csi-vxflexos@sha256:7a52560cd0801315350bf7afab4707753aacb2d051511d0f42514107f0542b52",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "initContainers": [
-                {
-                  "envs": [
-                    {
-                      "name": "MDM",
-                      "value": "10.x.x.x,10.x.x.x"
-                    }
-                  ],
-                  "image": "docker.io/dellemc/sdc@sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
-                  "imagePullPolicy": "IfNotPresent",
-                  "name": "sdc"
-                }
-              ],
-              "replicas": 1,
-              "sideCars": [
-                {
-                  "envs": [
-                    {
-                      "name": "HOST_PID",
-                      "value": "1"
-                    },
-                    {
-                      "name": "MDM",
-                      "value": ""
-                    }
-                  ],
-                  "name": "sdc-monitor"
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/dell-emc/dell-csiop-bundle-110@sha256:5b5ed897aa1626929c5ec762657587ea91470cf3609f7797832ba7ef9b6ab5ab",
-      "bundle_path_digest": "sha256:5b5ed897aa1626929c5ec762657587ea91470cf3609f7797832ba7ef9b6ab5ab",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-19T21:10:33.614000+00:00",
-      "csv_description": "Dell CSI Operator for Dell EMC CSI Drivers",
-      "csv_display_name": "Dell CSI Operator",
-      "csv_metadata_description": "",
-      "csv_name": "dell-csi-operator-certified.v1.7.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:57:09.962000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "dell-csi-operator-certified",
-      "provided_apis": [
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIIsilon",
-          "plural": "csiisilons",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIPowerMax",
-          "plural": "csipowermaxes",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIPowerMaxRevProxy",
-          "plural": "csipowermaxrevproxies",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIPowerStore",
-          "plural": "csipowerstores",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIUnity",
-          "plural": "csiunities",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIVXFlexOS",
-          "plural": "csivxflexoses",
-          "version": "v1"
-        }
-      ],
-      "provider": "Dell EMC",
-      "related_images": [
-        {
-          "digest": "sha256:5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90",
-          "image": "docker.io/dellemc/dell-csi-operator@sha256:5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90",
-          "name": "dell-csi-operator-5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90-annotation"
-        },
-        {
-          "digest": "sha256:5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90",
-          "image": "docker.io/dellemc/dell-csi-operator@sha256:5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90",
-          "name": "dell-csi-operator-controller"
-        },
-        {
-          "digest": "sha256:31a54a0cf86d7354788a8265f60ae6acb4b348a67efbcf7c1007dd3cf7af05ab",
-          "image": "docker.io/busybox@sha256:31a54a0cf86d7354788a8265f60ae6acb4b348a67efbcf7c1007dd3cf7af05ab",
-          "name": "config-copy"
-        },
-        {
-          "digest": "sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
-          "image": "docker.io/dellemc/sdc@sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
-          "name": "sdc-784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272-annotation"
-        },
-        {
-          "digest": "sha256:7a52560cd0801315350bf7afab4707753aacb2d051511d0f42514107f0542b52",
-          "image": "docker.io/dellemc/csi-vxflexos@sha256:7a52560cd0801315350bf7afab4707753aacb2d051511d0f42514107f0542b52",
-          "name": "csi-vxflexos-7a52560cd0801315350bf7afab4707753aacb2d051511d0f42514107f0542b52-annotation"
-        },
-        {
-          "digest": "sha256:9fddd37cf5a6af47e05c6c148a928524d278f505dc0de53109fab3682963b652",
-          "image": "docker.io/dellemc/csi-unity@sha256:9fddd37cf5a6af47e05c6c148a928524d278f505dc0de53109fab3682963b652",
-          "name": "csi-unity-9fddd37cf5a6af47e05c6c148a928524d278f505dc0de53109fab3682963b652-annotation"
-        },
-        {
-          "digest": "sha256:08c5effefadf2e55103eb49ef2a5a325d9904e7391b6eeb72701dae6e682ad9e",
-          "image": "docker.io/dellemc/csi-powerstore@sha256:08c5effefadf2e55103eb49ef2a5a325d9904e7391b6eeb72701dae6e682ad9e",
-          "name": "csi-powerstore-08c5effefadf2e55103eb49ef2a5a325d9904e7391b6eeb72701dae6e682ad9e-annotation"
-        },
-        {
-          "digest": "sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
-          "image": "docker.io/dellemc/csipowermax-reverseproxy@sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
-          "name": "csipowermax-reverseproxy-c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7-annotation"
-        },
-        {
-          "digest": "sha256:2fc83456ec2fb2c0336725e039a3db699a0202468cd8e3fd12d7ef2423068fc8",
-          "image": "docker.io/dellemc/csi-powermax@sha256:2fc83456ec2fb2c0336725e039a3db699a0202468cd8e3fd12d7ef2423068fc8",
-          "name": "csi-powermax-2fc83456ec2fb2c0336725e039a3db699a0202468cd8e3fd12d7ef2423068fc8-annotation"
-        },
-        {
-          "digest": "sha256:220dd73f1eaa4b927e53f3827109c126ad5108f6d37e68949b95cfce66206fbe",
-          "image": "docker.io/dellemc/csi-isilon@sha256:220dd73f1eaa4b927e53f3827109c126ad5108f6d37e68949b95cfce66206fbe",
-          "name": "csi-isilon-220dd73f1eaa4b927e53f3827109c126ad5108f6d37e68949b95cfce66206fbe-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.7.0",
-      "version_original": "1.7.0"
-    },
-    {
-      "_id": "6286b36431755c747c3606a6",
-      "alm_examples": [
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIIsilon",
-          "metadata": {
-            "name": "isilon",
-            "namespace": "test-isilon"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_VERBOSE",
-                    "value": "1"
-                  },
-                  {
-                    "name": "X_CSI_ISI_PORT",
-                    "value": "8080"
-                  },
-                  {
-                    "name": "X_CSI_ISI_PATH",
-                    "value": "/ifs/data/csi"
-                  },
-                  {
-                    "name": "X_CSI_ISI_NO_PROBE_ON_START",
-                    "value": "false"
-                  },
-                  {
-                    "name": "X_CSI_ISI_AUTOPROBE",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ISI_SKIP_CERTIFICATE_VALIDATION",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ISI_AUTH_TYPE",
-                    "value": "0"
-                  },
-                  {
-                    "name": "X_CSI_CUSTOM_TOPOLOGY_ENABLED",
-                    "value": "false"
-                  }
-                ],
-                "image": "docker.io/dellemc/csi-isilon@sha256:220dd73f1eaa4b927e53f3827109c126ad5108f6d37e68949b95cfce66206fbe",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "controller": {
-                "envs": [
-                  {
-                    "name": "X_CSI_ISI_QUOTA_ENABLED",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ISI_ACCESS_ZONE",
-                    "value": "System"
-                  },
-                  {
-                    "name": "X_CSI_ISI_VOLUME_PATH_PERMISSIONS",
-                    "value": "0777"
-                  }
-                ]
-              },
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "fsGroupPolicy": "ReadWriteOnceWithFSType",
-              "node": {
-                "envs": [
-                  {
-                    "name": "X_CSI_MAX_VOLUMES_PER_NODE",
-                    "value": "0"
-                  },
-                  {
-                    "name": "X_CSI_ALLOWED_NETWORKS",
-                    "value": ""
-                  }
-                ]
-              },
-              "replicas": 2,
-              "sideCars": [
-                {
-                  "args": [
-                    "--leader-election-lease-duration=15s",
-                    "--leader-election-renew-deadline=10s",
-                    "--leader-election-retry-period=5s"
-                  ],
-                  "name": "common"
-                },
-                {
-                  "args": [
-                    "--volume-name-prefix=csipscale"
-                  ],
-                  "name": "provisioner"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIPowerMax",
-          "metadata": {
-            "name": "test-powermax",
-            "namespace": "test-powermax"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_MANAGED_ARRAYS",
-                    "value": "000000000000,000000000001"
-                  },
-                  {
-                    "name": "X_CSI_POWERMAX_ENDPOINT",
-                    "value": "https://0.0.0.0:8443/"
-                  },
-                  {
-                    "name": "X_CSI_K8S_CLUSTER_PREFIX",
-                    "value": "XYZ"
-                  },
-                  {
-                    "name": "X_CSI_POWERMAX_PORTGROUPS",
-                    "value": ""
-                  },
-                  {
-                    "name": "X_CSI_TRANSPORT_PROTOCOL",
-                    "value": ""
-                  },
-                  {
-                    "name": "X_CSI_POWERMAX_PROXY_SERVICE_NAME",
-                    "value": ""
-                  },
-                  {
-                    "name": "X_CSI_GRPC_MAX_THREADS",
-                    "value": "4"
-                  }
-                ],
-                "image": "docker.io/dellemc/csi-powermax@sha256:2fc83456ec2fb2c0336725e039a3db699a0202468cd8e3fd12d7ef2423068fc8",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "node": {
-                "envs": [
-                  {
-                    "name": "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP",
-                    "value": "false"
-                  }
-                ]
-              },
-              "replicas": 2
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIPowerMaxRevProxy",
-          "metadata": {
-            "name": "powermax-reverseproxy",
-            "namespace": "test-powermax"
-          },
-          "spec": {
-            "config": {
-              "linkConfig": {
-                "backup": {
-                  "skipCertificateValidation": true,
-                  "url": "https://0.0.0.0:8443"
-                },
-                "primary": {
-                  "certSecret": "",
-                  "skipCertificateValidation": true,
-                  "url": "https://0.0.0.0:8443"
-                }
-              },
-              "mode": "Linked"
-            },
-            "image": "docker.io/dellemc/csipowermax-reverseproxy@sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
-            "imagePullPolicy": "IfNotPresent",
-            "tlsSecret": "csirevproxy-tls-secret"
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIPowerStore",
-          "metadata": {
-            "name": "test-powerstore",
-            "namespace": "test-powerstore"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
-                    "value": "csi"
-                  },
-                  {
-                    "name": "X_CSI_FC_PORTS_FILTER_FILE_PATH",
-                    "value": "/etc/fc-ports-filter"
-                  }
-                ],
-                "image": "docker.io/dellemc/csi-powerstore@sha256:08c5effefadf2e55103eb49ef2a5a325d9904e7391b6eeb72701dae6e682ad9e",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "controller": {
-                "envs": [
-                  {
-                    "name": "X_CSI_NFS_ACLS",
-                    "value": "0777"
-                  }
-                ]
-              },
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "fsGroupPolicy": "ReadWriteOnceWithFSType",
-              "node": {
-                "envs": [
-                  {
-                    "name": "X_CSI_POWERSTORE_ENABLE_CHAP",
-                    "value": "true"
-                  }
-                ]
-              },
-              "replicas": 2
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIUnity",
-          "metadata": {
-            "name": "test-unity",
-            "namespace": "test-unity"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "image": "docker.io/dellemc/csi-unity@sha256:9fddd37cf5a6af47e05c6c148a928524d278f505dc0de53109fab3682963b652",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "controller": {},
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "node": {},
-              "replicas": 2,
-              "sideCars": [
-                {
-                  "args": [
-                    "--volume-name-prefix=csiunity",
-                    "--default-fstype=ext4"
-                  ],
-                  "name": "provisioner"
-                },
-                {
-                  "args": [
-                    "--snapshot-name-prefix=csiunitysnap"
-                  ],
-                  "name": "snapshotter"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIVXFlexOS",
-          "metadata": {
-            "name": "test-vxflexos",
-            "namespace": "test-vxflexos"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
-                    "value": "false"
-                  },
-                  {
-                    "name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
-                    "value": "false"
-                  },
-                  {
-                    "name": "X_CSI_DEBUG",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ALLOW_RWO_MULTI_POD_ACCESS",
-                    "value": "false"
-                  }
-                ],
-                "image": "docker.io/dellemc/csi-vxflexos@sha256:7a52560cd0801315350bf7afab4707753aacb2d051511d0f42514107f0542b52",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "initContainers": [
-                {
-                  "envs": [
-                    {
-                      "name": "MDM",
-                      "value": "10.x.x.x,10.x.x.x"
-                    }
-                  ],
-                  "image": "docker.io/dellemc/sdc@sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
-                  "imagePullPolicy": "IfNotPresent",
-                  "name": "sdc"
-                }
-              ],
-              "replicas": 1,
-              "sideCars": [
-                {
-                  "envs": [
-                    {
-                      "name": "HOST_PID",
-                      "value": "1"
-                    },
-                    {
-                      "name": "MDM",
-                      "value": ""
-                    }
-                  ],
-                  "name": "sdc-monitor"
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/dell-emc/dell-csiop-bundle-110@sha256:5b5ed897aa1626929c5ec762657587ea91470cf3609f7797832ba7ef9b6ab5ab",
-      "bundle_path_digest": "sha256:5b5ed897aa1626929c5ec762657587ea91470cf3609f7797832ba7ef9b6ab5ab",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-19T21:15:16.001000+00:00",
-      "csv_description": "Dell CSI Operator for Dell EMC CSI Drivers",
-      "csv_display_name": "Dell CSI Operator",
-      "csv_metadata_description": "",
-      "csv_name": "dell-csi-operator-certified.v1.7.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:54:24.786000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "dell-csi-operator-certified",
-      "provided_apis": [
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIPowerStore",
-          "plural": "csipowerstores",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIUnity",
-          "plural": "csiunities",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIVXFlexOS",
-          "plural": "csivxflexoses",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIIsilon",
-          "plural": "csiisilons",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIPowerMax",
-          "plural": "csipowermaxes",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIPowerMaxRevProxy",
-          "plural": "csipowermaxrevproxies",
-          "version": "v1"
-        }
-      ],
-      "provider": "Dell EMC",
-      "related_images": [
-        {
-          "digest": "sha256:5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90",
-          "image": "docker.io/dellemc/dell-csi-operator@sha256:5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90",
-          "name": "dell-csi-operator-5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90-annotation"
-        },
-        {
-          "digest": "sha256:5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90",
-          "image": "docker.io/dellemc/dell-csi-operator@sha256:5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90",
-          "name": "dell-csi-operator-controller"
-        },
-        {
-          "digest": "sha256:31a54a0cf86d7354788a8265f60ae6acb4b348a67efbcf7c1007dd3cf7af05ab",
-          "image": "docker.io/busybox@sha256:31a54a0cf86d7354788a8265f60ae6acb4b348a67efbcf7c1007dd3cf7af05ab",
-          "name": "config-copy"
-        },
-        {
-          "digest": "sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
-          "image": "docker.io/dellemc/sdc@sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
-          "name": "sdc-784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272-annotation"
-        },
-        {
-          "digest": "sha256:7a52560cd0801315350bf7afab4707753aacb2d051511d0f42514107f0542b52",
-          "image": "docker.io/dellemc/csi-vxflexos@sha256:7a52560cd0801315350bf7afab4707753aacb2d051511d0f42514107f0542b52",
-          "name": "csi-vxflexos-7a52560cd0801315350bf7afab4707753aacb2d051511d0f42514107f0542b52-annotation"
-        },
-        {
-          "digest": "sha256:9fddd37cf5a6af47e05c6c148a928524d278f505dc0de53109fab3682963b652",
-          "image": "docker.io/dellemc/csi-unity@sha256:9fddd37cf5a6af47e05c6c148a928524d278f505dc0de53109fab3682963b652",
-          "name": "csi-unity-9fddd37cf5a6af47e05c6c148a928524d278f505dc0de53109fab3682963b652-annotation"
-        },
-        {
-          "digest": "sha256:08c5effefadf2e55103eb49ef2a5a325d9904e7391b6eeb72701dae6e682ad9e",
-          "image": "docker.io/dellemc/csi-powerstore@sha256:08c5effefadf2e55103eb49ef2a5a325d9904e7391b6eeb72701dae6e682ad9e",
-          "name": "csi-powerstore-08c5effefadf2e55103eb49ef2a5a325d9904e7391b6eeb72701dae6e682ad9e-annotation"
-        },
-        {
-          "digest": "sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
-          "image": "docker.io/dellemc/csipowermax-reverseproxy@sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
-          "name": "csipowermax-reverseproxy-c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7-annotation"
-        },
-        {
-          "digest": "sha256:2fc83456ec2fb2c0336725e039a3db699a0202468cd8e3fd12d7ef2423068fc8",
-          "image": "docker.io/dellemc/csi-powermax@sha256:2fc83456ec2fb2c0336725e039a3db699a0202468cd8e3fd12d7ef2423068fc8",
-          "name": "csi-powermax-2fc83456ec2fb2c0336725e039a3db699a0202468cd8e3fd12d7ef2423068fc8-annotation"
-        },
-        {
-          "digest": "sha256:220dd73f1eaa4b927e53f3827109c126ad5108f6d37e68949b95cfce66206fbe",
-          "image": "docker.io/dellemc/csi-isilon@sha256:220dd73f1eaa4b927e53f3827109c126ad5108f6d37e68949b95cfce66206fbe",
-          "name": "csi-isilon-220dd73f1eaa4b927e53f3827109c126ad5108f6d37e68949b95cfce66206fbe-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.7.0",
-      "version_original": "1.7.0"
-    },
-    {
-      "_id": "6286b63d3fcd237f6972734b",
-      "alm_examples": [
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIIsilon",
-          "metadata": {
-            "name": "isilon",
-            "namespace": "test-isilon"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_VERBOSE",
-                    "value": "1"
-                  },
-                  {
-                    "name": "X_CSI_ISI_PORT",
-                    "value": "8080"
-                  },
-                  {
-                    "name": "X_CSI_ISI_PATH",
-                    "value": "/ifs/data/csi"
-                  },
-                  {
-                    "name": "X_CSI_ISI_NO_PROBE_ON_START",
-                    "value": "false"
-                  },
-                  {
-                    "name": "X_CSI_ISI_AUTOPROBE",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ISI_SKIP_CERTIFICATE_VALIDATION",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ISI_AUTH_TYPE",
-                    "value": "0"
-                  },
-                  {
-                    "name": "X_CSI_CUSTOM_TOPOLOGY_ENABLED",
-                    "value": "false"
-                  }
-                ],
-                "image": "docker.io/dellemc/csi-isilon@sha256:220dd73f1eaa4b927e53f3827109c126ad5108f6d37e68949b95cfce66206fbe",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "controller": {
-                "envs": [
-                  {
-                    "name": "X_CSI_ISI_QUOTA_ENABLED",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ISI_ACCESS_ZONE",
-                    "value": "System"
-                  },
-                  {
-                    "name": "X_CSI_ISI_VOLUME_PATH_PERMISSIONS",
-                    "value": "0777"
-                  }
-                ]
-              },
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "fsGroupPolicy": "ReadWriteOnceWithFSType",
-              "node": {
-                "envs": [
-                  {
-                    "name": "X_CSI_MAX_VOLUMES_PER_NODE",
-                    "value": "0"
-                  },
-                  {
-                    "name": "X_CSI_ALLOWED_NETWORKS",
-                    "value": ""
-                  }
-                ]
-              },
-              "replicas": 2,
-              "sideCars": [
-                {
-                  "args": [
-                    "--leader-election-lease-duration=15s",
-                    "--leader-election-renew-deadline=10s",
-                    "--leader-election-retry-period=5s"
-                  ],
-                  "name": "common"
-                },
-                {
-                  "args": [
-                    "--volume-name-prefix=csipscale"
-                  ],
-                  "name": "provisioner"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIPowerMax",
-          "metadata": {
-            "name": "test-powermax",
-            "namespace": "test-powermax"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_MANAGED_ARRAYS",
-                    "value": "000000000000,000000000001"
-                  },
-                  {
-                    "name": "X_CSI_POWERMAX_ENDPOINT",
-                    "value": "https://0.0.0.0:8443/"
-                  },
-                  {
-                    "name": "X_CSI_K8S_CLUSTER_PREFIX",
-                    "value": "XYZ"
-                  },
-                  {
-                    "name": "X_CSI_POWERMAX_PORTGROUPS",
-                    "value": ""
-                  },
-                  {
-                    "name": "X_CSI_TRANSPORT_PROTOCOL",
-                    "value": ""
-                  },
-                  {
-                    "name": "X_CSI_POWERMAX_PROXY_SERVICE_NAME",
-                    "value": ""
-                  },
-                  {
-                    "name": "X_CSI_GRPC_MAX_THREADS",
-                    "value": "4"
-                  }
-                ],
-                "image": "docker.io/dellemc/csi-powermax@sha256:2fc83456ec2fb2c0336725e039a3db699a0202468cd8e3fd12d7ef2423068fc8",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "node": {
-                "envs": [
-                  {
-                    "name": "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP",
-                    "value": "false"
-                  }
-                ]
-              },
-              "replicas": 2
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIPowerMaxRevProxy",
-          "metadata": {
-            "name": "powermax-reverseproxy",
-            "namespace": "test-powermax"
-          },
-          "spec": {
-            "config": {
-              "linkConfig": {
-                "backup": {
-                  "skipCertificateValidation": true,
-                  "url": "https://0.0.0.0:8443"
-                },
-                "primary": {
-                  "certSecret": "",
-                  "skipCertificateValidation": true,
-                  "url": "https://0.0.0.0:8443"
-                }
-              },
-              "mode": "Linked"
-            },
-            "image": "docker.io/dellemc/csipowermax-reverseproxy@sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
-            "imagePullPolicy": "IfNotPresent",
-            "tlsSecret": "csirevproxy-tls-secret"
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIPowerStore",
-          "metadata": {
-            "name": "test-powerstore",
-            "namespace": "test-powerstore"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
-                    "value": "csi"
-                  },
-                  {
-                    "name": "X_CSI_FC_PORTS_FILTER_FILE_PATH",
-                    "value": "/etc/fc-ports-filter"
-                  }
-                ],
-                "image": "docker.io/dellemc/csi-powerstore@sha256:08c5effefadf2e55103eb49ef2a5a325d9904e7391b6eeb72701dae6e682ad9e",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "controller": {
-                "envs": [
-                  {
-                    "name": "X_CSI_NFS_ACLS",
-                    "value": "0777"
-                  }
-                ]
-              },
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "fsGroupPolicy": "ReadWriteOnceWithFSType",
-              "node": {
-                "envs": [
-                  {
-                    "name": "X_CSI_POWERSTORE_ENABLE_CHAP",
-                    "value": "true"
-                  }
-                ]
-              },
-              "replicas": 2
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIUnity",
-          "metadata": {
-            "name": "test-unity",
-            "namespace": "test-unity"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "image": "docker.io/dellemc/csi-unity@sha256:9fddd37cf5a6af47e05c6c148a928524d278f505dc0de53109fab3682963b652",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "controller": {},
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "node": {},
-              "replicas": 2,
-              "sideCars": [
-                {
-                  "args": [
-                    "--volume-name-prefix=csiunity",
-                    "--default-fstype=ext4"
-                  ],
-                  "name": "provisioner"
-                },
-                {
-                  "args": [
-                    "--snapshot-name-prefix=csiunitysnap"
-                  ],
-                  "name": "snapshotter"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "api_version": "storage.dell.com/v1",
-          "kind": "CSIVXFlexOS",
-          "metadata": {
-            "name": "test-vxflexos",
-            "namespace": "test-vxflexos"
-          },
-          "spec": {
-            "driver": {
-              "common": {
-                "envs": [
-                  {
-                    "name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
-                    "value": "false"
-                  },
-                  {
-                    "name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
-                    "value": "false"
-                  },
-                  {
-                    "name": "X_CSI_DEBUG",
-                    "value": "true"
-                  },
-                  {
-                    "name": "X_CSI_ALLOW_RWO_MULTI_POD_ACCESS",
-                    "value": "false"
-                  }
-                ],
-                "image": "docker.io/dellemc/csi-vxflexos@sha256:7a52560cd0801315350bf7afab4707753aacb2d051511d0f42514107f0542b52",
-                "imagePullPolicy": "IfNotPresent"
-              },
-              "configVersion": "v2.2.0",
-              "dnsPolicy": "ClusterFirstWithHostNet",
-              "forceUpdate": false,
-              "initContainers": [
-                {
-                  "envs": [
-                    {
-                      "name": "MDM",
-                      "value": "10.x.x.x,10.x.x.x"
-                    }
-                  ],
-                  "image": "docker.io/dellemc/sdc@sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
-                  "imagePullPolicy": "IfNotPresent",
-                  "name": "sdc"
-                }
-              ],
-              "replicas": 1,
-              "sideCars": [
-                {
-                  "envs": [
-                    {
-                      "name": "HOST_PID",
-                      "value": "1"
-                    },
-                    {
-                      "name": "MDM",
-                      "value": ""
-                    }
-                  ],
-                  "name": "sdc-monitor"
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/dell-emc/dell-csiop-bundle-110@sha256:5b5ed897aa1626929c5ec762657587ea91470cf3609f7797832ba7ef9b6ab5ab",
-      "bundle_path_digest": "sha256:5b5ed897aa1626929c5ec762657587ea91470cf3609f7797832ba7ef9b6ab5ab",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-19T21:27:25.472000+00:00",
-      "csv_description": "Dell CSI Operator for Dell EMC CSI Drivers",
-      "csv_display_name": "Dell CSI Operator",
-      "csv_metadata_description": "",
-      "csv_name": "dell-csi-operator-certified.v1.7.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:38:26.780000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "dell-csi-operator-certified",
-      "provided_apis": [
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIPowerMaxRevProxy",
-          "plural": "csipowermaxrevproxies",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIPowerStore",
-          "plural": "csipowerstores",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIUnity",
-          "plural": "csiunities",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIVXFlexOS",
-          "plural": "csivxflexoses",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIIsilon",
-          "plural": "csiisilons",
-          "version": "v1"
-        },
-        {
-          "group": "storage.dell.com",
-          "kind": "CSIPowerMax",
-          "plural": "csipowermaxes",
-          "version": "v1"
-        }
-      ],
-      "provider": "Dell EMC",
-      "related_images": [
-        {
-          "digest": "sha256:5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90",
-          "image": "docker.io/dellemc/dell-csi-operator@sha256:5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90",
-          "name": "dell-csi-operator-5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90-annotation"
-        },
-        {
-          "digest": "sha256:5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90",
-          "image": "docker.io/dellemc/dell-csi-operator@sha256:5d849eca01387bbf2353017752ecb1f5937e8c6588d2de43cf0475c0b747dc90",
-          "name": "dell-csi-operator-controller"
-        },
-        {
-          "digest": "sha256:31a54a0cf86d7354788a8265f60ae6acb4b348a67efbcf7c1007dd3cf7af05ab",
-          "image": "docker.io/busybox@sha256:31a54a0cf86d7354788a8265f60ae6acb4b348a67efbcf7c1007dd3cf7af05ab",
-          "name": "config-copy"
-        },
-        {
-          "digest": "sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
-          "image": "docker.io/dellemc/sdc@sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
-          "name": "sdc-784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272-annotation"
-        },
-        {
-          "digest": "sha256:7a52560cd0801315350bf7afab4707753aacb2d051511d0f42514107f0542b52",
-          "image": "docker.io/dellemc/csi-vxflexos@sha256:7a52560cd0801315350bf7afab4707753aacb2d051511d0f42514107f0542b52",
-          "name": "csi-vxflexos-7a52560cd0801315350bf7afab4707753aacb2d051511d0f42514107f0542b52-annotation"
-        },
-        {
-          "digest": "sha256:9fddd37cf5a6af47e05c6c148a928524d278f505dc0de53109fab3682963b652",
-          "image": "docker.io/dellemc/csi-unity@sha256:9fddd37cf5a6af47e05c6c148a928524d278f505dc0de53109fab3682963b652",
-          "name": "csi-unity-9fddd37cf5a6af47e05c6c148a928524d278f505dc0de53109fab3682963b652-annotation"
-        },
-        {
-          "digest": "sha256:08c5effefadf2e55103eb49ef2a5a325d9904e7391b6eeb72701dae6e682ad9e",
-          "image": "docker.io/dellemc/csi-powerstore@sha256:08c5effefadf2e55103eb49ef2a5a325d9904e7391b6eeb72701dae6e682ad9e",
-          "name": "csi-powerstore-08c5effefadf2e55103eb49ef2a5a325d9904e7391b6eeb72701dae6e682ad9e-annotation"
-        },
-        {
-          "digest": "sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
-          "image": "docker.io/dellemc/csipowermax-reverseproxy@sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
-          "name": "csipowermax-reverseproxy-c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7-annotation"
-        },
-        {
-          "digest": "sha256:2fc83456ec2fb2c0336725e039a3db699a0202468cd8e3fd12d7ef2423068fc8",
-          "image": "docker.io/dellemc/csi-powermax@sha256:2fc83456ec2fb2c0336725e039a3db699a0202468cd8e3fd12d7ef2423068fc8",
-          "name": "csi-powermax-2fc83456ec2fb2c0336725e039a3db699a0202468cd8e3fd12d7ef2423068fc8-annotation"
-        },
-        {
-          "digest": "sha256:220dd73f1eaa4b927e53f3827109c126ad5108f6d37e68949b95cfce66206fbe",
-          "image": "docker.io/dellemc/csi-isilon@sha256:220dd73f1eaa4b927e53f3827109c126ad5108f6d37e68949b95cfce66206fbe",
-          "name": "csi-isilon-220dd73f1eaa4b927e53f3827109c126ad5108f6d37e68949b95cfce66206fbe-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.7.0",
-      "version_original": "1.7.0"
-    },
-    {
-      "_id": "628e5ee70e22c919837331e9",
-      "alm_examples": [
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDB",
-          "metadata": {
-            "name": "my-replica-set"
-          },
-          "spec": {
-            "credentials": "my-credentials",
-            "members": 3,
-            "opsManager": {
-              "configMapRef": {
-                "name": "my-project"
-              }
-            },
-            "persistent": true,
-            "type": "ReplicaSet",
-            "version": "4.4.0-ent"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDB",
-          "metadata": {
-            "name": "sample-sharded-cluster"
-          },
-          "spec": {
-            "configServerCount": 3,
-            "credentials": "my-credentials",
-            "mongodsPerShardCount": 3,
-            "mongosCount": 2,
-            "opsManager": {
-              "configMapRef": {
-                "name": "my-project"
-              }
-            },
-            "persistent": true,
-            "shardCount": 1,
-            "type": "ShardedCluster",
-            "version": "4.4.0-ent"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDBMulti",
-          "metadata": {
-            "name": "multi-replica-set"
-          },
-          "spec": {
-            "clusterSpecList": {
-              "clusterSpecs": [
-                {
-                  "clusterName": "e2e.cluster1.mongokubernetes.com",
-                  "members": 2
-                },
-                {
-                  "clusterName": "e2e.cluster2.mongokubernetes.com",
-                  "members": 1
-                },
-                {
-                  "clusterName": "e2e.cluster3.mongokubernetes.com",
-                  "members": 2
-                }
-              ]
-            },
-            "credentials": "my-credentials",
-            "duplicateServiceObjects": false,
-            "opsManager": {
-              "configMapRef": {
-                "name": "my-project"
-              }
-            },
-            "persistent": false,
-            "type": "ReplicaSet",
-            "version": "4.4.0-ent"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDBOpsManager",
-          "metadata": {
-            "name": "ops-manager"
-          },
-          "spec": {
-            "adminCredentials": "ops-manager-admin",
-            "applicationDatabase": {
-              "members": 3,
-              "persistent": true,
-              "podSpec": {
-                "cpu": 1
-              }
-            },
-            "configuration": {
-              "mms.fromEmailAddr": "admin@thecompany.com"
-            },
-            "externalConnectivity": {
-              "type": "LoadBalancer"
-            },
-            "version": "4.4.1"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDBUser",
-          "metadata": {
-            "name": "my-replica-set-x509-user"
-          },
-          "spec": {
-            "db": "$external",
-            "mongodbResourceRef": {
-              "name": "my-replica-set"
-            },
-            "roles": [
-              {
-                "db": "admin",
-                "name": "dbOwner"
-              }
-            ],
-            "username": "CN=my-replica-set-x509-user,OU=cloud,O=MongoDB,L=New York,ST=New York,C=US"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:d75a22a01799c23ff0093ee0458e9807116817141c645cc7e67633d133185cab",
-      "bundle_path_digest": "sha256:d75a22a01799c23ff0093ee0458e9807116817141c645cc7e67633d133185cab",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-25T16:52:55.244000+00:00",
-      "csv_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB\ninto Kubernetes clusters, using our management, monitoring and backup\nplatforms, Ops Manager and Cloud Manager.\n\n## Before You Start\n\nTo start using the operator you''ll need an account in MongoDB Cloud Manager or\na MongoDB Ops Manager deployment.\n\n* [Create a Secret with your OpsManager API key](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-operator-credentials/#procedure)\n\n* [Create a ConfigMap with your OpsManager project ID and URL](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-project-using-configmap/)\n\nBy installing this integration, you will be able to deploy MongoDB instances\nwith a single simple command.\n\n## Required Parameters\n\n* `opsManager` or `cloudManager` - Enter the name of the ConfigMap containing project information\n* `credentials` - Enter the name of the Secret containing your OpsManager credentials\n* `type` - Enter MongoDB Deployment Types (\"Standalone\", \"ReplicaSet\", \"ShardedCluster\"\n\n## Supported MongoDB Deployment Types ##\n\n* Standalone: An instance of mongod that is running as a single server and\nnot as part of a replica set, this is, it does not do any kind of\nreplication.\n\n* Replica Set: A replica set in MongoDB is a group of mongod processes that\nmaintain the same data set. Replica sets provide redundancy and high\navailability, and are the basis for all production deployments. This section\nintroduces replication in MongoDB as well as the components and architecture\nof replica sets. The section also provides tutorials for common tasks\nrelated to replica sets.\n\n* Sharded Cluster: The set of nodes comprising a sharded MongoDB deployment.\nA sharded cluster consists of config servers, shards, and one or more mongos\nrouting processes. Sharding is a A database architecture that partitions\ndata by key ranges and distributes the data among two or more database\ninstances. Sharding enables horizontal scaling.\n\n## Requirements for deploying MongoDB OpsManager\n\n* In order to deploy resources of type MongoDB OpsManager, you will need to\ncreate a secret containing the [credentials](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/plan-om-resource/#om-rsrc-prereqs)\nfor the Global Onwer user\n\n## Security ##\n\nThe operator can enable TLS for all traffic between servers and also between\nclients and servers. Before enabling `security.tls.enabled` to `true` you\nshould create your certificates.  or you can leave the operator to create all\nthe certificates for you. The operator ability to create certs is been\ndepricted due to Kuberentes API changes.\n\nFor more information, please read the official MongoDB\nKubernetes Operator  [docs](https://docs.mongodb.com/kubernetes-operator/stable/).\n",
-      "csv_display_name": "MongoDB Enterprise Operator",
-      "csv_metadata_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB into Kubernetes clusters, using our management, monitoring and backup platforms, Ops Manager and Cloud Manager.",
-      "csv_name": "mongodb-enterprise.v1.16.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:20:02.911000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "mongodb-enterprise",
-      "provided_apis": [
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDB",
-          "version": "v1"
-        },
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDBMulti",
-          "version": "v1"
-        },
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDBOpsManager",
-          "version": "v1"
-        },
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDBUser",
-          "version": "v1"
-        }
-      ],
-      "provider": "MongoDB, Inc",
-      "related_images": [
-        {
-          "digest": "sha256:735d9e1cb2366a1ac6d93ff0450085cea214967f594fe8a1e10130499a85c0bb",
-          "image": "registry.connect.redhat.com/mongodb/enterprise-operator@sha256:735d9e1cb2366a1ac6d93ff0450085cea214967f594fe8a1e10130499a85c0bb",
-          "name": "mongodb-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.16.1",
-      "version_original": "1.16.1"
-    },
-    {
-      "_id": "628e5eeee07ae03809e4f767",
-      "alm_examples": [
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDB",
-          "metadata": {
-            "name": "my-replica-set"
-          },
-          "spec": {
-            "credentials": "my-credentials",
-            "members": 3,
-            "opsManager": {
-              "configMapRef": {
-                "name": "my-project"
-              }
-            },
-            "persistent": true,
-            "type": "ReplicaSet",
-            "version": "4.4.0-ent"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDB",
-          "metadata": {
-            "name": "sample-sharded-cluster"
-          },
-          "spec": {
-            "configServerCount": 3,
-            "credentials": "my-credentials",
-            "mongodsPerShardCount": 3,
-            "mongosCount": 2,
-            "opsManager": {
-              "configMapRef": {
-                "name": "my-project"
-              }
-            },
-            "persistent": true,
-            "shardCount": 1,
-            "type": "ShardedCluster",
-            "version": "4.4.0-ent"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDBMulti",
-          "metadata": {
-            "name": "multi-replica-set"
-          },
-          "spec": {
-            "clusterSpecList": {
-              "clusterSpecs": [
-                {
-                  "clusterName": "e2e.cluster1.mongokubernetes.com",
-                  "members": 2
-                },
-                {
-                  "clusterName": "e2e.cluster2.mongokubernetes.com",
-                  "members": 1
-                },
-                {
-                  "clusterName": "e2e.cluster3.mongokubernetes.com",
-                  "members": 2
-                }
-              ]
-            },
-            "credentials": "my-credentials",
-            "duplicateServiceObjects": false,
-            "opsManager": {
-              "configMapRef": {
-                "name": "my-project"
-              }
-            },
-            "persistent": false,
-            "type": "ReplicaSet",
-            "version": "4.4.0-ent"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDBOpsManager",
-          "metadata": {
-            "name": "ops-manager"
-          },
-          "spec": {
-            "adminCredentials": "ops-manager-admin",
-            "applicationDatabase": {
-              "members": 3,
-              "persistent": true,
-              "podSpec": {
-                "cpu": 1
-              }
-            },
-            "configuration": {
-              "mms.fromEmailAddr": "admin@thecompany.com"
-            },
-            "externalConnectivity": {
-              "type": "LoadBalancer"
-            },
-            "version": "4.4.1"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDBUser",
-          "metadata": {
-            "name": "my-replica-set-x509-user"
-          },
-          "spec": {
-            "db": "$external",
-            "mongodbResourceRef": {
-              "name": "my-replica-set"
-            },
-            "roles": [
-              {
-                "db": "admin",
-                "name": "dbOwner"
-              }
-            ],
-            "username": "CN=my-replica-set-x509-user,OU=cloud,O=MongoDB,L=New York,ST=New York,C=US"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:d75a22a01799c23ff0093ee0458e9807116817141c645cc7e67633d133185cab",
-      "bundle_path_digest": "sha256:d75a22a01799c23ff0093ee0458e9807116817141c645cc7e67633d133185cab",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-25T16:53:02.797000+00:00",
-      "csv_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB\ninto Kubernetes clusters, using our management, monitoring and backup\nplatforms, Ops Manager and Cloud Manager.\n\n## Before You Start\n\nTo start using the operator you''ll need an account in MongoDB Cloud Manager or\na MongoDB Ops Manager deployment.\n\n* [Create a Secret with your OpsManager API key](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-operator-credentials/#procedure)\n\n* [Create a ConfigMap with your OpsManager project ID and URL](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-project-using-configmap/)\n\nBy installing this integration, you will be able to deploy MongoDB instances\nwith a single simple command.\n\n## Required Parameters\n\n* `opsManager` or `cloudManager` - Enter the name of the ConfigMap containing project information\n* `credentials` - Enter the name of the Secret containing your OpsManager credentials\n* `type` - Enter MongoDB Deployment Types (\"Standalone\", \"ReplicaSet\", \"ShardedCluster\"\n\n## Supported MongoDB Deployment Types ##\n\n* Standalone: An instance of mongod that is running as a single server and\nnot as part of a replica set, this is, it does not do any kind of\nreplication.\n\n* Replica Set: A replica set in MongoDB is a group of mongod processes that\nmaintain the same data set. Replica sets provide redundancy and high\navailability, and are the basis for all production deployments. This section\nintroduces replication in MongoDB as well as the components and architecture\nof replica sets. The section also provides tutorials for common tasks\nrelated to replica sets.\n\n* Sharded Cluster: The set of nodes comprising a sharded MongoDB deployment.\nA sharded cluster consists of config servers, shards, and one or more mongos\nrouting processes. Sharding is a A database architecture that partitions\ndata by key ranges and distributes the data among two or more database\ninstances. Sharding enables horizontal scaling.\n\n## Requirements for deploying MongoDB OpsManager\n\n* In order to deploy resources of type MongoDB OpsManager, you will need to\ncreate a secret containing the [credentials](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/plan-om-resource/#om-rsrc-prereqs)\nfor the Global Onwer user\n\n## Security ##\n\nThe operator can enable TLS for all traffic between servers and also between\nclients and servers. Before enabling `security.tls.enabled` to `true` you\nshould create your certificates.  or you can leave the operator to create all\nthe certificates for you. The operator ability to create certs is been\ndepricted due to Kuberentes API changes.\n\nFor more information, please read the official MongoDB\nKubernetes Operator  [docs](https://docs.mongodb.com/kubernetes-operator/stable/).\n",
-      "csv_display_name": "MongoDB Enterprise Operator",
-      "csv_metadata_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB into Kubernetes clusters, using our management, monitoring and backup platforms, Ops Manager and Cloud Manager.",
-      "csv_name": "mongodb-enterprise.v1.16.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:04:42.890000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "mongodb-enterprise",
-      "provided_apis": [
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDB",
-          "plural": "mongodb",
-          "version": "v1"
-        },
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDBMulti",
-          "plural": "mongodbmulti",
-          "version": "v1"
-        },
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDBUser",
-          "plural": "mongodbusers",
-          "version": "v1"
-        },
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDBOpsManager",
-          "plural": "opsmanagers",
-          "version": "v1"
-        }
-      ],
-      "provider": "MongoDB, Inc",
-      "related_images": [
-        {
-          "digest": "sha256:735d9e1cb2366a1ac6d93ff0450085cea214967f594fe8a1e10130499a85c0bb",
-          "image": "registry.connect.redhat.com/mongodb/enterprise-operator@sha256:735d9e1cb2366a1ac6d93ff0450085cea214967f594fe8a1e10130499a85c0bb",
-          "name": "mongodb-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.16.1",
-      "version_original": "1.16.1"
-    },
-    {
-      "_id": "628e608fe07ae03809e4f77a",
-      "alm_examples": [
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDB",
-          "metadata": {
-            "name": "my-replica-set"
-          },
-          "spec": {
-            "credentials": "my-credentials",
-            "members": 3,
-            "opsManager": {
-              "configMapRef": {
-                "name": "my-project"
-              }
-            },
-            "persistent": true,
-            "type": "ReplicaSet",
-            "version": "4.4.0-ent"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDB",
-          "metadata": {
-            "name": "sample-sharded-cluster"
-          },
-          "spec": {
-            "configServerCount": 3,
-            "credentials": "my-credentials",
-            "mongodsPerShardCount": 3,
-            "mongosCount": 2,
-            "opsManager": {
-              "configMapRef": {
-                "name": "my-project"
-              }
-            },
-            "persistent": true,
-            "shardCount": 1,
-            "type": "ShardedCluster",
-            "version": "4.4.0-ent"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDBMulti",
-          "metadata": {
-            "name": "multi-replica-set"
-          },
-          "spec": {
-            "clusterSpecList": {
-              "clusterSpecs": [
-                {
-                  "clusterName": "e2e.cluster1.mongokubernetes.com",
-                  "members": 2
-                },
-                {
-                  "clusterName": "e2e.cluster2.mongokubernetes.com",
-                  "members": 1
-                },
-                {
-                  "clusterName": "e2e.cluster3.mongokubernetes.com",
-                  "members": 2
-                }
-              ]
-            },
-            "credentials": "my-credentials",
-            "duplicateServiceObjects": false,
-            "opsManager": {
-              "configMapRef": {
-                "name": "my-project"
-              }
-            },
-            "persistent": false,
-            "type": "ReplicaSet",
-            "version": "4.4.0-ent"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDBOpsManager",
-          "metadata": {
-            "name": "ops-manager"
-          },
-          "spec": {
-            "adminCredentials": "ops-manager-admin",
-            "applicationDatabase": {
-              "members": 3,
-              "persistent": true,
-              "podSpec": {
-                "cpu": 1
-              }
-            },
-            "configuration": {
-              "mms.fromEmailAddr": "admin@thecompany.com"
-            },
-            "externalConnectivity": {
-              "type": "LoadBalancer"
-            },
-            "version": "4.4.1"
-          }
-        },
-        {
-          "api_version": "mongodb.com/v1",
-          "kind": "MongoDBUser",
-          "metadata": {
-            "name": "my-replica-set-x509-user"
-          },
-          "spec": {
-            "db": "$external",
-            "mongodbResourceRef": {
-              "name": "my-replica-set"
-            },
-            "roles": [
-              {
-                "db": "admin",
-                "name": "dbOwner"
-              }
-            ],
-            "username": "CN=my-replica-set-x509-user,OU=cloud,O=MongoDB,L=New York,ST=New York,C=US"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:d75a22a01799c23ff0093ee0458e9807116817141c645cc7e67633d133185cab",
-      "bundle_path_digest": "sha256:d75a22a01799c23ff0093ee0458e9807116817141c645cc7e67633d133185cab",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-25T16:59:59.384000+00:00",
-      "csv_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB\ninto Kubernetes clusters, using our management, monitoring and backup\nplatforms, Ops Manager and Cloud Manager.\n\n## Before You Start\n\nTo start using the operator you''ll need an account in MongoDB Cloud Manager or\na MongoDB Ops Manager deployment.\n\n* [Create a Secret with your OpsManager API key](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-operator-credentials/#procedure)\n\n* [Create a ConfigMap with your OpsManager project ID and URL](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-project-using-configmap/)\n\nBy installing this integration, you will be able to deploy MongoDB instances\nwith a single simple command.\n\n## Required Parameters\n\n* `opsManager` or `cloudManager` - Enter the name of the ConfigMap containing project information\n* `credentials` - Enter the name of the Secret containing your OpsManager credentials\n* `type` - Enter MongoDB Deployment Types (\"Standalone\", \"ReplicaSet\", \"ShardedCluster\"\n\n## Supported MongoDB Deployment Types ##\n\n* Standalone: An instance of mongod that is running as a single server and\nnot as part of a replica set, this is, it does not do any kind of\nreplication.\n\n* Replica Set: A replica set in MongoDB is a group of mongod processes that\nmaintain the same data set. Replica sets provide redundancy and high\navailability, and are the basis for all production deployments. This section\nintroduces replication in MongoDB as well as the components and architecture\nof replica sets. The section also provides tutorials for common tasks\nrelated to replica sets.\n\n* Sharded Cluster: The set of nodes comprising a sharded MongoDB deployment.\nA sharded cluster consists of config servers, shards, and one or more mongos\nrouting processes. Sharding is a A database architecture that partitions\ndata by key ranges and distributes the data among two or more database\ninstances. Sharding enables horizontal scaling.\n\n## Requirements for deploying MongoDB OpsManager\n\n* In order to deploy resources of type MongoDB OpsManager, you will need to\ncreate a secret containing the [credentials](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/plan-om-resource/#om-rsrc-prereqs)\nfor the Global Onwer user\n\n## Security ##\n\nThe operator can enable TLS for all traffic between servers and also between\nclients and servers. Before enabling `security.tls.enabled` to `true` you\nshould create your certificates.  or you can leave the operator to create all\nthe certificates for you. The operator ability to create certs is been\ndepricted due to Kuberentes API changes.\n\nFor more information, please read the official MongoDB\nKubernetes Operator  [docs](https://docs.mongodb.com/kubernetes-operator/stable/).\n",
-      "csv_display_name": "MongoDB Enterprise Operator",
-      "csv_metadata_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB into Kubernetes clusters, using our management, monitoring and backup platforms, Ops Manager and Cloud Manager.",
-      "csv_name": "mongodb-enterprise.v1.16.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:03:11.635000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "mongodb-enterprise",
-      "provided_apis": [
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDBMulti",
-          "plural": "mongodbmulti",
-          "version": "v1"
-        },
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDBUser",
-          "plural": "mongodbusers",
-          "version": "v1"
-        },
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDBOpsManager",
-          "plural": "opsmanagers",
-          "version": "v1"
-        },
-        {
-          "group": "mongodb.com",
-          "kind": "MongoDB",
-          "plural": "mongodb",
-          "version": "v1"
-        }
-      ],
-      "provider": "MongoDB, Inc",
-      "related_images": [
-        {
-          "digest": "sha256:735d9e1cb2366a1ac6d93ff0450085cea214967f594fe8a1e10130499a85c0bb",
-          "image": "registry.connect.redhat.com/mongodb/enterprise-operator@sha256:735d9e1cb2366a1ac6d93ff0450085cea214967f594fe8a1e10130499a85c0bb",
-          "name": "mongodb-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.16.1",
-      "version_original": "1.16.1"
-    },
-    {
       "_id": "628e653c19ff1144872e4979",
       "alm_examples": [
         {
@@ -18761,9 +16716,626 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "6.2.10-34",
       "version_original": "6.2.10-34"
+    },
+    {
+      "_id": "62abd081240dc134424c44c0",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.2.4-55.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
+      "bundle_path_digest": "sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-06-17T00:53:21.291000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.4-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:53:21.291000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "redis-enterprise-operator-8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9-annotation"
+        },
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "admission"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.2.4-1",
+      "version_original": "6.2.4-1"
+    },
+    {
+      "_id": "62abd0ebdd92c1f1f12a724e",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.12-57.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
+      "bundle_path_digest": "sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.10",
+      "creation_date": "2022-06-17T00:55:07.784000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.12-5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:55:07.784000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "name": "redis-enterprise-operator-b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f-annotation"
+        },
+        {
+          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.12-5",
+      "version_original": "6.0.12-5"
+    },
+    {
+      "_id": "62abd0ef150d8182de8ea339",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.4",
+      "creation_date": "2022-06-17T00:55:11.562000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:55:11.562000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "62abd11f150d8182de8ea38e",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.8-30.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
+      "bundle_path_digest": "sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.4",
+      "creation_date": "2022-06-17T00:55:59.406000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-20",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:55:59.406000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "name": "redis-enterprise-operator-0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1-annotation"
+        },
+        {
+          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.8-20",
+      "version_original": "6.0.8-20"
+    },
+    {
+      "_id": "62abd13e150d8182de8ea3d6",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.6-39.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
+      "bundle_path_digest": "sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.4",
+      "creation_date": "2022-06-17T00:56:30.380000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-24",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:56:30.380000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "image": "redislabs/operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "name": "operator-998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b-annotation"
+        },
+        {
+          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.6-24",
+      "version_original": "6.0.6-24"
+    },
+    {
+      "_id": "62abd15bbe1fd3a96e0566eb",
+      "alm_examples": [
+        {
+          "api_version": "mellanox.com/v1alpha1",
+          "kind": "HostDeviceNetwork",
+          "metadata": {
+            "name": "hostdevicenetwork-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "api_version": "mellanox.com/v1alpha1",
+          "kind": "MacvlanNetwork",
+          "metadata": {
+            "name": "macvlannetwork-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "api_version": "mellanox.com/v1alpha1",
+          "kind": "NicClusterPolicy",
+          "metadata": {
+            "name": "nicclusterpolicy-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia-network-operator/nvidia-network-operator@sha256:2367829886a0f8aaa3705ec0d98118fb53e21c56f02b3e58f8ec312b337dd9c6",
+      "bundle_path_digest": "sha256:2367829886a0f8aaa3705ec0d98118fb53e21c56f02b3e58f8ec312b337dd9c6",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "1.1.0",
+      "creation_date": "2022-06-17T00:56:59.954000+00:00",
+      "csv_description": "## NVIDIA Network Operator\nThe NVIDIA Network Operator simplifies the provisioning and management of NVIDIA networking resources  in a Kubernetes cluster. The operator automatically installs the required host networking software - bringing together all the needed components to provide high-speed network connectivity. These components include the NVIDIA networking driver, Kubernetes device plugin, CNI plugins, IP address management (IPAM) plugin and others.\nThe NVIDIA Network Operator works in conjunction with the NVIDIA GPU Operator to deliver high-throughput, low-latency networking for scale-out, GPU computing clusters.\nThe Network Operator is open-source. For more information on contributions and release artifacts, see the [GitHub repo](https://github.com/Mellanox/network-operator/)\n",
+      "csv_display_name": "NVIDIA Network Operator",
+      "csv_metadata_description": "Deploy and manage NVIDIA networking resources in Kubernetes",
+      "csv_name": "nvidia-network-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:56:59.954000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "nvidia-network-operator",
+      "provided_apis": [
+        {
+          "group": "mellanox.com",
+          "kind": "NicClusterPolicy",
+          "plural": "nicclusterpolicies",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "k8s.cni.cncf.io",
+          "kind": "NetworkAttachmentDefinition",
+          "plural": "network-attachment-definitions",
+          "version": "v1"
+        },
+        {
+          "group": "mellanox.com",
+          "kind": "HostDeviceNetwork",
+          "plural": "hostdevicenetworks",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "mellanox.com",
+          "kind": "MacvlanNetwork",
+          "plural": "macvlannetworks",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:17afa53f1cf3733c8d0cd282c565975ed5de3124dfc2b7c485ad12c97e51c251",
+          "image": "nvcr.io/nvidia/cloud-native/network-operator@sha256:17afa53f1cf3733c8d0cd282c565975ed5de3124dfc2b7c485ad12c97e51c251",
+          "name": "manager"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
     }
   ],
   "page": 33,
   "page_size": 100,
-  "total": 4784
+  "total": 4796
 }
