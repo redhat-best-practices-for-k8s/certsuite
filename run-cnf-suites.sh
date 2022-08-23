@@ -41,12 +41,12 @@ while [[ $1 == -* ]]; do
 			fi ;;
 		-s|--skip)
 			while (( "$#" >= 2 )) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]] ; do
-				SKIP="$2|$SKIP"
+				SKIP="(^$2)|$SKIP"
 				shift
 			done;;
 		-f|--focus)
 			while (( "$#" >= 2 )) && ! [[ $2 = --* ]]  && ! [[ $2 = -* ]] ; do
-				FOCUS="$2|$FOCUS"
+				FOCUS="(^$2)|$FOCUS"
 				shift
 			done;;
 		-l|--label)

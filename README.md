@@ -169,6 +169,8 @@ Optional arguments are:
 
 If `-f` is not specified, the tnf will run in 'diagnostic' mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc...) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds...
 
+Note that the tests specified under `-f` and `-s` options can apply to multiple unit tests. What tnf will do is to execute/skip the tests that starts with the names provided (e.g. if typing `operator`, it will match with all operator suite's unit test, but it will not match with unit tests that contains operator but don't start with operator).
+
 If `-k` is not specified, autodiscovery is performed.
 The autodiscovery first looks for paths in the `$KUBECONFIG` environment variable on the host system, and if the variable is not set or is empty, the default configuration stored in `$HOME/.kube/config` is checked.
 
@@ -278,7 +280,7 @@ Run any combination of the suites keywords listed at in the [General tests](#gen
 ./run-cnf-suites.sh -f networking lifecycle affiliated-certification operator
 ```
 
-As with "run-tnf-container.sh", if `-f` is not specified here, the tnf will run in 'diagnostic' mode. See [Run the tests](#run-the-tests) section for more info.
+As with "run-tnf-container.sh", if `-f` is not specified here, the tnf will run in 'diagnostic' mode. Also, `-s` option to skip tests can be used. See [Run the tests](#run-the-tests) section for more info.
 
 By default the claim file will be output into the same location as the test executable. The `-o` argument for
 `run-cnf-suites.sh` can be used to provide a new location that the output files will be saved to. For more detailed
