@@ -170,4 +170,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
+require github.com/josharian/intern v1.0.0 // indirect
+
 replace github.com/openshift/machine-config-operator => github.com/openshift/machine-config-operator v0.0.1-0.20200913004441-7eba765c69c9
