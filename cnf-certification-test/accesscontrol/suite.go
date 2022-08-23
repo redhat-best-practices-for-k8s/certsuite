@@ -56,113 +56,113 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	ginkgo.ReportAfterEach(results.RecordResult)
 
 	// Security Context: non-compliant capabilities
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConCapabilitiesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags := identifiers.GetGinkgoTestIdAndLabels(identifiers.TestSecConCapabilitiesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestSecConCapabilities(&env)
 	})
 	// container security context: non-root user
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConNonRootUserIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestSecConNonRootUserIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestSecConRootUser(&env)
 	})
 	// container security context: privileged escalation
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSecConPrivilegeEscalation)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestSecConPrivilegeEscalation)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestSecConPrivilegeEscalation(&env)
 	})
 	// container security context: host port
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestContainerHostPort)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestContainerHostPort)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestContainerHostPort(&env)
 	})
 	// container security context: host network
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostNetwork)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestPodHostNetwork)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodHostNetwork(&env)
 	})
 	// pod host path
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostPath)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestPodHostPath)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodHostPath(&env)
 	})
 	// pod host ipc
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostIPC)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestPodHostIPC)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodHostIPC(&env)
 	})
 	// pod host pid
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHostPID)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestPodHostPID)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodHostPID(&env)
 	})
 	// Namespace
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNamespaceBestPracticesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestNamespaceBestPracticesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Namespaces)
 		TestNamespace(&env)
 	})
 	// pod service account
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodServiceAccountBestPracticesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestPodServiceAccountBestPracticesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodServiceAccount(&env)
 	})
 	// pod role bindings
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodRoleBindingsBestPracticesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestPodRoleBindingsBestPracticesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodRoleBindings(&env)
 	})
 	// pod cluster role bindings
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodClusterRoleBindingsBestPracticesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestPodClusterRoleBindingsBestPracticesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodClusterRoleBindings(&env)
 	})
 	// automount service token
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodAutomountServiceAccountIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestPodAutomountServiceAccountIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestAutomountServiceToken(&env)
 	})
 	// one process per container
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestOneProcessPerContainerIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestOneProcessPerContainerIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestOneProcessPerContainer(&env)
 	})
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSYSNiceRealtimeCapabilityIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestSYSNiceRealtimeCapabilityIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestSYSNiceRealtimeCapability(&env)
 	})
 	// SYS_PTRACE capability
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestSysPtraceCapabilityIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestSysPtraceCapabilityIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestSysPtraceCapability(&env)
 	})
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNamespaceResourceQuotaIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestNamespaceResourceQuotaIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestNamespaceResourceQuota(&env)
 	})
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodTolerationBypassIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestPodTolerationBypassIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodTolerationBypass(&env)
 	})
 	// ssh daemons
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNoSSHDaemonsAllowedIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestNoSSHDaemonsAllowedIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestNoSSHDaemonsAllowed(&env)
 	})

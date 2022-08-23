@@ -55,47 +55,47 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
 	// Default interface ICMP IPv4 test case
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv4ConnectivityIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags := identifiers.GetGinkgoTestIdAndLabels(identifiers.TestICMPv4ConnectivityIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testNetworkConnectivity(&env, netcommons.IPv4, netcommons.DEFAULT)
 	})
 	// Multus interfaces ICMP IPv4 test case
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv4ConnectivityMultusIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestICMPv4ConnectivityMultusIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testNetworkConnectivity(&env, netcommons.IPv4, netcommons.MULTUS)
 	})
 	// Default interface ICMP IPv6 test case
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv6ConnectivityIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestICMPv6ConnectivityIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testNetworkConnectivity(&env, netcommons.IPv6, netcommons.DEFAULT)
 	})
 	// Multus interfaces ICMP IPv6 test case
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestICMPv6ConnectivityMultusIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestICMPv6ConnectivityMultusIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testNetworkConnectivity(&env, netcommons.IPv6, netcommons.MULTUS)
 	})
 	// Default interface ICMP IPv6 test case
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestUndeclaredContainerPortsUsage)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestUndeclaredContainerPortsUsage)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testUndeclaredContainerPortsUsage(&env)
 	})
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestServicesDoNotUseNodeportsIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestServicesDoNotUseNodeportsIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testNodePort(&env)
 	})
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestOCPReservedPortsUsage)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestOCPReservedPortsUsage)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testOCPReservedPortsUsage(&env)
 	})
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestServiceDualStackIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestServiceDualStackIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Services)
 		testDualStackServices(&env)
 	})
