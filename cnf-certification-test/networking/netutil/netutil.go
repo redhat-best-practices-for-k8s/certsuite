@@ -84,7 +84,7 @@ const (
 	ipTablesLegacyWarning = "# Warning: iptables-legacy tables present, use iptables-legacy-save to see them"
 )
 
-func IsExecNotEmpty(cut *provider.Container, command string) (bool, error) {
+func isIPOrNSTablesPresent(cut *provider.Container, command string) (bool, error) {
 	outStr, errStr, err := crclient.ExecCommandContainerNSEnter(command, cut)
 	if err != nil || (errStr != "" && errStr != ipTablesLegacyWarning) {
 		return false, fmt.Errorf("failed to execute command %s on %s, err: %s, errStr: %s", command, cut, err, errStr)
@@ -96,9 +96,9 @@ func IsExecNotEmpty(cut *provider.Container, command string) (bool, error) {
 }
 
 func IsNFTablesPresent(cut *provider.Container) (bool, error) {
-	return IsExecNotEmpty(cut, dumpNFTablesCmd)
+	return isIPOrNSTablesPresent(cut, dumpNFTablesCmd)
 }
 
-func IsIPTablesPresent(cut *provider.Container) (result bool, err error) {
-	return IsExecNotEmpty(cut, dumpIPTablesCmd)
+func IsIPTablesPresent(cut *provider.Container) (bool, error) {
+	return isIPOrNSTablesPresent(cut, dumpIPTablesCmd)
 }

@@ -557,7 +557,7 @@ Test Case Name|iptables
 Test Case Label|networking-iptables
 Unique ID|http://test-network-function.com/testcases/networking/iptables
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/networking/dual-stack-service Checks that the output of "iptables-save" is empty, e.g. there is no iptables configuration on any CNF containers.
+Description|http://test-network-function.com/testcases/networking/iptables Checks that the output of "iptables-save" is empty, e.g. there is no iptables configuration on any CNF containers.
 Result Type|normative
 Suggested Remediation|Do not configure iptables on any CNF container.
 Best Practice Reference|https://TODO Section 4.6.23
@@ -570,7 +570,7 @@ Test Case Name|nftables
 Test Case Label|networking-nftables
 Unique ID|http://test-network-function.com/testcases/networking/nftables
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/networking/dual-stack-service Checks that the output of "nft list ruleset" is empty, e.g. there is no nftables configuration on any CNF containers.
+Description|http://test-network-function.com/testcases/networking/nftables Checks that the output of "nft list ruleset" is empty, e.g. there is no nftables configuration on any CNF containers.
 Result Type|normative
 Suggested Remediation|Do not configure nftables on any CNF container.
 Best Practice Reference|https://TODO Section 4.6.23
