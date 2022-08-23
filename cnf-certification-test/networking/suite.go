@@ -297,7 +297,7 @@ func testIsConfigPresent(env *provider.TestEnvironment, name string) {
 		}
 	}
 	testhelper.AddContainerResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
-	testhelper.AddContainerResultLog("Error", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddContainerResultLog("Error", errorContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testIsNFTablesConfigPresent(env *provider.TestEnvironment) {
