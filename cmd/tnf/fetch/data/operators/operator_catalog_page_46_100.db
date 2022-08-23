@@ -1,621 +1,6 @@
 {
   "data": [
     {
-      "_id": "62fa4651bb3b9bafa134a7f9",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:c593ed2375c6a44d041636b256ea909e8c06a914e0e3a07f7162f3959fdb0120",
-      "bundle_path_digest": "sha256:c593ed2375c6a44d041636b256ea909e8c06a914e0e3a07f7162f3959fdb0120",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.11",
-      "creation_date": "2022-08-15T13:12:49.083000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.11.6-x5140b7a",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:12:49.083000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Isovalent",
-      "related_images": [
-        {
-          "digest": "sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "image": "quay.io/isovalent/cilium@sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "image": "quay.io/isovalent/hubble-relay@sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "image": "quay.io/isovalent/operator-generic@sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "image": "quay.io/isovalent/cilium@sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:f3a647c73cc33196c15da0c4ec758520134235a4332d79e1f44a88d1aa84ab75",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:f3a647c73cc33196c15da0c4ec758520134235a4332d79e1f44a88d1aa84ab75",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:27c47c8d653f746b7574d24695c621783e4b6b37e7df2fb510c51bc01fabd6b7",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:27c47c8d653f746b7574d24695c621783e4b6b37e7df2fb510c51bc01fabd6b7",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "image": "quay.io/isovalent/hubble-relay@sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "image": "quay.io/isovalent/operator-generic@sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.11.6+x5140b7a",
-      "version_original": "1.11.6+x5140b7a"
-    },
-    {
-      "_id": "62fa46554eed1a480412fc55",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:fd01824f61500462187132b3b356a5233d61b8b053681b1234a917d42d17e604",
-      "bundle_path_digest": "sha256:fd01824f61500462187132b3b356a5233d61b8b053681b1234a917d42d17e604",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.11",
-      "creation_date": "2022-08-15T13:12:53.794000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.11.7-x250fc3c",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-19T19:07:07.357000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Isovalent",
-      "related_images": [
-        {
-          "digest": "sha256:e89bafbff51bfc3634956dc99fde58a9257521ea3fdc36c83de024c4f60c49be",
-          "image": "quay.io/isovalent/cilium@sha256:e89bafbff51bfc3634956dc99fde58a9257521ea3fdc36c83de024c4f60c49be",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:f64748a5f114315d5914adfbd7b8a68847cca24eedf7e2aa1a88d2a9ba33387c",
-          "image": "quay.io/isovalent/hubble-relay@sha256:f64748a5f114315d5914adfbd7b8a68847cca24eedf7e2aa1a88d2a9ba33387c",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:2c25a2dc7bdd9fc9a83aff5232e0a06d7b889f977499d725cc3eb52a5b2529eb",
-          "image": "quay.io/isovalent/operator-generic@sha256:2c25a2dc7bdd9fc9a83aff5232e0a06d7b889f977499d725cc3eb52a5b2529eb",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:e89bafbff51bfc3634956dc99fde58a9257521ea3fdc36c83de024c4f60c49be",
-          "image": "quay.io/isovalent/cilium@sha256:e89bafbff51bfc3634956dc99fde58a9257521ea3fdc36c83de024c4f60c49be",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:211562a667af8777bf387e6c57394cf04921d7016d7a2a450109fc55681eb674",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:211562a667af8777bf387e6c57394cf04921d7016d7a2a450109fc55681eb674",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:56ab5bb63623960c29b7dc018e33d57aaf44a018d7677fb37f9772cd43c7b651",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:56ab5bb63623960c29b7dc018e33d57aaf44a018d7677fb37f9772cd43c7b651",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:f64748a5f114315d5914adfbd7b8a68847cca24eedf7e2aa1a88d2a9ba33387c",
-          "image": "quay.io/isovalent/hubble-relay@sha256:f64748a5f114315d5914adfbd7b8a68847cca24eedf7e2aa1a88d2a9ba33387c",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:2c25a2dc7bdd9fc9a83aff5232e0a06d7b889f977499d725cc3eb52a5b2529eb",
-          "image": "quay.io/isovalent/operator-generic@sha256:2c25a2dc7bdd9fc9a83aff5232e0a06d7b889f977499d725cc3eb52a5b2529eb",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.11.7+x250fc3c",
-      "version_original": "1.11.7+x250fc3c"
-    },
-    {
-      "_id": "62fa4696bb3b9bafa134a850",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.4-55.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
-      "bundle_path_digest": "sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-08-15T13:13:58.703000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.4-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:13:58.703000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "redis-enterprise-operator-8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9-annotation"
-        },
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.2.4-1",
-      "version_original": "6.2.4-1"
-    },
-    {
       "_id": "62fa4697b289bcc7af670a33",
       "alm_examples": [
         {
@@ -16771,9 +16156,632 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.15.3",
       "version_original": "1.15.3"
+    },
+    {
+      "_id": "62fb970bb289bcc7af67898d",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:d004705563fed62b029388172792b8e349dd17eee9af38698d12032aec3ba137",
+      "bundle_path_digest": "sha256:d004705563fed62b029388172792b8e349dd17eee9af38698d12032aec3ba137",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-16T13:09:31.243000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.15.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-16T13:09:31.243000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:dcab0da73a06c939cc402adf8657f0729d8a3b500dd5586c317f2038a4157468",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:dcab0da73a06c939cc402adf8657f0729d8a3b500dd5586c317f2038a4157468",
+          "name": "cloud-native-postgresql-dcab0da73a06c939cc402adf8657f0729d8a3b500dd5586c317f2038a4157468-annotation"
+        },
+        {
+          "digest": "sha256:dcab0da73a06c939cc402adf8657f0729d8a3b500dd5586c317f2038a4157468",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:dcab0da73a06c939cc402adf8657f0729d8a3b500dd5586c317f2038a4157468",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=0.6.0 < 1.15.3",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.15.3",
+      "version_original": "1.15.3"
+    },
+    {
+      "_id": "62fb970ce07d71e4beb72d09",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:d004705563fed62b029388172792b8e349dd17eee9af38698d12032aec3ba137",
+      "bundle_path_digest": "sha256:d004705563fed62b029388172792b8e349dd17eee9af38698d12032aec3ba137",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable-v1.15",
+      "creation_date": "2022-08-16T13:09:32.304000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.15.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-16T13:09:32.304000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:dcab0da73a06c939cc402adf8657f0729d8a3b500dd5586c317f2038a4157468",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:dcab0da73a06c939cc402adf8657f0729d8a3b500dd5586c317f2038a4157468",
+          "name": "cloud-native-postgresql-dcab0da73a06c939cc402adf8657f0729d8a3b500dd5586c317f2038a4157468-annotation"
+        },
+        {
+          "digest": "sha256:dcab0da73a06c939cc402adf8657f0729d8a3b500dd5586c317f2038a4157468",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:dcab0da73a06c939cc402adf8657f0729d8a3b500dd5586c317f2038a4157468",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=0.6.0 < 1.15.3",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.15.3",
+      "version_original": "1.15.3"
+    },
+    {
+      "_id": "62fb9784b289bcc7af678a07",
+      "alm_examples": [
+        {
+          "api_version": "pg.percona.com/v1",
+          "kind": "PerconaPGCluster",
+          "metadata": {
+            "labels": {
+              "pgo-version": "1.3.0"
+            },
+            "name": "cluster1"
+          },
+          "spec": {
+            "backup": {
+              "backrestRepoImage": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:0bde250fde02d7e0a234277780d83785f5ef04c48dbf1e57c127d0f2ccbaa34a",
+              "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:8cfc2320d663152ec46adb79355935e161879249796e4689b3243a75653089ee",
+              "resources": {
+                "requests": {
+                  "cpu": "200m",
+                  "memory": "48Mi"
+                }
+              },
+              "schedule": [
+                {
+                  "keep": 3,
+                  "name": "sat-night-backup",
+                  "schedule": "0 0 * * 6",
+                  "storage": "local",
+                  "type": "full"
+                }
+              ],
+              "volumeSpec": {
+                "accessmode": "ReadWriteOnce",
+                "size": "1G",
+                "storageclass": "",
+                "storagetype": "dynamic"
+              }
+            },
+            "database": "pgdb",
+            "disableAutofail": false,
+            "keepBackups": true,
+            "keepData": true,
+            "pause": false,
+            "pgBadger": {
+              "enabled": false,
+              "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:b885df785f1ec057e04d9e7fefc0805d93f479ac812d6b8df4161a178cab21a1",
+              "port": 10000
+            },
+            "pgBouncer": {
+              "expose": {
+                "serviceType": "ClusterIP"
+              },
+              "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:0863a651319c5339898343adb4bbf09ef6e50478badd5927a1582abd5e3c3b74",
+              "resources": {
+                "requests": {
+                  "cpu": "1",
+                  "memory": "128Mi"
+                }
+              },
+              "size": 3
+            },
+            "pgPrimary": {
+              "expose": {
+                "serviceType": "ClusterIP"
+              },
+              "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:65746063ec9fab1869065f48394bb40b164c33e8102c48c42439812b2a6ba43e",
+              "resources": {
+                "requests": {
+                  "cpu": "500m",
+                  "memory": "256Mi"
+                }
+              },
+              "tolerations": [],
+              "volumeSpec": {
+                "accessmode": "ReadWriteOnce",
+                "size": "1G",
+                "storageclass": "",
+                "storagetype": "dynamic"
+              }
+            },
+            "pgReplicas": {
+              "hotStandby": {
+                "enableSyncStandby": false,
+                "expose": {
+                  "serviceType": "ClusterIP"
+                },
+                "resources": {
+                  "requests": {
+                    "cpu": "500m",
+                    "memory": "256Mi"
+                  }
+                },
+                "size": 2,
+                "volumeSpec": {
+                  "accessmode": "ReadWriteOnce",
+                  "size": "1G",
+                  "storageclass": "",
+                  "storagetype": "dynamic"
+                }
+              }
+            },
+            "pmm": {
+              "enabled": false,
+              "image": "percona/pmm-client:2.29.1",
+              "pmmSecret": "cluster1-pmm-secret",
+              "resources": {
+                "requests": {
+                  "cpu": "500m",
+                  "memory": "200M"
+                }
+              },
+              "serverHost": "monitoring-service",
+              "serverUser": "admin"
+            },
+            "port": "5432",
+            "standby": false,
+            "tlsOnly": false,
+            "upgradeOptions": {
+              "apply": "disabled",
+              "schedule": "0 4 * * *",
+              "versionServiceEndpoint": "https://check.percona.com"
+            },
+            "user": "pguser"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/percona/percona-postgresql-operator-bundle@sha256:7995df96b3a7a033321d46097387922a70c011746082d0967fa9cfe8ce75a43d",
+      "bundle_path_digest": "sha256:7995df96b3a7a033321d46097387922a70c011746082d0967fa9cfe8ce75a43d",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-16T13:11:32.679000+00:00",
+      "csv_description": "\n## Percona is Cloud Native\n\nPercona Operator for PostgreSQL automates and simplifies deploying and managing open source PostgreSQL clusters on Kubernetes. Percona Operator for PostgreSQL is based on Postgres Operator developed by Crunchy Data.\nWhether you need to get a simple PostgreSQL cluster up and running, need to deploy a high availability, fault tolerant cluster in production, or are running your own database-as-a-service, the Operator provides the essential features you need to keep your clusters healthy.\n\nConsult the [documentation](https://www.percona.com/doc/kubernetes-operator-for-postgresql/index.html) on the Percona Operator for PostgreSQL for complete details on capabilities and options.\n\n### Supported Features\n\n* **PostgreSQL Cluster Provisioning**\nCreate, Scale, & Delete PostgreSQL clusters with ease, while fully customizing your Pods and PostgreSQL configuration.\n* **High Availability**\n\n    Safe, automated failover backed by a distributed consensus based high-availability solution. Uses Pod Anti-Affinity to help resiliency; you can configure how much\n    enforced this can be. Failed primaries automatically heal, allowing for faster recovery time. Support for standby PostgreSQL clusters that work both within and\n    across multiple Kubernetes clusters.\n\n* **Disaster Recovery**\n\n    Backups and restores leverage the open source pgBackRest utility and includes support for full, incremental, and differential backups as well as efficient delta\n    restores. Set how long you want your backups retained for. Works great with very large databases!\n\n* **Communication Security**\n\n    Secure communication between your applications and data servers by enabling TLS for your PostgreSQL servers, including the ability to enforce all of your connections\n    to use TLS.\n\n* **Monitoring**\n\n    Track the health of your PostgreSQL clusters with Percona Monitoring and Management (PMM).\n\n* **PostgreSQL User Management**\n\n    Quickly add and remove users from your PostgreSQL clusters with powerful commands. Manage password expiration policies or use your preferred PostgreSQL authentication\n    scheme.\n\n* **Updates Management**\n\n    Safely apply PostgreSQL updates with minimal availability impact to your PostgreSQL clusters.\n\n* **Advanced Replication Support**\n\n    Choose between asynchronous replication and synchronous replication for workloads that are sensitive to losing transactions.\n\n* **Clone**\n\n    Create new clusters from your existing clusters or backups.\n\n* **Connection Pooling**\n\n    Use [pgBouncer](https://access.crunchydata.com/documentation/postgres-operator/latest/tutorial/pgbouncer/) for connection pooling\n\n* **Affinity and Tolerations**\n\n    Have your PostgreSQL clusters deployed to Kubernetes Nodes of your preference with node affinity, or designate which nodes Kubernetes can schedule PostgreSQL instances\n    to with Kubernetes  tolerations.\n\n* **Scheduled Backups**\n\n    Choose the type of backup (full, incremental, differential) and how frequently you want it to occur on each PostgreSQL cluster.\n\n* **Backup to S3**\n\n    Store your backups in Amazon S3 or any object storage system that supports the S3 protocol. The Operator can backup, restore, and create new clusters from these backups.\n\n* **Multi-Namespace Support**\n\n    You can control how the Operator leverages Kubernetes Namespaces with several different deployment models:\n\n    * Deploy the Operator and all PostgreSQL clusters to the same namespace\n    * Deploy the Operator to one Namespace, and all PostgreSQL clusters to a different Namespace\n    * Deploy the Operator to one Namespace, and have your PostgreSQL clusters managed across multiple Namespaces\n\n* **Full Customizability**\n\n    The Operator not only makes it easy to get PostgreSQL up and running on Kubernetes-enabled platforms, but also allows you to further customize your deployments:\n\n    * Selecting different storage classes for your primary, replica, and backup storage\n    * Select your own container resources class for each PostgreSQL cluster deployment; differentiate between resources applied for primary and replica clusters\n    * Use your own container image repository, including `imagePullSecrets` and private repositories  support\n    * Customize your PostgreSQL configuration\n    * Bring your own trusted certificate authority (CA) for use with the Operator API server\n    * Override your PostgreSQL configuration for each cluster\n    * Use your own custom images, re-define the image for each container separately\n\n### Release highlights\n* **What's new**\n\n    * The automated upgrade is now disabled by default to prevent an unplanned downtimes for user applications and to provide defaults more focused on strict user\u2019s control over the cluster\n    * Flexible anti-affinity configuration is now available, which allows the Operator to isolate PostgreSQL cluster instances on different Kubernetes nodes or to increase its availability by placing\nPostgreSQL instances in different availability zones\n    * Add possibility for postgres user to connect to PostgreSQL through PgBouncer with a new pgBouncer.exposePostgresUser Custom Resource option\n    * A new build and testing guide allows user to easily experiment with the source code of the Operator\n    * Fix the bug in the instruction on passing custom configuration options for PostgreSQL which made it usable for the new cluster only\n    * Fix the bug which caused the Operator crash without pgReplicas section in Custom Resource definition\n    * Fix the bug which caused the Operator to make connection requests to Version Service even with disabled Smart Update\n    * Fix the bug due to which restoring S3 backup from storage with self-signed certificates didn\u2019t work, by introducing the special backup.storages.verifyTLS option to address this issue\n",
+      "csv_display_name": "Percona Operator for PostgreSQL",
+      "csv_metadata_description": "Percona Operator for PostgreSQL manages the lifecycle of Percona PostgreSQL cluster instances.",
+      "csv_name": "percona-postgresql-operator-certified.v1.3.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-16T13:11:32.679000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "percona-postgresql-operator-certified",
+      "provided_apis": [
+        {
+          "group": "pg.percona.com",
+          "kind": "Pgcluster",
+          "plural": "pgclusters",
+          "version": "v1"
+        },
+        {
+          "group": "pg.percona.com",
+          "kind": "Pgpolicy",
+          "plural": "pgpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "pg.percona.com",
+          "kind": "Pgreplica",
+          "plural": "pgreplicas",
+          "version": "v1"
+        },
+        {
+          "group": "pg.percona.com",
+          "kind": "Pgtask",
+          "plural": "pgtasks",
+          "version": "v1"
+        },
+        {
+          "group": "pg.percona.com",
+          "kind": "PerconaPGCluster",
+          "plural": "perconapgclusters",
+          "version": "v1"
+        }
+      ],
+      "provider": "Percona",
+      "related_images": [
+        {
+          "digest": "sha256:8cfc2320d663152ec46adb79355935e161879249796e4689b3243a75653089ee",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:8cfc2320d663152ec46adb79355935e161879249796e4689b3243a75653089ee",
+          "name": "pgbackrest"
+        },
+        {
+          "digest": "sha256:0bde250fde02d7e0a234277780d83785f5ef04c48dbf1e57c127d0f2ccbaa34a",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:0bde250fde02d7e0a234277780d83785f5ef04c48dbf1e57c127d0f2ccbaa34a",
+          "name": "pgbackrest-repo"
+        },
+        {
+          "digest": "sha256:b885df785f1ec057e04d9e7fefc0805d93f479ac812d6b8df4161a178cab21a1",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:b885df785f1ec057e04d9e7fefc0805d93f479ac812d6b8df4161a178cab21a1",
+          "name": "pgbadger"
+        },
+        {
+          "digest": "sha256:0863a651319c5339898343adb4bbf09ef6e50478badd5927a1582abd5e3c3b74",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:0863a651319c5339898343adb4bbf09ef6e50478badd5927a1582abd5e3c3b74",
+          "name": "pgbouncer"
+        },
+        {
+          "digest": "sha256:65746063ec9fab1869065f48394bb40b164c33e8102c48c42439812b2a6ba43e",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:65746063ec9fab1869065f48394bb40b164c33e8102c48c42439812b2a6ba43e",
+          "name": "postgres-ha"
+        },
+        {
+          "digest": "sha256:3c7688d4ad7bbfda10a773862b58a070f6eb11106a003fd909081ed51edd520d",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator@sha256:3c7688d4ad7bbfda10a773862b58a070f6eb11106a003fd909081ed51edd520d",
+          "name": "rmdata"
+        },
+        {
+          "digest": "sha256:c997d3b902bd95185252ae6727bca1fef5424ff1d8c6c716e2f419b88946716a",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator@sha256:c997d3b902bd95185252ae6727bca1fef5424ff1d8c6c716e2f419b88946716a",
+          "name": "percona-postgresql-operator-c997d3b902bd95185252ae6727bca1fef5424ff1d8c6c716e2f419b88946716a-annotation"
+        },
+        {
+          "digest": "sha256:362eb3c33eaa99ab39fdf42962a38f2818253e1841aa55f656a16bcb79ac5489",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator@sha256:362eb3c33eaa99ab39fdf42962a38f2818253e1841aa55f656a16bcb79ac5489",
+          "name": "apiserver"
+        },
+        {
+          "digest": "sha256:c997d3b902bd95185252ae6727bca1fef5424ff1d8c6c716e2f419b88946716a",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator@sha256:c997d3b902bd95185252ae6727bca1fef5424ff1d8c6c716e2f419b88946716a",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:5e6a484f7a559e90e79aa7a034bdcf9415848015c08d244b176de17d47deeb12",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator@sha256:5e6a484f7a559e90e79aa7a034bdcf9415848015c08d244b176de17d47deeb12",
+          "name": "scheduler"
+        },
+        {
+          "digest": "sha256:8089fb1d73bf16757a28d94b1c08649556457d5f61cdfdc33bd75cea1147f012",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator@sha256:8089fb1d73bf16757a28d94b1c08649556457d5f61cdfdc33bd75cea1147f012",
+          "name": "event"
+        },
+        {
+          "digest": "sha256:8cfc2320d663152ec46adb79355935e161879249796e4689b3243a75653089ee",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:8cfc2320d663152ec46adb79355935e161879249796e4689b3243a75653089ee",
+          "name": "pgo_backrest"
+        },
+        {
+          "digest": "sha256:0bde250fde02d7e0a234277780d83785f5ef04c48dbf1e57c127d0f2ccbaa34a",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:0bde250fde02d7e0a234277780d83785f5ef04c48dbf1e57c127d0f2ccbaa34a",
+          "name": "pgo_backrest_repo"
+        },
+        {
+          "digest": "sha256:b885df785f1ec057e04d9e7fefc0805d93f479ac812d6b8df4161a178cab21a1",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:b885df785f1ec057e04d9e7fefc0805d93f479ac812d6b8df4161a178cab21a1",
+          "name": "crunchy_pgbadger"
+        },
+        {
+          "digest": "sha256:0863a651319c5339898343adb4bbf09ef6e50478badd5927a1582abd5e3c3b74",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:0863a651319c5339898343adb4bbf09ef6e50478badd5927a1582abd5e3c3b74",
+          "name": "crunchy_pgbouncer"
+        },
+        {
+          "digest": "sha256:65746063ec9fab1869065f48394bb40b164c33e8102c48c42439812b2a6ba43e",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:65746063ec9fab1869065f48394bb40b164c33e8102c48c42439812b2a6ba43e",
+          "name": "crunchy_postgres_ha"
+        },
+        {
+          "digest": "sha256:3c7688d4ad7bbfda10a773862b58a070f6eb11106a003fd909081ed51edd520d",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator@sha256:3c7688d4ad7bbfda10a773862b58a070f6eb11106a003fd909081ed51edd520d",
+          "name": "pgo_rmdata"
+        },
+        {
+          "digest": "sha256:b885df785f1ec057e04d9e7fefc0805d93f479ac812d6b8df4161a178cab21a1",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:b885df785f1ec057e04d9e7fefc0805d93f479ac812d6b8df4161a178cab21a1",
+          "name": "percona-postgresql-operator-containers-b885df785f1ec057e04d9e7fefc0805d93f479ac812d6b8df4161a178cab21a1-annotation"
+        },
+        {
+          "digest": "sha256:0863a651319c5339898343adb4bbf09ef6e50478badd5927a1582abd5e3c3b74",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:0863a651319c5339898343adb4bbf09ef6e50478badd5927a1582abd5e3c3b74",
+          "name": "percona-postgresql-operator-containers-0863a651319c5339898343adb4bbf09ef6e50478badd5927a1582abd5e3c3b74-annotation"
+        },
+        {
+          "digest": "sha256:0bde250fde02d7e0a234277780d83785f5ef04c48dbf1e57c127d0f2ccbaa34a",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:0bde250fde02d7e0a234277780d83785f5ef04c48dbf1e57c127d0f2ccbaa34a",
+          "name": "percona-postgresql-operator-containers-0bde250fde02d7e0a234277780d83785f5ef04c48dbf1e57c127d0f2ccbaa34a-annotation"
+        },
+        {
+          "digest": "sha256:8cfc2320d663152ec46adb79355935e161879249796e4689b3243a75653089ee",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:8cfc2320d663152ec46adb79355935e161879249796e4689b3243a75653089ee",
+          "name": "percona-postgresql-operator-containers-8cfc2320d663152ec46adb79355935e161879249796e4689b3243a75653089ee-annotation"
+        },
+        {
+          "digest": "sha256:65746063ec9fab1869065f48394bb40b164c33e8102c48c42439812b2a6ba43e",
+          "image": "registry.connect.redhat.com/percona/percona-postgresql-operator-containers@sha256:65746063ec9fab1869065f48394bb40b164c33e8102c48c42439812b2a6ba43e",
+          "name": "percona-postgresql-operator-containers-65746063ec9fab1869065f48394bb40b164c33e8102c48c42439812b2a6ba43e-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.3.0",
+      "version_original": "1.3.0"
     }
   ],
   "page": 46,
   "page_size": 100,
-  "total": 4796
+  "total": 4801
 }
