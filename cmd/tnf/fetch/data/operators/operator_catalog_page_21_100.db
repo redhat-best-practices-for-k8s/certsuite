@@ -1,507 +1,6 @@
 {
   "data": [
     {
-      "_id": "621d370d5c46c6464085f8b5",
-      "alm_examples": [
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "License",
-          "metadata": {
-            "name": "tvk-license-one",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "Target",
-          "metadata": {
-            "labels": {
-              "app": "triliovault"
-            },
-            "name": "triliovault-target",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "nfsCredentials": {
-              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
-              "nfsOptions": "nfsvers=4"
-            },
-            "type": "NFS",
-            "vendor": "Other"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "BackupPlan",
-          "metadata": {
-            "name": "tvk-backupplan"
-          },
-          "spec": {
-            "backupConfig": {
-              "retentionPolicy": {
-                "name": "retention-policy",
-                "namespace": "openshift-marketplace"
-              },
-              "schedulePolicy": {
-                "fullBackupPolicy": {
-                  "name": "full-bp-policy",
-                  "namespace": "openshift-marketplace"
-                },
-                "incrementalBackupPolicy": {
-                  "name": "inc-bp-policy",
-                  "namespace": "openshift-marketplace"
-                }
-              },
-              "target": {
-                "name": "triliovault-target",
-                "namespace": "openshift-marketplace"
-              }
-            },
-            "backupPlanComponents": {
-              "custom": [
-                {
-                  "matchLabels": {
-                    "app": "nginx"
-                  }
-                }
-              ],
-              "helmReleases": [
-                "sample-release"
-              ],
-              "operators": [
-                {
-                  "applicationResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "app": "etcd"
-                      }
-                    }
-                  ],
-                  "customResources": [
-                    {
-                      "groupVersionKind": {
-                        "group": "etcd.database.coreos.com",
-                        "kind": "EtcdCluster",
-                        "version": "v1beta2"
-                      },
-                      "objects": [
-                        "demo-etcd-cluster"
-                      ]
-                    }
-                  ],
-                  "operatorId": "demo-etcd-cluster",
-                  "operatorResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "release": "demo-etcd-operator"
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "ppc64le"
-      ],
-      "bundle_path": "registry.connect.redhat.com/trilio/k8s-triliovault-ibm@sha256:85bdda572f98163d5e84adddb0ca47fb183ecd2cbeaa2ff0e905387c4d8f3d2d",
-      "bundle_path_digest": "sha256:85bdda572f98163d5e84adddb0ca47fb183ecd2cbeaa2ff0e905387c4d8f3d2d",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-02-28T20:56:45.689000+00:00",
-      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
-      "csv_display_name": "TrilioVault for Kubernetes",
-      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
-      "csv_name": "k8s-triliovault-ibm-stable.2.7.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:21:30.786000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "k8s-triliovault-ibm",
-      "provided_apis": [
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterRestore",
-          "plural": "clusterrestores",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Restore",
-          "plural": "restores",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "BackupPlan",
-          "plural": "backupplans",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Hook",
-          "plural": "hooks",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "License",
-          "plural": "licenses",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Policy",
-          "plural": "policies",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Target",
-          "plural": "targets",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackupPlan",
-          "plural": "clusterbackupplans",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackup",
-          "plural": "clusterbackups",
-          "version": "v1"
-        }
-      ],
-      "provider": "Trilio",
-      "related_images": [
-        {
-          "digest": "sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
-          "image": "eu.gcr.io/amazing-chalice-243510/control-plane@sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
-          "name": "control-plane-1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a-annotation"
-        },
-        {
-          "digest": "sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
-          "image": "eu.gcr.io/amazing-chalice-243510/control-plane@sha256:1eea5404a92bf1a408559d3b7f7ac700f4df5559ce5e4737db866804930d720a",
-          "name": "k8s-triliovault-control-plane"
-        },
-        {
-          "digest": "sha256:8a1f8d4ef507034e9210f49cf6d20a42e18a480bff9974ac73efd35438610ba8",
-          "image": "eu.gcr.io/amazing-chalice-243510/analyzer@sha256:8a1f8d4ef507034e9210f49cf6d20a42e18a480bff9974ac73efd35438610ba8",
-          "name": "k8s-triliovault-analyzer"
-        },
-        {
-          "digest": "sha256:b1318b3e0ee719ae183a48a1876f158862f958e9c85fadb672ccab3de5593311",
-          "image": "eu.gcr.io/amazing-chalice-243510/trilio-admission-webhook@sha256:b1318b3e0ee719ae183a48a1876f158862f958e9c85fadb672ccab3de5593311",
-          "name": "triliovault-admission-webhook"
-        },
-        {
-          "digest": "sha256:3900293f0afbd3c594136768b89b3233611b115918ede5834eb8eab7ac5c3f70",
-          "image": "eu.gcr.io/amazing-chalice-243510/exporter@sha256:3900293f0afbd3c594136768b89b3233611b115918ede5834eb8eab7ac5c3f70",
-          "name": "triliovault-exporter"
-        },
-        {
-          "digest": "sha256:0c0691485ff10b2318ce378fcb37a77130db556d8cba9f895a6bf6814774b604",
-          "image": "eu.gcr.io/amazing-chalice-243510/web@sha256:0c0691485ff10b2318ce378fcb37a77130db556d8cba9f895a6bf6814774b604",
-          "name": "triliovault-web"
-        },
-        {
-          "digest": "sha256:c66c43fde40f9bf910b56c519d09cea3509de03973c6962ae57ceb3e924a9542",
-          "image": "eu.gcr.io/amazing-chalice-243510/web-backend@sha256:c66c43fde40f9bf910b56c519d09cea3509de03973c6962ae57ceb3e924a9542",
-          "name": "triliovault-web-backend"
-        },
-        {
-          "digest": "sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
-          "image": "eu.gcr.io/amazing-chalice-243510/dex@sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
-          "name": "triliovault-dex"
-        },
-        {
-          "digest": "sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
-          "image": "eu.gcr.io/amazing-chalice-243510/trilio-init@sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
-          "name": "webhook-init"
-        },
-        {
-          "digest": "sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
-          "image": "eu.gcr.io/amazing-chalice-243510/trilio-init@sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
-          "name": "dex-init"
-        },
-        {
-          "digest": "sha256:dc868ce5d6aa0f0fb194af84951f3e22922aa523f17ca1d7174441d72022cb77",
-          "image": "eu.gcr.io/amazing-chalice-243510/metamover@sha256:dc868ce5d6aa0f0fb194af84951f3e22922aa523f17ca1d7174441d72022cb77",
-          "name": "metamover"
-        },
-        {
-          "digest": "sha256:222b9317935dd19e9a333520bdf0b1f68d9768880bce6f482cb1b2250806da76",
-          "image": "eu.gcr.io/amazing-chalice-243510/datamover@sha256:222b9317935dd19e9a333520bdf0b1f68d9768880bce6f482cb1b2250806da76",
-          "name": "datamover"
-        },
-        {
-          "digest": "sha256:806090cc5ac8a65fcc5e90d82143dc7df230f742c29ff1c21e685bb49879aaa7",
-          "image": "eu.gcr.io/amazing-chalice-243510/datastore-attacher@sha256:806090cc5ac8a65fcc5e90d82143dc7df230f742c29ff1c21e685bb49879aaa7",
-          "name": "datastore_attacher"
-        },
-        {
-          "digest": "sha256:8b3f03459aedfb7829dad4c2e9f731d2f11abf9ba38319c3d2f0d8303a642c5e",
-          "image": "eu.gcr.io/amazing-chalice-243510/backup-scheduler@sha256:8b3f03459aedfb7829dad4c2e9f731d2f11abf9ba38319c3d2f0d8303a642c5e",
-          "name": "backup_scheduler"
-        },
-        {
-          "digest": "sha256:e687443babeb3b9850aa3050b6c6935976358bcdea66666fb79b487ee35c5c25",
-          "image": "eu.gcr.io/amazing-chalice-243510/backup-cleaner@sha256:e687443babeb3b9850aa3050b6c6935976358bcdea66666fb79b487ee35c5c25",
-          "name": "backup_cleaner"
-        },
-        {
-          "digest": "sha256:3eb71f17b6b04a7207f3cc921f29cd070993402d951aa940a6c0be61733fe958",
-          "image": "eu.gcr.io/amazing-chalice-243510/backup-retention@sha256:3eb71f17b6b04a7207f3cc921f29cd070993402d951aa940a6c0be61733fe958",
-          "name": "backup_retention"
-        },
-        {
-          "digest": "sha256:6729338fadd130c21e830fc9c5dacb4efae3ffb37427c415d377ee7c8f152872",
-          "image": "eu.gcr.io/amazing-chalice-243510/target-browser@sha256:6729338fadd130c21e830fc9c5dacb4efae3ffb37427c415d377ee7c8f152872",
-          "name": "target_browser"
-        },
-        {
-          "digest": "sha256:7a76cad51eab8ceb492426507cf6c92ed90047184ae2a8d0ce6c2e1a57762078",
-          "image": "eu.gcr.io/amazing-chalice-243510/hook-executor@sha256:7a76cad51eab8ceb492426507cf6c92ed90047184ae2a8d0ce6c2e1a57762078",
-          "name": "hook"
-        },
-        {
-          "digest": "sha256:08b4bb891506388fe6bc96490c3ee8117a2c4b7f99919e2e8a5333d2bc12ee5d",
-          "image": "eu.gcr.io/amazing-chalice-243510/resource-cleaner@sha256:08b4bb891506388fe6bc96490c3ee8117a2c4b7f99919e2e8a5333d2bc12ee5d",
-          "name": "resource_cleaner"
-        },
-        {
-          "digest": "sha256:6015efd6fe0f935ee77588573d1f1e8c4a4d453d27e6925ef1c89fbab0aa1068",
-          "image": "eu.gcr.io/amazing-chalice-243510/minio@sha256:6015efd6fe0f935ee77588573d1f1e8c4a4d453d27e6925ef1c89fbab0aa1068",
-          "name": "minio"
-        },
-        {
-          "digest": "sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
-          "image": "eu.gcr.io/amazing-chalice-243510/dex@sha256:040caf348ac11511b63271dd473bf31bf1d96d3e0fcbfc40e6d1bf4df2bb0f76",
-          "name": "dex"
-        },
-        {
-          "digest": "sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
-          "image": "eu.gcr.io/amazing-chalice-243510/trilio-init@sha256:73dd29b19b61a8fea3c4b94c7e479a5bc4546abf00deb35d47341b83246abf62",
-          "name": "tvk_init"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.7.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.7.0",
-      "version_original": "2.7.0"
-    },
-    {
-      "_id": "621e1ca283933ad10b40bb07",
-      "alm_examples": [
-        {
-          "api_version": "pmem-csi.intel.com/v1beta1",
-          "kind": "PmemCSIDeployment",
-          "metadata": {
-            "name": "pmem-csi.intel.com"
-          },
-          "spec": {
-            "deviceMode": "lvm",
-            "nodeSelector": {
-              "feature.node.kubernetes.io/memory-nv.dax": "true"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
-      "bundle_path_digest": "sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-01T13:16:18.551000+00:00",
-      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
-      "csv_display_name": "Operator for PMEM-CSI driver",
-      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
-      "csv_name": "pmem-csi-operator-os.v1.0.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:06:04.614000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "pmem-csi-operator-os",
-      "provided_apis": [
-        {
-          "group": "pmem-csi.intel.com",
-          "kind": "PmemCSIDeployment",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Intel\u00ae Corporation",
-      "related_images": [
-        {
-          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "name": "pmem-csi-driver-os-6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576-annotation"
-        },
-        {
-          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "name": "pmem-csi-operator-os"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.0.2",
-      "version_original": "1.0.2"
-    },
-    {
-      "_id": "621e1ca283933ad10b40bb08",
-      "alm_examples": [
-        {
-          "api_version": "pmem-csi.intel.com/v1beta1",
-          "kind": "PmemCSIDeployment",
-          "metadata": {
-            "name": "pmem-csi.intel.com"
-          },
-          "spec": {
-            "deviceMode": "lvm",
-            "nodeSelector": {
-              "feature.node.kubernetes.io/memory-nv.dax": "true"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
-      "bundle_path_digest": "sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-01T13:16:18.749000+00:00",
-      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
-      "csv_display_name": "Operator for PMEM-CSI driver",
-      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
-      "csv_name": "pmem-csi-operator-os.v1.0.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:06:10.308000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "pmem-csi-operator-os",
-      "provided_apis": [
-        {
-          "group": "pmem-csi.intel.com",
-          "kind": "PmemCSIDeployment",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Intel\u00ae Corporation",
-      "related_images": [
-        {
-          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "name": "pmem-csi-driver-os-6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576-annotation"
-        },
-        {
-          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "name": "pmem-csi-operator-os"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.0.2",
-      "version_original": "1.0.2"
-    },
-    {
       "_id": "621e2075207e0eb39180835f",
       "alm_examples": [
         {
@@ -14828,9 +14327,378 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "1.6.2-alpha",
       "version_original": "1.6.2-alpha"
+    },
+    {
+      "_id": "622d07f6353810fe31bdf858",
+      "alm_examples": [
+        {
+          "api_version": "manta.getmanta.com/v1alpha1",
+          "kind": "MantaAuth",
+          "metadata": {
+            "name": "mantaauth-sample"
+          },
+          "spec": {
+            "imagePullSecrets": "manta-registry-credentials",
+            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
+            "mantaFlowCredentials": "mantaflow-credentials",
+            "mantaVersion": "35.1.0",
+            "replicas": 1,
+            "storageClassName": "ibmc-block-custom"
+          }
+        },
+        {
+          "api_version": "manta.getmanta.com/v1alpha1",
+          "kind": "MantaFlow",
+          "metadata": {
+            "name": "mantaflow-sample"
+          },
+          "spec": {
+            "connectors": {
+              "wkc": {
+                "enabled": false,
+                "logInfo": true,
+                "routeName": "cpd",
+                "tlsSecretName": "internal-tls"
+              }
+            },
+            "imagePullSecrets": "manta-registry-credentials",
+            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
+            "mantaFlowCredentials": "mantaflow-credentials",
+            "mantaFlowKeys": "mantaflow-keys",
+            "mantaVersion": "35.1.0",
+            "replicas": 1,
+            "storageClassName": "ibmc-block-custom"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/manta-ubi8/mantaflow-operator-bundle@sha256:7bf755c3a71510a8c83d993ea233ca7ebde44cda083b4ca4f481fa0521d3dd62",
+      "bundle_path_digest": "sha256:7bf755c3a71510a8c83d993ea233ca7ebde44cda083b4ca4f481fa0521d3dd62",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-12T20:52:06.888000+00:00",
+      "csv_description": "# MANTA Flow\nMANTA is a Unified Lineage Platform for Data Lineage.  MANTA performs code scanning for lineage that is illustrated to the detailed attribute level with transformations.   Extreme color coding and filtering to make lineage consumable.  Also includes time-slicing for historical lineage analysis.\n\n## Features\n* **Create/Destroy**: Launch MANTA Flow Container deployment.\n* **Scaling to zero**: Scale down the deployment (turn off the container).\n\n## Prerequisites and Requirements\n### MANTA Flow Namespace\nMANTA should be installed into its own namespace.\n\nFor additional installation documentation see a [MANTA Flow Container documentation](https://mantatools.atlassian.net/wiki/spaces/MTKB/pages/2450620467/MANTA+Flow+Container)\nin the MANTA Flow Knowledge Base.\n\n### MANTA Flow Operator\nThe MANTA Flow Operator is responsible for deployment and management of MANTA Flow container deployment.\n\n### Memory Considerations\nMANTA Flow is a memory intensive application. The MANTA Flow Container will specify the memory and cpu requirements for both request and limits. Also, the minimum storage requirements are specified for the persistent volumes (PVs).\n\n### MANTA Flow license.key\nValid license.key needs to be provided in order to successfully launch MANTA Flow Container.\n\n## MANTA Flow Deployment\n\n### Secrets\nCreate a secret for MANTA Flow license.key by:\n    \n    oc create secret generic mantaflow-keys --from-file=<path to license.key>/license.key\n\nCreate an initial admin credentials `username` and `password` and a MANTA master password, which is used for encryption of sensitive data in the persistent storage.\n\n    oc create secret generic mantaflow-credentials --from-literal=username=<manta admin username> --from-literal=password=<manta admin password> --from-literal=MANTA_MASTERPASSWORD=<password for encryption>\n\n### Create MANTA Auth Custom Resource\nCreate a MANTA Auth custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n### Create MANTA Flow Custom Resource\nCreate a MANTA Flow custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n## Scaling\nMANTA Flow currently supports scaling to zero. This means you can set `replicas: 0` in MANTA Flow Custom Resource Definition (CRD) and MANTA Flow container will be stopped.\n\nBy setting `replicas: 1` MANTA Flow will be scaled to be running on 1 container. All other values of `replicas` are considered invalid.\n",
+      "csv_display_name": "MANTA Flow Operator",
+      "csv_metadata_description": "",
+      "csv_name": "mantaflow-operator.v35.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:02:35.034000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "mantaflow-operator",
+      "provided_apis": [
+        {
+          "group": "manta.getmanta.com",
+          "kind": "MantaFlow",
+          "plural": "mantaflows",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "manta.getmanta.com",
+          "kind": "MantaAuth",
+          "plural": "mantaauths",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "MANTA Software",
+      "related_images": [
+        {
+          "digest": "sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
+          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
+          "name": "mantaflow-operator-15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d-annotation"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
+          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "35.1.0",
+      "version_original": "35.1.0"
+    },
+    {
+      "_id": "622d0bdc353810fe31bdf859",
+      "alm_examples": [
+        {
+          "api_version": "manta.getmanta.com/v1alpha1",
+          "kind": "MantaAuth",
+          "metadata": {
+            "name": "mantaauth-sample"
+          },
+          "spec": {
+            "imagePullSecrets": "manta-registry-credentials",
+            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
+            "mantaFlowCredentials": "mantaflow-credentials",
+            "mantaVersion": "35.1.0",
+            "replicas": 1,
+            "storageClassName": "ibmc-block-custom"
+          }
+        },
+        {
+          "api_version": "manta.getmanta.com/v1alpha1",
+          "kind": "MantaFlow",
+          "metadata": {
+            "name": "mantaflow-sample"
+          },
+          "spec": {
+            "connectors": {
+              "wkc": {
+                "enabled": false,
+                "logInfo": true,
+                "routeName": "cpd",
+                "tlsSecretName": "internal-tls"
+              }
+            },
+            "imagePullSecrets": "manta-registry-credentials",
+            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
+            "mantaFlowCredentials": "mantaflow-credentials",
+            "mantaFlowKeys": "mantaflow-keys",
+            "mantaVersion": "35.1.0",
+            "replicas": 1,
+            "storageClassName": "ibmc-block-custom"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/manta-ubi8/mantaflow-operator-bundle@sha256:7bf755c3a71510a8c83d993ea233ca7ebde44cda083b4ca4f481fa0521d3dd62",
+      "bundle_path_digest": "sha256:7bf755c3a71510a8c83d993ea233ca7ebde44cda083b4ca4f481fa0521d3dd62",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-12T21:08:44.462000+00:00",
+      "csv_description": "# MANTA Flow\nMANTA is a Unified Lineage Platform for Data Lineage.  MANTA performs code scanning for lineage that is illustrated to the detailed attribute level with transformations.   Extreme color coding and filtering to make lineage consumable.  Also includes time-slicing for historical lineage analysis.\n\n## Features\n* **Create/Destroy**: Launch MANTA Flow Container deployment.\n* **Scaling to zero**: Scale down the deployment (turn off the container).\n\n## Prerequisites and Requirements\n### MANTA Flow Namespace\nMANTA should be installed into its own namespace.\n\nFor additional installation documentation see a [MANTA Flow Container documentation](https://mantatools.atlassian.net/wiki/spaces/MTKB/pages/2450620467/MANTA+Flow+Container)\nin the MANTA Flow Knowledge Base.\n\n### MANTA Flow Operator\nThe MANTA Flow Operator is responsible for deployment and management of MANTA Flow container deployment.\n\n### Memory Considerations\nMANTA Flow is a memory intensive application. The MANTA Flow Container will specify the memory and cpu requirements for both request and limits. Also, the minimum storage requirements are specified for the persistent volumes (PVs).\n\n### MANTA Flow license.key\nValid license.key needs to be provided in order to successfully launch MANTA Flow Container.\n\n## MANTA Flow Deployment\n\n### Secrets\nCreate a secret for MANTA Flow license.key by:\n    \n    oc create secret generic mantaflow-keys --from-file=<path to license.key>/license.key\n\nCreate an initial admin credentials `username` and `password` and a MANTA master password, which is used for encryption of sensitive data in the persistent storage.\n\n    oc create secret generic mantaflow-credentials --from-literal=username=<manta admin username> --from-literal=password=<manta admin password> --from-literal=MANTA_MASTERPASSWORD=<password for encryption>\n\n### Create MANTA Auth Custom Resource\nCreate a MANTA Auth custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n### Create MANTA Flow Custom Resource\nCreate a MANTA Flow custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n## Scaling\nMANTA Flow currently supports scaling to zero. This means you can set `replicas: 0` in MANTA Flow Custom Resource Definition (CRD) and MANTA Flow container will be stopped.\n\nBy setting `replicas: 1` MANTA Flow will be scaled to be running on 1 container. All other values of `replicas` are considered invalid.\n",
+      "csv_display_name": "MANTA Flow Operator",
+      "csv_metadata_description": "",
+      "csv_name": "mantaflow-operator.v35.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:37:26.086000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "mantaflow-operator",
+      "provided_apis": [
+        {
+          "group": "manta.getmanta.com",
+          "kind": "MantaAuth",
+          "plural": "mantaauths",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "manta.getmanta.com",
+          "kind": "MantaFlow",
+          "plural": "mantaflows",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "MANTA Software",
+      "related_images": [
+        {
+          "digest": "sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
+          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
+          "name": "mantaflow-operator-15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d-annotation"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
+          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "35.1.0",
+      "version_original": "35.1.0"
+    },
+    {
+      "_id": "622d29a9f19c93b02846c88d",
+      "alm_examples": [
+        {
+          "api_version": "manta.getmanta.com/v1alpha1",
+          "kind": "MantaAuth",
+          "metadata": {
+            "name": "mantaauth-sample"
+          },
+          "spec": {
+            "imagePullSecrets": "manta-registry-credentials",
+            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
+            "mantaFlowCredentials": "mantaflow-credentials",
+            "mantaVersion": "35.1.0",
+            "replicas": 1,
+            "storageClassName": "ibmc-block-custom"
+          }
+        },
+        {
+          "api_version": "manta.getmanta.com/v1alpha1",
+          "kind": "MantaFlow",
+          "metadata": {
+            "name": "mantaflow-sample"
+          },
+          "spec": {
+            "connectors": {
+              "wkc": {
+                "enabled": false,
+                "logInfo": true,
+                "routeName": "cpd",
+                "tlsSecretName": "internal-tls"
+              }
+            },
+            "imagePullSecrets": "manta-registry-credentials",
+            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
+            "mantaFlowCredentials": "mantaflow-credentials",
+            "mantaFlowKeys": "mantaflow-keys",
+            "mantaVersion": "35.1.0",
+            "replicas": 1,
+            "storageClassName": "ibmc-block-custom"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/manta-ubi8/mantaflow-operator-bundle@sha256:7bf755c3a71510a8c83d993ea233ca7ebde44cda083b4ca4f481fa0521d3dd62",
+      "bundle_path_digest": "sha256:7bf755c3a71510a8c83d993ea233ca7ebde44cda083b4ca4f481fa0521d3dd62",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-12T23:15:53.616000+00:00",
+      "csv_description": "# MANTA Flow\nMANTA is a Unified Lineage Platform for Data Lineage.  MANTA performs code scanning for lineage that is illustrated to the detailed attribute level with transformations.   Extreme color coding and filtering to make lineage consumable.  Also includes time-slicing for historical lineage analysis.\n\n## Features\n* **Create/Destroy**: Launch MANTA Flow Container deployment.\n* **Scaling to zero**: Scale down the deployment (turn off the container).\n\n## Prerequisites and Requirements\n### MANTA Flow Namespace\nMANTA should be installed into its own namespace.\n\nFor additional installation documentation see a [MANTA Flow Container documentation](https://mantatools.atlassian.net/wiki/spaces/MTKB/pages/2450620467/MANTA+Flow+Container)\nin the MANTA Flow Knowledge Base.\n\n### MANTA Flow Operator\nThe MANTA Flow Operator is responsible for deployment and management of MANTA Flow container deployment.\n\n### Memory Considerations\nMANTA Flow is a memory intensive application. The MANTA Flow Container will specify the memory and cpu requirements for both request and limits. Also, the minimum storage requirements are specified for the persistent volumes (PVs).\n\n### MANTA Flow license.key\nValid license.key needs to be provided in order to successfully launch MANTA Flow Container.\n\n## MANTA Flow Deployment\n\n### Secrets\nCreate a secret for MANTA Flow license.key by:\n    \n    oc create secret generic mantaflow-keys --from-file=<path to license.key>/license.key\n\nCreate an initial admin credentials `username` and `password` and a MANTA master password, which is used for encryption of sensitive data in the persistent storage.\n\n    oc create secret generic mantaflow-credentials --from-literal=username=<manta admin username> --from-literal=password=<manta admin password> --from-literal=MANTA_MASTERPASSWORD=<password for encryption>\n\n### Create MANTA Auth Custom Resource\nCreate a MANTA Auth custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n### Create MANTA Flow Custom Resource\nCreate a MANTA Flow custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n## Scaling\nMANTA Flow currently supports scaling to zero. This means you can set `replicas: 0` in MANTA Flow Custom Resource Definition (CRD) and MANTA Flow container will be stopped.\n\nBy setting `replicas: 1` MANTA Flow will be scaled to be running on 1 container. All other values of `replicas` are considered invalid.\n",
+      "csv_display_name": "MANTA Flow Operator",
+      "csv_metadata_description": "",
+      "csv_name": "mantaflow-operator.v35.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:49:26.784000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "mantaflow-operator",
+      "provided_apis": [
+        {
+          "group": "manta.getmanta.com",
+          "kind": "MantaFlow",
+          "plural": "mantaflows",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "manta.getmanta.com",
+          "kind": "MantaAuth",
+          "plural": "mantaauths",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "MANTA Software",
+      "related_images": [
+        {
+          "digest": "sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
+          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
+          "name": "mantaflow-operator-15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d-annotation"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
+          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "35.1.0",
+      "version_original": "35.1.0"
     }
   ],
   "page": 21,
   "page_size": 100,
-  "total": 4796
+  "total": 4801
 }
