@@ -21,6 +21,7 @@ import (
 
 	"github.com/onsi/ginkgo/v2/types"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
