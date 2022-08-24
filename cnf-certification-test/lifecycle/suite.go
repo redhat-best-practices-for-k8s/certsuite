@@ -50,7 +50,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
 
-	/*testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestShutdownIdentifier)
+	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestShutdownIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		testContainersPreStop(&env)
@@ -146,9 +146,9 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPersistentVolumeReclaimPolicyIdentifier)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testPodPersistentVolumeReclaimPolicy(&env)
-	})*/
+	})
 
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestContainersImageTag)
+	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestContainersImageTag)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		testContainersImageTag(&env)
