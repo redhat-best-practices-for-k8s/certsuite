@@ -491,7 +491,7 @@ Unique ID|http://test-network-function.com/testcases/lifecycle/test-containers-i
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/lifecycle/test-containers-image-tag Check that image tag exists on containers.
 Result Type|informative
-Suggested Remediation|Ensure that all the container iamge are tagged
+Suggested Remediation|Ensure that all the container images are tagged
 Best Practice Reference|https://TODO Section 4.6.12
 Exception Process|There is no documented exception process for this.
 
