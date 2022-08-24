@@ -1,2314 +1,6 @@
 {
   "data": [
     {
-      "_id": "6234603b314381d2b0756b43",
-      "alm_examples": [
-        {
-          "api_version": "charts.cloudbees.com/v1alpha1",
-          "kind": "CloudBeesCI",
-          "metadata": {
-            "name": "cloudbeesci-sample"
-          },
-          "spec": {
-            "Agents": {
-              "Enabled": true,
-              "Image": {
-                "dockerImage": "cloudbees/cloudbees-core-agent:2.289.3.2"
-              },
-              "SeparateNamespace": {
-                "Create": false,
-                "Enabled": false
-              }
-            },
-            "Hibernation": {
-              "Enabled": false,
-              "Image": {
-                "dockerImage": "cloudbees/managed-master-hibernation-monitor:247.c5dfce00a179"
-              },
-              "NodeSelector": {},
-              "Tolerations": []
-            },
-            "Master": {
-              "Enabled": true,
-              "Image": {
-                "dockerImage": "cloudbees/cloudbees-core-mm:2.289.3.2"
-              }
-            },
-            "NetworkPolicy": {
-              "Enabled": false,
-              "JMXSelectors": [],
-              "ingressControllerSelector": []
-            },
-            "OperationsCenter": {
-              "AgentListenerPort": 50000,
-              "Annotations": {},
-              "CSRF": {
-                "ProxyCompatibility": false
-              },
-              "CasC": {
-                "ConfigMapName": "oc-casc-bundle",
-                "Enabled": false
-              },
-              "ContainerPort": 8080,
-              "Enabled": true,
-              "ExtraConfigMaps": [],
-              "ExtraContainers": [],
-              "ExtraGroovyConfiguration": {},
-              "ExtraVolumeMounts": [],
-              "ExtraVolumes": [],
-              "HealthProbeLivenessFailureThreshold": 12,
-              "HealthProbes": true,
-              "Image": {
-                "dockerImage": "cloudbees/cloudbees-cloud-core-oc:2.289.3.2"
-              },
-              "Ingress": {
-                "Annotations": {
-                  "kubernetes.io/tls-acme": "false"
-                },
-                "Class": "nginx",
-                "tls": {
-                  "Enable": false
-                }
-              },
-              "LoadBalancerSourceRanges": [
-                "0.0.0.0/0"
-              ],
-              "Name": "cjoc",
-              "NodeSelector": {},
-              "Platform": "standard",
-              "Protocol": "http",
-              "Resources": {
-                "Limits": {
-                  "Cpu": 1,
-                  "Memory": "2G"
-                },
-                "Requests": {
-                  "Cpu": 1,
-                  "Memory": "2G"
-                }
-              },
-              "Route": {
-                "tls": {
-                  "Enable": false,
-                  "InsecureEdgeTerminationPolicy": "Redirect",
-                  "Termination": "edge"
-                }
-              },
-              "ServiceAgentListenerPort": 50000,
-              "ServiceAnnotations": {},
-              "ServicePort": 80,
-              "ServiceType": "ClusterIP",
-              "Tolerations": []
-            },
-            "Persistence": {
-              "AccessMode": "ReadWriteOnce",
-              "Annotations": {},
-              "Size": "20Gi"
-            },
-            "PodSecurityPolicy": {
-              "Annotations": {},
-              "Enabled": false
-            },
-            "Subdomain": false,
-            "ingress-nginx": {
-              "Enabled": false,
-              "controller": {
-                "admissionWebhooks": {
-                  "patch": {
-                    "nodeSelector": {
-                      "kubernetes.io/os": "linux"
-                    }
-                  }
-                },
-                "ingressClass": "nginx",
-                "nodeSelector": {
-                  "kubernetes.io/os": "linux"
-                },
-                "service": {
-                  "externalTrafficPolicy": "Local"
-                }
-              },
-              "defaultBackend": {
-                "nodeSelector": {
-                  "kubernetes.io/os": "linux"
-                }
-              }
-            },
-            "nginx-ingress": {
-              "Enabled": false,
-              "controller": {
-                "ingressClass": "nginx",
-                "nodeSelector": {
-                  "kubernetes.io/os": "linux"
-                },
-                "service": {
-                  "externalTrafficPolicy": "Local"
-                }
-              },
-              "defaultBackend": {
-                "nodeSelector": {
-                  "kubernetes.io/os": "linux"
-                }
-              }
-            },
-            "rbac": {
-              "agentsServiceAccountName": "jenkins-agents",
-              "hibernationMonitorServiceAccountName": "managed-master-hibernation-monitor",
-              "install": true,
-              "masterServiceAccountName": "jenkins",
-              "serviceAccountName": "cjoc"
-            },
-            "sidecarinjector": {
-              "Enabled": false
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cloudbees/cloudbees-core-modern@sha256:2cf058c819b40512094f84f4d374457455370ec4994d34cee6e39b9d87841f05",
-      "bundle_path_digest": "sha256:2cf058c819b40512094f84f4d374457455370ec4994d34cee6e39b9d87841f05",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-18T10:34:35.226000+00:00",
-      "csv_description": "CloudBees CI",
-      "csv_display_name": "CloudBees CI",
-      "csv_metadata_description": "",
-      "csv_name": "cloudbees-ci.v3.34.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:15:58.685000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "cloudbees-ci",
-      "provided_apis": [
-        {
-          "group": "charts.cloudbees.com",
-          "kind": "CloudBeesCI",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "CloudBees",
-      "related_images": [
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:bd0bd72e9e7807b0fa307de8a93a56967221fe2dd181bac02383f0f9be9120e4",
-          "image": "registry.connect.redhat.com/cloudbees/cloudbees-ci-operator@sha256:bd0bd72e9e7807b0fa307de8a93a56967221fe2dd181bac02383f0f9be9120e4",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "3.34.1",
-      "version_original": "3.34.1"
-    },
-    {
-      "_id": "6234603d5593ce895a7b5369",
-      "alm_examples": [
-        {
-          "api_version": "federatorai.containers.ai/v1alpha1",
-          "kind": "AlamedaService",
-          "metadata": {
-            "name": "my-alamedaservice"
-          },
-          "spec": {
-            "alamedaAi": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "10Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "alamedaInfluxdb": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "100Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "fedemeterInfluxdb": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "10Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "imageLocation": "registry.connect.redhat.com/prophetstor",
-            "keycode": {
-              "codeNumber": ""
-            },
-            "storages": [
-              {
-                "accessMode": [
-                  "ReadWriteOnce"
-                ],
-                "size": "2Gi",
-                "type": "pvc",
-                "usage": "log"
-              }
-            ],
-            "version": "v4.6.1-b1655-2"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/prophetstor/federatorai-operator-bundle@sha256:66fa5c8e525ce32eef696b286ba2278c0fca6be668bda76d28f5f78dc45c37e3",
-      "bundle_path_digest": "sha256:66fa5c8e525ce32eef696b286ba2278c0fca6be668bda76d28f5f78dc45c37e3",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:34:37.349000+00:00",
-      "csv_description": "Federator.ai helps enterprises optimize cloud resources, maximize application performance, and save significant cost without excessive over-provisioning or under-provisioning of resources, meeting the service-level requirements of their applications.\n\nEnterprises often lack understanding of the resources needed to support their applications. This leads to either excessive over-provisioning or under-provisioning of resources (CPU, memory, storage). Using machine learning, Federator.ai determines the optimal cloud resources needed to support any workload on OpenShift and helps users find the best-cost instances from cloud providers for their applications.\n\n\n**Multi-layer workload prediction**\n\nUsing machine learning and math-based algorithms, Federator.ai predicts containerized application and cluster node resource usage as the basis for resource recommendations at application level as well as at cluster node level. Federator.ai supports prediction for both physical/virtual CPUs and memories.\n\n\n**Auto-scaling via resource recommendation**\n\nFederator.ai utilizes the predicted resource usage to recommend the right number and size of pods for applications. Integrated with Datadog's WPA, applications are automatically scaled to meet the predicted resource usage.\n\n\n**Application-aware recommendation execution**\n\nOptimizing the resource usage and performance goals, Federator.ai uses application specific metrics for workload prediction and pod capacity estimation to auto-scale the right number of pods for best performance without overprovisioning.\n\n\n**Multi-cloud Cost Analysis**\n\nWith resource usage prediction, Federator.ai analyzes potential cost of a cluster on different public cloud providers. It also recommend appropriate cluster nodes and instance types based on resource usage.\n\n\n**Custom Datadog/Sysdig Dashboards**\n\nPredefined custom Datadog/Sysdig Dashboards for workload prediction/recommendation visualization for cluster nodes and applications.\n\n\n**Additional resources**\n\nWant more product information? Explore detailed information about using this product and where to find additional help.\n\n* [Federator.ai Datasheet](https://prophetstor.com/wp-content/uploads/datasheets/Federator.ai.pdf)\n* [Quick Start Guide](https://prophetstor.com/wp-content/uploads/documentation/Federator.ai/Latest%20Version/ProphetStor%20Federator.ai%20Quick%20Installation%20Guide.pdf)\n* [Installation Guide](https://prophetstor.com/wp-content/uploads/2021/07/ProphetStor-Federator.ai-v4.6.1-Installation-Guide-v1.0.pdf)\n* [User Guide](https://prophetstor.com/wp-content/uploads/2021/07/Federator.ai-4.6.1-User-Guide.pdf)\n* [Company Information](https://www.prophetstor.com/)\n\n\n### Prerequisite\n*  The [Openshift](https://www.openshift.com) version 4.4.x or later if using OpenShift platform.\n*  The [Kubernetes](https://kubernetes.io/) version 1.16 or later if using Kubernetes environment.",
-      "csv_display_name": "Federator.ai",
-      "csv_metadata_description": "Federator.ai Operator provides easy configuration and management of AI-based Kubernetes resource orchestrator",
-      "csv_name": "federatorai.v4.6.1-4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:12:59.740000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "federatorai-certified",
-      "provided_apis": [
-        {
-          "group": "federatorai.containers.ai",
-          "kind": "AlamedaService",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "ProphetStor Data Services, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
-          "name": "federatorai-operator-2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d-annotation"
-        },
-        {
-          "digest": "sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
-          "name": "federatorai-operator"
-        },
-        {
-          "digest": "sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:2c7070dcd426598c97e528b4fbc79de5585c4aeb4e5902406435a9e6d7e3bf0d",
-          "name": "upgrader"
-        },
-        {
-          "digest": "sha256:17aed4cd6a97f8ee5655660d2d13911e7c99c9f304b2fa09de891e4bf3141c69",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-ai-dispatcher@sha256:17aed4cd6a97f8ee5655660d2d13911e7c99c9f304b2fa09de891e4bf3141c69",
-          "name": "ai_dispatcher"
-        },
-        {
-          "digest": "sha256:0f946dde5fcb2f631153ea778ea24cac3e53b052a6bc97d09a0d2c04a8860446",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-ai@sha256:0f946dde5fcb2f631153ea778ea24cac3e53b052a6bc97d09a0d2c04a8860446",
-          "name": "ai_engine"
-        },
-        {
-          "digest": "sha256:222f6166fef3c74f187446adf5ab6361a03231eabab88a54ebd8f6f2a0ebd5c4",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-analyzer-ubi@sha256:222f6166fef3c74f187446adf5ab6361a03231eabab88a54ebd8f6f2a0ebd5c4",
-          "name": "analyzer"
-        },
-        {
-          "digest": "sha256:7601000fdaf7b937847cea40c4ac1b60ab843b1439e8a0c7e9dc4723408055ba",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-datahub-ubi@sha256:7601000fdaf7b937847cea40c4ac1b60ab843b1439e8a0c7e9dc4723408055ba",
-          "name": "datahub"
-        },
-        {
-          "digest": "sha256:d59db2fa0cdf0b0a66955297174641bef668db1d010e306b2bb711756ca57c38",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-executor-ubi@sha256:d59db2fa0cdf0b0a66955297174641bef668db1d010e306b2bb711756ca57c38",
-          "name": "executor"
-        },
-        {
-          "digest": "sha256:ae1e6994e8e1414a117308d7fb24bccfb093aaa8492d1d357a26f9e2ab7acf7c",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-api-ubi@sha256:ae1e6994e8e1414a117308d7fb24bccfb093aaa8492d1d357a26f9e2ab7acf7c",
-          "name": "fedemeter_api"
-        },
-        {
-          "digest": "sha256:d3b5505dd4fe688071f2d685773ed691cebcb04ff35eaf41e4f7a0331ff6e688",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-influxdb@sha256:d3b5505dd4fe688071f2d685773ed691cebcb04ff35eaf41e4f7a0331ff6e688",
-          "name": "fedemeter_influxdb"
-        },
-        {
-          "digest": "sha256:c5c2794413aea8384e8325a8cd9d86b4ec29ee5652e6b3bd172f15269e1d8ae0",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-ubi@sha256:c5c2794413aea8384e8325a8cd9d86b4ec29ee5652e6b3bd172f15269e1d8ae0",
-          "name": "federatorai_agent"
-        },
-        {
-          "digest": "sha256:468dfd11a6877103809cb17f56165d06e00d93a3c89411307249f921289fc1e4",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-preloader@sha256:468dfd11a6877103809cb17f56165d06e00d93a3c89411307249f921289fc1e4",
-          "name": "federatorai_agent_preloader"
-        },
-        {
-          "digest": "sha256:5a552ec0a78ae167ad7ff8dbdb02ac3de49d60df49bcbe6ca11091077e744a12",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-frontend@sha256:5a552ec0a78ae167ad7ff8dbdb02ac3de49d60df49bcbe6ca11091077e744a12",
-          "name": "federatorai_dashboard_frontend"
-        },
-        {
-          "digest": "sha256:77709a35443202cffd2ef4df9daabd6a00ab4e536525ce99a9fd4203a0669e9a",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-backend@sha256:77709a35443202cffd2ef4df9daabd6a00ab4e536525ce99a9fd4203a0669e9a",
-          "name": "federatorai_dashboard_backend"
-        },
-        {
-          "digest": "sha256:9c4ce48758ea58003cd25351c440e9aa12664cd59ee75bed8063374815f4d4da",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-data-adapter@sha256:9c4ce48758ea58003cd25351c440e9aa12664cd59ee75bed8063374815f4d4da",
-          "name": "federatorai_data_adapter"
-        },
-        {
-          "digest": "sha256:801059280ae54de7eaa518f5701ea320696e5aa83b3cd7ef3ad82ba1e3e1d395",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-rest-ubi@sha256:801059280ae54de7eaa518f5701ea320696e5aa83b3cd7ef3ad82ba1e3e1d395",
-          "name": "federatorai_restapi"
-        },
-        {
-          "digest": "sha256:a20096b566e7dde77e7e5885a60d47e6c8824f8db896f20b90676d14f7d2bcc8",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-influxdb@sha256:a20096b566e7dde77e7e5885a60d47e6c8824f8db896f20b90676d14f7d2bcc8",
-          "name": "influxdb"
-        },
-        {
-          "digest": "sha256:87afe424d8d205b8a2f01262e3edac73e8f3eee0aa597610b8a4ee57e17f4ac0",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-notifier-ubi@sha256:87afe424d8d205b8a2f01262e3edac73e8f3eee0aa597610b8a4ee57e17f4ac0",
-          "name": "notifier"
-        },
-        {
-          "digest": "sha256:d4fceace6cc1f0e80b8b6abe870ec9722ea69e91c481246b13e3d50a2c3e1ffb",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-operator-ubi@sha256:d4fceace6cc1f0e80b8b6abe870ec9722ea69e91c481246b13e3d50a2c3e1ffb",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:2b61bfd1ba9186cc50b8f960f54d0ec94643715292bb874762009b3045477799",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-rabbitmq@sha256:2b61bfd1ba9186cc50b8f960f54d0ec94643715292bb874762009b3045477799",
-          "name": "rabbitmq"
-        },
-        {
-          "digest": "sha256:288cb6c29200d07451b8e2ab53b9a5112108cb5f2b6dc288026f9c2f12f5f9fd",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:288cb6c29200d07451b8e2ab53b9a5112108cb5f2b6dc288026f9c2f12f5f9fd",
-          "name": "recommender"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "4.6.1-4",
-      "version_original": "4.6.1-4"
-    },
-    {
-      "_id": "6234603f314381d2b0756b44",
-      "alm_examples": [
-        {
-          "api_version": "federatorai.containers.ai/v1alpha1",
-          "kind": "AlamedaService",
-          "metadata": {
-            "name": "my-alamedaservice"
-          },
-          "spec": {
-            "alamedaAi": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "10Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "alamedaInfluxdb": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "100Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "fedemeterInfluxdb": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "10Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "imageLocation": "registry.connect.redhat.com/prophetstor",
-            "storages": [
-              {
-                "accessMode": [
-                  "ReadWriteOnce"
-                ],
-                "size": "2Gi",
-                "type": "pvc",
-                "usage": "log"
-              }
-            ],
-            "version": "v4.7.1-b1760"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/prophetstor/federatorai-operator-bundle@sha256:d0ac978d749654ddf4cc20823805ba7d33ee62e9a7ec98fdd53d9926b697c347",
-      "bundle_path_digest": "sha256:d0ac978d749654ddf4cc20823805ba7d33ee62e9a7ec98fdd53d9926b697c347",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:34:39.845000+00:00",
-      "csv_description": "Federator.ai helps enterprises optimize cloud resources, maximize application performance, and save significant cost without excessive over-provisioning or under-provisioning of resources, meeting the service-level requirements of their applications.\n\nEnterprises often lack understanding of the resources needed to support their applications. This leads to either excessive over-provisioning or under-provisioning of resources (CPU, memory, storage). Using machine learning, Federator.ai determines the optimal cloud resources needed to support any workload on OpenShift and helps users find the best-cost instances from cloud providers for their applications.\n\n\n**Multi-layer workload prediction**\n\nUsing machine learning and math-based algorithms, Federator.ai predicts containerized application and cluster node resource usage as the basis for resource recommendations at application level as well as at cluster node level. Federator.ai supports prediction for both physical/virtual CPUs and memories.\n\n\n**Auto-scaling via resource recommendation**\n\nFederator.ai utilizes the predicted resource usage to recommend the right number and size of pods for applications. Integrated with Datadog's WPA, applications are automatically scaled to meet the predicted resource usage.\n\n\n**Application-aware recommendation execution**\n\nOptimizing the resource usage and performance goals, Federator.ai uses application specific metrics for workload prediction and pod capacity estimation to auto-scale the right number of pods for best performance without overprovisioning.\n\n\n**Multi-cloud Cost Analysis**\n\nWith resource usage prediction, Federator.ai analyzes potential cost of a cluster on different public cloud providers. It also recommend appropriate cluster nodes and instance types based on resource usage.\n\n\n**Custom Datadog/Sysdig Dashboards**\n\nPredefined custom Datadog/Sysdig Dashboards for workload prediction/recommendation visualization for cluster nodes and applications.\n\n\n**Additional resources**\n\nWant more product information? Explore detailed information about using this product and where to find additional help.\n\n* [Federator.ai Datasheet](https://prophetstor.com/wp-content/uploads/datasheets/Federator.ai.pdf)\n* [Quick Start Guide](https://prophetstor.com/wp-content/uploads/documentation/Federator.ai/Latest%20Version/ProphetStor%20Federator.ai%20Quick%20Installation%20Guide.pdf)\n* [Installation Guide](https://prophetstor.com/wp-content/uploads/2021/08/ProphetStor-Federator.ai-v4.7.0-Installation-Guide-v1.0.pdf)\n* [User Guide](https://prophetstor.com/wp-content/uploads/2021/08/Federator.ai-4.7.0-User-Guide.pdf)\n* [Release Notes](https://prophetstor.com/wp-content/uploads/2021/08/Federator.ai-4.7.0-Release-Notes.pdf)\n* [Company Information](https://www.prophetstor.com/)\n\n\n### Prerequisite\n*  The [Openshift](https://www.openshift.com) version 4.4.x or later if using OpenShift platform.\n*  The [Kubernetes](https://kubernetes.io/) version 1.16 or later if using Kubernetes environment.",
-      "csv_display_name": "Federator.ai",
-      "csv_metadata_description": "Federator.ai Operator provides easy configuration and management of AI-based Kubernetes resource orchestrator",
-      "csv_name": "federatorai.v4.7.1-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:13:06.131000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "federatorai-certified",
-      "provided_apis": [
-        {
-          "group": "federatorai.containers.ai",
-          "kind": "AlamedaService",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "ProphetStor Data Services, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
-          "name": "federatorai-operator-bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047-annotation"
-        },
-        {
-          "digest": "sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
-          "name": "federatorai-operator"
-        },
-        {
-          "digest": "sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:bdd87f6b7d7ba9d12ed8ddb9c5151e5a89781e88d7a02b73814b16a766968047",
-          "name": "upgrader"
-        },
-        {
-          "digest": "sha256:6e0dc1136b0f8e5971d92b95ce0d6dfac475044c073bada50f23b315f4478ae4",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-ai-dispatcher@sha256:6e0dc1136b0f8e5971d92b95ce0d6dfac475044c073bada50f23b315f4478ae4",
-          "name": "ai_dispatcher"
-        },
-        {
-          "digest": "sha256:9293298bb2a72d0b0764050b6f6d8da707b46a83363a3b6aa7be60f512e2ec61",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-ai@sha256:9293298bb2a72d0b0764050b6f6d8da707b46a83363a3b6aa7be60f512e2ec61",
-          "name": "ai_engine"
-        },
-        {
-          "digest": "sha256:6117ac4692793d49bc0204f13091dec119bdbc7b169e9deb86c243aca00ded27",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-analyzer-ubi@sha256:6117ac4692793d49bc0204f13091dec119bdbc7b169e9deb86c243aca00ded27",
-          "name": "analyzer"
-        },
-        {
-          "digest": "sha256:3819d6acce8d376dbe3b12469be2528d0ce9ac95c2a86507aeb76b6e3a5f5f38",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-datahub-ubi@sha256:3819d6acce8d376dbe3b12469be2528d0ce9ac95c2a86507aeb76b6e3a5f5f38",
-          "name": "datahub"
-        },
-        {
-          "digest": "sha256:4512e3be7a89d0ca9f120b68f6ab9766d000bf2b01b279cd55b2dbc433aacfb6",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-executor-ubi@sha256:4512e3be7a89d0ca9f120b68f6ab9766d000bf2b01b279cd55b2dbc433aacfb6",
-          "name": "executor"
-        },
-        {
-          "digest": "sha256:451456207fe8d16b9824b3f64d00645766dcccbc8d685b6942e6c00d0d0c627e",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-api-ubi@sha256:451456207fe8d16b9824b3f64d00645766dcccbc8d685b6942e6c00d0d0c627e",
-          "name": "fedemeter_api"
-        },
-        {
-          "digest": "sha256:36904f003e8e29d4a9fd738655f401fbe840d60158d7d820cda79a09858dc2c2",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-influxdb@sha256:36904f003e8e29d4a9fd738655f401fbe840d60158d7d820cda79a09858dc2c2",
-          "name": "fedemeter_influxdb"
-        },
-        {
-          "digest": "sha256:cfadc84f31f3776ded15d4d8dda92e00b7d9b1bce0ff5440277176292f9304d3",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-ubi@sha256:cfadc84f31f3776ded15d4d8dda92e00b7d9b1bce0ff5440277176292f9304d3",
-          "name": "federatorai_agent"
-        },
-        {
-          "digest": "sha256:66daea6193e399f8363df5ba42e1fcd643db6df3a9075dbcd8c3464fdc91e776",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-preloader@sha256:66daea6193e399f8363df5ba42e1fcd643db6df3a9075dbcd8c3464fdc91e776",
-          "name": "federatorai_agent_preloader"
-        },
-        {
-          "digest": "sha256:1c1147425ca6302103363a1a3bcf27baeef13b10ec6780ef266b7f52fe27ffeb",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-frontend@sha256:1c1147425ca6302103363a1a3bcf27baeef13b10ec6780ef266b7f52fe27ffeb",
-          "name": "federatorai_dashboard_frontend"
-        },
-        {
-          "digest": "sha256:022dbf6696edb8eaf389fdbd1dff14c40a51c237c01f8a02a7ea65c60cd59f38",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-backend@sha256:022dbf6696edb8eaf389fdbd1dff14c40a51c237c01f8a02a7ea65c60cd59f38",
-          "name": "federatorai_dashboard_backend"
-        },
-        {
-          "digest": "sha256:adf5d655fa030dc05133516d45642d7282fdd66e0aa8e7a7331ed614a41d3fe0",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-data-adapter@sha256:adf5d655fa030dc05133516d45642d7282fdd66e0aa8e7a7331ed614a41d3fe0",
-          "name": "federatorai_data_adapter"
-        },
-        {
-          "digest": "sha256:3e92528615543ea900bf38387c4eb8439b60759be5be2ac5311a9dbaafc7026b",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-rest-ubi@sha256:3e92528615543ea900bf38387c4eb8439b60759be5be2ac5311a9dbaafc7026b",
-          "name": "federatorai_restapi"
-        },
-        {
-          "digest": "sha256:485c2119a6a56807e28ad03b2087129950118b55531126a66bb414063052ae76",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-influxdb@sha256:485c2119a6a56807e28ad03b2087129950118b55531126a66bb414063052ae76",
-          "name": "influxdb"
-        },
-        {
-          "digest": "sha256:1f75034fb78d62924a87cb4a5435661b4afa990d6960431e784029742fbae0da",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-notifier-ubi@sha256:1f75034fb78d62924a87cb4a5435661b4afa990d6960431e784029742fbae0da",
-          "name": "notifier"
-        },
-        {
-          "digest": "sha256:9a863394cb1c89228223b26addb0d12bb91a97233fe2d5d19ecd5998e0cfe0d6",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-operator-ubi@sha256:9a863394cb1c89228223b26addb0d12bb91a97233fe2d5d19ecd5998e0cfe0d6",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:b396d9aa0470e593a36f5799c04fc3c9e59b5723f703f4b019f7ef92528e6741",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-rabbitmq@sha256:b396d9aa0470e593a36f5799c04fc3c9e59b5723f703f4b019f7ef92528e6741",
-          "name": "rabbitmq"
-        },
-        {
-          "digest": "sha256:13e941df9252cea3024ecb5e2247a696b64928015c1a3a4a04ee4e362388b1e4",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:13e941df9252cea3024ecb5e2247a696b64928015c1a3a4a04ee4e362388b1e4",
-          "name": "federatorai_recommend_dispatcher"
-        },
-        {
-          "digest": "sha256:13e941df9252cea3024ecb5e2247a696b64928015c1a3a4a04ee4e362388b1e4",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:13e941df9252cea3024ecb5e2247a696b64928015c1a3a4a04ee4e362388b1e4",
-          "name": "federatorai_recommend_worker"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "4.7.1-1",
-      "version_original": "4.7.1-1"
-    },
-    {
-      "_id": "623460415593ce895a7b536a",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "fast",
-      "creation_date": "2022-03-18T10:34:41.539000+00:00",
-      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
-      "csv_display_name": "Run:AI",
-      "csv_metadata_description": "",
-      "csv_name": "installkit-customer.v2.0.15",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:30:58.762000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "installkit-customer",
-      "provided_apis": [],
-      "provider": "Run:AI Labs",
-      "related_images": [
-        {
-          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "name": "operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2.1.5",
-      "version_original": "2.1.5"
-    },
-    {
-      "_id": "62346043314381d2b0756b45",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-03-18T10:34:43.572000+00:00",
-      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
-      "csv_display_name": "Run:AI",
-      "csv_metadata_description": "",
-      "csv_name": "installkit-customer.v2.0.15",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:31:03.685000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "installkit-customer",
-      "provided_apis": [],
-      "provider": "Run:AI Labs",
-      "related_images": [
-        {
-          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "name": "operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2.1.5",
-      "version_original": "2.1.5"
-    },
-    {
-      "_id": "62346045670f4cadbafad2b3",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:34:45.862000+00:00",
-      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
-      "csv_display_name": "Run:AI",
-      "csv_metadata_description": "",
-      "csv_name": "installkit-customer.v2.0.15",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:30:52.113000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "installkit-customer",
-      "provided_apis": [],
-      "provider": "Run:AI Labs",
-      "related_images": [
-        {
-          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "name": "operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2.1.5",
-      "version_original": "2.1.5"
-    },
-    {
-      "_id": "623460475593ce895a7b536b",
-      "alm_examples": [
-        {
-          "api_version": "dynatrace.com/v1alpha1",
-          "kind": "DynaKube",
-          "metadata": {
-            "name": "dynakube",
-            "namespace": "dynatrace"
-          },
-          "spec": {
-            "activeGate": {
-              "image": ""
-            },
-            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api",
-            "classicFullStack": {
-              "enabled": true,
-              "tolerations": [
-                {
-                  "effect": "NoSchedule",
-                  "key": "node-role.kubernetes.io/master",
-                  "operator": "Exists"
-                }
-              ]
-            },
-            "kubernetesMonitoring": {
-              "enabled": true
-            },
-            "oneAgent": {
-              "image": ""
-            },
-            "routing": {
-              "enabled": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-operator-bundle@sha256:1a3898915535373eed8f860b8eb906fa2ecaebbb95c4e2d74488e12ca1540f9b",
-      "bundle_path_digest": "sha256:1a3898915535373eed8f860b8eb906fa2ecaebbb95c4e2d74488e12ca1540f9b",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-18T10:34:47.845000+00:00",
-      "csv_description": "The Dynatrace Operator supports rollout and lifecycle of various Dynatrace components in Kubernetes and OpenShift.\n\nAs of launch, the Dynatrace Operator can be used to deploy a containerized ActiveGate for Kubernetes API monitoring. New capabilities will be added to the Dynatrace Operator over time including metric routing, and API monitoring for AWS, Azure, GCP, and vSphere.\n\nWith v0.2.0 we added the classicFullStack functionality which allows rolling out the OneAgent to your Kubernetes cluster.\nFurthermore, the Dynatrace Operator is now capable of rolling out a containerized ActiveGate for routing the OneAgent traffic.\n\n### Installation\nOnce you've installed the Dynatrace Operator, you can create a DynaKube custom resource.\n\nFirst, please add a Secret within the Project you've deployed the Dynatrace Operator to, which would contain your API and PaaS tokens. Create tokens of type *Dynatrace API* (`API_TOKEN`) and *Platform as a Service* (`PAAS_TOKEN`) and use their values in the following commands respectively.\n\nFor assistance please refer to [Create user-generated access tokens](https://www.dynatrace.com/support/help/shortlink/token#create-user-generated-access-tokens).\n\n``` $ oc -n <project> create secret generic dynakube --from-literal=\"apiToken=API_TOKEN\" --from-literal=\"paasToken=PAAS_TOKEN\" ```\n\nYou may update this Secret at any time to rotate the tokens.\n\nAfter creation of the secret add the DynaKube object in the project where the Dynatrace Operator has been deployed, configured to your needs.\n\n### Required Parameters\n* `apiUrl` - provide the URL to the API of your Dynatrace environment. In Dynatrace SaaS it will look like `https://<ENVIRONMENTID>.live.dynatrace.com/api` . In Dynatrace Managed like `https://<YourDynatraceServerURL>/e/<ENVIRONMENTID>/api` .\n\n### Advanced Options\n* **Disable Certificate Checking** - disable any certificate validation that may interact poorly with proxies with in your cluster\n* **Image Override** - use a copy of the ActiveGate container image from a registry other than Docker's or Red Hat's\n\n#### Kubernetes Monitoring\n* **Kubernetes Monitoring** - when enabled the Dynatrace Operator will create a containerized ActiveGate with the capability to monitor your OpenShift cluster\n* **Replicas** - defines how many replicas of the containerized ActiveGate should be created\n* **NodeSelectors** - select a subset of your cluster's nodes to run the Dynatrace ActiveGate on, based on labels\n* **Environment variables** - define environment variables for the ActiveGate container\n\nFor a complete list of supported parameters please consult the [Operator Deploy Guide](https://www.dynatrace.com/support/help/shortlink/openshift-deploy).\n\n### Help\nYou can find more about our instructions in our [documentation](https://www.dynatrace.com/support/help/shortlink/openshift-deploy#install-dynatrace-operator).\n",
-      "csv_display_name": "Dynatrace Operator",
-      "csv_metadata_description": "",
-      "csv_name": "dynatrace-operator.v0.2.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:20:22.007000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "dynatrace-operator",
-      "provided_apis": [
-        {
-          "group": "dynatrace.com",
-          "kind": "DynaKube",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Dynatrace LLC",
-      "related_images": [
-        {
-          "digest": "sha256:afac1c0f4035ac032a0224f1214e12ab58fb6262f90e630598482abbfdccbac3",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:afac1c0f4035ac032a0224f1214e12ab58fb6262f90e630598482abbfdccbac3",
-          "name": "dynatrace-operator-afac1c0f4035ac032a0224f1214e12ab58fb6262f90e630598482abbfdccbac3-annotation"
-        },
-        {
-          "digest": "sha256:afac1c0f4035ac032a0224f1214e12ab58fb6262f90e630598482abbfdccbac3",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:afac1c0f4035ac032a0224f1214e12ab58fb6262f90e630598482abbfdccbac3",
-          "name": "dynatrace-operator"
-        },
-        {
-          "digest": "sha256:3975446f23bfd4cab0930d3cba62a795893f9085084e6887121ceaa94391c849",
-          "image": "registry.connect.redhat.com/dynatrace/oneagent@sha256:3975446f23bfd4cab0930d3cba62a795893f9085084e6887121ceaa94391c849",
-          "name": "dynatrace_oneagent"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.2.2",
-      "version_original": "0.2.2"
-    },
-    {
-      "_id": "6234604b670f4cadbafad2b5",
-      "alm_examples": [
-        {
-          "api_version": "vfunction.com/v1",
-          "kind": "VfunctionServer",
-          "metadata": {
-            "labels": {
-              "app.kubernetes.io/instance": "vfunction-server",
-              "app.kubernetes.io/managed-by": "operator",
-              "app.kubernetes.io/name": "vfunction",
-              "name": "vfunction"
-            },
-            "name": "example-vfunction-server",
-            "namespace": "vfunction"
-          },
-          "spec": {
-            "admin": {
-              "email": "admin@mycompany.com",
-              "name": "Admin",
-              "password": "Password1!"
-            },
-            "host": "http://my.domain.com",
-            "measurements": {
-              "auto_scaling": "No",
-              "max_number_of_services": "10",
-              "min_number_of_services": "2"
-            },
-            "org_name": "MyCompany",
-            "smtp": {
-              "identity": "",
-              "password": "",
-              "url": "",
-              "user": ""
-            },
-            "tls": {
-              "crt": "",
-              "key": ""
-            },
-            "upgrade": "Daily"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/vfunction/vfunction-server-operator-bundle@sha256:75cb80116afa46260ad077967679040ee495535933a640f152ed2e2012226d13",
-      "bundle_path_digest": "sha256:75cb80116afa46260ad077967679040ee495535933a640f152ed2e2012226d13",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:34:51.447000+00:00",
-      "csv_description": "\n## Introduction\n\n[vFunction](https://www.vfunction.com/) is a cloud-native modernization platform that combines dynamic and static code analysis, machine learning, and automation to automatically identify and extract services from existing applications. vFunction is the only platform purpose-built for modernization of Java applications.\n\nThe vFunction modernization process starts by learning the running monolithic application, and surfacing the interdependencies within it. Using AI, the platform analyzes and identifies services that can be separated from the application. This decomposition can present a range of micro, mini, or even macro services, depending on your application environment, each being an independently deployable and scalable application component.\n\nvFunction automates the extraction of these services, enabling you to modernize your monolith, quickly and easily.\n\n## The vFunction platform\n\nThe platform consists of 3 basic components; the server, the controller package, and a tools package. The server runs as an operand on an OpenShift environment. The controller package is installed on the machine that runs the monolithic application which can be either a Linux or a Windows machine, and the tools are run on a development machine, with access to the code of the monolithic application.\n\nThe controller package consists of three elements: the vFunction agent, that collects data during the dynamic analysis phase; the vFunction Viper application, that performs static analysis on the binaries of the application; and the vFunction controller that handles all the communication between the agent, Viper, and the vFunction server.\n\nThe vFunction agent is a mix of a Java and native agent, and needs to run on the JVM that is currently running your application. [Refer to the vFunction OOB Support Matrix document](https://drive.google.com/file/d/1ccq8LFab1FrYAimDUxwgjiCOdk4QuVzs/view) for a list of supported application servers and JVMs.\n\nThis operator installs a vFunction server instance to be connected later with one or more vFunction controllers installed on your application machine(s).\n\n## Before You Start\n\nThe vFunction operator requires a Red Hat OpenShift Kubernetes Application Platform 4.x.\n\nThe cluster recommended configuration (which is the same as the minimal one) should consist of:\n\n- *1 master node*\n\n- *1 worker node*\n\n- *Storage capacity enough for dynamically provision 2 PVs of 50G each*\n\n- *A default StorageClass configured*\n\nvFunction doesn\u2019t provide any encryption mechanism for data stored on any attached storage. If required, encryption can be achieved by the client by using its own external means on the storage itself.\n\nvFunction supports backup of all critical data as part of the application. Nevertheless, for complete backup of entire data it is recommended that the client apply its own storage based backup mechanism.\n\n## Install Prerequisites\n\n###Cluster:\nThe operator was certified and tested on OCP 4.6 and 4.7.\nIf you encounter any issue with other OCP versions or cloud providers please contact info@vfunction.com.\n\n###Storage:\nThe operator creates two new PersistentVolumeClaims (PVCs) during installation time. For their creation, it relies on the default StorageClass to dynamically provision two PersistentVolumes (PVs). The system must have a default StorageClass in place.\n\nBoth PersistentVolumes are accessed with ReadWriteOnce mode.\n\n###Project:\nThe operator should be installed in a new and dedicated project (namespace). If you intend to install more than one vFunction operands in the same cluster, please use different projects for each one. Installation of more than one operand on the same cluster will allow scaling by load balancing multiple applications to different vFunction servers.\n\n## Installation instructions\n\n1. Prepare the YAML file to use in the installation:\n\n    a. Copy the following YAML template into a text editor:\n\n    ```yaml\n        apiVersion: vfunction.com/v1\n        kind: VfunctionServer\n        metadata:\n          name: vfunction\n          namespace: vfunction\n          labels:\n            name: vfunction\n            app.kubernetes.io/name: vfunction\n            app.kubernetes.io/instance: vfunction-server\n            app.kubernetes.io/managed-by: operator\n        spec:\n          host: \"http://my.domain.com\"\n          org_name: \"MyCompany\"\n          upgrade: \"Daily\"\n          admin:\n            email: \"admin@mycompany.com\"\n            name: \"Admin\"\n            password: \"Password1!\"\n          smtp:\n            password: \"\"\n            url: \"\"\n            identity: \"\"\n            user: \"\"\n          measurements:\n            auto_scaling: \"No\"\n            min_number_of_services: \"2\"\n            max_number_of_services: \"10\"\n          tls:\n            crt: |\n              -----BEGIN CERTIFICATE-----\n              ...\n              -----END CERTIFICATE-----\n            key: |\n              -----BEGIN PRIVATE KEY-----\n              ...\n              -----END PRIVATE KEY-----\n    ```\n    b. Customize the template fields by replacing with your information:\n\n    - **host**: Enter the FQDN for accessing the vFunction dashboard.\n                Make sure that you use a domain name and not an IP address. Writing \"https://\" will mandate TLS while writing \"http://\" will expose the server through HTTP.\n    - **org_name**: Enter your organization name.\n    - **upgrade**: Choose auto-upgrade mode\n        - **Daily**: The operator will check for a new version every day at 3 AM and will install it automatically (default).\n        - **Always**: The operator will check for a new version every 10 minutes and will install it automatically.\n        - **Never**: The automatic upgrading mechanism is off.\n        - **Maintenance**: Put the operator in a maintenance mode.\n\n    - **admin.email**: Enter the email address of your administrator.\n    - **admin.name**: Enter the name of your administrator.\n    - **admin.password**: Enter the password you want to use for the vFunction administrator.\n                          The password should be at least 8 characters long, and consist of at least one lowercase letter, at least one uppercase letter, at least one number, and at least one special character.\n    - **smtp.user**: Enter the email address for a designated user for the SMTP server (optional).\n    - **smtp.password**: Enter this user\u2019s password (optional).\n    - **smtp.identity**: Enter this user\u2019s password (optional).\n    - **smtp.url**: Enter the SMTP server URL (optional).\n    - **tls.crt**: If your host FQDN starts with \u201chttps\u201d, paste in the certifications you have for using the TLS connection.\n    - **tls.key**: If your host FQDN starts with \u201chttps\u201d, enter the key you have for using the TLS connection.\n    - **measurements.auto_scaling**: Indicates if the measurement services auto scalling is active.\n    - **measurements.min_num_of_services**: Minimum Number of measurement service pods.\n    - **measurements.max_num_of_services**: Maximum Number of measurement service pods.\n    - **measurements.S3**: Save all measurements data to S3, instead of local PV (optional).\n        - **measurements.S3.bucket**: Measurements S3 bucket name.\n        - **measurements.S3.key**: Measurements S3 key.\n        - **measurements.S3.secret**: Measurements S3 secret.\n        - **measurements.S3.region**: Measurements S3 region.\n    - **backup.mysql.S3**: Backup MySQL to S3 (optional).\n        - **backup.mysql.S3.bucket**: MySQL backup S3 bucket name.\n        - **backup.mysql.S3.key**: MySQL backup S3 key.\n        - **backup.mysql.S3.secret**: MySQL backup S3 secret.\n        - **backup.mysql.S3.region**: MySQL backup S3 region.\n\n1. In the Installed Operators window choose and click on vFunction Operator and then Create Instance.\n1. In the Create vFunctionServer window, paste the YAML file that you created in step 1.\n1. Click Create.\n1. You can now click on your new created vFunction operand in order to see its details and installation progress.\n\n## Verifying the installation\n\nCheck that the operand installed successfully:\n\n1. Check that the \"Operand State\" property shows \u201cWorking\u201d.\n1. Check that the \"Successfully Installed\" property shows \"Yes\".\n\nIf \"Operand State\" shows \"Failed\", it indicates the operand wasn\u2019t installed correctly. Check the events and logs for all pods (operator and image containers) for any issues. In the event that you cannot troubleshoot, contact vFunction support.\n\n## After installation\n\nThe vFunction site is now accessible via the newly created vFunction application custom address, for example, my.domain.com. There are two ways you can access the vFunction dashboard.\n\n### Access using the router canonical hostname\n\n1. Update your DNS provider by creating a canonical name (CNAME) record.\nThis record should point to your host address, and to the \u201dvfunction\u201d subdomain of the  OpenShift canonical router hostname as the alias.\nFor example, ***my.domain.com.   CNAME   vfunction.apps.ocp4.my-openshift.com.***\n2. Find your cluster Router Canonical Hostname address in the newly created vfunction-route-xxx under your vFunction OpenShift project -> **Networking** -> **Routes** -> **vfunction-route-xxx** route -> **Router Canonical Hostname** field.\nYou can now access the dashboard using your defined \"host\" spec property (as above).\n\n### Access using the nginx service location\n\nYou may use this access method if your OpenShift is installed on a provider that supports exposing LoadBalancer-type services.\n1. Update your DNS provider by creating a canonical name (CNAME) record.\nThis record should point to your host address and to the vfunction-nginx-xxx service location.\nFor example, ***my.domain.com.   CNAME   a05951ed7cdf-1394239323.us-east-1.elb.amazonaws.com.***\n1. Point your custom domain to the vfunction-nginx-xxx service's external IP location, which you can find in the OpenShift project > **Networking** -> **Services** -> **vfunction-nginx-xxx** service > **Service Address** > **Location** field.\n\n## Upgrade and Rollback\n\nThe vFunction operator includes a built-in auto-upgrade mechanism.\n\nYou can choose one of 4 upgrading modes:\n- **Daily**: The operator will check for a new version every day at 3 AM and will install it automatically (default).\n- **Always**: The operator will check for a new version every 10 minutes and will install it automatically.\n- **Never**: The automatic upgrading mechanism is off.\n- **Maintenance**: Put the operator in a maintenance mode.\n\nFor an on-demand upgrade,  you can change anytime the upgrading mode from \u201cNever\u201d to \u201cAlways\u201d, wait for the operand to be upgraded, and change again to \u201cNever\u201d.\n\nDuring the upgrade, the \"Operand State\" property will change to \u201cUpgrading...\u201d and back again to \u201cWorking\u201d after a successful upgrade.\n\nIn case of a failure upgrading the operand, an automatic rollback to the last working version will occur. The failed version will be marked as defective and the operator will not try to upgrade to it again.\n\nChoosing the \"Maintenance\" option will tell the operator to take down all pods, so you can safely fix storage issues, return volumes from snapshots, etc.\nAfter finishing the maintenance, return the upgrade mode to your original desired policy.",
-      "csv_display_name": "vFunction Operator",
-      "csv_metadata_description": "vFunction is a cutting-edge code analysis, machine learning, and automation to boost your Java modernization projects.",
-      "csv_name": "vfunction-server-operator.v2.2.469",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:13:19.505000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "vfunction-server-operator",
-      "provided_apis": [
-        {
-          "group": "vfunction.com",
-          "kind": "VfunctionServer",
-          "version": "v1"
-        }
-      ],
-      "provider": "vFunction",
-      "related_images": [
-        {
-          "digest": "sha256:60d1965460101d0fd90ecc9499d0a6d4c9684a54ada61a43a253d30661fab22f",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-server-operator@sha256:60d1965460101d0fd90ecc9499d0a6d4c9684a54ada61a43a253d30661fab22f",
-          "name": "vfunction-server-operator-60d1965460101d0fd90ecc9499d0a6d4c9684a54ada61a43a253d30661fab22f-annotation"
-        },
-        {
-          "digest": "sha256:60d1965460101d0fd90ecc9499d0a6d4c9684a54ada61a43a253d30661fab22f",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-server-operator@sha256:60d1965460101d0fd90ecc9499d0a6d4c9684a54ada61a43a253d30661fab22f",
-          "name": "vfunction-server-operator"
-        },
-        {
-          "digest": "sha256:a6e06ea08fffa33b709d4d1240587bb3ab5b4cc6a28f493a227555e88e645798",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-mysql@sha256:a6e06ea08fffa33b709d4d1240587bb3ab5b4cc6a28f493a227555e88e645798",
-          "name": "vfunction_mysql_original_image"
-        },
-        {
-          "digest": "sha256:435d1489aaf29a811081ddb51f40ae692e5833f42c31dbced6bc189c0ddc40ab",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-nginx@sha256:435d1489aaf29a811081ddb51f40ae692e5833f42c31dbced6bc189c0ddc40ab",
-          "name": "vfunction_nginx_original_image"
-        },
-        {
-          "digest": "sha256:b778cb9c724a59e51b4cb9088047be471cdf338f1138c31b81f79e50a491203f",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-storage@sha256:b778cb9c724a59e51b4cb9088047be471cdf338f1138c31b81f79e50a491203f",
-          "name": "vfunction_storage_original_image"
-        },
-        {
-          "digest": "sha256:21ca95a0209f3c557a45658452d154777f928539a93129148470562c79e68d70",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-idp@sha256:21ca95a0209f3c557a45658452d154777f928539a93129148470562c79e68d70",
-          "name": "vfunction_vfapi_idp_original_image"
-        },
-        {
-          "digest": "sha256:35ffbee4b0eead58706b23cf5a702b1d55d2a7913cd0019cefbff94957d4e5d6",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-measurements@sha256:35ffbee4b0eead58706b23cf5a702b1d55d2a7913cd0019cefbff94957d4e5d6",
-          "name": "vfunction_vfapi_measurements_original_image"
-        },
-        {
-          "digest": "sha256:bcc2c3d6222af95e614318daea3108fffc6bc77aa17b23031cce296a3811b79f",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-organizations@sha256:bcc2c3d6222af95e614318daea3108fffc6bc77aa17b23031cce296a3811b79f",
-          "name": "vfunction_vfapi_organizations_original_image"
-        },
-        {
-          "digest": "sha256:e47cc051953976a0e075e8cfb457cd4749e9b9e4394f2fbecab2458c2ade92ca",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-users@sha256:e47cc051953976a0e075e8cfb457cd4749e9b9e4394f2fbecab2458c2ade92ca",
-          "name": "vfunction_vfapi_users_original_image"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2.2.469",
-      "version_original": "2.2.469"
-    },
-    {
-      "_id": "6234604e314381d2b0756b46",
-      "alm_examples": [
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixAgent",
-          "metadata": {
-            "labels": {
-              "app": "agent",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-agent"
-          },
-          "spec": {
-            "active_allow": true,
-            "activeservers": "",
-            "allow_key": "",
-            "allow_privileged": true,
-            "buffer#": 100,
-            "buffer_send": 5,
-            "debug_level": 3,
-            "deny_key": "system.run[*]",
-            "host_interface": "",
-            "host_interface_item": "",
-            "hostname": "",
-            "hostname_item": "system.hostname",
-            "load_module": "",
-            "log_remote_commands": true,
-            "max_lines_per_second": 20,
-            "metadata": "",
-            "metadata_item": "",
-            "passive_allow": true,
-            "passive_servers": "",
-            "refresh_active_checks": 120,
-            "server_host": "zabbix-server",
-            "start_agents": 3,
-            "timeout": 3,
-            "tls_accept": "unencrypted",
-            "tls_ca_file_name": "",
-            "tls_cert_file_name": "",
-            "tls_cipher_all": "",
-            "tls_cipher_cert_13": "",
-            "tls_cipher_psk": "",
-            "tls_cipherall_13": "",
-            "tls_connect": "unencrypted",
-            "tls_crl_file_name": "",
-            "tls_key_file_name": "",
-            "tls_psk_file_name": "",
-            "tls_psk_identity": "",
-            "tls_server_cert_issuer": "",
-            "tls_server_cert_subject": "",
-            "tlsciphercert": "",
-            "tlscipherpsk13": "",
-            "unsafe_user_parameters": false
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixAppliance",
-          "metadata": {
-            "labels": {
-              "app": "appliance",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-appliance"
-          },
-          "spec": {
-            "java_gateway": {
-              "debug_level": "info",
-              "start_pollers": 5,
-              "timeout": 3
-            },
-            "server": {
-              "cache#": "8M",
-              "cache_update_frequency": 60,
-              "db_tls_cipher": "",
-              "db_tls_cipher13": "",
-              "db_tls_cipher_13": "",
-              "db_tls_connect": "",
-              "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
-              "history_storage_date_index": true,
-              "history_storage_types": "",
-              "housekeeping_frequency": 1,
-              "load_module": "",
-              "log_slow_queries": 0,
-              "max_housekeeper_delete": 5000,
-              "proxy_config_frequency": 3600,
-              "proxy_data_frequency": 1,
-              "start_alerters": 3,
-              "start_db_syncers": 4,
-              "start_discoverers": 1,
-              "start_escalators": 1,
-              "start_http_pollers": 1,
-              "start_ipmi_pollers": 0,
-              "start_java_pollers": 5,
-              "start_lld_processors": 2,
-              "start_pingers": 1,
-              "start_pollers": 5,
-              "start_pollers_unreachable": 1,
-              "start_preprocessors": 3,
-              "start_proxy_pollers": 0,
-              "start_timers": 1,
-              "start_trappers": 5,
-              "start_vmware_collectors": 0,
-              "stats_allowed_ip": "",
-              "timeout": 4,
-              "tls_ca_file_name": "",
-              "tls_cert_file_name": "",
-              "tls_crl_file_name": "",
-              "tls_key_file_name": "",
-              "tlscipherall": "",
-              "tlscipherall13": "",
-              "tlsciphercert": "",
-              "tlsciphercert13": "",
-              "tlscipherpsk": "",
-              "tlscipherpsk13": "",
-              "trapper_timeout": 300,
-              "trend_cache#": "4M",
-              "unavailable_delay": 60,
-              "unreachable_delay": 15,
-              "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
-              "vmware_frequency": 60,
-              "vmware_perf_frequency": 60,
-              "vmware_timeout": 10
-            },
-            "web": {
-              "db_double_ieee754": true,
-              "deny_gui_access": false,
-              "enable_web_access_log": true,
-              "gui_access_ip_range": "",
-              "gui_warning_msg": "Zabbix is under maintenance.",
-              "history_storage_types": "",
-              "max_execution_time": 300,
-              "max_input_time": 300,
-              "memory_limit": "128M",
-              "post_max#": "16M",
-              "server_name": "Kubernetes installation",
-              "session_name": "zbx_sessionid",
-              "sso_settings": "",
-              "timezone": "Europe/Riga",
-              "upload_max_filesize": "2M"
-            },
-            "web_enable_route": true,
-            "zabbix_mysql_volumeclaim": "mysql-volume-claim",
-            "zabbix_mysqlsecret": "zabbix-mysql-secrets"
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixFull",
-          "metadata": {
-            "labels": {
-              "app": "server",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-full"
-          },
-          "spec": {
-            "history_storage_url": "",
-            "java_gateway": {
-              "debug_level": "info",
-              "start_pollers": 5,
-              "timeout": 3
-            },
-            "java_gateway#": 1,
-            "server": {
-              "cache#": "8M",
-              "cache_update_frequency": 60,
-              "db_tls_cipher": "",
-              "db_tls_cipher_13": "",
-              "db_tls_connect": "",
-              "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
-              "history_storage_date_index": true,
-              "history_storage_types": "",
-              "housekeeping_frequency": 1,
-              "load_module": "",
-              "log_slow_queries": 0,
-              "max_housekeeper_delete": 5000,
-              "proxy_config_frequency": 3600,
-              "proxy_data_frequency": 1,
-              "start_alerters": 3,
-              "start_db_syncers": 4,
-              "start_discoverers": 1,
-              "start_escalators": 1,
-              "start_http_pollers": 1,
-              "start_ipmi_pollers": 0,
-              "start_java_pollers": 5,
-              "start_lld_processors": 2,
-              "start_pingers": 1,
-              "start_pollers": 5,
-              "start_pollers_unreachable": 1,
-              "start_preprocessors": 3,
-              "start_proxy_pollers": 0,
-              "start_timers": 1,
-              "start_trappers": 5,
-              "start_vmware_collectors": 0,
-              "stats_allowed_ip": "",
-              "timeout": 4,
-              "tls_ca_file_name": "",
-              "tls_cert_file_name": "",
-              "tls_cipher_all": "",
-              "tls_cipher_cert_13": "",
-              "tls_cipher_psk": "",
-              "tls_cipherall_13": "",
-              "tls_crl_file_name": "",
-              "tls_key_file_name": "",
-              "tlsciphercert": "",
-              "tlscipherpsk13": "",
-              "trapper_timeout": 300,
-              "trend_cache#": "4M",
-              "unavailable_delay": 60,
-              "unreachable_delay": 15,
-              "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
-              "vmware_frequency": 60,
-              "vmware_perf_frequency": 60,
-              "vmware_timeout": 10
-            },
-            "web": {
-              "db_cipher_list": "",
-              "db_double_ieee754": true,
-              "db_encryption": false,
-              "db_verify_host": false,
-              "deny_gui_access": false,
-              "enable_web_access_log": true,
-              "gui_access_ip_range": "",
-              "gui_warning_msg": "Zabbix is under maintenance.",
-              "history_storage_types": "",
-              "max_execution_time": 300,
-              "max_input_time": 300,
-              "memory_limit": "128M",
-              "post_max#": "16M",
-              "server_name": "Kubernetes installation",
-              "session_name": "zbx_sessionid",
-              "sso_settings": "",
-              "timezone": "Europe/Riga",
-              "upload_max_filesize": "2M"
-            },
-            "web#": 2,
-            "web_enable_route": true,
-            "zabbix_mysql_volumeclaim": "mysql-volume-claim",
-            "zabbix_mysqlsecret": "zabbix-mysql-secrets"
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixProxyMysql",
-          "metadata": {
-            "labels": {
-              "app": "proxy",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-proxy-mysql"
-          },
-          "spec": {
-            "db_server_port": 3306,
-            "internal_db": true,
-            "java_gateway": {
-              "debug_level": "info",
-              "start_pollers": 5,
-              "timeout": 3
-            },
-            "java_gateway#": 1,
-            "mysql_database": "zabbix_proxy",
-            "proxy": {
-              "cache#": "8M",
-              "config_frequency": 3600,
-              "data_sender_frequency": 1,
-              "db_tls_cipher": "",
-              "db_tls_cipher_13": "",
-              "db_tls_connect": "",
-              "debug_level": 3,
-              "enable_remote_commands": false,
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
-              "hostname": "",
-              "hostname_item": "system.hostname",
-              "housekeeping_frequency": 1,
-              "log_remote_commands": true,
-              "log_slow_queries": 0,
-              "proxy_heartbeat_frequency": 60,
-              "proxy_local_buffer": 0,
-              "proxy_mode": 0,
-              "proxy_offline_buffer": 1,
-              "server_host": "zabbix-server",
-              "server_port": 10051,
-              "start_db_syncers": 4,
-              "start_discoverers": 1,
-              "start_http_pollers": 1,
-              "start_ipmi_pollers": 0,
-              "start_java_pollers": 5,
-              "start_pingers": 1,
-              "start_pollers": 5,
-              "start_pollers_unreachable": 1,
-              "start_preprocessors": 3,
-              "start_trappers": 5,
-              "start_vmware_collectors": 0,
-              "timeout": 4,
-              "tls_accept": "unencrypted",
-              "tls_ca_file_name": "",
-              "tls_cert_file_name": "",
-              "tls_cipher_all": "",
-              "tls_cipher_cert_13": "",
-              "tls_cipher_psk": "",
-              "tls_cipherall_13": "",
-              "tls_connect": "unencrypted",
-              "tls_crl_file_name": "",
-              "tls_key_file_name": "",
-              "tls_psk_file_name": "",
-              "tls_psk_identity": "",
-              "tls_server_cert_issuer": "",
-              "tls_server_cert_subject": "",
-              "tlscipherall": "",
-              "tlscipherall13": "",
-              "tlsciphercert": "",
-              "tlsciphercert13": "",
-              "tlscipherpsk": "",
-              "tlscipherpsk13": "",
-              "trapper_timeout": 300,
-              "unavailable_delay": 60,
-              "unreachable_delay": 15,
-              "unreachable_period": 45,
-              "vmware_cache#": "8M",
-              "vmware_frequency": 60,
-              "vmware_perf_frequency": 60,
-              "vmware_timeout": 10
-            },
-            "zabbix_mysql_volumeclaim": "mysql-volume-claim",
-            "zabbix_mysqlsecret": "zabbix-mysql-secrets"
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixProxySqlite",
-          "metadata": {
-            "labels": {
-              "app": "proxy",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-proxy-sqlite"
-          },
-          "spec": {
-            "java_gateway": {
-              "debug_level": "info",
-              "start_pollers": 5,
-              "timeout": 3
-            },
-            "java_gateway#": 1,
-            "proxy": {
-              "cache#": "8M",
-              "config_frequency": 3600,
-              "data_sender_frequency": 1,
-              "debug_level": 3,
-              "enable_remote_commands": false,
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
-              "hostname": "",
-              "hostname_item": "system.hostname",
-              "housekeeping_frequency": 1,
-              "log_remote_commands": true,
-              "log_slow_queries": 0,
-              "proxy_heartbeat_frequency": 60,
-              "proxy_local_buffer": 0,
-              "proxy_mode": 0,
-              "proxy_offline_buffer": 1,
-              "server_host": "zabbix-server",
-              "server_port": 10051,
-              "start_db_syncers": 4,
-              "start_discoverers": 1,
-              "start_http_pollers": 1,
-              "start_ipmi_pollers": 0,
-              "start_java_pollers": 5,
-              "start_pingers": 1,
-              "start_pollers": 5,
-              "start_pollers_unreachable": 1,
-              "start_preprocessors": 3,
-              "start_trappers": 5,
-              "start_vmware_collectors": 0,
-              "timeout": 4,
-              "tls_accept": "unencrypted",
-              "tls_ca_file_name": "",
-              "tls_cert_file_name": "",
-              "tls_cipher_all": "",
-              "tls_cipher_cert_13": "",
-              "tls_cipher_psk": "",
-              "tls_cipherall_13": "",
-              "tls_connect": "unencrypted",
-              "tls_crl_file_name": "",
-              "tls_key_file_name": "",
-              "tls_psk_file_name": "",
-              "tls_psk_identity": "",
-              "tls_server_cert_issuer": "",
-              "tls_server_cert_subject": "",
-              "tlscipherall": "",
-              "tlscipherall13": "",
-              "tlsciphercert": "",
-              "tlsciphercert13": "",
-              "tlscipherpsk": "",
-              "tlscipherpsk13": "",
-              "trapper_timeout": 300,
-              "unavailable_delay": 60,
-              "unreachable_delay": 15,
-              "unreachable_period": 45,
-              "vmware_cache#": "8M",
-              "vmware_frequency": 60,
-              "vmware_perf_frequency": 60,
-              "vmware_timeout": 10
-            },
-            "proxy#": 1
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixServer",
-          "metadata": {
-            "labels": {
-              "app": "server",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-server"
-          },
-          "spec": {
-            "db_server_host": "mysql-server",
-            "db_server_port": 3306,
-            "history_storage_url": "",
-            "java_gateway": {
-              "debug_level": "info",
-              "start_pollers": 5,
-              "timeout": 3
-            },
-            "java_gateway#": 1,
-            "mysql_database": "zabbix",
-            "server": {
-              "cache#": "8M",
-              "cache_update_frequency": 60,
-              "db_tls_cipher": "",
-              "db_tls_cipher13": "",
-              "db_tls_cipher_13": "",
-              "db_tls_connect": "",
-              "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
-              "history_storage_date_index": true,
-              "history_storage_types": "",
-              "housekeeping_frequency": 1,
-              "load_module": "",
-              "log_slow_queries": 0,
-              "max_housekeeper_delete": 5000,
-              "proxy_config_frequency": 3600,
-              "proxy_data_frequency": 1,
-              "start_alerters": 3,
-              "start_db_syncers": 4,
-              "start_discoverers": 1,
-              "start_escalators": 1,
-              "start_http_pollers": 1,
-              "start_ipmi_pollers": 0,
-              "start_java_pollers": 5,
-              "start_lld_processors": 2,
-              "start_pingers": 1,
-              "start_pollers": 5,
-              "start_pollers_unreachable": 1,
-              "start_preprocessors": 3,
-              "start_proxy_pollers": 0,
-              "start_timers": 1,
-              "start_trappers": 5,
-              "start_vmware_collectors": 0,
-              "stats_allowed_ip": "",
-              "timeout": 4,
-              "tls_ca_file_name": "",
-              "tls_cert_file_name": "",
-              "tls_crl_file_name": "",
-              "tls_key_file_name": "",
-              "tlscipherall": "",
-              "tlscipherall13": "",
-              "tlsciphercert": "",
-              "tlsciphercert13": "",
-              "tlscipherpsk": "",
-              "tlscipherpsk13": "",
-              "trapper_timeout": 300,
-              "trend_cache#": "4M",
-              "unavailable_delay": 60,
-              "unreachable_delay": 15,
-              "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
-              "vmware_frequency": 60,
-              "vmware_perf_frequency": 60,
-              "vmware_timeout": 10
-            },
-            "web": {
-              "db_cipher_list": "",
-              "db_double_ieee754": true,
-              "db_encryption": false,
-              "db_verify_host": false,
-              "deny_gui_access": false,
-              "enable_web_access_log": true,
-              "gui_access_ip_range": "",
-              "gui_warning_msg": "Zabbix is under maintenance.",
-              "history_storage_types": "",
-              "max_execution_time": 300,
-              "max_input_time": 300,
-              "memory_limit": "128M",
-              "post_max#": "16M",
-              "server_name": "Kubernetes installation",
-              "session_name": "zbx_sessionid",
-              "sso_settings": "",
-              "timezone": "Europe/Riga",
-              "upload_max_filesize": "2M"
-            },
-            "web#": 2,
-            "web_enable_route": true,
-            "zabbix_mysqlsecret": "zabbix-mysql-secrets"
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixAgent",
-          "metadata": {
-            "labels": {
-              "app": "agent",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-agent"
-          },
-          "spec": {
-            "active_allow": true,
-            "activeservers": "",
-            "allow_key": "",
-            "allow_privileged": true,
-            "buffer#": 100,
-            "buffer_send": 5,
-            "debug_level": 3,
-            "deny_key": "system.run[*]",
-            "host_interface": "",
-            "host_interface_item": "",
-            "hostname": "",
-            "hostname_item": "system.hostname",
-            "load_module": "",
-            "log_remote_commands": true,
-            "max_lines_per_second": 20,
-            "metadata": "",
-            "metadata_item": "",
-            "passive_allow": true,
-            "passive_servers": "",
-            "refresh_active_checks": 120,
-            "server_host": "zabbix-server",
-            "start_agents": 3,
-            "timeout": 3,
-            "tls_accept": "unencrypted",
-            "tls_ca_file_name": "",
-            "tls_cert_file_name": "",
-            "tls_cipher_all": "",
-            "tls_cipher_cert_13": "",
-            "tls_cipher_psk": "",
-            "tls_cipherall_13": "",
-            "tls_connect": "unencrypted",
-            "tls_crl_file_name": "",
-            "tls_key_file_name": "",
-            "tls_psk_file_name": "",
-            "tls_psk_identity": "",
-            "tls_server_cert_issuer": "",
-            "tls_server_cert_subject": "",
-            "tlsciphercert": "",
-            "tlscipherpsk13": "",
-            "unsafe_user_parameters": false
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixServer",
-          "metadata": {
-            "labels": {
-              "app": "server",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-server"
-          },
-          "spec": {
-            "db_server_host": "mysql-server",
-            "db_server_port": 3306,
-            "history_storage_url": "",
-            "java_gateway": {
-              "debug_level": "info",
-              "start_pollers": 5,
-              "timeout": 3
-            },
-            "java_gateway#": 1,
-            "mysql_database": "zabbix",
-            "server": {
-              "cache#": "8M",
-              "cache_update_frequency": 60,
-              "db_tls_cipher": "",
-              "db_tls_cipher13": "",
-              "db_tls_cipher_13": "",
-              "db_tls_connect": "",
-              "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
-              "history_storage_date_index": true,
-              "history_storage_types": "",
-              "housekeeping_frequency": 1,
-              "load_module": "",
-              "log_slow_queries": 0,
-              "max_housekeeper_delete": 5000,
-              "proxy_config_frequency": 3600,
-              "proxy_data_frequency": 1,
-              "start_alerters": 3,
-              "start_db_syncers": 4,
-              "start_discoverers": 1,
-              "start_escalators": 1,
-              "start_http_pollers": 1,
-              "start_ipmi_pollers": 0,
-              "start_java_pollers": 5,
-              "start_lld_processors": 2,
-              "start_pingers": 1,
-              "start_pollers": 5,
-              "start_pollers_unreachable": 1,
-              "start_preprocessors": 3,
-              "start_proxy_pollers": 0,
-              "start_timers": 1,
-              "start_trappers": 5,
-              "start_vmware_collectors": 0,
-              "stats_allowed_ip": "",
-              "timeout": 4,
-              "tls_ca_file_name": "",
-              "tls_cert_file_name": "",
-              "tls_crl_file_name": "",
-              "tls_key_file_name": "",
-              "tlscipherall": "",
-              "tlscipherall13": "",
-              "tlsciphercert": "",
-              "tlsciphercert13": "",
-              "tlscipherpsk": "",
-              "tlscipherpsk13": "",
-              "trapper_timeout": 300,
-              "trend_cache#": "4M",
-              "unavailable_delay": 60,
-              "unreachable_delay": 15,
-              "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
-              "vmware_frequency": 60,
-              "vmware_perf_frequency": 60,
-              "vmware_timeout": 10
-            },
-            "web": {
-              "db_cipher_list": "",
-              "db_double_ieee754": true,
-              "db_encryption": false,
-              "db_verify_host": false,
-              "deny_gui_access": false,
-              "enable_web_access_log": true,
-              "gui_access_ip_range": "",
-              "gui_warning_msg": "Zabbix is under maintenance.",
-              "history_storage_types": "",
-              "max_execution_time": 300,
-              "max_input_time": 300,
-              "memory_limit": "128M",
-              "post_max#": "16M",
-              "server_name": "Kubernetes installation",
-              "session_name": "zbx_sessionid",
-              "sso_settings": "",
-              "timezone": "Europe/Riga",
-              "upload_max_filesize": "2M"
-            },
-            "web#": 2,
-            "web_enable_route": true,
-            "zabbix_mysqlsecret": "mysql-secrets"
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixProxySqlite",
-          "metadata": {
-            "labels": {
-              "app": "proxy",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-proxy-sqlite"
-          },
-          "spec": {
-            "java_gateway": {
-              "debug_level": "info",
-              "start_pollers": 5,
-              "timeout": 3
-            },
-            "java_gateway#": 1,
-            "proxy": {
-              "cache#": "8M",
-              "config_frequency": 3600,
-              "data_sender_frequency": 1,
-              "debug_level": 3,
-              "enable_remote_commands": false,
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
-              "hostname": "",
-              "hostname_item": "system.hostname",
-              "housekeeping_frequency": 1,
-              "log_remote_commands": true,
-              "log_slow_queries": 0,
-              "proxy_heartbeat_frequency": 60,
-              "proxy_local_buffer": 0,
-              "proxy_mode": 0,
-              "proxy_offline_buffer": 1,
-              "server_host": "zabbix-server",
-              "server_port": 10051,
-              "start_db_syncers": 4,
-              "start_discoverers": 1,
-              "start_http_pollers": 1,
-              "start_ipmi_pollers": 0,
-              "start_java_pollers": 5,
-              "start_pingers": 1,
-              "start_pollers": 5,
-              "start_pollers_unreachable": 1,
-              "start_preprocessors": 3,
-              "start_trappers": 5,
-              "start_vmware_collectors": 0,
-              "timeout": 4,
-              "tls_accept": "unencrypted",
-              "tls_ca_file_name": "",
-              "tls_cert_file_name": "",
-              "tls_cipher_all": "",
-              "tls_cipher_cert_13": "",
-              "tls_cipher_psk": "",
-              "tls_cipherall_13": "",
-              "tls_connect": "unencrypted",
-              "tls_crl_file_name": "",
-              "tls_key_file_name": "",
-              "tls_psk_file_name": "",
-              "tls_psk_identity": "",
-              "tls_server_cert_issuer": "",
-              "tls_server_cert_subject": "",
-              "tlscipherall": "",
-              "tlscipherall13": "",
-              "tlsciphercert": "",
-              "tlsciphercert13": "",
-              "tlscipherpsk": "",
-              "tlscipherpsk13": "",
-              "trapper_timeout": 300,
-              "unavailable_delay": 60,
-              "unreachable_delay": 15,
-              "unreachable_period": 45,
-              "vmware_cache#": "8M",
-              "vmware_frequency": 60,
-              "vmware_perf_frequency": 60,
-              "vmware_timeout": 10
-            },
-            "proxy#": 1
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixProxyMysql",
-          "metadata": {
-            "labels": {
-              "app": "proxy",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-proxy-mysql"
-          },
-          "spec": {
-            "db_server_port": 3306,
-            "internal_db": true,
-            "java_gateway": {
-              "debug_level": "info",
-              "start_pollers": 5,
-              "timeout": 3
-            },
-            "java_gateway#": 1,
-            "mysql_database": "zabbix_proxy",
-            "proxy": {
-              "cache#": "8M",
-              "config_frequency": 3600,
-              "data_sender_frequency": 1,
-              "db_tls_cipher": "",
-              "db_tls_cipher_13": "",
-              "db_tls_connect": "",
-              "debug_level": 3,
-              "enable_remote_commands": false,
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
-              "hostname": "",
-              "hostname_item": "system.hostname",
-              "housekeeping_frequency": 1,
-              "log_remote_commands": true,
-              "log_slow_queries": 0,
-              "proxy_heartbeat_frequency": 60,
-              "proxy_local_buffer": 0,
-              "proxy_mode": 0,
-              "proxy_offline_buffer": 1,
-              "server_host": "zabbix-server",
-              "server_port": 10051,
-              "start_db_syncers": 4,
-              "start_discoverers": 1,
-              "start_http_pollers": 1,
-              "start_ipmi_pollers": 0,
-              "start_java_pollers": 5,
-              "start_pingers": 1,
-              "start_pollers": 5,
-              "start_pollers_unreachable": 1,
-              "start_preprocessors": 3,
-              "start_trappers": 5,
-              "start_vmware_collectors": 0,
-              "timeout": 4,
-              "tls_accept": "unencrypted",
-              "tls_ca_file_name": "",
-              "tls_cert_file_name": "",
-              "tls_cipher_all": "",
-              "tls_cipher_cert_13": "",
-              "tls_cipher_psk": "",
-              "tls_cipherall_13": "",
-              "tls_connect": "unencrypted",
-              "tls_crl_file_name": "",
-              "tls_key_file_name": "",
-              "tls_psk_file_name": "",
-              "tls_psk_identity": "",
-              "tls_server_cert_issuer": "",
-              "tls_server_cert_subject": "",
-              "tlscipherall": "",
-              "tlscipherall13": "",
-              "tlsciphercert": "",
-              "tlsciphercert13": "",
-              "tlscipherpsk": "",
-              "tlscipherpsk13": "",
-              "trapper_timeout": 300,
-              "unavailable_delay": 60,
-              "unreachable_delay": 15,
-              "unreachable_period": 45,
-              "vmware_cache#": "8M",
-              "vmware_frequency": 60,
-              "vmware_perf_frequency": 60,
-              "vmware_timeout": 10
-            },
-            "zabbix_mysql_volumeclaim": "mysql-volume-claim",
-            "zabbix_mysqlsecret": "zabbix-mysql-secrets"
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixFull",
-          "metadata": {
-            "labels": {
-              "app": "server",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-full"
-          },
-          "spec": {
-            "history_storage_url": "",
-            "java_gateway": {
-              "debug_level": "info",
-              "start_pollers": 5,
-              "timeout": 3
-            },
-            "java_gateway#": 1,
-            "server": {
-              "cache#": "8M",
-              "cache_update_frequency": 60,
-              "db_tls_cipher": "",
-              "db_tls_cipher_13": "",
-              "db_tls_connect": "",
-              "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
-              "history_storage_date_index": true,
-              "history_storage_types": "",
-              "housekeeping_frequency": 1,
-              "load_module": "",
-              "log_slow_queries": 0,
-              "max_housekeeper_delete": 5000,
-              "proxy_config_frequency": 3600,
-              "proxy_data_frequency": 1,
-              "start_alerters": 3,
-              "start_db_syncers": 4,
-              "start_discoverers": 1,
-              "start_escalators": 1,
-              "start_http_pollers": 1,
-              "start_ipmi_pollers": 0,
-              "start_java_pollers": 5,
-              "start_lld_processors": 2,
-              "start_pingers": 1,
-              "start_pollers": 5,
-              "start_pollers_unreachable": 1,
-              "start_preprocessors": 3,
-              "start_proxy_pollers": 0,
-              "start_timers": 1,
-              "start_trappers": 5,
-              "start_vmware_collectors": 0,
-              "stats_allowed_ip": "",
-              "timeout": 4,
-              "tls_ca_file_name": "",
-              "tls_cert_file_name": "",
-              "tls_cipher_all": "",
-              "tls_cipher_cert_13": "",
-              "tls_cipher_psk": "",
-              "tls_cipherall_13": "",
-              "tls_crl_file_name": "",
-              "tls_key_file_name": "",
-              "tlsciphercert": "",
-              "tlscipherpsk13": "",
-              "trapper_timeout": 300,
-              "trend_cache#": "4M",
-              "unavailable_delay": 60,
-              "unreachable_delay": 15,
-              "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
-              "vmware_frequency": 60,
-              "vmware_perf_frequency": 60,
-              "vmware_timeout": 10
-            },
-            "web": {
-              "db_cipher_list": "",
-              "db_double_ieee754": true,
-              "db_encryption": false,
-              "db_verify_host": false,
-              "deny_gui_access": false,
-              "enable_web_access_log": true,
-              "gui_access_ip_range": "",
-              "gui_warning_msg": "Zabbix is under maintenance.",
-              "history_storage_types": "",
-              "max_execution_time": 300,
-              "max_input_time": 300,
-              "memory_limit": "128M",
-              "post_max#": "16M",
-              "server_name": "Kubernetes installation",
-              "session_name": "zbx_sessionid",
-              "sso_settings": "",
-              "timezone": "Europe/Riga",
-              "upload_max_filesize": "2M"
-            },
-            "web#": 2,
-            "web_enable_route": true,
-            "zabbix_mysql_volumeclaim": "mysql-volume-claim",
-            "zabbix_mysqlsecret": "mysql-secrets"
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixAppliance",
-          "metadata": {
-            "labels": {
-              "app": "appliance",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-appliance"
-          },
-          "spec": {
-            "java_gateway": {
-              "debug_level": "info",
-              "start_pollers": 5,
-              "timeout": 3
-            },
-            "server": {
-              "cache#": "8M",
-              "cache_update_frequency": 60,
-              "db_tls_cipher": "",
-              "db_tls_cipher13": "",
-              "db_tls_cipher_13": "",
-              "db_tls_connect": "",
-              "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
-              "history_storage_date_index": true,
-              "history_storage_types": "",
-              "housekeeping_frequency": 1,
-              "load_module": "",
-              "log_slow_queries": 0,
-              "max_housekeeper_delete": 5000,
-              "proxy_config_frequency": 3600,
-              "proxy_data_frequency": 1,
-              "start_alerters": 3,
-              "start_db_syncers": 4,
-              "start_discoverers": 1,
-              "start_escalators": 1,
-              "start_http_pollers": 1,
-              "start_ipmi_pollers": 0,
-              "start_java_pollers": 5,
-              "start_lld_processors": 2,
-              "start_pingers": 1,
-              "start_pollers": 5,
-              "start_pollers_unreachable": 1,
-              "start_preprocessors": 3,
-              "start_proxy_pollers": 0,
-              "start_timers": 1,
-              "start_trappers": 5,
-              "start_vmware_collectors": 0,
-              "stats_allowed_ip": "",
-              "timeout": 4,
-              "tls_ca_file_name": "",
-              "tls_cert_file_name": "",
-              "tls_crl_file_name": "",
-              "tls_key_file_name": "",
-              "tlscipherall": "",
-              "tlscipherall13": "",
-              "tlsciphercert": "",
-              "tlsciphercert13": "",
-              "tlscipherpsk": "",
-              "tlscipherpsk13": "",
-              "trapper_timeout": 300,
-              "trend_cache#": "4M",
-              "unavailable_delay": 60,
-              "unreachable_delay": 15,
-              "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
-              "vmware_frequency": 60,
-              "vmware_perf_frequency": 60,
-              "vmware_timeout": 10
-            },
-            "web": {
-              "db_double_ieee754": true,
-              "deny_gui_access": false,
-              "enable_web_access_log": true,
-              "gui_access_ip_range": "",
-              "gui_warning_msg": "Zabbix is under maintenance.",
-              "history_storage_types": "",
-              "max_execution_time": 300,
-              "max_input_time": 300,
-              "memory_limit": "128M",
-              "post_max#": "16M",
-              "server_name": "Kubernetes installation",
-              "session_name": "zbx_sessionid",
-              "sso_settings": "",
-              "timezone": "Europe/Riga",
-              "upload_max_filesize": "2M"
-            },
-            "web_enable_route": true,
-            "zabbix_mysql_volumeclaim": "mysql-volume-claim",
-            "zabbix_mysqlsecret": "mysql-secrets"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/zabbix/zabbixoperator-certified-bundle@sha256:236d7cc772634f20540dc153f9a7fc66357d7d4852962c5c7b5daff61c99e5c8",
-      "bundle_path_digest": "sha256:236d7cc772634f20540dc153f9a7fc66357d7d4852962c5c7b5daff61c99e5c8",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "lts",
-      "creation_date": "2022-03-18T10:34:54.004000+00:00",
-      "csv_description": "## About this Operator\n\nZabbix helps you to real-time monitoring of millions of metrics collected from tens of thousands of servers, virtual machines and network devices.\nThe Zabbix Operator allows users to easily deploy, manage, and maintain Zabbix deployments on OpenShift. By installing this integration you will be able to deploy Zabbix server / proxies and other components with a single command.\n## Supported Features\n* **Zabbix Server** - Simple Zabbix installation with included Zabbix server, Zabbix web-interface and Zabbix Java Gateway with MySQL database support. The feature does not provide MySQL service and requires an external MySQL database. \n* **Zabbix Server (Full)** - Zabbix installation with included Zabbix server, Zabbix web-interface, Zabbix Java Gateway and MySQL server instance.\n* **Zabbix proxy (SQLite3)** - Very simple way to gain power of Zabbix proxy. The feature has  SQLite3 support for Zabbix proxies and allow to specify amount of proxies. \n* **Zabbix proxy (MySQL)** - Another option of Zabbix proxy. The option support and deliver MySQL database.\n* **Zabbix agent** - Zabbix agent can be deployed on each available node for stability and performance monitoring on remote nodes. It allows to gather metrics with full automation!\n* **Zabbix Appliance** - Zabbix appliance very simple way to test and check Zabbix features. The option provides all core components in one solution. It includes Zabbix server, Zabbix Java Gateway, Zabbix web-interface and MySQL server in deployment. It is very useful for testing Zabbix features!\n## Prerequisites\nAll deployment options are require additional information during deployment. Please, check the following instructions and provide required configuration:\n* **Zabbix Server** - MySQL database host information and MySQL database credentials in specially formatted *Secret*. Additionally it is possible to specify SSL certificates for HTTPS support in *Secret*.\n* **Zabbix Server (Full)** - MySQL database credentials in specially formatted *Secret*. MySQL database volume name information. Additionally it is possible to specify SSL certificates for HTTPS support in *Secret*.\n* **Zabbix proxy (SQLite3)** - Zabbix server host information only.\n* **Zabbix proxy (MySQL)** - MySQL database credentials in specially formatted *Secrets* and Zabbix server host information.\n* **Zabbix agent** - Zabbix server host information only for outgoing and incoming connections. Zabbix agent uses \"privileged\" mode to monitor node resources! For example, running processes.\n* **Zabbix Appliance** - MySQL database credentials in specially formatted *Secret*. MySQL database volume name information. Additionally it is possible to specify SSL certificates for HTTPS support in *Secret*.\n### MySQL credentials\n```\nkind: Secret\napiVersion: v1\nmetadata:\n  name: zabbix-full-secrets\ndata:\n  mysql_root_password: emFiYml4X3N1cGVyX3Jvb3Q= [1]\n  mysql_zabbix_password: emFiYml4X3VzZXJfcGFzc3dvcmQ= [2]\n  mysql_zabbix_username: emFiYml4 [3]\ntype: Opaque\n```\nUsing MySQL root password (*mysqlrootpassword* [1]) Zabbix server / proxy will try to create MySQL database schema with grant permissions to *mysqlzabbixusername* [2] and *mysqlzabbixpassword* [3].\n### SSL certificates for HTTPS\n```\nkind: Secret\napiVersion: v1\nmetadata:\n  name: zabbix-web-sslsecret\ndata:\n  ssl.crt: >-\n   < ssl.crt data>\n  ssl.key: >-\n\t < ssl.key data >\n  dhparam.pem: >-\n   <  dhparam.pem data >\n```\nFiles *ssl.crt*, *ssl.key* and *dhparam.perm* are required for Zabbix web-interface for SSL support.\n",
-      "csv_display_name": "Zabbix Operator",
-      "csv_metadata_description": "Zabbix operator with multiple deployment variants and different components",
-      "csv_name": "zabbix-operator-certified.v0.0.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:21:11.746000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "zabbix-operator-certified",
-      "provided_apis": [
-        {
-          "group": "kubernetes.zabbix.com",
-          "kind": "ZabbixAgent",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "kubernetes.zabbix.com",
-          "kind": "ZabbixAppliance",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "kubernetes.zabbix.com",
-          "kind": "ZabbixFull",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "kubernetes.zabbix.com",
-          "kind": "ZabbixProxyMysql",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "kubernetes.zabbix.com",
-          "kind": "ZabbixProxySqlite",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "kubernetes.zabbix.com",
-          "kind": "ZabbixServer",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Zabbix LLC",
-      "related_images": [
-        {
-          "digest": "sha256:c2dee633a667191d3272bf1652412ac1077455f18b90168ddcaa2ac8882f0c66",
-          "image": "registry.connect.redhat.com/zabbix/zabbixoperator-certified@sha256:c2dee633a667191d3272bf1652412ac1077455f18b90168ddcaa2ac8882f0c66",
-          "name": "zabbixoperator-certified-c2dee633a667191d3272bf1652412ac1077455f18b90168ddcaa2ac8882f0c66-annotation"
-        },
-        {
-          "digest": "sha256:c2dee633a667191d3272bf1652412ac1077455f18b90168ddcaa2ac8882f0c66",
-          "image": "registry.connect.redhat.com/zabbix/zabbixoperator-certified@sha256:c2dee633a667191d3272bf1652412ac1077455f18b90168ddcaa2ac8882f0c66",
-          "name": "ansible"
-        },
-        {
-          "digest": "sha256:c2dee633a667191d3272bf1652412ac1077455f18b90168ddcaa2ac8882f0c66",
-          "image": "registry.connect.redhat.com/zabbix/zabbixoperator-certified@sha256:c2dee633a667191d3272bf1652412ac1077455f18b90168ddcaa2ac8882f0c66",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:2f76e7cbece9d9366b613bcb1079b030ddbcc5e97b2f133b73bd0131f0869725",
-          "image": "registry.connect.redhat.com/zabbix/zabbix-server-mysql-50@sha256:2f76e7cbece9d9366b613bcb1079b030ddbcc5e97b2f133b73bd0131f0869725",
-          "name": "zbx_server_mysql"
-        },
-        {
-          "digest": "sha256:9f3ba82445ea3d9754f016e21b2ea1c99c1958da928f49aee1b18377af78d365",
-          "image": "registry.connect.redhat.com/zabbix/zabbix-web-mysql-50@sha256:9f3ba82445ea3d9754f016e21b2ea1c99c1958da928f49aee1b18377af78d365",
-          "name": "zbx_web_mysql"
-        },
-        {
-          "digest": "sha256:a216de448dc10b2797a70f4fc6664c2bd611840b7b6c26f066635d48c606bf06",
-          "image": "registry.connect.redhat.com/zabbix/zabbix-java-gateway-50@sha256:a216de448dc10b2797a70f4fc6664c2bd611840b7b6c26f066635d48c606bf06",
-          "name": "zbx_java_gateway"
-        },
-        {
-          "digest": "sha256:054ad28ade616642fb50fd38a48df2d00a9c0c6a57df1e367caeceb6469f6c42",
-          "image": "registry.connect.redhat.com/zabbix/zabbix-proxy-mysql-50@sha256:054ad28ade616642fb50fd38a48df2d00a9c0c6a57df1e367caeceb6469f6c42",
-          "name": "zbx_proxy_mysql"
-        },
-        {
-          "digest": "sha256:713a6223a01ee57efb719d6f491ef779d74104a1bc1b8599eade8b3f4a3318ed",
-          "image": "registry.connect.redhat.com/zabbix/zabbix-proxy-sqlite-50@sha256:713a6223a01ee57efb719d6f491ef779d74104a1bc1b8599eade8b3f4a3318ed",
-          "name": "zbx_proxy_sqlite"
-        },
-        {
-          "digest": "sha256:229562a27ed45319ef17397fe81cac81129c84eccd2c14f6085531a86ef9b87d",
-          "image": "registry.connect.redhat.com/zabbix/zabbix-agent-50@sha256:229562a27ed45319ef17397fe81cac81129c84eccd2c14f6085531a86ef9b87d",
-          "name": "zbx_agent"
-        },
-        {
-          "digest": "sha256:7236c68c494f572edf64ced85c3a083b7eafff1c6562e95bdc50e50c37e3e3bf",
-          "image": "registry.connect.redhat.com/zabbix/zabbix-appliance-50@sha256:7236c68c494f572edf64ced85c3a083b7eafff1c6562e95bdc50e50c37e3e3bf",
-          "name": "zbx_appliance"
-        },
-        {
-          "digest": "sha256:e7541d9fbcb7a71ac8a68cc4efc1806bab74023961c7d3fb562ded320df90c43",
-          "image": "registry.redhat.io/rhel8/mysql-80@sha256:e7541d9fbcb7a71ac8a68cc4efc1806bab74023961c7d3fb562ded320df90c43",
-          "name": "db_mysql"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.0.2",
-      "version_original": "0.0.2"
-    },
-    {
       "_id": "6234605006c5dada0193e08b",
       "alm_examples": [
         {
@@ -12949,9 +10641,468 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.0.1",
       "version_original": "0.0.1"
+    },
+    {
+      "_id": "6262a5ae834f257293b60f6a",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.20",
+      "creation_date": "2022-04-22T12:55:10.113000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:21:47.503000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "6262a5b0834f257293b60f6b",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:e0a36fbe70d56aa4faf878b3a2d8f4196008d87ea9057f8509eaf4334b0eb1c5",
+      "bundle_path_digest": "sha256:e0a36fbe70d56aa4faf878b3a2d8f4196008d87ea9057f8509eaf4334b0eb1c5",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:55:12.626000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "mongodb-enterprise.v1.4.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:09:51.026000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.4.2",
+      "version_original": "1.4.2"
+    },
+    {
+      "_id": "6262a5b2173a0d36cf5d6953",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:2c354e02f3ddfd9ef6ccac776b77603e60f907b10bac730e133845292500dd40",
+      "bundle_path_digest": "sha256:2c354e02f3ddfd9ef6ccac776b77603e60f907b10bac730e133845292500dd40",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T12:55:14.869000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "neuvector-operator.v1.0.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:00:01.079000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.0.1",
+      "version_original": "1.0.1"
+    },
+    {
+      "_id": "6262a5b6834f257293b60f6e",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nginx/nginx-ingress-operator-bundle@sha256:d53eea0345b2e18fb84d1208f5ca6c2e74c425403ba1611b5b1ee525315da0ae",
+      "bundle_path_digest": "sha256:d53eea0345b2e18fb84d1208f5ca6c2e74c425403ba1611b5b1ee525315da0ae",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:55:18.206000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nginx-ingress-operator.v0.0.6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:05:52.861000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nginx-ingress-operator",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.6",
+      "version_original": "0.0.6"
+    },
+    {
+      "_id": "6262a5bf834f257293b60f70",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:ff246089fecc3946921207dfd13eabfae67e2e6bb38909f11c078fee347adae3",
+      "bundle_path_digest": "sha256:ff246089fecc3946921207dfd13eabfae67e2e6bb38909f11c078fee347adae3",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:55:27.130000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nastel-navigator-operator.v0.0.18",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:00:14.700000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "nastel-navigator-operator-certified",
+      "provided_apis": [
+        {
+          "group": "navigator.nastel.com",
+          "kind": "NastelNavigator",
+          "plural": "nastelnavigators",
+          "version": "v1alpha6"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.18",
+      "version_original": "0.0.18"
+    },
+    {
+      "_id": "6262a5c9cde83e2b177c20b9",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:c380d43717df7db52058bcf261ece6ceb0e0ce779b0576d31d25d8a3c9c70e55",
+      "bundle_path_digest": "sha256:c380d43717df7db52058bcf261ece6ceb0e0ce779b0576d31d25d8a3c9c70e55",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:55:37.031000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "seldon-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:27:31.510000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "seldon-operator-certified",
+      "provided_apis": [
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha3"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "6262a5d9cde83e2b177c20bd",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cloudark/kubeplus-operator-bundle@sha256:a1944c0e06d995361c72f03b8a975a646dd25935a0312c5209a03cb1a1732256",
+      "bundle_path_digest": "sha256:a1944c0e06d995361c72f03b8a975a646dd25935a0312c5209a03cb1a1732256",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:55:53.204000+00:00",
+      "csv_description": "SaaS Multi-tenancy Manager",
+      "csv_display_name": "KubePlus",
+      "csv_metadata_description": "SaaS Operator - Create SaaS from Helm charts",
+      "csv_name": "kubeplus.v1.0.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:09:33.459000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "kubeplus",
+      "provided_apis": [
+        {
+          "group": "workflows.kubeplus",
+          "kind": "ResourceComposition",
+          "plural": "resourcecompositions",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "workflows.kubeplus",
+          "kind": "ResourceEvent",
+          "plural": "resourceevents",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "workflows.kubeplus",
+          "kind": "ResourceMonitor",
+          "plural": "resourcemonitors",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "workflows.kubeplus",
+          "kind": "ResourcePolicy",
+          "plural": "resourcepolicies",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:9de09c08e692625e42e9d2cf096b2fc746c6b5a0ea4833f471a3b705db8c2b97",
+          "image": "registry.connect.redhat.com/cloudark/kubeplus-platform-operator@sha256:9de09c08e692625e42e9d2cf096b2fc746c6b5a0ea4833f471a3b705db8c2b97",
+          "name": "kubeplus-platform-operator-9de09c08e692625e42e9d2cf096b2fc746c6b5a0ea4833f471a3b705db8c2b97-annotation"
+        },
+        {
+          "digest": "sha256:08a76ff2c5644872a68bb333162d86c57c79cd7d4e1201dda894902914896e7b",
+          "image": "registry.connect.redhat.com/cloudark/kubeplus-mutating-webhook@sha256:08a76ff2c5644872a68bb333162d86c57c79cd7d4e1201dda894902914896e7b",
+          "name": "crd-hook"
+        },
+        {
+          "digest": "sha256:fb180d9b3b0ce6c2141fe5280a405636eeba1ebbad54310ee83cdb412d210150",
+          "image": "registry.connect.redhat.com/cloudark/kubeplus-mutating-webhook-helper@sha256:fb180d9b3b0ce6c2141fe5280a405636eeba1ebbad54310ee83cdb412d210150",
+          "name": "mutating-webhook-helper"
+        },
+        {
+          "digest": "sha256:9de09c08e692625e42e9d2cf096b2fc746c6b5a0ea4833f471a3b705db8c2b97",
+          "image": "registry.connect.redhat.com/cloudark/kubeplus-platform-operator@sha256:9de09c08e692625e42e9d2cf096b2fc746c6b5a0ea4833f471a3b705db8c2b97",
+          "name": "platform-operator"
+        },
+        {
+          "digest": "sha256:d7861164cb1555c673d157c182852b00bd783f9d66cabb2eca4970a3f1a68eb8",
+          "image": "registry.connect.redhat.com/cloudark/kubeplus-helmer1@sha256:d7861164cb1555c673d157c182852b00bd783f9d66cabb2eca4970a3f1a68eb8",
+          "name": "helmer"
+        },
+        {
+          "digest": "sha256:c60295e9c86607e1c06aa63d027b7824c3255852e869b98ad57cb3a68a987f9c",
+          "image": "registry.connect.redhat.com/cloudark/kubeplus-webhook-cert-setup@sha256:c60295e9c86607e1c06aa63d027b7824c3255852e869b98ad57cb3a68a987f9c",
+          "name": "webhook-cert-setup"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.0.5",
+      "version_original": "1.0.5"
+    },
+    {
+      "_id": "6262a5db84481d5f5229993a",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-04-22T12:55:55.565000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-04-22T12:55:55.565000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "6262a5e1834f257293b60f74",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:29de0c8f38adb379957ec2564eea036e4f839980377e52c49f8b462e3033c7aa",
+      "bundle_path_digest": "sha256:29de0c8f38adb379957ec2564eea036e4f839980377e52c49f8b462e3033c7aa",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:56:01.553000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.1.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:16:07.369000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "plural": "dashboardwithjupyterhubs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.1.2",
+      "version_original": "0.1.2"
     }
   ],
   "page": 23,
   "page_size": 100,
-  "total": 4780
+  "total": 4801
 }
