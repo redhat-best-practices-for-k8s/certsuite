@@ -56,7 +56,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
 
-	testID, tags := identifiers.GetGinkgoTestIdAndLabels(identifiers.TestUnalteredBaseImageIdentifier)
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredBaseImageIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		if provider.IsOCPCluster() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
@@ -66,19 +66,19 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		}
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestNonTaintedNodeKernelsIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNonTaintedNodeKernelsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
 		testTainted(&env, nodetainted.NewNodeTaintedTester(clientsholder.GetClientsHolder())) // minikube tainted kernels are allowed via config
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestIsRedHatReleaseIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsRedHatReleaseIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		testIsRedHatRelease(&env)
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestIsSELinuxEnforcingIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsSELinuxEnforcingIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		if provider.IsOCPCluster() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
@@ -88,7 +88,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		}
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestHugepagesNotManuallyManipulated)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHugepagesNotManuallyManipulated)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		if provider.IsOCPCluster() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
@@ -98,7 +98,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		}
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestUnalteredStartupBootParamsIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredStartupBootParamsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		if provider.IsOCPCluster() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
@@ -108,7 +108,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		}
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestSysctlConfigsIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSysctlConfigsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		if provider.IsOCPCluster() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
@@ -118,20 +118,20 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		}
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestServiceMeshIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceMeshIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestServiceMesh(&env)
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestOCPLifecycleIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOCPLifecycleIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		if provider.IsOCPCluster() {
 			testOCPStatus(&env)
 		}
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestNodeOperatingSystemIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNodeOperatingSystemIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		if provider.IsOCPCluster() {
 			testNodeOperatingSystemStatus(&env)

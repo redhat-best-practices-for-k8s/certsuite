@@ -49,18 +49,18 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	ginkgo.ReportAfterEach(results.RecordResult)
 
 	// Query API for certification status of listed containers
-	testID, tags := identifiers.GetGinkgoTestIdAndLabels(identifiers.TestContainerIsCertifiedIdentifier)
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testContainerCertificationStatus(&env)
 	})
 
 	// Query API for certification status of listed operators
-	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testAllOperatorCertified(&env)
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestHelmIsCertifiedIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testHelmCertified(&env)
 	})

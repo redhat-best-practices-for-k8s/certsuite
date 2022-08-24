@@ -36,7 +36,7 @@ var _ = ginkgo.Describe(common.ChaosTesting, func() {
 		env.SetNeedsRefresh()
 	})
 
-	testID, tags := identifiers.GetGinkgoTestIdAndLabels(identifiers.TestPodDeleteIdentifier)
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodDeleteIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testPodDelete(&env)
 	})

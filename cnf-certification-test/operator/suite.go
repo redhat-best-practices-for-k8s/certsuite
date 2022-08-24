@@ -43,19 +43,19 @@ var _ = ginkgo.Describe(common.OperatorTestKey, func() {
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
 
-	testID, tags := identifiers.GetGinkgoTestIdAndLabels(identifiers.TestOperatorInstallStatusSucceededIdentifier)
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorInstallStatusSucceededIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Operators)
 		testOperatorInstallationPhaseSucceeded(&env)
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestOperatorNoPrivileges)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorNoPrivileges)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Operators)
 		testOperatorInstallationWithoutPrivileges(&env)
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIdAndLabels(identifiers.TestOperatorIsInstalledViaOLMIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsInstalledViaOLMIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Operators)
 		testOperatorOlmSubscription(&env)

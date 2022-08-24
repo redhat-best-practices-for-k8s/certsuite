@@ -34,10 +34,8 @@ const (
 )
 
 const (
-	tagCommon   = "common"
-	tagRan      = "ran"
-	tagExtended = "extended"
-	tagOnline   = "online"
+	tagCommon = "common"
+	tagOnline = "online"
 )
 
 // TestCaseDescription describes a JUnit test case.
@@ -405,17 +403,17 @@ var (
 	}
 	// TestSysPtraceCapabilityIdentifier ensures that if process namespace sharing is enabled then the SYS_PTRACE capability is allowed
 	TestSysPtraceCapabilityIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagExtended),
+		Tags:    formTestTags(tagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "sys-ptrace-capability"),
 		Version: versionOne,
 	}
 	TestPodRequestsAndLimitsIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon, tagRan),
+		Tags:    formTestTags(tagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "requests-and-limits"),
 		Version: versionOne,
 	}
 	TestNamespaceResourceQuotaIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon, tagRan),
+		Tags:    formTestTags(tagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "namespace-resource-quota"),
 		Version: versionOne,
 	}
@@ -445,11 +443,11 @@ func formDescription(identifier claim.Identifier, description string) string {
 	return fmt.Sprintf("%s %s", identifier.Url, description)
 }
 
-// GetGinkgoTestIdAndLabels transform the claim.Identifier into a test Id that can be used to skip
+// GetGinkgoTestIDAndLabels transform the claim.Identifier into a test Id that can be used to skip
 // specific tests
-func GetGinkgoTestIdAndLabels(identifier claim.Identifier) (string, []string) {
-	testID := getGinkgoTestId(identifier, "")
-	tags := strings.Split(identifier.Tags, ",")
+func GetGinkgoTestIDAndLabels(identifier claim.Identifier) (testID string, tags []string) {
+	testID = getGinkgoTestID(identifier, "")
+	tags = strings.Split(identifier.Tags, ",")
 	tags = append(tags, testID)
 
 	return testID, tags
@@ -457,7 +455,7 @@ func GetGinkgoTestIdAndLabels(identifier claim.Identifier) (string, []string) {
 
 // getGinkgoTestId transform the claim.Identifier into a test Id that can be used to skip
 // specific tests
-func getGinkgoTestId(identifier claim.Identifier, extra string) string {
+func getGinkgoTestID(identifier claim.Identifier, extra string) string {
 	itID := strings.ReplaceAll(strings.TrimPrefix(identifier.Url, url+"/"), "/", "-")
 	var key string
 	if extra != "" {
