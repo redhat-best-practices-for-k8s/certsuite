@@ -493,10 +493,10 @@ func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
 func testContainersImageTag(env *provider.TestEnvironment) {
 	badcontainers := []string{}
 	for _, cut := range env.Containers {
-		logrus.Debugln("check container ", cut.String(), " image, should be tagged ")
+		logrus.Debugln("check container ", cut.String(), " image should be tagged ")
 		if cut.ContainerImageIdentifier.Tag == "" {
-			badcontainers = append(badcontainers, "{"+cut.String()+": is not having tag"+"}")
-			logrus.Debugf("Container image for %s does not have a valid tag", cut.Data.Name)
+			badcontainers = append(badcontainers, cut.String())
+			logrus.Debugf("Container %s is missing image tag(s)", cut.Data.Name)
 		}
 	}
 	if len(badcontainers) > 0 {

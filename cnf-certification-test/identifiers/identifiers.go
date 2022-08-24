@@ -363,7 +363,7 @@ var (
 		Version: versionOne,
 	}
 	TestContainersImageTag = claim.Identifier{
-		Url:     formTestURL(common.LifecycleTestKey, "test-containers-image-tag"),
+		Url:     formTestURL(common.LifecycleTestKey, "containers-image-tag"),
 		Version: versionOne,
 	}
 	TestNoSSHDaemonsAllowedIdentifier = claim.Identifier{
