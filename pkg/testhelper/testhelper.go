@@ -72,10 +72,10 @@ func SkipIfEmptyAll(skip func(string, ...int), object ...interface{}) {
 	}
 }
 
-func AddContainerResultLog(prefix string, object interface{}, log func(string, ...interface{}), fail func(string, ...int)) {
+func AddTestResultLog(prefix string, object interface{}, log func(string, ...interface{}), fail func(string, ...int)) {
 	s := reflect.ValueOf(object)
 	if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
-		panic("AddContainerResultLog object param is a non slice/map type")
+		panic("AddTestResultLog object param is a non slice/map type")
 	}
 	if s.Len() > 0 {
 		log(fmt.Sprintf("%s %s: %v", prefix, reflect.TypeOf(object), object))

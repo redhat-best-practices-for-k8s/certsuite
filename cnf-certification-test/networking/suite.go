@@ -99,13 +99,13 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Services)
 		testDualStackServices(&env)
 	})
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestNFTablesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNFTablesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		testIsNFTablesConfigPresent(&env)
 	})
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestIPTablesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIPTablesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		testIsIPTablesConfigPresent(&env)
 	})
@@ -296,8 +296,8 @@ func testIsConfigPresent(env *provider.TestEnvironment, name string) {
 			badContainers = append(badContainers, cut)
 		}
 	}
-	testhelper.AddContainerResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
-	testhelper.AddContainerResultLog("Error", errorContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Error", errorContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testIsNFTablesConfigPresent(env *provider.TestEnvironment) {

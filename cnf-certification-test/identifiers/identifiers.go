@@ -173,11 +173,13 @@ var (
 	}
 	// TestNFTablesIdentifier verifies that there is no nftable configuration in any containers of the CNF
 	TestNFTablesIdentifier = claim.Identifier{
+		Tags:    formTestTags(tagCommon),
 		Url:     formTestURL(common.NetworkingTestKey, "nftables"),
 		Version: versionOne,
 	}
 	// TestIPTablesIdentifier verifies that there is no iptables configuration in any containers of the CNF
 	TestIPTablesIdentifier = claim.Identifier{
+		Tags:    formTestTags(tagCommon),
 		Url:     formTestURL(common.NetworkingTestKey, "iptables"),
 		Version: versionOne,
 	}
