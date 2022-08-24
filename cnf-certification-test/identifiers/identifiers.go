@@ -20,9 +20,8 @@ import (
 	"fmt"
 	"strings"
 
-	// "github.com/test-network-function/test-network-function-claim/pkg/claim"
-	"github.com/jmontesi/test-network-function-claim/pkg/claim"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
+	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
 const (
@@ -406,17 +405,17 @@ var (
 	}
 	// TestSysPtraceCapabilityIdentifier ensures that if process namespace sharing is enabled then the SYS_PTRACE capability is allowed
 	TestSysPtraceCapabilityIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(tagExtended),
 		Url:     formTestURL(common.AccessControlTestKey, "sys-ptrace-capability"),
 		Version: versionOne,
 	}
 	TestPodRequestsAndLimitsIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(tagCommon, tagRan),
 		Url:     formTestURL(common.AccessControlTestKey, "requests-and-limits"),
 		Version: versionOne,
 	}
 	TestNamespaceResourceQuotaIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
+		Tags:    formTestTags(tagCommon, tagRan),
 		Url:     formTestURL(common.AccessControlTestKey, "namespace-resource-quota"),
 		Version: versionOne,
 	}
