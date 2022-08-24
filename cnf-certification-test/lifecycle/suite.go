@@ -148,7 +148,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testPodPersistentVolumeReclaimPolicy(&env)
 	})
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestContainersImageTag)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainersImageTag)
 	ginkgo.It(testID, ginkgo.Label(testID), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		testContainersImageTag(&env)

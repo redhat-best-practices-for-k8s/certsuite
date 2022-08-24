@@ -433,6 +433,7 @@ var (
 		Version: versionOne,
 	}
 	TestContainersImageTag = claim.Identifier{
+		Tags:    formTestTags(tagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "containers-image-tag"),
 		Version: versionOne,
 	}
