@@ -89,13 +89,8 @@ func LoadBinary(bytes []byte, db map[string]*ContainerCatalogEntry) error {
 	return nil
 }
 
-func (checker OfflineChecker) IsContainerCertified(registry, repository, tag, digest string, justDigest bool) bool {
+func (checker OfflineChecker) IsContainerCertified(registry, repository, tag, digest string) bool {
 	const tagLatest = "latest"
-	if justDigest {
-		if digest == "" {
-			return false
-		}
-	}
 	if digest != "" {
 		if _, ok := containerdb[digest]; ok {
 			logrus.Trace("container is certified based on digest", digest)
