@@ -43,26 +43,26 @@ var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
 
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestLoggingIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLoggingIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		testContainersLogging(&env)
 	})
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestCrdsStatusSubresourceIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdsStatusSubresourceIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Crds)
 		testCrds(&env)
 	})
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestTerminationMessagePolicyIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestTerminationMessagePolicyIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		testTerminationMessagePolicy(&env)
 	})
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodDisruptionBudgetIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodDisruptionBudgetIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.PodDisruptionBudgets)
 		testPodDisruptionBudgets(&env)
 	})

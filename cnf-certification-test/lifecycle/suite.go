@@ -50,44 +50,44 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
 
-	testID := identifiers.XformToGinkgoItIdentifier(identifiers.TestShutdownIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestShutdownIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		testContainersPreStop(&env)
 	})
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestImagePullPolicyIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestImagePullPolicyIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		testContainersImagePolicy(&env)
 	})
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestReadinessProbeIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestReadinessProbeIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		testContainersReadinessProbe(&env)
 	})
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestLivenessProbeIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLivenessProbeIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		testContainersLivenessProbe(&env)
 	})
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestStartupProbeIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStartupProbeIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		testContainersStartupProbe(&env)
 	})
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodDeploymentBestPracticesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodDeploymentBestPracticesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Pods)
 		testPodsOwnerReference(&env)
 	})
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodHighAvailabilityBestPractices)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHighAvailabilityBestPractices)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 			ginkgo.Skip("Skipping pod high availability test because invalid number of available workers.")
 		}
@@ -95,8 +95,8 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testHighAvailability(&env)
 	})
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodNodeSelectorAndAffinityBestPractices)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodNodeSelectorAndAffinityBestPractices)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 			ginkgo.Skip("Skipping pod scheduling test because invalid number of available workers.")
 		}
@@ -104,8 +104,8 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testPodNodeSelectorAndAffinityBestPractices(&env)
 	})
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodRecreationIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRecreationIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatetfulSets)
 		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 			ginkgo.Skip("Skipping pod recreation scaling test because invalid number of available workers.")
@@ -114,15 +114,15 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testPodsRecreation(&env)
 	})
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPodRequestsAndLimitsIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRequestsAndLimitsIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		testPodRequestsAndLimits(&env)
 	})
 
 	if env.IsIntrusive() {
-		testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestDeploymentScalingIdentifier)
-		ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDeploymentScalingIdentifier)
+		ginkgo.It(testID, ginkgo.Label(tags...), func() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Deployments)
 			if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 				// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
@@ -131,8 +131,8 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 			}
 			testDeploymentScaling(&env, timeout)
 		})
-		testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestStateFulSetScalingIdentifier)
-		ginkgo.It(testID, ginkgo.Label(testID), func() {
+		testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStateFulSetScalingIdentifier)
+		ginkgo.It(testID, ginkgo.Label(tags...), func() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.StatetfulSets)
 			if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 				// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
@@ -143,10 +143,11 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		})
 	}
 
-	testID = identifiers.XformToGinkgoItIdentifier(identifiers.TestPersistentVolumeReclaimPolicyIdentifier)
-	ginkgo.It(testID, ginkgo.Label(testID), func() {
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPersistentVolumeReclaimPolicyIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testPodPersistentVolumeReclaimPolicy(&env)
 	})
+
 })
 
 func testContainersPreStop(env *provider.TestEnvironment) {

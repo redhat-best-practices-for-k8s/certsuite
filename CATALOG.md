@@ -482,6 +482,22 @@ Suggested Remediation|Ensure CNF statefulsets/replica sets can scale in/out succ
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
 
+### manageability
+
+#### containers-image-tag
+
+Property|Description
+---|---
+Test Case Name|containers-image-tag
+Test Case Label|manageability-containers-image-tag
+Unique ID|http://test-network-function.com/testcases/manageability/containers-image-tag
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/manageability/containers-image-tag Check that image tag exists on containers.
+Result Type|informative
+Suggested Remediation|Ensure that all the container images are tagged
+Best Practice Reference|https://TODO Section 4.6.12
+Exception Process|There is no documented exception process for this.
+
 ### networking
 
 #### dual-stack-service
