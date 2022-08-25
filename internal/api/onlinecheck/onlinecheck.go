@@ -161,7 +161,12 @@ func (checker OnlineValidator) getImageByRepository(registry, repository string)
 // IsContainerCertified get container image info by registry/repository [tag|digest]
 // returns true if the container is present and is certified.
 // returns false otherwise
-func (checker OnlineValidator) IsContainerCertified(registry, repository, tag, digest string) bool {
+func (checker OnlineValidator) IsContainerCertified(registry, repository, tag, digest string, justDigest bool) bool {
+	if justDigest {
+		if digest == "" {
+			return false
+		}
+	}
 	if digest != "" {
 		if imageID, err := checker.getImageByDigest(registry, repository, digest); err != nil || imageID == "" {
 			return false

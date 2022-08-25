@@ -100,7 +100,7 @@ func TestIsCertified(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		isCertified := checker.IsContainerCertified(tc.registry, tc.repository, tc.tag, tc.digest)
+		isCertified := checker.IsContainerCertified(tc.registry, tc.repository, tc.tag, tc.digest, false)
 		assert.Equal(t, isCertified, tc.expectedCertificationStatus)
 	}
 }
