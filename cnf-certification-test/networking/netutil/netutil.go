@@ -77,3 +77,28 @@ func GetListeningPorts(cut *provider.Container) (map[PortInfo]bool, error) {
 
 	return parseListeningPorts(outStr)
 }
+
+const (
+	dumpNFTablesCmd       = "nft list ruleset"
+	dumpIPTablesCmd       = "iptables-save"
+	ipTablesLegacyWarning = "# Warning: iptables-legacy tables present, use iptables-legacy-save to see them"
+)
+
+func isIPOrNSTablesPresent(cut *provider.Container, command string) (bool, error) {
+	outStr, errStr, err := crclient.ExecCommandContainerNSEnter(command, cut)
+	if err != nil || (errStr != "" && errStr != ipTablesLegacyWarning) {
+		return false, fmt.Errorf("failed to execute command %s on %s, err: %s, errStr: %s", command, cut, err, errStr)
+	}
+	if errStr == ipTablesLegacyWarning {
+		return true, nil
+	}
+	return outStr != "", nil
+}
+
+func IsNFTablesPresent(cut *provider.Container) (bool, error) {
+	return isIPOrNSTablesPresent(cut, dumpNFTablesCmd)
+}
+
+func IsIPTablesPresent(cut *provider.Container) (bool, error) {
+	return isIPOrNSTablesPresent(cut, dumpIPTablesCmd)
+}

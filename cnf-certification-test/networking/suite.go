@@ -99,7 +99,16 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Services)
 		testDualStackServices(&env)
 	})
-
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNFTablesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		testIsNFTablesConfigPresent(&env)
+	})
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIPTablesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		testIsIPTablesConfigPresent(&env)
+	})
 })
 
 //nolint:funlen
@@ -258,4 +267,43 @@ func testDualStackServices(env *provider.TestEnvironment) {
 		tnf.ClaimFilePrintf("Services in error:\n %s", services.ToStringSlice(errorServices))
 		ginkgo.Fail(fmt.Sprintf("Found %d services in error, check error log for details", len(errorServices)))
 	}
+}
+
+const (
+	nfTables = "nftables"
+	ipTables = "iptables"
+)
+
+func testIsConfigPresent(env *provider.TestEnvironment, name string) {
+	var badContainers, errorContainers []*provider.Container
+	var function func(cut *provider.Container) (bool, error)
+	switch name {
+	case nfTables:
+		function = netutil.IsNFTablesPresent
+	case ipTables:
+		function = netutil.IsIPTablesPresent
+	default:
+		ginkgo.Fail(fmt.Sprintf("Internal error: configuration %s is not supported", name))
+	}
+	for _, cut := range env.Containers {
+		result, err := function(cut)
+		if err != nil {
+			tnf.ClaimFilePrintf("Could not check %s config on: %s, error: %s", name, cut, err)
+			errorContainers = append(errorContainers, cut)
+			continue
+		}
+		if result {
+			badContainers = append(badContainers, cut)
+		}
+	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Error", errorContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func testIsNFTablesConfigPresent(env *provider.TestEnvironment) {
+	testIsConfigPresent(env, nfTables)
+}
+
+func testIsIPTablesConfigPresent(env *provider.TestEnvironment) {
+	testIsConfigPresent(env, ipTables)
 }

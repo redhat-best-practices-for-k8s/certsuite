@@ -172,6 +172,18 @@ var (
 		Url:     formTestURL(common.NetworkingTestKey, "dual-stack-service"),
 		Version: versionOne,
 	}
+	// TestNFTablesIdentifier verifies that there is no nftable configuration in any containers of the CNF
+	TestNFTablesIdentifier = claim.Identifier{
+		Tags:    formTestTags(tagCommon),
+		Url:     formTestURL(common.NetworkingTestKey, "nftables"),
+		Version: versionOne,
+	}
+	// TestIPTablesIdentifier verifies that there is no iptables configuration in any containers of the CNF
+	TestIPTablesIdentifier = claim.Identifier{
+		Tags:    formTestTags(tagCommon),
+		Url:     formTestURL(common.NetworkingTestKey, "iptables"),
+		Version: versionOne,
+	}
 	// TestNamespaceBestPracticesIdentifier ensures the namespace has followed best namespace practices.
 	TestNamespaceBestPracticesIdentifier = claim.Identifier{
 		Tags:    formTestTags(tagCommon),
@@ -697,7 +709,27 @@ test case requires the Deployment of the debug daemonset.`),
 		Description: formDescription(TestServiceDualStackIdentifier,
 			`Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This
 test case requires the deployment of the debug daemonset.`),
-		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 3.5.7",
+		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.5.7",
+		ExceptionProcess:      NoDocumentedProcess,
+	},
+
+	TestNFTablesIdentifier: {
+		Identifier:  TestNFTablesIdentifier,
+		Type:        normativeResult,
+		Remediation: TestNFTablesRemediation,
+		Description: formDescription(TestNFTablesIdentifier,
+			`Checks that the output of "nft list ruleset" is empty, e.g. there is no nftables configuration on any CNF containers.`),
+		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.23",
+		ExceptionProcess:      NoDocumentedProcess,
+	},
+
+	TestIPTablesIdentifier: {
+		Identifier:  TestIPTablesIdentifier,
+		Type:        normativeResult,
+		Remediation: TestIPTablesRemediation,
+		Description: formDescription(TestIPTablesIdentifier,
+			`Checks that the output of "iptables-save" is empty, e.g. there is no iptables configuration on any CNF containers.`),
+		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.23",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 

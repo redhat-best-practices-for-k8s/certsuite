@@ -71,3 +71,14 @@ func SkipIfEmptyAll(skip func(string, ...int), object ...interface{}) {
 		skip(fmt.Sprintf("Test skipped because there are no %s to test, please check under test labels", allTypes))
 	}
 }
+
+func AddTestResultLog(prefix string, object interface{}, log func(string, ...interface{}), fail func(string, ...int)) {
+	s := reflect.ValueOf(object)
+	if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
+		panic("AddTestResultLog object param is a non slice/map type")
+	}
+	if s.Len() > 0 {
+		log(fmt.Sprintf("%s %s: %v", prefix, reflect.TypeOf(object), object))
+		fail(fmt.Sprintf("Number of %s %s = %d", prefix, reflect.TypeOf(object), s.Len()))
+	}
+}

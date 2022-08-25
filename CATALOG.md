@@ -511,7 +511,7 @@ Version|v1.0.0
 Description|http://test-network-function.com/testcases/networking/dual-stack-service Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This test case requires the deployment of the debug daemonset.
 Result Type|normative
 Suggested Remediation|Configure every CNF services with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 3.5.7
+Best Practice Reference|https://TODO Section 3.5.7
 Exception Process|There is no documented exception process for this.
 #### icmpv4-connectivity
 
@@ -564,6 +564,32 @@ Description|http://test-network-function.com/testcases/networking/icmpv6-connect
 Result Type|normative
 Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, 	CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod 	from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is not important, only its presence.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Exception Process|There is no documented exception process for this.
+#### iptables
+
+Property|Description
+---|---
+Test Case Name|iptables
+Test Case Label|networking-iptables
+Unique ID|http://test-network-function.com/testcases/networking/iptables
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/networking/iptables Checks that the output of "iptables-save" is empty, e.g. there is no iptables configuration on any CNF containers.
+Result Type|normative
+Suggested Remediation|Do not configure iptables on any CNF container.
+Best Practice Reference|https://TODO Section 4.6.23
+Exception Process|There is no documented exception process for this.
+#### nftables
+
+Property|Description
+---|---
+Test Case Name|nftables
+Test Case Label|networking-nftables
+Unique ID|http://test-network-function.com/testcases/networking/nftables
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/networking/nftables Checks that the output of "nft list ruleset" is empty, e.g. there is no nftables configuration on any CNF containers.
+Result Type|normative
+Suggested Remediation|Do not configure nftables on any CNF container.
+Best Practice Reference|https://TODO Section 4.6.23
 Exception Process|There is no documented exception process for this.
 #### ocp-reserved-ports-usage
 
