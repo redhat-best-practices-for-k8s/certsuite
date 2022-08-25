@@ -151,14 +151,11 @@ func testHelmCertified(env *provider.TestEnvironment) {
 	}
 }
 func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
-	containersToQuery := certtool.GetContainersToQuery(env)
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, containersToQuery)
-	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
 	failedContainers := []configuration.ContainerImageIdentifier{}
 	allContainersToQueryEmpty := true
 	for _, c := range env.Containers {
 		if c.ContainerImageIdentifier.Name == "" || c.ContainerImageIdentifier.Repository == "" {
-			tnf.ClaimFilePrintf("Container name = \"%s\" or repository = \"%s\" is missing, skipping this container to query", c.Name, c.Repository)
+			tnf.ClaimFilePrintf("Container name = \"%s\" or repository = \"%s\" is missing, skipping this container to query", c.ContainerImageIdentifier.Name, c.ContainerImageIdentifier.Repository)
 			continue
 		}
 		allContainersToQueryEmpty = false
