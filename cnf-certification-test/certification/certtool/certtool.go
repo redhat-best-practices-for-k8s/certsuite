@@ -34,9 +34,9 @@ var (
 )
 
 // getContainerCertificationRequestFunction returns function that will try to get the certification status (CCP) for a container.
-func GetContainerCertificationRequestFunction(id configuration.ContainerImageIdentifier) func() bool {
+func GetContainerCertificationRequestFunction(id configuration.ContainerImageIdentifier, justDigest bool) func() bool {
 	return func() bool {
-		return CertAPIClient.IsContainerCertified(id.Repository, id.Name, id.Tag, id.Digest)
+		return CertAPIClient.IsContainerCertified(id.Repository, id.Name, id.Tag, id.Digest, justDigest)
 	}
 }
 
