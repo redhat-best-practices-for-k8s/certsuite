@@ -15725,450 +15725,6 @@
       "version_original": "1.0.1"
     },
     {
-      "_id": "61ea6cbc81c433814d217b57",
-      "alm_examples": [
-        {
-          "api_version": "fic.f5.com/v1",
-          "kind": "F5IpamCtlr",
-          "metadata": {
-            "name": "f5ipamctlr-sample"
-          },
-          "spec": {
-            "args": {
-              "infoblox_grid_host": "<IP Address of Server>",
-              "infoblox_labels": "<CIDR Labels>",
-              "infoblox_netview": "<NetView>",
-              "infoblox_password": "<PASSWORD>",
-              "infoblox_username": "<USERNAME>",
-              "infoblox_wapi_version": "<VERSION>",
-              "ip_range": "<IP RANGE LABELS>",
-              "orchestration": "kubernetes",
-              "provider": "infoblox"
-            },
-            "image": {
-              "pullPolicy": "Always",
-              "repo": "f5-ipam-controller",
-              "user": "f5networks",
-              "version": "0.1.5"
-            },
-            "namespace": "kube-system",
-            "rbac": {
-              "create": true
-            },
-            "serviceAccount": {
-              "create": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/f5networks/f5-ipam-controller-operator-bundle@sha256:1ae77a9ea0781721f93f9485e783caf69722cbb9a6ccc5470b91a740352ff906",
-      "bundle_path_digest": "sha256:1ae77a9ea0781721f93f9485e783caf69722cbb9a6ccc5470b91a740352ff906",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-01-21T08:20:12.631000+00:00",
-      "csv_description": "## Introduction\nThis Operator installs F5 IPAM Controller in your OpenShift Cluster. This enables to configure and deploy FIC using Helm Charts.\n## F5 IPAM Controller\nThe F5 IPAM Controller is a Docker container that runs in an orchestration environment and interfaces with an IPAM system. It allocates IP addresses from an IPAM system\u2019s address pool for hostnames in an orchestration environment. The F5 IPAM Controller watches orchestration-specific resources and consumes the hostnames within each resource.\n## Documentation\nRefer to F5 IPAM Controller documentation\n- https://github.com/F5Networks/f5-ipam-controller/blob/main/README.md\n## Prerequisites\n### Configure Infoblox with network and netview [Provider: Infoblox]\nRefer Infoblox documentation\n### Create persistent volume and persistent volume claim [Provider: f5-ip-provider]\nCreate persistent volume and persistent volume claim\n```\noc apply -f https://raw.githubusercontent.com/F5Networks/f5-ipam-controller/main/docs/config_examples/f5-ip-provider/localstorage-pv-pvc-example.yaml\n```\n",
-      "csv_display_name": "F5 Ipam controller",
-      "csv_metadata_description": "Operator to install F5 IPAM Controller.",
-      "csv_name": "f5-ipam-controller-operator.v0.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:55:23.883000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "f5-ipam-controller-operator",
-      "provided_apis": [
-        {
-          "group": "fic.f5.com",
-          "kind": "F5IpamCtlr",
-          "plural": "f5ipamctlrs",
-          "version": "v1"
-        }
-      ],
-      "provider": "F5 Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "image": "registry.connect.redhat.com/f5networks/f5-ipam-controller-operator@sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "name": "f5-ipam-controller-operator-65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902-annotation"
-        },
-        {
-          "digest": "sha256:076093ea58ca42a77839d911193977a7985728607187f31d3652ce189d79900d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:076093ea58ca42a77839d911193977a7985728607187f31d3652ce189d79900d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "image": "registry.connect.redhat.com/f5networks/f5-ipam-controller-operator@sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.0.1",
-      "version_original": "0.0.1"
-    },
-    {
-      "_id": "61ea6e4e81c433814d217c35",
-      "alm_examples": [
-        {
-          "api_version": "fic.f5.com/v1",
-          "kind": "F5IpamCtlr",
-          "metadata": {
-            "name": "f5ipamctlr-sample"
-          },
-          "spec": {
-            "args": {
-              "infoblox_grid_host": "<IP Address of Server>",
-              "infoblox_labels": "<CIDR Labels>",
-              "infoblox_netview": "<NetView>",
-              "infoblox_password": "<PASSWORD>",
-              "infoblox_username": "<USERNAME>",
-              "infoblox_wapi_version": "<VERSION>",
-              "ip_range": "<IP RANGE LABELS>",
-              "orchestration": "kubernetes",
-              "provider": "infoblox"
-            },
-            "image": {
-              "pullPolicy": "Always",
-              "repo": "f5-ipam-controller",
-              "user": "f5networks",
-              "version": "0.1.5"
-            },
-            "namespace": "kube-system",
-            "rbac": {
-              "create": true
-            },
-            "serviceAccount": {
-              "create": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/f5networks/f5-ipam-controller-operator-bundle@sha256:1ae77a9ea0781721f93f9485e783caf69722cbb9a6ccc5470b91a740352ff906",
-      "bundle_path_digest": "sha256:1ae77a9ea0781721f93f9485e783caf69722cbb9a6ccc5470b91a740352ff906",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-01-21T08:26:54.920000+00:00",
-      "csv_description": "## Introduction\nThis Operator installs F5 IPAM Controller in your OpenShift Cluster. This enables to configure and deploy FIC using Helm Charts.\n## F5 IPAM Controller\nThe F5 IPAM Controller is a Docker container that runs in an orchestration environment and interfaces with an IPAM system. It allocates IP addresses from an IPAM system\u2019s address pool for hostnames in an orchestration environment. The F5 IPAM Controller watches orchestration-specific resources and consumes the hostnames within each resource.\n## Documentation\nRefer to F5 IPAM Controller documentation\n- https://github.com/F5Networks/f5-ipam-controller/blob/main/README.md\n## Prerequisites\n### Configure Infoblox with network and netview [Provider: Infoblox]\nRefer Infoblox documentation\n### Create persistent volume and persistent volume claim [Provider: f5-ip-provider]\nCreate persistent volume and persistent volume claim\n```\noc apply -f https://raw.githubusercontent.com/F5Networks/f5-ipam-controller/main/docs/config_examples/f5-ip-provider/localstorage-pv-pvc-example.yaml\n```\n",
-      "csv_display_name": "F5 Ipam controller",
-      "csv_metadata_description": "Operator to install F5 IPAM Controller.",
-      "csv_name": "f5-ipam-controller-operator.v0.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:25:14.572000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "f5-ipam-controller-operator",
-      "provided_apis": [
-        {
-          "group": "fic.f5.com",
-          "kind": "F5IpamCtlr",
-          "plural": "f5ipamctlrs",
-          "version": "v1"
-        }
-      ],
-      "provider": "F5 Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "image": "registry.connect.redhat.com/f5networks/f5-ipam-controller-operator@sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "name": "f5-ipam-controller-operator-65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902-annotation"
-        },
-        {
-          "digest": "sha256:076093ea58ca42a77839d911193977a7985728607187f31d3652ce189d79900d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:076093ea58ca42a77839d911193977a7985728607187f31d3652ce189d79900d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "image": "registry.connect.redhat.com/f5networks/f5-ipam-controller-operator@sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.0.1",
-      "version_original": "0.0.1"
-    },
-    {
-      "_id": "61ea6e8fed74b2ffb22ace57",
-      "alm_examples": [
-        {
-          "api_version": "fic.f5.com/v1",
-          "kind": "F5IpamCtlr",
-          "metadata": {
-            "name": "f5ipamctlr-sample"
-          },
-          "spec": {
-            "args": {
-              "infoblox_grid_host": "<IP Address of Server>",
-              "infoblox_labels": "<CIDR Labels>",
-              "infoblox_netview": "<NetView>",
-              "infoblox_password": "<PASSWORD>",
-              "infoblox_username": "<USERNAME>",
-              "infoblox_wapi_version": "<VERSION>",
-              "ip_range": "<IP RANGE LABELS>",
-              "orchestration": "kubernetes",
-              "provider": "infoblox"
-            },
-            "image": {
-              "pullPolicy": "Always",
-              "repo": "f5-ipam-controller",
-              "user": "f5networks",
-              "version": "0.1.5"
-            },
-            "namespace": "kube-system",
-            "rbac": {
-              "create": true
-            },
-            "serviceAccount": {
-              "create": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/f5networks/f5-ipam-controller-operator-bundle@sha256:1ae77a9ea0781721f93f9485e783caf69722cbb9a6ccc5470b91a740352ff906",
-      "bundle_path_digest": "sha256:1ae77a9ea0781721f93f9485e783caf69722cbb9a6ccc5470b91a740352ff906",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-01-21T08:27:59.312000+00:00",
-      "csv_description": "## Introduction\nThis Operator installs F5 IPAM Controller in your OpenShift Cluster. This enables to configure and deploy FIC using Helm Charts.\n## F5 IPAM Controller\nThe F5 IPAM Controller is a Docker container that runs in an orchestration environment and interfaces with an IPAM system. It allocates IP addresses from an IPAM system\u2019s address pool for hostnames in an orchestration environment. The F5 IPAM Controller watches orchestration-specific resources and consumes the hostnames within each resource.\n## Documentation\nRefer to F5 IPAM Controller documentation\n- https://github.com/F5Networks/f5-ipam-controller/blob/main/README.md\n## Prerequisites\n### Configure Infoblox with network and netview [Provider: Infoblox]\nRefer Infoblox documentation\n### Create persistent volume and persistent volume claim [Provider: f5-ip-provider]\nCreate persistent volume and persistent volume claim\n```\noc apply -f https://raw.githubusercontent.com/F5Networks/f5-ipam-controller/main/docs/config_examples/f5-ip-provider/localstorage-pv-pvc-example.yaml\n```\n",
-      "csv_display_name": "F5 Ipam controller",
-      "csv_metadata_description": "Operator to install F5 IPAM Controller.",
-      "csv_name": "f5-ipam-controller-operator.v0.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:48:45.837000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "f5-ipam-controller-operator",
-      "provided_apis": [
-        {
-          "group": "fic.f5.com",
-          "kind": "F5IpamCtlr",
-          "plural": "f5ipamctlrs",
-          "version": "v1"
-        }
-      ],
-      "provider": "F5 Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "image": "registry.connect.redhat.com/f5networks/f5-ipam-controller-operator@sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "name": "f5-ipam-controller-operator-65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902-annotation"
-        },
-        {
-          "digest": "sha256:076093ea58ca42a77839d911193977a7985728607187f31d3652ce189d79900d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:076093ea58ca42a77839d911193977a7985728607187f31d3652ce189d79900d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "image": "registry.connect.redhat.com/f5networks/f5-ipam-controller-operator@sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.0.1",
-      "version_original": "0.0.1"
-    },
-    {
-      "_id": "61ea6eb381c433814d217c6a",
-      "alm_examples": [
-        {
-          "api_version": "fic.f5.com/v1",
-          "kind": "F5IpamCtlr",
-          "metadata": {
-            "name": "f5ipamctlr-sample"
-          },
-          "spec": {
-            "args": {
-              "infoblox_grid_host": "<IP Address of Server>",
-              "infoblox_labels": "<CIDR Labels>",
-              "infoblox_netview": "<NetView>",
-              "infoblox_password": "<PASSWORD>",
-              "infoblox_username": "<USERNAME>",
-              "infoblox_wapi_version": "<VERSION>",
-              "ip_range": "<IP RANGE LABELS>",
-              "orchestration": "kubernetes",
-              "provider": "infoblox"
-            },
-            "image": {
-              "pullPolicy": "Always",
-              "repo": "f5-ipam-controller",
-              "user": "f5networks",
-              "version": "0.1.5"
-            },
-            "namespace": "kube-system",
-            "rbac": {
-              "create": true
-            },
-            "serviceAccount": {
-              "create": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/f5networks/f5-ipam-controller-operator-bundle@sha256:1ae77a9ea0781721f93f9485e783caf69722cbb9a6ccc5470b91a740352ff906",
-      "bundle_path_digest": "sha256:1ae77a9ea0781721f93f9485e783caf69722cbb9a6ccc5470b91a740352ff906",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-01-21T08:28:35.427000+00:00",
-      "csv_description": "## Introduction\nThis Operator installs F5 IPAM Controller in your OpenShift Cluster. This enables to configure and deploy FIC using Helm Charts.\n## F5 IPAM Controller\nThe F5 IPAM Controller is a Docker container that runs in an orchestration environment and interfaces with an IPAM system. It allocates IP addresses from an IPAM system\u2019s address pool for hostnames in an orchestration environment. The F5 IPAM Controller watches orchestration-specific resources and consumes the hostnames within each resource.\n## Documentation\nRefer to F5 IPAM Controller documentation\n- https://github.com/F5Networks/f5-ipam-controller/blob/main/README.md\n## Prerequisites\n### Configure Infoblox with network and netview [Provider: Infoblox]\nRefer Infoblox documentation\n### Create persistent volume and persistent volume claim [Provider: f5-ip-provider]\nCreate persistent volume and persistent volume claim\n```\noc apply -f https://raw.githubusercontent.com/F5Networks/f5-ipam-controller/main/docs/config_examples/f5-ip-provider/localstorage-pv-pvc-example.yaml\n```\n",
-      "csv_display_name": "F5 Ipam controller",
-      "csv_metadata_description": "Operator to install F5 IPAM Controller.",
-      "csv_name": "f5-ipam-controller-operator.v0.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:32:25.861000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "f5-ipam-controller-operator",
-      "provided_apis": [
-        {
-          "group": "fic.f5.com",
-          "kind": "F5IpamCtlr",
-          "plural": "f5ipamctlrs",
-          "version": "v1"
-        }
-      ],
-      "provider": "F5 Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "image": "registry.connect.redhat.com/f5networks/f5-ipam-controller-operator@sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "name": "f5-ipam-controller-operator-65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902-annotation"
-        },
-        {
-          "digest": "sha256:076093ea58ca42a77839d911193977a7985728607187f31d3652ce189d79900d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:076093ea58ca42a77839d911193977a7985728607187f31d3652ce189d79900d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "image": "registry.connect.redhat.com/f5networks/f5-ipam-controller-operator@sha256:65eb080a6610d3422fb5f36aba312c403b1971371e8cfba79187f7008f7d7902",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.0.1",
-      "version_original": "0.0.1"
-    },
-    {
       "_id": "61eb29b2ed74b2ffb22b0155",
       "alm_examples": [
         {
@@ -16759,9 +16315,354 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "0.0.25",
       "version_original": "0.0.25"
+    },
+    {
+      "_id": "61ee7681384a3eb331996a7c",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
+      "bundle_path_digest": "sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-01-24T09:50:57.196000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.25",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:06:38.019000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Joget, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
+          "name": "joget"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.0.25",
+      "version_original": "0.0.25"
+    },
+    {
+      "_id": "61ee786833f211c45407a7db",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
+      "bundle_path_digest": "sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-01-24T09:59:04.414000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.25",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:33:20.275000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Joget, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
+          "name": "joget"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.25",
+      "version_original": "0.0.25"
+    },
+    {
+      "_id": "61ee7a03384a3eb331996ae6",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
+      "bundle_path_digest": "sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-01-24T10:05:55.438000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.25",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:28:39.953000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Joget, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
+          "name": "joget"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.0.25",
+      "version_original": "0.0.25"
+    },
+    {
+      "_id": "61ee7a4a384a3eb331996b0d",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
+      "bundle_path_digest": "sha256:f9c5556854d4c2d1b32b57ebc096b6b525cecd5e801da2cf15a9fed2dfa0d7c3",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-01-24T10:07:06.967000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.25",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:49:45.688000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [],
+      "provider": "Joget, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:d2c8ad6be94b49b9e679025d60ddafd3c4f2261e08b30785157f9039ca05f289",
+          "name": "joget"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.25",
+      "version_original": "0.0.25"
     }
   ],
   "page": 19,
   "page_size": 100,
-  "total": 4801
+  "total": 4813
 }
