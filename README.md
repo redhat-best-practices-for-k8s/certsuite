@@ -3,7 +3,7 @@
 
 
 This repository contains a set of Cloud-Native Network Functions (CNFs) test cases and the framework to build more. The tests and framework are intended 
-to test the interaction of CNFs with OpenShift Container Platform.  It also generates a report 
+to test the interaction of CNFs with OpenShift Container Platform.  It also generates a report
 (claim.json) after running tests.
 
 Please consult [CATALOG.md](./CATALOG.md) for a catalog of the included test cases and test case building blocks.
@@ -11,13 +11,13 @@ Please consult [CATALOG.md](./CATALOG.md) for a catalog of the included test cas
 The suite is provided here in part so that CNF Developers can use the suite to test their CNFs readiness for
 certification.  Please see "CNF Developers" below for more information.
 
-## Overview 
+## Overview
  ![overview](assets/images/overview-new.svg)
 
 In the diagram above:
 - the `CNF` is the CNF to be certified. The certification suite identifies the resources (containers/pods/operators etc) belonging to the CNF via labels or static data entries in the config file
 - the `Certification container/exec` is the certification test suite running on the platform or in a container. The executable verifies the CNF under test configuration and its interactions with openshift
-- the `Debug` pods are part of a daemonset responsible to run various privileged commands on kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The debug daemonset is instantiated via the cnf-certification-test-partner repository [repo](https://github.com/test-network-function/cnf-certification-test-partner).  
+- the `Debug` pods are part of a daemonset responsible to run various privileged commands on kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The debug daemonset is instantiated via the cnf-certification-test-partner repository [repo](https://github.com/test-network-function/cnf-certification-test-partner).
 
 
 ## Test Configuration
@@ -30,7 +30,7 @@ Multiple namespaces can be specified in the [configuration file](cnf-certificati
 ``` shell script
 targetNameSpaces:
   - name: firstnamespace
-  - name: secondnamespace 
+  - name: secondnamespace
 ```
 ### targetPodLabels
 The goal of this section is to specify the labels to be used to identify the CNF resources under test. It's highly recommended that the labels should be defined in pod definition rather than added after pod is created, as labels added later on will be lost in case the pod gets rescheduled. In case of pods defined as part of a deployment, it's best to use the same label as the one defined in the `spec.selector.matchLabels` section of the deployment yaml. The prefix field can be used to avoid naming collision with other labels.
@@ -41,9 +41,9 @@ targetPodLabels:
     value: target
 ```
 
-The corresponding label used to match pods is: 
+The corresponding label used to match pods is:
 ```shell script
-test-network-function.com/generic: target 
+test-network-function.com/generic: target
 ```
 
 Once the pods are found, all of their containers are also added to the target container list. A target deployments list will also be created with all the deployments which the test pods belong to.
@@ -139,7 +139,7 @@ By default, the image with release tag `4.6` is used and the ginkgo skip argumen
 An image is built and is available at this repository: [quay.io](https://quay.io/repository/testnetworkfunction/cnf-certification-test)
 The image can be pulled using :
 ```shell script
-docker pull quay.io/testnetworkfunction/cnf-certification-test
+podman pull quay.io/testnetworkfunction/cnf-certification-test
 ```
 ### Cluster requirement
 * OCP cluster should allow interactive shell sessions to pods/containers to stay alive when being idle for more than a few minutes. If it is not the case, consult the maintainer of the cluster infrastructure on how it can be enabled. Also, make sure the firewalls/load balancers on the path do not timeout idle connections too quickly.
@@ -153,7 +153,7 @@ In short, oc debug tool will launch a new container ending with "-debug" suffix,
 **Note:**
 It's recommended to clean up disk space and make sure there's enough resources to deploy another container image in every node before starting the tests.
 ### Run the tests
-``./run-tnf-container.sh`` script is used to launch the tests.  
+``./run-tnf-container.sh`` script is used to launch the tests.
 
 There are several required arguments:
 
@@ -180,13 +180,13 @@ See [General tests](#general-tests) for a list of available keywords.
 
 ### Running using `docker` instead of `podman`
 
-By default, `run-container.sh` utilizes `podman`.  However, you can configure an alternate container virtualization
-client using `TNF_CONTAINER_CLIENT`.  This is particularly useful for operating systems that do not readily support
-`podman`, such as macOS.  In order to configure the test harness to use `docker`, issue the following prior to
+By default, `run-container.sh` utilizes `podman`. However, you can configure an alternate container virtualization
+client using `TNF_CONTAINER_CLIENT`. This is particularly useful for operating systems that do not readily support
+`podman`. In order to configure the test harness to use `docker`, issue the following prior to
 `run-tnf-container.sh`:
 
 ```shell script
-export TNF_CONTAINER_CLIENT="docker"
+export TNF_CONTAINER_CLIENT=docker
 ```
 
 ### Building the container image locally
@@ -194,7 +194,7 @@ export TNF_CONTAINER_CLIENT="docker"
 You can build an image locally by using the command below. Use the value of `TNF_VERSION` to set a branch, a tag, or a hash of a commit that will be installed into the image. Also use `OPENSHIFT_VERSION` to point to the OCP version of the cluster in which the workloads to be tested are deployed.
 
 ```shell script
-docker build -t cnf-certification-test:v1.0.5 \
+podman build -t cnf-certification-test:v1.0.5 \
   --build-arg TNF_VERSION=v1.0.5 \
   --build-arg OPENSHIFT_VERSION=4.7.55 .
 ```
@@ -202,7 +202,7 @@ docker build -t cnf-certification-test:v1.0.5 \
 To build an image that installs TNF from an unofficial source (e.g. a fork of the TNF repository), use the `TNF_SRC_URL` build argument to override the URL to a source repository.
 
 ```shell script
-docker build -t cnf-certification-test:v1.0.5 \
+podman build -t cnf-certification-test:v1.0.5 \
   --build-arg TNF_VERSION=v1.0.5 \
   --build-arg TNF_SRC_URL=https://github.com/test-network-function/cnf-certification-test \
   --build-arg OPENSHIFT_VERSION=4.7.55 .
