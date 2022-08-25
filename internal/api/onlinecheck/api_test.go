@@ -25,23 +25,23 @@ import (
 func TestIsContainerCertified(t *testing.T) {
 	client := onlinecheck.NewOnlineValidator()
 	var v bool
-	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "", "", false)
+	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "", "")
 	assert.Equal(t, true, v) // true
-	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-1", "", false)
+	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-1", "")
 	assert.Equal(t, true, v) // true
 
-	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-1", "sha256:c358eee360a1e7754c2d555ec5fba4e6a42f1ede2bc9dd9e59068dd287113b33", false)
+	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-1", "sha256:c358eee360a1e7754c2d555ec5fba4e6a42f1ede2bc9dd9e59068dd287113b33")
 	assert.Equal(t, true, v) // true
 
 	// wrong tag, valid digest, should be true
-	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-100", "sha256:c358eee360a1e7754c2d555ec5fba4e6a42f1ede2bc9dd9e59068dd287113b33", false)
+	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-100", "sha256:c358eee360a1e7754c2d555ec5fba4e6a42f1ede2bc9dd9e59068dd287113b33")
 	assert.Equal(t, true, v) // true
 
 	// wrong tag, everything else is valid
-	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-XX", "", false)
+	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-XX", "")
 	assert.Equal(t, false, v) // false
 
 	// wrong digest, everything else is valid
-	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-1", "sha256:c358eee360a1e7754c2d555ec5fba4e6a42f1ede2bc9dd9e59068dd287113b35", false)
+	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-1", "sha256:c358eee360a1e7754c2d555ec5fba4e6a42f1ede2bc9dd9e59068dd287113b35")
 	assert.Equal(t, false, v) // false
 }
