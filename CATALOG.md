@@ -325,19 +325,6 @@ Result Type|normative
 Suggested Remediation| 	It's considered best-practices to define prestop for proper management of container lifecycle. 	The prestop can be used to gracefully stop the container and clean resources (e.g., DB connection). 	 	The prestop can be configured using : 	 1) Exec : executes the supplied command inside the container 	 2) HTTP : executes HTTP request against the specified endpoint. 	 	When defined. K8s will handle shutdown of the container using the following: 	1) K8s first execute the preStop hook inside the container. 	2) K8s will wait for a grace period. 	3) K8s will clean the remaining processes using KILL signal.		 		
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.1.3, 12.2 and 12.5
 Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot  									use a prestop shutdown specification.
-#### containers-image-tag
-
-Property|Description
----|---
-Test Case Name|containers-image-tag
-Test Case Label|lifecycle-containers-image-tag
-Unique ID|http://test-network-function.com/testcases/lifecycle/containers-image-tag
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/containers-image-tag Check that image tag exists on containers.
-Result Type|informative
-Suggested Remediation|Ensure that all the container images are tagged
-Best Practice Reference|https://TODO Section 4.6.12
-Exception Process|There is no documented exception process for this.
 #### deployment-scaling
 
 Property|Description
@@ -493,6 +480,22 @@ Description|http://test-network-function.com/testcases/lifecycle/statefulset-sca
 Result Type|normative
 Suggested Remediation|Ensure CNF statefulsets/replica sets can scale in/out successfully.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Exception Process|There is no documented exception process for this.
+
+### manageability
+
+#### containers-image-tag
+
+Property|Description
+---|---
+Test Case Name|containers-image-tag
+Test Case Label|manageability-containers-image-tag
+Unique ID|http://test-network-function.com/testcases/manageability/containers-image-tag
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/manageability/containers-image-tag Check that image tag exists on containers.
+Result Type|informative
+Suggested Remediation|Ensure that all the container images are tagged
+Best Practice Reference|https://TODO Section 4.6.12
 Exception Process|There is no documented exception process for this.
 
 ### networking

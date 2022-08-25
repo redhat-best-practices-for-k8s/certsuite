@@ -35,6 +35,7 @@ const (
 
 const (
 	tagCommon = "common"
+	tagExtand = "extand"
 	tagOnline = "online"
 )
 
@@ -433,8 +434,8 @@ var (
 		Version: versionOne,
 	}
 	TestContainersImageTag = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
-		Url:     formTestURL(common.LifecycleTestKey, "containers-image-tag"),
+		Tags:    formTestTags(tagExtand),
+		Url:     formTestURL(common.ManageabilityestKey, "containers-image-tag"),
 		Version: versionOne,
 	}
 	TestNoSSHDaemonsAllowedIdentifier = claim.Identifier{
