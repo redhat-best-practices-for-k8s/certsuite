@@ -66,12 +66,12 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	})
 })
 
-func testContainerCertification(c configuration.ContainerImageIdentifier, justDigest bool) bool {
+func testContainerCertification(c configuration.ContainerImageIdentifier) bool {
 	tag := c.Tag
 	digest := c.Digest
 	registryName := c.Repository
 	name := c.Name
-	ans := api.IsContainerCertified(registryName, name, tag, digest, justDigest)
+	ans := api.IsContainerCertified(registryName, name, tag, digest)
 	if !ans {
 		tnf.ClaimFilePrintf("%s/%s:%s is not listed in certified containers", registryName, name, tag)
 	}
@@ -90,8 +90,7 @@ func testContainerCertificationStatus(env *provider.TestEnvironment) {
 			continue
 		}
 		allContainersToQueryEmpty = false
-		justDigest := false
-		if !testContainerCertification(c, justDigest) {
+		if !testContainerCertification(c) {
 			failedContainers = append(failedContainers, c)
 		}
 	}
@@ -157,16 +156,20 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
 	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
 	failedContainers := []configuration.ContainerImageIdentifier{}
 	allContainersToQueryEmpty := true
-	for c := range containersToQuery {
-		if c.Name == "" || c.Repository == "" {
+	for _, c := range env.Containers {
+		if c.ContainerImageIdentifier.Name == "" || c.ContainerImageIdentifier.Repository == "" {
 			tnf.ClaimFilePrintf("Container name = \"%s\" or repository = \"%s\" is missing, skipping this container to query", c.Name, c.Repository)
 			continue
 		}
 		allContainersToQueryEmpty = false
-		justDigest := true
-		if !testContainerCertification(c, justDigest) {
-			failedContainers = append(failedContainers, c)
+		if c.ContainerImageIdentifier.Digest == "" {
+			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
+		} else {
+			if !testContainerCertification(c.ContainerImageIdentifier) {
+				failedContainers = append(failedContainers, c.ContainerImageIdentifier)
+			}
 		}
+
 	}
 	if allContainersToQueryEmpty {
 		ginkgo.Skip("No containers to check because either container name or repository is empty for all containers in tnf_config.yml")
