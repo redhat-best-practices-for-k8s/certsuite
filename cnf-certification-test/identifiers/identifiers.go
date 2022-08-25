@@ -34,9 +34,9 @@ const (
 )
 
 const (
-	tagCommon = "common"
-	tagExtand = "extand"
-	tagOnline = "online"
+	tagCommon   = "common"
+	tagExtended = "extanded"
+	tagOnline   = "online"
 )
 
 // TestCaseDescription describes a JUnit test case.
@@ -434,8 +434,8 @@ var (
 		Version: versionOne,
 	}
 	TestContainersImageTag = claim.Identifier{
-		Tags:    formTestTags(tagExtand),
-		Url:     formTestURL(common.ManageabilityestKey, "containers-image-tag"),
+		Tags:    formTestTags(tagExtended),
+		Url:     formTestURL(common.ManageabilityTestKey, "containers-image-tag"),
 		Version: versionOne,
 	}
 	TestNoSSHDaemonsAllowedIdentifier = claim.Identifier{

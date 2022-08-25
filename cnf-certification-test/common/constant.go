@@ -21,7 +21,7 @@ const (
 	defaultTimeoutSeconds     = 10
 	AccessControlTestKey      = "access-control"
 	LifecycleTestKey          = "lifecycle"
-	ManageabilityestKey       = "manageability"
+	ManageabilityTestKey      = "manageability"
 	ChaosTesting              = "chaostesting"
 	AffiliatedCertTestKey     = "affiliated-certification"
 	NetworkingTestKey         = "networking"

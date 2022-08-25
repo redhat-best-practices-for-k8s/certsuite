@@ -150,3 +150,27 @@ func testHelmCertified(env *provider.TestEnvironment) {
 		ginkgo.Fail(fmt.Sprintf("%d helms chart are not certified.", len(failedHelmCharts)))
 	}
 }
+func testContainerCertificationbydigest(env *provider.TestEnvironment) {
+	containersToQuery := certtool.GetContainersToQuery(env)
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, containersToQuery)
+	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
+	failedContainers := []configuration.ContainerImageIdentifier{}
+	allContainersToQueryEmpty := true
+	for c := range containersToQuery {
+		if c.Name == "" || c.Repository == "" {
+			tnf.ClaimFilePrintf("Container name = \"%s\" or repository = \"%s\" is missing, skipping this container to query", c.Name, c.Repository)
+			continue
+		}
+		allContainersToQueryEmpty = false
+		if !testContainerCertification(c) {
+			failedContainers = append(failedContainers, c)
+		}
+	}
+	if allContainersToQueryEmpty {
+		ginkgo.Skip("No containers to check because either container name or repository is empty for all containers in tnf_config.yml")
+	}
+	if n := len(failedContainers); n > 0 {
+		logrus.Warnf("Containers that are not certified: %+v", failedContainers)
+		ginkgo.Fail(fmt.Sprintf("%d container images are not certified.", n))
+	}
+}
