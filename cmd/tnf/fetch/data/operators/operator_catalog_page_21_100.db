@@ -1,1486 +1,6 @@
 {
   "data": [
     {
-      "_id": "621e22955c4460caf312456e",
-      "alm_examples": [
-        {
-          "api_version": "pmem-csi.intel.com/v1beta1",
-          "kind": "PmemCSIDeployment",
-          "metadata": {
-            "name": "pmem-csi.intel.com"
-          },
-          "spec": {
-            "deviceMode": "lvm",
-            "nodeSelector": {
-              "feature.node.kubernetes.io/memory-nv.dax": "true"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
-      "bundle_path_digest": "sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-01T13:41:41.694000+00:00",
-      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
-      "csv_display_name": "Operator for PMEM-CSI driver",
-      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
-      "csv_name": "pmem-csi-operator-os.v1.0.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:21:39.985000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "pmem-csi-operator-os",
-      "provided_apis": [
-        {
-          "group": "pmem-csi.intel.com",
-          "kind": "PmemCSIDeployment",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Intel\u00ae Corporation",
-      "related_images": [
-        {
-          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "name": "pmem-csi-driver-os-6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576-annotation"
-        },
-        {
-          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "name": "pmem-csi-operator-os"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.0.2",
-      "version_original": "1.0.2"
-    },
-    {
-      "_id": "621e22955c4460caf312456f",
-      "alm_examples": [
-        {
-          "api_version": "pmem-csi.intel.com/v1beta1",
-          "kind": "PmemCSIDeployment",
-          "metadata": {
-            "name": "pmem-csi.intel.com"
-          },
-          "spec": {
-            "deviceMode": "lvm",
-            "nodeSelector": {
-              "feature.node.kubernetes.io/memory-nv.dax": "true"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
-      "bundle_path_digest": "sha256:d1a141da228dcc7499bd8a984ee1f9489a9fa8718f17ff00c38b5034e4e9f300",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-01T13:41:41.944000+00:00",
-      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
-      "csv_display_name": "Operator for PMEM-CSI driver",
-      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
-      "csv_name": "pmem-csi-operator-os.v1.0.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:11:15.423000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "pmem-csi-operator-os",
-      "provided_apis": [
-        {
-          "group": "pmem-csi.intel.com",
-          "kind": "PmemCSIDeployment",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Intel\u00ae Corporation",
-      "related_images": [
-        {
-          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "name": "pmem-csi-driver-os-6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576-annotation"
-        },
-        {
-          "digest": "sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:6d24fd56c756ada2ef760d6395cafb9d8a49e84b9c96d2bb2b7238ad98cfd576",
-          "name": "pmem-csi-operator-os"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.0.2",
-      "version_original": "1.0.2"
-    },
-    {
-      "_id": "621e6337bf15cd3a565ef917",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "OpenshiftXray",
-          "metadata": {
-            "name": "openshiftxray"
-          },
-          "spec": {
-            "xray": {
-              "analysis": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-analysis"
-                },
-                "name": "xray-analysis",
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "common": {
-                "xrayGroupId": "1000721035",
-                "xrayUserId": "1000721035"
-              },
-              "database": {
-                "password": "OVERRIDE",
-                "url": "OVERRIDE",
-                "user": "OVERRIDE"
-              },
-              "global": {},
-              "indexer": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-indexer"
-                },
-                "name": "xray-indexer",
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "persist": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-persist"
-                },
-                "name": "xray-persist",
-                "persistence": {
-                  "size": "10Gi"
-                },
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "postgresql": {
-                "enabled": false
-              },
-              "rabbitmq": {
-                "auth": {
-                  "erlangCookie": "XRAYRABBITMQCLUSTER",
-                  "password": "xray",
-                  "tls": {
-                    "caCertificate": "",
-                    "enabled": false,
-                    "failIfNoPeerCert": true,
-                    "serverCertificate": "",
-                    "serverKey": "",
-                    "sslOptionsVerify": "verify_peer"
-                  },
-                  "username": "xray"
-                },
-                "enabled": true,
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-rabbitmq"
-                },
-                "podSecurityContext": {
-                  "fsGroup": 1000721001,
-                  "runAsUser": 1000721001
-                },
-                "rbac": {
-                  "create": true
-                },
-                "replicaCount": 1
-              },
-              "rabbitmq-ha": {
-                "enabled": false,
-                "image": {
-                  "repository": "registry.connect.redhat.com/jfrog/xray-rabbitmq"
-                },
-                "initContainer": {
-                  "enabled": false
-                },
-                "managementPassword": "guest",
-                "managementUsername": "guest",
-                "rabbitmqPassword": "guest",
-                "rabbitmqUsername": "guest",
-                "replicaCount": 1,
-                "securityContext": {
-                  "fsGroup": 1000721035,
-                  "runAsGroup": 1000721035,
-                  "runAsUser": 1000721035
-                }
-              },
-              "replicaCount": 1,
-              "router": {
-                "image": {
-                  "imagePullPolicy": "IfNotPresent",
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-router"
-                },
-                "name": "router"
-              },
-              "server": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-server"
-                },
-                "name": "xray-server",
-                "podManagementPolicy": "Parallel",
-                "replicaCount": 1,
-                "updateStrategy": "RollingUpdate"
-              },
-              "unifiedUpgradeAllowed": "true",
-              "xray": {
-                "consoleLog": false,
-                "jfrogUrl": "OVERRIDE",
-                "joinKey": "OVERRIDE",
-                "masterKey": "OVERRIDE"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/jfrog/xray-operator-bundle@sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
-      "bundle_path_digest": "sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-01T18:17:27.313000+00:00",
-      "csv_description": "## Overview Openshift Operator to deploy JFrog Xray Continuous Security scanner into your Openshift cluster. NOTE: Artifactory is required for JFrog Xray to connect with and scan artifacts against.\n### Major version v2.0.4 Breaking change notification!!\nThis release has major bug fix for Rabbitmq Pod. Please update to version 2.0.4 of the operator.\n### Major version v2.0.0 Breaking change notification!! Xray is dependent upon Rabbitmq. The version of Rabbitmq that this chart uses has significantly changed from version 1.1.8 of the operator. For full details on how to migrate please visit: `https://github.com/jfrog/charts/blob/master/stable/xray/RABBITMQ_MIGRATION_NOTES.md`\nIf you are using operator version < 2.1.0 there is a issue with upgrade where xray version is not updated if you update operator version.As workaround you can update the Custom Resource OpenshiftXray which has hardcored image tag value.After upgrading to version 2.1.0 you can remove the image tags parameters from your CR so that future upgrade works without workaround.\n### Security Context Constraints To deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc. ``` oc adm policy add-scc-to-user anyuid -z xray-operator ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray-rabbitmq-ha ``` ## Usage An external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it. Search for JFrog and click JFrog Xray Operator to install. Go to the Installed Operators. Wait for the JFrog Xray Operator to complete the installation. Open the Operator and click on the provided API: Xray Click Create New Instance and provide the following parameters for your DB configuration: ``` JFROG_URL DATABASE_URL DATABASE_USER DATABASE_PASSWORD ``` JFROG_URL is the external ip or DNS of your Artifactory to connect Xray to. Artifactory is required to use this operator. You can set your JFROG_URL to the service name of your Artifactory Nginx: ``` oc get svc -n my_namespace | grep nginx ``` DATABASE_URL must be a Postgresql URL in the format: `` postgres://postgres-postgresql:5432/xraydb?sslmode=disable `` DATABASE_USER and DATABASE_PASSWORD must supply a valid user on Postgresql. Click Create for Xray to deploy into OpenShift. Open Artifactory in a web browser to complete the onboarding wizard for Xray! ### Air gap environments To use Xray Operator in an air gap environment you will need to download the images as image streams into your Openshift air gap cluster manually. Use the image overrides to then specify the image stream locations that are local to your cluster. Next you will need to setup the database of index data for xray to use when scanning artifacts. Follow the link below for instructions on setup: https://www.jfrog.com/confluence/display/JFROG/Configuring+Xray#ConfiguringXray-SynchronizingtheDatabase ",
-      "csv_display_name": "JFrog Xray Continuous Security Operator",
-      "csv_metadata_description": "JFrog Xray Enterprise deploys Xray continuous security scanner into Openshift (Requires Jfrog Artifactory)",
-      "csv_name": "xray-operator.v2.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:14:21.284000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "openshiftxray-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "OpenshiftXray",
-          "plural": "openshiftxrays",
-          "version": "v1"
-        }
-      ],
-      "provider": "JFrog",
-      "related_images": [
-        {
-          "digest": "sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
-          "image": "registry.connect.redhat.com/jfrog/xray-server@sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
-          "name": "xray-server"
-        },
-        {
-          "digest": "sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
-          "image": "registry.connect.redhat.com/jfrog/xray-analysis@sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
-          "name": "xray-analysis"
-        },
-        {
-          "digest": "sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
-          "image": "registry.connect.redhat.com/jfrog/xray-persist@sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
-          "name": "xray-persist"
-        },
-        {
-          "digest": "sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
-          "image": "registry.connect.redhat.com/jfrog/xray-indexer@sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
-          "name": "xray-indexer"
-        },
-        {
-          "digest": "sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
-          "image": "registry.connect.redhat.com/jfrog/xray-router@sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
-          "name": "xray-router"
-        },
-        {
-          "digest": "sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
-          "image": "registry.connect.redhat.com/jfrog/xray-rabbitmq@sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
-          "name": "xray-rabbitmq"
-        },
-        {
-          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "name": "xray-operator"
-        },
-        {
-          "digest": "sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
-          "image": "registry.connect.redhat.com/jfrog/init@sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
-          "name": "init-container"
-        },
-        {
-          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "name": "xray-operator-a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "2.1.0",
-      "version_original": "2.1.0"
-    },
-    {
-      "_id": "621e63b883933ad10b40bc76",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "OpenshiftXray",
-          "metadata": {
-            "name": "openshiftxray"
-          },
-          "spec": {
-            "xray": {
-              "analysis": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-analysis"
-                },
-                "name": "xray-analysis",
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "common": {
-                "xrayGroupId": "1000721035",
-                "xrayUserId": "1000721035"
-              },
-              "database": {
-                "password": "OVERRIDE",
-                "url": "OVERRIDE",
-                "user": "OVERRIDE"
-              },
-              "global": {},
-              "indexer": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-indexer"
-                },
-                "name": "xray-indexer",
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "persist": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-persist"
-                },
-                "name": "xray-persist",
-                "persistence": {
-                  "size": "10Gi"
-                },
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "postgresql": {
-                "enabled": false
-              },
-              "rabbitmq": {
-                "auth": {
-                  "erlangCookie": "XRAYRABBITMQCLUSTER",
-                  "password": "xray",
-                  "tls": {
-                    "caCertificate": "",
-                    "enabled": false,
-                    "failIfNoPeerCert": true,
-                    "serverCertificate": "",
-                    "serverKey": "",
-                    "sslOptionsVerify": "verify_peer"
-                  },
-                  "username": "xray"
-                },
-                "enabled": true,
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-rabbitmq"
-                },
-                "podSecurityContext": {
-                  "fsGroup": 1000721001,
-                  "runAsUser": 1000721001
-                },
-                "rbac": {
-                  "create": true
-                },
-                "replicaCount": 1
-              },
-              "rabbitmq-ha": {
-                "enabled": false,
-                "image": {
-                  "repository": "registry.connect.redhat.com/jfrog/xray-rabbitmq"
-                },
-                "initContainer": {
-                  "enabled": false
-                },
-                "managementPassword": "guest",
-                "managementUsername": "guest",
-                "rabbitmqPassword": "guest",
-                "rabbitmqUsername": "guest",
-                "replicaCount": 1,
-                "securityContext": {
-                  "fsGroup": 1000721035,
-                  "runAsGroup": 1000721035,
-                  "runAsUser": 1000721035
-                }
-              },
-              "replicaCount": 1,
-              "router": {
-                "image": {
-                  "imagePullPolicy": "IfNotPresent",
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-router"
-                },
-                "name": "router"
-              },
-              "server": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-server"
-                },
-                "name": "xray-server",
-                "podManagementPolicy": "Parallel",
-                "replicaCount": 1,
-                "updateStrategy": "RollingUpdate"
-              },
-              "unifiedUpgradeAllowed": "true",
-              "xray": {
-                "consoleLog": false,
-                "jfrogUrl": "OVERRIDE",
-                "joinKey": "OVERRIDE",
-                "masterKey": "OVERRIDE"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/jfrog/xray-operator-bundle@sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
-      "bundle_path_digest": "sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-01T18:19:36.563000+00:00",
-      "csv_description": "## Overview Openshift Operator to deploy JFrog Xray Continuous Security scanner into your Openshift cluster. NOTE: Artifactory is required for JFrog Xray to connect with and scan artifacts against.\n### Major version v2.0.4 Breaking change notification!!\nThis release has major bug fix for Rabbitmq Pod. Please update to version 2.0.4 of the operator.\n### Major version v2.0.0 Breaking change notification!! Xray is dependent upon Rabbitmq. The version of Rabbitmq that this chart uses has significantly changed from version 1.1.8 of the operator. For full details on how to migrate please visit: `https://github.com/jfrog/charts/blob/master/stable/xray/RABBITMQ_MIGRATION_NOTES.md`\nIf you are using operator version < 2.1.0 there is a issue with upgrade where xray version is not updated if you update operator version.As workaround you can update the Custom Resource OpenshiftXray which has hardcored image tag value.After upgrading to version 2.1.0 you can remove the image tags parameters from your CR so that future upgrade works without workaround.\n### Security Context Constraints To deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc. ``` oc adm policy add-scc-to-user anyuid -z xray-operator ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray-rabbitmq-ha ``` ## Usage An external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it. Search for JFrog and click JFrog Xray Operator to install. Go to the Installed Operators. Wait for the JFrog Xray Operator to complete the installation. Open the Operator and click on the provided API: Xray Click Create New Instance and provide the following parameters for your DB configuration: ``` JFROG_URL DATABASE_URL DATABASE_USER DATABASE_PASSWORD ``` JFROG_URL is the external ip or DNS of your Artifactory to connect Xray to. Artifactory is required to use this operator. You can set your JFROG_URL to the service name of your Artifactory Nginx: ``` oc get svc -n my_namespace | grep nginx ``` DATABASE_URL must be a Postgresql URL in the format: `` postgres://postgres-postgresql:5432/xraydb?sslmode=disable `` DATABASE_USER and DATABASE_PASSWORD must supply a valid user on Postgresql. Click Create for Xray to deploy into OpenShift. Open Artifactory in a web browser to complete the onboarding wizard for Xray! ### Air gap environments To use Xray Operator in an air gap environment you will need to download the images as image streams into your Openshift air gap cluster manually. Use the image overrides to then specify the image stream locations that are local to your cluster. Next you will need to setup the database of index data for xray to use when scanning artifacts. Follow the link below for instructions on setup: https://www.jfrog.com/confluence/display/JFROG/Configuring+Xray#ConfiguringXray-SynchronizingtheDatabase ",
-      "csv_display_name": "JFrog Xray Continuous Security Operator",
-      "csv_metadata_description": "JFrog Xray Enterprise deploys Xray continuous security scanner into Openshift (Requires Jfrog Artifactory)",
-      "csv_name": "xray-operator.v2.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:03:14.309000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "openshiftxray-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "OpenshiftXray",
-          "plural": "openshiftxrays",
-          "version": "v1"
-        }
-      ],
-      "provider": "JFrog",
-      "related_images": [
-        {
-          "digest": "sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
-          "image": "registry.connect.redhat.com/jfrog/xray-server@sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
-          "name": "xray-server"
-        },
-        {
-          "digest": "sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
-          "image": "registry.connect.redhat.com/jfrog/xray-analysis@sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
-          "name": "xray-analysis"
-        },
-        {
-          "digest": "sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
-          "image": "registry.connect.redhat.com/jfrog/xray-persist@sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
-          "name": "xray-persist"
-        },
-        {
-          "digest": "sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
-          "image": "registry.connect.redhat.com/jfrog/xray-indexer@sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
-          "name": "xray-indexer"
-        },
-        {
-          "digest": "sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
-          "image": "registry.connect.redhat.com/jfrog/xray-router@sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
-          "name": "xray-router"
-        },
-        {
-          "digest": "sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
-          "image": "registry.connect.redhat.com/jfrog/xray-rabbitmq@sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
-          "name": "xray-rabbitmq"
-        },
-        {
-          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "name": "xray-operator"
-        },
-        {
-          "digest": "sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
-          "image": "registry.connect.redhat.com/jfrog/init@sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
-          "name": "init-container"
-        },
-        {
-          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "name": "xray-operator-a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.1.0",
-      "version_original": "2.1.0"
-    },
-    {
-      "_id": "621e64f483933ad10b40bc77",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "OpenshiftXray",
-          "metadata": {
-            "name": "openshiftxray"
-          },
-          "spec": {
-            "xray": {
-              "analysis": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-analysis"
-                },
-                "name": "xray-analysis",
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "common": {
-                "xrayGroupId": "1000721035",
-                "xrayUserId": "1000721035"
-              },
-              "database": {
-                "password": "OVERRIDE",
-                "url": "OVERRIDE",
-                "user": "OVERRIDE"
-              },
-              "global": {},
-              "indexer": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-indexer"
-                },
-                "name": "xray-indexer",
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "persist": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-persist"
-                },
-                "name": "xray-persist",
-                "persistence": {
-                  "size": "10Gi"
-                },
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "postgresql": {
-                "enabled": false
-              },
-              "rabbitmq": {
-                "auth": {
-                  "erlangCookie": "XRAYRABBITMQCLUSTER",
-                  "password": "xray",
-                  "tls": {
-                    "caCertificate": "",
-                    "enabled": false,
-                    "failIfNoPeerCert": true,
-                    "serverCertificate": "",
-                    "serverKey": "",
-                    "sslOptionsVerify": "verify_peer"
-                  },
-                  "username": "xray"
-                },
-                "enabled": true,
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-rabbitmq"
-                },
-                "podSecurityContext": {
-                  "fsGroup": 1000721001,
-                  "runAsUser": 1000721001
-                },
-                "rbac": {
-                  "create": true
-                },
-                "replicaCount": 1
-              },
-              "rabbitmq-ha": {
-                "enabled": false,
-                "image": {
-                  "repository": "registry.connect.redhat.com/jfrog/xray-rabbitmq"
-                },
-                "initContainer": {
-                  "enabled": false
-                },
-                "managementPassword": "guest",
-                "managementUsername": "guest",
-                "rabbitmqPassword": "guest",
-                "rabbitmqUsername": "guest",
-                "replicaCount": 1,
-                "securityContext": {
-                  "fsGroup": 1000721035,
-                  "runAsGroup": 1000721035,
-                  "runAsUser": 1000721035
-                }
-              },
-              "replicaCount": 1,
-              "router": {
-                "image": {
-                  "imagePullPolicy": "IfNotPresent",
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-router"
-                },
-                "name": "router"
-              },
-              "server": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-server"
-                },
-                "name": "xray-server",
-                "podManagementPolicy": "Parallel",
-                "replicaCount": 1,
-                "updateStrategy": "RollingUpdate"
-              },
-              "unifiedUpgradeAllowed": "true",
-              "xray": {
-                "consoleLog": false,
-                "jfrogUrl": "OVERRIDE",
-                "joinKey": "OVERRIDE",
-                "masterKey": "OVERRIDE"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/jfrog/xray-operator-bundle@sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
-      "bundle_path_digest": "sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-01T18:24:52.756000+00:00",
-      "csv_description": "## Overview Openshift Operator to deploy JFrog Xray Continuous Security scanner into your Openshift cluster. NOTE: Artifactory is required for JFrog Xray to connect with and scan artifacts against.\n### Major version v2.0.4 Breaking change notification!!\nThis release has major bug fix for Rabbitmq Pod. Please update to version 2.0.4 of the operator.\n### Major version v2.0.0 Breaking change notification!! Xray is dependent upon Rabbitmq. The version of Rabbitmq that this chart uses has significantly changed from version 1.1.8 of the operator. For full details on how to migrate please visit: `https://github.com/jfrog/charts/blob/master/stable/xray/RABBITMQ_MIGRATION_NOTES.md`\nIf you are using operator version < 2.1.0 there is a issue with upgrade where xray version is not updated if you update operator version.As workaround you can update the Custom Resource OpenshiftXray which has hardcored image tag value.After upgrading to version 2.1.0 you can remove the image tags parameters from your CR so that future upgrade works without workaround.\n### Security Context Constraints To deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc. ``` oc adm policy add-scc-to-user anyuid -z xray-operator ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray-rabbitmq-ha ``` ## Usage An external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it. Search for JFrog and click JFrog Xray Operator to install. Go to the Installed Operators. Wait for the JFrog Xray Operator to complete the installation. Open the Operator and click on the provided API: Xray Click Create New Instance and provide the following parameters for your DB configuration: ``` JFROG_URL DATABASE_URL DATABASE_USER DATABASE_PASSWORD ``` JFROG_URL is the external ip or DNS of your Artifactory to connect Xray to. Artifactory is required to use this operator. You can set your JFROG_URL to the service name of your Artifactory Nginx: ``` oc get svc -n my_namespace | grep nginx ``` DATABASE_URL must be a Postgresql URL in the format: `` postgres://postgres-postgresql:5432/xraydb?sslmode=disable `` DATABASE_USER and DATABASE_PASSWORD must supply a valid user on Postgresql. Click Create for Xray to deploy into OpenShift. Open Artifactory in a web browser to complete the onboarding wizard for Xray! ### Air gap environments To use Xray Operator in an air gap environment you will need to download the images as image streams into your Openshift air gap cluster manually. Use the image overrides to then specify the image stream locations that are local to your cluster. Next you will need to setup the database of index data for xray to use when scanning artifacts. Follow the link below for instructions on setup: https://www.jfrog.com/confluence/display/JFROG/Configuring+Xray#ConfiguringXray-SynchronizingtheDatabase ",
-      "csv_display_name": "JFrog Xray Continuous Security Operator",
-      "csv_metadata_description": "JFrog Xray Enterprise deploys Xray continuous security scanner into Openshift (Requires Jfrog Artifactory)",
-      "csv_name": "xray-operator.v2.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:53:39.295000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "openshiftxray-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "OpenshiftXray",
-          "plural": "openshiftxrays",
-          "version": "v1"
-        }
-      ],
-      "provider": "JFrog",
-      "related_images": [
-        {
-          "digest": "sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
-          "image": "registry.connect.redhat.com/jfrog/xray-server@sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
-          "name": "xray-server"
-        },
-        {
-          "digest": "sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
-          "image": "registry.connect.redhat.com/jfrog/xray-analysis@sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
-          "name": "xray-analysis"
-        },
-        {
-          "digest": "sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
-          "image": "registry.connect.redhat.com/jfrog/xray-persist@sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
-          "name": "xray-persist"
-        },
-        {
-          "digest": "sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
-          "image": "registry.connect.redhat.com/jfrog/xray-indexer@sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
-          "name": "xray-indexer"
-        },
-        {
-          "digest": "sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
-          "image": "registry.connect.redhat.com/jfrog/xray-router@sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
-          "name": "xray-router"
-        },
-        {
-          "digest": "sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
-          "image": "registry.connect.redhat.com/jfrog/xray-rabbitmq@sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
-          "name": "xray-rabbitmq"
-        },
-        {
-          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "name": "xray-operator"
-        },
-        {
-          "digest": "sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
-          "image": "registry.connect.redhat.com/jfrog/init@sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
-          "name": "init-container"
-        },
-        {
-          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "name": "xray-operator-a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.1.0",
-      "version_original": "2.1.0"
-    },
-    {
-      "_id": "621e656983933ad10b40bc78",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "OpenshiftXray",
-          "metadata": {
-            "name": "openshiftxray"
-          },
-          "spec": {
-            "xray": {
-              "analysis": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-analysis"
-                },
-                "name": "xray-analysis",
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "common": {
-                "xrayGroupId": "1000721035",
-                "xrayUserId": "1000721035"
-              },
-              "database": {
-                "password": "OVERRIDE",
-                "url": "OVERRIDE",
-                "user": "OVERRIDE"
-              },
-              "global": {},
-              "indexer": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-indexer"
-                },
-                "name": "xray-indexer",
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "persist": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-persist"
-                },
-                "name": "xray-persist",
-                "persistence": {
-                  "size": "10Gi"
-                },
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "postgresql": {
-                "enabled": false
-              },
-              "rabbitmq": {
-                "auth": {
-                  "erlangCookie": "XRAYRABBITMQCLUSTER",
-                  "password": "xray",
-                  "tls": {
-                    "caCertificate": "",
-                    "enabled": false,
-                    "failIfNoPeerCert": true,
-                    "serverCertificate": "",
-                    "serverKey": "",
-                    "sslOptionsVerify": "verify_peer"
-                  },
-                  "username": "xray"
-                },
-                "enabled": true,
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-rabbitmq"
-                },
-                "podSecurityContext": {
-                  "fsGroup": 1000721001,
-                  "runAsUser": 1000721001
-                },
-                "rbac": {
-                  "create": true
-                },
-                "replicaCount": 1
-              },
-              "rabbitmq-ha": {
-                "enabled": false,
-                "image": {
-                  "repository": "registry.connect.redhat.com/jfrog/xray-rabbitmq"
-                },
-                "initContainer": {
-                  "enabled": false
-                },
-                "managementPassword": "guest",
-                "managementUsername": "guest",
-                "rabbitmqPassword": "guest",
-                "rabbitmqUsername": "guest",
-                "replicaCount": 1,
-                "securityContext": {
-                  "fsGroup": 1000721035,
-                  "runAsGroup": 1000721035,
-                  "runAsUser": 1000721035
-                }
-              },
-              "replicaCount": 1,
-              "router": {
-                "image": {
-                  "imagePullPolicy": "IfNotPresent",
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-router"
-                },
-                "name": "router"
-              },
-              "server": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-server"
-                },
-                "name": "xray-server",
-                "podManagementPolicy": "Parallel",
-                "replicaCount": 1,
-                "updateStrategy": "RollingUpdate"
-              },
-              "unifiedUpgradeAllowed": "true",
-              "xray": {
-                "consoleLog": false,
-                "jfrogUrl": "OVERRIDE",
-                "joinKey": "OVERRIDE",
-                "masterKey": "OVERRIDE"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/jfrog/xray-operator-bundle@sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
-      "bundle_path_digest": "sha256:0b3fc22b17422c53635bf514e592632c1370985269fb13ab260ce687dc4e04ae",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-01T18:26:49.062000+00:00",
-      "csv_description": "## Overview Openshift Operator to deploy JFrog Xray Continuous Security scanner into your Openshift cluster. NOTE: Artifactory is required for JFrog Xray to connect with and scan artifacts against.\n### Major version v2.0.4 Breaking change notification!!\nThis release has major bug fix for Rabbitmq Pod. Please update to version 2.0.4 of the operator.\n### Major version v2.0.0 Breaking change notification!! Xray is dependent upon Rabbitmq. The version of Rabbitmq that this chart uses has significantly changed from version 1.1.8 of the operator. For full details on how to migrate please visit: `https://github.com/jfrog/charts/blob/master/stable/xray/RABBITMQ_MIGRATION_NOTES.md`\nIf you are using operator version < 2.1.0 there is a issue with upgrade where xray version is not updated if you update operator version.As workaround you can update the Custom Resource OpenshiftXray which has hardcored image tag value.After upgrading to version 2.1.0 you can remove the image tags parameters from your CR so that future upgrade works without workaround.\n### Security Context Constraints To deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc. ``` oc adm policy add-scc-to-user anyuid -z xray-operator ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray ``` ``` oc adm policy add-scc-to-user anyuid -z openshiftxray-rabbitmq-ha ``` ## Usage An external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it. Search for JFrog and click JFrog Xray Operator to install. Go to the Installed Operators. Wait for the JFrog Xray Operator to complete the installation. Open the Operator and click on the provided API: Xray Click Create New Instance and provide the following parameters for your DB configuration: ``` JFROG_URL DATABASE_URL DATABASE_USER DATABASE_PASSWORD ``` JFROG_URL is the external ip or DNS of your Artifactory to connect Xray to. Artifactory is required to use this operator. You can set your JFROG_URL to the service name of your Artifactory Nginx: ``` oc get svc -n my_namespace | grep nginx ``` DATABASE_URL must be a Postgresql URL in the format: `` postgres://postgres-postgresql:5432/xraydb?sslmode=disable `` DATABASE_USER and DATABASE_PASSWORD must supply a valid user on Postgresql. Click Create for Xray to deploy into OpenShift. Open Artifactory in a web browser to complete the onboarding wizard for Xray! ### Air gap environments To use Xray Operator in an air gap environment you will need to download the images as image streams into your Openshift air gap cluster manually. Use the image overrides to then specify the image stream locations that are local to your cluster. Next you will need to setup the database of index data for xray to use when scanning artifacts. Follow the link below for instructions on setup: https://www.jfrog.com/confluence/display/JFROG/Configuring+Xray#ConfiguringXray-SynchronizingtheDatabase ",
-      "csv_display_name": "JFrog Xray Continuous Security Operator",
-      "csv_metadata_description": "JFrog Xray Enterprise deploys Xray continuous security scanner into Openshift (Requires Jfrog Artifactory)",
-      "csv_name": "xray-operator.v2.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:59:05.322000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "openshiftxray-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "OpenshiftXray",
-          "plural": "openshiftxrays",
-          "version": "v1"
-        }
-      ],
-      "provider": "JFrog",
-      "related_images": [
-        {
-          "digest": "sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
-          "image": "registry.connect.redhat.com/jfrog/xray-server@sha256:12760c420d2ab9dcdac4dac6196b446ef32e2a1dc19d4c055d0dfa69e010b12e",
-          "name": "xray-server"
-        },
-        {
-          "digest": "sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
-          "image": "registry.connect.redhat.com/jfrog/xray-analysis@sha256:1af107666f45b65571afe8bec14d918563889cd2c6f7a4b0b318e3d6f4c3bdca",
-          "name": "xray-analysis"
-        },
-        {
-          "digest": "sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
-          "image": "registry.connect.redhat.com/jfrog/xray-persist@sha256:02bd44f98c1c4ebb51da05227d591c9c77c7291b10043c63f2b999905d713344",
-          "name": "xray-persist"
-        },
-        {
-          "digest": "sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
-          "image": "registry.connect.redhat.com/jfrog/xray-indexer@sha256:10cadf07e25f7a3d9fb636481d10742e732d7df3a1bbdf1f46529c879affa5c8",
-          "name": "xray-indexer"
-        },
-        {
-          "digest": "sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
-          "image": "registry.connect.redhat.com/jfrog/xray-router@sha256:75798b4c41df87ec46c2130ff114e27edbbcffd879f58cbd18ea716a5eacc91a",
-          "name": "xray-router"
-        },
-        {
-          "digest": "sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
-          "image": "registry.connect.redhat.com/jfrog/xray-rabbitmq@sha256:1638571cefe53ab74b9de413c4a10b6d520cc771fbc56d339fe2b96f96abae9e",
-          "name": "xray-rabbitmq"
-        },
-        {
-          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "name": "xray-operator"
-        },
-        {
-          "digest": "sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
-          "image": "registry.connect.redhat.com/jfrog/init@sha256:f9777c2ec1e16d263c5de7c9fe42a5dc4e1a010031470c3649b8da2b172cb5f2",
-          "name": "init-container"
-        },
-        {
-          "digest": "sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe",
-          "name": "xray-operator-a158dc5ca36a4a4698e171c6f948044b2650742e4e6de322907a79b2f1657dbe-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.1.0",
-      "version_original": "2.1.0"
-    },
-    {
-      "_id": "621eace4207e0eb391808546",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:b1a8b56ff5e1bb5326e1bde4931303358410da9768f0ebf9c08e2c2d8661d742",
-      "bundle_path_digest": "sha256:b1a8b56ff5e1bb5326e1bde4931303358410da9768f0ebf9c08e2c2d8661d742",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.23",
-      "creation_date": "2022-03-01T23:31:48.914000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.23.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:13:27.926000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkSet",
-          "plural": "networksets",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "TigeraStatus",
-          "plural": "tigerastatuses",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPConfiguration",
-          "plural": "bgpconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "HostEndpoint",
-          "plural": "hostendpoints",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMHandle",
-          "plural": "ipamhandles",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPPeer",
-          "plural": "bgppeers",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPPool",
-          "plural": "ippools",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "ImageSet",
-          "plural": "imagesets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BlockAffinity",
-          "plural": "blockaffinities",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMConfig",
-          "plural": "ipamconfigs",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "FelixConfiguration",
-          "plural": "felixconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkPolicy",
-          "plural": "globalnetworkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "Installation",
-          "plural": "installations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkSet",
-          "plural": "globalnetworksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "ClusterInformation",
-          "plural": "clusterinformations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMBlock",
-          "plural": "ipamblocks",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "KubeControllersConfiguration",
-          "plural": "kubecontrollersconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkPolicy",
-          "plural": "networkpolicies",
-          "version": "v1"
-        }
-      ],
-      "provider": "Tigera",
-      "related_images": [
-        {
-          "digest": "sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
-          "image": "quay.io/tigera/operator@sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
-          "name": "tigera-operator"
-        },
-        {
-          "digest": "sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
-          "image": "quay.io/tigera/operator@sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
-          "name": "operator-f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<1.23.4",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.23.4",
-      "version_original": "1.23.4"
-    },
-    {
-      "_id": "621eadc4bf15cd3a565ef935",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:b1a8b56ff5e1bb5326e1bde4931303358410da9768f0ebf9c08e2c2d8661d742",
-      "bundle_path_digest": "sha256:b1a8b56ff5e1bb5326e1bde4931303358410da9768f0ebf9c08e2c2d8661d742",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.23",
-      "creation_date": "2022-03-01T23:35:32.111000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.23.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:12:58.829000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPConfiguration",
-          "plural": "bgpconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "HostEndpoint",
-          "plural": "hostendpoints",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BlockAffinity",
-          "plural": "blockaffinities",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "Installation",
-          "plural": "installations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkSet",
-          "plural": "networksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "ClusterInformation",
-          "plural": "clusterinformations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "FelixConfiguration",
-          "plural": "felixconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMConfig",
-          "plural": "ipamconfigs",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkPolicy",
-          "plural": "globalnetworkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPPool",
-          "plural": "ippools",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPPeer",
-          "plural": "bgppeers",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "KubeControllersConfiguration",
-          "plural": "kubecontrollersconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMBlock",
-          "plural": "ipamblocks",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMHandle",
-          "plural": "ipamhandles",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkSet",
-          "plural": "globalnetworksets",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "TigeraStatus",
-          "plural": "tigerastatuses",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkPolicy",
-          "plural": "networkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "ImageSet",
-          "plural": "imagesets",
-          "version": "v1"
-        }
-      ],
-      "provider": "Tigera",
-      "related_images": [
-        {
-          "digest": "sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
-          "image": "quay.io/tigera/operator@sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
-          "name": "tigera-operator"
-        },
-        {
-          "digest": "sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
-          "image": "quay.io/tigera/operator@sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
-          "name": "operator-f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<1.23.4",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.23.4",
-      "version_original": "1.23.4"
-    },
-    {
       "_id": "621eaddbbf15cd3a565ef936",
       "alm_examples": [
         {
@@ -15192,9 +13712,1788 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "5.0.5",
       "version_original": "5.0.5"
+    },
+    {
+      "_id": "622fc5edf19c93b02846c90e",
+      "alm_examples": [
+        {
+          "api_version": "postgres-operator.crunchydata.com/v1beta1",
+          "kind": "PostgresCluster",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": {
+            "instances": [
+              {
+                "dataVolumeClaimSpec": {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "resources": {
+                    "requests": {
+                      "storage": "1Gi"
+                    }
+                  }
+                },
+                "replicas": 1
+              }
+            ],
+            "postgresVersion": 13
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/crunchydata/postgres-operator-bundle@sha256:ce40b9bd94ed562963fd298acdad256ef5fe30397aa8ee82e88febfab61f96e4",
+      "bundle_path_digest": "sha256:ce40b9bd94ed562963fd298acdad256ef5fe30397aa8ee82e88febfab61f96e4",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "v5",
+      "creation_date": "2022-03-14T22:47:09.200000+00:00",
+      "csv_description": "[PGO](https://github.com/CrunchyData/postgres-operator), the\n[Postgres Operator](https://github.com/CrunchyData/postgres-operator) from\n[Crunchy Data](https://www.crunchydata.com), gives you a **declarative Postgres** solution that\nautomatically manages your [PostgreSQL](https://www.postgresql.org) clusters.\n\nDesigned for your GitOps workflows, it is [easy to get started](https://access.crunchydata.com/documentation/postgres-operator/v5/quickstart/)\nwith Postgres on Kubernetes with PGO. Within a few moments, you can have a production grade Postgres\ncluster complete with high availability, disaster recovery, and monitoring, all over secure TLS communications.\nEven better, PGO lets you easily customize your Postgres cluster to tailor it to your workload!\n\nWith conveniences like cloning Postgres clusters to using rolling updates to roll out disruptive\nchanges with minimal downtime, PGO is ready to support your Postgres data at every stage of your\nrelease pipeline. Built for resiliency and uptime, PGO will keep your desired Postgres in a desired\nstate so you do not need to worry about it.\n\nPGO is developed with many years of production experience in automating Postgres management on\nKubernetes, providing a seamless cloud native Postgres solution to keep your data always available.\n\n- **PostgreSQL Cluster Provisioning**: [Create, Scale, & Delete PostgreSQL clusters with ease][provisioning],\n  while fully customizing your Pods and PostgreSQL configuration!\n- **High-Availability**: Safe, automated failover backed by a [distributed consensus based high-availability solution][high-availability].\n  Uses [Pod Anti-Affinity][k8s-anti-affinity] to help resiliency; you can configure how aggressive this can be!\n  Failed primaries automatically heal, allowing for faster recovery time. You can even create regularly scheduled\n  backups as well and set your backup retention policy\n- **Disaster Recovery**: [Backups][backups] and [restores][disaster-recovery] leverage the open source [pgBackRest][] utility and\n  [includes support for full, incremental, and differential backups as well as efficient delta restores][backups].\n  Set how long you want your backups retained for. Works great with very large databases!\n- **Monitoring**: [Track the health of your PostgreSQL clusters][monitoring] using the open source [pgMonitor][] library.\n- **Clone**: [Create new clusters from your existing clusters or backups][clone] with efficient data cloning.\n- **TLS**: All connections are over [TLS][tls]. You can also [bring your own TLS infrastructure][tls] if you do not want to use the provided defaults.\n- **Connection Pooling**: Advanced [connection pooling][pool] support using [pgBouncer][].\n- **Affinity and Tolerations**: Have your PostgreSQL clusters deployed to [Kubernetes Nodes][k8s-nodes] of your preference.\n  Set your [pod anti-affinity][k8s-anti-affinity], node affinity, Pod tolerations and more rules to customize your deployment topology!\n- **Full Customizability**: Crunchy PostgreSQL for Kubernetes makes it easy to get your own PostgreSQL-as-a-Service up and running\n  and fully customize your deployments, including:\n    - Choose the resources for your Postgres cluster: [container resources and storage size][resize-cluster]. [Resize at any time][resize-cluster] with minimal disruption.\n    - Use your own container image repository, including support `imagePullSecrets` and private repositories\n    - [Customize your PostgreSQL configuration][customize-cluster]\n\nand much more!\n\n[backups]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/backups/\n[clone]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/disaster-recovery/#clone-a-postgres-cluster\n[customize-cluster]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/customize-cluster/\n[disaster-recovery]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/disaster-recovery/\n[high-availability]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/high-availability/\n[monitoring]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/monitoring/\n[pool]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/connection-pooling/\n[provisioning]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/create-cluster/\n[resize-cluster]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/resize-cluster/\n[tls]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/customize-cluster/#customize-tls\n\n[k8s-anti-affinity]: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity\n[k8s-nodes]: https://kubernetes.io/docs/concepts/architecture/nodes/\n\n[pgBackRest]: https://www.pgbackrest.org\n[pgBouncer]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/connection-pooling/\n[pgMonitor]: https://github.com/CrunchyData/pgmonitor\n\n\n## Post-Installation\n\n### Tutorial\n\nWant to [learn more about the PostgreSQL Operator][tutorial]? Browse through the [tutorial][] to learn more about what you can do!\n\n[tutorial]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial",
+      "csv_display_name": "Crunchy Postgres for Kubernetes",
+      "csv_metadata_description": "Production Postgres Made Easy",
+      "csv_name": "postgresoperator.v5.0.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:27:24.924000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "crunchy-postgres-operator",
+      "provided_apis": [
+        {
+          "group": "postgres-operator.crunchydata.com",
+          "kind": "PostgresCluster",
+          "plural": "postgresclusters",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Crunchy Data",
+      "related_images": [
+        {
+          "digest": "sha256:779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685",
+          "name": "postgres-operator-779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685-annotation"
+        },
+        {
+          "digest": "sha256:779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:42807ed2f6b6594e9f023a843ee1de965b11afd62e12d6d5949fa4aba94a72ff",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbackrest@sha256:42807ed2f6b6594e9f023a843ee1de965b11afd62e12d6d5949fa4aba94a72ff",
+          "name": "pgbackrest"
+        },
+        {
+          "digest": "sha256:d97c88c2d0804de1ee93fd99b647918b0b0b7c0ff3091254f315c4474e2623cf",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbouncer@sha256:d97c88c2d0804de1ee93fd99b647918b0b0b7c0ff3091254f315c4474e2623cf",
+          "name": "pgbouncer"
+        },
+        {
+          "digest": "sha256:5043f230985d89e2bf1d41f6ca5831ce98a2c33b2e7c0521c0ccdbb5bd045230",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-exporter@sha256:5043f230985d89e2bf1d41f6ca5831ce98a2c33b2e7c0521c0ccdbb5bd045230",
+          "name": "pgexporter"
+        },
+        {
+          "digest": "sha256:10f449d290003133c4a37482f575078250b9ab9d0efcb3541291e42140e5b2eb",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:10f449d290003133c4a37482f575078250b9ab9d0efcb3541291e42140e5b2eb",
+          "name": "postgres_12"
+        },
+        {
+          "digest": "sha256:56a08b3d6c417bee9d670bf4063b05cfee5e4ab250e791cfd36dc10d8bdf1caa",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:56a08b3d6c417bee9d670bf4063b05cfee5e4ab250e791cfd36dc10d8bdf1caa",
+          "name": "postgres_13"
+        },
+        {
+          "digest": "sha256:397ef823ac62b3d0d0f6b5e5d594bfcdb6b1ca1423a4c7ed6a80847a4bc6cb26",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:397ef823ac62b3d0d0f6b5e5d594bfcdb6b1ca1423a4c7ed6a80847a4bc6cb26",
+          "name": "postgres_14"
+        },
+        {
+          "digest": "sha256:3ad82d4757699474d647606775ae6eed1527c0deb08690f5486ec993e4339b80",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:3ad82d4757699474d647606775ae6eed1527c0deb08690f5486ec993e4339b80",
+          "name": "postgres_12_gis_2.5"
+        },
+        {
+          "digest": "sha256:fd29e3f0f1ff6c81bf5821378cee6ac83954dd7b2f9e3ace00c18111d2bcda49",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:fd29e3f0f1ff6c81bf5821378cee6ac83954dd7b2f9e3ace00c18111d2bcda49",
+          "name": "postgres_12_gis_3.0"
+        },
+        {
+          "digest": "sha256:de806714dbf7ab548b18760f2181be67fe2dadacf5939027fd2ac4b2a94912d9",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:de806714dbf7ab548b18760f2181be67fe2dadacf5939027fd2ac4b2a94912d9",
+          "name": "postgres_13_gis_3.0"
+        },
+        {
+          "digest": "sha256:8bf4f028e941898a3f1ecfde8caaafab555e8547190df923e80c4cc7d2c13351",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:8bf4f028e941898a3f1ecfde8caaafab555e8547190df923e80c4cc7d2c13351",
+          "name": "postgres_13_gis_3.1"
+        },
+        {
+          "digest": "sha256:a35500c19df076b44566ef23c54f2adbe4bdbb6e6b9e01ccd0f30a2b679df776",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:a35500c19df076b44566ef23c54f2adbe4bdbb6e6b9e01ccd0f30a2b679df776",
+          "name": "postgres_14_gis_3.1"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "5.0.5",
+      "version_original": "5.0.5"
+    },
+    {
+      "_id": "622fc5f5f19c93b02846c90f",
+      "alm_examples": [
+        {
+          "api_version": "postgres-operator.crunchydata.com/v1beta1",
+          "kind": "PostgresCluster",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": {
+            "instances": [
+              {
+                "dataVolumeClaimSpec": {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "resources": {
+                    "requests": {
+                      "storage": "1Gi"
+                    }
+                  }
+                },
+                "replicas": 1
+              }
+            ],
+            "postgresVersion": 13
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/crunchydata/postgres-operator-bundle@sha256:ce40b9bd94ed562963fd298acdad256ef5fe30397aa8ee82e88febfab61f96e4",
+      "bundle_path_digest": "sha256:ce40b9bd94ed562963fd298acdad256ef5fe30397aa8ee82e88febfab61f96e4",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "v5",
+      "creation_date": "2022-03-14T22:47:17.975000+00:00",
+      "csv_description": "[PGO](https://github.com/CrunchyData/postgres-operator), the\n[Postgres Operator](https://github.com/CrunchyData/postgres-operator) from\n[Crunchy Data](https://www.crunchydata.com), gives you a **declarative Postgres** solution that\nautomatically manages your [PostgreSQL](https://www.postgresql.org) clusters.\n\nDesigned for your GitOps workflows, it is [easy to get started](https://access.crunchydata.com/documentation/postgres-operator/v5/quickstart/)\nwith Postgres on Kubernetes with PGO. Within a few moments, you can have a production grade Postgres\ncluster complete with high availability, disaster recovery, and monitoring, all over secure TLS communications.\nEven better, PGO lets you easily customize your Postgres cluster to tailor it to your workload!\n\nWith conveniences like cloning Postgres clusters to using rolling updates to roll out disruptive\nchanges with minimal downtime, PGO is ready to support your Postgres data at every stage of your\nrelease pipeline. Built for resiliency and uptime, PGO will keep your desired Postgres in a desired\nstate so you do not need to worry about it.\n\nPGO is developed with many years of production experience in automating Postgres management on\nKubernetes, providing a seamless cloud native Postgres solution to keep your data always available.\n\n- **PostgreSQL Cluster Provisioning**: [Create, Scale, & Delete PostgreSQL clusters with ease][provisioning],\n  while fully customizing your Pods and PostgreSQL configuration!\n- **High-Availability**: Safe, automated failover backed by a [distributed consensus based high-availability solution][high-availability].\n  Uses [Pod Anti-Affinity][k8s-anti-affinity] to help resiliency; you can configure how aggressive this can be!\n  Failed primaries automatically heal, allowing for faster recovery time. You can even create regularly scheduled\n  backups as well and set your backup retention policy\n- **Disaster Recovery**: [Backups][backups] and [restores][disaster-recovery] leverage the open source [pgBackRest][] utility and\n  [includes support for full, incremental, and differential backups as well as efficient delta restores][backups].\n  Set how long you want your backups retained for. Works great with very large databases!\n- **Monitoring**: [Track the health of your PostgreSQL clusters][monitoring] using the open source [pgMonitor][] library.\n- **Clone**: [Create new clusters from your existing clusters or backups][clone] with efficient data cloning.\n- **TLS**: All connections are over [TLS][tls]. You can also [bring your own TLS infrastructure][tls] if you do not want to use the provided defaults.\n- **Connection Pooling**: Advanced [connection pooling][pool] support using [pgBouncer][].\n- **Affinity and Tolerations**: Have your PostgreSQL clusters deployed to [Kubernetes Nodes][k8s-nodes] of your preference.\n  Set your [pod anti-affinity][k8s-anti-affinity], node affinity, Pod tolerations and more rules to customize your deployment topology!\n- **Full Customizability**: Crunchy PostgreSQL for Kubernetes makes it easy to get your own PostgreSQL-as-a-Service up and running\n  and fully customize your deployments, including:\n    - Choose the resources for your Postgres cluster: [container resources and storage size][resize-cluster]. [Resize at any time][resize-cluster] with minimal disruption.\n    - Use your own container image repository, including support `imagePullSecrets` and private repositories\n    - [Customize your PostgreSQL configuration][customize-cluster]\n\nand much more!\n\n[backups]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/backups/\n[clone]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/disaster-recovery/#clone-a-postgres-cluster\n[customize-cluster]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/customize-cluster/\n[disaster-recovery]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/disaster-recovery/\n[high-availability]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/high-availability/\n[monitoring]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/monitoring/\n[pool]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/connection-pooling/\n[provisioning]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/create-cluster/\n[resize-cluster]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/resize-cluster/\n[tls]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/customize-cluster/#customize-tls\n\n[k8s-anti-affinity]: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity\n[k8s-nodes]: https://kubernetes.io/docs/concepts/architecture/nodes/\n\n[pgBackRest]: https://www.pgbackrest.org\n[pgBouncer]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/connection-pooling/\n[pgMonitor]: https://github.com/CrunchyData/pgmonitor\n\n\n## Post-Installation\n\n### Tutorial\n\nWant to [learn more about the PostgreSQL Operator][tutorial]? Browse through the [tutorial][] to learn more about what you can do!\n\n[tutorial]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial",
+      "csv_display_name": "Crunchy Postgres for Kubernetes",
+      "csv_metadata_description": "Production Postgres Made Easy",
+      "csv_name": "postgresoperator.v5.0.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:37:20.407000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "crunchy-postgres-operator",
+      "provided_apis": [
+        {
+          "group": "postgres-operator.crunchydata.com",
+          "kind": "PostgresCluster",
+          "plural": "postgresclusters",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Crunchy Data",
+      "related_images": [
+        {
+          "digest": "sha256:779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685",
+          "name": "postgres-operator-779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685-annotation"
+        },
+        {
+          "digest": "sha256:779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:42807ed2f6b6594e9f023a843ee1de965b11afd62e12d6d5949fa4aba94a72ff",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbackrest@sha256:42807ed2f6b6594e9f023a843ee1de965b11afd62e12d6d5949fa4aba94a72ff",
+          "name": "pgbackrest"
+        },
+        {
+          "digest": "sha256:d97c88c2d0804de1ee93fd99b647918b0b0b7c0ff3091254f315c4474e2623cf",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbouncer@sha256:d97c88c2d0804de1ee93fd99b647918b0b0b7c0ff3091254f315c4474e2623cf",
+          "name": "pgbouncer"
+        },
+        {
+          "digest": "sha256:5043f230985d89e2bf1d41f6ca5831ce98a2c33b2e7c0521c0ccdbb5bd045230",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-exporter@sha256:5043f230985d89e2bf1d41f6ca5831ce98a2c33b2e7c0521c0ccdbb5bd045230",
+          "name": "pgexporter"
+        },
+        {
+          "digest": "sha256:10f449d290003133c4a37482f575078250b9ab9d0efcb3541291e42140e5b2eb",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:10f449d290003133c4a37482f575078250b9ab9d0efcb3541291e42140e5b2eb",
+          "name": "postgres_12"
+        },
+        {
+          "digest": "sha256:56a08b3d6c417bee9d670bf4063b05cfee5e4ab250e791cfd36dc10d8bdf1caa",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:56a08b3d6c417bee9d670bf4063b05cfee5e4ab250e791cfd36dc10d8bdf1caa",
+          "name": "postgres_13"
+        },
+        {
+          "digest": "sha256:397ef823ac62b3d0d0f6b5e5d594bfcdb6b1ca1423a4c7ed6a80847a4bc6cb26",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:397ef823ac62b3d0d0f6b5e5d594bfcdb6b1ca1423a4c7ed6a80847a4bc6cb26",
+          "name": "postgres_14"
+        },
+        {
+          "digest": "sha256:3ad82d4757699474d647606775ae6eed1527c0deb08690f5486ec993e4339b80",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:3ad82d4757699474d647606775ae6eed1527c0deb08690f5486ec993e4339b80",
+          "name": "postgres_12_gis_2.5"
+        },
+        {
+          "digest": "sha256:fd29e3f0f1ff6c81bf5821378cee6ac83954dd7b2f9e3ace00c18111d2bcda49",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:fd29e3f0f1ff6c81bf5821378cee6ac83954dd7b2f9e3ace00c18111d2bcda49",
+          "name": "postgres_12_gis_3.0"
+        },
+        {
+          "digest": "sha256:de806714dbf7ab548b18760f2181be67fe2dadacf5939027fd2ac4b2a94912d9",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:de806714dbf7ab548b18760f2181be67fe2dadacf5939027fd2ac4b2a94912d9",
+          "name": "postgres_13_gis_3.0"
+        },
+        {
+          "digest": "sha256:8bf4f028e941898a3f1ecfde8caaafab555e8547190df923e80c4cc7d2c13351",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:8bf4f028e941898a3f1ecfde8caaafab555e8547190df923e80c4cc7d2c13351",
+          "name": "postgres_13_gis_3.1"
+        },
+        {
+          "digest": "sha256:a35500c19df076b44566ef23c54f2adbe4bdbb6e6b9e01ccd0f30a2b679df776",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:a35500c19df076b44566ef23c54f2adbe4bdbb6e6b9e01ccd0f30a2b679df776",
+          "name": "postgres_14_gis_3.1"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "5.0.5",
+      "version_original": "5.0.5"
+    },
+    {
+      "_id": "6230ef9e6ff50428c193a16c",
+      "alm_examples": [
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIIsilon",
+          "metadata": {
+            "name": "isilon",
+            "namespace": "test-isilon"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VERBOSE",
+                    "value": "1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PORT",
+                    "value": "8080"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PATH",
+                    "value": "/ifs/data/csi"
+                  },
+                  {
+                    "name": "X_CSI_ISI_NO_PROBE_ON_START",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_ISI_AUTOPROBE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_SKIP_CERTIFICATE_VALIDATION",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_CUSTOM_TOPOLOGY_ENABLED",
+                    "value": "false"
+                  }
+                ],
+                "image": "docker.io/dellemc/csi-isilon@sha256:5cf558cf80b6cbc9b5ff7a1766bb902663774b5461dc43ca590215edcef148e2",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.1.0",
+              "controller": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISI_QUOTA_ENABLED",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ACCESS_ZONE",
+                    "value": "System"
+                  },
+                  {
+                    "name": "X_CSI_ISI_VOLUME_PATH_PERMISSIONS",
+                    "value": "0777"
+                  }
+                ]
+              },
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_MAX_VOLUMES_PER_NODE",
+                    "value": "0"
+                  },
+                  {
+                    "name": "X_CSI_ALLOWED_NETWORKS",
+                    "value": ""
+                  }
+                ]
+              },
+              "replicas": 2,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csipscale"
+                  ],
+                  "name": "provisioner"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerMax",
+          "metadata": {
+            "name": "test-powermax",
+            "namespace": "test-powermax"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_MANAGED_ARRAYS",
+                    "value": "000000000000,000000000001"
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_ENDPOINT",
+                    "value": "https://0.0.0.0:8443/"
+                  },
+                  {
+                    "name": "X_CSI_K8S_CLUSTER_PREFIX",
+                    "value": "XYZ"
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_PORTGROUPS",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_TRANSPORT_PROTOCOL",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_PROXY_SERVICE_NAME",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_GRPC_MAX_THREADS",
+                    "value": "4"
+                  }
+                ],
+                "image": "docker.io/dellemc/csi-powermax@sha256:58489d23b52d1599820425da8a45ede7a0348f7e6c23e95e85ad124c647b94a4",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.1.0",
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP",
+                    "value": "false"
+                  }
+                ]
+              },
+              "replicas": 2
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerMaxRevProxy",
+          "metadata": {
+            "name": "powermax-reverseproxy",
+            "namespace": "test-powermax"
+          },
+          "spec": {
+            "config": {
+              "linkConfig": {
+                "backup": {
+                  "skipCertificateValidation": true,
+                  "url": "https://0.0.0.0:8443"
+                },
+                "primary": {
+                  "certSecret": "",
+                  "skipCertificateValidation": true,
+                  "url": "https://0.0.0.0:8443"
+                }
+              },
+              "mode": "Linked"
+            },
+            "image": "docker.io/dellemc/csipowermax-reverseproxy@sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
+            "imagePullPolicy": "IfNotPresent",
+            "tlsSecret": "csirevproxy-tls-secret"
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerStore",
+          "metadata": {
+            "name": "test-powerstore",
+            "namespace": "test-powerstore"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
+                    "value": "csi"
+                  },
+                  {
+                    "name": "X_CSI_FC_PORTS_FILTER_FILE_PATH",
+                    "value": "/etc/fc-ports-filter"
+                  }
+                ],
+                "image": "docker.io/dellemc/csi-powerstore@sha256:c3dd54f0da5eec198d0f4f3ddfa93882371b8cd2e45c3b49e1aec14d0669888a",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.1.0",
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERSTORE_ENABLE_CHAP",
+                    "value": "true"
+                  }
+                ]
+              },
+              "replicas": 2
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIUnity",
+          "metadata": {
+            "name": "test-unity",
+            "namespace": "test-unity"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "image": "docker.io/dellemc/csi-unity@sha256:55c2d9e5eba9d00acec956b1a19106e61c6a116aaa765d96ef1e0e3a9ec557ad",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.1.0",
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "replicas": 2,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csiunity",
+                    "--default-fstype=ext4"
+                  ],
+                  "name": "provisioner"
+                },
+                {
+                  "args": [
+                    "--snapshot-name-prefix=csiunitysnap"
+                  ],
+                  "name": "snapshotter"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIVXFlexOS",
+          "metadata": {
+            "name": "test-vxflexos",
+            "namespace": "test-vxflexos"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ALLOW_RWO_MULTI_POD_ACCESS",
+                    "value": "false"
+                  }
+                ],
+                "image": "docker.io/dellemc/csi-vxflexos@sha256:9e320ce871033e6f326da1195c895caea7e0b4cdfe492f46cbe905efc62be3c1",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.1.0",
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "initContainers": [
+                {
+                  "envs": [
+                    {
+                      "name": "MDM",
+                      "value": "10.x.x.x,10.x.x.x"
+                    }
+                  ],
+                  "image": "docker.io/dellemc/sdc@sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "sdc"
+                }
+              ],
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "envs": [
+                    {
+                      "name": "HOST_PID",
+                      "value": "1"
+                    },
+                    {
+                      "name": "MDM",
+                      "value": ""
+                    }
+                  ],
+                  "name": "sdc-monitor"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/dell-emc/dell-csiop-bundle-110@sha256:a7a86c4466741edd5aa2358edff6dcb00600dd294867c173c228c7abd6338c2b",
+      "bundle_path_digest": "sha256:a7a86c4466741edd5aa2358edff6dcb00600dd294867c173c228c7abd6338c2b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-15T19:57:18.193000+00:00",
+      "csv_description": "Dell CSI Operator for Dell EMC CSI Drivers",
+      "csv_display_name": "Dell CSI Operator",
+      "csv_metadata_description": "",
+      "csv_name": "dell-csi-operator-certified.v1.6.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:54:20.600000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "dell-csi-operator-certified",
+      "provided_apis": [
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerStore",
+          "plural": "csipowerstores",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIUnity",
+          "plural": "csiunities",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIVXFlexOS",
+          "plural": "csivxflexoses",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIIsilon",
+          "plural": "csiisilons",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerMax",
+          "plural": "csipowermaxes",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerMaxRevProxy",
+          "plural": "csipowermaxrevproxies",
+          "version": "v1"
+        }
+      ],
+      "provider": "Dell EMC",
+      "related_images": [
+        {
+          "digest": "sha256:92cad581e2e8aee7bffbe780401d9aa61cb3ff1304569bf315b17607e17ae849",
+          "image": "docker.io/dellemc/dell-csi-operator@sha256:92cad581e2e8aee7bffbe780401d9aa61cb3ff1304569bf315b17607e17ae849",
+          "name": "dell-csi-operator-92cad581e2e8aee7bffbe780401d9aa61cb3ff1304569bf315b17607e17ae849-annotation"
+        },
+        {
+          "digest": "sha256:92cad581e2e8aee7bffbe780401d9aa61cb3ff1304569bf315b17607e17ae849",
+          "image": "docker.io/dellemc/dell-csi-operator@sha256:92cad581e2e8aee7bffbe780401d9aa61cb3ff1304569bf315b17607e17ae849",
+          "name": "dell-csi-operator-controller"
+        },
+        {
+          "digest": "sha256:31a54a0cf86d7354788a8265f60ae6acb4b348a67efbcf7c1007dd3cf7af05ab",
+          "image": "docker.io/busybox@sha256:31a54a0cf86d7354788a8265f60ae6acb4b348a67efbcf7c1007dd3cf7af05ab",
+          "name": "config-copy"
+        },
+        {
+          "digest": "sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
+          "image": "docker.io/dellemc/sdc@sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
+          "name": "sdc-784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272-annotation"
+        },
+        {
+          "digest": "sha256:9e320ce871033e6f326da1195c895caea7e0b4cdfe492f46cbe905efc62be3c1",
+          "image": "docker.io/dellemc/csi-vxflexos@sha256:9e320ce871033e6f326da1195c895caea7e0b4cdfe492f46cbe905efc62be3c1",
+          "name": "csi-vxflexos-9e320ce871033e6f326da1195c895caea7e0b4cdfe492f46cbe905efc62be3c1-annotation"
+        },
+        {
+          "digest": "sha256:55c2d9e5eba9d00acec956b1a19106e61c6a116aaa765d96ef1e0e3a9ec557ad",
+          "image": "docker.io/dellemc/csi-unity@sha256:55c2d9e5eba9d00acec956b1a19106e61c6a116aaa765d96ef1e0e3a9ec557ad",
+          "name": "csi-unity-55c2d9e5eba9d00acec956b1a19106e61c6a116aaa765d96ef1e0e3a9ec557ad-annotation"
+        },
+        {
+          "digest": "sha256:c3dd54f0da5eec198d0f4f3ddfa93882371b8cd2e45c3b49e1aec14d0669888a",
+          "image": "docker.io/dellemc/csi-powerstore@sha256:c3dd54f0da5eec198d0f4f3ddfa93882371b8cd2e45c3b49e1aec14d0669888a",
+          "name": "csi-powerstore-c3dd54f0da5eec198d0f4f3ddfa93882371b8cd2e45c3b49e1aec14d0669888a-annotation"
+        },
+        {
+          "digest": "sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
+          "image": "docker.io/dellemc/csipowermax-reverseproxy@sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
+          "name": "csipowermax-reverseproxy-c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7-annotation"
+        },
+        {
+          "digest": "sha256:58489d23b52d1599820425da8a45ede7a0348f7e6c23e95e85ad124c647b94a4",
+          "image": "docker.io/dellemc/csi-powermax@sha256:58489d23b52d1599820425da8a45ede7a0348f7e6c23e95e85ad124c647b94a4",
+          "name": "csi-powermax-58489d23b52d1599820425da8a45ede7a0348f7e6c23e95e85ad124c647b94a4-annotation"
+        },
+        {
+          "digest": "sha256:5cf558cf80b6cbc9b5ff7a1766bb902663774b5461dc43ca590215edcef148e2",
+          "image": "docker.io/dellemc/csi-isilon@sha256:5cf558cf80b6cbc9b5ff7a1766bb902663774b5461dc43ca590215edcef148e2",
+          "name": "csi-isilon-5cf558cf80b6cbc9b5ff7a1766bb902663774b5461dc43ca590215edcef148e2-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.6.0",
+      "version_original": "1.6.0"
+    },
+    {
+      "_id": "6230f0e1f506970211844557",
+      "alm_examples": [
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIIsilon",
+          "metadata": {
+            "name": "isilon",
+            "namespace": "test-isilon"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VERBOSE",
+                    "value": "1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PORT",
+                    "value": "8080"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PATH",
+                    "value": "/ifs/data/csi"
+                  },
+                  {
+                    "name": "X_CSI_ISI_NO_PROBE_ON_START",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_ISI_AUTOPROBE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_SKIP_CERTIFICATE_VALIDATION",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_CUSTOM_TOPOLOGY_ENABLED",
+                    "value": "false"
+                  }
+                ],
+                "image": "docker.io/dellemc/csi-isilon@sha256:5cf558cf80b6cbc9b5ff7a1766bb902663774b5461dc43ca590215edcef148e2",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.1.0",
+              "controller": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISI_QUOTA_ENABLED",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ACCESS_ZONE",
+                    "value": "System"
+                  },
+                  {
+                    "name": "X_CSI_ISI_VOLUME_PATH_PERMISSIONS",
+                    "value": "0777"
+                  }
+                ]
+              },
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_MAX_VOLUMES_PER_NODE",
+                    "value": "0"
+                  },
+                  {
+                    "name": "X_CSI_ALLOWED_NETWORKS",
+                    "value": ""
+                  }
+                ]
+              },
+              "replicas": 2,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csipscale"
+                  ],
+                  "name": "provisioner"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerMax",
+          "metadata": {
+            "name": "test-powermax",
+            "namespace": "test-powermax"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_MANAGED_ARRAYS",
+                    "value": "000000000000,000000000001"
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_ENDPOINT",
+                    "value": "https://0.0.0.0:8443/"
+                  },
+                  {
+                    "name": "X_CSI_K8S_CLUSTER_PREFIX",
+                    "value": "XYZ"
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_PORTGROUPS",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_TRANSPORT_PROTOCOL",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_PROXY_SERVICE_NAME",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_GRPC_MAX_THREADS",
+                    "value": "4"
+                  }
+                ],
+                "image": "docker.io/dellemc/csi-powermax@sha256:58489d23b52d1599820425da8a45ede7a0348f7e6c23e95e85ad124c647b94a4",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.1.0",
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP",
+                    "value": "false"
+                  }
+                ]
+              },
+              "replicas": 2
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerMaxRevProxy",
+          "metadata": {
+            "name": "powermax-reverseproxy",
+            "namespace": "test-powermax"
+          },
+          "spec": {
+            "config": {
+              "linkConfig": {
+                "backup": {
+                  "skipCertificateValidation": true,
+                  "url": "https://0.0.0.0:8443"
+                },
+                "primary": {
+                  "certSecret": "",
+                  "skipCertificateValidation": true,
+                  "url": "https://0.0.0.0:8443"
+                }
+              },
+              "mode": "Linked"
+            },
+            "image": "docker.io/dellemc/csipowermax-reverseproxy@sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
+            "imagePullPolicy": "IfNotPresent",
+            "tlsSecret": "csirevproxy-tls-secret"
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerStore",
+          "metadata": {
+            "name": "test-powerstore",
+            "namespace": "test-powerstore"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
+                    "value": "csi"
+                  },
+                  {
+                    "name": "X_CSI_FC_PORTS_FILTER_FILE_PATH",
+                    "value": "/etc/fc-ports-filter"
+                  }
+                ],
+                "image": "docker.io/dellemc/csi-powerstore@sha256:c3dd54f0da5eec198d0f4f3ddfa93882371b8cd2e45c3b49e1aec14d0669888a",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.1.0",
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERSTORE_ENABLE_CHAP",
+                    "value": "true"
+                  }
+                ]
+              },
+              "replicas": 2
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIUnity",
+          "metadata": {
+            "name": "test-unity",
+            "namespace": "test-unity"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "image": "docker.io/dellemc/csi-unity@sha256:55c2d9e5eba9d00acec956b1a19106e61c6a116aaa765d96ef1e0e3a9ec557ad",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.1.0",
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "replicas": 2,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csiunity",
+                    "--default-fstype=ext4"
+                  ],
+                  "name": "provisioner"
+                },
+                {
+                  "args": [
+                    "--snapshot-name-prefix=csiunitysnap"
+                  ],
+                  "name": "snapshotter"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIVXFlexOS",
+          "metadata": {
+            "name": "test-vxflexos",
+            "namespace": "test-vxflexos"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ALLOW_RWO_MULTI_POD_ACCESS",
+                    "value": "false"
+                  }
+                ],
+                "image": "docker.io/dellemc/csi-vxflexos@sha256:9e320ce871033e6f326da1195c895caea7e0b4cdfe492f46cbe905efc62be3c1",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2.1.0",
+              "dnsPolicy": "ClusterFirstWithHostNet",
+              "forceUpdate": false,
+              "initContainers": [
+                {
+                  "envs": [
+                    {
+                      "name": "MDM",
+                      "value": "10.x.x.x,10.x.x.x"
+                    }
+                  ],
+                  "image": "docker.io/dellemc/sdc@sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
+                  "imagePullPolicy": "IfNotPresent",
+                  "name": "sdc"
+                }
+              ],
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "envs": [
+                    {
+                      "name": "HOST_PID",
+                      "value": "1"
+                    },
+                    {
+                      "name": "MDM",
+                      "value": ""
+                    }
+                  ],
+                  "name": "sdc-monitor"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/dell-emc/dell-csiop-bundle-110@sha256:a7a86c4466741edd5aa2358edff6dcb00600dd294867c173c228c7abd6338c2b",
+      "bundle_path_digest": "sha256:a7a86c4466741edd5aa2358edff6dcb00600dd294867c173c228c7abd6338c2b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-15T20:02:41.272000+00:00",
+      "csv_description": "Dell CSI Operator for Dell EMC CSI Drivers",
+      "csv_display_name": "Dell CSI Operator",
+      "csv_metadata_description": "",
+      "csv_name": "dell-csi-operator-certified.v1.6.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:17:39.504000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "dell-csi-operator-certified",
+      "provided_apis": [
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerMax",
+          "plural": "csipowermaxes",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerMaxRevProxy",
+          "plural": "csipowermaxrevproxies",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerStore",
+          "plural": "csipowerstores",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIUnity",
+          "plural": "csiunities",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIVXFlexOS",
+          "plural": "csivxflexoses",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIIsilon",
+          "plural": "csiisilons",
+          "version": "v1"
+        }
+      ],
+      "provider": "Dell EMC",
+      "related_images": [
+        {
+          "digest": "sha256:92cad581e2e8aee7bffbe780401d9aa61cb3ff1304569bf315b17607e17ae849",
+          "image": "docker.io/dellemc/dell-csi-operator@sha256:92cad581e2e8aee7bffbe780401d9aa61cb3ff1304569bf315b17607e17ae849",
+          "name": "dell-csi-operator-92cad581e2e8aee7bffbe780401d9aa61cb3ff1304569bf315b17607e17ae849-annotation"
+        },
+        {
+          "digest": "sha256:92cad581e2e8aee7bffbe780401d9aa61cb3ff1304569bf315b17607e17ae849",
+          "image": "docker.io/dellemc/dell-csi-operator@sha256:92cad581e2e8aee7bffbe780401d9aa61cb3ff1304569bf315b17607e17ae849",
+          "name": "dell-csi-operator-controller"
+        },
+        {
+          "digest": "sha256:31a54a0cf86d7354788a8265f60ae6acb4b348a67efbcf7c1007dd3cf7af05ab",
+          "image": "docker.io/busybox@sha256:31a54a0cf86d7354788a8265f60ae6acb4b348a67efbcf7c1007dd3cf7af05ab",
+          "name": "config-copy"
+        },
+        {
+          "digest": "sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
+          "image": "docker.io/dellemc/sdc@sha256:784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272",
+          "name": "sdc-784b3ad7c0d5fbea8267e7e0be1830383f31d6bb57e4626c55cf5d0de344a272-annotation"
+        },
+        {
+          "digest": "sha256:9e320ce871033e6f326da1195c895caea7e0b4cdfe492f46cbe905efc62be3c1",
+          "image": "docker.io/dellemc/csi-vxflexos@sha256:9e320ce871033e6f326da1195c895caea7e0b4cdfe492f46cbe905efc62be3c1",
+          "name": "csi-vxflexos-9e320ce871033e6f326da1195c895caea7e0b4cdfe492f46cbe905efc62be3c1-annotation"
+        },
+        {
+          "digest": "sha256:55c2d9e5eba9d00acec956b1a19106e61c6a116aaa765d96ef1e0e3a9ec557ad",
+          "image": "docker.io/dellemc/csi-unity@sha256:55c2d9e5eba9d00acec956b1a19106e61c6a116aaa765d96ef1e0e3a9ec557ad",
+          "name": "csi-unity-55c2d9e5eba9d00acec956b1a19106e61c6a116aaa765d96ef1e0e3a9ec557ad-annotation"
+        },
+        {
+          "digest": "sha256:c3dd54f0da5eec198d0f4f3ddfa93882371b8cd2e45c3b49e1aec14d0669888a",
+          "image": "docker.io/dellemc/csi-powerstore@sha256:c3dd54f0da5eec198d0f4f3ddfa93882371b8cd2e45c3b49e1aec14d0669888a",
+          "name": "csi-powerstore-c3dd54f0da5eec198d0f4f3ddfa93882371b8cd2e45c3b49e1aec14d0669888a-annotation"
+        },
+        {
+          "digest": "sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
+          "image": "docker.io/dellemc/csipowermax-reverseproxy@sha256:c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7",
+          "name": "csipowermax-reverseproxy-c236cb87d5799ef239b3e5df956761e1c042f3d5686c8e5728c06edfef3095b7-annotation"
+        },
+        {
+          "digest": "sha256:58489d23b52d1599820425da8a45ede7a0348f7e6c23e95e85ad124c647b94a4",
+          "image": "docker.io/dellemc/csi-powermax@sha256:58489d23b52d1599820425da8a45ede7a0348f7e6c23e95e85ad124c647b94a4",
+          "name": "csi-powermax-58489d23b52d1599820425da8a45ede7a0348f7e6c23e95e85ad124c647b94a4-annotation"
+        },
+        {
+          "digest": "sha256:5cf558cf80b6cbc9b5ff7a1766bb902663774b5461dc43ca590215edcef148e2",
+          "image": "docker.io/dellemc/csi-isilon@sha256:5cf558cf80b6cbc9b5ff7a1766bb902663774b5461dc43ca590215edcef148e2",
+          "name": "csi-isilon-5cf558cf80b6cbc9b5ff7a1766bb902663774b5461dc43ca590215edcef148e2-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.6.0",
+      "version_original": "1.6.0"
+    },
+    {
+      "_id": "623140d75f071f8d039e335b",
+      "alm_examples": [
+        {
+          "api_version": "csi.hitachi.com/v1",
+          "kind": "HSPC",
+          "metadata": {
+            "name": "hspc",
+            "namespace": "kube-system"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/hitachi/hspc-operator-bundle@sha256:8c27039726005a30f2e60afc7d72a7eea4ffd6ec1802c393e7d2d891d131674e",
+      "bundle_path_digest": "sha256:8c27039726005a30f2e60afc7d72a7eea4ffd6ec1802c393e7d2d891d131674e",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-16T01:43:51.852000+00:00",
+      "csv_description": "## About\nHitachi Storage Plug-in for Containers (HSPC) is a plugin that integrates Hitachi VSP storage into Kubernetes based clusters.\nHSPC provides dynamic persistent volume provisioning capabilities from Hitachi's block storage arrays.\n\nFor full documentation, go to our [Knowledge Base](https://knowledge.hitachivantara.com/Documents/Adapters_and_Drivers/Storage_Adapters_and_Drivers/Containers) and refer to the reference guide for HSPC v3.9.0.\n\n## Requirements\n\n### Supported Driver Version\n\n* HSPC v3.9.0\n\n### Supported Platforms\n\n* OpenShift v4.7, v4.8, v4.9\n\n### Supported Operating Systems\n\n* RHEL 7.x\n* RHEL 8.x",
+      "csv_display_name": "Hitachi Storage Plug-in for Containers",
+      "csv_metadata_description": "An operator for managing Hitachi Storage Plug-in for Containers CSI driver",
+      "csv_name": "hspc-operator.v1.9.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:14:24.799000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "hspc-operator",
+      "provided_apis": [
+        {
+          "group": "csi.hitachi.com",
+          "kind": "HSPC",
+          "plural": "hspcs",
+          "version": "v1"
+        }
+      ],
+      "provider": "Hitachi",
+      "related_images": [
+        {
+          "digest": "sha256:550d2e1f01167fde1de4e1625b7eaa021518a8a6c99a1fd4821e20a5df8de933",
+          "image": "registry.connect.redhat.com/hitachi/hspc-csi-driver@sha256:550d2e1f01167fde1de4e1625b7eaa021518a8a6c99a1fd4821e20a5df8de933",
+          "name": "hspc-csi-driver"
+        },
+        {
+          "digest": "sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
+          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
+          "name": "hspc-operator"
+        },
+        {
+          "digest": "sha256:e4ce5adf0abe5add640b166bc9f658d069ca4783ed37fcd8774f20da89a7cad1",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:e4ce5adf0abe5add640b166bc9f658d069ca4783ed37fcd8774f20da89a7cad1",
+          "name": "ose-csi-external-attacher-v4.7"
+        },
+        {
+          "digest": "sha256:d99597158ef4baf204e0fe7ed24c1dbc7b0218305077cdaf22c3899a1b3988c7",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:d99597158ef4baf204e0fe7ed24c1dbc7b0218305077cdaf22c3899a1b3988c7",
+          "name": "ose-csi-external-provisioner-v4.7"
+        },
+        {
+          "digest": "sha256:2c7bb13d648a5048584530fddc62deb4b2e47bb7d389b77992e1077b920867e8",
+          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:2c7bb13d648a5048584530fddc62deb4b2e47bb7d389b77992e1077b920867e8",
+          "name": "ose-csi-node-driver-registrar-v4.7"
+        },
+        {
+          "digest": "sha256:221cda173d5ad2be44655dd8ab697a80bd94149358183b3375b09280ba025f92",
+          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:221cda173d5ad2be44655dd8ab697a80bd94149358183b3375b09280ba025f92",
+          "name": "ose-csi-livenessprobe-v4.7"
+        },
+        {
+          "digest": "sha256:890729e261e87ad12bf7c523f9c2c39a20fb07e18aa269cd015f86ed23ac22b7",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:890729e261e87ad12bf7c523f9c2c39a20fb07e18aa269cd015f86ed23ac22b7",
+          "name": "ose-csi-external-resizer-rhel8-v4.7"
+        },
+        {
+          "digest": "sha256:727b6317ef2575c905cd87c9d6d14b7c45886c4f20f0d75904641c55bb1e1814",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:727b6317ef2575c905cd87c9d6d14b7c45886c4f20f0d75904641c55bb1e1814",
+          "name": "ose-csi-external-snapshotter-rhel8-v4.7"
+        },
+        {
+          "digest": "sha256:89e05898626e7689113d46ffb98c98e95a2a49b71c6a8b32409699eab8f32ea4",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:89e05898626e7689113d46ffb98c98e95a2a49b71c6a8b32409699eab8f32ea4",
+          "name": "ose-csi-external-attacher-v4.8"
+        },
+        {
+          "digest": "sha256:f91ba2c92c97f9b4c4afe789040250c9a6cb675fbe24cbae3ad381e58bc3b83a",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:f91ba2c92c97f9b4c4afe789040250c9a6cb675fbe24cbae3ad381e58bc3b83a",
+          "name": "ose-csi-external-provisioner-v4.8"
+        },
+        {
+          "digest": "sha256:2e01a77235d1b692b87ec7e3e842dab52762032fbf3988f258960e2cece04225",
+          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:2e01a77235d1b692b87ec7e3e842dab52762032fbf3988f258960e2cece04225",
+          "name": "ose-csi-node-driver-registrar-v4.8"
+        },
+        {
+          "digest": "sha256:2f0c069bd085951f864c268ebbb28d5044e912327cf1de13cb40e082a2aaf4db",
+          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:2f0c069bd085951f864c268ebbb28d5044e912327cf1de13cb40e082a2aaf4db",
+          "name": "ose-csi-livenessprobe-v4.8"
+        },
+        {
+          "digest": "sha256:e55efd04b15565bfcfcb8bd64b4da3a58461d8a6e2cfbbf1b1ac4bc537cf307b",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:e55efd04b15565bfcfcb8bd64b4da3a58461d8a6e2cfbbf1b1ac4bc537cf307b",
+          "name": "ose-csi-external-resizer-rhel8-v4.8"
+        },
+        {
+          "digest": "sha256:bca38e3c695cf2bbb338b4933982f6892782b7fec14a1c835cb5a08c1cc7a14c",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:bca38e3c695cf2bbb338b4933982f6892782b7fec14a1c835cb5a08c1cc7a14c",
+          "name": "ose-csi-external-snapshotter-rhel8-v4.8"
+        },
+        {
+          "digest": "sha256:9ffed943cdc9597803faedfac8891b963e08ec86f4cb21a59ae7c37adc5ce349",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:9ffed943cdc9597803faedfac8891b963e08ec86f4cb21a59ae7c37adc5ce349",
+          "name": "ose-csi-external-attacher-v4.9"
+        },
+        {
+          "digest": "sha256:ea0797b04595d1bf46ca5d3b205cead25c70e8c252e844551944079000a3fbe1",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:ea0797b04595d1bf46ca5d3b205cead25c70e8c252e844551944079000a3fbe1",
+          "name": "ose-csi-external-provisioner-v4.9"
+        },
+        {
+          "digest": "sha256:4ca6d4d2f88eb0435084e1e0703330181e69e9c5c205ce21071d30fce864efde",
+          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:4ca6d4d2f88eb0435084e1e0703330181e69e9c5c205ce21071d30fce864efde",
+          "name": "ose-csi-node-driver-registrar-v4.9"
+        },
+        {
+          "digest": "sha256:7c9816e9265dcc83af534a61175814e174ec10c1b411e71baf5d379ceeca1ecd",
+          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:7c9816e9265dcc83af534a61175814e174ec10c1b411e71baf5d379ceeca1ecd",
+          "name": "ose-csi-livenessprobe-v4.9"
+        },
+        {
+          "digest": "sha256:49ed3001a156015c3acbe5ef058f9acbb471b456535e7d56f6baec742527de74",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:49ed3001a156015c3acbe5ef058f9acbb471b456535e7d56f6baec742527de74",
+          "name": "ose-csi-external-resizer-rhel8-v4.9"
+        },
+        {
+          "digest": "sha256:3ce747b7e19c5d0fa095fdeb29db3c9133575d24d941bad8ef6e71130c3f3883",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:3ce747b7e19c5d0fa095fdeb29db3c9133575d24d941bad8ef6e71130c3f3883",
+          "name": "ose-csi-external-snapshotter-rhel8-v4.9"
+        },
+        {
+          "digest": "sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
+          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
+          "name": "hspc-operator-ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f-annotation"
+        },
+        {
+          "digest": "sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
+          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ecbb09f376eaa8bb9c1aba4a09139f9b0e19d6ab57124586870d0f26b145cc8f",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.9.0",
+      "version_original": "1.9.0"
+    },
+    {
+      "_id": "6231ca3e4b7f7a37109310c5",
+      "alm_examples": [
+        {
+          "api_version": "dynatrace.com/v1beta1",
+          "kind": "DynaKube",
+          "metadata": {
+            "name": "dynakube",
+            "namespace": "dynatrace"
+          },
+          "spec": {
+            "activeGate": {
+              "capabilities": [
+                "routing",
+                "kubernetes-monitoring"
+              ],
+              "image": ""
+            },
+            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api",
+            "oneAgent": {
+              "classicFullStack": {
+                "image": "",
+                "tolerations": [
+                  {
+                    "effect": "NoSchedule",
+                    "key": "node-role.kubernetes.io/master",
+                    "operator": "Exists"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-operator-bundle@sha256:3716b9d211e0546492116502848c277e6b34bb2b9d4eb93b292db3055085f13e",
+      "bundle_path_digest": "sha256:3716b9d211e0546492116502848c277e6b34bb2b9d4eb93b292db3055085f13e",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-16T11:30:06.238000+00:00",
+      "csv_description": "The Dynatrace Operator supports rollout and lifecycle management of various Dynatrace components in Kubernetes and OpenShift.\n\nCurrently the Dynatrace Operator supports the following capabilities:\n\n### OneAgent\n  * `classicFullStack` rolls out one OneAgent pod per node to monitor its pods and the node itself\n  * `applicationMonitoring` is a webhook based injection mechanism for automatic app-only injection\n  * `hostMonitoring` monitors only the hosts, i.e., the nodes, in the cluster without app-only injection\n### ActiveGate\n  * `routing` routes OneAgent traffic through the ActiveGate\n  * `kubernetes-monitoring` allows monitoring the Kubernetes API\n  * `metrics-ingest` routes enriched metrics through an ActiveGate\n\nFor more information please refer to [our DynaKube Custom Resource examples](https://dt-url.net/dynakube-samples).\n\n### Installation\nOnce you've installed the Dynatrace Operator, you can create a DynaKube custom resource.\n\nFirst, please add a Secret within the Project you've deployed the Dynatrace Operator to, which would contain your API and PaaS tokens. Create tokens of type *Dynatrace API* (`API_TOKEN`) and *Platform as a Service* (`PAAS_TOKEN`) and use their values in the following commands respectively.\n\nFor assistance please refer to [Create user-generated access tokens](https://www.dynatrace.com/support/help/shortlink/token#create-user-generated-access-tokens).\n\n``` $ oc -n <project> create secret generic dynakube --from-literal=\"apiToken=API_TOKEN\" --from-literal=\"paasToken=PAAS_TOKEN\" ```\n\nYou may update this Secret at any time to rotate the tokens.\n\nAfter creation of the secret add the DynaKube object in the project where the Dynatrace Operator has been deployed, configured to your needs.\n\n### Required Parameters\n* `apiUrl` - provide the URL to the API of your Dynatrace environment. In Dynatrace SaaS it will look like `https://<ENVIRONMENTID>.live.dynatrace.com/api` . In Dynatrace Managed like `https://<YourDynatraceServerURL>/e/<ENVIRONMENTID>/api` .\n\n### Advanced Options\n* **Disable Certificate Checking** - disable any certificate validation that may interact poorly with proxies with in your cluster\n* **Image Override** - use a copy of the ActiveGate container image from a registry other than Docker's or Red Hat's\n\nFor a complete list of supported parameters please consult the [Operator Deploy Guide](https://www.dynatrace.com/support/help/shortlink/openshift-deploy).\n\n### Help\nYou can find more about our instructions in our [documentation](https://www.dynatrace.com/support/help/shortlink/openshift-deploy#install-dynatrace-operator).\n",
+      "csv_display_name": "Dynatrace Operator",
+      "csv_metadata_description": "",
+      "csv_name": "dynatrace-operator.v0.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:14:18.487000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "dynatrace-operator",
+      "provided_apis": [
+        {
+          "group": "dynatrace.com",
+          "kind": "DynaKube",
+          "plural": "dynakubes",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "dynatrace.com",
+          "kind": "DynaKube",
+          "plural": "dynakubes",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Dynatrace LLC",
+      "related_images": [
+        {
+          "digest": "sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
+          "name": "dynatrace-operator-438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3-annotation"
+        },
+        {
+          "digest": "sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
+          "name": "dynatrace-operator"
+        },
+        {
+          "digest": "sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-operator@sha256:438f7e5d2164eb137d0122c436f715739ddfd9f4bcf9cef97114e0a7bd0bb6d3",
+          "name": "webhook"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.5.0",
+      "version_original": "0.5.0"
+    },
+    {
+      "_id": "6231e6445f071f8d039e3c87",
+      "alm_examples": [
+        {
+          "api_version": "postgres-operator.crunchydata.com/v1beta1",
+          "kind": "PostgresCluster",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": {
+            "instances": [
+              {
+                "dataVolumeClaimSpec": {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "resources": {
+                    "requests": {
+                      "storage": "1Gi"
+                    }
+                  }
+                },
+                "replicas": 1
+              }
+            ],
+            "postgresVersion": 13
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/crunchydata/postgres-operator-bundle@sha256:ce40b9bd94ed562963fd298acdad256ef5fe30397aa8ee82e88febfab61f96e4",
+      "bundle_path_digest": "sha256:ce40b9bd94ed562963fd298acdad256ef5fe30397aa8ee82e88febfab61f96e4",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "v5",
+      "creation_date": "2022-03-16T13:29:40.910000+00:00",
+      "csv_description": "[PGO](https://github.com/CrunchyData/postgres-operator), the\n[Postgres Operator](https://github.com/CrunchyData/postgres-operator) from\n[Crunchy Data](https://www.crunchydata.com), gives you a **declarative Postgres** solution that\nautomatically manages your [PostgreSQL](https://www.postgresql.org) clusters.\n\nDesigned for your GitOps workflows, it is [easy to get started](https://access.crunchydata.com/documentation/postgres-operator/v5/quickstart/)\nwith Postgres on Kubernetes with PGO. Within a few moments, you can have a production grade Postgres\ncluster complete with high availability, disaster recovery, and monitoring, all over secure TLS communications.\nEven better, PGO lets you easily customize your Postgres cluster to tailor it to your workload!\n\nWith conveniences like cloning Postgres clusters to using rolling updates to roll out disruptive\nchanges with minimal downtime, PGO is ready to support your Postgres data at every stage of your\nrelease pipeline. Built for resiliency and uptime, PGO will keep your desired Postgres in a desired\nstate so you do not need to worry about it.\n\nPGO is developed with many years of production experience in automating Postgres management on\nKubernetes, providing a seamless cloud native Postgres solution to keep your data always available.\n\n- **PostgreSQL Cluster Provisioning**: [Create, Scale, & Delete PostgreSQL clusters with ease][provisioning],\n  while fully customizing your Pods and PostgreSQL configuration!\n- **High-Availability**: Safe, automated failover backed by a [distributed consensus based high-availability solution][high-availability].\n  Uses [Pod Anti-Affinity][k8s-anti-affinity] to help resiliency; you can configure how aggressive this can be!\n  Failed primaries automatically heal, allowing for faster recovery time. You can even create regularly scheduled\n  backups as well and set your backup retention policy\n- **Disaster Recovery**: [Backups][backups] and [restores][disaster-recovery] leverage the open source [pgBackRest][] utility and\n  [includes support for full, incremental, and differential backups as well as efficient delta restores][backups].\n  Set how long you want your backups retained for. Works great with very large databases!\n- **Monitoring**: [Track the health of your PostgreSQL clusters][monitoring] using the open source [pgMonitor][] library.\n- **Clone**: [Create new clusters from your existing clusters or backups][clone] with efficient data cloning.\n- **TLS**: All connections are over [TLS][tls]. You can also [bring your own TLS infrastructure][tls] if you do not want to use the provided defaults.\n- **Connection Pooling**: Advanced [connection pooling][pool] support using [pgBouncer][].\n- **Affinity and Tolerations**: Have your PostgreSQL clusters deployed to [Kubernetes Nodes][k8s-nodes] of your preference.\n  Set your [pod anti-affinity][k8s-anti-affinity], node affinity, Pod tolerations and more rules to customize your deployment topology!\n- **Full Customizability**: Crunchy PostgreSQL for Kubernetes makes it easy to get your own PostgreSQL-as-a-Service up and running\n  and fully customize your deployments, including:\n    - Choose the resources for your Postgres cluster: [container resources and storage size][resize-cluster]. [Resize at any time][resize-cluster] with minimal disruption.\n    - Use your own container image repository, including support `imagePullSecrets` and private repositories\n    - [Customize your PostgreSQL configuration][customize-cluster]\n\nand much more!\n\n[backups]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/backups/\n[clone]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/disaster-recovery/#clone-a-postgres-cluster\n[customize-cluster]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/customize-cluster/\n[disaster-recovery]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/disaster-recovery/\n[high-availability]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/high-availability/\n[monitoring]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/monitoring/\n[pool]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/connection-pooling/\n[provisioning]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/create-cluster/\n[resize-cluster]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/resize-cluster/\n[tls]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/customize-cluster/#customize-tls\n\n[k8s-anti-affinity]: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity\n[k8s-nodes]: https://kubernetes.io/docs/concepts/architecture/nodes/\n\n[pgBackRest]: https://www.pgbackrest.org\n[pgBouncer]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/connection-pooling/\n[pgMonitor]: https://github.com/CrunchyData/pgmonitor\n\n\n## Post-Installation\n\n### Tutorial\n\nWant to [learn more about the PostgreSQL Operator][tutorial]? Browse through the [tutorial][] to learn more about what you can do!\n\n[tutorial]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial",
+      "csv_display_name": "Crunchy Postgres for Kubernetes",
+      "csv_metadata_description": "Production Postgres Made Easy",
+      "csv_name": "postgresoperator.v5.0.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:22:46.719000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "crunchy-postgres-operator",
+      "provided_apis": [
+        {
+          "group": "postgres-operator.crunchydata.com",
+          "kind": "PostgresCluster",
+          "plural": "postgresclusters",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Crunchy Data",
+      "related_images": [
+        {
+          "digest": "sha256:779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685",
+          "name": "postgres-operator-779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685-annotation"
+        },
+        {
+          "digest": "sha256:779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:779c528947a218c9a7ca1b2eb59987b20f42c93e75d6606c540e6fa32811b685",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:42807ed2f6b6594e9f023a843ee1de965b11afd62e12d6d5949fa4aba94a72ff",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbackrest@sha256:42807ed2f6b6594e9f023a843ee1de965b11afd62e12d6d5949fa4aba94a72ff",
+          "name": "pgbackrest"
+        },
+        {
+          "digest": "sha256:d97c88c2d0804de1ee93fd99b647918b0b0b7c0ff3091254f315c4474e2623cf",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbouncer@sha256:d97c88c2d0804de1ee93fd99b647918b0b0b7c0ff3091254f315c4474e2623cf",
+          "name": "pgbouncer"
+        },
+        {
+          "digest": "sha256:5043f230985d89e2bf1d41f6ca5831ce98a2c33b2e7c0521c0ccdbb5bd045230",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-exporter@sha256:5043f230985d89e2bf1d41f6ca5831ce98a2c33b2e7c0521c0ccdbb5bd045230",
+          "name": "pgexporter"
+        },
+        {
+          "digest": "sha256:10f449d290003133c4a37482f575078250b9ab9d0efcb3541291e42140e5b2eb",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:10f449d290003133c4a37482f575078250b9ab9d0efcb3541291e42140e5b2eb",
+          "name": "postgres_12"
+        },
+        {
+          "digest": "sha256:56a08b3d6c417bee9d670bf4063b05cfee5e4ab250e791cfd36dc10d8bdf1caa",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:56a08b3d6c417bee9d670bf4063b05cfee5e4ab250e791cfd36dc10d8bdf1caa",
+          "name": "postgres_13"
+        },
+        {
+          "digest": "sha256:397ef823ac62b3d0d0f6b5e5d594bfcdb6b1ca1423a4c7ed6a80847a4bc6cb26",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:397ef823ac62b3d0d0f6b5e5d594bfcdb6b1ca1423a4c7ed6a80847a4bc6cb26",
+          "name": "postgres_14"
+        },
+        {
+          "digest": "sha256:3ad82d4757699474d647606775ae6eed1527c0deb08690f5486ec993e4339b80",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:3ad82d4757699474d647606775ae6eed1527c0deb08690f5486ec993e4339b80",
+          "name": "postgres_12_gis_2.5"
+        },
+        {
+          "digest": "sha256:fd29e3f0f1ff6c81bf5821378cee6ac83954dd7b2f9e3ace00c18111d2bcda49",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:fd29e3f0f1ff6c81bf5821378cee6ac83954dd7b2f9e3ace00c18111d2bcda49",
+          "name": "postgres_12_gis_3.0"
+        },
+        {
+          "digest": "sha256:de806714dbf7ab548b18760f2181be67fe2dadacf5939027fd2ac4b2a94912d9",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:de806714dbf7ab548b18760f2181be67fe2dadacf5939027fd2ac4b2a94912d9",
+          "name": "postgres_13_gis_3.0"
+        },
+        {
+          "digest": "sha256:8bf4f028e941898a3f1ecfde8caaafab555e8547190df923e80c4cc7d2c13351",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:8bf4f028e941898a3f1ecfde8caaafab555e8547190df923e80c4cc7d2c13351",
+          "name": "postgres_13_gis_3.1"
+        },
+        {
+          "digest": "sha256:a35500c19df076b44566ef23c54f2adbe4bdbb6e6b9e01ccd0f30a2b679df776",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:a35500c19df076b44566ef23c54f2adbe4bdbb6e6b9e01ccd0f30a2b679df776",
+          "name": "postgres_14_gis_3.1"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "5.0.5",
+      "version_original": "5.0.5"
+    },
+    {
+      "_id": "6232e1405f071f8d039e3cfc",
+      "alm_examples": [
+        {
+          "api_version": "ezmeral.hpe.com/v1",
+          "kind": "HPEEzmeralCSIDriver",
+          "metadata": {
+            "name": "hpeezmeralcsidriver"
+          },
+          "spec": {
+            "controllerImage": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
+            "nodeImage": "registry.connect.redhat.com/maprtech/csi-kdfplugin@sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
+            "pullPolicy": "Always"
+          }
+        },
+        {
+          "api_version": "ezmeral.hpe.com/v1",
+          "kind": "HPEEzmeralNFSCSIDriver",
+          "metadata": {
+            "name": "hpeezmeralnfscsidriver"
+          },
+          "spec": {
+            "controllerImage": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
+            "nodeImage": "registry.connect.redhat.com/maprtech/csi-nfsplugin@sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
+            "pullPolicy": "Always"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator-bundle@sha256:b23ef079d0bcbeaa227a0d759c900c103f97310ad2e00a566a74b100f95a37ff",
+      "bundle_path_digest": "sha256:b23ef079d0bcbeaa227a0d759c900c103f97310ad2e00a566a74b100f95a37ff",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-17T07:20:32.162000+00:00",
+      "csv_description": "The HPE Ezmeral CSI Operator for Kubernetes packages, deploys, manages, upgrades the HPE Ezmeral CSI Driver on Kubernetes and OpenShift for dynamic provisioning of persistent volumes on HPE Ezmeral Data Fabric platform.\nThe HPE Ezmeral CSI Driver for Kubernetes leverages HPE Ezmeral Data Fabric platform to provide scalable and persistent storage for stateful applications. Please refer to our CSI driver [documentation](https://docs.datafabric.hpe.com/home/CSIdriver/csi_overview.html) for full list of supported CSI features.\n## Installation\nRefer to the HPE Ezmeral CSI Operator for Kubernetes [documentation](https://docs.datafabric.hpe.com/home/CSIdriver/csi_installing_operator.html)\n",
+      "csv_display_name": "HPE Ezmeral Data Fabric CSI Operator for Kubernetes",
+      "csv_metadata_description": "A Container Storage Interface (CSI) driver for HPE Ezmeral Data Fabric platform. The CSI driver allows you to use HPE Ezmeral Data Fabric with your preferred container orchestrator.",
+      "csv_name": "hpe-ezmeral-csi-operator.v1.0.9",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:00:01.044000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "hpe-ezmeral-csi-operator",
+      "provided_apis": [
+        {
+          "group": "ezmeral.hpe.com",
+          "kind": "HPEEzmeralCSIDriver",
+          "plural": "hpeezmeralcsidrivers",
+          "version": "v1"
+        },
+        {
+          "group": "ezmeral.hpe.com",
+          "kind": "HPEEzmeralNFSCSIDriver",
+          "plural": "hpeezmeralnfscsidrivers",
+          "version": "v1"
+        }
+      ],
+      "provider": "HPE Ezmeral",
+      "related_images": [
+        {
+          "digest": "sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
+          "image": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator@sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
+          "name": "hpe-ezmeral-csi-operator-82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f-annotation"
+        },
+        {
+          "digest": "sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
+          "image": "registry.connect.redhat.com/maprtech/hpe-ezmeral-csi-operator@sha256:82f52179dcd59a1e16f249bcd21f7aae22c09e84f24b479a923fef2adee45c7f",
+          "name": "hpe-ezmeral-csi-operator"
+        },
+        {
+          "digest": "sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
+          "image": "registry.connect.redhat.com/maprtech/csi-nfsplugin@sha256:35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822",
+          "name": "csi-nfsplugin-35c275363a6949fed56b8ddfe3886ed42a6267fb07271494d8367abbd4d8c822-annotation"
+        },
+        {
+          "digest": "sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
+          "image": "registry.connect.redhat.com/maprtech/csi-kdfprovisioner@sha256:89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42",
+          "name": "csi-kdfprovisioner-89a397c26960ba05542ac069e3a47059bced2bc958cfff4aa0f1eb081fab5d42-annotation"
+        },
+        {
+          "digest": "sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
+          "image": "registry.connect.redhat.com/maprtech/csi-kdfplugin@sha256:480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef",
+          "name": "csi-kdfplugin-480b6fb8b2501caa76013c94feac91bef7f9b5ae6ad0b286ec621fd6a9ce4bef-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.0.9",
+      "version_original": "1.0.9"
     }
   ],
   "page": 21,
   "page_size": 100,
-  "total": 4813
+  "total": 4817
 }
