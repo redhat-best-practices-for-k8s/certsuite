@@ -270,29 +270,33 @@ func testDualStackServices(env *provider.TestEnvironment) {
 }
 
 const (
-	nfTables = "nftables"
-	ipTables = "iptables"
+	nfTables  = "nftables"
+	ipTables  = "iptables"
+	ip6Tables = "ip6tables"
 )
 
 func testIsConfigPresent(env *provider.TestEnvironment, name string) {
 	var badContainers, errorContainers []*provider.Container
-	var function func(cut *provider.Container) (bool, error)
+	var function func(cut *provider.Container) (bool, string, error)
 	switch name {
 	case nfTables:
 		function = netutil.IsNFTablesPresent
 	case ipTables:
 		function = netutil.IsIPTablesPresent
+	case ip6Tables:
+		function = netutil.IsIP6TablesPresent
 	default:
 		ginkgo.Fail(fmt.Sprintf("Internal error: configuration %s is not supported", name))
 	}
 	for _, cut := range env.Containers {
-		result, err := function(cut)
+		result, log, err := function(cut)
 		if err != nil {
-			tnf.ClaimFilePrintf("Could not check %s config on: %s, error: %s", name, cut, err)
+			tnf.ClaimFilePrintf("Could not check %s config on: %s, error: %s log: %s", name, cut, err, log)
 			errorContainers = append(errorContainers, cut)
 			continue
 		}
 		if result {
+			tnf.ClaimFilePrintf("Non-compliant %s config on: %s log: %s", name, cut, log)
 			badContainers = append(badContainers, cut)
 		}
 	}
@@ -306,4 +310,5 @@ func testIsNFTablesConfigPresent(env *provider.TestEnvironment) {
 
 func testIsIPTablesConfigPresent(env *provider.TestEnvironment) {
 	testIsConfigPresent(env, ipTables)
+	testIsConfigPresent(env, ip6Tables)
 }
