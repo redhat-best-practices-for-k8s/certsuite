@@ -179,6 +179,5 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
 	}
 	if m > 0 || n > 0 {
 		ginkgo.Fail(fmt.Sprintf("%d container images are not certified by there digest.", n+m))
-
 	}
 }
