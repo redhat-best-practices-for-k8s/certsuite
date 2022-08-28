@@ -135,6 +135,12 @@ var (
 		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified"),
 		Version: versionOne,
 	}
+	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
+	TestContainerIsCertifiedDigestIdentifier = claim.Identifier{
+		Tags:    formTestTags(tagCommon, tagOnline),
+		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified-digest"),
+		Version: versionOne,
+	}
 	// TestHugepagesNotManuallyManipulated represents the test identifier testing hugepages have not been manipulated.
 	TestHugepagesNotManuallyManipulated = claim.Identifier{
 		Tags:    formTestTags(tagCommon),
@@ -578,6 +584,15 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation: ContainerIsCertifiedRemediation,
 		Description: formDescription(TestContainerIsCertifiedIdentifier,
 			`Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).`),
+		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.7",
+		ExceptionProcess:      NoDocumentedProcess,
+	},
+	TestContainerIsCertifiedDigestIdentifier: {
+		Identifier:  TestContainerIsCertifiedDigestIdentifier,
+		Type:        normativeResult,
+		Remediation: ContainerIsCertifiedRemediation,
+		Description: formDescription(TestContainerIsCertifiedDigestIdentifier,
+			`Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program by there digest(CCP).`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.7",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
