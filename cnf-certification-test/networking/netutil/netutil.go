@@ -81,24 +81,76 @@ func GetListeningPorts(cut *provider.Container) (map[PortInfo]bool, error) {
 const (
 	dumpNFTablesCmd       = "nft list ruleset"
 	dumpIPTablesCmd       = "iptables-save"
+	dumpIP6TablesCmd      = "ip6tables-save"
 	ipTablesLegacyWarning = "# Warning: iptables-legacy tables present, use iptables-legacy-save to see them"
+	// https://bugzilla.redhat.com/show_bug.cgi?id=1915027
+	openshiftMachineConfigNft = `table ip filter {
+		chain INPUT {
+			type filter hook input priority filter; policy accept;
+		}
+	
+		chain FORWARD {
+			type filter hook forward priority filter; policy accept;
+			meta l4proto tcp tcp dport 22623 tcp flags & (fin|syn|rst|ack) == syn counter packets 0 bytes 0 reject
+			meta l4proto tcp tcp dport 22624 tcp flags & (fin|syn|rst|ack) == syn counter packets 0 bytes 0 reject
+			meta l4proto tcp ip daddr 169.254.169.254 tcp dport != 53 counter packets 0 bytes 0 reject
+			meta l4proto udp ip daddr 169.254.169.254 udp dport 53 counter packets 0 bytes 0 reject
+		}
+	
+		chain OUTPUT {
+			type filter hook output priority filter; policy accept;
+			meta l4proto tcp tcp dport 22623 tcp flags & (fin|syn|rst|ack) == syn counter packets 0 bytes 0 reject
+			meta l4proto tcp tcp dport 22624 tcp flags & (fin|syn|rst|ack) == syn counter packets 0 bytes 0 reject
+			meta l4proto tcp ip daddr 169.254.169.254 tcp dport != 53 counter packets 0 bytes 0 reject
+			meta l4proto udp ip daddr 169.254.169.254 udp dport 53 counter packets 0 bytes 0 reject
+		}
+	}
+	`
+	// https://bugzilla.redhat.com/show_bug.cgi?id=1915027
+	openshiftMachineConfigIptables = `*filter
+	:INPUT ACCEPT [0:0]
+	:FORWARD ACCEPT [0:0]
+	:OUTPUT ACCEPT [0:0]
+	-A FORWARD -p tcp -m tcp --dport 22623 --tcp-flags FIN,SYN,RST,ACK SYN -j REJECT --reject-with icmp-port-unreachable
+	-A FORWARD -p tcp -m tcp --dport 22624 --tcp-flags FIN,SYN,RST,ACK SYN -j REJECT --reject-with icmp-port-unreachable
+	-A FORWARD -d 169.254.169.254/32 -p tcp -m tcp ! --dport 53 -j REJECT --reject-with icmp-port-unreachable
+	-A FORWARD -d 169.254.169.254/32 -p udp -m udp ! --dport 53 -j REJECT --reject-with icmp-port-unreachable
+	-A OUTPUT -p tcp -m tcp --dport 22623 --tcp-flags FIN,SYN,RST,ACK SYN -j REJECT --reject-with icmp-port-unreachable
+	-A OUTPUT -p tcp -m tcp --dport 22624 --tcp-flags FIN,SYN,RST,ACK SYN -j REJECT --reject-with icmp-port-unreachable
+	-A OUTPUT -d 169.254.169.254/32 -p tcp -m tcp ! --dport 53 -j REJECT --reject-with icmp-port-unreachable
+	-A OUTPUT -d 169.254.169.254/32 -p udp -m udp ! --dport 53 -j REJECT --reject-with icmp-port-unreachable
+	COMMIT
+	`
 )
 
-func isIPOrNSTablesPresent(cut *provider.Container, command string) (bool, error) {
+func stripSpaceTabLine(in string) string {
+	return strings.NewReplacer("\n", "", "\t", "", " ", "").Replace(in)
+}
+func isIPOrNSTablesPresent(cut *provider.Container, command string) (bool, string, error) { //nolint:gocritic
 	outStr, errStr, err := crclient.ExecCommandContainerNSEnter(command, cut)
 	if err != nil || (errStr != "" && errStr != ipTablesLegacyWarning) {
-		return false, fmt.Errorf("failed to execute command %s on %s, err: %s, errStr: %s", command, cut, err, errStr)
+		return false, outStr, fmt.Errorf("failed to execute command %s on %s, err: %s, errStr: %s", command, cut, err, errStr)
 	}
+
 	if errStr == ipTablesLegacyWarning {
-		return true, nil
+		return true, outStr, nil
 	}
-	return outStr != "", nil
+	if strings.Contains(stripSpaceTabLine(outStr), stripSpaceTabLine(openshiftMachineConfigNft)) ||
+		strings.Contains(stripSpaceTabLine(outStr), stripSpaceTabLine(openshiftMachineConfigIptables)) {
+		return false, outStr, nil
+	}
+
+	return outStr != "", outStr, nil
 }
 
-func IsNFTablesPresent(cut *provider.Container) (bool, error) {
+func IsNFTablesPresent(cut *provider.Container) (bool, string, error) { //nolint:gocritic
 	return isIPOrNSTablesPresent(cut, dumpNFTablesCmd)
 }
 
-func IsIPTablesPresent(cut *provider.Container) (bool, error) {
+func IsIPTablesPresent(cut *provider.Container) (bool, string, error) { //nolint:gocritic
 	return isIPOrNSTablesPresent(cut, dumpIPTablesCmd)
+}
+
+func IsIP6TablesPresent(cut *provider.Container) (bool, string, error) { //nolint:gocritic
+	return isIPOrNSTablesPresent(cut, dumpIP6TablesCmd)
 }
