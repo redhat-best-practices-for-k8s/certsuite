@@ -1,148 +1,6 @@
 {
   "data": [
     {
-      "_id": "6262a633173a0d36cf5d696c",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:14aa8a718a050baa0fef250d3385d18f408c572f38ee53528ce4293f4db30757",
-      "bundle_path_digest": "sha256:14aa8a718a050baa0fef250d3385d18f408c572f38ee53528ce4293f4db30757",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "v1.4",
-      "creation_date": "2022-04-22T12:57:23.475000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "couchdb-operator.v1.4.1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:56:19.417000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "couchdb-operator-certified",
-      "provided_apis": [
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Bucket",
-          "plural": "buckets",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "CouchDBCluster",
-          "plural": "couchdbclusters",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "FormationLock",
-          "plural": "formationlocks",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Formation",
-          "plural": "formations",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Recipe",
-          "plural": "recipes",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "RecipeTemplate",
-          "plural": "recipetemplates",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": ">=1.0.0 <1.4.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.4.1",
-      "version_original": "1.4.1"
-    },
-    {
-      "_id": "6262a63584481d5f52299957",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/portworx/portworx-certified-bundle@sha256:46948a9049f11cab4b7896b20e29381c8c06b92fbedc2c0605480711f4786323",
-      "bundle_path_digest": "sha256:46948a9049f11cab4b7896b20e29381c8c06b92fbedc2c0605480711f4786323",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T12:57:25.543000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "portworx-operator.v1.4.1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T00:56:46.703000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "portworx-certified",
-      "provided_apis": [
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageNode",
-          "plural": "storagenodes",
-          "version": "v1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageNode",
-          "plural": "storagenodes",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageCluster",
-          "plural": "storageclusters",
-          "version": "v1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageCluster",
-          "plural": "storageclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.4.1",
-      "version_original": "1.4.1"
-    },
-    {
       "_id": "6262a63c834f257293b60f7f",
       "alm_examples": [],
       "annotations": {
@@ -4951,9 +4809,83 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "2.3.3",
       "version_original": "2.3.3"
+    },
+    {
+      "_id": "6262a8d2834f257293b60fd9",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator-bundle@sha256:8c4b0a6f8e465f5b969ea88d78cb3883a308b1c8c19f68e3c9cef2f6a0b40584",
+      "bundle_path_digest": "sha256:8c4b0a6f8e465f5b969ea88d78cb3883a308b1c8c19f68e3c9cef2f6a0b40584",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:08:34.053000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "dynatrace-monitoring.v0.9.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:18:35.879000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "oneagent-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.9.0",
+      "version_original": "0.9.0"
+    },
+    {
+      "_id": "6262a8d9cde83e2b177c2116",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.12",
+      "creation_date": "2022-04-22T13:08:41.722000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:07:48.146000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
     }
   ],
   "page": 24,
   "page_size": 100,
-  "total": 4817
+  "total": 4866
 }

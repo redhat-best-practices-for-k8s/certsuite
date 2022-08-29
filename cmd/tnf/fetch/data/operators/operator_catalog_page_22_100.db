@@ -1,278 +1,6 @@
 {
   "data": [
     {
-      "_id": "62338f019abee742b66cf8eb",
-      "alm_examples": [
-        {
-          "api_version": "csi.ibm.com/v1",
-          "kind": "IBMBlockCSI",
-          "metadata": {
-            "name": "ibm-block-csi"
-          },
-          "spec": {
-            "controller": {
-              "affinity": {
-                "nodeAffinity": {
-                  "requiredDuringSchedulingIgnoredDuringExecution": {
-                    "nodeSelectorTerms": [
-                      {
-                        "matchExpressions": [
-                          {
-                            "key": "kubernetes.io/arch",
-                            "operator": "In",
-                            "values": [
-                              "amd64"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                }
-              },
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "ibmcom/ibm-block-csi-driver-controller",
-              "tag": "1.9.0"
-            },
-            "node": {
-              "affinity": {
-                "nodeAffinity": {
-                  "requiredDuringSchedulingIgnoredDuringExecution": {
-                    "nodeSelectorTerms": [
-                      {
-                        "matchExpressions": [
-                          {
-                            "key": "kubernetes.io/arch",
-                            "operator": "In",
-                            "values": [
-                              "amd64"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                }
-              },
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "ibmcom/ibm-block-csi-driver-node",
-              "tag": "1.9.0"
-            },
-            "sidecars": [
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-node-driver-registrar",
-                "repository": "k8s.gcr.io/sig-storage/csi-node-driver-registrar",
-                "tag": "v2.5.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-provisioner",
-                "repository": "k8s.gcr.io/sig-storage/csi-provisioner",
-                "tag": "v3.1.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-attacher",
-                "repository": "k8s.gcr.io/sig-storage/csi-attacher",
-                "tag": "v3.4.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-snapshotter",
-                "repository": "k8s.gcr.io/sig-storage/csi-snapshotter",
-                "tag": "v5.0.1"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-resizer",
-                "repository": "k8s.gcr.io/sig-storage/csi-resizer",
-                "tag": "v1.4.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-addons-replicator",
-                "repository": "quay.io/csiaddons/volumereplication-operator",
-                "tag": "v0.2.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "livenessprobe",
-                "repository": "k8s.gcr.io/sig-storage/livenessprobe",
-                "tag": "v2.6.0"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/ibm-block-csi-operator-bundle@sha256:090e8752c1b86dbfad2c3e9249a0517d21f07d7922eec870ea913e27b7716aa6",
-      "bundle_path_digest": "sha256:090e8752c1b86dbfad2c3e9249a0517d21f07d7922eec870ea913e27b7716aa6",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-17T19:41:53.055000+00:00",
-      "csv_description": "The Container Storage Interface (CSI) Driver for IBM block storage systems enables container orchestrators such as Kubernetes to manage the life cycle of persistent storage.\n\nThis is the official operator to deploy and manage IBM block storage CSI driver.\n\nFor compatibility, prerequisites, release notes, and other user information, see [IBM block storage CSI driver documentation](https://www.ibm.com/docs/en/stg-block-csi-driver).\n",
-      "csv_display_name": "IBM block storage CSI driver operator",
-      "csv_metadata_description": "Run IBM block storage CSI driver on OpenShift.",
-      "csv_name": "ibm-block-csi-operator.v1.9.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:22:01.296000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "ibm-block-csi-operator",
-      "provided_apis": [
-        {
-          "group": "csi.ibm.com",
-          "kind": "IBMBlockCSI",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:49e631f495b2a66f96141da71ffc15cde67c3493fce31bdfd86544ef5c854277",
-          "image": "registry.connect.redhat.com/ibm/ibm-block-csi-operator@sha256:49e631f495b2a66f96141da71ffc15cde67c3493fce31bdfd86544ef5c854277",
-          "name": "ibm-block-csi-operator"
-        },
-        {
-          "digest": "sha256:49e631f495b2a66f96141da71ffc15cde67c3493fce31bdfd86544ef5c854277",
-          "image": "registry.connect.redhat.com/ibm/ibm-block-csi-operator@sha256:49e631f495b2a66f96141da71ffc15cde67c3493fce31bdfd86544ef5c854277",
-          "name": "ibm-block-csi-operator-49e631f495b2a66f96141da71ffc15cde67c3493fce31bdfd86544ef5c854277-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.6.0 <1.9.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.9.0",
-      "version_original": "1.9.0"
-    },
-    {
-      "_id": "62345f12670f4cadbafad29e",
-      "alm_examples": [
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "HazelcastEnterprise",
-          "metadata": {
-            "name": "hz"
-          },
-          "spec": {
-            "hazelcast": {
-              "licenseKeySecretName": "hz-license-key-secret"
-            },
-            "securityContext": {
-              "fsGroup": "",
-              "runAsGroup": "",
-              "runAsUser": ""
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hazelcast/hazelcast-enterprise-operator-bundle@sha256:4090c5206fa7c0602ff0ce4cca18c632b97d294a70ad8b0d2b68ef1081927ea6",
-      "bundle_path_digest": "sha256:4090c5206fa7c0602ff0ce4cca18c632b97d294a70ad8b0d2b68ef1081927ea6",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-18T10:29:38.943000+00:00",
-      "csv_description": "Hazelcast IMDG Enterprise is the most widely used in-memory data grid with hundreds of thousands of installed clusters around the world. It offers caching solutions ensuring that data is in the right place when it\u2019s needed for optimal performance.\n\n   ### Before Your Start\n\nYou need Hazelcast Enterprise License Key. If you don't have one, get a trial key from this [link](https://hazelcast.com/hazelcast-enterprise-download/trial/).\n\n### Installation Guide & Configuration\n\nFor the complete installation guide and all configuration options please refer to [Hazelcast RHM Deployment Instructions](https://github.com/hazelcast/hazelcast-operator/tree/master/hazelcast-enterprise-operator#step-4-hazelcast-enterprise-cluster-and-management-center-installation).\n",
-      "csv_display_name": "Hazelcast Enterprise Operator",
-      "csv_metadata_description": "Install Hazelcast Enterprise cluster.",
-      "csv_name": "hazelcast-enterprise-operator.v0.3.7",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:22:34.285000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "hazelcast-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "hazelcast.com",
-          "kind": "HazelcastEnterprise",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Hazelcast, Inc",
-      "related_images": [
-        {
-          "digest": "sha256:1283c27946205177c143edd2cbed9594de0f9ae8be4a0b4f7ebf5974efbc7caf",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-enterprise-operator@sha256:1283c27946205177c143edd2cbed9594de0f9ae8be4a0b4f7ebf5974efbc7caf",
-          "name": "hazelcast-enterprise-operator-1283c27946205177c143edd2cbed9594de0f9ae8be4a0b4f7ebf5974efbc7caf-annotation"
-        },
-        {
-          "digest": "sha256:1283c27946205177c143edd2cbed9594de0f9ae8be4a0b4f7ebf5974efbc7caf",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-enterprise-operator@sha256:1283c27946205177c143edd2cbed9594de0f9ae8be4a0b4f7ebf5974efbc7caf",
-          "name": "hazelcast-enterprise-operator"
-        },
-        {
-          "digest": "sha256:1773b71eccc4a45fcf8a8d62c55a377507581ac479f73aa3e2e2f62136da73fa",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-enterprise-4-rhel8@sha256:1773b71eccc4a45fcf8a8d62c55a377507581ac479f73aa3e2e2f62136da73fa",
-          "name": "hazelcast"
-        },
-        {
-          "digest": "sha256:b0c404e3309afc509942502fbf87664e5cdb349aefb587b3592d2dfc22d25f8e",
-          "image": "registry.connect.redhat.com/hazelcast/management-center-4-rhel8@sha256:b0c404e3309afc509942502fbf87664e5cdb349aefb587b3592d2dfc22d25f8e",
-          "name": "mancenter"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.3.7",
-      "version_original": "0.3.7"
-    },
-    {
       "_id": "62345f18314381d2b0756b27",
       "alm_examples": [
         {
@@ -19390,9 +19118,403 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "2.0.4",
       "version_original": "2.0.4"
+    },
+    {
+      "_id": "623a088957d5e4fffe9893dd",
+      "alm_examples": [
+        {
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
+          "metadata": {
+            "name": "gpu-cluster-policy"
+          },
+          "spec": {
+            "daemonsets": {},
+            "dcgm": {
+              "enabled": true
+            },
+            "dcgmExporter": {
+              "config": {
+                "name": ""
+              }
+            },
+            "devicePlugin": {},
+            "driver": {
+              "certConfig": {
+                "name": ""
+              },
+              "enabled": true,
+              "kernelModuleConfig": {
+                "name": ""
+              },
+              "licensingConfig": {
+                "configMapName": "",
+                "nlsEnabled": false
+              },
+              "repoConfig": {
+                "configMapName": ""
+              },
+              "use_ocp_driver_toolkit": true,
+              "virtualTopology": {
+                "config": ""
+              }
+            },
+            "gfd": {},
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "enabled": true
+            },
+            "nodeStatusExporter": {
+              "enabled": true
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "deployGFD": true,
+              "initContainer": {}
+            },
+            "toolkit": {
+              "enabled": true
+            },
+            "validator": {
+              "plugin": {
+                "env": [
+                  {
+                    "name": "WITH_WORKLOAD",
+                    "value": "true"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
+      "bundle_path_digest": "sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-22T17:34:01.705000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:58:51.921000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "plural": "clusterpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": "NVIDIA Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "name": "dcgm-image"
+        },
+        {
+          "digest": "sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
+          "image": "nvcr.io/nvidia/driver@sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
+          "image": "docker.io/nvidia/cuda@sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
+          "name": "gpu-operator-validator-image"
+        },
+        {
+          "digest": "sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "name": "k8s-driver-manager-image"
+        },
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator-e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be-annotation"
+        },
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
+    },
+    {
+      "_id": "623a088a5216f202c0697683",
+      "alm_examples": [
+        {
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
+          "metadata": {
+            "name": "gpu-cluster-policy"
+          },
+          "spec": {
+            "daemonsets": {},
+            "dcgm": {
+              "enabled": true
+            },
+            "dcgmExporter": {
+              "config": {
+                "name": ""
+              }
+            },
+            "devicePlugin": {},
+            "driver": {
+              "certConfig": {
+                "name": ""
+              },
+              "enabled": true,
+              "kernelModuleConfig": {
+                "name": ""
+              },
+              "licensingConfig": {
+                "configMapName": "",
+                "nlsEnabled": false
+              },
+              "repoConfig": {
+                "configMapName": ""
+              },
+              "use_ocp_driver_toolkit": true,
+              "virtualTopology": {
+                "config": ""
+              }
+            },
+            "gfd": {},
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "enabled": true
+            },
+            "nodeStatusExporter": {
+              "enabled": true
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "deployGFD": true,
+              "initContainer": {}
+            },
+            "toolkit": {
+              "enabled": true
+            },
+            "validator": {
+              "plugin": {
+                "env": [
+                  {
+                    "name": "WITH_WORKLOAD",
+                    "value": "true"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
+      "bundle_path_digest": "sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "v1.10",
+      "creation_date": "2022-03-22T17:34:02.977000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:58:57.827000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "plural": "clusterpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": "NVIDIA Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "name": "dcgm-image"
+        },
+        {
+          "digest": "sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
+          "image": "nvcr.io/nvidia/driver@sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
+          "image": "docker.io/nvidia/cuda@sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
+          "name": "gpu-operator-validator-image"
+        },
+        {
+          "digest": "sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "name": "k8s-driver-manager-image"
+        },
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator-e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be-annotation"
+        },
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
     }
   ],
   "page": 22,
   "page_size": 100,
-  "total": 4817
+  "total": 4866
 }

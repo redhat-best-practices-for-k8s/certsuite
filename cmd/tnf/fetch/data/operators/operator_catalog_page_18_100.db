@@ -1,569 +1,6 @@
 {
   "data": [
     {
-      "_id": "61a49f75c17162a20c1c675c",
-      "alm_examples": [
-        {
-          "api_version": "federatorai.containers.ai/v1alpha1",
-          "kind": "AlamedaService",
-          "metadata": {
-            "name": "my-alamedaservice"
-          },
-          "spec": {
-            "alamedaAi": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "10Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "alamedaInfluxdb": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "100Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "fedemeterInfluxdb": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "10Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "imageLocation": "registry.connect.redhat.com/prophetstor",
-            "storages": [
-              {
-                "accessModes": [
-                  "ReadWriteOnce"
-                ],
-                "size": "2Gi",
-                "type": "pvc",
-                "usage": "log"
-              }
-            ],
-            "version": "v4.7.2-b1777"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/prophetstor/federatorai-operator-bundle@sha256:8fcbd648e2d8048c8a209e1aba7fa67a0651adeaec5c9523a7a8f3c1b51bd85a",
-      "bundle_path_digest": "sha256:8fcbd648e2d8048c8a209e1aba7fa67a0651adeaec5c9523a7a8f3c1b51bd85a",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-11-29T09:37:57.184000+00:00",
-      "csv_description": "Federator.ai helps enterprises optimize cloud resources, maximize application performance, and save significant cost without excessive over-provisioning or under-provisioning of resources, meeting the service-level requirements of their applications.\n\nEnterprises often lack understanding of the resources needed to support their applications. This leads to either excessive over-provisioning or under-provisioning of resources (CPU, memory, storage). Using machine learning, Federator.ai determines the optimal cloud resources needed to support any workload on OpenShift and helps users find the best-cost instances from cloud providers for their applications.\n\n\n**Multi-layer workload prediction**\n\nUsing machine learning and math-based algorithms, Federator.ai predicts containerized application and cluster node resource usage as the basis for resource recommendations at application level as well as at cluster node level. Federator.ai supports prediction for both physical/virtual CPUs and memories.\n\n\n**Auto-scaling via resource recommendation**\n\nFederator.ai utilizes the predicted resource usage to recommend the right number and size of pods for applications. Integrated with Datadog's WPA, applications are automatically scaled to meet the predicted resource usage.\n\n\n**Application-aware recommendation execution**\n\nOptimizing the resource usage and performance goals, Federator.ai uses application specific metrics for workload prediction and pod capacity estimation to auto-scale the right number of pods for best performance without overprovisioning.\n\n\n**Multi-cloud Cost Analysis**\n\nWith resource usage prediction, Federator.ai analyzes potential cost of a cluster on different public cloud providers. It also recommend appropriate cluster nodes and instance types based on resource usage.\n\n\n**Custom Datadog/Sysdig Dashboards**\n\nPredefined custom Datadog/Sysdig Dashboards for workload prediction/recommendation visualization for cluster nodes and applications.\n\n\n**Additional resources**\n\nWant more product information? Explore detailed information about using this product and where to find additional help.\n\n* [Federator.ai Datasheet](https://prophetstor.com/wp-content/uploads/datasheets/Federator.ai.pdf)\n* [Quick Start Guide](https://prophetstor.com/wp-content/uploads/documentation/Federator.ai/Latest%20Version/ProphetStor%20Federator.ai%20Quick%20Installation%20Guide.pdf)\n* [Installation Guide](https://prophetstor.com/wp-content/uploads/2021/08/ProphetStor-Federator.ai-v4.7.0-Installation-Guide-v1.0.pdf)\n* [User Guide](https://prophetstor.com/wp-content/uploads/2021/11/Federator.ai-User-Guide-4.7.2.pdf)\n* [Release Notes](https://prophetstor.com/wp-content/uploads/2021/11/Federator.ai-4.7.2-Release-Notes.pdf)\n* [Company Information](https://www.prophetstor.com/)\n\n\n### Prerequisite\n*  The [Openshift](https://www.openshift.com) version 4.6.x or later if using OpenShift platform.\n*  The [Kubernetes](https://kubernetes.io/) version 1.16 or later if using Kubernetes environment.",
-      "csv_display_name": "Federator.ai",
-      "csv_metadata_description": "Federator.ai Operator provides easy configuration and management of AI-based Kubernetes resource orchestrator",
-      "csv_name": "federatorai.v4.7.2-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:49:21.157000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "federatorai-certified",
-      "provided_apis": [
-        {
-          "group": "federatorai.containers.ai",
-          "kind": "AlamedaService",
-          "plural": "alamedaservices",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "ProphetStor Data Services, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:b12df0a12196c1bf9fd036bfa64507b8469254c3ffbcbdd92333603576200e6c",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-ai-dispatcher@sha256:b12df0a12196c1bf9fd036bfa64507b8469254c3ffbcbdd92333603576200e6c",
-          "name": "ai-dispatcher"
-        },
-        {
-          "digest": "sha256:c4ca91f8b942f90141f3cacc2b80f4e123058447ae4ad880763360a42408e439",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-ai@sha256:c4ca91f8b942f90141f3cacc2b80f4e123058447ae4ad880763360a42408e439",
-          "name": "ai_engine"
-        },
-        {
-          "digest": "sha256:a9f8fa8224535f70a959f736aba992b2135018afd57184f4849e8739d1ea2a18",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-datahub-ubi@sha256:a9f8fa8224535f70a959f736aba992b2135018afd57184f4849e8739d1ea2a18",
-          "name": "datahub"
-        },
-        {
-          "digest": "sha256:d5c6fbd329f49100422a995a4e177ba76c0a49936f0a0c8139250bf1357e992e",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-executor-ubi@sha256:d5c6fbd329f49100422a995a4e177ba76c0a49936f0a0c8139250bf1357e992e",
-          "name": "executor"
-        },
-        {
-          "digest": "sha256:60328410dc4813c1285ade12533efba9acb602433be7cc1f256fb3ea6312d3c2",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-api-ubi@sha256:60328410dc4813c1285ade12533efba9acb602433be7cc1f256fb3ea6312d3c2",
-          "name": "fedemeter-api"
-        },
-        {
-          "digest": "sha256:163e559a6c684cde953f3515f1df08ebe7e799c53b24add3b225fcd6a976bb12",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-influxdb@sha256:163e559a6c684cde953f3515f1df08ebe7e799c53b24add3b225fcd6a976bb12",
-          "name": "fedemeter-influxdb"
-        },
-        {
-          "digest": "sha256:43641d57b7b694adb090e6377bfd6315aab6193e5637bab91221f076f205d819",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-ubi@sha256:43641d57b7b694adb090e6377bfd6315aab6193e5637bab91221f076f205d819",
-          "name": "federatorai-agent"
-        },
-        {
-          "digest": "sha256:8f6ee4e54297b6dadc51bd8dad4d9f67cfb5aa7c4e8de82ad0928d71e1d0d0f7",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-preloader@sha256:8f6ee4e54297b6dadc51bd8dad4d9f67cfb5aa7c4e8de82ad0928d71e1d0d0f7",
-          "name": "federatorai-agent-preloader"
-        },
-        {
-          "digest": "sha256:3bde9bb8f63c92619d28c80985e5e30ec4cc96dba8252dff6c3b5f10104db89d",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-frontend@sha256:3bde9bb8f63c92619d28c80985e5e30ec4cc96dba8252dff6c3b5f10104db89d",
-          "name": "federatorai-dashboard-frontend"
-        },
-        {
-          "digest": "sha256:fa443c901e06aad3780666a4d676b330c61d66d8ea52ae2850f382f68559154d",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-backend@sha256:fa443c901e06aad3780666a4d676b330c61d66d8ea52ae2850f382f68559154d",
-          "name": "federatorai-dashboard-backend"
-        },
-        {
-          "digest": "sha256:46b206bb1814b2b7d38e9e0d14ef1f0e3c51d7b3f18b32cc92515bffc5ca5b1f",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-data-adapter@sha256:46b206bb1814b2b7d38e9e0d14ef1f0e3c51d7b3f18b32cc92515bffc5ca5b1f",
-          "name": "federatorai-data-adapter"
-        },
-        {
-          "digest": "sha256:889136e2f82db71d4c7a5ab39472f578e12315c65bda1ab3dc3ef9adc9d4a6cc",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-rest-ubi@sha256:889136e2f82db71d4c7a5ab39472f578e12315c65bda1ab3dc3ef9adc9d4a6cc",
-          "name": "federatorai-restapi"
-        },
-        {
-          "digest": "sha256:75c7ac8323db161c3a37d1931c863bda21f224e67443543572d912b976ee3ff0",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-influxdb@sha256:75c7ac8323db161c3a37d1931c863bda21f224e67443543572d912b976ee3ff0",
-          "name": "influxdb"
-        },
-        {
-          "digest": "sha256:3738f97c0b50afcf9e6b78d1084e98a3c78e0fd6d10d0a3ae458c27604e395fd",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-notifier-ubi@sha256:3738f97c0b50afcf9e6b78d1084e98a3c78e0fd6d10d0a3ae458c27604e395fd",
-          "name": "notifier"
-        },
-        {
-          "digest": "sha256:c28e9740e6031f1db3274a3722e9682eb7708479187fcdc5799ae0c21141639b",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-operator-ubi@sha256:c28e9740e6031f1db3274a3722e9682eb7708479187fcdc5799ae0c21141639b",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:3db8b480b94452aa7211327ec4ec5382b9b94156dfc7c22e65b5cbf4d0e1140b",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-rabbitmq@sha256:3db8b480b94452aa7211327ec4ec5382b9b94156dfc7c22e65b5cbf4d0e1140b",
-          "name": "rabbitmq"
-        },
-        {
-          "digest": "sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "name": "federatorai-recommend-dispatcher"
-        },
-        {
-          "digest": "sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "name": "federatorai-recommend-worker"
-        },
-        {
-          "digest": "sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
-          "name": "federatorai-operator-23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3-annotation"
-        },
-        {
-          "digest": "sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
-          "name": "federatorai-operator"
-        },
-        {
-          "digest": "sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
-          "name": "upgrader"
-        },
-        {
-          "digest": "sha256:b12df0a12196c1bf9fd036bfa64507b8469254c3ffbcbdd92333603576200e6c",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-ai-dispatcher@sha256:b12df0a12196c1bf9fd036bfa64507b8469254c3ffbcbdd92333603576200e6c",
-          "name": "ai_dispatcher"
-        },
-        {
-          "digest": "sha256:60328410dc4813c1285ade12533efba9acb602433be7cc1f256fb3ea6312d3c2",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-api-ubi@sha256:60328410dc4813c1285ade12533efba9acb602433be7cc1f256fb3ea6312d3c2",
-          "name": "fedemeter_api"
-        },
-        {
-          "digest": "sha256:163e559a6c684cde953f3515f1df08ebe7e799c53b24add3b225fcd6a976bb12",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-influxdb@sha256:163e559a6c684cde953f3515f1df08ebe7e799c53b24add3b225fcd6a976bb12",
-          "name": "fedemeter_influxdb"
-        },
-        {
-          "digest": "sha256:43641d57b7b694adb090e6377bfd6315aab6193e5637bab91221f076f205d819",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-ubi@sha256:43641d57b7b694adb090e6377bfd6315aab6193e5637bab91221f076f205d819",
-          "name": "federatorai_agent"
-        },
-        {
-          "digest": "sha256:8f6ee4e54297b6dadc51bd8dad4d9f67cfb5aa7c4e8de82ad0928d71e1d0d0f7",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-preloader@sha256:8f6ee4e54297b6dadc51bd8dad4d9f67cfb5aa7c4e8de82ad0928d71e1d0d0f7",
-          "name": "federatorai_agent_preloader"
-        },
-        {
-          "digest": "sha256:3bde9bb8f63c92619d28c80985e5e30ec4cc96dba8252dff6c3b5f10104db89d",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-frontend@sha256:3bde9bb8f63c92619d28c80985e5e30ec4cc96dba8252dff6c3b5f10104db89d",
-          "name": "federatorai_dashboard_frontend"
-        },
-        {
-          "digest": "sha256:fa443c901e06aad3780666a4d676b330c61d66d8ea52ae2850f382f68559154d",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-backend@sha256:fa443c901e06aad3780666a4d676b330c61d66d8ea52ae2850f382f68559154d",
-          "name": "federatorai_dashboard_backend"
-        },
-        {
-          "digest": "sha256:46b206bb1814b2b7d38e9e0d14ef1f0e3c51d7b3f18b32cc92515bffc5ca5b1f",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-data-adapter@sha256:46b206bb1814b2b7d38e9e0d14ef1f0e3c51d7b3f18b32cc92515bffc5ca5b1f",
-          "name": "federatorai_data_adapter"
-        },
-        {
-          "digest": "sha256:889136e2f82db71d4c7a5ab39472f578e12315c65bda1ab3dc3ef9adc9d4a6cc",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-rest-ubi@sha256:889136e2f82db71d4c7a5ab39472f578e12315c65bda1ab3dc3ef9adc9d4a6cc",
-          "name": "federatorai_restapi"
-        },
-        {
-          "digest": "sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "name": "federatorai_recommend_dispatcher"
-        },
-        {
-          "digest": "sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "name": "federatorai_recommend_worker"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "4.7.2-1",
-      "version_original": "4.7.2-1"
-    },
-    {
-      "_id": "61a4a616bfd4a5234d595fc9",
-      "alm_examples": [
-        {
-          "api_version": "federatorai.containers.ai/v1alpha1",
-          "kind": "AlamedaService",
-          "metadata": {
-            "name": "my-alamedaservice"
-          },
-          "spec": {
-            "alamedaAi": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "10Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "alamedaInfluxdb": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "100Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "fedemeterInfluxdb": {
-              "storages": [
-                {
-                  "accessModes": [
-                    "ReadWriteOnce"
-                  ],
-                  "size": "10Gi",
-                  "type": "pvc",
-                  "usage": "data"
-                }
-              ]
-            },
-            "imageLocation": "registry.connect.redhat.com/prophetstor",
-            "storages": [
-              {
-                "accessModes": [
-                  "ReadWriteOnce"
-                ],
-                "size": "2Gi",
-                "type": "pvc",
-                "usage": "log"
-              }
-            ],
-            "version": "v4.7.2-b1777"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/prophetstor/federatorai-operator-bundle@sha256:8fcbd648e2d8048c8a209e1aba7fa67a0651adeaec5c9523a7a8f3c1b51bd85a",
-      "bundle_path_digest": "sha256:8fcbd648e2d8048c8a209e1aba7fa67a0651adeaec5c9523a7a8f3c1b51bd85a",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-11-29T10:06:14.844000+00:00",
-      "csv_description": "Federator.ai helps enterprises optimize cloud resources, maximize application performance, and save significant cost without excessive over-provisioning or under-provisioning of resources, meeting the service-level requirements of their applications.\n\nEnterprises often lack understanding of the resources needed to support their applications. This leads to either excessive over-provisioning or under-provisioning of resources (CPU, memory, storage). Using machine learning, Federator.ai determines the optimal cloud resources needed to support any workload on OpenShift and helps users find the best-cost instances from cloud providers for their applications.\n\n\n**Multi-layer workload prediction**\n\nUsing machine learning and math-based algorithms, Federator.ai predicts containerized application and cluster node resource usage as the basis for resource recommendations at application level as well as at cluster node level. Federator.ai supports prediction for both physical/virtual CPUs and memories.\n\n\n**Auto-scaling via resource recommendation**\n\nFederator.ai utilizes the predicted resource usage to recommend the right number and size of pods for applications. Integrated with Datadog's WPA, applications are automatically scaled to meet the predicted resource usage.\n\n\n**Application-aware recommendation execution**\n\nOptimizing the resource usage and performance goals, Federator.ai uses application specific metrics for workload prediction and pod capacity estimation to auto-scale the right number of pods for best performance without overprovisioning.\n\n\n**Multi-cloud Cost Analysis**\n\nWith resource usage prediction, Federator.ai analyzes potential cost of a cluster on different public cloud providers. It also recommend appropriate cluster nodes and instance types based on resource usage.\n\n\n**Custom Datadog/Sysdig Dashboards**\n\nPredefined custom Datadog/Sysdig Dashboards for workload prediction/recommendation visualization for cluster nodes and applications.\n\n\n**Additional resources**\n\nWant more product information? Explore detailed information about using this product and where to find additional help.\n\n* [Federator.ai Datasheet](https://prophetstor.com/wp-content/uploads/datasheets/Federator.ai.pdf)\n* [Quick Start Guide](https://prophetstor.com/wp-content/uploads/documentation/Federator.ai/Latest%20Version/ProphetStor%20Federator.ai%20Quick%20Installation%20Guide.pdf)\n* [Installation Guide](https://prophetstor.com/wp-content/uploads/2021/08/ProphetStor-Federator.ai-v4.7.0-Installation-Guide-v1.0.pdf)\n* [User Guide](https://prophetstor.com/wp-content/uploads/2021/11/Federator.ai-User-Guide-4.7.2.pdf)\n* [Release Notes](https://prophetstor.com/wp-content/uploads/2021/11/Federator.ai-4.7.2-Release-Notes.pdf)\n* [Company Information](https://www.prophetstor.com/)\n\n\n### Prerequisite\n*  The [Openshift](https://www.openshift.com) version 4.6.x or later if using OpenShift platform.\n*  The [Kubernetes](https://kubernetes.io/) version 1.16 or later if using Kubernetes environment.",
-      "csv_display_name": "Federator.ai",
-      "csv_metadata_description": "Federator.ai Operator provides easy configuration and management of AI-based Kubernetes resource orchestrator",
-      "csv_name": "federatorai.v4.7.2-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:13:16.810000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "federatorai-certified",
-      "provided_apis": [
-        {
-          "group": "federatorai.containers.ai",
-          "kind": "AlamedaService",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "ProphetStor Data Services, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:b12df0a12196c1bf9fd036bfa64507b8469254c3ffbcbdd92333603576200e6c",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-ai-dispatcher@sha256:b12df0a12196c1bf9fd036bfa64507b8469254c3ffbcbdd92333603576200e6c",
-          "name": "ai-dispatcher"
-        },
-        {
-          "digest": "sha256:c4ca91f8b942f90141f3cacc2b80f4e123058447ae4ad880763360a42408e439",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-ai@sha256:c4ca91f8b942f90141f3cacc2b80f4e123058447ae4ad880763360a42408e439",
-          "name": "ai_engine"
-        },
-        {
-          "digest": "sha256:a9f8fa8224535f70a959f736aba992b2135018afd57184f4849e8739d1ea2a18",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-datahub-ubi@sha256:a9f8fa8224535f70a959f736aba992b2135018afd57184f4849e8739d1ea2a18",
-          "name": "datahub"
-        },
-        {
-          "digest": "sha256:d5c6fbd329f49100422a995a4e177ba76c0a49936f0a0c8139250bf1357e992e",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-executor-ubi@sha256:d5c6fbd329f49100422a995a4e177ba76c0a49936f0a0c8139250bf1357e992e",
-          "name": "executor"
-        },
-        {
-          "digest": "sha256:60328410dc4813c1285ade12533efba9acb602433be7cc1f256fb3ea6312d3c2",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-api-ubi@sha256:60328410dc4813c1285ade12533efba9acb602433be7cc1f256fb3ea6312d3c2",
-          "name": "fedemeter-api"
-        },
-        {
-          "digest": "sha256:163e559a6c684cde953f3515f1df08ebe7e799c53b24add3b225fcd6a976bb12",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-influxdb@sha256:163e559a6c684cde953f3515f1df08ebe7e799c53b24add3b225fcd6a976bb12",
-          "name": "fedemeter-influxdb"
-        },
-        {
-          "digest": "sha256:43641d57b7b694adb090e6377bfd6315aab6193e5637bab91221f076f205d819",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-ubi@sha256:43641d57b7b694adb090e6377bfd6315aab6193e5637bab91221f076f205d819",
-          "name": "federatorai-agent"
-        },
-        {
-          "digest": "sha256:8f6ee4e54297b6dadc51bd8dad4d9f67cfb5aa7c4e8de82ad0928d71e1d0d0f7",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-preloader@sha256:8f6ee4e54297b6dadc51bd8dad4d9f67cfb5aa7c4e8de82ad0928d71e1d0d0f7",
-          "name": "federatorai-agent-preloader"
-        },
-        {
-          "digest": "sha256:3bde9bb8f63c92619d28c80985e5e30ec4cc96dba8252dff6c3b5f10104db89d",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-frontend@sha256:3bde9bb8f63c92619d28c80985e5e30ec4cc96dba8252dff6c3b5f10104db89d",
-          "name": "federatorai-dashboard-frontend"
-        },
-        {
-          "digest": "sha256:fa443c901e06aad3780666a4d676b330c61d66d8ea52ae2850f382f68559154d",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-backend@sha256:fa443c901e06aad3780666a4d676b330c61d66d8ea52ae2850f382f68559154d",
-          "name": "federatorai-dashboard-backend"
-        },
-        {
-          "digest": "sha256:46b206bb1814b2b7d38e9e0d14ef1f0e3c51d7b3f18b32cc92515bffc5ca5b1f",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-data-adapter@sha256:46b206bb1814b2b7d38e9e0d14ef1f0e3c51d7b3f18b32cc92515bffc5ca5b1f",
-          "name": "federatorai-data-adapter"
-        },
-        {
-          "digest": "sha256:889136e2f82db71d4c7a5ab39472f578e12315c65bda1ab3dc3ef9adc9d4a6cc",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-rest-ubi@sha256:889136e2f82db71d4c7a5ab39472f578e12315c65bda1ab3dc3ef9adc9d4a6cc",
-          "name": "federatorai-restapi"
-        },
-        {
-          "digest": "sha256:75c7ac8323db161c3a37d1931c863bda21f224e67443543572d912b976ee3ff0",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-influxdb@sha256:75c7ac8323db161c3a37d1931c863bda21f224e67443543572d912b976ee3ff0",
-          "name": "influxdb"
-        },
-        {
-          "digest": "sha256:3738f97c0b50afcf9e6b78d1084e98a3c78e0fd6d10d0a3ae458c27604e395fd",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-notifier-ubi@sha256:3738f97c0b50afcf9e6b78d1084e98a3c78e0fd6d10d0a3ae458c27604e395fd",
-          "name": "notifier"
-        },
-        {
-          "digest": "sha256:c28e9740e6031f1db3274a3722e9682eb7708479187fcdc5799ae0c21141639b",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-operator-ubi@sha256:c28e9740e6031f1db3274a3722e9682eb7708479187fcdc5799ae0c21141639b",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:3db8b480b94452aa7211327ec4ec5382b9b94156dfc7c22e65b5cbf4d0e1140b",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-rabbitmq@sha256:3db8b480b94452aa7211327ec4ec5382b9b94156dfc7c22e65b5cbf4d0e1140b",
-          "name": "rabbitmq"
-        },
-        {
-          "digest": "sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "name": "federatorai-recommend-dispatcher"
-        },
-        {
-          "digest": "sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "name": "federatorai-recommend-worker"
-        },
-        {
-          "digest": "sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
-          "name": "federatorai-operator-23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3-annotation"
-        },
-        {
-          "digest": "sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
-          "name": "federatorai-operator"
-        },
-        {
-          "digest": "sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-operator@sha256:23743249f43219d077aa0a2b899e8c08bbee7caf0577771228c7192d3b99e9f3",
-          "name": "upgrader"
-        },
-        {
-          "digest": "sha256:b12df0a12196c1bf9fd036bfa64507b8469254c3ffbcbdd92333603576200e6c",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-ai-dispatcher@sha256:b12df0a12196c1bf9fd036bfa64507b8469254c3ffbcbdd92333603576200e6c",
-          "name": "ai_dispatcher"
-        },
-        {
-          "digest": "sha256:60328410dc4813c1285ade12533efba9acb602433be7cc1f256fb3ea6312d3c2",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-api-ubi@sha256:60328410dc4813c1285ade12533efba9acb602433be7cc1f256fb3ea6312d3c2",
-          "name": "fedemeter_api"
-        },
-        {
-          "digest": "sha256:163e559a6c684cde953f3515f1df08ebe7e799c53b24add3b225fcd6a976bb12",
-          "image": "registry.connect.redhat.com/prophetstor/fedemeter-influxdb@sha256:163e559a6c684cde953f3515f1df08ebe7e799c53b24add3b225fcd6a976bb12",
-          "name": "fedemeter_influxdb"
-        },
-        {
-          "digest": "sha256:43641d57b7b694adb090e6377bfd6315aab6193e5637bab91221f076f205d819",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-ubi@sha256:43641d57b7b694adb090e6377bfd6315aab6193e5637bab91221f076f205d819",
-          "name": "federatorai_agent"
-        },
-        {
-          "digest": "sha256:8f6ee4e54297b6dadc51bd8dad4d9f67cfb5aa7c4e8de82ad0928d71e1d0d0f7",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-agent-preloader@sha256:8f6ee4e54297b6dadc51bd8dad4d9f67cfb5aa7c4e8de82ad0928d71e1d0d0f7",
-          "name": "federatorai_agent_preloader"
-        },
-        {
-          "digest": "sha256:3bde9bb8f63c92619d28c80985e5e30ec4cc96dba8252dff6c3b5f10104db89d",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-frontend@sha256:3bde9bb8f63c92619d28c80985e5e30ec4cc96dba8252dff6c3b5f10104db89d",
-          "name": "federatorai_dashboard_frontend"
-        },
-        {
-          "digest": "sha256:fa443c901e06aad3780666a4d676b330c61d66d8ea52ae2850f382f68559154d",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-dashboard-backend@sha256:fa443c901e06aad3780666a4d676b330c61d66d8ea52ae2850f382f68559154d",
-          "name": "federatorai_dashboard_backend"
-        },
-        {
-          "digest": "sha256:46b206bb1814b2b7d38e9e0d14ef1f0e3c51d7b3f18b32cc92515bffc5ca5b1f",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-data-adapter@sha256:46b206bb1814b2b7d38e9e0d14ef1f0e3c51d7b3f18b32cc92515bffc5ca5b1f",
-          "name": "federatorai_data_adapter"
-        },
-        {
-          "digest": "sha256:889136e2f82db71d4c7a5ab39472f578e12315c65bda1ab3dc3ef9adc9d4a6cc",
-          "image": "registry.connect.redhat.com/prophetstor/federatorai-rest-ubi@sha256:889136e2f82db71d4c7a5ab39472f578e12315c65bda1ab3dc3ef9adc9d4a6cc",
-          "name": "federatorai_restapi"
-        },
-        {
-          "digest": "sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "name": "federatorai_recommend_dispatcher"
-        },
-        {
-          "digest": "sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "image": "registry.connect.redhat.com/prophetstor/alameda-recommender-ubi@sha256:b4cbe2b2aaac4200cb45310d0f9b4b6acb9d5c7c71d5daef0f3de491440ef94e",
-          "name": "federatorai_recommend_worker"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "4.7.2-1",
-      "version_original": "4.7.2-1"
-    },
-    {
       "_id": "61a4a62827e166330707d8ac",
       "alm_examples": [
         {
@@ -18474,9 +17911,343 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "2.0.2",
       "version_original": "2.0.2"
+    },
+    {
+      "_id": "61b7bbe9dda6c5fe6ba361e1",
+      "alm_examples": [
+        {
+          "api_version": "conjur.cyberark.com/v1",
+          "kind": "ConjurFollower",
+          "metadata": {
+            "labels": {
+              "app": "conjur-follower"
+            },
+            "name": "conjur-follower-operator-my-conjur-follower",
+            "namespace": "conjur-follower-operator-system"
+          },
+          "spec": {
+            "images": {
+              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
+              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
+              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
+              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
+              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
+              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c"
+            },
+            "master": {
+              "account": "my-company",
+              "authenticatorID": "conjur-openshift-follower",
+              "authnLogin": "host/conjur-openshift-follower",
+              "caCertificateFrom": {
+                "configMapKeyRef": {
+                  "key": "conjur.master-cert",
+                  "name": "follower"
+                }
+              },
+              "hostname": "conjur.my-company.net"
+            },
+            "replicas": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:e3bc395543de733defc75270df2828fa8ba4cdf5c5cf79848a4640ee99a9fef7",
+      "bundle_path_digest": "sha256:e3bc395543de733defc75270df2828fa8ba4cdf5c5cf79848a4640ee99a9fef7",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2021-12-13T21:32:25.632000+00:00",
+      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
+      "csv_display_name": "Conjur Enterprise Follower Operator",
+      "csv_metadata_description": "",
+      "csv_name": "conjur-follower-operator.v2.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:11:17.049000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "conjur-follower-operator",
+      "provided_apis": [
+        {
+          "group": "conjur.cyberark.com",
+          "kind": "ConjurFollower",
+          "plural": "conjurfollowers",
+          "version": "v1"
+        }
+      ],
+      "provider": "CyberArk",
+      "related_images": [
+        {
+          "digest": "sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
+          "name": "conjur-openshift-follower-operator"
+        },
+        {
+          "digest": "sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
+          "name": "conjur-openshift-follower-configurator"
+        },
+        {
+          "digest": "sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
+          "name": "conjur-openshift-follower-conjur"
+        },
+        {
+          "digest": "sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
+          "name": "conjur-openshift-follower-info"
+        },
+        {
+          "digest": "sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
+          "name": "conjur-openshift-follower-nginx"
+        },
+        {
+          "digest": "sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
+          "name": "conjur-openshift-follower-postgres"
+        },
+        {
+          "digest": "sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
+          "name": "conjur-openshift-follower-syslog-ng"
+        },
+        {
+          "digest": "sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
+          "name": "conjur-follower-operator"
+        },
+        {
+          "digest": "sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
+          "name": "conjur-openshift-follower-syslog-ng-7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c-annotation"
+        },
+        {
+          "digest": "sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
+          "name": "conjur-openshift-follower-postgres-96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5-annotation"
+        },
+        {
+          "digest": "sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
+          "name": "conjur-openshift-follower-nginx-d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981-annotation"
+        },
+        {
+          "digest": "sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
+          "name": "conjur-openshift-follower-info-27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05-annotation"
+        },
+        {
+          "digest": "sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
+          "name": "conjur-openshift-follower-conjur-ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c-annotation"
+        },
+        {
+          "digest": "sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
+          "name": "conjur-openshift-follower-configurator-b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.0.2",
+      "version_original": "2.0.2"
+    },
+    {
+      "_id": "61b7bbec2e8aeda4b340e5cf",
+      "alm_examples": [
+        {
+          "api_version": "conjur.cyberark.com/v1",
+          "kind": "ConjurFollower",
+          "metadata": {
+            "labels": {
+              "app": "conjur-follower"
+            },
+            "name": "conjur-follower-operator-my-conjur-follower",
+            "namespace": "conjur-follower-operator-system"
+          },
+          "spec": {
+            "images": {
+              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
+              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
+              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
+              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
+              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
+              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c"
+            },
+            "master": {
+              "account": "my-company",
+              "authenticatorID": "conjur-openshift-follower",
+              "authnLogin": "host/conjur-openshift-follower",
+              "caCertificateFrom": {
+                "configMapKeyRef": {
+                  "key": "conjur.master-cert",
+                  "name": "follower"
+                }
+              },
+              "hostname": "conjur.my-company.net"
+            },
+            "replicas": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:e3bc395543de733defc75270df2828fa8ba4cdf5c5cf79848a4640ee99a9fef7",
+      "bundle_path_digest": "sha256:e3bc395543de733defc75270df2828fa8ba4cdf5c5cf79848a4640ee99a9fef7",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-12-13T21:32:28.183000+00:00",
+      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
+      "csv_display_name": "Conjur Enterprise Follower Operator",
+      "csv_metadata_description": "",
+      "csv_name": "conjur-follower-operator.v2.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:44:35.657000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "conjur-follower-operator",
+      "provided_apis": [
+        {
+          "group": "conjur.cyberark.com",
+          "kind": "ConjurFollower",
+          "plural": "conjurfollowers",
+          "version": "v1"
+        }
+      ],
+      "provider": "CyberArk",
+      "related_images": [
+        {
+          "digest": "sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
+          "name": "conjur-openshift-follower-operator"
+        },
+        {
+          "digest": "sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
+          "name": "conjur-openshift-follower-configurator"
+        },
+        {
+          "digest": "sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
+          "name": "conjur-openshift-follower-conjur"
+        },
+        {
+          "digest": "sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
+          "name": "conjur-openshift-follower-info"
+        },
+        {
+          "digest": "sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
+          "name": "conjur-openshift-follower-nginx"
+        },
+        {
+          "digest": "sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
+          "name": "conjur-openshift-follower-postgres"
+        },
+        {
+          "digest": "sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
+          "name": "conjur-openshift-follower-syslog-ng"
+        },
+        {
+          "digest": "sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
+          "name": "conjur-follower-operator"
+        },
+        {
+          "digest": "sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
+          "name": "conjur-openshift-follower-syslog-ng-7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c-annotation"
+        },
+        {
+          "digest": "sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
+          "name": "conjur-openshift-follower-postgres-96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5-annotation"
+        },
+        {
+          "digest": "sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
+          "name": "conjur-openshift-follower-nginx-d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981-annotation"
+        },
+        {
+          "digest": "sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
+          "name": "conjur-openshift-follower-info-27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05-annotation"
+        },
+        {
+          "digest": "sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
+          "name": "conjur-openshift-follower-conjur-ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c-annotation"
+        },
+        {
+          "digest": "sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
+          "name": "conjur-openshift-follower-configurator-b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.0.2",
+      "version_original": "2.0.2"
     }
   ],
   "page": 18,
   "page_size": 100,
-  "total": 4817
+  "total": 4866
 }

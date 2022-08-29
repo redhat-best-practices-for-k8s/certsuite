@@ -1,340 +1,6 @@
 {
   "data": [
     {
-      "_id": "61b7bbe9dda6c5fe6ba361e1",
-      "alm_examples": [
-        {
-          "api_version": "conjur.cyberark.com/v1",
-          "kind": "ConjurFollower",
-          "metadata": {
-            "labels": {
-              "app": "conjur-follower"
-            },
-            "name": "conjur-follower-operator-my-conjur-follower",
-            "namespace": "conjur-follower-operator-system"
-          },
-          "spec": {
-            "images": {
-              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
-              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
-              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
-              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
-              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
-              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c"
-            },
-            "master": {
-              "account": "my-company",
-              "authenticatorID": "conjur-openshift-follower",
-              "authnLogin": "host/conjur-openshift-follower",
-              "caCertificateFrom": {
-                "configMapKeyRef": {
-                  "key": "conjur.master-cert",
-                  "name": "follower"
-                }
-              },
-              "hostname": "conjur.my-company.net"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:e3bc395543de733defc75270df2828fa8ba4cdf5c5cf79848a4640ee99a9fef7",
-      "bundle_path_digest": "sha256:e3bc395543de733defc75270df2828fa8ba4cdf5c5cf79848a4640ee99a9fef7",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2021-12-13T21:32:25.632000+00:00",
-      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
-      "csv_display_name": "Conjur Enterprise Follower Operator",
-      "csv_metadata_description": "",
-      "csv_name": "conjur-follower-operator.v2.0.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:11:17.049000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "conjur-follower-operator",
-      "provided_apis": [
-        {
-          "group": "conjur.cyberark.com",
-          "kind": "ConjurFollower",
-          "plural": "conjurfollowers",
-          "version": "v1"
-        }
-      ],
-      "provider": "CyberArk",
-      "related_images": [
-        {
-          "digest": "sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
-          "name": "conjur-openshift-follower-operator"
-        },
-        {
-          "digest": "sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
-          "name": "conjur-openshift-follower-configurator"
-        },
-        {
-          "digest": "sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
-          "name": "conjur-openshift-follower-conjur"
-        },
-        {
-          "digest": "sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
-          "name": "conjur-openshift-follower-info"
-        },
-        {
-          "digest": "sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
-          "name": "conjur-openshift-follower-nginx"
-        },
-        {
-          "digest": "sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
-          "name": "conjur-openshift-follower-postgres"
-        },
-        {
-          "digest": "sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
-          "name": "conjur-openshift-follower-syslog-ng"
-        },
-        {
-          "digest": "sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
-          "name": "conjur-follower-operator"
-        },
-        {
-          "digest": "sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
-          "name": "conjur-openshift-follower-syslog-ng-7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c-annotation"
-        },
-        {
-          "digest": "sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
-          "name": "conjur-openshift-follower-postgres-96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5-annotation"
-        },
-        {
-          "digest": "sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
-          "name": "conjur-openshift-follower-nginx-d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981-annotation"
-        },
-        {
-          "digest": "sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
-          "name": "conjur-openshift-follower-info-27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05-annotation"
-        },
-        {
-          "digest": "sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
-          "name": "conjur-openshift-follower-conjur-ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c-annotation"
-        },
-        {
-          "digest": "sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
-          "name": "conjur-openshift-follower-configurator-b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.0.2",
-      "version_original": "2.0.2"
-    },
-    {
-      "_id": "61b7bbec2e8aeda4b340e5cf",
-      "alm_examples": [
-        {
-          "api_version": "conjur.cyberark.com/v1",
-          "kind": "ConjurFollower",
-          "metadata": {
-            "labels": {
-              "app": "conjur-follower"
-            },
-            "name": "conjur-follower-operator-my-conjur-follower",
-            "namespace": "conjur-follower-operator-system"
-          },
-          "spec": {
-            "images": {
-              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
-              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
-              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
-              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
-              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
-              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c"
-            },
-            "master": {
-              "account": "my-company",
-              "authenticatorID": "conjur-openshift-follower",
-              "authnLogin": "host/conjur-openshift-follower",
-              "caCertificateFrom": {
-                "configMapKeyRef": {
-                  "key": "conjur.master-cert",
-                  "name": "follower"
-                }
-              },
-              "hostname": "conjur.my-company.net"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:e3bc395543de733defc75270df2828fa8ba4cdf5c5cf79848a4640ee99a9fef7",
-      "bundle_path_digest": "sha256:e3bc395543de733defc75270df2828fa8ba4cdf5c5cf79848a4640ee99a9fef7",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-12-13T21:32:28.183000+00:00",
-      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
-      "csv_display_name": "Conjur Enterprise Follower Operator",
-      "csv_metadata_description": "",
-      "csv_name": "conjur-follower-operator.v2.0.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:44:35.657000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "conjur-follower-operator",
-      "provided_apis": [
-        {
-          "group": "conjur.cyberark.com",
-          "kind": "ConjurFollower",
-          "plural": "conjurfollowers",
-          "version": "v1"
-        }
-      ],
-      "provider": "CyberArk",
-      "related_images": [
-        {
-          "digest": "sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
-          "name": "conjur-openshift-follower-operator"
-        },
-        {
-          "digest": "sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
-          "name": "conjur-openshift-follower-configurator"
-        },
-        {
-          "digest": "sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
-          "name": "conjur-openshift-follower-conjur"
-        },
-        {
-          "digest": "sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
-          "name": "conjur-openshift-follower-info"
-        },
-        {
-          "digest": "sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
-          "name": "conjur-openshift-follower-nginx"
-        },
-        {
-          "digest": "sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
-          "name": "conjur-openshift-follower-postgres"
-        },
-        {
-          "digest": "sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
-          "name": "conjur-openshift-follower-syslog-ng"
-        },
-        {
-          "digest": "sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:ba6d5751c8428a8749c7f0cda46aff3ac4f871c5127a1499b22dbd1988c7f63d",
-          "name": "conjur-follower-operator"
-        },
-        {
-          "digest": "sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c",
-          "name": "conjur-openshift-follower-syslog-ng-7a51775bbea3185f5660c340e27813f97ac1a364d85dcc3fe62702926155840c-annotation"
-        },
-        {
-          "digest": "sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5",
-          "name": "conjur-openshift-follower-postgres-96a96a3ee41a08105c37a6ad44efe0a245dae51f2112529fb5c1fda31a0897f5-annotation"
-        },
-        {
-          "digest": "sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981",
-          "name": "conjur-openshift-follower-nginx-d2d23fffb9a867633622560fe99cfb0152607e7af46806bc1c0c636229914981-annotation"
-        },
-        {
-          "digest": "sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05",
-          "name": "conjur-openshift-follower-info-27b5d09d78b87a032104f6b4e79f9dae8069607202f0e7af327f6d2ef958aa05-annotation"
-        },
-        {
-          "digest": "sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c",
-          "name": "conjur-openshift-follower-conjur-ba4a079664b1ed1bae7f1cfb00145af150a23bd046c1606503382cb171131e6c-annotation"
-        },
-        {
-          "digest": "sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21",
-          "name": "conjur-openshift-follower-configurator-b4074231697be6e87b2cb0cb18dd89aa45fed314619ad102b261182eadb74c21-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.0.2",
-      "version_original": "2.0.2"
-    },
-    {
       "_id": "61b7bc4856779435db589dd4",
       "alm_examples": [
         {
@@ -16660,9 +16326,407 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.0.25",
       "version_original": "0.0.25"
+    },
+    {
+      "_id": "61f031dc33f211c45407add8",
+      "alm_examples": [
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "CouchDBCluster",
+          "metadata": {
+            "name": "example-couchdbcluster"
+          },
+          "spec": {
+            "cpu": "1",
+            "disk": "1Gi",
+            "environment": {
+              "adminPassword": "changeme",
+              "search": true
+            },
+            "memory": "1Gi",
+            "size": 3,
+            "storageClass": ""
+          }
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "FormationLock",
+          "metadata": {
+            "name": "example-formationlock"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Recipe",
+          "metadata": {
+            "name": "example-recipe"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "RecipeTemplate",
+          "metadata": {
+            "name": "example-recipetemplate"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "example-backup"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Bucket",
+          "metadata": {
+            "name": "example-bucket"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Formation",
+          "metadata": {
+            "name": "example-formation"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64"
+      ],
+      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
+      "bundle_path_digest": "sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-01-25T17:22:36.684000+00:00",
+      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n### CouchDB 2.3.1 Update Instructions\nWhen the operator is updated to v2.0 or above any existing CouchDB 2.3.1 cluster will not be automatically upgraded to CouchDB 3. The user must manually trigger this process by removing the version statement `version: 2.3.1` in the CouchDBCluster CR for each CouchDB cluster\nThe operator will then perform a rolling update, with the new pods running CouchDB3.\nIt is advised that customers do this straightaway as CouchDB 2.3.1 is no longer supported.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://ibm.biz/BdfGQy)\n",
+      "csv_display_name": "Operator for Apache CouchDB",
+      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
+      "csv_name": "couchdb-operator.v2.2.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:53:54.076000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "couchdb-operator-certified",
+      "provided_apis": [
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "CouchDBCluster",
+          "plural": "couchdbclusters",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "FormationLock",
+          "plural": "formationlocks",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Formation",
+          "plural": "formations",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Recipe",
+          "plural": "recipes",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "RecipeTemplate",
+          "plural": "recipetemplates",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Bucket",
+          "plural": "buckets",
+          "version": "v1"
+        }
+      ],
+      "provider": "IBM",
+      "related_images": [
+        {
+          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
+          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
+          "name": "COUCHDB3"
+        },
+        {
+          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
+          "name": "COUCHDB-MGMT"
+        },
+        {
+          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
+          "name": "couchdb-operator-0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea-annotation"
+        },
+        {
+          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
+          "name": "couchdb-operator"
+        },
+        {
+          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
+          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
+          "name": "couchdb3"
+        },
+        {
+          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
+          "name": "mgmt"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.2.1",
+      "version_original": "2.2.1"
+    },
+    {
+      "_id": "61f031de384a3eb3319970fd",
+      "alm_examples": [
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "CouchDBCluster",
+          "metadata": {
+            "name": "example-couchdbcluster"
+          },
+          "spec": {
+            "cpu": "1",
+            "disk": "1Gi",
+            "environment": {
+              "adminPassword": "changeme",
+              "search": true
+            },
+            "memory": "1Gi",
+            "size": 3,
+            "storageClass": ""
+          }
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "FormationLock",
+          "metadata": {
+            "name": "example-formationlock"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Recipe",
+          "metadata": {
+            "name": "example-recipe"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "RecipeTemplate",
+          "metadata": {
+            "name": "example-recipetemplate"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "example-backup"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Bucket",
+          "metadata": {
+            "name": "example-bucket"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Formation",
+          "metadata": {
+            "name": "example-formation"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64"
+      ],
+      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
+      "bundle_path_digest": "sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "v2.2",
+      "creation_date": "2022-01-25T17:22:38.473000+00:00",
+      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n### CouchDB 2.3.1 Update Instructions\nWhen the operator is updated to v2.0 or above any existing CouchDB 2.3.1 cluster will not be automatically upgraded to CouchDB 3. The user must manually trigger this process by removing the version statement `version: 2.3.1` in the CouchDBCluster CR for each CouchDB cluster\nThe operator will then perform a rolling update, with the new pods running CouchDB3.\nIt is advised that customers do this straightaway as CouchDB 2.3.1 is no longer supported.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://ibm.biz/BdfGQy)\n",
+      "csv_display_name": "Operator for Apache CouchDB",
+      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
+      "csv_name": "couchdb-operator.v2.2.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:53:58.184000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "couchdb-operator-certified",
+      "provided_apis": [
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "CouchDBCluster",
+          "plural": "couchdbclusters",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "FormationLock",
+          "plural": "formationlocks",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Formation",
+          "plural": "formations",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Recipe",
+          "plural": "recipes",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "RecipeTemplate",
+          "plural": "recipetemplates",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Bucket",
+          "plural": "buckets",
+          "version": "v1"
+        }
+      ],
+      "provider": "IBM",
+      "related_images": [
+        {
+          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
+          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
+          "name": "COUCHDB3"
+        },
+        {
+          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
+          "name": "COUCHDB-MGMT"
+        },
+        {
+          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
+          "name": "couchdb-operator-0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea-annotation"
+        },
+        {
+          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
+          "name": "couchdb-operator"
+        },
+        {
+          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
+          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
+          "name": "couchdb3"
+        },
+        {
+          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
+          "name": "mgmt"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.2.1",
+      "version_original": "2.2.1"
     }
   ],
   "page": 19,
   "page_size": 100,
-  "total": 4817
+  "total": 4866
 }
