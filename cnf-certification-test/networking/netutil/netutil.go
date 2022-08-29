@@ -137,7 +137,7 @@ func isIPOrNSTablesPresent(cut *provider.Container, command string) (bool, strin
 	if errStr == ipTablesLegacyWarning {
 		return true, outStr, nil
 	}
-	if strings.Contains((outStr), stripSpaceTabLine(openshiftMachineConfigNft)) ||
+	if strings.Contains(stripSpaceTabLine(outStr), stripSpaceTabLine(openshiftMachineConfigNft)) ||
 		strings.Contains(stripSpaceTabLine(outStr), stripSpaceTabLine(openshiftMachineConfigIptables)) {
 		return false, outStr, nil
 	}
