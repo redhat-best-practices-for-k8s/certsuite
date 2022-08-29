@@ -1,508 +1,6 @@
 {
   "data": [
     {
-      "_id": "62cee2cd6537ee32f3d77393",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "bootstrapperImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/outbound",
-              "versionTag": "6.2.10-41"
-            },
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise",
-              "versionTag": "6.2.14-9.rhel8-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "redisEnterpriseServicesRiggerImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/services-manager",
-              "versionTag": "6.2.10-41"
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:4981d96081cc3d10cd26f20aab792e9c195b05bdcd609367011b7e9c7e6759b1",
-      "bundle_path_digest": "sha256:4981d96081cc3d10cd26f20aab792e9c195b05bdcd609367011b7e9c7e6759b1",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-07-13T15:20:45.130000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n*  Changing the name of the Redis Enterprise Cluster in the spec from the\n  default requires running commands to grant permissions to the pods:\n\n  Operator service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\n    Redis Enterprise Cluster service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\n    Replace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.\n\n* When creating a Redis Enterprise Cluster without specifying in its spec a `persistentSpec` with explicit `storageClassName`,\nthe default Storage Class of the Kubernetes cluster will be used to dynamically provision storage for the Redis Enterprise Cluster's nodes.\nHowever, if the Kubernetes cluster doesn't have a default Storage Class configured\nand no specific Storage Class was specified in the Redis Enterprise Cluster Spec, the installation of the cluster could fail.\nTo avoid such scenario in cases where a specific Storage Class isn't specified, make sure the Kubernetes Cluster has a default Storage Cluster configured.\nThis can be done by running a `kubectl get storageclass` command and see if one of the Storage Classes' names contains a `(default)` mark.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.10-41",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:55:17.184000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis",
-      "related_images": [
-        {
-          "digest": "sha256:3c251754ae8650157465a56ef3a7b41d5a0ad4e9db09ef042e0014076f25e8a2",
-          "image": "registry.connect.redhat.com/redislabs/outbound@sha256:3c251754ae8650157465a56ef3a7b41d5a0ad4e9db09ef042e0014076f25e8a2",
-          "name": "outbound-3c251754ae8650157465a56ef3a7b41d5a0ad4e9db09ef042e0014076f25e8a2-annotation"
-        },
-        {
-          "digest": "sha256:3c251754ae8650157465a56ef3a7b41d5a0ad4e9db09ef042e0014076f25e8a2",
-          "image": "registry.connect.redhat.com/redislabs/outbound@sha256:3c251754ae8650157465a56ef3a7b41d5a0ad4e9db09ef042e0014076f25e8a2",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:3c251754ae8650157465a56ef3a7b41d5a0ad4e9db09ef042e0014076f25e8a2",
-          "image": "registry.connect.redhat.com/redislabs/outbound@sha256:3c251754ae8650157465a56ef3a7b41d5a0ad4e9db09ef042e0014076f25e8a2",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.2.10-41",
-      "version_original": "6.2.10-41"
-    },
-    {
-      "_id": "62cee2cdc942619c6bc53d01",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.8-41.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:cf89cfbb1c39ac9a7fd925f1e8b5bec94535e4eb64dd6e2da102e9f7b44f9f5e",
-      "bundle_path_digest": "sha256:cf89cfbb1c39ac9a7fd925f1e8b5bec94535e4eb64dd6e2da102e9f7b44f9f5e",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-07-13T15:20:45.634000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.8-2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:35:13.795000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis",
-      "related_images": [
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "redis-enterprise-operator-f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353-annotation"
-        },
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.2.8-2",
-      "version_original": "6.2.8-2"
-    },
-    {
-      "_id": "62cee2e8fe766184e15e98c6",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.8-30.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
-      "bundle_path_digest": "sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-07-13T15:21:12.376000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:40:31.327000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "name": "redis-enterprise-operator-0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1-annotation"
-        },
-        {
-          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.8-20",
-      "version_original": "6.0.8-20"
-    },
-    {
-      "_id": "62cee2e8fe766184e15e98c8",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.8-41.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:cf89cfbb1c39ac9a7fd925f1e8b5bec94535e4eb64dd6e2da102e9f7b44f9f5e",
-      "bundle_path_digest": "sha256:cf89cfbb1c39ac9a7fd925f1e8b5bec94535e4eb64dd6e2da102e9f7b44f9f5e",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-07-13T15:21:12.852000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.8-2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:51:24.242000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis",
-      "related_images": [
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "redis-enterprise-operator-f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353-annotation"
-        },
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.2.8-2",
-      "version_original": "6.2.8-2"
-    },
-    {
       "_id": "62cee2e9c942619c6bc53d04",
       "alm_examples": [],
       "annotations": {
@@ -15567,9 +15065,888 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "5.0.9",
       "version_original": "5.0.9"
+    },
+    {
+      "_id": "62df063c462616182838292c",
+      "alm_examples": [
+        {
+          "api_version": "apps.ibmz.com/v1alpha1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "mongodb-sample"
+          },
+          "spec": {
+            "affinity": {},
+            "autoscaling": {
+              "enabled": false,
+              "maxReplicas": 100,
+              "minReplicas": 1,
+              "targetCPUUtilizationPercentage": 80
+            },
+            "database": {
+              "adminpassword": "snowball123",
+              "adminuser": "adminuser",
+              "name_database": "mydb"
+            },
+            "fullnameOverride": "",
+            "global": {
+              "license": true,
+              "persistence": {
+                "claims": {
+                  "accessMode": "ReadWriteMany",
+                  "capacity": 10,
+                  "capacityUnit": "Gi",
+                  "mountPath": "/data/db/",
+                  "name": "mongo-pv-claim",
+                  "storageClassName": "managed-nfs-storage"
+                },
+                "securityContext": {
+                  "fsGroup": 0,
+                  "supplementalGroup": 0
+                }
+              }
+            },
+            "image": {
+              "pullPolicy": "Always",
+              "repository": "quay.io/ibm/ibmz-mongodb-ee-database@sha256:d5035f260b288d063704a68ad6d185013d8d177815dd073b31f770f6b383b4e3"
+            },
+            "imagePullSecretRef": "registry-pull-secret",
+            "imagePullSecrets": [
+              {
+                "name": "registry-pull-secret"
+              }
+            ],
+            "ingress": {
+              "annotations": {},
+              "controller": "nginx",
+              "tls": []
+            },
+            "name": "mongodb",
+            "nameOverride": "",
+            "namespaceList": [],
+            "namespaced": true,
+            "nodeSelector": {},
+            "podSecurity": {
+              "enabled": true,
+              "securityContext": {
+                "fsGroup": 1000650000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000650000
+              }
+            },
+            "replicaCount": 1,
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "1Gi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "1Gi"
+              }
+            },
+            "service": {
+              "port": 27017,
+              "type": "ClusterIP"
+            },
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": "mongod"
+            },
+            "tolerations": []
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/tonyfieit/ibmz-mongodb-ee-operator-bundle@sha256:dc272911777fc8f73231e0e92a72202a1c6536368b10e57e98ac70bf57c96289",
+      "bundle_path_digest": "sha256:dc272911777fc8f73231e0e92a72202a1c6536368b10e57e98ac70bf57c96289",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-07-25T21:08:12.032000+00:00",
+      "csv_description": "IBM Operator to deploy MongoDB Enterprise on OpenShift Container",
+      "csv_display_name": "IBMz Mongodb EE operator 5.0",
+      "csv_metadata_description": "Run IBMz Mongodb Enterprise Edition on OpenShift on LinuxONE.",
+      "csv_name": "ibmz-mongodb-ee-operator.v5.0.9",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:58:39.580000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "ibmz-mongodb-ee-operator",
+      "provided_apis": [
+        {
+          "group": "apps.ibmz.com",
+          "kind": "MongoDB",
+          "plural": "mongodbs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "IBMz",
+      "related_images": [
+        {
+          "digest": "sha256:def5981c7c0cc56ec8477074c17392f63ea045ee99a0812a384a5121d86f4fba",
+          "image": "quay.io/ibm/ibmz-mongodb-ee-operator@sha256:def5981c7c0cc56ec8477074c17392f63ea045ee99a0812a384a5121d86f4fba",
+          "name": "mongodb-enterprise-operator"
+        },
+        {
+          "digest": "sha256:d5035f260b288d063704a68ad6d185013d8d177815dd073b31f770f6b383b4e3",
+          "image": "quay.io/ibm/ibmz-mongodb-ee-database@sha256:d5035f260b288d063704a68ad6d185013d8d177815dd073b31f770f6b383b4e3",
+          "name": "mongo-enterprise-database"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:def5981c7c0cc56ec8477074c17392f63ea045ee99a0812a384a5121d86f4fba",
+          "image": "quay.io/ibm/ibmz-mongodb-ee-operator@sha256:def5981c7c0cc56ec8477074c17392f63ea045ee99a0812a384a5121d86f4fba",
+          "name": "ibmz-mongodb-ee-operator-def5981c7c0cc56ec8477074c17392f63ea045ee99a0812a384a5121d86f4fba-annotation"
+        },
+        {
+          "digest": "sha256:def5981c7c0cc56ec8477074c17392f63ea045ee99a0812a384a5121d86f4fba",
+          "image": "quay.io/ibm/ibmz-mongodb-ee-operator@sha256:def5981c7c0cc56ec8477074c17392f63ea045ee99a0812a384a5121d86f4fba",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:d5035f260b288d063704a68ad6d185013d8d177815dd073b31f770f6b383b4e3",
+          "image": "quay.io/ibm/ibmz-mongodb-ee-database@sha256:d5035f260b288d063704a68ad6d185013d8d177815dd073b31f770f6b383b4e3",
+          "name": "ibmz-mongodb-ee-database-d5035f260b288d063704a68ad6d185013d8d177815dd073b31f770f6b383b4e3-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=4.4.0 <4.4.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "5.0.9",
+      "version_original": "5.0.9"
+    },
+    {
+      "_id": "62dfd509eacf80d76d79618b",
+      "alm_examples": [
+        {
+          "api_version": "csi.ibm.com/v1",
+          "kind": "IBMBlockCSI",
+          "metadata": {
+            "name": "ibm-block-csi"
+          },
+          "spec": {
+            "controller": {
+              "affinity": {
+                "nodeAffinity": {
+                  "requiredDuringSchedulingIgnoredDuringExecution": {
+                    "nodeSelectorTerms": [
+                      {
+                        "matchExpressions": [
+                          {
+                            "key": "kubernetes.io/arch",
+                            "operator": "In",
+                            "values": [
+                              "amd64"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "ibmcom/ibm-block-csi-driver-controller",
+              "tag": "1.10.0"
+            },
+            "node": {
+              "affinity": {
+                "nodeAffinity": {
+                  "requiredDuringSchedulingIgnoredDuringExecution": {
+                    "nodeSelectorTerms": [
+                      {
+                        "matchExpressions": [
+                          {
+                            "key": "kubernetes.io/arch",
+                            "operator": "In",
+                            "values": [
+                              "amd64"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "ibmcom/ibm-block-csi-driver-node",
+              "tag": "1.10.0"
+            },
+            "sidecars": [
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-node-driver-registrar",
+                "repository": "k8s.gcr.io/sig-storage/csi-node-driver-registrar",
+                "tag": "v2.5.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-provisioner",
+                "repository": "k8s.gcr.io/sig-storage/csi-provisioner",
+                "tag": "v3.1.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-attacher",
+                "repository": "k8s.gcr.io/sig-storage/csi-attacher",
+                "tag": "v3.4.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-snapshotter",
+                "repository": "k8s.gcr.io/sig-storage/csi-snapshotter",
+                "tag": "v5.0.1"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-resizer",
+                "repository": "k8s.gcr.io/sig-storage/csi-resizer",
+                "tag": "v1.4.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-addons-replicator",
+                "repository": "quay.io/csiaddons/volumereplication-operator",
+                "tag": "v0.2.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "livenessprobe",
+                "repository": "k8s.gcr.io/sig-storage/livenessprobe",
+                "tag": "v2.6.0"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "csi.ibm.com/v1",
+          "kind": "HostDefinition",
+          "metadata": {
+            "name": "host-definition"
+          },
+          "spec": {
+            "hostDefinition": {
+              "nodeName": "node-name"
+            }
+          }
+        },
+        {
+          "api_version": "csi.ibm.com/v1",
+          "kind": "HostDefiner",
+          "metadata": {
+            "name": "host-definer"
+          },
+          "spec": {
+            "hostDefiner": {
+              "affinity": {
+                "nodeAffinity": {
+                  "requiredDuringSchedulingIgnoredDuringExecution": {
+                    "nodeSelectorTerms": [
+                      {
+                        "matchExpressions": [
+                          {
+                            "key": "kubernetes.io/arch",
+                            "operator": "In",
+                            "values": [
+                              "amd64"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "allowDelete": true,
+              "dynamicNodeLabeling": false,
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "ibmcom/ibm-block-csi-host-definer",
+              "tag": "1.10.0"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/ibm-block-csi-operator-bundle@sha256:19e5ec5c103e56db12e2e7384b8fbb1b9c55b21b7c9ed4393423122a153000e8",
+      "bundle_path_digest": "sha256:19e5ec5c103e56db12e2e7384b8fbb1b9c55b21b7c9ed4393423122a153000e8",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-26T11:50:33.847000+00:00",
+      "csv_description": "The Container Storage Interface (CSI) Driver for IBM block storage systems enables container orchestrators such as Kubernetes to manage the life cycle of persistent storage.\n\nThis is the official operator to deploy and manage IBM block storage CSI driver.\n\nFor compatibility, prerequisites, release notes, and other user information, see [IBM block storage CSI driver documentation](https://www.ibm.com/docs/en/stg-block-csi-driver).\n",
+      "csv_display_name": "IBM block storage CSI driver operator",
+      "csv_metadata_description": "Run IBM block storage CSI driver on OpenShift.",
+      "csv_name": "ibm-block-csi-operator.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:16:10.947000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "ibm-block-csi-operator",
+      "provided_apis": [
+        {
+          "group": "csi.ibm.com",
+          "kind": "HostDefiner",
+          "version": "v1"
+        },
+        {
+          "group": "csi.ibm.com",
+          "kind": "HostDefinition",
+          "version": "v1"
+        },
+        {
+          "group": "csi.ibm.com",
+          "kind": "IBMBlockCSI",
+          "version": "v1"
+        }
+      ],
+      "provider": "IBM",
+      "related_images": [
+        {
+          "digest": "sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
+          "image": "registry.connect.redhat.com/ibm/ibm-block-csi-operator@sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
+          "name": "ibm-block-csi-operator"
+        },
+        {
+          "digest": "sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
+          "image": "registry.connect.redhat.com/ibm/ibm-block-csi-operator@sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
+          "name": "ibm-block-csi-operator-64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.6.0 <1.10.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
+    },
+    {
+      "_id": "62dfd50efbeebdfb3b948ee9",
+      "alm_examples": [
+        {
+          "api_version": "csi.ibm.com/v1",
+          "kind": "IBMBlockCSI",
+          "metadata": {
+            "name": "ibm-block-csi"
+          },
+          "spec": {
+            "controller": {
+              "affinity": {
+                "nodeAffinity": {
+                  "requiredDuringSchedulingIgnoredDuringExecution": {
+                    "nodeSelectorTerms": [
+                      {
+                        "matchExpressions": [
+                          {
+                            "key": "kubernetes.io/arch",
+                            "operator": "In",
+                            "values": [
+                              "amd64"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "ibmcom/ibm-block-csi-driver-controller",
+              "tag": "1.10.0"
+            },
+            "node": {
+              "affinity": {
+                "nodeAffinity": {
+                  "requiredDuringSchedulingIgnoredDuringExecution": {
+                    "nodeSelectorTerms": [
+                      {
+                        "matchExpressions": [
+                          {
+                            "key": "kubernetes.io/arch",
+                            "operator": "In",
+                            "values": [
+                              "amd64"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "ibmcom/ibm-block-csi-driver-node",
+              "tag": "1.10.0"
+            },
+            "sidecars": [
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-node-driver-registrar",
+                "repository": "k8s.gcr.io/sig-storage/csi-node-driver-registrar",
+                "tag": "v2.5.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-provisioner",
+                "repository": "k8s.gcr.io/sig-storage/csi-provisioner",
+                "tag": "v3.1.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-attacher",
+                "repository": "k8s.gcr.io/sig-storage/csi-attacher",
+                "tag": "v3.4.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-snapshotter",
+                "repository": "k8s.gcr.io/sig-storage/csi-snapshotter",
+                "tag": "v5.0.1"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-resizer",
+                "repository": "k8s.gcr.io/sig-storage/csi-resizer",
+                "tag": "v1.4.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-addons-replicator",
+                "repository": "quay.io/csiaddons/volumereplication-operator",
+                "tag": "v0.2.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "livenessprobe",
+                "repository": "k8s.gcr.io/sig-storage/livenessprobe",
+                "tag": "v2.6.0"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "csi.ibm.com/v1",
+          "kind": "HostDefinition",
+          "metadata": {
+            "name": "host-definition"
+          },
+          "spec": {
+            "hostDefinition": {
+              "nodeName": "node-name"
+            }
+          }
+        },
+        {
+          "api_version": "csi.ibm.com/v1",
+          "kind": "HostDefiner",
+          "metadata": {
+            "name": "host-definer"
+          },
+          "spec": {
+            "hostDefiner": {
+              "affinity": {
+                "nodeAffinity": {
+                  "requiredDuringSchedulingIgnoredDuringExecution": {
+                    "nodeSelectorTerms": [
+                      {
+                        "matchExpressions": [
+                          {
+                            "key": "kubernetes.io/arch",
+                            "operator": "In",
+                            "values": [
+                              "amd64"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "allowDelete": true,
+              "dynamicNodeLabeling": false,
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "ibmcom/ibm-block-csi-host-definer",
+              "tag": "1.10.0"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/ibm-block-csi-operator-bundle@sha256:19e5ec5c103e56db12e2e7384b8fbb1b9c55b21b7c9ed4393423122a153000e8",
+      "bundle_path_digest": "sha256:19e5ec5c103e56db12e2e7384b8fbb1b9c55b21b7c9ed4393423122a153000e8",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-26T11:50:38.149000+00:00",
+      "csv_description": "The Container Storage Interface (CSI) Driver for IBM block storage systems enables container orchestrators such as Kubernetes to manage the life cycle of persistent storage.\n\nThis is the official operator to deploy and manage IBM block storage CSI driver.\n\nFor compatibility, prerequisites, release notes, and other user information, see [IBM block storage CSI driver documentation](https://www.ibm.com/docs/en/stg-block-csi-driver).\n",
+      "csv_display_name": "IBM block storage CSI driver operator",
+      "csv_metadata_description": "Run IBM block storage CSI driver on OpenShift.",
+      "csv_name": "ibm-block-csi-operator.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:00:15.887000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "ibm-block-csi-operator",
+      "provided_apis": [
+        {
+          "group": "csi.ibm.com",
+          "kind": "IBMBlockCSI",
+          "plural": "ibmblockcsis",
+          "version": "v1"
+        },
+        {
+          "group": "csi.ibm.com",
+          "kind": "HostDefiner",
+          "plural": "hostdefiners",
+          "version": "v1"
+        },
+        {
+          "group": "csi.ibm.com",
+          "kind": "HostDefinition",
+          "plural": "hostdefinitions",
+          "version": "v1"
+        }
+      ],
+      "provider": "IBM",
+      "related_images": [
+        {
+          "digest": "sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
+          "image": "registry.connect.redhat.com/ibm/ibm-block-csi-operator@sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
+          "name": "ibm-block-csi-operator"
+        },
+        {
+          "digest": "sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
+          "image": "registry.connect.redhat.com/ibm/ibm-block-csi-operator@sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
+          "name": "ibm-block-csi-operator-64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.6.0 <1.10.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
+    },
+    {
+      "_id": "62dfd8cd76f5243efbecaea1",
+      "alm_examples": [
+        {
+          "api_version": "csi.ibm.com/v1",
+          "kind": "IBMBlockCSI",
+          "metadata": {
+            "name": "ibm-block-csi"
+          },
+          "spec": {
+            "controller": {
+              "affinity": {
+                "nodeAffinity": {
+                  "requiredDuringSchedulingIgnoredDuringExecution": {
+                    "nodeSelectorTerms": [
+                      {
+                        "matchExpressions": [
+                          {
+                            "key": "kubernetes.io/arch",
+                            "operator": "In",
+                            "values": [
+                              "amd64"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "ibmcom/ibm-block-csi-driver-controller",
+              "tag": "1.10.0"
+            },
+            "node": {
+              "affinity": {
+                "nodeAffinity": {
+                  "requiredDuringSchedulingIgnoredDuringExecution": {
+                    "nodeSelectorTerms": [
+                      {
+                        "matchExpressions": [
+                          {
+                            "key": "kubernetes.io/arch",
+                            "operator": "In",
+                            "values": [
+                              "amd64"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "ibmcom/ibm-block-csi-driver-node",
+              "tag": "1.10.0"
+            },
+            "sidecars": [
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-node-driver-registrar",
+                "repository": "k8s.gcr.io/sig-storage/csi-node-driver-registrar",
+                "tag": "v2.5.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-provisioner",
+                "repository": "k8s.gcr.io/sig-storage/csi-provisioner",
+                "tag": "v3.1.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-attacher",
+                "repository": "k8s.gcr.io/sig-storage/csi-attacher",
+                "tag": "v3.4.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-snapshotter",
+                "repository": "k8s.gcr.io/sig-storage/csi-snapshotter",
+                "tag": "v5.0.1"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-resizer",
+                "repository": "k8s.gcr.io/sig-storage/csi-resizer",
+                "tag": "v1.4.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-addons-replicator",
+                "repository": "quay.io/csiaddons/volumereplication-operator",
+                "tag": "v0.2.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "livenessprobe",
+                "repository": "k8s.gcr.io/sig-storage/livenessprobe",
+                "tag": "v2.6.0"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "csi.ibm.com/v1",
+          "kind": "HostDefinition",
+          "metadata": {
+            "name": "host-definition"
+          },
+          "spec": {
+            "hostDefinition": {
+              "nodeName": "node-name"
+            }
+          }
+        },
+        {
+          "api_version": "csi.ibm.com/v1",
+          "kind": "HostDefiner",
+          "metadata": {
+            "name": "host-definer"
+          },
+          "spec": {
+            "hostDefiner": {
+              "affinity": {
+                "nodeAffinity": {
+                  "requiredDuringSchedulingIgnoredDuringExecution": {
+                    "nodeSelectorTerms": [
+                      {
+                        "matchExpressions": [
+                          {
+                            "key": "kubernetes.io/arch",
+                            "operator": "In",
+                            "values": [
+                              "amd64"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "allowDelete": true,
+              "dynamicNodeLabeling": false,
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "ibmcom/ibm-block-csi-host-definer",
+              "tag": "1.10.0"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/ibm-block-csi-operator-bundle@sha256:19e5ec5c103e56db12e2e7384b8fbb1b9c55b21b7c9ed4393423122a153000e8",
+      "bundle_path_digest": "sha256:19e5ec5c103e56db12e2e7384b8fbb1b9c55b21b7c9ed4393423122a153000e8",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-26T12:06:37.100000+00:00",
+      "csv_description": "The Container Storage Interface (CSI) Driver for IBM block storage systems enables container orchestrators such as Kubernetes to manage the life cycle of persistent storage.\n\nThis is the official operator to deploy and manage IBM block storage CSI driver.\n\nFor compatibility, prerequisites, release notes, and other user information, see [IBM block storage CSI driver documentation](https://www.ibm.com/docs/en/stg-block-csi-driver).\n",
+      "csv_display_name": "IBM block storage CSI driver operator",
+      "csv_metadata_description": "Run IBM block storage CSI driver on OpenShift.",
+      "csv_name": "ibm-block-csi-operator.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:58:12.273000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "ibm-block-csi-operator",
+      "provided_apis": [
+        {
+          "group": "csi.ibm.com",
+          "kind": "IBMBlockCSI",
+          "plural": "ibmblockcsis",
+          "version": "v1"
+        },
+        {
+          "group": "csi.ibm.com",
+          "kind": "HostDefiner",
+          "plural": "hostdefiners",
+          "version": "v1"
+        },
+        {
+          "group": "csi.ibm.com",
+          "kind": "HostDefinition",
+          "plural": "hostdefinitions",
+          "version": "v1"
+        }
+      ],
+      "provider": "IBM",
+      "related_images": [
+        {
+          "digest": "sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
+          "image": "registry.connect.redhat.com/ibm/ibm-block-csi-operator@sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
+          "name": "ibm-block-csi-operator"
+        },
+        {
+          "digest": "sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
+          "image": "registry.connect.redhat.com/ibm/ibm-block-csi-operator@sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
+          "name": "ibm-block-csi-operator-64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.6.0 <1.10.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
     }
   ],
   "page": 37,
   "page_size": 100,
-  "total": 4817
+  "total": 4866
 }

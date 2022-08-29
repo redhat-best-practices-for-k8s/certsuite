@@ -1,653 +1,6 @@
 {
   "data": [
     {
-      "_id": "62e9f713b1ddc76f11b3c4c6",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "bootstrapperImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise-operator"
-            },
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "redisEnterpriseServicesRiggerImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/services-manager"
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:3e0fde49a8e8c5f780a76087bbc42507a42fea0e1fea572ae05ba66d27338365",
-      "bundle_path_digest": "sha256:3e0fde49a8e8c5f780a76087bbc42507a42fea0e1fea572ae05ba66d27338365",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-08-03T04:18:27.324000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n*  Changing the name of the Redis Enterprise Cluster in the spec from the\n  default requires running commands to grant permissions to the pods:\n\n  Operator service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\n    Redis Enterprise Cluster service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\n    Replace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.\n\n* When creating a Redis Enterprise Cluster without specifying in its spec a `persistentSpec` with explicit `storageClassName`,\nthe default Storage Class of the Kubernetes cluster will be used to dynamically provision storage for the Redis Enterprise Cluster's nodes.\nHowever, if the Kubernetes cluster doesn't have a default Storage Class configured\nand no specific Storage Class was specified in the Redis Enterprise Cluster Spec, the installation of the cluster could fail.\nTo avoid such scenario in cases where a specific Storage Class isn't specified, make sure the Kubernetes Cluster has a default Storage Cluster configured.\nThis can be done by running a `kubectl get storageclass` command and see if one of the Storage Classes' names contains a `(default)` mark.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.10-45",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:18:27.324000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "name": "admission-image"
-        },
-        {
-          "digest": "sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "name": "bootstrapper-image"
-        },
-        {
-          "digest": "sha256:8b46f2aacfb3e1b243c0b64975accc55fd80b4de9c9ac4769c3c67a5676addc5",
-          "image": "registry.connect.redhat.com/redislabs/services-manager@sha256:8b46f2aacfb3e1b243c0b64975accc55fd80b4de9c9ac4769c3c67a5676addc5",
-          "name": "k8s-controller-image"
-        },
-        {
-          "digest": "sha256:ffdf10a1b08115fd4de06f1cd751d36644a9bc9a8c11034cd432e9b66a5d2f73",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise@sha256:ffdf10a1b08115fd4de06f1cd751d36644a9bc9a8c11034cd432e9b66a5d2f73",
-          "name": "rs-image"
-        },
-        {
-          "digest": "sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "name": "redis-enterprise-operator-b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6-annotation"
-        },
-        {
-          "digest": "sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "6.2.10-45",
-      "version_original": "6.2.10-45"
-    },
-    {
-      "_id": "62e9f71deb76270c10f333a1",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "route": true,
-            "runAsNonRoot": false,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "runAsNonRoot": false,
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "6.5"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:cf711d4f5842b8618b74396f93ae5dac9ddb34d0d8f38fc4ebc130f4dc20bd98",
-      "bundle_path_digest": "sha256:cf711d4f5842b8618b74396f93ae5dac9ddb34d0d8f38fc4ebc130f4dc20bd98",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "6.5",
-      "creation_date": "2022-08-03T04:18:37.933000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/6.5.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v6.5.22188",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:18:37.933000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "AquaStarboard",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ConfigAuditReport",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ClusterConfigAuditReport",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:310c485ee99d3956183829c0fa4be193db0147f8dc2156a8da2cbc6c90c58533",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:310c485ee99d3956183829c0fa4be193db0147f8dc2156a8da2cbc6c90c58533",
-          "name": "aquasec-310c485ee99d3956183829c0fa4be193db0147f8dc2156a8da2cbc6c90c58533-annotation"
-        },
-        {
-          "digest": "sha256:310c485ee99d3956183829c0fa4be193db0147f8dc2156a8da2cbc6c90c58533",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:310c485ee99d3956183829c0fa4be193db0147f8dc2156a8da2cbc6c90c58533",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:eb8afdbe8773d986fe9f8103a505025d66d91469abe56d8c2c0bef31357372cd",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:eb8afdbe8773d986fe9f8103a505025d66d91469abe56d8c2c0bef31357372cd",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:2c0a0575663dcc04dc0d3aab51172e29d578282758c8feb5878c7523677b1e69",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:2c0a0575663dcc04dc0d3aab51172e29d578282758c8feb5878c7523677b1e69",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:1101003dacfbe0cd0dd6c344bef5750485d5518c80e7fcf4c964bc9a9f3583d5",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:1101003dacfbe0cd0dd6c344bef5750485d5518c80e7fcf4c964bc9a9f3583d5",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:1e3700c6ca0a02b361542d15ecea95ebf70f4213afaf571ef1f79b24e0ab3ced",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:1e3700c6ca0a02b361542d15ecea95ebf70f4213afaf571ef1f79b24e0ab3ced",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:8f557be28c3d09482b236850a9d115b3f62b7e17226e4b647e8c8dc941fc86fd",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:8f557be28c3d09482b236850a9d115b3f62b7e17226e4b647e8c8dc941fc86fd",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.2 <6.5.22188",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.5.22188",
-      "version_original": "6.5.22188"
-    },
-    {
-      "_id": "62e9f743fa788ab421562c96",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.8-30.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
-      "bundle_path_digest": "sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-08-03T04:19:15.972000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:19:15.972000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "name": "redis-enterprise-operator-0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1-annotation"
-        },
-        {
-          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.8-20",
-      "version_original": "6.0.8-20"
-    },
-    {
-      "_id": "62e9f7b6fa788ab421562cce",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-08-03T04:21:10.985000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T04:21:10.985000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.8-1",
-      "version_original": "6.0.8-1"
-    },
-    {
       "_id": "62e9f7bfced786fb0e4b9a9b",
       "alm_examples": [
         {
@@ -16466,9 +15819,547 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "8.6.1-beta.2",
       "version_original": "8.6.1-beta.2"
+    },
+    {
+      "_id": "62f3cd25c7996e54ea0a7283",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Prometurbo",
+          "metadata": {
+            "name": "prometurbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/prometurbo-operator-bundle@sha256:872d50fa2bdbe18a12a0951f369650b2fd0cf206e609a3d2288c430014b12431",
+      "bundle_path_digest": "sha256:872d50fa2bdbe18a12a0951f369650b2fd0cf206e609a3d2288c430014b12431",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-10T15:22:13.014000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 PromeTurbo \u2014 that runs next to your Prometheus sever, which monitors your environment.\nPromeTurbo sends application and infrastructure monitoring data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Prometurbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "prometurbo-operator.v8.6.1-beta.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:25:57.925000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "prometurbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Prometurbo",
+          "plural": "prometurbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Prometurbo",
+          "plural": "prometurbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:b5d8f2be823bdd7887cf91d027134de62a7a4b37fc79305d659868121e14c877",
+          "image": "registry.connect.redhat.com/turbonomic/prometurbo-operator@sha256:b5d8f2be823bdd7887cf91d027134de62a7a4b37fc79305d659868121e14c877",
+          "name": "prometurbo-operator-b5d8f2be823bdd7887cf91d027134de62a7a4b37fc79305d659868121e14c877-annotation"
+        },
+        {
+          "digest": "sha256:b5d8f2be823bdd7887cf91d027134de62a7a4b37fc79305d659868121e14c877",
+          "image": "registry.connect.redhat.com/turbonomic/prometurbo-operator@sha256:b5d8f2be823bdd7887cf91d027134de62a7a4b37fc79305d659868121e14c877",
+          "name": "prometurbo-operator"
+        },
+        {
+          "digest": "sha256:f9fe30d11306f4e3496c2592497eefe0b12c0ffea6243247097b52dd0eb8086f",
+          "image": "registry.connect.redhat.com/turbonomic/prometurbo@sha256:f9fe30d11306f4e3496c2592497eefe0b12c0ffea6243247097b52dd0eb8086f",
+          "name": "prometurbo"
+        },
+        {
+          "digest": "sha256:433be1eecaa745ead1cf8c7c4b3a5bfe85e64d290b2771bf07a438e2d7be709d",
+          "image": "registry.connect.redhat.com/turbonomic/turbodif@sha256:433be1eecaa745ead1cf8c7c4b3a5bfe85e64d290b2771bf07a438e2d7be709d",
+          "name": "turbodif"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "8.6.1-beta.2",
+      "version_original": "8.6.1-beta.2"
+    },
+    {
+      "_id": "62f3cf1dda70c31f8cb60710",
+      "alm_examples": [
+        {
+          "api_version": "aiml.pachyderm.com/v1beta1",
+          "kind": "Pachyderm",
+          "metadata": {
+            "name": "pachyderm-sample"
+          },
+          "spec": {
+            "console": {
+              "disable": true
+            },
+            "pachd": {
+              "metrics": {
+                "disable": false
+              },
+              "storage": {
+                "amazon": {
+                  "credentialSecretName": "pachyderm-aws-secret"
+                },
+                "backend": "AMAZON"
+              }
+            }
+          }
+        },
+        {
+          "api_version": "aiml.pachyderm.com/v1beta1",
+          "kind": "PachydermExport",
+          "metadata": {
+            "name": "pachydermexport-sample"
+          },
+          "spec": {
+            "backup": {
+              "target": "pachyderm-sample"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/pachyderm/pachyderm-bundle@sha256:d99b8a9c2ce7ac9d29c6070e7c3fecf712498caf7eb348ab7b27087dde66ba0a",
+      "bundle_path_digest": "sha256:d99b8a9c2ce7ac9d29c6070e7c3fecf712498caf7eb348ab7b27087dde66ba0a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-10T15:30:37.365000+00:00",
+      "csv_description": "The Pachyderm operator aims to make deploying and managing Pachyderm instances on Openshift container platform easier.\n\nPachyderm is the data foundation for machine learning.  Pachyderm provides industry leading data versioning, pipelines and lineage that allow data science teams to automate the machine learning lifecycle and optimize their machine learning operations (MLOps). \n\n## Getting started\n\n1. Pachyderm uses an object store to store your data. Set the pachd storage backend at `pachyderm.spec.pachd.storage.backend` to `AMAZON`, `MICROSOFT`, `GOOGLE` or `MINIO` depending on your storage provider. Additionally, create a user with read/write access to the object store.\n\n2. Setup the user credentials in the section, `pachyderm.spec.pachd.storage`. Required fields depend on the backend type set in step 1 above.\n\n3. Finally, deploy the pachyderm cluster in its own namespace.\n\nFor more information on getting started, reference the documentation.\n",
+      "csv_display_name": "Pachyderm",
+      "csv_metadata_description": "Pachyderm provides the data layer that allows data science teams to productionize and scale their machine learning lifecycle with data driven automation, petabyte scalability and end-to-end reproducibility.",
+      "csv_name": "pachyderm-operator.v0.1.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:25:47.622000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "pachyderm-operator",
+      "provided_apis": [
+        {
+          "group": "aiml.pachyderm.com",
+          "kind": "Pachyderm",
+          "version": "v1beta1"
+        },
+        {
+          "group": "aiml.pachyderm.com",
+          "kind": "PachydermExport",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Pachyderm, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
+          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
+          "name": "pachyderm-operator"
+        },
+        {
+          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
+          "name": "ose-kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
+          "image": "registry.connect.redhat.com/pachyderm/pachd@sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
+          "name": "pachd"
+        },
+        {
+          "digest": "sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
+          "image": "registry.connect.redhat.com/pachyderm/worker@sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
+          "name": "worker"
+        },
+        {
+          "digest": "sha256:d76af4fbc67557b401409618d5b197feaa59804bdac7532d8d339e23ecbfbe23",
+          "image": "registry.connect.redhat.com/pachyderm/etcd@sha256:d76af4fbc67557b401409618d5b197feaa59804bdac7532d8d339e23ecbfbe23",
+          "name": "etcd"
+        },
+        {
+          "digest": "sha256:9fd7af383b4070866b7ae013f19e9c672de7dff14e1661fd24d763277ac1cfd3",
+          "image": "registry.redhat.io/rhel8/postgresql-13@sha256:9fd7af383b4070866b7ae013f19e9c672de7dff14e1661fd24d763277ac1cfd3",
+          "name": "postgresql"
+        },
+        {
+          "digest": "sha256:00db44237a0b820f41b64bb7f7abe340a46299bec71abef392cb243bb269e01f",
+          "image": "registry.connect.redhat.com/pachyderm/pgbouncer@sha256:00db44237a0b820f41b64bb7f7abe340a46299bec71abef392cb243bb269e01f",
+          "name": "pgbouncer"
+        },
+        {
+          "digest": "sha256:97e77bdef29a4d731d8425d4a648988a2408e69328cac2fcc708521f32d0d719",
+          "image": "registry.connect.redhat.com/pachyderm/init-utils@sha256:97e77bdef29a4d731d8425d4a648988a2408e69328cac2fcc708521f32d0d719",
+          "name": "init-utils"
+        },
+        {
+          "digest": "sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
+          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
+          "name": "backup-handler"
+        },
+        {
+          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
+          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
+          "name": "pachyderm-operator-8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82-annotation"
+        },
+        {
+          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
+          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
+          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
+          "name": "backup"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "0.1.3",
+      "version_original": "0.1.3"
+    },
+    {
+      "_id": "62f3cf468c2137a6fb68b51e",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Prometurbo",
+          "metadata": {
+            "name": "prometurbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/prometurbo-operator-bundle@sha256:872d50fa2bdbe18a12a0951f369650b2fd0cf206e609a3d2288c430014b12431",
+      "bundle_path_digest": "sha256:872d50fa2bdbe18a12a0951f369650b2fd0cf206e609a3d2288c430014b12431",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-10T15:31:18.068000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 PromeTurbo \u2014 that runs next to your Prometheus sever, which monitors your environment.\nPromeTurbo sends application and infrastructure monitoring data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Prometurbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "prometurbo-operator.v8.6.1-beta.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:50:51.696000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "prometurbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Prometurbo",
+          "plural": "prometurbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Prometurbo",
+          "plural": "prometurbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:b5d8f2be823bdd7887cf91d027134de62a7a4b37fc79305d659868121e14c877",
+          "image": "registry.connect.redhat.com/turbonomic/prometurbo-operator@sha256:b5d8f2be823bdd7887cf91d027134de62a7a4b37fc79305d659868121e14c877",
+          "name": "prometurbo-operator-b5d8f2be823bdd7887cf91d027134de62a7a4b37fc79305d659868121e14c877-annotation"
+        },
+        {
+          "digest": "sha256:b5d8f2be823bdd7887cf91d027134de62a7a4b37fc79305d659868121e14c877",
+          "image": "registry.connect.redhat.com/turbonomic/prometurbo-operator@sha256:b5d8f2be823bdd7887cf91d027134de62a7a4b37fc79305d659868121e14c877",
+          "name": "prometurbo-operator"
+        },
+        {
+          "digest": "sha256:f9fe30d11306f4e3496c2592497eefe0b12c0ffea6243247097b52dd0eb8086f",
+          "image": "registry.connect.redhat.com/turbonomic/prometurbo@sha256:f9fe30d11306f4e3496c2592497eefe0b12c0ffea6243247097b52dd0eb8086f",
+          "name": "prometurbo"
+        },
+        {
+          "digest": "sha256:433be1eecaa745ead1cf8c7c4b3a5bfe85e64d290b2771bf07a438e2d7be709d",
+          "image": "registry.connect.redhat.com/turbonomic/turbodif@sha256:433be1eecaa745ead1cf8c7c4b3a5bfe85e64d290b2771bf07a438e2d7be709d",
+          "name": "turbodif"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "8.6.1-beta.2",
+      "version_original": "8.6.1-beta.2"
+    },
+    {
+      "_id": "62f3d0bcc7996e54ea0a7492",
+      "alm_examples": [
+        {
+          "api_version": "aiml.pachyderm.com/v1beta1",
+          "kind": "Pachyderm",
+          "metadata": {
+            "name": "pachyderm-sample"
+          },
+          "spec": {
+            "console": {
+              "disable": true
+            },
+            "pachd": {
+              "metrics": {
+                "disable": false
+              },
+              "storage": {
+                "amazon": {
+                  "credentialSecretName": "pachyderm-aws-secret"
+                },
+                "backend": "AMAZON"
+              }
+            }
+          }
+        },
+        {
+          "api_version": "aiml.pachyderm.com/v1beta1",
+          "kind": "PachydermExport",
+          "metadata": {
+            "name": "pachydermexport-sample"
+          },
+          "spec": {
+            "backup": {
+              "target": "pachyderm-sample"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/pachyderm/pachyderm-bundle@sha256:d99b8a9c2ce7ac9d29c6070e7c3fecf712498caf7eb348ab7b27087dde66ba0a",
+      "bundle_path_digest": "sha256:d99b8a9c2ce7ac9d29c6070e7c3fecf712498caf7eb348ab7b27087dde66ba0a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-10T15:37:32.483000+00:00",
+      "csv_description": "The Pachyderm operator aims to make deploying and managing Pachyderm instances on Openshift container platform easier.\n\nPachyderm is the data foundation for machine learning.  Pachyderm provides industry leading data versioning, pipelines and lineage that allow data science teams to automate the machine learning lifecycle and optimize their machine learning operations (MLOps). \n\n## Getting started\n\n1. Pachyderm uses an object store to store your data. Set the pachd storage backend at `pachyderm.spec.pachd.storage.backend` to `AMAZON`, `MICROSOFT`, `GOOGLE` or `MINIO` depending on your storage provider. Additionally, create a user with read/write access to the object store.\n\n2. Setup the user credentials in the section, `pachyderm.spec.pachd.storage`. Required fields depend on the backend type set in step 1 above.\n\n3. Finally, deploy the pachyderm cluster in its own namespace.\n\nFor more information on getting started, reference the documentation.\n",
+      "csv_display_name": "Pachyderm",
+      "csv_metadata_description": "Pachyderm provides the data layer that allows data science teams to productionize and scale their machine learning lifecycle with data driven automation, petabyte scalability and end-to-end reproducibility.",
+      "csv_name": "pachyderm-operator.v0.1.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:07:01.239000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "pachyderm-operator",
+      "provided_apis": [
+        {
+          "group": "aiml.pachyderm.com",
+          "kind": "PachydermExport",
+          "plural": "pachydermexports",
+          "version": "v1beta1"
+        },
+        {
+          "group": "aiml.pachyderm.com",
+          "kind": "Pachyderm",
+          "plural": "pachyderms",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Pachyderm, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
+          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
+          "name": "pachyderm-operator"
+        },
+        {
+          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
+          "name": "ose-kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
+          "image": "registry.connect.redhat.com/pachyderm/pachd@sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
+          "name": "pachd"
+        },
+        {
+          "digest": "sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
+          "image": "registry.connect.redhat.com/pachyderm/worker@sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
+          "name": "worker"
+        },
+        {
+          "digest": "sha256:d76af4fbc67557b401409618d5b197feaa59804bdac7532d8d339e23ecbfbe23",
+          "image": "registry.connect.redhat.com/pachyderm/etcd@sha256:d76af4fbc67557b401409618d5b197feaa59804bdac7532d8d339e23ecbfbe23",
+          "name": "etcd"
+        },
+        {
+          "digest": "sha256:9fd7af383b4070866b7ae013f19e9c672de7dff14e1661fd24d763277ac1cfd3",
+          "image": "registry.redhat.io/rhel8/postgresql-13@sha256:9fd7af383b4070866b7ae013f19e9c672de7dff14e1661fd24d763277ac1cfd3",
+          "name": "postgresql"
+        },
+        {
+          "digest": "sha256:00db44237a0b820f41b64bb7f7abe340a46299bec71abef392cb243bb269e01f",
+          "image": "registry.connect.redhat.com/pachyderm/pgbouncer@sha256:00db44237a0b820f41b64bb7f7abe340a46299bec71abef392cb243bb269e01f",
+          "name": "pgbouncer"
+        },
+        {
+          "digest": "sha256:97e77bdef29a4d731d8425d4a648988a2408e69328cac2fcc708521f32d0d719",
+          "image": "registry.connect.redhat.com/pachyderm/init-utils@sha256:97e77bdef29a4d731d8425d4a648988a2408e69328cac2fcc708521f32d0d719",
+          "name": "init-utils"
+        },
+        {
+          "digest": "sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
+          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
+          "name": "backup-handler"
+        },
+        {
+          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
+          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
+          "name": "pachyderm-operator-8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82-annotation"
+        },
+        {
+          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
+          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
+          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
+          "name": "backup"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.1.3",
+      "version_original": "0.1.3"
     }
   ],
   "page": 43,
   "page_size": 100,
-  "total": 4817
+  "total": 4866
 }

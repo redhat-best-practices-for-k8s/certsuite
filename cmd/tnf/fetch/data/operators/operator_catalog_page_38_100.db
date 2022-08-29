@@ -1,885 +1,6 @@
 {
   "data": [
     {
-      "_id": "62df063c462616182838292c",
-      "alm_examples": [
-        {
-          "api_version": "apps.ibmz.com/v1alpha1",
-          "kind": "MongoDB",
-          "metadata": {
-            "name": "mongodb-sample"
-          },
-          "spec": {
-            "affinity": {},
-            "autoscaling": {
-              "enabled": false,
-              "maxReplicas": 100,
-              "minReplicas": 1,
-              "targetCPUUtilizationPercentage": 80
-            },
-            "database": {
-              "adminpassword": "snowball123",
-              "adminuser": "adminuser",
-              "name_database": "mydb"
-            },
-            "fullnameOverride": "",
-            "global": {
-              "license": true,
-              "persistence": {
-                "claims": {
-                  "accessMode": "ReadWriteMany",
-                  "capacity": 10,
-                  "capacityUnit": "Gi",
-                  "mountPath": "/data/db/",
-                  "name": "mongo-pv-claim",
-                  "storageClassName": "managed-nfs-storage"
-                },
-                "securityContext": {
-                  "fsGroup": 0,
-                  "supplementalGroup": 0
-                }
-              }
-            },
-            "image": {
-              "pullPolicy": "Always",
-              "repository": "quay.io/ibm/ibmz-mongodb-ee-database@sha256:d5035f260b288d063704a68ad6d185013d8d177815dd073b31f770f6b383b4e3"
-            },
-            "imagePullSecretRef": "registry-pull-secret",
-            "imagePullSecrets": [
-              {
-                "name": "registry-pull-secret"
-              }
-            ],
-            "ingress": {
-              "annotations": {},
-              "controller": "nginx",
-              "tls": []
-            },
-            "name": "mongodb",
-            "nameOverride": "",
-            "namespaceList": [],
-            "namespaced": true,
-            "nodeSelector": {},
-            "podSecurity": {
-              "enabled": true,
-              "securityContext": {
-                "fsGroup": 1000650000,
-                "runAsNonRoot": true,
-                "runAsUser": 1000650000
-              }
-            },
-            "replicaCount": 1,
-            "resources": {
-              "limits": {
-                "cpu": "250m",
-                "memory": "1Gi"
-              },
-              "requests": {
-                "cpu": "250m",
-                "memory": "1Gi"
-              }
-            },
-            "service": {
-              "port": 27017,
-              "type": "ClusterIP"
-            },
-            "serviceAccount": {
-              "annotations": {},
-              "create": true,
-              "name": "mongod"
-            },
-            "tolerations": []
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "s390x"
-      ],
-      "bundle_path": "registry.connect.redhat.com/tonyfieit/ibmz-mongodb-ee-operator-bundle@sha256:dc272911777fc8f73231e0e92a72202a1c6536368b10e57e98ac70bf57c96289",
-      "bundle_path_digest": "sha256:dc272911777fc8f73231e0e92a72202a1c6536368b10e57e98ac70bf57c96289",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-07-25T21:08:12.032000+00:00",
-      "csv_description": "IBM Operator to deploy MongoDB Enterprise on OpenShift Container",
-      "csv_display_name": "IBMz Mongodb EE operator 5.0",
-      "csv_metadata_description": "Run IBMz Mongodb Enterprise Edition on OpenShift on LinuxONE.",
-      "csv_name": "ibmz-mongodb-ee-operator.v5.0.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:58:39.580000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "ibmz-mongodb-ee-operator",
-      "provided_apis": [
-        {
-          "group": "apps.ibmz.com",
-          "kind": "MongoDB",
-          "plural": "mongodbs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "IBMz",
-      "related_images": [
-        {
-          "digest": "sha256:def5981c7c0cc56ec8477074c17392f63ea045ee99a0812a384a5121d86f4fba",
-          "image": "quay.io/ibm/ibmz-mongodb-ee-operator@sha256:def5981c7c0cc56ec8477074c17392f63ea045ee99a0812a384a5121d86f4fba",
-          "name": "mongodb-enterprise-operator"
-        },
-        {
-          "digest": "sha256:d5035f260b288d063704a68ad6d185013d8d177815dd073b31f770f6b383b4e3",
-          "image": "quay.io/ibm/ibmz-mongodb-ee-database@sha256:d5035f260b288d063704a68ad6d185013d8d177815dd073b31f770f6b383b4e3",
-          "name": "mongo-enterprise-database"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:def5981c7c0cc56ec8477074c17392f63ea045ee99a0812a384a5121d86f4fba",
-          "image": "quay.io/ibm/ibmz-mongodb-ee-operator@sha256:def5981c7c0cc56ec8477074c17392f63ea045ee99a0812a384a5121d86f4fba",
-          "name": "ibmz-mongodb-ee-operator-def5981c7c0cc56ec8477074c17392f63ea045ee99a0812a384a5121d86f4fba-annotation"
-        },
-        {
-          "digest": "sha256:def5981c7c0cc56ec8477074c17392f63ea045ee99a0812a384a5121d86f4fba",
-          "image": "quay.io/ibm/ibmz-mongodb-ee-operator@sha256:def5981c7c0cc56ec8477074c17392f63ea045ee99a0812a384a5121d86f4fba",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:d5035f260b288d063704a68ad6d185013d8d177815dd073b31f770f6b383b4e3",
-          "image": "quay.io/ibm/ibmz-mongodb-ee-database@sha256:d5035f260b288d063704a68ad6d185013d8d177815dd073b31f770f6b383b4e3",
-          "name": "ibmz-mongodb-ee-database-d5035f260b288d063704a68ad6d185013d8d177815dd073b31f770f6b383b4e3-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=4.4.0 <4.4.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "5.0.9",
-      "version_original": "5.0.9"
-    },
-    {
-      "_id": "62dfd509eacf80d76d79618b",
-      "alm_examples": [
-        {
-          "api_version": "csi.ibm.com/v1",
-          "kind": "IBMBlockCSI",
-          "metadata": {
-            "name": "ibm-block-csi"
-          },
-          "spec": {
-            "controller": {
-              "affinity": {
-                "nodeAffinity": {
-                  "requiredDuringSchedulingIgnoredDuringExecution": {
-                    "nodeSelectorTerms": [
-                      {
-                        "matchExpressions": [
-                          {
-                            "key": "kubernetes.io/arch",
-                            "operator": "In",
-                            "values": [
-                              "amd64"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                }
-              },
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "ibmcom/ibm-block-csi-driver-controller",
-              "tag": "1.10.0"
-            },
-            "node": {
-              "affinity": {
-                "nodeAffinity": {
-                  "requiredDuringSchedulingIgnoredDuringExecution": {
-                    "nodeSelectorTerms": [
-                      {
-                        "matchExpressions": [
-                          {
-                            "key": "kubernetes.io/arch",
-                            "operator": "In",
-                            "values": [
-                              "amd64"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                }
-              },
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "ibmcom/ibm-block-csi-driver-node",
-              "tag": "1.10.0"
-            },
-            "sidecars": [
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-node-driver-registrar",
-                "repository": "k8s.gcr.io/sig-storage/csi-node-driver-registrar",
-                "tag": "v2.5.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-provisioner",
-                "repository": "k8s.gcr.io/sig-storage/csi-provisioner",
-                "tag": "v3.1.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-attacher",
-                "repository": "k8s.gcr.io/sig-storage/csi-attacher",
-                "tag": "v3.4.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-snapshotter",
-                "repository": "k8s.gcr.io/sig-storage/csi-snapshotter",
-                "tag": "v5.0.1"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-resizer",
-                "repository": "k8s.gcr.io/sig-storage/csi-resizer",
-                "tag": "v1.4.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-addons-replicator",
-                "repository": "quay.io/csiaddons/volumereplication-operator",
-                "tag": "v0.2.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "livenessprobe",
-                "repository": "k8s.gcr.io/sig-storage/livenessprobe",
-                "tag": "v2.6.0"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "csi.ibm.com/v1",
-          "kind": "HostDefinition",
-          "metadata": {
-            "name": "host-definition"
-          },
-          "spec": {
-            "hostDefinition": {
-              "nodeName": "node-name"
-            }
-          }
-        },
-        {
-          "api_version": "csi.ibm.com/v1",
-          "kind": "HostDefiner",
-          "metadata": {
-            "name": "host-definer"
-          },
-          "spec": {
-            "hostDefiner": {
-              "affinity": {
-                "nodeAffinity": {
-                  "requiredDuringSchedulingIgnoredDuringExecution": {
-                    "nodeSelectorTerms": [
-                      {
-                        "matchExpressions": [
-                          {
-                            "key": "kubernetes.io/arch",
-                            "operator": "In",
-                            "values": [
-                              "amd64"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                }
-              },
-              "allowDelete": true,
-              "dynamicNodeLabeling": false,
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "ibmcom/ibm-block-csi-host-definer",
-              "tag": "1.10.0"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/ibm-block-csi-operator-bundle@sha256:19e5ec5c103e56db12e2e7384b8fbb1b9c55b21b7c9ed4393423122a153000e8",
-      "bundle_path_digest": "sha256:19e5ec5c103e56db12e2e7384b8fbb1b9c55b21b7c9ed4393423122a153000e8",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-26T11:50:33.847000+00:00",
-      "csv_description": "The Container Storage Interface (CSI) Driver for IBM block storage systems enables container orchestrators such as Kubernetes to manage the life cycle of persistent storage.\n\nThis is the official operator to deploy and manage IBM block storage CSI driver.\n\nFor compatibility, prerequisites, release notes, and other user information, see [IBM block storage CSI driver documentation](https://www.ibm.com/docs/en/stg-block-csi-driver).\n",
-      "csv_display_name": "IBM block storage CSI driver operator",
-      "csv_metadata_description": "Run IBM block storage CSI driver on OpenShift.",
-      "csv_name": "ibm-block-csi-operator.v1.10.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:16:10.947000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "ibm-block-csi-operator",
-      "provided_apis": [
-        {
-          "group": "csi.ibm.com",
-          "kind": "HostDefiner",
-          "version": "v1"
-        },
-        {
-          "group": "csi.ibm.com",
-          "kind": "HostDefinition",
-          "version": "v1"
-        },
-        {
-          "group": "csi.ibm.com",
-          "kind": "IBMBlockCSI",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
-          "image": "registry.connect.redhat.com/ibm/ibm-block-csi-operator@sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
-          "name": "ibm-block-csi-operator"
-        },
-        {
-          "digest": "sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
-          "image": "registry.connect.redhat.com/ibm/ibm-block-csi-operator@sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
-          "name": "ibm-block-csi-operator-64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.6.0 <1.10.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.10.0",
-      "version_original": "1.10.0"
-    },
-    {
-      "_id": "62dfd50efbeebdfb3b948ee9",
-      "alm_examples": [
-        {
-          "api_version": "csi.ibm.com/v1",
-          "kind": "IBMBlockCSI",
-          "metadata": {
-            "name": "ibm-block-csi"
-          },
-          "spec": {
-            "controller": {
-              "affinity": {
-                "nodeAffinity": {
-                  "requiredDuringSchedulingIgnoredDuringExecution": {
-                    "nodeSelectorTerms": [
-                      {
-                        "matchExpressions": [
-                          {
-                            "key": "kubernetes.io/arch",
-                            "operator": "In",
-                            "values": [
-                              "amd64"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                }
-              },
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "ibmcom/ibm-block-csi-driver-controller",
-              "tag": "1.10.0"
-            },
-            "node": {
-              "affinity": {
-                "nodeAffinity": {
-                  "requiredDuringSchedulingIgnoredDuringExecution": {
-                    "nodeSelectorTerms": [
-                      {
-                        "matchExpressions": [
-                          {
-                            "key": "kubernetes.io/arch",
-                            "operator": "In",
-                            "values": [
-                              "amd64"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                }
-              },
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "ibmcom/ibm-block-csi-driver-node",
-              "tag": "1.10.0"
-            },
-            "sidecars": [
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-node-driver-registrar",
-                "repository": "k8s.gcr.io/sig-storage/csi-node-driver-registrar",
-                "tag": "v2.5.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-provisioner",
-                "repository": "k8s.gcr.io/sig-storage/csi-provisioner",
-                "tag": "v3.1.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-attacher",
-                "repository": "k8s.gcr.io/sig-storage/csi-attacher",
-                "tag": "v3.4.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-snapshotter",
-                "repository": "k8s.gcr.io/sig-storage/csi-snapshotter",
-                "tag": "v5.0.1"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-resizer",
-                "repository": "k8s.gcr.io/sig-storage/csi-resizer",
-                "tag": "v1.4.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-addons-replicator",
-                "repository": "quay.io/csiaddons/volumereplication-operator",
-                "tag": "v0.2.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "livenessprobe",
-                "repository": "k8s.gcr.io/sig-storage/livenessprobe",
-                "tag": "v2.6.0"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "csi.ibm.com/v1",
-          "kind": "HostDefinition",
-          "metadata": {
-            "name": "host-definition"
-          },
-          "spec": {
-            "hostDefinition": {
-              "nodeName": "node-name"
-            }
-          }
-        },
-        {
-          "api_version": "csi.ibm.com/v1",
-          "kind": "HostDefiner",
-          "metadata": {
-            "name": "host-definer"
-          },
-          "spec": {
-            "hostDefiner": {
-              "affinity": {
-                "nodeAffinity": {
-                  "requiredDuringSchedulingIgnoredDuringExecution": {
-                    "nodeSelectorTerms": [
-                      {
-                        "matchExpressions": [
-                          {
-                            "key": "kubernetes.io/arch",
-                            "operator": "In",
-                            "values": [
-                              "amd64"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                }
-              },
-              "allowDelete": true,
-              "dynamicNodeLabeling": false,
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "ibmcom/ibm-block-csi-host-definer",
-              "tag": "1.10.0"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/ibm-block-csi-operator-bundle@sha256:19e5ec5c103e56db12e2e7384b8fbb1b9c55b21b7c9ed4393423122a153000e8",
-      "bundle_path_digest": "sha256:19e5ec5c103e56db12e2e7384b8fbb1b9c55b21b7c9ed4393423122a153000e8",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-26T11:50:38.149000+00:00",
-      "csv_description": "The Container Storage Interface (CSI) Driver for IBM block storage systems enables container orchestrators such as Kubernetes to manage the life cycle of persistent storage.\n\nThis is the official operator to deploy and manage IBM block storage CSI driver.\n\nFor compatibility, prerequisites, release notes, and other user information, see [IBM block storage CSI driver documentation](https://www.ibm.com/docs/en/stg-block-csi-driver).\n",
-      "csv_display_name": "IBM block storage CSI driver operator",
-      "csv_metadata_description": "Run IBM block storage CSI driver on OpenShift.",
-      "csv_name": "ibm-block-csi-operator.v1.10.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:00:15.887000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "ibm-block-csi-operator",
-      "provided_apis": [
-        {
-          "group": "csi.ibm.com",
-          "kind": "IBMBlockCSI",
-          "plural": "ibmblockcsis",
-          "version": "v1"
-        },
-        {
-          "group": "csi.ibm.com",
-          "kind": "HostDefiner",
-          "plural": "hostdefiners",
-          "version": "v1"
-        },
-        {
-          "group": "csi.ibm.com",
-          "kind": "HostDefinition",
-          "plural": "hostdefinitions",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
-          "image": "registry.connect.redhat.com/ibm/ibm-block-csi-operator@sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
-          "name": "ibm-block-csi-operator"
-        },
-        {
-          "digest": "sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
-          "image": "registry.connect.redhat.com/ibm/ibm-block-csi-operator@sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
-          "name": "ibm-block-csi-operator-64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.6.0 <1.10.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.10.0",
-      "version_original": "1.10.0"
-    },
-    {
-      "_id": "62dfd8cd76f5243efbecaea1",
-      "alm_examples": [
-        {
-          "api_version": "csi.ibm.com/v1",
-          "kind": "IBMBlockCSI",
-          "metadata": {
-            "name": "ibm-block-csi"
-          },
-          "spec": {
-            "controller": {
-              "affinity": {
-                "nodeAffinity": {
-                  "requiredDuringSchedulingIgnoredDuringExecution": {
-                    "nodeSelectorTerms": [
-                      {
-                        "matchExpressions": [
-                          {
-                            "key": "kubernetes.io/arch",
-                            "operator": "In",
-                            "values": [
-                              "amd64"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                }
-              },
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "ibmcom/ibm-block-csi-driver-controller",
-              "tag": "1.10.0"
-            },
-            "node": {
-              "affinity": {
-                "nodeAffinity": {
-                  "requiredDuringSchedulingIgnoredDuringExecution": {
-                    "nodeSelectorTerms": [
-                      {
-                        "matchExpressions": [
-                          {
-                            "key": "kubernetes.io/arch",
-                            "operator": "In",
-                            "values": [
-                              "amd64"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                }
-              },
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "ibmcom/ibm-block-csi-driver-node",
-              "tag": "1.10.0"
-            },
-            "sidecars": [
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-node-driver-registrar",
-                "repository": "k8s.gcr.io/sig-storage/csi-node-driver-registrar",
-                "tag": "v2.5.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-provisioner",
-                "repository": "k8s.gcr.io/sig-storage/csi-provisioner",
-                "tag": "v3.1.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-attacher",
-                "repository": "k8s.gcr.io/sig-storage/csi-attacher",
-                "tag": "v3.4.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-snapshotter",
-                "repository": "k8s.gcr.io/sig-storage/csi-snapshotter",
-                "tag": "v5.0.1"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-resizer",
-                "repository": "k8s.gcr.io/sig-storage/csi-resizer",
-                "tag": "v1.4.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "csi-addons-replicator",
-                "repository": "quay.io/csiaddons/volumereplication-operator",
-                "tag": "v0.2.0"
-              },
-              {
-                "imagePullPolicy": "IfNotPresent",
-                "name": "livenessprobe",
-                "repository": "k8s.gcr.io/sig-storage/livenessprobe",
-                "tag": "v2.6.0"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "csi.ibm.com/v1",
-          "kind": "HostDefinition",
-          "metadata": {
-            "name": "host-definition"
-          },
-          "spec": {
-            "hostDefinition": {
-              "nodeName": "node-name"
-            }
-          }
-        },
-        {
-          "api_version": "csi.ibm.com/v1",
-          "kind": "HostDefiner",
-          "metadata": {
-            "name": "host-definer"
-          },
-          "spec": {
-            "hostDefiner": {
-              "affinity": {
-                "nodeAffinity": {
-                  "requiredDuringSchedulingIgnoredDuringExecution": {
-                    "nodeSelectorTerms": [
-                      {
-                        "matchExpressions": [
-                          {
-                            "key": "kubernetes.io/arch",
-                            "operator": "In",
-                            "values": [
-                              "amd64"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                }
-              },
-              "allowDelete": true,
-              "dynamicNodeLabeling": false,
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "ibmcom/ibm-block-csi-host-definer",
-              "tag": "1.10.0"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/ibm-block-csi-operator-bundle@sha256:19e5ec5c103e56db12e2e7384b8fbb1b9c55b21b7c9ed4393423122a153000e8",
-      "bundle_path_digest": "sha256:19e5ec5c103e56db12e2e7384b8fbb1b9c55b21b7c9ed4393423122a153000e8",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-26T12:06:37.100000+00:00",
-      "csv_description": "The Container Storage Interface (CSI) Driver for IBM block storage systems enables container orchestrators such as Kubernetes to manage the life cycle of persistent storage.\n\nThis is the official operator to deploy and manage IBM block storage CSI driver.\n\nFor compatibility, prerequisites, release notes, and other user information, see [IBM block storage CSI driver documentation](https://www.ibm.com/docs/en/stg-block-csi-driver).\n",
-      "csv_display_name": "IBM block storage CSI driver operator",
-      "csv_metadata_description": "Run IBM block storage CSI driver on OpenShift.",
-      "csv_name": "ibm-block-csi-operator.v1.10.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:58:12.273000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "ibm-block-csi-operator",
-      "provided_apis": [
-        {
-          "group": "csi.ibm.com",
-          "kind": "IBMBlockCSI",
-          "plural": "ibmblockcsis",
-          "version": "v1"
-        },
-        {
-          "group": "csi.ibm.com",
-          "kind": "HostDefiner",
-          "plural": "hostdefiners",
-          "version": "v1"
-        },
-        {
-          "group": "csi.ibm.com",
-          "kind": "HostDefinition",
-          "plural": "hostdefinitions",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
-          "image": "registry.connect.redhat.com/ibm/ibm-block-csi-operator@sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
-          "name": "ibm-block-csi-operator"
-        },
-        {
-          "digest": "sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
-          "image": "registry.connect.redhat.com/ibm/ibm-block-csi-operator@sha256:64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee",
-          "name": "ibm-block-csi-operator-64f6fd2f9dae7fcaa2c3d4fe93193dd0713966607bced6d14584f74eb7917cee-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.6.0 <1.10.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.10.0",
-      "version_original": "1.10.0"
-    },
-    {
       "_id": "62e05a7d67e405bb17fa65c5",
       "alm_examples": [
         {
@@ -14651,9 +13772,745 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "1.10.1",
       "version_original": "1.10.1"
+    },
+    {
+      "_id": "62e82e80ac578be24da20a16",
+      "alm_examples": [
+        {
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
+          "metadata": {
+            "name": "gpu-cluster-policy"
+          },
+          "spec": {
+            "daemonsets": {},
+            "dcgm": {
+              "enabled": true
+            },
+            "dcgmExporter": {
+              "config": {
+                "name": ""
+              }
+            },
+            "devicePlugin": {},
+            "driver": {
+              "certConfig": {
+                "name": ""
+              },
+              "enabled": true,
+              "kernelModuleConfig": {
+                "name": ""
+              },
+              "licensingConfig": {
+                "configMapName": "",
+                "nlsEnabled": false
+              },
+              "repoConfig": {
+                "configMapName": ""
+              },
+              "use_ocp_driver_toolkit": true,
+              "virtualTopology": {
+                "config": ""
+              }
+            },
+            "gfd": {},
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "enabled": true
+            },
+            "nodeStatusExporter": {
+              "enabled": true
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "deployGFD": true,
+              "initContainer": {}
+            },
+            "toolkit": {
+              "enabled": true
+            },
+            "validator": {
+              "plugin": {
+                "env": [
+                  {
+                    "name": "WITH_WORKLOAD",
+                    "value": "true"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
+      "bundle_path_digest": "sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "v1.11",
+      "creation_date": "2022-08-01T19:50:24.287000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:30:28.519000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "version": "v1"
+        }
+      ],
+      "provider": "NVIDIA Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "name": "dcgm-image"
+        },
+        {
+          "digest": "sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
+          "image": "nvcr.io/nvidia/driver@sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
+          "image": "docker.io/nvidia/cuda@sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
+          "name": "gpu-operator-validator-image"
+        },
+        {
+          "digest": "sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "name": "k8s-driver-manager-image"
+        },
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator-e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be-annotation"
+        },
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
+    },
+    {
+      "_id": "62e82e830f371fa893a669f6",
+      "alm_examples": [
+        {
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
+          "metadata": {
+            "name": "gpu-cluster-policy"
+          },
+          "spec": {
+            "daemonsets": {},
+            "dcgm": {
+              "enabled": true
+            },
+            "dcgmExporter": {
+              "config": {
+                "name": ""
+              }
+            },
+            "devicePlugin": {},
+            "driver": {
+              "certConfig": {
+                "name": ""
+              },
+              "enabled": true,
+              "kernelModuleConfig": {
+                "name": ""
+              },
+              "licensingConfig": {
+                "configMapName": "",
+                "nlsEnabled": false
+              },
+              "repoConfig": {
+                "configMapName": ""
+              },
+              "use_ocp_driver_toolkit": true,
+              "virtualTopology": {
+                "config": ""
+              }
+            },
+            "gfd": {},
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "enabled": true
+            },
+            "nodeStatusExporter": {
+              "enabled": true
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "deployGFD": true,
+              "initContainer": {}
+            },
+            "toolkit": {
+              "enabled": true
+            },
+            "validator": {
+              "plugin": {
+                "env": [
+                  {
+                    "name": "WITH_WORKLOAD",
+                    "value": "true"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:60b1d25ebb3aada94985e359bb059d4491bf0148ac75d51b68a461670659e429",
+      "bundle_path_digest": "sha256:60b1d25ebb3aada94985e359bb059d4491bf0148ac75d51b68a461670659e429",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "v1.11",
+      "creation_date": "2022-08-01T19:50:27.424000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.10.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:30:35.784000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "version": "v1"
+        }
+      ],
+      "provider": "NVIDIA Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "name": "dcgm-image"
+        },
+        {
+          "digest": "sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:f99b66855e92451a59a722355dd52bf97eb985cc8a647172273de8178aeaa93c",
+          "image": "nvcr.io/nvidia/driver@sha256:f99b66855e92451a59a722355dd52bf97eb985cc8a647172273de8178aeaa93c",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:7f0f7dc8c993a86865d4d9f9b0e36d113ea15603d5d5279d2879fa2bc21c8236",
+          "image": "nvcr.io/nvidia/cuda@sha256:7f0f7dc8c993a86865d4d9f9b0e36d113ea15603d5d5279d2879fa2bc21c8236",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:24d804e8f005d7aeca8343aa13e5f92295d8642a4c47cb24e3ac86a22543bc37",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:24d804e8f005d7aeca8343aa13e5f92295d8642a4c47cb24e3ac86a22543bc37",
+          "name": "gpu-operator-validator-image"
+        },
+        {
+          "digest": "sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "name": "k8s-driver-manager-image"
+        },
+        {
+          "digest": "sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "name": "gpu-operator-c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a-annotation"
+        },
+        {
+          "digest": "sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:c7f9074c1a7f58947c807f23f2eece3a8b04e11175127919156f8e864821d45a",
+          "name": "gpu-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=v1.9.0 <v1.10.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.10.1",
+      "version_original": "1.10.1"
+    },
+    {
+      "_id": "62e82e860f371fa893a669f8",
+      "alm_examples": [
+        {
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
+          "metadata": {
+            "name": "gpu-cluster-policy"
+          },
+          "spec": {
+            "daemonsets": {},
+            "dcgm": {
+              "enabled": true
+            },
+            "dcgmExporter": {
+              "config": {
+                "name": ""
+              }
+            },
+            "devicePlugin": {
+              "config": {
+                "default": "",
+                "name": ""
+              }
+            },
+            "driver": {
+              "certConfig": {
+                "name": ""
+              },
+              "enabled": true,
+              "kernelModuleConfig": {
+                "name": ""
+              },
+              "licensingConfig": {
+                "configMapName": "",
+                "nlsEnabled": false
+              },
+              "repoConfig": {
+                "configMapName": ""
+              },
+              "virtualTopology": {
+                "config": ""
+              }
+            },
+            "gfd": {},
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "enabled": true
+            },
+            "nodeStatusExporter": {
+              "enabled": true
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "initContainer": {},
+              "use_ocp_driver_toolkit": true
+            },
+            "sandboxDevicePlugin": {
+              "enabled": true
+            },
+            "sandboxWorkloads": {
+              "defaultWorkload": "container",
+              "enabled": false
+            },
+            "toolkit": {
+              "enabled": true
+            },
+            "validator": {
+              "plugin": {
+                "env": [
+                  {
+                    "name": "WITH_WORKLOAD",
+                    "value": "true"
+                  }
+                ]
+              }
+            },
+            "vfioManager": {
+              "enabled": true
+            },
+            "vgpuDeviceManager": {
+              "config": {
+                "default": "default",
+                "name": "vgpu-devices-config"
+              },
+              "enabled": true
+            },
+            "vgpuManager": {
+              "enabled": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "arm64"
+      ],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:501dd759f32adb585848f511f6dfa7bc9372d5e905abea9b082dd50cbe232216",
+      "bundle_path_digest": "sha256:501dd759f32adb585848f511f6dfa7bc9372d5e905abea9b082dd50cbe232216",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "v1.11",
+      "creation_date": "2022-08-01T19:50:30.569000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://cloud.redhat.com/blog/introducing-the-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.11.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:30:41.184000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "version": "v1"
+        }
+      ],
+      "provider": "NVIDIA Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:7e3699c82bf02ba640d49775ce1b1fc96a5eca02d5ea453ea0ed1571d73779a5",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:7e3699c82bf02ba640d49775ce1b1fc96a5eca02d5ea453ea0ed1571d73779a5",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:b90a519e9f30fbc013e1806bc081268724e9e80b4035c67c167ab3b43a37704a",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:b90a519e9f30fbc013e1806bc081268724e9e80b4035c67c167ab3b43a37704a",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:8490d555131a57a11311561667ea9ec8cf554a399d2492a6f9e6677c01ec4b9a",
+          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:8490d555131a57a11311561667ea9ec8cf554a399d2492a6f9e6677c01ec4b9a",
+          "name": "dcgm-image"
+        },
+        {
+          "digest": "sha256:2d6e86db0e2b0db64c00566938e1851e25d4bb1019b1e7b696e2b199cba33397",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:2d6e86db0e2b0db64c00566938e1851e25d4bb1019b1e7b696e2b199cba33397",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:8c9fabc1cd773e9526eb7e8526084f065f6cca9d0fd8dc2a672a0bb717f1cc60",
+          "image": "nvcr.io/nvidia/driver@sha256:8c9fabc1cd773e9526eb7e8526084f065f6cca9d0fd8dc2a672a0bb717f1cc60",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:6e2902d73c54cf57bec94edf166d206cfeb0b948b5aab70800ccbe025064b3a1",
+          "image": "nvcr.io/nvidia/driver@sha256:6e2902d73c54cf57bec94edf166d206cfeb0b948b5aab70800ccbe025064b3a1",
+          "name": "driver-image-510"
+        },
+        {
+          "digest": "sha256:cf8ce04907d0e8decf90a8dccfa6134af9c39509d2f8a21c355ed71223acacdb",
+          "image": "nvcr.io/nvidia/driver@sha256:cf8ce04907d0e8decf90a8dccfa6134af9c39509d2f8a21c355ed71223acacdb",
+          "name": "driver-image-470"
+        },
+        {
+          "digest": "sha256:b8799e7397fae5a27446737443091eed05b918816f53c400a48be71125ee22e8",
+          "image": "nvcr.io/nvidia/driver@sha256:b8799e7397fae5a27446737443091eed05b918816f53c400a48be71125ee22e8",
+          "name": "driver-image-450"
+        },
+        {
+          "digest": "sha256:7a0ccbcbe8d379bfc441e06504eb45d0d433a37e2a9e6dde83d13347296ebe81",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:7a0ccbcbe8d379bfc441e06504eb45d0d433a37e2a9e6dde83d13347296ebe81",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:39127d04c9faff3f22068dcf463ed48d02be684cd18e3f14db843bddbdd783a7",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:39127d04c9faff3f22068dcf463ed48d02be684cd18e3f14db843bddbdd783a7",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:3804e2b03c44d25dd410e3882b7fb6d1fde41f55110d7702af47136b042a63ff",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:3804e2b03c44d25dd410e3882b7fb6d1fde41f55110d7702af47136b042a63ff",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:4400b56f81095b24fc9dde93ad7ad7d0ca6a7e9736c4c7f1d4e2bcbf0afbe45c",
+          "image": "nvcr.io/nvidia/cuda@sha256:4400b56f81095b24fc9dde93ad7ad7d0ca6a7e9736c4c7f1d4e2bcbf0afbe45c",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:d83aee1c7a9c3aa39e3947f0bd206e7955390943b8e3f2e56bdb96bc4ef99d69",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:d83aee1c7a9c3aa39e3947f0bd206e7955390943b8e3f2e56bdb96bc4ef99d69",
+          "name": "gpu-operator-validator-image"
+        },
+        {
+          "digest": "sha256:2cb6f2b43e153e67780b1b350ae171c800e15b3f1ae5ad6375b66de530d701fd",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:2cb6f2b43e153e67780b1b350ae171c800e15b3f1ae5ad6375b66de530d701fd",
+          "name": "k8s-driver-manager-image"
+        },
+        {
+          "digest": "sha256:4400b56f81095b24fc9dde93ad7ad7d0ca6a7e9736c4c7f1d4e2bcbf0afbe45c",
+          "image": "nvcr.io/nvidia/cuda@sha256:4400b56f81095b24fc9dde93ad7ad7d0ca6a7e9736c4c7f1d4e2bcbf0afbe45c",
+          "name": "vfio-manager-image"
+        },
+        {
+          "digest": "sha256:f48e8b430248a9cadf716a9211bb0050d4a663d1f1386ea107e72917f82e5b5f",
+          "image": "nvcr.io/nvidia/kubevirt-gpu-device-plugin@sha256:f48e8b430248a9cadf716a9211bb0050d4a663d1f1386ea107e72917f82e5b5f",
+          "name": "sandbox-device-plugin-image"
+        },
+        {
+          "digest": "sha256:16ee5b1a8d9217f761c40a06c7ae598cbc893fbc35d99ff9b84fa886ea6b9b37",
+          "image": "nvcr.io/nvidia/cloud-native/vgpu-device-manager@sha256:16ee5b1a8d9217f761c40a06c7ae598cbc893fbc35d99ff9b84fa886ea6b9b37",
+          "name": "vgpu-device-manager-image"
+        },
+        {
+          "digest": "sha256:7e3699c82bf02ba640d49775ce1b1fc96a5eca02d5ea453ea0ed1571d73779a5",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:7e3699c82bf02ba640d49775ce1b1fc96a5eca02d5ea453ea0ed1571d73779a5",
+          "name": "gpu-operator-7e3699c82bf02ba640d49775ce1b1fc96a5eca02d5ea453ea0ed1571d73779a5-annotation"
+        },
+        {
+          "digest": "sha256:7e3699c82bf02ba640d49775ce1b1fc96a5eca02d5ea453ea0ed1571d73779a5",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:7e3699c82bf02ba640d49775ce1b1fc96a5eca02d5ea453ea0ed1571d73779a5",
+          "name": "gpu-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=v1.9.0 <v1.11.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.11.0",
+      "version_original": "1.11.0"
+    },
+    {
+      "_id": "62e8dfc1a9a2233d923f5dc4",
+      "alm_examples": [
+        {
+          "api_version": "apps.apimatic.io/v1beta2",
+          "kind": "CodeGen",
+          "metadata": {
+            "name": "codegen-sample"
+          },
+          "spec": {
+            "licenseSpec": {
+              "licenseSourceType": "LicenseBlob",
+              "licenseSourceValue": "PExpY2Vuc2U+DQogIDxJZD41MDVlNzM4Ny0xZmIxLTQ4ZDQtOGRmMS1iYjk3NGEyNjM2MDM8L0lkPg0KICA8VHlwZT5TdGFuZGFyZDwvVHlwZT4NCiAgPEV4cGlyYXRpb24+RnJpLCAxNyBNYXkgMjA1MiAwNzoxOTozOSBHTVQ8L0V4cGlyYXRpb24+DQogIDxRdWFudGl0eT4yPC9RdWFudGl0eT4NCiAgPFByb2R1Y3RGZWF0dXJlcz4NCiAgICA8RmVhdHVyZSBuYW1lPSJpbXBvcnRGb3JtYXRzIj5BUElCbHVlUHJpbnQsQVBJRWxlbWVudHMsUG9zdG1hbjIsV3NkbCxXQURMMjAwOSxXQURMMjAwNixSYW1sLFJhbWwxMCxTd2FnZ2VyMjAsU3dhZ2dlcllhbWwsU3dhZ2dlcjEwLE9wZW5BcGkzSnNvbixPcGVuQXBpM1lhbWwsSU9Eb2NzLElPRG9jc1YwMzE0LEluc29tbmlhLEluc29tbmlhWWFtbCxSQU1MQXNKc29uLEdvb2dsZURpc2NvdmVyeSxQb3N0bWFuPC9GZWF0dXJlPg0KICAgIDxGZWF0dXJlIG5hbWU9ImV4cG9ydEZvcm1hdHMiPlN3YWdnZXIyMCxTd2FnZ2VyWWFtbCxTd2FnZ2VyMTAsT3BlbkFwaTNKc29uLE9wZW5BcGkzWWFtbCxXc2RsLEFQSUJsdWVQcmludCxBUElFbGVtZW50cyxQb3N0bWFuMixXQURMMjAwOSxXQURMMjAwNixXU0RMLElPRG9jcyxJT0RvY3NWMDMxNCxSQU1MLFJBTUwxMCxHb29nbGVEaXNjb3ZlcnksUG9zdG1hbjIwLEluc29tbmlhLEluc29tbmlhWWFtbDwvRmVhdHVyZT4NCiAgICA8RmVhdHVyZSBuYW1lPSJwbGF0Zm9ybXMiPjwvRmVhdHVyZT4NCiAgPC9Qcm9kdWN0RmVhdHVyZXM+DQogIDxDdXN0b21lcj4NCiAgICA8TmFtZT5EZXZlbG9wZXI8L05hbWU+DQogICAgPEVtYWlsPmRldmVsb3BlckBhcGltYXRpYy5pbzwvRW1haWw+DQogIDwvQ3VzdG9tZXI+DQogIDxTaWduYXR1cmU+TUVVQ0lRRE1yTlY0dE1PUzEwUExiZ1Z0QkVvTHZ6ZGd1UDkzUnk5Tm9pMHBsS2lWa2dJZ1ZOVWtoWTVoS2xiZFBLc1pMcDZrcnZKODV0WUdHUHFBV1gxblkyUUx2NjQ9PC9TaWduYXR1cmU+DQo8L0xpY2Vuc2U+"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-bundle@sha256:7acddb15739908666c465471ad8888d588538b1588894e13738829982e333ddb",
+      "bundle_path_digest": "sha256:7acddb15739908666c465471ad8888d588538b1588894e13738829982e333ddb",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-02T08:26:41.404000+00:00",
+      "csv_description": "APIMatic CodeGen Operator deploys the APIMatic CodeGen application to Kubernetes and RedHat with all necessary resources and configurations. More information can be found [here](https://github.com/apimatic/apimatic-codegen-operator/blob/main/README.md)",
+      "csv_display_name": "APIMatic CodeGen Operator",
+      "csv_metadata_description": "API CodeGen Operator deploys the APIMatic CodeGen Application to Kubernetes and OpenShift clusters",
+      "csv_name": "apimatic-codegen-operator.v1.9.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:53:17.151000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "apimatic-codegen-operator",
+      "provided_apis": [
+        {
+          "group": "apps.apimatic.io",
+          "kind": "CodeGen",
+          "plural": "codegens",
+          "version": "v1beta2"
+        }
+      ],
+      "provider": "APIMatic.io",
+      "related_images": [
+        {
+          "digest": "sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "image": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-ubi8@sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "image": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-ubi8@sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "name": "apimatic-codegen-operator-ubi8-707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.9.3",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.9.3",
+      "version_original": "1.9.3"
     }
   ],
   "page": 38,
   "page_size": 100,
-  "total": 4817
+  "total": 4866
 }
