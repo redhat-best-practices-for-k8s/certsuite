@@ -124,9 +124,7 @@ const (
 )
 
 func stripSpaceTabLine(in string) string {
-	s1 := strings.ReplaceAll(in, "\n", "")
-	s2 := strings.ReplaceAll(s1, "\t", "")
-	return strings.ReplaceAll(s2, " ", "")
+	return strings.NewReplacer("\n", "", "\t", "", " ", "").Replace(in)
 }
 func isIPOrNSTablesPresent(cut *provider.Container, command string) (bool, string, error) { //nolint:gocritic
 	outStr, errStr, err := crclient.ExecCommandContainerNSEnter(command, cut)
