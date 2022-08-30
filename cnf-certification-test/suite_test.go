@@ -139,7 +139,7 @@ func TestTest(t *testing.T) {
 	log.Infof("Labels filter       : %v", ginkgoConfig.LabelFilter)
 
 	// Diagnostic functions will run also when no focus test suites were provided.
-	diagnosticMode := len(ginkgoConfig.FocusStrings) == 0
+	diagnosticMode := len(ginkgoConfig.LabelFilter) == 0
 
 	// Set clientsholder singleton with the filenames from the env vars.
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)

@@ -97,13 +97,7 @@ func createPrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][
 	catalog := make(map[string][]catalogElement)
 	// we need the list of suite's names
 	for _, i := range keys {
-		suiteTest := identifiers.GetSuiteAndTestFromIdentifier(i)
-		if suiteTest == nil {
-			fmt.Fprintf(os.Stderr, "Identifier Url not valid\n")
-			return nil
-		}
-		suiteName := suiteTest[0]
-		testName := suiteTest[1]
+		suiteName, testName := identifiers.GetSuiteAndTestFromIdentifier(i)
 		testLabel := suiteName + "-" + testName
 		catalog[suiteName] = append(catalog[suiteName], catalogElement{
 			testName:   testName,
@@ -118,7 +112,8 @@ func getSuitesFromIdentifiers(keys []claim.Identifier) []string {
 	var suites []string
 
 	for _, i := range keys {
-		suites = append(suites, identifiers.GetSuiteAndTestFromIdentifier(i)[0])
+		suiteName, _ := identifiers.GetSuiteAndTestFromIdentifier(i)
+		suites = append(suites, suiteName)
 	}
 
 	return Unique(suites)
