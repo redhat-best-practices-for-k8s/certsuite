@@ -17,7 +17,6 @@
 package policies
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -29,9 +28,8 @@ import (
 func TestIsNetworkPolicyCompliant(t *testing.T) {
 	testCases := []struct {
 		testNP                networkingv1.NetworkPolicy
-		expectedPolicies      []networkingv1.PolicyType
-		expectedIngressOutput error
-		expectedEgressOutput  error
+		expectedIngressOutput bool
+		expectedEgressOutput  bool
 	}{
 		{ // Test #1 - Network Policy with no label selector, no policy types, fails.
 			testNP: networkingv1.NetworkPolicy{
@@ -46,9 +44,8 @@ func TestIsNetworkPolicyCompliant(t *testing.T) {
 					},
 				},
 			},
-			expectedPolicies:      nil,
-			expectedIngressOutput: errors.New("PolicyTypes is empty"),
-			expectedEgressOutput:  errors.New("PolicyTypes is empty"),
+			expectedIngressOutput: false,
+			expectedEgressOutput:  false,
 		},
 		{ // Test #2 - Network Policy with label selector, and both ingress/egress policy types
 			testNP: networkingv1.NetworkPolicy{
@@ -67,12 +64,8 @@ func TestIsNetworkPolicyCompliant(t *testing.T) {
 					},
 				},
 			},
-			expectedPolicies: []networkingv1.PolicyType{
-				networkingv1.PolicyTypeEgress,
-				networkingv1.PolicyTypeIngress,
-			},
-			expectedIngressOutput: nil,
-			expectedEgressOutput:  nil,
+			expectedIngressOutput: true,
+			expectedEgressOutput:  true,
 		},
 		{ // Test #3 - Network Policy with label selector with no egress policytype
 			testNP: networkingv1.NetworkPolicy{
@@ -91,12 +84,8 @@ func TestIsNetworkPolicyCompliant(t *testing.T) {
 					},
 				},
 			},
-			expectedPolicies: []networkingv1.PolicyType{
-				networkingv1.PolicyTypeEgress,
-				networkingv1.PolicyTypeIngress,
-			},
-			expectedIngressOutput: nil,
-			expectedEgressOutput:  errors.New("deny all network policy not found"),
+			expectedIngressOutput: true,
+			expectedEgressOutput:  false,
 		},
 		{ // Test #4 - Network Policy with label selector with no ingress policytype
 			testNP: networkingv1.NetworkPolicy{
@@ -115,12 +104,74 @@ func TestIsNetworkPolicyCompliant(t *testing.T) {
 					},
 				},
 			},
-			expectedPolicies: []networkingv1.PolicyType{
-				networkingv1.PolicyTypeEgress,
-				networkingv1.PolicyTypeIngress,
+			expectedIngressOutput: false,
+			expectedEgressOutput:  true,
+		},
+		{ // Test #5 - Network Policy with egress policy type but the spec has a namespace selector
+			testNP: networkingv1.NetworkPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test1",
+				},
+				Spec: networkingv1.NetworkPolicySpec{
+					PodSelector: metav1.LabelSelector{
+						MatchLabels: map[string]string{
+							"key1": "value1",
+						},
+					},
+					PolicyTypes: []networkingv1.PolicyType{
+						networkingv1.PolicyTypeEgress,
+						// networkingv1.PolicyTypeIngress, // policy type does not exist so this fails the ingress compliancy check
+					},
+					Egress: []networkingv1.NetworkPolicyEgressRule{
+						{
+							To: []networkingv1.NetworkPolicyPeer{
+								{
+									NamespaceSelector: &metav1.LabelSelector{
+										MatchLabels: map[string]string{
+											"kubernetes.io/metadata.name": "tnf",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
 			},
-			expectedIngressOutput: errors.New("deny all network policy not found"),
-			expectedEgressOutput:  nil,
+			expectedIngressOutput: false, // ingress spec fails because policyType is missing
+			expectedEgressOutput:  false, // egress fails because it shouldn't be specified
+		},
+		{ // Test #6 - Network Policy with ingress policy type but the spec has a namespace selector
+			testNP: networkingv1.NetworkPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test1",
+				},
+				Spec: networkingv1.NetworkPolicySpec{
+					PodSelector: metav1.LabelSelector{
+						MatchLabels: map[string]string{
+							"key1": "value1",
+						},
+					},
+					PolicyTypes: []networkingv1.PolicyType{
+						// networkingv1.PolicyTypeEgress, // policy type does not exist so this fails the ingress compliancy check
+						networkingv1.PolicyTypeIngress,
+					},
+					Ingress: []networkingv1.NetworkPolicyIngressRule{
+						{
+							From: []networkingv1.NetworkPolicyPeer{
+								{
+									NamespaceSelector: &metav1.LabelSelector{
+										MatchLabels: map[string]string{
+											"kubernetes.io/metadata.name": "tnf",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			expectedIngressOutput: false,
+			expectedEgressOutput:  false, // ingress spec fails because specified
 		},
 	}
 

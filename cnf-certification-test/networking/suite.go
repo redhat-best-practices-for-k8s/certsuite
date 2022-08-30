@@ -321,7 +321,6 @@ func testIsIPTablesConfigPresent(env *provider.TestEnvironment) {
 	testIsConfigPresent(env, ip6Tables)
 }
 
-//nolint:funlen
 func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
 	ginkgo.By("Test for Deny All in network policies")
 	var podsMissingDenyAllDefaultPolicies []string
@@ -344,18 +343,11 @@ func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
 
 			// Match the pod namespace with the network policy namespace.
 			if policies.LabelsMatch(env.NetworkPolicies[index].Spec.PodSelector, put.Data.Labels) {
-				// Check if compliant for egress network policy
-				if err := policies.IsNetworkPolicyCompliant(&env.NetworkPolicies[index], networkingv1.PolicyTypeEgress); err != nil {
-					logrus.Error(err)
-				} else {
-					denyAllEgressFound = true
+				if !denyAllEgressFound {
+					denyAllEgressFound = policies.IsNetworkPolicyCompliant(&env.NetworkPolicies[index], networkingv1.PolicyTypeEgress)
 				}
-
-				// Check if compliant for ingress network policy
-				if err := policies.IsNetworkPolicyCompliant(&env.NetworkPolicies[index], networkingv1.PolicyTypeIngress); err != nil {
-					logrus.Error(err)
-				} else {
-					denyAllIngressFound = true
+				if !denyAllIngressFound {
+					denyAllIngressFound = policies.IsNetworkPolicyCompliant(&env.NetworkPolicies[index], networkingv1.PolicyTypeIngress)
 				}
 			}
 		}

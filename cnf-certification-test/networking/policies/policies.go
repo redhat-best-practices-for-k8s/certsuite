@@ -17,44 +17,47 @@
 package policies
 
 import (
-	"errors"
-
+	"github.com/sirupsen/logrus"
 	networkingv1 "k8s.io/api/networking/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func IsNetworkPolicyCompliant(np *networkingv1.NetworkPolicy, policyType networkingv1.PolicyType) error {
+func IsNetworkPolicyCompliant(np *networkingv1.NetworkPolicy, policyType networkingv1.PolicyType) bool {
 	// As long as we have decided above that there is no pod selector,
 	// we just have to make sure that the policy type is either Ingress or Egress (or both) we can return true.
 	// For more information about deny-all policies, there are some good examples on:
 	// https://kubernetes.io/docs/concepts/services-networking/network-policies/
 
 	if len(np.Spec.PolicyTypes) == 0 {
-		return errors.New("PolicyTypes is empty")
+		logrus.Debugf("%s: policy types found empty", np.Name)
+		return false
 	}
 
 	// Ingress and Egress rules should be "empty" if it is a default rule.
-	if np.Spec.Egress != nil {
-		return errors.New("egress spec is not empty")
-	}
-	if np.Spec.Ingress != nil {
-		return errors.New("ingress spec is not empty")
-	}
-
-	policyTypeFound := false
-
-	// Look through the returned policies to make sure they include both ingress and egress.
-	for _, p := range np.Spec.PolicyTypes {
-		if p == policyType {
-			policyTypeFound = true
+	if policyType == networkingv1.PolicyTypeEgress {
+		if np.Spec.Egress != nil || len(np.Spec.Egress) > 0 {
+			logrus.Debugf("%s: egress spec found not empty", np.Name)
+			return false
 		}
 	}
 
-	if !policyTypeFound {
-		return errors.New("deny all network policy not found")
+	if policyType == networkingv1.PolicyTypeIngress {
+		if np.Spec.Ingress != nil || len(np.Spec.Ingress) > 0 {
+			logrus.Debugf("%s: ingress spec found not empty", np.Name)
+			return false
+		}
 	}
 
-	return nil
+	policyTypeFound := false
+	// Look through the returned policies to see if they match the desired policyType
+	for _, p := range np.Spec.PolicyTypes {
+		if p == policyType {
+			policyTypeFound = true
+			break
+		}
+	}
+
+	return policyTypeFound
 }
 
 func LabelsMatch(podSelectorLabels v1.LabelSelector, podLabels map[string]string) bool {
