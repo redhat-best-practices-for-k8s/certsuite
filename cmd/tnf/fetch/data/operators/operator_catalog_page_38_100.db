@@ -1,469 +1,6 @@
 {
   "data": [
     {
-      "_id": "62e05a7d67e405bb17fa65c5",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Xl",
-          "metadata": {
-            "name": "xl-release"
-          },
-          "spec": {
-            "global": {
-              "customImageNames": false,
-              "repository": "registry.connect.redhat.com/turbonomic",
-              "tag": "8.5.7"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
-      "bundle_path_digest": "sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-26T21:19:57.587000+00:00",
-      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
-      "csv_display_name": "Turbonomic Platform Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "t8c-operator.v42.12.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-16T18:05:35.467000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "name": "t8c-operator-d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3-annotation"
-        },
-        {
-          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "name": "t8c-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "42.12.0",
-      "version_original": "42.12.0"
-    },
-    {
-      "_id": "62e05aae297aa53ad8d327ae",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Xl",
-          "metadata": {
-            "name": "xl-release"
-          },
-          "spec": {
-            "global": {
-              "customImageNames": false,
-              "repository": "registry.connect.redhat.com/turbonomic",
-              "tag": "8.5.7"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
-      "bundle_path_digest": "sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-26T21:20:46.515000+00:00",
-      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
-      "csv_display_name": "Turbonomic Platform Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "t8c-operator.v42.12.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-16T18:21:53.689000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "name": "t8c-operator-d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3-annotation"
-        },
-        {
-          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "name": "t8c-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "42.12.0",
-      "version_original": "42.12.0"
-    },
-    {
-      "_id": "62e05eb067e405bb17fa6630",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Xl",
-          "metadata": {
-            "name": "xl-release"
-          },
-          "spec": {
-            "global": {
-              "customImageNames": false,
-              "repository": "registry.connect.redhat.com/turbonomic",
-              "tag": "8.5.7"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
-      "bundle_path_digest": "sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-26T21:37:52.097000+00:00",
-      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
-      "csv_display_name": "Turbonomic Platform Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "t8c-operator.v42.12.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-16T18:22:15.469000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "name": "t8c-operator-d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3-annotation"
-        },
-        {
-          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "name": "t8c-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "42.12.0",
-      "version_original": "42.12.0"
-    },
-    {
-      "_id": "62e05f98297aa53ad8d3283e",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Xl",
-          "metadata": {
-            "name": "xl-release"
-          },
-          "spec": {
-            "global": {
-              "customImageNames": false,
-              "repository": "registry.connect.redhat.com/turbonomic",
-              "tag": "8.5.7"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
-      "bundle_path_digest": "sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-26T21:41:44.030000+00:00",
-      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
-      "csv_display_name": "Turbonomic Platform Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "t8c-operator.v42.12.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-16T18:24:30.435000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "name": "t8c-operator-d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3-annotation"
-        },
-        {
-          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "name": "t8c-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "42.12.0",
-      "version_original": "42.12.0"
-    },
-    {
-      "_id": "62e05fc8297aa53ad8d32841",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Xl",
-          "metadata": {
-            "name": "xl-release"
-          },
-          "spec": {
-            "global": {
-              "customImageNames": false,
-              "repository": "registry.connect.redhat.com/turbonomic",
-              "tag": "8.5.7"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
-      "bundle_path_digest": "sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-07-26T21:42:32.803000+00:00",
-      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
-      "csv_display_name": "Turbonomic Platform Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "t8c-operator.v42.12.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-16T18:24:51.960000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "name": "t8c-operator-d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3-annotation"
-        },
-        {
-          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
-          "name": "t8c-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "42.12.0",
-      "version_original": "42.12.0"
-    },
-    {
       "_id": "62e0612515b1275ee34b0c37",
       "alm_examples": [
         {
@@ -14508,9 +14045,455 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "1.9.3",
       "version_original": "1.9.3"
+    },
+    {
+      "_id": "62e8dfe6a9a2233d923f5dca",
+      "alm_examples": [
+        {
+          "api_version": "apps.apimatic.io/v1beta2",
+          "kind": "CodeGen",
+          "metadata": {
+            "name": "codegen-sample"
+          },
+          "spec": {
+            "licenseSpec": {
+              "licenseSourceType": "LicenseBlob",
+              "licenseSourceValue": "PExpY2Vuc2U+DQogIDxJZD41MDVlNzM4Ny0xZmIxLTQ4ZDQtOGRmMS1iYjk3NGEyNjM2MDM8L0lkPg0KICA8VHlwZT5TdGFuZGFyZDwvVHlwZT4NCiAgPEV4cGlyYXRpb24+RnJpLCAxNyBNYXkgMjA1MiAwNzoxOTozOSBHTVQ8L0V4cGlyYXRpb24+DQogIDxRdWFudGl0eT4yPC9RdWFudGl0eT4NCiAgPFByb2R1Y3RGZWF0dXJlcz4NCiAgICA8RmVhdHVyZSBuYW1lPSJpbXBvcnRGb3JtYXRzIj5BUElCbHVlUHJpbnQsQVBJRWxlbWVudHMsUG9zdG1hbjIsV3NkbCxXQURMMjAwOSxXQURMMjAwNixSYW1sLFJhbWwxMCxTd2FnZ2VyMjAsU3dhZ2dlcllhbWwsU3dhZ2dlcjEwLE9wZW5BcGkzSnNvbixPcGVuQXBpM1lhbWwsSU9Eb2NzLElPRG9jc1YwMzE0LEluc29tbmlhLEluc29tbmlhWWFtbCxSQU1MQXNKc29uLEdvb2dsZURpc2NvdmVyeSxQb3N0bWFuPC9GZWF0dXJlPg0KICAgIDxGZWF0dXJlIG5hbWU9ImV4cG9ydEZvcm1hdHMiPlN3YWdnZXIyMCxTd2FnZ2VyWWFtbCxTd2FnZ2VyMTAsT3BlbkFwaTNKc29uLE9wZW5BcGkzWWFtbCxXc2RsLEFQSUJsdWVQcmludCxBUElFbGVtZW50cyxQb3N0bWFuMixXQURMMjAwOSxXQURMMjAwNixXU0RMLElPRG9jcyxJT0RvY3NWMDMxNCxSQU1MLFJBTUwxMCxHb29nbGVEaXNjb3ZlcnksUG9zdG1hbjIwLEluc29tbmlhLEluc29tbmlhWWFtbDwvRmVhdHVyZT4NCiAgICA8RmVhdHVyZSBuYW1lPSJwbGF0Zm9ybXMiPjwvRmVhdHVyZT4NCiAgPC9Qcm9kdWN0RmVhdHVyZXM+DQogIDxDdXN0b21lcj4NCiAgICA8TmFtZT5EZXZlbG9wZXI8L05hbWU+DQogICAgPEVtYWlsPmRldmVsb3BlckBhcGltYXRpYy5pbzwvRW1haWw+DQogIDwvQ3VzdG9tZXI+DQogIDxTaWduYXR1cmU+TUVVQ0lRRE1yTlY0dE1PUzEwUExiZ1Z0QkVvTHZ6ZGd1UDkzUnk5Tm9pMHBsS2lWa2dJZ1ZOVWtoWTVoS2xiZFBLc1pMcDZrcnZKODV0WUdHUHFBV1gxblkyUUx2NjQ9PC9TaWduYXR1cmU+DQo8L0xpY2Vuc2U+"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-bundle@sha256:7acddb15739908666c465471ad8888d588538b1588894e13738829982e333ddb",
+      "bundle_path_digest": "sha256:7acddb15739908666c465471ad8888d588538b1588894e13738829982e333ddb",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-02T08:27:18.144000+00:00",
+      "csv_description": "APIMatic CodeGen Operator deploys the APIMatic CodeGen application to Kubernetes and RedHat with all necessary resources and configurations. More information can be found [here](https://github.com/apimatic/apimatic-codegen-operator/blob/main/README.md)",
+      "csv_display_name": "APIMatic CodeGen Operator",
+      "csv_metadata_description": "API CodeGen Operator deploys the APIMatic CodeGen Application to Kubernetes and OpenShift clusters",
+      "csv_name": "apimatic-codegen-operator.v1.9.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:49:25.872000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "apimatic-codegen-operator",
+      "provided_apis": [
+        {
+          "group": "apps.apimatic.io",
+          "kind": "CodeGen",
+          "plural": "codegens",
+          "version": "v1beta2"
+        }
+      ],
+      "provider": "APIMatic.io",
+      "related_images": [
+        {
+          "digest": "sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "image": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-ubi8@sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "image": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-ubi8@sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "name": "apimatic-codegen-operator-ubi8-707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.9.3",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.9.3",
+      "version_original": "1.9.3"
+    },
+    {
+      "_id": "62e8e0bca9a2233d923f5ddf",
+      "alm_examples": [
+        {
+          "api_version": "apps.apimatic.io/v1beta2",
+          "kind": "CodeGen",
+          "metadata": {
+            "name": "codegen-sample"
+          },
+          "spec": {
+            "licenseSpec": {
+              "licenseSourceType": "LicenseBlob",
+              "licenseSourceValue": "PExpY2Vuc2U+DQogIDxJZD41MDVlNzM4Ny0xZmIxLTQ4ZDQtOGRmMS1iYjk3NGEyNjM2MDM8L0lkPg0KICA8VHlwZT5TdGFuZGFyZDwvVHlwZT4NCiAgPEV4cGlyYXRpb24+RnJpLCAxNyBNYXkgMjA1MiAwNzoxOTozOSBHTVQ8L0V4cGlyYXRpb24+DQogIDxRdWFudGl0eT4yPC9RdWFudGl0eT4NCiAgPFByb2R1Y3RGZWF0dXJlcz4NCiAgICA8RmVhdHVyZSBuYW1lPSJpbXBvcnRGb3JtYXRzIj5BUElCbHVlUHJpbnQsQVBJRWxlbWVudHMsUG9zdG1hbjIsV3NkbCxXQURMMjAwOSxXQURMMjAwNixSYW1sLFJhbWwxMCxTd2FnZ2VyMjAsU3dhZ2dlcllhbWwsU3dhZ2dlcjEwLE9wZW5BcGkzSnNvbixPcGVuQXBpM1lhbWwsSU9Eb2NzLElPRG9jc1YwMzE0LEluc29tbmlhLEluc29tbmlhWWFtbCxSQU1MQXNKc29uLEdvb2dsZURpc2NvdmVyeSxQb3N0bWFuPC9GZWF0dXJlPg0KICAgIDxGZWF0dXJlIG5hbWU9ImV4cG9ydEZvcm1hdHMiPlN3YWdnZXIyMCxTd2FnZ2VyWWFtbCxTd2FnZ2VyMTAsT3BlbkFwaTNKc29uLE9wZW5BcGkzWWFtbCxXc2RsLEFQSUJsdWVQcmludCxBUElFbGVtZW50cyxQb3N0bWFuMixXQURMMjAwOSxXQURMMjAwNixXU0RMLElPRG9jcyxJT0RvY3NWMDMxNCxSQU1MLFJBTUwxMCxHb29nbGVEaXNjb3ZlcnksUG9zdG1hbjIwLEluc29tbmlhLEluc29tbmlhWWFtbDwvRmVhdHVyZT4NCiAgICA8RmVhdHVyZSBuYW1lPSJwbGF0Zm9ybXMiPjwvRmVhdHVyZT4NCiAgPC9Qcm9kdWN0RmVhdHVyZXM+DQogIDxDdXN0b21lcj4NCiAgICA8TmFtZT5EZXZlbG9wZXI8L05hbWU+DQogICAgPEVtYWlsPmRldmVsb3BlckBhcGltYXRpYy5pbzwvRW1haWw+DQogIDwvQ3VzdG9tZXI+DQogIDxTaWduYXR1cmU+TUVVQ0lRRE1yTlY0dE1PUzEwUExiZ1Z0QkVvTHZ6ZGd1UDkzUnk5Tm9pMHBsS2lWa2dJZ1ZOVWtoWTVoS2xiZFBLc1pMcDZrcnZKODV0WUdHUHFBV1gxblkyUUx2NjQ9PC9TaWduYXR1cmU+DQo8L0xpY2Vuc2U+"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-bundle@sha256:7acddb15739908666c465471ad8888d588538b1588894e13738829982e333ddb",
+      "bundle_path_digest": "sha256:7acddb15739908666c465471ad8888d588538b1588894e13738829982e333ddb",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-02T08:30:52.113000+00:00",
+      "csv_description": "APIMatic CodeGen Operator deploys the APIMatic CodeGen application to Kubernetes and RedHat with all necessary resources and configurations. More information can be found [here](https://github.com/apimatic/apimatic-codegen-operator/blob/main/README.md)",
+      "csv_display_name": "APIMatic CodeGen Operator",
+      "csv_metadata_description": "API CodeGen Operator deploys the APIMatic CodeGen Application to Kubernetes and OpenShift clusters",
+      "csv_name": "apimatic-codegen-operator.v1.9.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:06:54.885000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "apimatic-codegen-operator",
+      "provided_apis": [
+        {
+          "group": "apps.apimatic.io",
+          "kind": "CodeGen",
+          "plural": "codegens",
+          "version": "v1beta2"
+        }
+      ],
+      "provider": "APIMatic.io",
+      "related_images": [
+        {
+          "digest": "sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "image": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-ubi8@sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "image": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-ubi8@sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "name": "apimatic-codegen-operator-ubi8-707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.9.3",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.9.3",
+      "version_original": "1.9.3"
+    },
+    {
+      "_id": "62e8e2201c1f32c818c66698",
+      "alm_examples": [
+        {
+          "api_version": "apps.apimatic.io/v1beta2",
+          "kind": "CodeGen",
+          "metadata": {
+            "name": "codegen-sample"
+          },
+          "spec": {
+            "licenseSpec": {
+              "licenseSourceType": "LicenseBlob",
+              "licenseSourceValue": "PExpY2Vuc2U+DQogIDxJZD41MDVlNzM4Ny0xZmIxLTQ4ZDQtOGRmMS1iYjk3NGEyNjM2MDM8L0lkPg0KICA8VHlwZT5TdGFuZGFyZDwvVHlwZT4NCiAgPEV4cGlyYXRpb24+RnJpLCAxNyBNYXkgMjA1MiAwNzoxOTozOSBHTVQ8L0V4cGlyYXRpb24+DQogIDxRdWFudGl0eT4yPC9RdWFudGl0eT4NCiAgPFByb2R1Y3RGZWF0dXJlcz4NCiAgICA8RmVhdHVyZSBuYW1lPSJpbXBvcnRGb3JtYXRzIj5BUElCbHVlUHJpbnQsQVBJRWxlbWVudHMsUG9zdG1hbjIsV3NkbCxXQURMMjAwOSxXQURMMjAwNixSYW1sLFJhbWwxMCxTd2FnZ2VyMjAsU3dhZ2dlcllhbWwsU3dhZ2dlcjEwLE9wZW5BcGkzSnNvbixPcGVuQXBpM1lhbWwsSU9Eb2NzLElPRG9jc1YwMzE0LEluc29tbmlhLEluc29tbmlhWWFtbCxSQU1MQXNKc29uLEdvb2dsZURpc2NvdmVyeSxQb3N0bWFuPC9GZWF0dXJlPg0KICAgIDxGZWF0dXJlIG5hbWU9ImV4cG9ydEZvcm1hdHMiPlN3YWdnZXIyMCxTd2FnZ2VyWWFtbCxTd2FnZ2VyMTAsT3BlbkFwaTNKc29uLE9wZW5BcGkzWWFtbCxXc2RsLEFQSUJsdWVQcmludCxBUElFbGVtZW50cyxQb3N0bWFuMixXQURMMjAwOSxXQURMMjAwNixXU0RMLElPRG9jcyxJT0RvY3NWMDMxNCxSQU1MLFJBTUwxMCxHb29nbGVEaXNjb3ZlcnksUG9zdG1hbjIwLEluc29tbmlhLEluc29tbmlhWWFtbDwvRmVhdHVyZT4NCiAgICA8RmVhdHVyZSBuYW1lPSJwbGF0Zm9ybXMiPjwvRmVhdHVyZT4NCiAgPC9Qcm9kdWN0RmVhdHVyZXM+DQogIDxDdXN0b21lcj4NCiAgICA8TmFtZT5EZXZlbG9wZXI8L05hbWU+DQogICAgPEVtYWlsPmRldmVsb3BlckBhcGltYXRpYy5pbzwvRW1haWw+DQogIDwvQ3VzdG9tZXI+DQogIDxTaWduYXR1cmU+TUVVQ0lRRE1yTlY0dE1PUzEwUExiZ1Z0QkVvTHZ6ZGd1UDkzUnk5Tm9pMHBsS2lWa2dJZ1ZOVWtoWTVoS2xiZFBLc1pMcDZrcnZKODV0WUdHUHFBV1gxblkyUUx2NjQ9PC9TaWduYXR1cmU+DQo8L0xpY2Vuc2U+"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-bundle@sha256:7acddb15739908666c465471ad8888d588538b1588894e13738829982e333ddb",
+      "bundle_path_digest": "sha256:7acddb15739908666c465471ad8888d588538b1588894e13738829982e333ddb",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-02T08:36:48.571000+00:00",
+      "csv_description": "APIMatic CodeGen Operator deploys the APIMatic CodeGen application to Kubernetes and RedHat with all necessary resources and configurations. More information can be found [here](https://github.com/apimatic/apimatic-codegen-operator/blob/main/README.md)",
+      "csv_display_name": "APIMatic CodeGen Operator",
+      "csv_metadata_description": "API CodeGen Operator deploys the APIMatic CodeGen Application to Kubernetes and OpenShift clusters",
+      "csv_name": "apimatic-codegen-operator.v1.9.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:15:36.037000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "apimatic-codegen-operator",
+      "provided_apis": [
+        {
+          "group": "apps.apimatic.io",
+          "kind": "CodeGen",
+          "plural": "codegens",
+          "version": "v1beta2"
+        }
+      ],
+      "provider": "APIMatic.io",
+      "related_images": [
+        {
+          "digest": "sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "image": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-ubi8@sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "image": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-ubi8@sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "name": "apimatic-codegen-operator-ubi8-707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.9.3",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.9.3",
+      "version_original": "1.9.3"
+    },
+    {
+      "_id": "62e8e3cbac578be24da264d4",
+      "alm_examples": [
+        {
+          "api_version": "apps.apimatic.io/v1beta2",
+          "kind": "CodeGen",
+          "metadata": {
+            "name": "codegen-sample"
+          },
+          "spec": {
+            "licenseSpec": {
+              "licenseSourceType": "LicenseBlob",
+              "licenseSourceValue": "PExpY2Vuc2U+DQogIDxJZD41MDVlNzM4Ny0xZmIxLTQ4ZDQtOGRmMS1iYjk3NGEyNjM2MDM8L0lkPg0KICA8VHlwZT5TdGFuZGFyZDwvVHlwZT4NCiAgPEV4cGlyYXRpb24+RnJpLCAxNyBNYXkgMjA1MiAwNzoxOTozOSBHTVQ8L0V4cGlyYXRpb24+DQogIDxRdWFudGl0eT4yPC9RdWFudGl0eT4NCiAgPFByb2R1Y3RGZWF0dXJlcz4NCiAgICA8RmVhdHVyZSBuYW1lPSJpbXBvcnRGb3JtYXRzIj5BUElCbHVlUHJpbnQsQVBJRWxlbWVudHMsUG9zdG1hbjIsV3NkbCxXQURMMjAwOSxXQURMMjAwNixSYW1sLFJhbWwxMCxTd2FnZ2VyMjAsU3dhZ2dlcllhbWwsU3dhZ2dlcjEwLE9wZW5BcGkzSnNvbixPcGVuQXBpM1lhbWwsSU9Eb2NzLElPRG9jc1YwMzE0LEluc29tbmlhLEluc29tbmlhWWFtbCxSQU1MQXNKc29uLEdvb2dsZURpc2NvdmVyeSxQb3N0bWFuPC9GZWF0dXJlPg0KICAgIDxGZWF0dXJlIG5hbWU9ImV4cG9ydEZvcm1hdHMiPlN3YWdnZXIyMCxTd2FnZ2VyWWFtbCxTd2FnZ2VyMTAsT3BlbkFwaTNKc29uLE9wZW5BcGkzWWFtbCxXc2RsLEFQSUJsdWVQcmludCxBUElFbGVtZW50cyxQb3N0bWFuMixXQURMMjAwOSxXQURMMjAwNixXU0RMLElPRG9jcyxJT0RvY3NWMDMxNCxSQU1MLFJBTUwxMCxHb29nbGVEaXNjb3ZlcnksUG9zdG1hbjIwLEluc29tbmlhLEluc29tbmlhWWFtbDwvRmVhdHVyZT4NCiAgICA8RmVhdHVyZSBuYW1lPSJwbGF0Zm9ybXMiPjwvRmVhdHVyZT4NCiAgPC9Qcm9kdWN0RmVhdHVyZXM+DQogIDxDdXN0b21lcj4NCiAgICA8TmFtZT5EZXZlbG9wZXI8L05hbWU+DQogICAgPEVtYWlsPmRldmVsb3BlckBhcGltYXRpYy5pbzwvRW1haWw+DQogIDwvQ3VzdG9tZXI+DQogIDxTaWduYXR1cmU+TUVVQ0lRRE1yTlY0dE1PUzEwUExiZ1Z0QkVvTHZ6ZGd1UDkzUnk5Tm9pMHBsS2lWa2dJZ1ZOVWtoWTVoS2xiZFBLc1pMcDZrcnZKODV0WUdHUHFBV1gxblkyUUx2NjQ9PC9TaWduYXR1cmU+DQo8L0xpY2Vuc2U+"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-bundle@sha256:7acddb15739908666c465471ad8888d588538b1588894e13738829982e333ddb",
+      "bundle_path_digest": "sha256:7acddb15739908666c465471ad8888d588538b1588894e13738829982e333ddb",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-02T08:43:55.583000+00:00",
+      "csv_description": "APIMatic CodeGen Operator deploys the APIMatic CodeGen application to Kubernetes and RedHat with all necessary resources and configurations. More information can be found [here](https://github.com/apimatic/apimatic-codegen-operator/blob/main/README.md)",
+      "csv_display_name": "APIMatic CodeGen Operator",
+      "csv_metadata_description": "API CodeGen Operator deploys the APIMatic CodeGen Application to Kubernetes and OpenShift clusters",
+      "csv_name": "apimatic-codegen-operator.v1.9.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:07:59.377000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "apimatic-codegen-operator",
+      "provided_apis": [
+        {
+          "group": "apps.apimatic.io",
+          "kind": "CodeGen",
+          "plural": "codegens",
+          "version": "v1beta2"
+        }
+      ],
+      "provider": "APIMatic.io",
+      "related_images": [
+        {
+          "digest": "sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "image": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-ubi8@sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "image": "registry.connect.redhat.com/apimatic/apimatic-codegen-operator-ubi8@sha256:707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6",
+          "name": "apimatic-codegen-operator-ubi8-707deb6d885c396a49e6c9a9ac084608d8efff1497fe594e715a19da864608f6-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.9.3",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.9.3",
+      "version_original": "1.9.3"
+    },
+    {
+      "_id": "62e9384f1c1f32c818c67082",
+      "alm_examples": [
+        {
+          "api_version": "operator.antrea.vmware.com/v1",
+          "kind": "AntreaInstall",
+          "metadata": {
+            "name": "antrea-install",
+            "namespace": "antrea-operator"
+          },
+          "spec": {
+            "antreaAgentConfig": "# FeatureGates is a map of feature names to bools that enable or disable experimental features.\nfeatureGates:\n# Enable AntreaProxy which provides ServiceLB for in-cluster Services in antrea-agent.\n# It should be enabled on Windows, otherwise NetworkPolicy will not take effect on\n# Service traffic.\n#  AntreaProxy: true\n\n# Enable EndpointSlice support in AntreaProxy. Don't enable this feature unless that EndpointSlice\n# API version v1beta1 is supported and set as enabled in Kubernetes. If AntreaProxy is not enabled,\n# this flag will not take effect.\n#  EndpointSlice: false\n\n# Enable traceflow which provides packet tracing feature to diagnose network issue.\n#  Traceflow: true\n\n# Enable NodePortLocal feature to make the Pods reachable externally through NodePort\n#  NodePortLocal: true\n\n# Enable Antrea ClusterNetworkPolicy feature to complement K8s NetworkPolicy for cluster admins\n# to define security policies which apply to the entire cluster, and Antrea NetworkPolicy\n# feature that supports priorities, rule actions and externalEntities in the future.\n#  AntreaPolicy: true\n\n# Enable flowexporter which exports polled conntrack connections as IPFIX flow records from each\n# agent to a configured collector.\n#  FlowExporter: false\n\n# Enable collecting and exposing NetworkPolicy statistics.\n#  NetworkPolicyStats: true\n\n# Enable controlling SNAT IPs of Pod egress traffic.\n#  Egress: false\n\n# Enable AntreaIPAM, which can allocate IP addresses from IPPools. AntreaIPAM is required by the\n# bridging mode and allocates IPs to Pods in bridging mode.\n#  AntreaIPAM: false\n\n# Enable multicast traffic. This feature is supported only with noEncap mode.\n#  Multicast: false\n\n# Enable support for provisioning secondary network interfaces for Pods (using\n# Pod annotations). At the moment, Antrea can only create secondary network\n# interfaces using SR-IOV VFs on baremetal Nodes.\n#  SecondaryNetwork: false\n\n# Enable managing external IPs of Services of LoadBalancer type.\n#  ServiceExternalIP: false\n\n# Name of the OpenVSwitch bridge antrea-agent will create and use.\n# Make sure it doesn't conflict with your existing OpenVSwitch bridges.\n#ovsBridge: br-int\n\n# Datapath type to use for the OpenVSwitch bridge created by Antrea. Supported values are:\n# - system\n# - netdev\n# 'system' is the default value and corresponds to the kernel datapath. Use 'netdev' to run\n# OVS in userspace mode. Userspace mode requires the tun device driver to be available.\n#ovsDatapathType: system\n\n# Name of the interface antrea-agent will create and use for host <--> pod communication.\n# Make sure it doesn't conflict with your existing interfaces.\n#hostGateway: antrea-gw0\n\n# Determines how traffic is encapsulated. It has the following options:\n# encap(default):    Inter-node Pod traffic is always encapsulated and Pod to external network\n#                    traffic is SNAT'd.\n# noEncap:           Inter-node Pod traffic is not encapsulated; Pod to external network traffic is\n#                    SNAT'd if noSNAT is not set to true. Underlying network must be capable of\n#                    supporting Pod traffic across IP subnets.\n# hybrid:            noEncap if source and destination Nodes are on the same subnet, otherwise encap.\n# networkPolicyOnly: Antrea enforces NetworkPolicy only, and utilizes CNI chaining and delegates Pod\n#                    IPAM and connectivity to the primary CNI.\n#\n#trafficEncapMode: encap\n\n# Whether or not to SNAT (using the Node IP) the egress traffic from a Pod to the external network.\n# This option is for the noEncap traffic mode only, and the default value is false. In the noEncap\n# mode, if the cluster's Pod CIDR is reachable from the external network, then the Pod traffic to\n# the external network needs not be SNAT'd. In the networkPolicyOnly mode, antrea-agent never\n# performs SNAT and this option will be ignored; for other modes it must be set to false.\n#noSNAT: false\n\n# Tunnel protocols used for encapsulating traffic across Nodes. If WireGuard is enabled in trafficEncryptionMode,\n# this option will not take effect. Supported values:\n# - geneve (default)\n# - vxlan\n# - gre\n# - stt\n#tunnelType: geneve\n\n# Determines how tunnel traffic is encrypted. Currently encryption only works with encap mode.\n# It has the following options:\n# - none (default):  Inter-node Pod traffic will not be encrypted.\n# - ipsec:           Enable IPsec (ESP) encryption for Pod traffic across Nodes. Antrea uses\n#                    Preshared Key (PSK) for IKE authentication. When IPsec tunnel is enabled,\n#                    the PSK value must be passed to Antrea Agent through an environment\n#                    variable: ANTREA_IPSEC_PSK.\n# - wireGuard:       Enable WireGuard for tunnel traffic encryption.\n#trafficEncryptionMode: none\n\n# Enable bridging mode of Pod network on Nodes, in which the Node's transport interface is connected\n# to the OVS bridge, and cross-Node/VLAN traffic from AntreaIPAM Pods (Pods whose IP addresses are\n# allocated by AntreaIPAM from IPPools) is sent to the underlay network via the uplink, and\n# forwarded/routed by the underlay network.\n# This option requires the `AntreaIPAM` feature gate to be enabled. At this moment, it supports only\n# IPv4 and Linux Nodes, and can be enabled only when `ovsDatapathType` is `system`,\n# `trafficEncapMode` is `noEncap`, and `noSNAT` is true.\n#enableBridgingMode: false\n\n# Default MTU to use for the host gateway interface and the network interface of each Pod.\n# If omitted, antrea-agent will discover the MTU of the Node's primary interface and\n# also adjust MTU to accommodate for tunnel encapsulation overhead (if applicable).\n#defaultMTU: 0\n\n# wireGuard specifies WireGuard related configurations.\nwireGuard:\n#  The port for WireGuard to receive traffic.\n#  port: 51820\n\negress:\n#  exceptCIDRs is the CIDR ranges to which outbound Pod traffic will not be SNAT'd by Egresses.\n#  exceptCIDRs: []\n\n# ClusterIP CIDR range for Services. It's required when AntreaProxy is not enabled, and should be\n# set to the same value as the one specified by --service-cluster-ip-range for kube-apiserver. When\n# AntreaProxy is enabled, this parameter is not needed and will be ignored if provided.\n#serviceCIDR: 10.96.0.0/12\n\n# ClusterIP CIDR range for IPv6 Services. It's required when using kube-proxy to provide IPv6 Service in a Dual-Stack\n# cluster or an IPv6 only cluster. The value should be the same as the configuration for kube-apiserver specified by\n# --service-cluster-ip-range. When AntreaProxy is enabled, this parameter is not needed.\n# No default value for this field.\n#serviceCIDRv6:\n\n# The port for the antrea-agent APIServer to serve on.\n# Note that if it's set to another value, the `containerPort` of the `api` port of the\n# `antrea-agent` container must be set to the same value.\n#apiPort: 10350\n\n# Enable metrics exposure via Prometheus. Initializes Prometheus metrics listener.\n#enablePrometheusMetrics: true\n\n# Provide the IPFIX collector address as a string with format <HOST>:[<PORT>][:<PROTO>].\n# HOST can either be the DNS name or the IP of the Flow Collector. For example,\n# \"flow-aggregator.flow-aggregator.svc\" can be provided as DNS name to connect\n# to the Antrea Flow Aggregator service. If IP, it can be either IPv4 or IPv6.\n# However, IPv6 address should be wrapped with [].\n# If PORT is empty, we default to 4739, the standard IPFIX port.\n# If no PROTO is given, we consider \"tls\" as default. We support \"tls\", \"tcp\" and\n# \"udp\" protocols. \"tls\" is used for securing communication between flow exporter and\n# flow aggregator.\n#flowCollectorAddr: \"flow-aggregator.flow-aggregator.svc:4739:tls\"\n\n# Provide flow poll interval as a duration string. This determines how often the\n# flow exporter dumps connections from the conntrack module. Flow poll interval\n# should be greater than or equal to 1s (one second).\n# Valid time units are \"ns\", \"us\" (or \"\u00b5s\"), \"ms\", \"s\", \"m\", \"h\".\n#flowPollInterval: \"5s\"\n\n# Provide the active flow export timeout, which is the timeout after which a flow\n# record is sent to the collector for active flows. Thus, for flows with a continuous\n# stream of packets, a flow record will be exported to the collector once the elapsed\n# time since the last export event is equal to the value of this timeout.\n# Valid time units are \"ns\", \"us\" (or \"\u00b5s\"), \"ms\", \"s\", \"m\", \"h\".\n#activeFlowExportTimeout: \"30s\"\n\n# Provide the idle flow export timeout, which is the timeout after which a flow\n# record is sent to the collector for idle flows. A flow is considered idle if no\n# packet matching this flow has been observed since the last export event.\n# Valid time units are \"ns\", \"us\" (or \"\u00b5s\"), \"ms\", \"s\", \"m\", \"h\".\n#idleFlowExportTimeout: \"15s\"\n\nnodePortLocal:\n# Enable NodePortLocal, a feature used to make Pods reachable using port forwarding on the host. To\n# enable this feature, you need to set \"enable\" to true, and ensure that the NodePortLocal feature\n# gate is also enabled (which is the default).\n#  enable: false\n# Provide the port range used by NodePortLocal. When the NodePortLocal feature is enabled, a port\n# from that range will be assigned whenever a Pod's container defines a specific port to be exposed\n# (each container can define a list of ports as pod.spec.containers[].ports), and all Node traffic\n# directed to that port will be forwarded to the Pod.\n#  portRange: 61000-62000\n\n# Provide the address of Kubernetes apiserver, to override any value provided in kubeconfig or InClusterConfig.\n# Defaults to \"\". It must be a host string, a host:port pair, or a URL to the base of the apiserver.\n#kubeAPIServerOverride: \"\"\n\n# Comma-separated list of Cipher Suites. If omitted, the default Go Cipher Suites will be used.\n# https://golang.org/pkg/crypto/tls/#pkg-constants\n# Note that TLS1.3 Cipher Suites cannot be added to the list. But the apiserver will always\n# prefer TLS1.3 Cipher Suites whenever possible.\n#tlsCipherSuites:\n\n# TLS min version from: VersionTLS10, VersionTLS11, VersionTLS12, VersionTLS13.\n#tlsMinVersion:\n\n# The name of the interface on Node which is used for tunneling or routing the traffic across Nodes.\n# If there are multiple IP addresses configured on the interface, the first one is used. The IP\n# address used for tunneling or routing traffic to remote Nodes is decided in the following order of\n# preference (from highest to lowest):\n# 1. transportInterface\n# 2. transportInterfaceCIDRs\n# 3. The Node IP\n#transportInterface:\n\n# The names of the interfaces on Nodes that are used to forward multicast traffic.\n# Defaults to transport interface if not set.\n#multicastInterfaces: []\n\n# The network CIDRs of the interface on Node which is used for tunneling or routing the traffic across\n# Nodes. If there are multiple interfaces configured the same network CIDR, the first one is used. The\n# IP address used for tunneling or routing traffic to remote Nodes is decided in the following order of\n# preference (from highest to lowest):\n# 1. transportInterface\n# 2. transportInterfaceCIDRs\n# 3. The Node IP\n#transportInterfaceCIDRs: [<IPv4 CIDR>,<IPv6 CIDR>]\n\n# Option antreaProxy contains AntreaProxy related configuration options.\nantreaProxy:\n# ProxyAll tells antrea-agent to proxy all Service traffic, including NodePort, LoadBalancer, and ClusterIP traffic,\n# regardless of where they come from. Therefore, running kube-proxy is no longer required. This requires the AntreaProxy\n# feature to be enabled.\n# Note that this option is experimental. If kube-proxy is removed, option kubeAPIServerOverride must be used to access\n# apiserver directly.\n#proxyAll: false\n# A string array of values which specifies the host IPv4/IPv6 addresses for NodePort. Values can be valid IP blocks.\n# (e.g. 1.2.3.0/24, 1.2.3.4/32). An empty string slice is meant to select all host IPv4/IPv6 addresses.\n# Note that the option is only valid when proxyAll is true.\n#nodePortAddresses: []\n# An array of string values to specify a list of Services which should be ignored by AntreaProxy (traffic to these\n# Services will not be load-balanced). Values can be a valid ClusterIP (e.g. 10.11.1.2) or a Service name\n# with Namespace (e.g. kube-system/kube-dns)\n#skipServices: []\n# When ProxyLoadBalancerIPs is set to false, AntreaProxy no longer load-balances traffic destined to the\n# External IPs of LoadBalancer Services. This is useful when the external LoadBalancer provides additional\n# capabilities (e.g. TLS termination) and it is desirable for Pod-to-ExternalIP traffic to be sent to the\n# external LoadBalancer instead of being load-balanced to an Endpoint directly by AntreaProxy.\n# Note that setting ProxyLoadBalancerIPs to false usually only makes sense when ProxyAll is set to true and\n# kube-proxy is removed from the cluser, otherwise kube-proxy will still load-balance this traffic.\n#proxyLoadBalancerIPs: true\n",
+            "antreaCNIConfig": "{\n    \"cniVersion\":\"0.3.0\",\n    \"name\": \"antrea\",\n    \"plugins\": [\n        {\n            \"type\": \"antrea\",\n            \"ipam\": {\n                \"type\": \"host-local\"\n            }\n        },\n        {\n            \"type\": \"portmap\",\n            \"capabilities\": {\"portMappings\": true}\n        },\n        {\n            \"type\": \"bandwidth\",\n            \"capabilities\": {\"bandwidth\": true}\n        }\n    ]\n}\n",
+            "antreaControllerConfig": "# FeatureGates is a map of feature names to bools that enable or disable experimental features.\nfeatureGates:\n# Enable traceflow which provides packet tracing feature to diagnose network issue.\n#  Traceflow: true\n\n# Enable Antrea ClusterNetworkPolicy feature to complement K8s NetworkPolicy for cluster admins\n# to define security policies which apply to the entire cluster, and Antrea NetworkPolicy\n# feature that supports priorities, rule actions and externalEntities in the future.\n#  AntreaPolicy: true\n\n# Enable collecting and exposing NetworkPolicy statistics.\n#  NetworkPolicyStats: true\n\n# Enable controlling SNAT IPs of Pod egress traffic.\n#  Egress: false\n\n# Run Kubernetes NodeIPAMController with Antrea.\n#  NodeIPAM: false\n\n# Enable flexible IPAM mode for Antrea. This mode allows to assign IP Ranges to Namespaces,\n# Deployments and StatefulSets via IP Pool annotation.\n#  AntreaIPAM: false\n\n# Enable managing external IPs of Services of LoadBalancer type.\n#  ServiceExternalIP: false\n\n# The port for the antrea-controller APIServer to serve on.\n# Note that if it's set to another value, the `containerPort` of the `api` port of the\n# `antrea-controller` container must be set to the same value.\n#apiPort: 10349\n\n# Enable metrics exposure via Prometheus. Initializes Prometheus metrics listener.\n#enablePrometheusMetrics: true\n\n# Indicates whether to use auto-generated self-signed TLS certificate.\n# If false, A Secret named \"antrea-controller-tls\" must be provided with the following keys:\n#   ca.crt: <CA certificate>\n#   tls.crt: <TLS certificate>\n#   tls.key: <TLS private key>\n# And the Secret must be mounted to directory \"/var/run/antrea/antrea-controller-tls\" of the\n# antrea-controller container.\n#selfSignedCert: true\n\n# Comma-separated list of Cipher Suites. If omitted, the default Go Cipher Suites will be used.\n# https://golang.org/pkg/crypto/tls/#pkg-constants\n# Note that TLS1.3 Cipher Suites cannot be added to the list. But the apiserver will always\n# prefer TLS1.3 Cipher Suites whenever possible.\n#tlsCipherSuites:\n\n# TLS min version from: VersionTLS10, VersionTLS11, VersionTLS12, VersionTLS13.\n#tlsMinVersion:\n\nnodeIPAM:\n# Enable the integrated Node IPAM controller within the Antrea controller.\n#  enableNodeIPAM: false\n\n# CIDR ranges for Pods in cluster. String array containing single CIDR range, or multiple ranges.\n# The CIDRs could be either IPv4 or IPv6. At most one CIDR may be specified for each IP family.\n# Value ignored when enableNodeIPAM is false.\n#  clusterCIDRs: []\n\n# CIDR ranges for Services in cluster. It is not necessary to specify it when there is no overlap with clusterCIDRs.\n# Value ignored when enableNodeIPAM is false.\n#  serviceCIDR:\n#  serviceCIDRv6:\n\n# Mask size for IPv4 Node CIDR in IPv4 or dual-stack cluster. Value ignored when enableNodeIPAM is false\n# or when IPv4 Pod CIDR is not configured. Valid range is 16 to 30.\n#  nodeCIDRMaskSizeIPv4: 24\n\n# Mask size for IPv6 Node CIDR in IPv6 or dual-stack cluster. Value ignored when enableNodeIPAM is false\n# or when IPv6 Pod CIDR is not configured. Valid range is 64 to 126.\n#  nodeCIDRMaskSizeIPv6: 64\n",
+            "antreaImage": "antrea/antrea-ubi:v1.7.0"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/wavefronthq/antrea-openshift-operator@sha256:8d01228af9c1292672297ddef337a9854fd37a9736028009937376ab6f97c22f",
+      "bundle_path_digest": "sha256:8d01228af9c1292672297ddef337a9854fd37a9736028009937376ab6f97c22f",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-08-02T14:44:31.460000+00:00",
+      "csv_description": "An operator which installs Antrea network CNI plugin on the Kubernetes cluster.",
+      "csv_display_name": "Antrea Operator",
+      "csv_metadata_description": "An operator which installs Antrea network CNI plugin on the Kubernetes cluster.",
+      "csv_name": "antrea-operator-for-kubernetes.v1.7.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:52:59.008000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "antrea-operator-for-kubernetes",
+      "provided_apis": [
+        {
+          "group": "operator.antrea.vmware.com",
+          "kind": "AntreaInstall",
+          "plural": "antreainstalls",
+          "version": "v1"
+        }
+      ],
+      "provider": "antrea.io",
+      "related_images": [
+        {
+          "digest": "sha256:8737f208421d295be92cc42daf369f2cef88ebc6098e8ee474b352a1075bbe39",
+          "image": "antrea/antrea-operator@sha256:8737f208421d295be92cc42daf369f2cef88ebc6098e8ee474b352a1075bbe39",
+          "name": "antrea-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.7.0",
+      "version_original": "1.7.0"
     }
   ],
   "page": 38,
   "page_size": 100,
-  "total": 4866
+  "total": 4862
 }
