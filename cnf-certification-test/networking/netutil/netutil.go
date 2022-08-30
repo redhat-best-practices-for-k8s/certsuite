@@ -107,7 +107,7 @@ const (
 	}
 	`
 	// https://bugzilla.redhat.com/show_bug.cgi?id=1915027
-	openshiftMachineConfigIptables = `*filter
+	openshiftMachineConfigIPtables = `*filter
 	:INPUT ACCEPT [0:0]
 	:FORWARD ACCEPT [0:0]
 	:OUTPUT ACCEPT [0:0]
@@ -120,6 +120,15 @@ const (
 	-A OUTPUT -d 169.254.169.254/32 -p tcp -m tcp ! --dport 53 -j REJECT --reject-with icmp-port-unreachable
 	-A OUTPUT -d 169.254.169.254/32 -p udp -m udp ! --dport 53 -j REJECT --reject-with icmp-port-unreachable
 	COMMIT
+	`
+	openshiftMachineConfigIP6tables = `*filter
+	:INPUT ACCEPT [0:0]
+	:FORWARD ACCEPT [0:0]
+	:OUTPUT ACCEPT [0:0]
+	-A FORWARD -p tcp -m tcp --dport 22623 --tcp-flags FIN,SYN,RST,ACK SYN -j REJECT --reject-with icmp6-port-unreachable
+	-A FORWARD -p tcp -m tcp --dport 22624 --tcp-flags FIN,SYN,RST,ACK SYN -j REJECT --reject-with icmp6-port-unreachable
+	-A OUTPUT -p tcp -m tcp --dport 22623 --tcp-flags FIN,SYN,RST,ACK SYN -j REJECT --reject-with icmp6-port-unreachable
+	-A OUTPUT -p tcp -m tcp --dport 22624 --tcp-flags FIN,SYN,RST,ACK SYN -j REJECT --reject-with icmp6-port-unreachable
 	`
 )
 
@@ -136,7 +145,8 @@ func isIPOrNSTablesPresent(cut *provider.Container, command string) (bool, strin
 		return true, outStr, nil
 	}
 	if strings.Contains(stripSpaceTabLine(outStr), stripSpaceTabLine(openshiftMachineConfigNft)) ||
-		strings.Contains(stripSpaceTabLine(outStr), stripSpaceTabLine(openshiftMachineConfigIptables)) {
+		strings.Contains(stripSpaceTabLine(outStr), stripSpaceTabLine(openshiftMachineConfigIPtables)) ||
+		strings.Contains(stripSpaceTabLine(outStr), stripSpaceTabLine(openshiftMachineConfigIP6tables)) {
 		return false, outStr, nil
 	}
 
