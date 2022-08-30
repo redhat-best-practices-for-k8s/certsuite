@@ -30,7 +30,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/services"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
@@ -330,23 +329,26 @@ func testIsIPTablesConfigPresent(env *provider.TestEnvironment) {
 //nolint:funlen
 func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
 	ginkgo.By("Test for Deny All in network policies")
-	var namespacesMissingDenyAllDefaultPolicies []string
-	var processedNamespaces []string
+	var podsMissingDenyAllDefaultPolicies []string
 
+	// Loop through the pods, looking for corresponding entries within a deny-all network policy (both ingress and egress).
+	// This ensures that each pod is accounted for that we are tasked with testing and excludes any pods that are not marked
+	// for testing (via the labels).
 	for _, put := range env.Pods {
 		denyAllEgressFound := false
 		denyAllIngressFound := false
 
-		// Short circuit if the namespace has already been processed
-		if stringhelper.StringInSlice(processedNamespaces, put.Data.Namespace, false) {
-			logrus.Debugf("Namespace: %s has already been processed for deny-all network policies.  Skipping.", put.Data.Namespace)
-			break
-		}
-
 		// Look through all of the network policies for a matching namespace.
 		for index := range env.NetworkPolicies {
+			logrus.Debugf("Testing network policy %s against pod %s", env.NetworkPolicies[index].Name, put.String())
+
+			// Skip any network policies that don't match the namespace of the pod we are testing.
+			if env.NetworkPolicies[index].Namespace != put.Data.Namespace {
+				continue
+			}
+
 			// Match the pod namespace with the network policy namespace.
-			if put.Data.Namespace == env.NetworkPolicies[index].Namespace {
+			if policies.LabelsMatch(env.NetworkPolicies[index].Spec.PodSelector, put.Data.Labels) {
 				// Check to see if the network policy is deny-all (and contains ingress, egress, (or both) network policy types)
 				denyAllExists, foundPolicies := policies.IsNetworkPolicyDenyAll(&env.NetworkPolicies[index])
 
@@ -367,16 +369,13 @@ func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
 
 		// Network policy has not been found that contains a deny-all rule for both ingress and egress.
 		if !denyAllIngressFound || !denyAllEgressFound {
-			namespacesMissingDenyAllDefaultPolicies = append(namespacesMissingDenyAllDefaultPolicies, put.Data.Namespace)
-			tnf.ClaimFilePrintf("Namespace %s was found to not have a default deny-all network policy.", put.Data.Namespace)
+			podsMissingDenyAllDefaultPolicies = append(podsMissingDenyAllDefaultPolicies, put.Data.Name)
+			tnf.ClaimFilePrintf("%s was found to not have a default deny-all network policy.", put.Data.Name)
 		}
-
-		// Add current namespace to the list of already processed namespaces to avoid duplicating work.
-		processedNamespaces = append(processedNamespaces, put.Data.Namespace)
 	}
 
-	if n := len(namespacesMissingDenyAllDefaultPolicies); n > 0 {
-		errMsg := fmt.Sprintf("Number of namespaces running CNF pods that do not have default deny-all network policies: %d", n)
+	if n := len(podsMissingDenyAllDefaultPolicies); n > 0 {
+		errMsg := fmt.Sprintf("Number of pods running CNF pods that do not have default deny-all network policies: %d", n)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
 	}

@@ -45,7 +45,13 @@ func TestIsNetworkPolicyDenyAll(t *testing.T) {
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test1",
 				},
-				Spec: networkingv1.NetworkPolicySpec{},
+				Spec: networkingv1.NetworkPolicySpec{
+					PodSelector: metav1.LabelSelector{
+						MatchLabels: map[string]string{
+							"key1": "value1",
+						},
+					},
+				},
 			},
 			expectedPolicies: nil,
 			expectedOutput:   false,
@@ -56,7 +62,11 @@ func TestIsNetworkPolicyDenyAll(t *testing.T) {
 					Name: "test2",
 				},
 				Spec: networkingv1.NetworkPolicySpec{
-					PodSelector: metav1.LabelSelector{},
+					PodSelector: metav1.LabelSelector{
+						MatchLabels: map[string]string{
+							"key1": "value1",
+						},
+					},
 					PolicyTypes: []networkingv1.PolicyType{
 						networkingv1.PolicyTypeEgress,
 						networkingv1.PolicyTypeIngress,

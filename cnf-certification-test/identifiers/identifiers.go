@@ -498,6 +498,7 @@ var (
 	TestNetworkPolicyDenyAllIdentifier = claim.Identifier{
 		Url:     formTestURL(common.AccessControlTestKey, "network-policy-deny-all"),
 		Version: versionOne,
+		Tags:    formTestTags(tagCommon),
 	}
 )
 

@@ -18,13 +18,10 @@ package policies
 
 import (
 	networkingv1 "k8s.io/api/networking/v1"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func IsNetworkPolicyDenyAll(np *networkingv1.NetworkPolicy) (bool, []networkingv1.PolicyType) {
-	if len(np.Spec.PodSelector.MatchLabels) != 0 {
-		return false, nil
-	}
-
 	// As long as we have decided above that there is no pod selector,
 	// we just have to make sure that the policy type is either Ingress or Egress (or both) we can return true.
 	// For more information about deny-all policies, there are some good examples on:
@@ -43,4 +40,21 @@ func IsNetworkPolicyDenyAll(np *networkingv1.NetworkPolicy) (bool, []networkingv
 	}
 
 	return true, np.Spec.PolicyTypes
+}
+
+func LabelsMatch(podSelectorLabels v1.LabelSelector, podLabels map[string]string) bool {
+	labelMatch := false
+	for psLabelKey, psLabelValue := range podSelectorLabels.MatchLabels {
+		for podLabelKey, podLabelValue := range podLabels {
+			if psLabelKey == podLabelKey && psLabelValue == podLabelValue {
+				labelMatch = true
+				break
+			}
+		}
+		if labelMatch {
+			break
+		}
+	}
+
+	return labelMatch
 }
