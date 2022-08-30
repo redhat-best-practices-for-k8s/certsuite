@@ -60,12 +60,58 @@ type TestCaseDescription struct {
 	ExceptionProcess string `json:"exceptionProcess,omitempty" yaml:"exceptionProcess,omitempty"`
 }
 
+func init() {
+	InitCatalog()
+}
+
 func formTestURL(suite, name string) string {
 	return fmt.Sprintf("%s/%s/%s", url, suite, name)
 }
 
 func formTestTags(tags ...string) string {
 	return strings.Join(tags, ",")
+}
+
+func AddCatalogEntry(testID, description, remediation, testType, exception, version, reference string, tags ...string) (aID claim.Identifier) {
+	aID = claim.Identifier{
+		Tags:    formTestTags(tags...),
+		Url:     formTestURL(common.NetworkingTestKey, testID),
+		Version: version,
+	}
+
+	aTCDescription := TestCaseDescription{}
+	aTCDescription.Identifier = aID
+	aTCDescription.Type = testType
+	aTCDescription.Description = formDescription(aID, description)
+	aTCDescription.Remediation = remediation
+	aTCDescription.ExceptionProcess = exception
+	aTCDescription.BestPracticeReference = reference
+
+	Catalog[aID] = aTCDescription
+
+	return aID
+}
+
+var (
+	TestICMPv4ConnectivityIdentifier claim.Identifier
+)
+
+func InitCatalog() map[claim.Identifier]TestCaseDescription {
+	TestICMPv4ConnectivityIdentifier = AddCatalogEntry(
+		"icmpv4-connectivity",
+		`Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network.
+This test case requires the Deployment of the debug daemonset.`,
+		`Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases,
+CNFs may require routing table changes in order to communicate over the Default network. To exclude
+a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.
+The label value is not important, only its presence.`,
+		normativeResult,
+		NoDocumentedProcess,
+		versionOne,
+		bestPracticeDocV1dot3URL+" Section 5.2",
+		tagCommon)
+
+	return Catalog
 }
 
 var (
@@ -140,12 +186,6 @@ var (
 	TestHugepagesNotManuallyManipulated = claim.Identifier{
 		Tags:    formTestTags(tagCommon),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "hugepages-config"),
-		Version: versionOne,
-	}
-	// TestICMPv4ConnectivityIdentifier tests icmpv4 connectivity.
-	TestICMPv4ConnectivityIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon),
-		Url:     formTestURL(common.NetworkingTestKey, "icmpv4-connectivity"),
 		Version: versionOne,
 	}
 	// TestICMPv6ConnectivityIdentifier tests icmpv6 connectivity.
@@ -657,18 +697,6 @@ they are the same.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
-
-	TestICMPv4ConnectivityIdentifier: {
-		Identifier:  TestICMPv4ConnectivityIdentifier,
-		Type:        normativeResult,
-		Remediation: ICMPv4ConnectivityRemediation,
-		Description: formDescription(TestICMPv4ConnectivityIdentifier,
-			`Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network.  This
-test case requires the Deployment of the debug daemonset.`),
-		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
-		ExceptionProcess:      NoDocumentedProcess,
-	},
-
 	TestICMPv6ConnectivityIdentifier: {
 		Identifier:  TestICMPv6ConnectivityIdentifier,
 		Type:        normativeResult,

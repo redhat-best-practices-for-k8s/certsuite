@@ -521,9 +521,9 @@ Test Case Name|icmpv4-connectivity
 Test Case Label|networking-icmpv4-connectivity
 Unique ID|http://test-network-function.com/testcases/networking/icmpv4-connectivity
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/networking/icmpv4-connectivity Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network.  This test case requires the Deployment of the debug daemonset.
+Description|http://test-network-function.com/testcases/networking/icmpv4-connectivity Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.
 Result Type|normative
-Suggested Remediation|Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, 	CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod 	from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is not important, only its presence.
+Suggested Remediation|Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is not important, only its presence.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
 #### icmpv4-connectivity-multus
