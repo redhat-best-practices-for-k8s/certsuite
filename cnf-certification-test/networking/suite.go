@@ -33,7 +33,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
-	v1 "k8s.io/api/networking/v1"
+	networkingv1 "k8s.io/api/networking/v1"
 )
 
 const (
@@ -110,11 +110,6 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		testIsIPTablesConfigPresent(&env)
-	})
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceDualStackIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Services)
-		testDualStackServices(&env)
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetworkPolicyDenyAllIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
@@ -349,28 +344,31 @@ func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
 
 			// Match the pod namespace with the network policy namespace.
 			if policies.LabelsMatch(env.NetworkPolicies[index].Spec.PodSelector, put.Data.Labels) {
-				// Check to see if the network policy is deny-all (and contains ingress, egress, (or both) network policy types)
-				denyAllExists, foundPolicies := policies.IsNetworkPolicyDenyAll(&env.NetworkPolicies[index])
+				// Check if compliant for egress network policy
+				if err := policies.IsNetworkPolicyCompliant(&env.NetworkPolicies[index], networkingv1.PolicyTypeEgress); err != nil {
+					logrus.Error(err)
+				} else {
+					denyAllEgressFound = true
+				}
 
-				if denyAllExists {
-					// Look through the returned policies to make sure they include both ingress and egress.
-					for _, p := range foundPolicies {
-						if p == v1.PolicyTypeEgress {
-							denyAllEgressFound = true
-						}
-
-						if p == v1.PolicyTypeIngress {
-							denyAllIngressFound = true
-						}
-					}
+				// Check if compliant for ingress network policy
+				if err := policies.IsNetworkPolicyCompliant(&env.NetworkPolicies[index], networkingv1.PolicyTypeIngress); err != nil {
+					logrus.Error(err)
+				} else {
+					denyAllIngressFound = true
 				}
 			}
 		}
 
 		// Network policy has not been found that contains a deny-all rule for both ingress and egress.
-		if !denyAllIngressFound || !denyAllEgressFound {
+		if !denyAllIngressFound {
 			podsMissingDenyAllDefaultPolicies = append(podsMissingDenyAllDefaultPolicies, put.Data.Name)
-			tnf.ClaimFilePrintf("%s was found to not have a default deny-all network policy.", put.Data.Name)
+			tnf.ClaimFilePrintf("%s was found to not have a default ingress deny-all network policy.", put.Data.Name)
+		}
+
+		if !denyAllEgressFound {
+			podsMissingDenyAllDefaultPolicies = append(podsMissingDenyAllDefaultPolicies, put.Data.Name)
+			tnf.ClaimFilePrintf("%s was found to not have a default egress deny-all network policy.", put.Data.Name)
 		}
 	}
 

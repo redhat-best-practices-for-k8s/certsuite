@@ -17,29 +17,44 @@
 package policies
 
 import (
+	"errors"
+
 	networkingv1 "k8s.io/api/networking/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func IsNetworkPolicyDenyAll(np *networkingv1.NetworkPolicy) (bool, []networkingv1.PolicyType) {
+func IsNetworkPolicyCompliant(np *networkingv1.NetworkPolicy, policyType networkingv1.PolicyType) error {
 	// As long as we have decided above that there is no pod selector,
 	// we just have to make sure that the policy type is either Ingress or Egress (or both) we can return true.
 	// For more information about deny-all policies, there are some good examples on:
 	// https://kubernetes.io/docs/concepts/services-networking/network-policies/
 
 	if len(np.Spec.PolicyTypes) == 0 {
-		return false, nil
+		return errors.New("PolicyTypes is empty")
 	}
 
 	// Ingress and Egress rules should be "empty" if it is a default rule.
 	if np.Spec.Egress != nil {
-		return false, nil
+		return errors.New("egress spec is not empty")
 	}
 	if np.Spec.Ingress != nil {
-		return false, nil
+		return errors.New("ingress spec is not empty")
 	}
 
-	return true, np.Spec.PolicyTypes
+	policyTypeFound := false
+
+	// Look through the returned policies to make sure they include both ingress and egress.
+	for _, p := range np.Spec.PolicyTypes {
+		if p == policyType {
+			policyTypeFound = true
+		}
+	}
+
+	if !policyTypeFound {
+		return errors.New("deny all network policy not found")
+	}
+
+	return nil
 }
 
 func LabelsMatch(podSelectorLabels v1.LabelSelector, podLabels map[string]string) bool {

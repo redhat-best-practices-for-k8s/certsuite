@@ -17,6 +17,7 @@
 package policies
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -25,20 +26,12 @@ import (
 )
 
 //nolint:funlen
-func TestIsNetworkPolicyDenyAll(t *testing.T) {
-	policyInSlice := func(s []networkingv1.PolicyType, pt networkingv1.PolicyType) bool {
-		for _, v := range s {
-			if v == pt {
-				return true
-			}
-		}
-		return false
-	}
-
+func TestIsNetworkPolicyCompliant(t *testing.T) {
 	testCases := []struct {
-		testNP           networkingv1.NetworkPolicy
-		expectedPolicies []networkingv1.PolicyType
-		expectedOutput   bool
+		testNP                networkingv1.NetworkPolicy
+		expectedPolicies      []networkingv1.PolicyType
+		expectedIngressOutput error
+		expectedEgressOutput  error
 	}{
 		{ // Test #1 - Network Policy with no label selector, no policy types, fails.
 			testNP: networkingv1.NetworkPolicy{
@@ -53,8 +46,9 @@ func TestIsNetworkPolicyDenyAll(t *testing.T) {
 					},
 				},
 			},
-			expectedPolicies: nil,
-			expectedOutput:   false,
+			expectedPolicies:      nil,
+			expectedIngressOutput: errors.New("PolicyTypes is empty"),
+			expectedEgressOutput:  errors.New("PolicyTypes is empty"),
 		},
 		{ // Test #2 - Network Policy with label selector, and both ingress/egress policy types
 			testNP: networkingv1.NetworkPolicy{
@@ -77,16 +71,61 @@ func TestIsNetworkPolicyDenyAll(t *testing.T) {
 				networkingv1.PolicyTypeEgress,
 				networkingv1.PolicyTypeIngress,
 			},
-			expectedOutput: true,
+			expectedIngressOutput: nil,
+			expectedEgressOutput:  nil,
+		},
+		{ // Test #3 - Network Policy with label selector with no egress policytype
+			testNP: networkingv1.NetworkPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test2",
+				},
+				Spec: networkingv1.NetworkPolicySpec{
+					PodSelector: metav1.LabelSelector{
+						MatchLabels: map[string]string{
+							"key1": "value1",
+						},
+					},
+					PolicyTypes: []networkingv1.PolicyType{
+						// networkingv1.PolicyTypeEgress,
+						networkingv1.PolicyTypeIngress,
+					},
+				},
+			},
+			expectedPolicies: []networkingv1.PolicyType{
+				networkingv1.PolicyTypeEgress,
+				networkingv1.PolicyTypeIngress,
+			},
+			expectedIngressOutput: nil,
+			expectedEgressOutput:  errors.New("deny all network policy not found"),
+		},
+		{ // Test #4 - Network Policy with label selector with no ingress policytype
+			testNP: networkingv1.NetworkPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test2",
+				},
+				Spec: networkingv1.NetworkPolicySpec{
+					PodSelector: metav1.LabelSelector{
+						MatchLabels: map[string]string{
+							"key1": "value1",
+						},
+					},
+					PolicyTypes: []networkingv1.PolicyType{
+						networkingv1.PolicyTypeEgress,
+						// networkingv1.PolicyTypeIngress,
+					},
+				},
+			},
+			expectedPolicies: []networkingv1.PolicyType{
+				networkingv1.PolicyTypeEgress,
+				networkingv1.PolicyTypeIngress,
+			},
+			expectedIngressOutput: errors.New("deny all network policy not found"),
+			expectedEgressOutput:  nil,
 		},
 	}
 
 	for _, tc := range testCases {
-		result, policyResult := IsNetworkPolicyDenyAll(&tc.testNP)
-		assert.Equal(t, tc.expectedOutput, result)
-
-		for _, pr := range policyResult {
-			assert.True(t, policyInSlice(tc.expectedPolicies, pr))
-		}
+		assert.Equal(t, tc.expectedEgressOutput, IsNetworkPolicyCompliant(&tc.testNP, networkingv1.PolicyTypeEgress))
+		assert.Equal(t, tc.expectedIngressOutput, IsNetworkPolicyCompliant(&tc.testNP, networkingv1.PolicyTypeIngress))
 	}
 }
