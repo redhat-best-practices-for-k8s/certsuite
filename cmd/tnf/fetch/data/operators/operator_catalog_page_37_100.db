@@ -10853,722 +10853,6 @@
       "version_original": "0.0.31"
     },
     {
-      "_id": "62d6041a7a414467b50dcce5",
-      "alm_examples": [
-        {
-          "api_version": "rtf.operators.mulesoft.com/v1",
-          "kind": "RTFAgent",
-          "metadata": {
-            "name": "rtfagent-sample"
-          },
-          "spec": {
-            "agent": {
-              "app": {
-                "resources": {
-                  "limits": {
-                    "cpu": "1000m",
-                    "memory": "500Mi"
-                  },
-                  "requests": {
-                    "cpu": "100m",
-                    "memory": "200Mi"
-                  }
-                }
-              },
-              "rtfd": {
-                "resources": {
-                  "limits": {
-                    "cpu": "50m",
-                    "memory": "50Mi"
-                  },
-                  "requests": {
-                    "cpu": "20m",
-                    "memory": "50Mi"
-                  }
-                }
-              }
-            },
-            "global": {
-              "cluster": {
-                "flavor": "byok",
-                "type": ""
-              },
-              "containerLogPaths": [
-                "/var/lib/docker/containers",
-                "/var/log/containers",
-                "/var/log/pods"
-              ],
-              "core": {
-                "affinity": {},
-                "tolerations": []
-              },
-              "deployment": {
-                "nodeSelector": ""
-              },
-              "image": {
-                "provider": "aws",
-                "pullSecretName": "rtf-pull-secret",
-                "rtfRegistry": "rtf-runtime-registry.kprod.msap.io"
-              },
-              "logForwarding": {
-                "anypointMonitoring": false
-              },
-              "mule": {
-                "disablePerAppSA": false
-              },
-              "service": {}
-            },
-            "proxy": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/oscargcervantes/rtf-agent-operator@sha256:5eeb6e4caa619abb1d1690ca4996af5849d35b95f17e25e70c9751c532fb2cad",
-      "bundle_path_digest": "sha256:5eeb6e4caa619abb1d1690ca4996af5849d35b95f17e25e70c9751c532fb2cad",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-07-19T01:08:42.840000+00:00",
-      "csv_description": "Runtime Fabric Agent from MuleSoft",
-      "csv_display_name": "Runtime Fabric Agent",
-      "csv_metadata_description": "",
-      "csv_name": "rtf-agent-operator.v1.13.36",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:10:22.048000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "rtf-agent-operator",
-      "provided_apis": [
-        {
-          "group": "rtf.operators.mulesoft.com",
-          "kind": "RTFAgent",
-          "version": "v1"
-        }
-      ],
-      "provider": "MuleSoft",
-      "related_images": [
-        {
-          "digest": "sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "image": "quay.io/oscargcervantes/rtf-agent-operator@sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "name": "rtf-agent-operator"
-        },
-        {
-          "digest": "sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "image": "quay.io/oscargcervantes/rtf-agent-operator@sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.13.36",
-      "version_original": "1.13.36"
-    },
-    {
-      "_id": "62d6074e87f682e859c7f2ea",
-      "alm_examples": [
-        {
-          "api_version": "rtf.operators.mulesoft.com/v1",
-          "kind": "RTFAgent",
-          "metadata": {
-            "name": "rtfagent-sample"
-          },
-          "spec": {
-            "agent": {
-              "app": {
-                "resources": {
-                  "limits": {
-                    "cpu": "1000m",
-                    "memory": "500Mi"
-                  },
-                  "requests": {
-                    "cpu": "100m",
-                    "memory": "200Mi"
-                  }
-                }
-              },
-              "rtfd": {
-                "resources": {
-                  "limits": {
-                    "cpu": "50m",
-                    "memory": "50Mi"
-                  },
-                  "requests": {
-                    "cpu": "20m",
-                    "memory": "50Mi"
-                  }
-                }
-              }
-            },
-            "global": {
-              "cluster": {
-                "flavor": "byok",
-                "type": ""
-              },
-              "containerLogPaths": [
-                "/var/lib/docker/containers",
-                "/var/log/containers",
-                "/var/log/pods"
-              ],
-              "core": {
-                "affinity": {},
-                "tolerations": []
-              },
-              "deployment": {
-                "nodeSelector": ""
-              },
-              "image": {
-                "provider": "aws",
-                "pullSecretName": "rtf-pull-secret",
-                "rtfRegistry": "rtf-runtime-registry.kprod.msap.io"
-              },
-              "logForwarding": {
-                "anypointMonitoring": false
-              },
-              "mule": {
-                "disablePerAppSA": false
-              },
-              "service": {}
-            },
-            "proxy": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/oscargcervantes/rtf-agent-operator@sha256:5eeb6e4caa619abb1d1690ca4996af5849d35b95f17e25e70c9751c532fb2cad",
-      "bundle_path_digest": "sha256:5eeb6e4caa619abb1d1690ca4996af5849d35b95f17e25e70c9751c532fb2cad",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-07-19T01:22:22.656000+00:00",
-      "csv_description": "Runtime Fabric Agent from MuleSoft",
-      "csv_display_name": "Runtime Fabric Agent",
-      "csv_metadata_description": "",
-      "csv_name": "rtf-agent-operator.v1.13.36",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:10:42.800000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "rtf-agent-operator",
-      "provided_apis": [
-        {
-          "group": "rtf.operators.mulesoft.com",
-          "kind": "RTFAgent",
-          "plural": "rtfagents",
-          "version": "v1"
-        }
-      ],
-      "provider": "MuleSoft",
-      "related_images": [
-        {
-          "digest": "sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "image": "quay.io/oscargcervantes/rtf-agent-operator@sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "name": "rtf-agent-operator"
-        },
-        {
-          "digest": "sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "image": "quay.io/oscargcervantes/rtf-agent-operator@sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.13.36",
-      "version_original": "1.13.36"
-    },
-    {
-      "_id": "62d608dd7a414467b50dcd1d",
-      "alm_examples": [
-        {
-          "api_version": "rtf.operators.mulesoft.com/v1",
-          "kind": "RTFAgent",
-          "metadata": {
-            "name": "rtfagent-sample"
-          },
-          "spec": {
-            "agent": {
-              "app": {
-                "resources": {
-                  "limits": {
-                    "cpu": "1000m",
-                    "memory": "500Mi"
-                  },
-                  "requests": {
-                    "cpu": "100m",
-                    "memory": "200Mi"
-                  }
-                }
-              },
-              "rtfd": {
-                "resources": {
-                  "limits": {
-                    "cpu": "50m",
-                    "memory": "50Mi"
-                  },
-                  "requests": {
-                    "cpu": "20m",
-                    "memory": "50Mi"
-                  }
-                }
-              }
-            },
-            "global": {
-              "cluster": {
-                "flavor": "byok",
-                "type": ""
-              },
-              "containerLogPaths": [
-                "/var/lib/docker/containers",
-                "/var/log/containers",
-                "/var/log/pods"
-              ],
-              "core": {
-                "affinity": {},
-                "tolerations": []
-              },
-              "deployment": {
-                "nodeSelector": ""
-              },
-              "image": {
-                "provider": "aws",
-                "pullSecretName": "rtf-pull-secret",
-                "rtfRegistry": "rtf-runtime-registry.kprod.msap.io"
-              },
-              "logForwarding": {
-                "anypointMonitoring": false
-              },
-              "mule": {
-                "disablePerAppSA": false
-              },
-              "service": {}
-            },
-            "proxy": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/oscargcervantes/rtf-agent-operator@sha256:5eeb6e4caa619abb1d1690ca4996af5849d35b95f17e25e70c9751c532fb2cad",
-      "bundle_path_digest": "sha256:5eeb6e4caa619abb1d1690ca4996af5849d35b95f17e25e70c9751c532fb2cad",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-07-19T01:29:01.403000+00:00",
-      "csv_description": "Runtime Fabric Agent from MuleSoft",
-      "csv_display_name": "Runtime Fabric Agent",
-      "csv_metadata_description": "",
-      "csv_name": "rtf-agent-operator.v1.13.36",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:20:27.133000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "rtf-agent-operator",
-      "provided_apis": [
-        {
-          "group": "rtf.operators.mulesoft.com",
-          "kind": "RTFAgent",
-          "version": "v1"
-        }
-      ],
-      "provider": "MuleSoft",
-      "related_images": [
-        {
-          "digest": "sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "image": "quay.io/oscargcervantes/rtf-agent-operator@sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "name": "rtf-agent-operator"
-        },
-        {
-          "digest": "sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "image": "quay.io/oscargcervantes/rtf-agent-operator@sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.13.36",
-      "version_original": "1.13.36"
-    },
-    {
-      "_id": "62d608e42bb35ca385064cbb",
-      "alm_examples": [
-        {
-          "api_version": "rtf.operators.mulesoft.com/v1",
-          "kind": "RTFAgent",
-          "metadata": {
-            "name": "rtfagent-sample"
-          },
-          "spec": {
-            "agent": {
-              "app": {
-                "resources": {
-                  "limits": {
-                    "cpu": "1000m",
-                    "memory": "500Mi"
-                  },
-                  "requests": {
-                    "cpu": "100m",
-                    "memory": "200Mi"
-                  }
-                }
-              },
-              "rtfd": {
-                "resources": {
-                  "limits": {
-                    "cpu": "50m",
-                    "memory": "50Mi"
-                  },
-                  "requests": {
-                    "cpu": "20m",
-                    "memory": "50Mi"
-                  }
-                }
-              }
-            },
-            "global": {
-              "cluster": {
-                "flavor": "byok",
-                "type": ""
-              },
-              "containerLogPaths": [
-                "/var/lib/docker/containers",
-                "/var/log/containers",
-                "/var/log/pods"
-              ],
-              "core": {
-                "affinity": {},
-                "tolerations": []
-              },
-              "deployment": {
-                "nodeSelector": ""
-              },
-              "image": {
-                "provider": "aws",
-                "pullSecretName": "rtf-pull-secret",
-                "rtfRegistry": "rtf-runtime-registry.kprod.msap.io"
-              },
-              "logForwarding": {
-                "anypointMonitoring": false
-              },
-              "mule": {
-                "disablePerAppSA": false
-              },
-              "service": {}
-            },
-            "proxy": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/oscargcervantes/rtf-agent-operator@sha256:5eeb6e4caa619abb1d1690ca4996af5849d35b95f17e25e70c9751c532fb2cad",
-      "bundle_path_digest": "sha256:5eeb6e4caa619abb1d1690ca4996af5849d35b95f17e25e70c9751c532fb2cad",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-07-19T01:29:08.689000+00:00",
-      "csv_description": "Runtime Fabric Agent from MuleSoft",
-      "csv_display_name": "Runtime Fabric Agent",
-      "csv_metadata_description": "",
-      "csv_name": "rtf-agent-operator.v1.13.36",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:41:25.840000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "rtf-agent-operator",
-      "provided_apis": [
-        {
-          "group": "rtf.operators.mulesoft.com",
-          "kind": "RTFAgent",
-          "version": "v1"
-        }
-      ],
-      "provider": "MuleSoft",
-      "related_images": [
-        {
-          "digest": "sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "image": "quay.io/oscargcervantes/rtf-agent-operator@sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "name": "rtf-agent-operator"
-        },
-        {
-          "digest": "sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "image": "quay.io/oscargcervantes/rtf-agent-operator@sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.13.36",
-      "version_original": "1.13.36"
-    },
-    {
-      "_id": "62d608f6e49e44f05a42d3e6",
-      "alm_examples": [
-        {
-          "api_version": "rtf.operators.mulesoft.com/v1",
-          "kind": "RTFAgent",
-          "metadata": {
-            "name": "rtfagent-sample"
-          },
-          "spec": {
-            "agent": {
-              "app": {
-                "resources": {
-                  "limits": {
-                    "cpu": "1000m",
-                    "memory": "500Mi"
-                  },
-                  "requests": {
-                    "cpu": "100m",
-                    "memory": "200Mi"
-                  }
-                }
-              },
-              "rtfd": {
-                "resources": {
-                  "limits": {
-                    "cpu": "50m",
-                    "memory": "50Mi"
-                  },
-                  "requests": {
-                    "cpu": "20m",
-                    "memory": "50Mi"
-                  }
-                }
-              }
-            },
-            "global": {
-              "cluster": {
-                "flavor": "byok",
-                "type": ""
-              },
-              "containerLogPaths": [
-                "/var/lib/docker/containers",
-                "/var/log/containers",
-                "/var/log/pods"
-              ],
-              "core": {
-                "affinity": {},
-                "tolerations": []
-              },
-              "deployment": {
-                "nodeSelector": ""
-              },
-              "image": {
-                "provider": "aws",
-                "pullSecretName": "rtf-pull-secret",
-                "rtfRegistry": "rtf-runtime-registry.kprod.msap.io"
-              },
-              "logForwarding": {
-                "anypointMonitoring": false
-              },
-              "mule": {
-                "disablePerAppSA": false
-              },
-              "service": {}
-            },
-            "proxy": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/oscargcervantes/rtf-agent-operator@sha256:5eeb6e4caa619abb1d1690ca4996af5849d35b95f17e25e70c9751c532fb2cad",
-      "bundle_path_digest": "sha256:5eeb6e4caa619abb1d1690ca4996af5849d35b95f17e25e70c9751c532fb2cad",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-07-19T01:29:26.205000+00:00",
-      "csv_description": "Runtime Fabric Agent from MuleSoft",
-      "csv_display_name": "Runtime Fabric Agent",
-      "csv_metadata_description": "",
-      "csv_name": "rtf-agent-operator.v1.13.36",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:22:15.689000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "rtf-agent-operator",
-      "provided_apis": [
-        {
-          "group": "rtf.operators.mulesoft.com",
-          "kind": "RTFAgent",
-          "version": "v1"
-        }
-      ],
-      "provider": "MuleSoft",
-      "related_images": [
-        {
-          "digest": "sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "image": "quay.io/oscargcervantes/rtf-agent-operator@sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "name": "rtf-agent-operator"
-        },
-        {
-          "digest": "sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:011909289ad5a6e6dd012fafaab83117777073febb15536ee7e66a4d5830f303",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "image": "quay.io/oscargcervantes/rtf-agent-operator@sha256:2561be272b5751bfc08ac9a2bb56aa2847c792b1894cdb06ab1bdc32c4dc6378",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.13.36",
-      "version_original": "1.13.36"
-    },
-    {
       "_id": "62d84ea11f0f0172ac52ac75",
       "alm_examples": [
         {
@@ -15944,9 +15228,472 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.10.0",
       "version_original": "1.10.0"
+    },
+    {
+      "_id": "62e05a7d67e405bb17fa65c5",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Xl",
+          "metadata": {
+            "name": "xl-release"
+          },
+          "spec": {
+            "global": {
+              "customImageNames": false,
+              "repository": "registry.connect.redhat.com/turbonomic",
+              "tag": "8.5.7"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
+      "bundle_path_digest": "sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-26T21:19:57.587000+00:00",
+      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
+      "csv_display_name": "Turbonomic Platform Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "t8c-operator.v42.12.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-16T18:05:35.467000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "t8c-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "name": "t8c-operator-d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3-annotation"
+        },
+        {
+          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "name": "t8c-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "42.12.0",
+      "version_original": "42.12.0"
+    },
+    {
+      "_id": "62e05aae297aa53ad8d327ae",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Xl",
+          "metadata": {
+            "name": "xl-release"
+          },
+          "spec": {
+            "global": {
+              "customImageNames": false,
+              "repository": "registry.connect.redhat.com/turbonomic",
+              "tag": "8.5.7"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
+      "bundle_path_digest": "sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-26T21:20:46.515000+00:00",
+      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
+      "csv_display_name": "Turbonomic Platform Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "t8c-operator.v42.12.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-16T18:21:53.689000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "t8c-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "name": "t8c-operator-d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3-annotation"
+        },
+        {
+          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "name": "t8c-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "42.12.0",
+      "version_original": "42.12.0"
+    },
+    {
+      "_id": "62e05eb067e405bb17fa6630",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Xl",
+          "metadata": {
+            "name": "xl-release"
+          },
+          "spec": {
+            "global": {
+              "customImageNames": false,
+              "repository": "registry.connect.redhat.com/turbonomic",
+              "tag": "8.5.7"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
+      "bundle_path_digest": "sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-26T21:37:52.097000+00:00",
+      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
+      "csv_display_name": "Turbonomic Platform Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "t8c-operator.v42.12.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-16T18:22:15.469000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "t8c-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "name": "t8c-operator-d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3-annotation"
+        },
+        {
+          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "name": "t8c-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "42.12.0",
+      "version_original": "42.12.0"
+    },
+    {
+      "_id": "62e05f98297aa53ad8d3283e",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Xl",
+          "metadata": {
+            "name": "xl-release"
+          },
+          "spec": {
+            "global": {
+              "customImageNames": false,
+              "repository": "registry.connect.redhat.com/turbonomic",
+              "tag": "8.5.7"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
+      "bundle_path_digest": "sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-26T21:41:44.030000+00:00",
+      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
+      "csv_display_name": "Turbonomic Platform Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "t8c-operator.v42.12.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-16T18:24:30.435000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "t8c-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "name": "t8c-operator-d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3-annotation"
+        },
+        {
+          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "name": "t8c-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "42.12.0",
+      "version_original": "42.12.0"
+    },
+    {
+      "_id": "62e05fc8297aa53ad8d32841",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Xl",
+          "metadata": {
+            "name": "xl-release"
+          },
+          "spec": {
+            "global": {
+              "customImageNames": false,
+              "repository": "registry.connect.redhat.com/turbonomic",
+              "tag": "8.5.7"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
+      "bundle_path_digest": "sha256:141434b2abef8988f9adb2e07c4674b2beee71041015145b9ffa60de6ca332de",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-26T21:42:32.803000+00:00",
+      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
+      "csv_display_name": "Turbonomic Platform Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "t8c-operator.v42.12.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-16T18:24:51.960000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "t8c-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "name": "t8c-operator-d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3-annotation"
+        },
+        {
+          "digest": "sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:d4e3a78203a8afefd98f08d3f339cf66c689eba5e43fdd51a08b6ad1df8c4ca3",
+          "name": "t8c-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "42.12.0",
+      "version_original": "42.12.0"
     }
   ],
   "page": 37,
   "page_size": 100,
-  "total": 4866
+  "total": 4862
 }

@@ -1,1153 +1,6 @@
 {
   "data": [
     {
-      "_id": "62f3d0e18c2137a6fb68b5ab",
-      "alm_examples": [
-        {
-          "api_version": "aiml.pachyderm.com/v1beta1",
-          "kind": "Pachyderm",
-          "metadata": {
-            "name": "pachyderm-sample"
-          },
-          "spec": {
-            "console": {
-              "disable": true
-            },
-            "pachd": {
-              "metrics": {
-                "disable": false
-              },
-              "storage": {
-                "amazon": {
-                  "credentialSecretName": "pachyderm-aws-secret"
-                },
-                "backend": "AMAZON"
-              }
-            }
-          }
-        },
-        {
-          "api_version": "aiml.pachyderm.com/v1beta1",
-          "kind": "PachydermExport",
-          "metadata": {
-            "name": "pachydermexport-sample"
-          },
-          "spec": {
-            "backup": {
-              "target": "pachyderm-sample"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/pachyderm/pachyderm-bundle@sha256:d99b8a9c2ce7ac9d29c6070e7c3fecf712498caf7eb348ab7b27087dde66ba0a",
-      "bundle_path_digest": "sha256:d99b8a9c2ce7ac9d29c6070e7c3fecf712498caf7eb348ab7b27087dde66ba0a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-10T15:38:09.492000+00:00",
-      "csv_description": "The Pachyderm operator aims to make deploying and managing Pachyderm instances on Openshift container platform easier.\n\nPachyderm is the data foundation for machine learning.  Pachyderm provides industry leading data versioning, pipelines and lineage that allow data science teams to automate the machine learning lifecycle and optimize their machine learning operations (MLOps). \n\n## Getting started\n\n1. Pachyderm uses an object store to store your data. Set the pachd storage backend at `pachyderm.spec.pachd.storage.backend` to `AMAZON`, `MICROSOFT`, `GOOGLE` or `MINIO` depending on your storage provider. Additionally, create a user with read/write access to the object store.\n\n2. Setup the user credentials in the section, `pachyderm.spec.pachd.storage`. Required fields depend on the backend type set in step 1 above.\n\n3. Finally, deploy the pachyderm cluster in its own namespace.\n\nFor more information on getting started, reference the documentation.\n",
-      "csv_display_name": "Pachyderm",
-      "csv_metadata_description": "Pachyderm provides the data layer that allows data science teams to productionize and scale their machine learning lifecycle with data driven automation, petabyte scalability and end-to-end reproducibility.",
-      "csv_name": "pachyderm-operator.v0.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:05:22.246000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "pachyderm-operator",
-      "provided_apis": [
-        {
-          "group": "aiml.pachyderm.com",
-          "kind": "Pachyderm",
-          "plural": "pachyderms",
-          "version": "v1beta1"
-        },
-        {
-          "group": "aiml.pachyderm.com",
-          "kind": "PachydermExport",
-          "plural": "pachydermexports",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Pachyderm, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "name": "pachyderm-operator"
-        },
-        {
-          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
-          "image": "registry.connect.redhat.com/pachyderm/pachd@sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
-          "name": "pachd"
-        },
-        {
-          "digest": "sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
-          "image": "registry.connect.redhat.com/pachyderm/worker@sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
-          "name": "worker"
-        },
-        {
-          "digest": "sha256:d76af4fbc67557b401409618d5b197feaa59804bdac7532d8d339e23ecbfbe23",
-          "image": "registry.connect.redhat.com/pachyderm/etcd@sha256:d76af4fbc67557b401409618d5b197feaa59804bdac7532d8d339e23ecbfbe23",
-          "name": "etcd"
-        },
-        {
-          "digest": "sha256:9fd7af383b4070866b7ae013f19e9c672de7dff14e1661fd24d763277ac1cfd3",
-          "image": "registry.redhat.io/rhel8/postgresql-13@sha256:9fd7af383b4070866b7ae013f19e9c672de7dff14e1661fd24d763277ac1cfd3",
-          "name": "postgresql"
-        },
-        {
-          "digest": "sha256:00db44237a0b820f41b64bb7f7abe340a46299bec71abef392cb243bb269e01f",
-          "image": "registry.connect.redhat.com/pachyderm/pgbouncer@sha256:00db44237a0b820f41b64bb7f7abe340a46299bec71abef392cb243bb269e01f",
-          "name": "pgbouncer"
-        },
-        {
-          "digest": "sha256:97e77bdef29a4d731d8425d4a648988a2408e69328cac2fcc708521f32d0d719",
-          "image": "registry.connect.redhat.com/pachyderm/init-utils@sha256:97e77bdef29a4d731d8425d4a648988a2408e69328cac2fcc708521f32d0d719",
-          "name": "init-utils"
-        },
-        {
-          "digest": "sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "name": "backup-handler"
-        },
-        {
-          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "name": "pachyderm-operator-8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82-annotation"
-        },
-        {
-          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "name": "backup"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.1.3",
-      "version_original": "0.1.3"
-    },
-    {
-      "_id": "62f3d2774dabb84b9a34021e",
-      "alm_examples": [
-        {
-          "api_version": "aiml.pachyderm.com/v1beta1",
-          "kind": "Pachyderm",
-          "metadata": {
-            "name": "pachyderm-sample"
-          },
-          "spec": {
-            "console": {
-              "disable": true
-            },
-            "pachd": {
-              "metrics": {
-                "disable": false
-              },
-              "storage": {
-                "amazon": {
-                  "credentialSecretName": "pachyderm-aws-secret"
-                },
-                "backend": "AMAZON"
-              }
-            }
-          }
-        },
-        {
-          "api_version": "aiml.pachyderm.com/v1beta1",
-          "kind": "PachydermExport",
-          "metadata": {
-            "name": "pachydermexport-sample"
-          },
-          "spec": {
-            "backup": {
-              "target": "pachyderm-sample"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/pachyderm/pachyderm-bundle@sha256:d99b8a9c2ce7ac9d29c6070e7c3fecf712498caf7eb348ab7b27087dde66ba0a",
-      "bundle_path_digest": "sha256:d99b8a9c2ce7ac9d29c6070e7c3fecf712498caf7eb348ab7b27087dde66ba0a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-10T15:44:55.875000+00:00",
-      "csv_description": "The Pachyderm operator aims to make deploying and managing Pachyderm instances on Openshift container platform easier.\n\nPachyderm is the data foundation for machine learning.  Pachyderm provides industry leading data versioning, pipelines and lineage that allow data science teams to automate the machine learning lifecycle and optimize their machine learning operations (MLOps). \n\n## Getting started\n\n1. Pachyderm uses an object store to store your data. Set the pachd storage backend at `pachyderm.spec.pachd.storage.backend` to `AMAZON`, `MICROSOFT`, `GOOGLE` or `MINIO` depending on your storage provider. Additionally, create a user with read/write access to the object store.\n\n2. Setup the user credentials in the section, `pachyderm.spec.pachd.storage`. Required fields depend on the backend type set in step 1 above.\n\n3. Finally, deploy the pachyderm cluster in its own namespace.\n\nFor more information on getting started, reference the documentation.\n",
-      "csv_display_name": "Pachyderm",
-      "csv_metadata_description": "Pachyderm provides the data layer that allows data science teams to productionize and scale their machine learning lifecycle with data driven automation, petabyte scalability and end-to-end reproducibility.",
-      "csv_name": "pachyderm-operator.v0.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:56:55.414000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "pachyderm-operator",
-      "provided_apis": [
-        {
-          "group": "aiml.pachyderm.com",
-          "kind": "Pachyderm",
-          "plural": "pachyderms",
-          "version": "v1beta1"
-        },
-        {
-          "group": "aiml.pachyderm.com",
-          "kind": "PachydermExport",
-          "plural": "pachydermexports",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Pachyderm, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "name": "pachyderm-operator"
-        },
-        {
-          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
-          "image": "registry.connect.redhat.com/pachyderm/pachd@sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
-          "name": "pachd"
-        },
-        {
-          "digest": "sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
-          "image": "registry.connect.redhat.com/pachyderm/worker@sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
-          "name": "worker"
-        },
-        {
-          "digest": "sha256:d76af4fbc67557b401409618d5b197feaa59804bdac7532d8d339e23ecbfbe23",
-          "image": "registry.connect.redhat.com/pachyderm/etcd@sha256:d76af4fbc67557b401409618d5b197feaa59804bdac7532d8d339e23ecbfbe23",
-          "name": "etcd"
-        },
-        {
-          "digest": "sha256:9fd7af383b4070866b7ae013f19e9c672de7dff14e1661fd24d763277ac1cfd3",
-          "image": "registry.redhat.io/rhel8/postgresql-13@sha256:9fd7af383b4070866b7ae013f19e9c672de7dff14e1661fd24d763277ac1cfd3",
-          "name": "postgresql"
-        },
-        {
-          "digest": "sha256:00db44237a0b820f41b64bb7f7abe340a46299bec71abef392cb243bb269e01f",
-          "image": "registry.connect.redhat.com/pachyderm/pgbouncer@sha256:00db44237a0b820f41b64bb7f7abe340a46299bec71abef392cb243bb269e01f",
-          "name": "pgbouncer"
-        },
-        {
-          "digest": "sha256:97e77bdef29a4d731d8425d4a648988a2408e69328cac2fcc708521f32d0d719",
-          "image": "registry.connect.redhat.com/pachyderm/init-utils@sha256:97e77bdef29a4d731d8425d4a648988a2408e69328cac2fcc708521f32d0d719",
-          "name": "init-utils"
-        },
-        {
-          "digest": "sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "name": "backup-handler"
-        },
-        {
-          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "name": "pachyderm-operator-8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82-annotation"
-        },
-        {
-          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "name": "backup"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.1.3",
-      "version_original": "0.1.3"
-    },
-    {
-      "_id": "62f3d29676d6c2f705125405",
-      "alm_examples": [
-        {
-          "api_version": "aiml.pachyderm.com/v1beta1",
-          "kind": "Pachyderm",
-          "metadata": {
-            "name": "pachyderm-sample"
-          },
-          "spec": {
-            "console": {
-              "disable": true
-            },
-            "pachd": {
-              "metrics": {
-                "disable": false
-              },
-              "storage": {
-                "amazon": {
-                  "credentialSecretName": "pachyderm-aws-secret"
-                },
-                "backend": "AMAZON"
-              }
-            }
-          }
-        },
-        {
-          "api_version": "aiml.pachyderm.com/v1beta1",
-          "kind": "PachydermExport",
-          "metadata": {
-            "name": "pachydermexport-sample"
-          },
-          "spec": {
-            "backup": {
-              "target": "pachyderm-sample"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/pachyderm/pachyderm-bundle@sha256:d99b8a9c2ce7ac9d29c6070e7c3fecf712498caf7eb348ab7b27087dde66ba0a",
-      "bundle_path_digest": "sha256:d99b8a9c2ce7ac9d29c6070e7c3fecf712498caf7eb348ab7b27087dde66ba0a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-10T15:45:26.638000+00:00",
-      "csv_description": "The Pachyderm operator aims to make deploying and managing Pachyderm instances on Openshift container platform easier.\n\nPachyderm is the data foundation for machine learning.  Pachyderm provides industry leading data versioning, pipelines and lineage that allow data science teams to automate the machine learning lifecycle and optimize their machine learning operations (MLOps). \n\n## Getting started\n\n1. Pachyderm uses an object store to store your data. Set the pachd storage backend at `pachyderm.spec.pachd.storage.backend` to `AMAZON`, `MICROSOFT`, `GOOGLE` or `MINIO` depending on your storage provider. Additionally, create a user with read/write access to the object store.\n\n2. Setup the user credentials in the section, `pachyderm.spec.pachd.storage`. Required fields depend on the backend type set in step 1 above.\n\n3. Finally, deploy the pachyderm cluster in its own namespace.\n\nFor more information on getting started, reference the documentation.\n",
-      "csv_display_name": "Pachyderm",
-      "csv_metadata_description": "Pachyderm provides the data layer that allows data science teams to productionize and scale their machine learning lifecycle with data driven automation, petabyte scalability and end-to-end reproducibility.",
-      "csv_name": "pachyderm-operator.v0.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:18:55.563000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "pachyderm-operator",
-      "provided_apis": [
-        {
-          "group": "aiml.pachyderm.com",
-          "kind": "PachydermExport",
-          "plural": "pachydermexports",
-          "version": "v1beta1"
-        },
-        {
-          "group": "aiml.pachyderm.com",
-          "kind": "Pachyderm",
-          "plural": "pachyderms",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Pachyderm, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "name": "pachyderm-operator"
-        },
-        {
-          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
-          "image": "registry.connect.redhat.com/pachyderm/pachd@sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
-          "name": "pachd"
-        },
-        {
-          "digest": "sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
-          "image": "registry.connect.redhat.com/pachyderm/worker@sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
-          "name": "worker"
-        },
-        {
-          "digest": "sha256:d76af4fbc67557b401409618d5b197feaa59804bdac7532d8d339e23ecbfbe23",
-          "image": "registry.connect.redhat.com/pachyderm/etcd@sha256:d76af4fbc67557b401409618d5b197feaa59804bdac7532d8d339e23ecbfbe23",
-          "name": "etcd"
-        },
-        {
-          "digest": "sha256:9fd7af383b4070866b7ae013f19e9c672de7dff14e1661fd24d763277ac1cfd3",
-          "image": "registry.redhat.io/rhel8/postgresql-13@sha256:9fd7af383b4070866b7ae013f19e9c672de7dff14e1661fd24d763277ac1cfd3",
-          "name": "postgresql"
-        },
-        {
-          "digest": "sha256:00db44237a0b820f41b64bb7f7abe340a46299bec71abef392cb243bb269e01f",
-          "image": "registry.connect.redhat.com/pachyderm/pgbouncer@sha256:00db44237a0b820f41b64bb7f7abe340a46299bec71abef392cb243bb269e01f",
-          "name": "pgbouncer"
-        },
-        {
-          "digest": "sha256:97e77bdef29a4d731d8425d4a648988a2408e69328cac2fcc708521f32d0d719",
-          "image": "registry.connect.redhat.com/pachyderm/init-utils@sha256:97e77bdef29a4d731d8425d4a648988a2408e69328cac2fcc708521f32d0d719",
-          "name": "init-utils"
-        },
-        {
-          "digest": "sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "name": "backup-handler"
-        },
-        {
-          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "name": "pachyderm-operator-8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82-annotation"
-        },
-        {
-          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "name": "backup"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.1.3",
-      "version_original": "0.1.3"
-    },
-    {
-      "_id": "62f3d41276d6c2f705125430",
-      "alm_examples": [
-        {
-          "api_version": "aiml.pachyderm.com/v1beta1",
-          "kind": "Pachyderm",
-          "metadata": {
-            "name": "pachyderm-sample"
-          },
-          "spec": {
-            "console": {
-              "disable": true
-            },
-            "pachd": {
-              "metrics": {
-                "disable": false
-              },
-              "storage": {
-                "amazon": {
-                  "credentialSecretName": "pachyderm-aws-secret"
-                },
-                "backend": "AMAZON"
-              }
-            }
-          }
-        },
-        {
-          "api_version": "aiml.pachyderm.com/v1beta1",
-          "kind": "PachydermExport",
-          "metadata": {
-            "name": "pachydermexport-sample"
-          },
-          "spec": {
-            "backup": {
-              "target": "pachyderm-sample"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/pachyderm/pachyderm-bundle@sha256:d99b8a9c2ce7ac9d29c6070e7c3fecf712498caf7eb348ab7b27087dde66ba0a",
-      "bundle_path_digest": "sha256:d99b8a9c2ce7ac9d29c6070e7c3fecf712498caf7eb348ab7b27087dde66ba0a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-10T15:51:46.008000+00:00",
-      "csv_description": "The Pachyderm operator aims to make deploying and managing Pachyderm instances on Openshift container platform easier.\n\nPachyderm is the data foundation for machine learning.  Pachyderm provides industry leading data versioning, pipelines and lineage that allow data science teams to automate the machine learning lifecycle and optimize their machine learning operations (MLOps). \n\n## Getting started\n\n1. Pachyderm uses an object store to store your data. Set the pachd storage backend at `pachyderm.spec.pachd.storage.backend` to `AMAZON`, `MICROSOFT`, `GOOGLE` or `MINIO` depending on your storage provider. Additionally, create a user with read/write access to the object store.\n\n2. Setup the user credentials in the section, `pachyderm.spec.pachd.storage`. Required fields depend on the backend type set in step 1 above.\n\n3. Finally, deploy the pachyderm cluster in its own namespace.\n\nFor more information on getting started, reference the documentation.\n",
-      "csv_display_name": "Pachyderm",
-      "csv_metadata_description": "Pachyderm provides the data layer that allows data science teams to productionize and scale their machine learning lifecycle with data driven automation, petabyte scalability and end-to-end reproducibility.",
-      "csv_name": "pachyderm-operator.v0.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:09:26.708000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "pachyderm-operator",
-      "provided_apis": [
-        {
-          "group": "aiml.pachyderm.com",
-          "kind": "PachydermExport",
-          "plural": "pachydermexports",
-          "version": "v1beta1"
-        },
-        {
-          "group": "aiml.pachyderm.com",
-          "kind": "Pachyderm",
-          "plural": "pachyderms",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Pachyderm, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "name": "pachyderm-operator"
-        },
-        {
-          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
-          "image": "registry.connect.redhat.com/pachyderm/pachd@sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
-          "name": "pachd"
-        },
-        {
-          "digest": "sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
-          "image": "registry.connect.redhat.com/pachyderm/worker@sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
-          "name": "worker"
-        },
-        {
-          "digest": "sha256:d76af4fbc67557b401409618d5b197feaa59804bdac7532d8d339e23ecbfbe23",
-          "image": "registry.connect.redhat.com/pachyderm/etcd@sha256:d76af4fbc67557b401409618d5b197feaa59804bdac7532d8d339e23ecbfbe23",
-          "name": "etcd"
-        },
-        {
-          "digest": "sha256:9fd7af383b4070866b7ae013f19e9c672de7dff14e1661fd24d763277ac1cfd3",
-          "image": "registry.redhat.io/rhel8/postgresql-13@sha256:9fd7af383b4070866b7ae013f19e9c672de7dff14e1661fd24d763277ac1cfd3",
-          "name": "postgresql"
-        },
-        {
-          "digest": "sha256:00db44237a0b820f41b64bb7f7abe340a46299bec71abef392cb243bb269e01f",
-          "image": "registry.connect.redhat.com/pachyderm/pgbouncer@sha256:00db44237a0b820f41b64bb7f7abe340a46299bec71abef392cb243bb269e01f",
-          "name": "pgbouncer"
-        },
-        {
-          "digest": "sha256:97e77bdef29a4d731d8425d4a648988a2408e69328cac2fcc708521f32d0d719",
-          "image": "registry.connect.redhat.com/pachyderm/init-utils@sha256:97e77bdef29a4d731d8425d4a648988a2408e69328cac2fcc708521f32d0d719",
-          "name": "init-utils"
-        },
-        {
-          "digest": "sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "name": "backup-handler"
-        },
-        {
-          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "name": "pachyderm-operator-8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82-annotation"
-        },
-        {
-          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:8b60962bf742de4a4a30842bfbafce702f6de689a0bb29d607395bbc71394e82",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:b0ec000db72f5f34eba45d513329c973c1e38dbdbebf55ea7d3c2f806f296b90",
-          "name": "backup"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.1.3",
-      "version_original": "0.1.3"
-    },
-    {
-      "_id": "62f533b930a80ba5a2082565",
-      "alm_examples": [
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseCluster",
-          "metadata": {
-            "name": "cb-example"
-          },
-          "spec": {
-            "backup": {
-              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              },
-              "serviceAccountName": "couchbase-backup"
-            },
-            "buckets": {
-              "managed": true,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            },
-            "cluster": {
-              "analyticsServiceMemoryQuota": "1Gi",
-              "autoCompaction": {
-                "databaseFragmentationThreshold": {
-                  "percent": 30,
-                  "size": "1Gi"
-                },
-                "parallelCompaction": false,
-                "timeWindow": {
-                  "abortCompactionOutsideWindow": true,
-                  "end": "06:00",
-                  "start": "02:00"
-                },
-                "tombstonePurgeInterval": "72h",
-                "viewFragmentationThreshold": {
-                  "percent": 30,
-                  "size": "1Gi"
-                }
-              },
-              "autoFailoverMaxCount": 3,
-              "autoFailoverOnDataDiskIssues": true,
-              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
-              "autoFailoverServerGroup": false,
-              "autoFailoverTimeout": "120s",
-              "clusterName": "cb-example",
-              "dataServiceMemoryQuota": "256Mi",
-              "eventingServiceMemoryQuota": "256Mi",
-              "indexServiceMemoryQuota": "256Mi",
-              "indexStorageSetting": "memory_optimized",
-              "searchServiceMemoryQuota": "256Mi"
-            },
-            "enablePreviewScaling": false,
-            "hibernate": false,
-            "hibernationStrategy": "Immediate",
-            "image": "registry.connect.redhat.com/couchbase/server@sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
-            "logRetentionCount": 20,
-            "logRetentionTime": "604800s",
-            "monitoring": {
-              "prometheus": {
-                "enabled": false,
-                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6"
-              }
-            },
-            "networking": {
-              "adminConsoleServiceType": "NodePort",
-              "adminConsoleServices": [
-                "data"
-              ],
-              "exposeAdminConsole": true,
-              "exposedFeatureServiceType": "NodePort",
-              "exposedFeatures": [
-                "xdcr"
-              ]
-            },
-            "recoveryPolicy": "PrioritizeDataIntegrity",
-            "security": {
-              "adminSecret": "cb-example-auth",
-              "rbac": {
-                "managed": true,
-                "selector": {
-                  "matchLabels": {
-                    "cluster": "cb-example"
-                  }
-                }
-              }
-            },
-            "servers": [
-              {
-                "name": "all_services",
-                "services": [
-                  "data",
-                  "index",
-                  "query",
-                  "search",
-                  "eventing",
-                  "analytics"
-                ],
-                "size": 3
-              }
-            ],
-            "upgradeStrategy": "RollingUpgrade",
-            "xdcr": {
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "default"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "enableIndexReplica": true,
-            "evictionPolicy": "valueOnly",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseEphemeralBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "ephemeral-bucket"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "evictionPolicy": "noEviction",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseMemcachedBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "memcached-bucket"
-          },
-          "spec": {
-            "enableFlush": false,
-            "memoryQuota": "100Mi"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseUser",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-user"
-          },
-          "spec": {
-            "authDomain": "local",
-            "authSecret": "cb-example-auth",
-            "fullName": "My User"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseGroup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-group"
-          },
-          "spec": {
-            "roles": [
-              {
-                "bucket": "default",
-                "name": "bucket_admin"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseRoleBinding",
-          "metadata": {
-            "name": "my-role-binding"
-          },
-          "spec": {
-            "roleRef": {
-              "kind": "CouchbaseGroup",
-              "name": "my-group"
-            },
-            "subjects": [
-              {
-                "kind": "CouchbaseUser",
-                "name": "my-user"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseReplication",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-replication"
-          },
-          "spec": {
-            "bucket": "default",
-            "compressionType": "Snappy",
-            "filterExpression": "",
-            "paused": false,
-            "remoteBucket": "default"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-backup"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backupRetention": "24h",
-            "failedJobsHistoryLimit": 3,
-            "full": {
-              "schedule": "0 3 * * 6"
-            },
-            "incremental": {
-              "schedule": "0 3 * * 1-6"
-            },
-            "logRetention": "24h",
-            "size": "5Gi",
-            "strategy": "full_incremental",
-            "successfulJobsHistoryLimit": 1
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackupRestore",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-restore"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backup": "cb-backup",
-            "end": {
-              "int": 1
-            },
-            "logRetention": "24h",
-            "repo": "cb-example-2020-10-29T19_00_03",
-            "start": {
-              "int": 1
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseAutoscaler",
-          "metadata": {
-            "name": "do.not.create.internal.only"
-          },
-          "spec": {
-            "servers": "internal",
-            "size": 2
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:34d5409a2ab6863d5dcf56dc40f83abc5ad8bcf41be06a6b0097ed0b858675bd",
-      "bundle_path_digest": "sha256:34d5409a2ab6863d5dcf56dc40f83abc5ad8bcf41be06a6b0097ed0b858675bd",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "2.2.4",
-      "creation_date": "2022-08-11T16:52:09.558000+00:00",
-      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
-      "csv_display_name": "Couchbase Operator",
-      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
-      "csv_name": "couchbase-operator.v2.2.4-2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-11T16:52:09.558000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "plural": "couchbaserolebindings",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "plural": "couchbaseusers",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackupRestore",
-          "plural": "couchbasebackuprestores",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "plural": "couchbasegroups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "plural": "couchbaseclusters",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseEphemeralBucket",
-          "plural": "couchbaseephemeralbuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "plural": "couchbasebackups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseMemcachedBucket",
-          "plural": "couchbasememcachedbuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseReplication",
-          "plural": "couchbasereplications",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseAutoscaler",
-          "plural": "couchbaseautoscalers",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "plural": "couchbasebuckets",
-          "version": "v2"
-        }
-      ],
-      "provider": "Couchbase",
-      "related_images": [
-        {
-          "digest": "sha256:8e152e8e4ce5bedf22f893bf127f5f882e1d02b0b9509b9114e349eb0716bca2",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:8e152e8e4ce5bedf22f893bf127f5f882e1d02b0b9509b9114e349eb0716bca2",
-          "name": "couchbase-operator"
-        },
-        {
-          "digest": "sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
-          "name": "couchbase-server"
-        },
-        {
-          "digest": "sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
-          "name": "couchbase-backup"
-        },
-        {
-          "digest": "sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
-          "name": "couchbase-metrics"
-        },
-        {
-          "digest": "sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
-          "name": "couchbase_server"
-        },
-        {
-          "digest": "sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
-          "name": "couchbase_backup"
-        },
-        {
-          "digest": "sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
-          "name": "couchbase_metrics"
-        },
-        {
-          "digest": "sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
-          "name": "exporter-fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6-annotation"
-        },
-        {
-          "digest": "sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
-          "name": "operator-backup-e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935-annotation"
-        },
-        {
-          "digest": "sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
-          "name": "server-76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2.2.4-2",
-      "version_original": "2.2.4-2"
-    },
-    {
       "_id": "62f533d4bb3b9bafa13403a8",
       "alm_examples": [
         {
@@ -18304,9 +17157,1557 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "6.2.4-1",
       "version_original": "6.2.4-1"
+    },
+    {
+      "_id": "62fa424f4eed1a480412f784",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:e0624abf48e3f643638e93a633a4017961b454f133830f6d369b238d58a6eb8b",
+      "bundle_path_digest": "sha256:e0624abf48e3f643638e93a633a4017961b454f133830f6d369b238d58a6eb8b",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "null",
+      "creation_date": "2022-08-15T12:55:43.449000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.15.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:55:43.449000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
+          "name": "cloud-native-postgresql-af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc-annotation"
+        },
+        {
+          "digest": "sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=0.6.0 < 1.15.2",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.15.2",
+      "version_original": "1.15.2"
+    },
+    {
+      "_id": "62fa426ebb3b9bafa134a39d",
+      "alm_examples": [
+        {
+          "api_version": "platform.confluent.io/v1beta1",
+          "kind": "Zookeeper",
+          "metadata": {
+            "name": "zookeeper"
+          },
+          "spec": {
+            "dataVolumeCapacity": "10Gi",
+            "image": {
+              "application": "confluentinc/cp-zookeeper@sha256:f80df50ad358773df08657bace7980dd89c97cfc518141ed1ebffe88ce610ef4",
+              "init": "confluentinc/confluent-init-container@sha256:35c19bd2fd4300899a47bd06e66dc43569cba02e95286f9b9548a764de0e1001"
+            },
+            "logVolumeCapacity": "10Gi",
+            "replicas": 3
+          }
+        },
+        {
+          "api_version": "platform.confluent.io/v1beta1",
+          "kind": "Kafka",
+          "metadata": {
+            "name": "kafka"
+          },
+          "spec": {
+            "dataVolumeCapacity": "10Gi",
+            "image": {
+              "application": "confluentinc/cp-server@sha256:bbc1493e52991094cde2c94ad334d6fbbf413e87fa5f203e942f6bcc0d488ffd",
+              "init": "confluentinc/confluent-init-container@sha256:35c19bd2fd4300899a47bd06e66dc43569cba02e95286f9b9548a764de0e1001"
+            },
+            "metricReporter": {
+              "enabled": true
+            },
+            "replicas": 3
+          }
+        },
+        {
+          "api_version": "platform.confluent.io/v1beta1",
+          "kind": "KafkaRestProxy",
+          "metadata": {
+            "name": "kafkarestproxy"
+          },
+          "spec": {
+            "image": {
+              "application": "confluentinc/cp-kafka-rest@sha256:d380a9e0dbb456f95e70b7d6c56cca02d4734b1d0fde8fbe2a053c3e6d44e16d ",
+              "init": "confluentinc/confluent-init-container@sha256:35c19bd2fd4300899a47bd06e66dc43569cba02e95286f9b9548a764de0e1001"
+            },
+            "metricReporter": {
+              "enabled": true
+            },
+            "replicas": 3
+          }
+        },
+        {
+          "api_version": "platform.confluent.io/v1beta1",
+          "kind": "Connect",
+          "metadata": {
+            "name": "connect"
+          },
+          "spec": {
+            "dependencies": {
+              "kafka": {
+                "bootstrapEndpoint": "kafka:9071"
+              }
+            },
+            "image": {
+              "application": "confluentinc/cp-server-connect@sha256:7da14f9d34b48bed11cb307a4a080d2055a18d5acc95f5bcc31b7feac0e0395e",
+              "init": "confluentinc/confluent-init-container@sha256:35c19bd2fd4300899a47bd06e66dc43569cba02e95286f9b9548a764de0e1001"
+            },
+            "replicas": 1
+          }
+        },
+        {
+          "api_version": "platform.confluent.io/v1beta1",
+          "kind": "KsqlDB",
+          "metadata": {
+            "name": "ksqldb"
+          },
+          "spec": {
+            "dataVolumeCapacity": "10Gi",
+            "image": {
+              "application": "confluentinc/cp-ksqldb-server@sha256:951af16f6249a3bc3909420bf0abe78a7d5d853f4aa4eaf66665e1a6b2676af2",
+              "init": "confluentinc/confluent-init-container@sha256:35c19bd2fd4300899a47bd06e66dc43569cba02e95286f9b9548a764de0e1001"
+            },
+            "replicas": 1
+          }
+        },
+        {
+          "api_version": "platform.confluent.io/v1beta1",
+          "kind": "ControlCenter",
+          "metadata": {
+            "name": "controlcenter"
+          },
+          "spec": {
+            "dataVolumeCapacity": "10Gi",
+            "dependencies": {
+              "connect": [
+                {
+                  "name": "connect",
+                  "url": "http://connect.confluent.svc.cluster.local:8083"
+                }
+              ],
+              "ksqldb": [
+                {
+                  "name": "ksqldb",
+                  "url": "http://ksqldb.confluent.svc.cluster.local:8088"
+                }
+              ],
+              "schemaRegistry": {
+                "url": "http://schemaregistry.confluent.svc.cluster.local:8081"
+              }
+            },
+            "image": {
+              "application": "confluentinc/cp-enterprise-control-center@sha256:ef89f3bc2656c215a80dd202958bbfd1f843297574dff5a537590d1733aaf38a",
+              "init": "confluentinc/confluent-init-container@sha256:35c19bd2fd4300899a47bd06e66dc43569cba02e95286f9b9548a764de0e1001"
+            },
+            "replicas": 1
+          }
+        },
+        {
+          "api_version": "platform.confluent.io/v1beta1",
+          "kind": "SchemaRegistry",
+          "metadata": {
+            "name": "schemaregistry"
+          },
+          "spec": {
+            "image": {
+              "application": "confluentinc/cp-schema-registry@sha256:dabf016b86abb9ca7ab7f800ccdc0c18fdd80975da2195d90672e3e488ba0797",
+              "init": "confluentinc/confluent-init-container@sha256:35c19bd2fd4300899a47bd06e66dc43569cba02e95286f9b9548a764de0e1001"
+            },
+            "replicas": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": [
+          "Confluent Platform License"
+        ]
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/confluentinc/confluent-for-kubernetes-v2@sha256:aaaa7c9077f0d2f844c7b2943b50e880ef7ed501dacae91d68cd14e30902eb02",
+      "bundle_path_digest": "sha256:aaaa7c9077f0d2f844c7b2943b50e880ef7ed501dacae91d68cd14e30902eb02",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "2.3",
+      "creation_date": "2022-08-15T12:56:14.287000+00:00",
+      "csv_description": "Confluent for Kubernetes (CFK) is a cloud-native control plane for deploying and managing Confluent in your private cloud environment. It provides standard and simple interface to customize, deploy, and manage Confluent Platform through declarative API.\nConfluent for Kubernetes runs on Kubernetes, the runtime for private cloud architectures.",
+      "csv_display_name": "Confluent for Kubernetes",
+      "csv_metadata_description": "",
+      "csv_name": "confluent-for-kubernetes.v2.3.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:56:14.287000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "confluent-for-kubernetes",
+      "provided_apis": [
+        {
+          "group": "platform.confluent.io",
+          "kind": "Kafka",
+          "plural": "kafkas",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "Connect",
+          "plural": "connects",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "KafkaRestClass",
+          "plural": "kafkarestclasses",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "Zookeeper",
+          "plural": "zookeepers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "SchemaRegistry",
+          "plural": "schemaregistries",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "KafkaRestProxy",
+          "plural": "kafkarestproxies",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "ConfluentRolebinding",
+          "plural": "confluentrolebindings",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "ControlCenter",
+          "plural": "controlcenters",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "KafkaTopic",
+          "plural": "kafkatopics",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "MigrationJob",
+          "plural": "migrationjobs",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "KsqlDB",
+          "plural": "ksqldbs",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "Connector",
+          "plural": "connectors",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "Schema",
+          "plural": "schemas",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "ClusterLink",
+          "plural": "clusterlinks",
+          "version": "v1beta1"
+        },
+        {
+          "group": "platform.confluent.io",
+          "kind": "SchemaExporter",
+          "plural": "schemaexporters",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Confluent, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:236c01102003982ac70b8f7b101f73de1a049f1900c266fd2986d4f6d4c47ec5",
+          "image": "docker.io/confluentinc/confluent-operator@sha256:236c01102003982ac70b8f7b101f73de1a049f1900c266fd2986d4f6d4c47ec5",
+          "name": "confluent-operator"
+        },
+        {
+          "digest": "sha256:35c19bd2fd4300899a47bd06e66dc43569cba02e95286f9b9548a764de0e1001",
+          "image": "docker.io/confluentinc/confluent-init-container@sha256:35c19bd2fd4300899a47bd06e66dc43569cba02e95286f9b9548a764de0e1001",
+          "name": "confluent-init-container"
+        },
+        {
+          "digest": "sha256:f80df50ad358773df08657bace7980dd89c97cfc518141ed1ebffe88ce610ef4",
+          "image": "docker.io/confluentinc/cp-zookeeper@sha256:f80df50ad358773df08657bace7980dd89c97cfc518141ed1ebffe88ce610ef4",
+          "name": "cp-zookeeper"
+        },
+        {
+          "digest": "sha256:bbc1493e52991094cde2c94ad334d6fbbf413e87fa5f203e942f6bcc0d488ffd",
+          "image": "docker.io/confluentinc/cp-server@sha256:bbc1493e52991094cde2c94ad334d6fbbf413e87fa5f203e942f6bcc0d488ffd",
+          "name": "cp-server"
+        },
+        {
+          "digest": "sha256:d380a9e0dbb456f95e70b7d6c56cca02d4734b1d0fde8fbe2a053c3e6d44e16d",
+          "image": "docker.io/confluentinc/cp-kafka-rest@sha256:d380a9e0dbb456f95e70b7d6c56cca02d4734b1d0fde8fbe2a053c3e6d44e16d",
+          "name": "cp-kafka-rest"
+        },
+        {
+          "digest": "sha256:951af16f6249a3bc3909420bf0abe78a7d5d853f4aa4eaf66665e1a6b2676af2",
+          "image": "docker.io/confluentinc/cp-ksqldb-server@sha256:951af16f6249a3bc3909420bf0abe78a7d5d853f4aa4eaf66665e1a6b2676af2",
+          "name": "cp-ksqldb-server"
+        },
+        {
+          "digest": "sha256:dabf016b86abb9ca7ab7f800ccdc0c18fdd80975da2195d90672e3e488ba0797",
+          "image": "docker.io/confluentinc/cp-schema-registry@sha256:dabf016b86abb9ca7ab7f800ccdc0c18fdd80975da2195d90672e3e488ba0797",
+          "name": "cp-schema-registry"
+        },
+        {
+          "digest": "sha256:7da14f9d34b48bed11cb307a4a080d2055a18d5acc95f5bcc31b7feac0e0395e",
+          "image": "docker.io/confluentinc/cp-server-connect@sha256:7da14f9d34b48bed11cb307a4a080d2055a18d5acc95f5bcc31b7feac0e0395e",
+          "name": "cp-server-connect"
+        },
+        {
+          "digest": "sha256:ef89f3bc2656c215a80dd202958bbfd1f843297574dff5a537590d1733aaf38a",
+          "image": "docker.io/confluentinc/cp-enterprise-control-center@sha256:ef89f3bc2656c215a80dd202958bbfd1f843297574dff5a537590d1733aaf38a",
+          "name": "cp-enterprise-control-center"
+        },
+        {
+          "digest": "sha256:236c01102003982ac70b8f7b101f73de1a049f1900c266fd2986d4f6d4c47ec5",
+          "image": "docker.io/confluentinc/confluent-operator@sha256:236c01102003982ac70b8f7b101f73de1a049f1900c266fd2986d4f6d4c47ec5",
+          "name": "confluent-operator-236c01102003982ac70b8f7b101f73de1a049f1900c266fd2986d4f6d4c47ec5-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=2.2.0 <2.3.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.3.0",
+      "version_original": "2.3.0"
+    },
+    {
+      "_id": "62fa4275e07d71e4beb6a8ec",
+      "alm_examples": [
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCluster",
+          "metadata": {
+            "name": "cb-example"
+          },
+          "spec": {
+            "backup": {
+              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              },
+              "serviceAccountName": "couchbase-backup"
+            },
+            "buckets": {
+              "managed": true,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            },
+            "cluster": {
+              "analyticsServiceMemoryQuota": "1Gi",
+              "autoCompaction": {
+                "databaseFragmentationThreshold": {
+                  "percent": 30,
+                  "size": "1Gi"
+                },
+                "parallelCompaction": false,
+                "timeWindow": {
+                  "abortCompactionOutsideWindow": true,
+                  "end": "06:00",
+                  "start": "02:00"
+                },
+                "tombstonePurgeInterval": "72h",
+                "viewFragmentationThreshold": {
+                  "percent": 30,
+                  "size": "1Gi"
+                }
+              },
+              "autoFailoverMaxCount": 3,
+              "autoFailoverOnDataDiskIssues": true,
+              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
+              "autoFailoverServerGroup": false,
+              "autoFailoverTimeout": "120s",
+              "clusterName": "cb-example",
+              "dataServiceMemoryQuota": "256Mi",
+              "eventingServiceMemoryQuota": "256Mi",
+              "indexServiceMemoryQuota": "256Mi",
+              "indexStorageSetting": "memory_optimized",
+              "searchServiceMemoryQuota": "256Mi"
+            },
+            "enablePreviewScaling": false,
+            "hibernate": false,
+            "hibernationStrategy": "Immediate",
+            "image": "registry.connect.redhat.com/couchbase/server@sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
+            "logRetentionCount": 20,
+            "logRetentionTime": "604800s",
+            "monitoring": {
+              "prometheus": {
+                "enabled": false,
+                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6"
+              }
+            },
+            "networking": {
+              "adminConsoleServiceType": "NodePort",
+              "adminConsoleServices": [
+                "data"
+              ],
+              "exposeAdminConsole": true,
+              "exposedFeatureServiceType": "NodePort",
+              "exposedFeatures": [
+                "xdcr"
+              ]
+            },
+            "recoveryPolicy": "PrioritizeDataIntegrity",
+            "security": {
+              "adminSecret": "cb-example-auth",
+              "rbac": {
+                "managed": true,
+                "selector": {
+                  "matchLabels": {
+                    "cluster": "cb-example"
+                  }
+                }
+              }
+            },
+            "servers": [
+              {
+                "name": "all_services",
+                "services": [
+                  "data",
+                  "index",
+                  "query",
+                  "search",
+                  "eventing",
+                  "analytics"
+                ],
+                "size": 3
+              }
+            ],
+            "upgradeStrategy": "RollingUpgrade",
+            "xdcr": {
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "default"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "enableIndexReplica": true,
+            "evictionPolicy": "valueOnly",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseEphemeralBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "ephemeral-bucket"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "evictionPolicy": "noEviction",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMemcachedBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "memcached-bucket"
+          },
+          "spec": {
+            "enableFlush": false,
+            "memoryQuota": "100Mi"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseUser",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-user"
+          },
+          "spec": {
+            "authDomain": "local",
+            "authSecret": "cb-example-auth",
+            "fullName": "My User"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseGroup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-group"
+          },
+          "spec": {
+            "roles": [
+              {
+                "bucket": "default",
+                "name": "bucket_admin"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseRoleBinding",
+          "metadata": {
+            "name": "my-role-binding"
+          },
+          "spec": {
+            "roleRef": {
+              "kind": "CouchbaseGroup",
+              "name": "my-group"
+            },
+            "subjects": [
+              {
+                "kind": "CouchbaseUser",
+                "name": "my-user"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseReplication",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-replication"
+          },
+          "spec": {
+            "bucket": "default",
+            "compressionType": "Snappy",
+            "filterExpression": "",
+            "paused": false,
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-backup"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backupRetention": "24h",
+            "failedJobsHistoryLimit": 3,
+            "full": {
+              "schedule": "0 3 * * 6"
+            },
+            "incremental": {
+              "schedule": "0 3 * * 1-6"
+            },
+            "logRetention": "24h",
+            "size": "5Gi",
+            "strategy": "full_incremental",
+            "successfulJobsHistoryLimit": 1
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackupRestore",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-restore"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backup": "cb-backup",
+            "end": {
+              "int": 1
+            },
+            "logRetention": "24h",
+            "repo": "cb-example-2020-10-29T19_00_03",
+            "start": {
+              "int": 1
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseAutoscaler",
+          "metadata": {
+            "name": "do.not.create.internal.only"
+          },
+          "spec": {
+            "servers": "internal",
+            "size": 2
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:34d5409a2ab6863d5dcf56dc40f83abc5ad8bcf41be06a6b0097ed0b858675bd",
+      "bundle_path_digest": "sha256:34d5409a2ab6863d5dcf56dc40f83abc5ad8bcf41be06a6b0097ed0b858675bd",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "2.2.4",
+      "creation_date": "2022-08-15T12:56:21.943000+00:00",
+      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
+      "csv_display_name": "Couchbase Operator",
+      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
+      "csv_name": "couchbase-operator.v2.2.4-2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:56:21.943000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "plural": "couchbaserolebindings",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "plural": "couchbaseusers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackupRestore",
+          "plural": "couchbasebackuprestores",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "plural": "couchbasegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "plural": "couchbaseclusters",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseEphemeralBucket",
+          "plural": "couchbaseephemeralbuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "plural": "couchbasebackups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMemcachedBucket",
+          "plural": "couchbasememcachedbuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseReplication",
+          "plural": "couchbasereplications",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseAutoscaler",
+          "plural": "couchbaseautoscalers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "plural": "couchbasebuckets",
+          "version": "v2"
+        }
+      ],
+      "provider": "Couchbase",
+      "related_images": [
+        {
+          "digest": "sha256:8e152e8e4ce5bedf22f893bf127f5f882e1d02b0b9509b9114e349eb0716bca2",
+          "image": "registry.connect.redhat.com/couchbase/operator@sha256:8e152e8e4ce5bedf22f893bf127f5f882e1d02b0b9509b9114e349eb0716bca2",
+          "name": "couchbase-operator"
+        },
+        {
+          "digest": "sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
+          "name": "couchbase-server"
+        },
+        {
+          "digest": "sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
+          "name": "couchbase-backup"
+        },
+        {
+          "digest": "sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
+          "name": "couchbase-metrics"
+        },
+        {
+          "digest": "sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
+          "name": "couchbase_server"
+        },
+        {
+          "digest": "sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
+          "name": "couchbase_backup"
+        },
+        {
+          "digest": "sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
+          "name": "couchbase_metrics"
+        },
+        {
+          "digest": "sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
+          "name": "exporter-fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6-annotation"
+        },
+        {
+          "digest": "sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
+          "name": "operator-backup-e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935-annotation"
+        },
+        {
+          "digest": "sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
+          "name": "server-76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.2.4-2",
+      "version_original": "2.2.4-2"
+    },
+    {
+      "_id": "62fa427cb289bcc7af6705a2",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-08-15T12:56:28.562000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:56:28.562000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "62fa427cb289bcc7af6705a4",
+      "alm_examples": [
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCluster",
+          "metadata": {
+            "name": "cb-example"
+          },
+          "spec": {
+            "backup": {
+              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              },
+              "serviceAccountName": "couchbase-backup"
+            },
+            "buckets": {
+              "managed": true,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            },
+            "cluster": {
+              "analyticsServiceMemoryQuota": "1Gi",
+              "autoFailoverMaxCount": 3,
+              "autoFailoverOnDataDiskIssues": true,
+              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
+              "autoFailoverServerGroup": false,
+              "autoFailoverTimeout": "120s",
+              "clusterName": "cb-example",
+              "dataServiceMemoryQuota": "256Mi",
+              "eventingServiceMemoryQuota": "256Mi",
+              "indexServiceMemoryQuota": "256Mi",
+              "indexStorageSetting": "memory_optimized",
+              "searchServiceMemoryQuota": "256Mi"
+            },
+            "enablePreviewScaling": false,
+            "hibernate": false,
+            "hibernationStrategy": "Immediate",
+            "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+            "logRetentionCount": 20,
+            "logRetentionTime": "604800s",
+            "monitoring": {
+              "prometheus": {
+                "enabled": false,
+                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6"
+              }
+            },
+            "networking": {
+              "adminConsoleServiceType": "NodePort",
+              "adminConsoleServices": [
+                "data"
+              ],
+              "exposeAdminConsole": true,
+              "exposedFeatureServiceType": "NodePort",
+              "exposedFeatures": [
+                "xdcr"
+              ]
+            },
+            "recoveryPolicy": "PrioritizeDataIntegrity",
+            "security": {
+              "adminSecret": "cb-example-auth",
+              "rbac": {
+                "managed": true,
+                "selector": {
+                  "matchLabels": {
+                    "cluster": "cb-example"
+                  }
+                }
+              }
+            },
+            "servers": [
+              {
+                "name": "all_services",
+                "services": [
+                  "data",
+                  "index",
+                  "query",
+                  "search",
+                  "eventing",
+                  "analytics"
+                ],
+                "size": 3
+              }
+            ],
+            "upgradeStrategy": "RollingUpgrade",
+            "xdcr": {
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "default"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "enableIndexReplica": true,
+            "evictionPolicy": "valueOnly",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseEphemeralBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "ephemeral-bucket"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "evictionPolicy": "noEviction",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMemcachedBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "memcached-bucket"
+          },
+          "spec": {
+            "enableFlush": false,
+            "memoryQuota": "100Mi"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseUser",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-user"
+          },
+          "spec": {
+            "authDomain": "local",
+            "authSecret": "cb-example-auth",
+            "fullName": "My User"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseGroup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-group"
+          },
+          "spec": {
+            "roles": [
+              {
+                "bucket": "default",
+                "name": "bucket_admin"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseRoleBinding",
+          "metadata": {
+            "name": "my-role-binding"
+          },
+          "spec": {
+            "roleRef": {
+              "kind": "CouchbaseGroup",
+              "name": "my-group"
+            },
+            "subjects": [
+              {
+                "kind": "CouchbaseUser",
+                "name": "my-user"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseReplication",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-replication"
+          },
+          "spec": {
+            "bucket": "default",
+            "compressionType": "Snappy",
+            "filterExpression": "",
+            "paused": false,
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-backup"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backupRetention": "24h",
+            "failedJobsHistoryLimit": 3,
+            "full": {
+              "schedule": "0 3 * * 6"
+            },
+            "incremental": {
+              "schedule": "0 3 * * 1-6"
+            },
+            "logRetention": "24h",
+            "size": "5Gi",
+            "strategy": "full_incremental",
+            "successfulJobsHistoryLimit": 1
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackupRestore",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-restore"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backup": "cb-backup",
+            "end": {
+              "int": 1
+            },
+            "logRetention": "24h",
+            "repo": "cb-example-2020-10-29T19_00_03",
+            "start": {
+              "int": 1
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCollectionGroup",
+          "metadata": {
+            "name": "my-collection-group"
+          },
+          "spec": {
+            "maxTTL": "",
+            "names": [
+              "my-collection"
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCollection",
+          "metadata": {
+            "name": "my-collection"
+          },
+          "spec": {
+            "maxTTL": "",
+            "name": "my-collection"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseScopeGroup",
+          "metadata": {
+            "name": "my-scope-group"
+          },
+          "spec": {
+            "collections": {},
+            "names": [
+              "my-scope"
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseScope",
+          "metadata": {
+            "name": "my-scope"
+          },
+          "spec": {
+            "collections": {},
+            "name": "my-scope"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMigrationReplication",
+          "metadata": {
+            "name": "default-migration"
+          },
+          "spec": {
+            "bucket": "default",
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseAutoscaler",
+          "metadata": {
+            "name": "do.not.create.internal.only"
+          },
+          "spec": {
+            "servers": "internal",
+            "size": 2
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:84ea69b8c4a4b823597ccd4e4260947de0f0520c2330c19fd8b24f53e508b680",
+      "bundle_path_digest": "sha256:84ea69b8c4a4b823597ccd4e4260947de0f0520c2330c19fd8b24f53e508b680",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "2.3.1",
+      "creation_date": "2022-08-15T12:56:28.808000+00:00",
+      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
+      "csv_display_name": "Couchbase Operator",
+      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
+      "csv_name": "couchbase-operator.v2.3.1-2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:56:28.808000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "plural": "couchbasegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "plural": "couchbaseclusters",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "plural": "couchbaserolebindings",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "plural": "couchbaseusers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseEphemeralBucket",
+          "plural": "couchbaseephemeralbuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseReplication",
+          "plural": "couchbasereplications",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "plural": "couchbasebackups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCollection",
+          "plural": "couchbasecollections",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCollectionGroup",
+          "plural": "couchbasecollectiongroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseScope",
+          "plural": "couchbasescopes",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMigrationReplication",
+          "plural": "couchbasemigrationreplications",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackupRestore",
+          "plural": "couchbasebackuprestores",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseAutoscaler",
+          "plural": "couchbaseautoscalers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseScopeGroup",
+          "plural": "couchbasescopegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "plural": "couchbasebuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMemcachedBucket",
+          "plural": "couchbasememcachedbuckets",
+          "version": "v2"
+        }
+      ],
+      "provider": "Couchbase",
+      "related_images": [
+        {
+          "digest": "sha256:9ff13f4d8d8efc15f8c21f3ea2ddf6cd103731f02c1f26a1dd173dbf17d2afd0",
+          "image": "registry.connect.redhat.com/couchbase/operator@sha256:9ff13f4d8d8efc15f8c21f3ea2ddf6cd103731f02c1f26a1dd173dbf17d2afd0",
+          "name": "couchbase-operator"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "couchbase-server"
+        },
+        {
+          "digest": "sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
+          "name": "couchbase-backup"
+        },
+        {
+          "digest": "sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
+          "name": "couchbase-metrics"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "couchbase_server"
+        },
+        {
+          "digest": "sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
+          "name": "couchbase_backup"
+        },
+        {
+          "digest": "sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
+          "name": "couchbase_metrics"
+        },
+        {
+          "digest": "sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
+          "name": "exporter-fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6-annotation"
+        },
+        {
+          "digest": "sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
+          "name": "operator-backup-e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935-annotation"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "server-05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.3.1-2",
+      "version_original": "2.3.1-2"
     }
   ],
   "page": 44,
   "page_size": 100,
-  "total": 4866
+  "total": 4862
 }
