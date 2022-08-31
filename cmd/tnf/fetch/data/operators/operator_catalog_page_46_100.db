@@ -1,1279 +1,6 @@
 {
   "data": [
     {
-      "_id": "62fa49e84eed1a480412ffee",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "5.3"
-            },
-            "route": true,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "5.3"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "5.3"
-            },
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway.aqua:8443"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "5.3"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "5.3"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "5.3"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:c367a6e2000ff5eb18363b3008930e86623a1ef74d0236cdb9423b63468fdfc2",
-      "bundle_path_digest": "sha256:c367a6e2000ff5eb18363b3008930e86623a1ef74d0236cdb9423b63468fdfc2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "5.3",
-      "creation_date": "2022-08-15T13:28:08.111000+00:00",
-      "csv_description": "The Aqua Security Operator is used to deploy and manage the Aqua Cloud Native Security Platform (CSP) and its components:\n* Server (aka \"console\")\n* Database (optional; you can map an external database as well)\n* Gateway\n* Enforcer\n* KubeEnforcer\n* Scanner\n\nUse the Aqua Operator to:\n* Deploy Aqua CSP on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua CSP components\n* Automatically scale the number of Aqua scanners based on the number of images in the scan queue\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n3. Create the secret for Aqua Database password\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password>```\n    \nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* latest: This maps to the Aqua version 4.6.0\n* alpha: This maps to the Aqua version 5.0.0\n* 5.3: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v5.3.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:28:08.111000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "plural": "aquakubeenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "plural": "aquascanners",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "plural": "aquaservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "plural": "aquacsps",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "plural": "aquadatabases",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "plural": "aquaenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "plural": "aquagateways",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Aqua Security, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17",
-          "name": "aquasec-5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17-annotation"
-        },
-        {
-          "digest": "sha256:5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:5232320700d92814955daee9588845b6d57ff499d24406e34c86cb2264df7e17",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:5e3f0ceb3805eb556a270ff6dd24f38b7363af635be67a07537537fdcea91a59",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:5e3f0ceb3805eb556a270ff6dd24f38b7363af635be67a07537537fdcea91a59",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:736ebc8d15add4f82999d0d4cd95f0d7ddf4d4459496718c1482716841750dd9",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:736ebc8d15add4f82999d0d4cd95f0d7ddf4d4459496718c1482716841750dd9",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:03669814dfa811b54116ce9c7481c6594f44058593ab50f8549beeef9ed0e54c",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:03669814dfa811b54116ce9c7481c6594f44058593ab50f8549beeef9ed0e54c",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:6617cc185815d883ef25d40d0ba02e00bd39224c9431d36ecbf2254690206230",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:6617cc185815d883ef25d40d0ba02e00bd39224c9431d36ecbf2254690206230",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:a132492d9678275c250aaddcdf9af4fea551e79d6aaf95682f457edf8f92af50",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:a132492d9678275c250aaddcdf9af4fea551e79d6aaf95682f457edf8f92af50",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "5.3.0",
-      "version_original": "5.3.0"
-    },
-    {
-      "_id": "62fa49f430a80ba5a208cd14",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.8-28.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-08-15T13:28:20.659000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:28:20.659000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca",
-          "image": "redislabs/operator@sha256:29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca",
-          "name": "operator-29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca-annotation"
-        },
-        {
-          "digest": "sha256:29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.0.8-1",
-      "version_original": "6.0.8-1"
-    },
-    {
-      "_id": "62fa49f7e07d71e4beb6b126",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.8-30.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
-      "bundle_path_digest": "sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-08-15T13:28:23.681000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:28:23.681000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "name": "redis-enterprise-operator-0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1-annotation"
-        },
-        {
-          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.8-20",
-      "version_original": "6.0.8-20"
-    },
-    {
-      "_id": "62fa4a2930a80ba5a208cd57",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "5.4.14-31.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "size": 3,
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
-      "bundle_path_digest": "sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "5.4.14",
-      "creation_date": "2022-08-15T13:29:13.652000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v5.4.14-7",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:29:13.652000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "image": "redislabs/operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "name": "operator-062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217-annotation"
-        },
-        {
-          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "5.4.14-7",
-      "version_original": "5.4.14-7"
-    },
-    {
-      "_id": "62fa4a5f4eed1a4804130076",
-      "alm_examples": [
-        {
-          "api_version": "postgresql.k8s.enterprisedb.io/v1",
-          "kind": "Backup",
-          "metadata": {
-            "name": "backup-sample"
-          },
-          "spec": {
-            "cluster": {
-              "name": "cluster-sample"
-            }
-          }
-        },
-        {
-          "api_version": "postgresql.k8s.enterprisedb.io/v1",
-          "kind": "Cluster",
-          "metadata": {
-            "name": "cluster-sample"
-          },
-          "spec": {
-            "instances": 3,
-            "logLevel": "info",
-            "primaryUpdateStrategy": "unsupervised",
-            "storage": {
-              "size": "1Gi"
-            }
-          }
-        },
-        {
-          "api_version": "postgresql.k8s.enterprisedb.io/v1",
-          "kind": "Pooler",
-          "metadata": {
-            "name": "pooler-sample-rw"
-          },
-          "spec": {
-            "cluster": {
-              "name": "cluster-sample"
-            },
-            "instances": 1,
-            "pgbouncer": {
-              "poolMode": "session"
-            },
-            "type": "rw"
-          }
-        },
-        {
-          "api_version": "postgresql.k8s.enterprisedb.io/v1",
-          "kind": "ScheduledBackup",
-          "metadata": {
-            "name": "scheduledbackup-sample"
-          },
-          "spec": {
-            "cluster": {
-              "name": "cluster-sample"
-            },
-            "schedule": "0 0 0 * * *"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64",
-        "ppc64le",
-        "s390x"
-      ],
-      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:e0624abf48e3f643638e93a633a4017961b454f133830f6d369b238d58a6eb8b",
-      "bundle_path_digest": "sha256:e0624abf48e3f643638e93a633a4017961b454f133830f6d369b238d58a6eb8b",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "null",
-      "creation_date": "2022-08-15T13:30:07.941000+00:00",
-      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
-      "csv_display_name": "EDB Postgres for Kubernetes",
-      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
-      "csv_name": "cloud-native-postgresql.v1.15.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:30:07.941000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "cloud-native-postgresql",
-      "provided_apis": [
-        {
-          "group": "postgresql.k8s.enterprisedb.io",
-          "kind": "Cluster",
-          "plural": "clusters",
-          "version": "v1"
-        },
-        {
-          "group": "postgresql.k8s.enterprisedb.io",
-          "kind": "Pooler",
-          "plural": "poolers",
-          "version": "v1"
-        },
-        {
-          "group": "postgresql.k8s.enterprisedb.io",
-          "kind": "ScheduledBackup",
-          "plural": "scheduledbackups",
-          "version": "v1"
-        },
-        {
-          "group": "postgresql.k8s.enterprisedb.io",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        }
-      ],
-      "provider": "EnterpriseDB Corporation",
-      "related_images": [
-        {
-          "digest": "sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
-          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
-          "name": "cloud-native-postgresql-af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc-annotation"
-        },
-        {
-          "digest": "sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
-          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=0.6.0 < 1.15.2",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.15.2",
-      "version_original": "1.15.2"
-    },
-    {
-      "_id": "62fa4a794eed1a480413009b",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "bootstrapperImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise-operator"
-            },
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise",
-              "versionTag": "6.2.10-107.rhel8-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "redisEnterpriseServicesRiggerImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/services-manager"
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a6a5a8925abe7ed7899b1c0cbfa7808223ad5a641adf6d537dbc197be3eb6c16",
-      "bundle_path_digest": "sha256:a6a5a8925abe7ed7899b1c0cbfa7808223ad5a641adf6d537dbc197be3eb6c16",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-08-15T13:30:33.634000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n*  Changing the name of the Redis Enterprise Cluster in the spec from the\n  default requires running commands to grant permissions to the pods:\n\n  Operator service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\n    Redis Enterprise Cluster service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\n    Replace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.\n\n* When creating a Redis Enterprise Cluster without specifying in its spec a `persistentSpec` with explicit `storageClassName`,\nthe default Storage Class of the Kubernetes cluster will be used to dynamically provision storage for the Redis Enterprise Cluster's nodes.\nHowever, if the Kubernetes cluster doesn't have a default Storage Class configured\nand no specific Storage Class was specified in the Redis Enterprise Cluster Spec, the installation of the cluster could fail.\nTo avoid such scenario in cases where a specific Storage Class isn't specified, make sure the Kubernetes Cluster has a default Storage Cluster configured.\nThis can be done by running a `kubectl get storageclass` command and see if one of the Storage Classes' names contains a `(default)` mark.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.10-34",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:30:33.634000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis",
-      "related_images": [
-        {
-          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "name": "redis-enterprise-operator-53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb-annotation"
-        },
-        {
-          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.2.10-34",
-      "version_original": "6.2.10-34"
-    },
-    {
-      "_id": "62fa4abd4eed1a48041300ea",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.6-39.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
-      "bundle_path_digest": "sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2022-08-15T13:31:41.693000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-24",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:31:41.693000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "image": "redislabs/operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "name": "operator-998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b-annotation"
-        },
-        {
-          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.6-24",
-      "version_original": "6.0.6-24"
-    },
-    {
-      "_id": "62fa4ac130a80ba5a208ce07",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.8-53.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "bundle_path_digest": "sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2022-08-15T13:31:45.169000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.8-11",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:31:45.169000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis",
-      "related_images": [
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator-5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59-annotation"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.2.8-11",
-      "version_original": "6.2.8-11"
-    },
-    {
-      "_id": "62fa4ac5b289bcc7af670eaa",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "5.4.14-31.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "size": 3,
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
-      "bundle_path_digest": "sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2022-08-15T13:31:49.269000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v5.4.14-7",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:31:49.269000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "image": "redislabs/operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "name": "operator-062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217-annotation"
-        },
-        {
-          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "5.4.14-7",
-      "version_original": "5.4.14-7"
-    },
-    {
       "_id": "62fa4af2bb3b9bafa134acd3",
       "alm_examples": [
         {
@@ -4817,738 +3544,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.2.0",
       "version_original": "1.2.0"
-    },
-    {
-      "_id": "62fab5bd30a80ba5a2091292",
-      "alm_examples": [
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MarketplaceConfig",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "marketplaceconfig",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "clusterUUID": "",
-            "features": {
-              "deployment": true,
-              "meterDefinitionCatalogServer": false,
-              "registration": true
-            },
-            "installIBMCatalogSource": true,
-            "isDisconnected": false,
-            "rhmAccountID": ""
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MeterBase",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "meterbase",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "enabled": true,
-            "prometheus": {
-              "resources": {
-                "limits": {
-                  "cpu": "2",
-                  "memory": "2Gi"
-                },
-                "requests": {
-                  "cpu": "1",
-                  "memory": "1G"
-                }
-              },
-              "storage": {
-                "size": "20Gi"
-              }
-            }
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MeterReport",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-meterreport",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "endTime": "2020-08-05T00:00:00Z",
-            "prometheusService": {
-              "name": "rhm-prometheus-meterbase",
-              "namespace": "openshift-redhat-marketplace",
-              "targetPort": "rbac"
-            },
-            "startTime": "2020-08-04T00:00:00Z"
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "RazeeDeployment",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "razeedeployment-example",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "clusterUUID": "example-cluster-uuid",
-            "enabled": true
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "RemoteResourceS3",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-remoteresources3",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "auth": {
-              "iam": {
-                "apiKeyRef": {
-                  "valueFrom": {
-                    "secretKeyRef": {
-                      "key": "accesskey",
-                      "name": "rhm-cos-reader-key"
-                    }
-                  }
-                },
-                "grantType": "urn:ibm:params:oauth:grant-type:apikey",
-                "responseType": "cloud_iam",
-                "url": "https://iam.cloud.ibm.com/identity/token"
-              }
-            },
-            "requests": [
-              {
-                "options": {
-                  "url": "https://s3.us-east.cloud-object-storage.appdomain.cloud/your-accountId/your-cluster-uuid/name-of-child.yaml"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1beta1",
-          "kind": "MeterDefinition",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-meterdefinition-4",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "group": "partner.metering.com",
-            "kind": "App",
-            "meters": [
-              {
-                "aggregation": "sum",
-                "metricId": "container_cpu_usage_core_avg",
-                "period": "1h",
-                "query": "rate(container_cpu_usage_seconds_total{cpu=\"total\",container=\"db\"}[5m])*100",
-                "workloadType": "Pod"
-              }
-            ],
-            "resourceFilters": [
-              {
-                "namespace": {
-                  "useOperatorGroup": true
-                },
-                "ownerCRD": {
-                  "apiVersion": "marketplace.redhat.com/v1alpha1",
-                  "kind": "RazeeDeployment"
-                },
-                "workloadType": "Pod"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1beta1",
-          "kind": "MeterDefinition",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "meterdefinition-sample",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "group": "partner.metering.com",
-            "kind": "App",
-            "meters": [
-              {
-                "aggregation": "sum",
-                "metricId": "container_cpu_usage_core_avg",
-                "period": "1h",
-                "query": "rate(container_cpu_usage_seconds_total{cpu=\"total\",container=\"db\"}[5m])*100",
-                "workloadType": "Pod"
-              }
-            ],
-            "resourceFilters": [
-              {
-                "namespace": {
-                  "useOperatorGroup": true
-                },
-                "ownerCRD": {
-                  "apiVersion": "marketplace.redhat.com/v1alpha1",
-                  "kind": "RazeeDeployment"
-                },
-                "workloadType": "Pod"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64",
-        "ppc64le",
-        "s390x"
-      ],
-      "bundle_path": "registry.connect.redhat.com/rh-marketplace/rh-marketplace-bundle@sha256:56e0c99e209b81a9aec1438f080a180dd6c0c617bf1df19cdbd9dbe685a27bb2",
-      "bundle_path_digest": "sha256:56e0c99e209b81a9aec1438f080a180dd6c0c617bf1df19cdbd9dbe685a27bb2",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-15T21:08:13.352000+00:00",
-      "csv_description": "The Red Hat Marketplace Operator provides cluster management, metering and\noperator installation for Red Hat Marketplace customers.\n### **Important Note**\nA set of instructions for onboarding is provided here. For more detailed onboarding instructions or information about what is installed please visit [marketplace.redhat.com](https://marketplace.redhat.com).\nTo access images from Red Hat Marketplace and the Marketplace container catalog you will need to make the pull secret attained in installation available to the workloads running on the cluster.\n### Prerequisites\n1. It is recommended to [enable monitoring for user-defined projects](https://docs.openshift.com/container-platform/4.10/monitoring/enabling-monitoring-for-user-defined-projects.html) as the Prometheus provider.\n2. Edit the cluster-monitoring-config ConfigMap object:\n  \n   ```sh\n   $ oc -n openshift-monitoring edit configmap cluster-monitoring-config\n   ```\n\n3. Add enableUserWorkload: true under data/config.yaml:\n  \n    ```sh\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: cluster-monitoring-config\n      namespace: openshift-monitoring\n    data:\n      config.yaml: |\n        enableUserWorkload: true\n    ```\n\n4. Configure the user-workload-monitoring-config ConfigMap object:\n  \n    ```sh\n    $ oc -n openshift-user-workload-monitoring edit configmap user-workload-monitoring-config\n    ```\n\n5. Configure a minimum retention time of 168h and minimum storage capacity of 40Gi\n  \n    ```sh\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: user-workload-monitoring-config\n      namespace: openshift-user-workload-monitoring\n    data:\n      config.yaml: |\n        prometheus:\n          retention: 168h\n          volumeClaimTemplate:\n            spec:\n              resources:\n                requests:\n                  storage: 40Gi\n    ```\n\n### Installation\n1. Create or get your pull secret from [Red Hat Marketplace](https://marketplace.redhat.com/en-us/documentation/clusters#get-pull-secret).\n2. Install the Red Hat Marketplace Operator in the openshift-redhat-marketplace namespace.\n3. Create a Kubernetes secret in the openshift-redhat-marketplace namespace with the name `redhat-marketplace-pull-secret` and key `PULL_SECRET` with the value of the Red hat Marketplace Pull Secret.\n\n   ```sh\n   # Replace ${PULL_SECRET} with your secret from Red Hat Marketplace\n   oc create secret generic redhat-marketplace-pull-secret -n  openshift-redhat-marketplace --from-literal=PULL_SECRET=${PULL_SECRET}\n   ```\n\n4. Install the Red Hat Marketplace pull secret as a global pull secret on the cluster.\n   **Warning:** This step will make your cluster perform a rolling restart.\n   These steps require `oc`, `jq`, and `base64` to be available on your machine.\n\n   ```sh\n   # Create the docker pull secret file using your PULL_SECRET from Red Hat Marketplace.\n   # Store it in a file called entitledregistryconfigjson.\n   oc create secret docker-registry entitled-registry --docker-server=registry.marketplace.redhat.com --docker-username \"cp\" --docker-password \"${PULL_SECRET}\" --dry-run=true --output=\"jsonpath={.data.\\.dockerconfigjson}\" | base64 --decode > entitledregistryconfigjson\n   # Get the current global secrets on the cluster and store it as a file named dockerconfigjson\n   oc get secret pull-secret -n openshift-config --output=\"jsonpath={.data.\\.dockerconfigjson}\" | base64 --decode > dockerconfigjson\n   # Merge the two dockerconfigs together into a file called dockerconfigjson-merged.\n   jq -s '.[0] * .[1]' dockerconfigjson entitledregistryconfigjson > dockerconfigjson-merged\n   # Set the cluster's dockerconfig file to the new merged version.\n   oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=dockerconfigjson-merged\n   # Cluster will now restart.\n   ```\n\n### Why is a global pull secret required?\nIn order to successfully install the Red Hat Marketplace products, you will need to make the pull secret available across the cluster. This can be achieved by applying the Red Hat Marketplace Pull Secret as a [global pull secret](https://docs.openshift.com/container-platform/4.6/openshift_images/managing_images/using-image-pull-secrets.html#images-update-global-pull-secret_using-image-pull-secrets).\nFor alternative approachs, please see the official OpenShift [documentation](https://docs.openshift.com/container-platform/4.6/openshift_images/managing_images/using-image-pull-secrets.html).\n### Documentation\nYou can find our documentation [here.](https://marketplace.redhat.com/en-us/documentation/)\n### Getting help\nIf you encounter any issues while using Red Hat Marketplace operator, you\ncan create an issue on our [Github\nrepo](https://github.com/redhat-marketplace/redhat-marketplace-operator) for\nbugs, enhancements, or other requests. You can also visit our main page and\nreview our [support](https://marketplace.redhat.com/en-us/support) and [documentation](https://marketplace.redhat.com/en-us/documentation/).\n### Readme\nYou can find our readme [here.](https://github.com/redhat-marketplace/redhat-marketplace-operator/blob/develop/README.md)\n### License information\nYou can find our license information [here.](https://github.com/redhat-marketplace/redhat-marketplace-operator/blob/develop/LICENSE)\n",
-      "csv_display_name": "Red Hat Marketplace",
-      "csv_metadata_description": "The Red Hat Marketplace Operator provides cluster management, metering and operator installation for Red Hat Marketplace customers.",
-      "csv_name": "redhat-marketplace-operator.v2.8.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T21:08:13.352000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redhat-marketplace-operator",
-      "provided_apis": [
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterReport",
-          "plural": "meterreports",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "RazeeDeployment",
-          "plural": "razeedeployments",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "RemoteResourceS3",
-          "plural": "remoteresources3s",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MarketplaceConfig",
-          "plural": "marketplaceconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterBase",
-          "plural": "meterbases",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterDefinition",
-          "plural": "meterdefinitions",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterDefinition",
-          "plural": "meterdefinitions",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Red Hat Marketplace",
-      "related_images": [
-        {
-          "digest": "sha256:07c3deef1552b6f1c659843b4b380233975fa3048dce1a58c006786022ffb710",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-authcheck@sha256:07c3deef1552b6f1c659843b4b380233975fa3048dce1a58c006786022ffb710",
-          "name": "authcheck"
-        },
-        {
-          "digest": "sha256:9dd6a3999077d1830a6d0b3a7dfb7e744fc29ac9858df674472ee82c2e5b8ff4",
-          "image": "us.icr.io/armada-master/watch-keeper@sha256:9dd6a3999077d1830a6d0b3a7dfb7e744fc29ac9858df674472ee82c2e5b8ff4",
-          "name": "rhm_watch_keeper_deployment"
-        },
-        {
-          "digest": "sha256:6e7a075b9ff8d3e2459dad46445758a2a3f6fc4887392645b4ca86fe5b1d0fb0",
-          "image": "us.icr.io/armada-master/remoteresources3@sha256:6e7a075b9ff8d3e2459dad46445758a2a3f6fc4887392645b4ca86fe5b1d0fb0",
-          "name": "rhm_rrs3_deployment"
-        },
-        {
-          "digest": "sha256:5ca572cb31f15534ee8b6fd20a026452870fb8be756f5fa9de9813bdb80969f4",
-          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:5ca572cb31f15534ee8b6fd20a026452870fb8be756f5fa9de9813bdb80969f4",
-          "name": "oauth_proxy"
-        },
-        {
-          "digest": "sha256:18688ecd113373abff11958237d84983a624cd2cc763842ea1c01dd701a98656",
-          "image": "registry.redhat.io/openshift4/ose-prometheus-operator@sha256:18688ecd113373abff11958237d84983a624cd2cc763842ea1c01dd701a98656",
-          "name": "prometheus_operator"
-        },
-        {
-          "digest": "sha256:5da2b67402519d4498695097728b7ad4c1dfe69cd1ddf87cc0c74e7043212574",
-          "image": "registry.redhat.io/openshift4/ose-prometheus@sha256:5da2b67402519d4498695097728b7ad4c1dfe69cd1ddf87cc0c74e7043212574",
-          "name": "prometheus"
-        },
-        {
-          "digest": "sha256:a4bb67ace1dd2992029ebfee6b08c439b1a363b2bf4059a10803d82f1bd089b6",
-          "image": "registry.redhat.io/openshift4/ose-prometheus-config-reloader@sha256:a4bb67ace1dd2992029ebfee6b08c439b1a363b2bf4059a10803d82f1bd089b6",
-          "name": "prometheus_configmap_reloader"
-        },
-        {
-          "digest": "sha256:093f3a006c0d73bcf3d5e1ac78f684734b87c08147b1ac57e6a609f34eddc9c8",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-data-service@sha256:093f3a006c0d73bcf3d5e1ac78f684734b87c08147b1ac57e6a609f34eddc9c8",
-          "name": "dqlite"
-        },
-        {
-          "digest": "sha256:260ebab52c1e825e354bfa60827e314388fb7878bfa16d1dc061707962e95bea",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:260ebab52c1e825e354bfa60827e314388fb7878bfa16d1dc061707962e95bea",
-          "name": "kube_rbac_proxy"
-        },
-        {
-          "digest": "sha256:9a15dca79b88a6e1e37617a5817ccac5df74b7ddef8fbae7da66685d90108c55",
-          "image": "registry.redhat.io/openshift4/ose-configmap-reloader@sha256:9a15dca79b88a6e1e37617a5817ccac5df74b7ddef8fbae7da66685d90108c55",
-          "name": "configmap_reloader"
-        },
-        {
-          "digest": "sha256:5c8e285a28ac89c2567940e74448da4586c4493151cac54fbc30281c6cc097cb",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-reporter@sha256:5c8e285a28ac89c2567940e74448da4586c4493151cac54fbc30281c6cc097cb",
-          "name": "reporter"
-        },
-        {
-          "digest": "sha256:4d2fa73d4f4577b1560e07d0692492374a4bb8b6bb6b9261fa88effff5e44db3",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-metric-state@sha256:4d2fa73d4f4577b1560e07d0692492374a4bb8b6bb6b9261fa88effff5e44db3",
-          "name": "metric_state"
-        },
-        {
-          "digest": "sha256:fcb7eed720b3b6c82b8455e77eec1b7c6ff314c0be018c61e244b6ae6a8f40f5",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-operator@sha256:fcb7eed720b3b6c82b8455e77eec1b7c6ff314c0be018c61e244b6ae6a8f40f5",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:fcb7eed720b3b6c82b8455e77eec1b7c6ff314c0be018c61e244b6ae6a8f40f5",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-operator@sha256:fcb7eed720b3b6c82b8455e77eec1b7c6ff314c0be018c61e244b6ae6a8f40f5",
-          "name": "redhat-marketplace-operator-fcb7eed720b3b6c82b8455e77eec1b7c6ff314c0be018c61e244b6ae6a8f40f5-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.0 <2.8.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.8.0",
-      "version_original": "2.8.0"
-    },
-    {
-      "_id": "62fab5be4eed1a4804134510",
-      "alm_examples": [
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MarketplaceConfig",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "marketplaceconfig",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "clusterUUID": "",
-            "features": {
-              "deployment": true,
-              "meterDefinitionCatalogServer": false,
-              "registration": true
-            },
-            "installIBMCatalogSource": true,
-            "isDisconnected": false,
-            "rhmAccountID": ""
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MeterBase",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "meterbase",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "enabled": true,
-            "prometheus": {
-              "resources": {
-                "limits": {
-                  "cpu": "2",
-                  "memory": "2Gi"
-                },
-                "requests": {
-                  "cpu": "1",
-                  "memory": "1G"
-                }
-              },
-              "storage": {
-                "size": "20Gi"
-              }
-            }
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MeterReport",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-meterreport",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "endTime": "2020-08-05T00:00:00Z",
-            "prometheusService": {
-              "name": "rhm-prometheus-meterbase",
-              "namespace": "openshift-redhat-marketplace",
-              "targetPort": "rbac"
-            },
-            "startTime": "2020-08-04T00:00:00Z"
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "RazeeDeployment",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "razeedeployment-example",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "clusterUUID": "example-cluster-uuid",
-            "enabled": true
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "RemoteResourceS3",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-remoteresources3",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "auth": {
-              "iam": {
-                "apiKeyRef": {
-                  "valueFrom": {
-                    "secretKeyRef": {
-                      "key": "accesskey",
-                      "name": "rhm-cos-reader-key"
-                    }
-                  }
-                },
-                "grantType": "urn:ibm:params:oauth:grant-type:apikey",
-                "responseType": "cloud_iam",
-                "url": "https://iam.cloud.ibm.com/identity/token"
-              }
-            },
-            "requests": [
-              {
-                "options": {
-                  "url": "https://s3.us-east.cloud-object-storage.appdomain.cloud/your-accountId/your-cluster-uuid/name-of-child.yaml"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1beta1",
-          "kind": "MeterDefinition",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-meterdefinition-4",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "group": "partner.metering.com",
-            "kind": "App",
-            "meters": [
-              {
-                "aggregation": "sum",
-                "metricId": "container_cpu_usage_core_avg",
-                "period": "1h",
-                "query": "rate(container_cpu_usage_seconds_total{cpu=\"total\",container=\"db\"}[5m])*100",
-                "workloadType": "Pod"
-              }
-            ],
-            "resourceFilters": [
-              {
-                "namespace": {
-                  "useOperatorGroup": true
-                },
-                "ownerCRD": {
-                  "apiVersion": "marketplace.redhat.com/v1alpha1",
-                  "kind": "RazeeDeployment"
-                },
-                "workloadType": "Pod"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1beta1",
-          "kind": "MeterDefinition",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "meterdefinition-sample",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "group": "partner.metering.com",
-            "kind": "App",
-            "meters": [
-              {
-                "aggregation": "sum",
-                "metricId": "container_cpu_usage_core_avg",
-                "period": "1h",
-                "query": "rate(container_cpu_usage_seconds_total{cpu=\"total\",container=\"db\"}[5m])*100",
-                "workloadType": "Pod"
-              }
-            ],
-            "resourceFilters": [
-              {
-                "namespace": {
-                  "useOperatorGroup": true
-                },
-                "ownerCRD": {
-                  "apiVersion": "marketplace.redhat.com/v1alpha1",
-                  "kind": "RazeeDeployment"
-                },
-                "workloadType": "Pod"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64",
-        "ppc64le",
-        "s390x"
-      ],
-      "bundle_path": "registry.connect.redhat.com/rh-marketplace/rh-marketplace-bundle@sha256:56e0c99e209b81a9aec1438f080a180dd6c0c617bf1df19cdbd9dbe685a27bb2",
-      "bundle_path_digest": "sha256:56e0c99e209b81a9aec1438f080a180dd6c0c617bf1df19cdbd9dbe685a27bb2",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-15T21:08:14.485000+00:00",
-      "csv_description": "The Red Hat Marketplace Operator provides cluster management, metering and\noperator installation for Red Hat Marketplace customers.\n### **Important Note**\nA set of instructions for onboarding is provided here. For more detailed onboarding instructions or information about what is installed please visit [marketplace.redhat.com](https://marketplace.redhat.com).\nTo access images from Red Hat Marketplace and the Marketplace container catalog you will need to make the pull secret attained in installation available to the workloads running on the cluster.\n### Prerequisites\n1. It is recommended to [enable monitoring for user-defined projects](https://docs.openshift.com/container-platform/4.10/monitoring/enabling-monitoring-for-user-defined-projects.html) as the Prometheus provider.\n2. Edit the cluster-monitoring-config ConfigMap object:\n  \n   ```sh\n   $ oc -n openshift-monitoring edit configmap cluster-monitoring-config\n   ```\n\n3. Add enableUserWorkload: true under data/config.yaml:\n  \n    ```sh\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: cluster-monitoring-config\n      namespace: openshift-monitoring\n    data:\n      config.yaml: |\n        enableUserWorkload: true\n    ```\n\n4. Configure the user-workload-monitoring-config ConfigMap object:\n  \n    ```sh\n    $ oc -n openshift-user-workload-monitoring edit configmap user-workload-monitoring-config\n    ```\n\n5. Configure a minimum retention time of 168h and minimum storage capacity of 40Gi\n  \n    ```sh\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: user-workload-monitoring-config\n      namespace: openshift-user-workload-monitoring\n    data:\n      config.yaml: |\n        prometheus:\n          retention: 168h\n          volumeClaimTemplate:\n            spec:\n              resources:\n                requests:\n                  storage: 40Gi\n    ```\n\n### Installation\n1. Create or get your pull secret from [Red Hat Marketplace](https://marketplace.redhat.com/en-us/documentation/clusters#get-pull-secret).\n2. Install the Red Hat Marketplace Operator in the openshift-redhat-marketplace namespace.\n3. Create a Kubernetes secret in the openshift-redhat-marketplace namespace with the name `redhat-marketplace-pull-secret` and key `PULL_SECRET` with the value of the Red hat Marketplace Pull Secret.\n\n   ```sh\n   # Replace ${PULL_SECRET} with your secret from Red Hat Marketplace\n   oc create secret generic redhat-marketplace-pull-secret -n  openshift-redhat-marketplace --from-literal=PULL_SECRET=${PULL_SECRET}\n   ```\n\n4. Install the Red Hat Marketplace pull secret as a global pull secret on the cluster.\n   **Warning:** This step will make your cluster perform a rolling restart.\n   These steps require `oc`, `jq`, and `base64` to be available on your machine.\n\n   ```sh\n   # Create the docker pull secret file using your PULL_SECRET from Red Hat Marketplace.\n   # Store it in a file called entitledregistryconfigjson.\n   oc create secret docker-registry entitled-registry --docker-server=registry.marketplace.redhat.com --docker-username \"cp\" --docker-password \"${PULL_SECRET}\" --dry-run=true --output=\"jsonpath={.data.\\.dockerconfigjson}\" | base64 --decode > entitledregistryconfigjson\n   # Get the current global secrets on the cluster and store it as a file named dockerconfigjson\n   oc get secret pull-secret -n openshift-config --output=\"jsonpath={.data.\\.dockerconfigjson}\" | base64 --decode > dockerconfigjson\n   # Merge the two dockerconfigs together into a file called dockerconfigjson-merged.\n   jq -s '.[0] * .[1]' dockerconfigjson entitledregistryconfigjson > dockerconfigjson-merged\n   # Set the cluster's dockerconfig file to the new merged version.\n   oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=dockerconfigjson-merged\n   # Cluster will now restart.\n   ```\n\n### Why is a global pull secret required?\nIn order to successfully install the Red Hat Marketplace products, you will need to make the pull secret available across the cluster. This can be achieved by applying the Red Hat Marketplace Pull Secret as a [global pull secret](https://docs.openshift.com/container-platform/4.6/openshift_images/managing_images/using-image-pull-secrets.html#images-update-global-pull-secret_using-image-pull-secrets).\nFor alternative approachs, please see the official OpenShift [documentation](https://docs.openshift.com/container-platform/4.6/openshift_images/managing_images/using-image-pull-secrets.html).\n### Documentation\nYou can find our documentation [here.](https://marketplace.redhat.com/en-us/documentation/)\n### Getting help\nIf you encounter any issues while using Red Hat Marketplace operator, you\ncan create an issue on our [Github\nrepo](https://github.com/redhat-marketplace/redhat-marketplace-operator) for\nbugs, enhancements, or other requests. You can also visit our main page and\nreview our [support](https://marketplace.redhat.com/en-us/support) and [documentation](https://marketplace.redhat.com/en-us/documentation/).\n### Readme\nYou can find our readme [here.](https://github.com/redhat-marketplace/redhat-marketplace-operator/blob/develop/README.md)\n### License information\nYou can find our license information [here.](https://github.com/redhat-marketplace/redhat-marketplace-operator/blob/develop/LICENSE)\n",
-      "csv_display_name": "Red Hat Marketplace",
-      "csv_metadata_description": "The Red Hat Marketplace Operator provides cluster management, metering and operator installation for Red Hat Marketplace customers.",
-      "csv_name": "redhat-marketplace-operator.v2.8.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T21:08:14.485000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redhat-marketplace-operator",
-      "provided_apis": [
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterReport",
-          "plural": "meterreports",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "RazeeDeployment",
-          "plural": "razeedeployments",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "RemoteResourceS3",
-          "plural": "remoteresources3s",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MarketplaceConfig",
-          "plural": "marketplaceconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterBase",
-          "plural": "meterbases",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterDefinition",
-          "plural": "meterdefinitions",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterDefinition",
-          "plural": "meterdefinitions",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Red Hat Marketplace",
-      "related_images": [
-        {
-          "digest": "sha256:07c3deef1552b6f1c659843b4b380233975fa3048dce1a58c006786022ffb710",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-authcheck@sha256:07c3deef1552b6f1c659843b4b380233975fa3048dce1a58c006786022ffb710",
-          "name": "authcheck"
-        },
-        {
-          "digest": "sha256:9dd6a3999077d1830a6d0b3a7dfb7e744fc29ac9858df674472ee82c2e5b8ff4",
-          "image": "us.icr.io/armada-master/watch-keeper@sha256:9dd6a3999077d1830a6d0b3a7dfb7e744fc29ac9858df674472ee82c2e5b8ff4",
-          "name": "rhm_watch_keeper_deployment"
-        },
-        {
-          "digest": "sha256:6e7a075b9ff8d3e2459dad46445758a2a3f6fc4887392645b4ca86fe5b1d0fb0",
-          "image": "us.icr.io/armada-master/remoteresources3@sha256:6e7a075b9ff8d3e2459dad46445758a2a3f6fc4887392645b4ca86fe5b1d0fb0",
-          "name": "rhm_rrs3_deployment"
-        },
-        {
-          "digest": "sha256:5ca572cb31f15534ee8b6fd20a026452870fb8be756f5fa9de9813bdb80969f4",
-          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:5ca572cb31f15534ee8b6fd20a026452870fb8be756f5fa9de9813bdb80969f4",
-          "name": "oauth_proxy"
-        },
-        {
-          "digest": "sha256:18688ecd113373abff11958237d84983a624cd2cc763842ea1c01dd701a98656",
-          "image": "registry.redhat.io/openshift4/ose-prometheus-operator@sha256:18688ecd113373abff11958237d84983a624cd2cc763842ea1c01dd701a98656",
-          "name": "prometheus_operator"
-        },
-        {
-          "digest": "sha256:5da2b67402519d4498695097728b7ad4c1dfe69cd1ddf87cc0c74e7043212574",
-          "image": "registry.redhat.io/openshift4/ose-prometheus@sha256:5da2b67402519d4498695097728b7ad4c1dfe69cd1ddf87cc0c74e7043212574",
-          "name": "prometheus"
-        },
-        {
-          "digest": "sha256:a4bb67ace1dd2992029ebfee6b08c439b1a363b2bf4059a10803d82f1bd089b6",
-          "image": "registry.redhat.io/openshift4/ose-prometheus-config-reloader@sha256:a4bb67ace1dd2992029ebfee6b08c439b1a363b2bf4059a10803d82f1bd089b6",
-          "name": "prometheus_configmap_reloader"
-        },
-        {
-          "digest": "sha256:093f3a006c0d73bcf3d5e1ac78f684734b87c08147b1ac57e6a609f34eddc9c8",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-data-service@sha256:093f3a006c0d73bcf3d5e1ac78f684734b87c08147b1ac57e6a609f34eddc9c8",
-          "name": "dqlite"
-        },
-        {
-          "digest": "sha256:260ebab52c1e825e354bfa60827e314388fb7878bfa16d1dc061707962e95bea",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:260ebab52c1e825e354bfa60827e314388fb7878bfa16d1dc061707962e95bea",
-          "name": "kube_rbac_proxy"
-        },
-        {
-          "digest": "sha256:9a15dca79b88a6e1e37617a5817ccac5df74b7ddef8fbae7da66685d90108c55",
-          "image": "registry.redhat.io/openshift4/ose-configmap-reloader@sha256:9a15dca79b88a6e1e37617a5817ccac5df74b7ddef8fbae7da66685d90108c55",
-          "name": "configmap_reloader"
-        },
-        {
-          "digest": "sha256:5c8e285a28ac89c2567940e74448da4586c4493151cac54fbc30281c6cc097cb",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-reporter@sha256:5c8e285a28ac89c2567940e74448da4586c4493151cac54fbc30281c6cc097cb",
-          "name": "reporter"
-        },
-        {
-          "digest": "sha256:4d2fa73d4f4577b1560e07d0692492374a4bb8b6bb6b9261fa88effff5e44db3",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-metric-state@sha256:4d2fa73d4f4577b1560e07d0692492374a4bb8b6bb6b9261fa88effff5e44db3",
-          "name": "metric_state"
-        },
-        {
-          "digest": "sha256:fcb7eed720b3b6c82b8455e77eec1b7c6ff314c0be018c61e244b6ae6a8f40f5",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-operator@sha256:fcb7eed720b3b6c82b8455e77eec1b7c6ff314c0be018c61e244b6ae6a8f40f5",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:fcb7eed720b3b6c82b8455e77eec1b7c6ff314c0be018c61e244b6ae6a8f40f5",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-operator@sha256:fcb7eed720b3b6c82b8455e77eec1b7c6ff314c0be018c61e244b6ae6a8f40f5",
-          "name": "redhat-marketplace-operator-fcb7eed720b3b6c82b8455e77eec1b7c6ff314c0be018c61e244b6ae6a8f40f5-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.0 <2.8.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.8.0",
-      "version_original": "2.8.0"
     },
     {
       "_id": "62fb92b5b289bcc7af678727",
@@ -19756,9 +17751,1249 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "2.0.202",
       "version_original": "2.0.202"
+    },
+    {
+      "_id": "62fe761bdca7d12fdf8dc0d5",
+      "alm_examples": [
+        {
+          "api_version": "anzounstructured.clusters.cambridgesemantics.com/v1",
+          "kind": "AnzoUnstructured",
+          "metadata": {
+            "name": "au01"
+          },
+          "spec": {
+            "auWorker": {
+              "nodeConfig": {
+                "spec": {
+                  "replicas": 1,
+                  "selector": {
+                    "matchLabels": {
+                      "app": "anzounstructured"
+                    }
+                  },
+                  "serviceName": "au-au01-w",
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app": "anzounstructured"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:7422d8e0d74ecfa5bfff06dfaf84961308b3b3e1740d80ec9cf71b2f2511f1f4",
+                          "name": "w",
+                          "resources": {
+                            "limits": {
+                              "cpu": "2",
+                              "memory": "4Gi"
+                            },
+                            "requests": {
+                              "cpu": "2",
+                              "memory": "4Gi"
+                            }
+                          }
+                        }
+                      ],
+                      "serviceAccountName": "unstructured-operator"
+                    }
+                  }
+                }
+              }
+            },
+            "msLeader": {
+              "nodeConfig": {
+                "spec": {
+                  "replicas": 1,
+                  "selector": {
+                    "matchLabels": {
+                      "app": "anzounstructured"
+                    }
+                  },
+                  "serviceName": "au-au01-ms",
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app": "anzounstructured"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-leader@sha256:0d0e0a92af2dd71d4bce81bf1d7016ad128a245bc94091d632ff0471e1ae037f",
+                          "name": "ms",
+                          "resources": {
+                            "limits": {
+                              "cpu": "2",
+                              "memory": "4Gi"
+                            },
+                            "requests": {
+                              "cpu": "2",
+                              "memory": "4Gi"
+                            }
+                          }
+                        }
+                      ],
+                      "serviceAccountName": "unstructured-operator"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-operator-bundle@sha256:cf67a40d08722cbd7acb326e5ce371b56a1c40db721bdc34572c55007a6a0797",
+      "bundle_path_digest": "sha256:cf67a40d08722cbd7acb326e5ce371b56a1c40db721bdc34572c55007a6a0797",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-18T17:25:47.218000+00:00",
+      "csv_description": "The Anzo Unstructured Operator provides the way to install and configure an anzo unstructured setup on Red Hat K8S environment.\nCurrently, this is possible only through existing Anzo installation.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzo-unstructured/blob/v2.0.2/README.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzo/userdoc/cloud-deployments.htm )\n\n### Support\n\nWe offer Support to our customers through [ Cambridge Semantics Customer Center ]( https://customercenter.cambridgesemantics.com/ ).",
+      "csv_display_name": "Anzo Unstructured Operator",
+      "csv_metadata_description": "Kubernetes Operator for Anzo Unstructured",
+      "csv_name": "anzounstructured-operator.v2.0.202",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-18T17:25:47.218000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "anzounstructured-operator",
+      "provided_apis": [
+        {
+          "group": "anzounstructured.clusters.cambridgesemantics.com",
+          "kind": "AnzoUnstructured",
+          "plural": "anzounstructureds",
+          "version": "v1"
+        }
+      ],
+      "provider": "Cambridge Semantics Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:0d0e0a92af2dd71d4bce81bf1d7016ad128a245bc94091d632ff0471e1ae037f",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-leader@sha256:0d0e0a92af2dd71d4bce81bf1d7016ad128a245bc94091d632ff0471e1ae037f",
+          "name": "anzo-microservices-leader"
+        },
+        {
+          "digest": "sha256:7422d8e0d74ecfa5bfff06dfaf84961308b3b3e1740d80ec9cf71b2f2511f1f4",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:7422d8e0d74ecfa5bfff06dfaf84961308b3b3e1740d80ec9cf71b2f2511f1f4",
+          "name": "anzo-unstructured-worker"
+        },
+        {
+          "digest": "sha256:991705873d77bfea28f2c92e571f29597e17eb59f879ab898301261a7e6fa446",
+          "image": "registry.connect.redhat.com/cambridgesemantics/unstructured-operator@sha256:991705873d77bfea28f2c92e571f29597e17eb59f879ab898301261a7e6fa446",
+          "name": "unstructured-operator-991705873d77bfea28f2c92e571f29597e17eb59f879ab898301261a7e6fa446-annotation"
+        },
+        {
+          "digest": "sha256:991705873d77bfea28f2c92e571f29597e17eb59f879ab898301261a7e6fa446",
+          "image": "registry.connect.redhat.com/cambridgesemantics/unstructured-operator@sha256:991705873d77bfea28f2c92e571f29597e17eb59f879ab898301261a7e6fa446",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:0d0e0a92af2dd71d4bce81bf1d7016ad128a245bc94091d632ff0471e1ae037f",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-leader@sha256:0d0e0a92af2dd71d4bce81bf1d7016ad128a245bc94091d632ff0471e1ae037f",
+          "name": "anzo_microservices_leader"
+        },
+        {
+          "digest": "sha256:7422d8e0d74ecfa5bfff06dfaf84961308b3b3e1740d80ec9cf71b2f2511f1f4",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:7422d8e0d74ecfa5bfff06dfaf84961308b3b3e1740d80ec9cf71b2f2511f1f4",
+          "name": "anzo_unstructured_worker"
+        },
+        {
+          "digest": "sha256:0d0e0a92af2dd71d4bce81bf1d7016ad128a245bc94091d632ff0471e1ae037f",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-leader@sha256:0d0e0a92af2dd71d4bce81bf1d7016ad128a245bc94091d632ff0471e1ae037f",
+          "name": "anzo-unstructured-leader-0d0e0a92af2dd71d4bce81bf1d7016ad128a245bc94091d632ff0471e1ae037f-annotation"
+        },
+        {
+          "digest": "sha256:7422d8e0d74ecfa5bfff06dfaf84961308b3b3e1740d80ec9cf71b2f2511f1f4",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:7422d8e0d74ecfa5bfff06dfaf84961308b3b3e1740d80ec9cf71b2f2511f1f4",
+          "name": "anzo-unstructured-worker-7422d8e0d74ecfa5bfff06dfaf84961308b3b3e1740d80ec9cf71b2f2511f1f4-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.0.202",
+      "version_original": "2.0.202"
+    },
+    {
+      "_id": "62fe7979f49810331c93798a",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.2.2"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-18T17:40:09.179000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-18T17:40:09.179000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "GitLab Inc",
+      "related_images": [
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
+        },
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.10.2",
+      "version_original": "0.10.2"
+    },
+    {
+      "_id": "62fe797a53cb8f6da4550340",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.2.2"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "unstable",
+      "creation_date": "2022-08-18T17:40:10.534000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-18T17:40:10.534000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "GitLab Inc",
+      "related_images": [
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
+        },
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.10.2",
+      "version_original": "0.10.2"
+    },
+    {
+      "_id": "62fe79fe07f6a613524f8e17",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.2.2"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-18T17:42:22.944000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-18T17:42:22.944000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "GitLab Inc",
+      "related_images": [
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
+        },
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.10.2",
+      "version_original": "0.10.2"
+    },
+    {
+      "_id": "62fe79ffdca7d12fdf8dc16d",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.2.2"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "unstable",
+      "creation_date": "2022-08-18T17:42:23.548000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-18T17:42:23.548000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "GitLab Inc",
+      "related_images": [
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
+        },
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.10.2",
+      "version_original": "0.10.2"
+    },
+    {
+      "_id": "62fe7a5707f6a613524f8e30",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.2.2"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-18T17:43:51.128000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-18T17:43:51.128000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "GitLab Inc",
+      "related_images": [
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
+        },
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.10.2",
+      "version_original": "0.10.2"
+    },
+    {
+      "_id": "62fe7a57dca7d12fdf8dc18b",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.2.2"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "unstable",
+      "creation_date": "2022-08-18T17:43:51.800000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-18T17:43:51.800000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "GitLab Inc",
+      "related_images": [
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
+        },
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.10.2",
+      "version_original": "0.10.2"
+    },
+    {
+      "_id": "62fe7ab8051dd1e2227e77f4",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.2.2"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "unstable",
+      "creation_date": "2022-08-18T17:45:28.372000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-18T17:45:28.372000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "GitLab Inc",
+      "related_images": [
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
+        },
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.10.2",
+      "version_original": "0.10.2"
+    },
+    {
+      "_id": "62fe7ab9dca7d12fdf8dc1a0",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.2.2"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-18T17:45:29.523000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-18T17:45:29.523000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "GitLab Inc",
+      "related_images": [
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
+        },
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.10.2",
+      "version_original": "0.10.2"
+    },
+    {
+      "_id": "62fe7bdbf49810331c9379cf",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.2.2"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "unstable",
+      "creation_date": "2022-08-18T17:50:19.904000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-18T17:50:19.904000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "GitLab Inc",
+      "related_images": [
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
+        },
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.10.2",
+      "version_original": "0.10.2"
+    },
+    {
+      "_id": "62fe7bdc53cb8f6da455039f",
+      "alm_examples": [
+        {
+          "api_version": "apps.gitlab.com/v1beta1",
+          "kind": "GitLab",
+          "metadata": {
+            "name": "gitlab",
+            "namespace": "gitlab-system"
+          },
+          "spec": {
+            "chart": {
+              "values": {
+                "certmanager": {
+                  "install": false
+                },
+                "global": {
+                  "hosts": {
+                    "domain": "example.com"
+                  },
+                  "ingress": {
+                    "configureCertmanager": false,
+                    "tls": {}
+                  }
+                }
+              },
+              "version": "6.2.2"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-18T17:50:20.412000+00:00",
+      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
+      "csv_display_name": "GitLab",
+      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
+      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-18T17:50:20.412000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "gitlab-operator-kubernetes",
+      "provided_apis": [
+        {
+          "group": "apps.gitlab.com",
+          "kind": "GitLab",
+          "plural": "gitlabs",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "GitLab Inc",
+      "related_images": [
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
+        },
+        {
+          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
+          "name": "kube-rbac-proxy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.10.2",
+      "version_original": "0.10.2"
     }
   ],
   "page": 46,
   "page_size": 100,
-  "total": 4862
+  "total": 4873
 }

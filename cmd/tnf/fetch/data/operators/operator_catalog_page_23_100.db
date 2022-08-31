@@ -1,555 +1,6 @@
 {
   "data": [
     {
-      "_id": "623a0efc5216f202c0697686",
-      "alm_examples": [
-        {
-          "api_version": "nvidia.com/v1",
-          "kind": "ClusterPolicy",
-          "metadata": {
-            "name": "gpu-cluster-policy"
-          },
-          "spec": {
-            "daemonsets": {},
-            "dcgm": {
-              "enabled": true
-            },
-            "dcgmExporter": {
-              "config": {
-                "name": ""
-              }
-            },
-            "devicePlugin": {},
-            "driver": {
-              "certConfig": {
-                "name": ""
-              },
-              "enabled": true,
-              "kernelModuleConfig": {
-                "name": ""
-              },
-              "licensingConfig": {
-                "configMapName": "",
-                "nlsEnabled": false
-              },
-              "repoConfig": {
-                "configMapName": ""
-              },
-              "use_ocp_driver_toolkit": true,
-              "virtualTopology": {
-                "config": ""
-              }
-            },
-            "gfd": {},
-            "mig": {
-              "strategy": "single"
-            },
-            "migManager": {
-              "enabled": true
-            },
-            "nodeStatusExporter": {
-              "enabled": true
-            },
-            "operator": {
-              "defaultRuntime": "crio",
-              "deployGFD": true,
-              "initContainer": {}
-            },
-            "toolkit": {
-              "enabled": true
-            },
-            "validator": {
-              "plugin": {
-                "env": [
-                  {
-                    "name": "WITH_WORKLOAD",
-                    "value": "true"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
-      "bundle_path_digest": "sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-22T18:01:32.719000+00:00",
-      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
-      "csv_display_name": "NVIDIA GPU Operator",
-      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
-      "csv_name": "gpu-operator-certified.v1.10.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:55:58.862000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "gpu-operator-certified",
-      "provided_apis": [
-        {
-          "group": "nvidia.com",
-          "kind": "ClusterPolicy",
-          "plural": "clusterpolicies",
-          "version": "v1"
-        }
-      ],
-      "provider": "NVIDIA Corporation",
-      "related_images": [
-        {
-          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "name": "gpu-operator-image"
-        },
-        {
-          "digest": "sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
-          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
-          "name": "dcgm-exporter-image"
-        },
-        {
-          "digest": "sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
-          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
-          "name": "dcgm-image"
-        },
-        {
-          "digest": "sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
-          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
-          "name": "container-toolkit-image"
-        },
-        {
-          "digest": "sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
-          "image": "nvcr.io/nvidia/driver@sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
-          "name": "driver-image"
-        },
-        {
-          "digest": "sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
-          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
-          "name": "device-plugin-image"
-        },
-        {
-          "digest": "sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
-          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
-          "name": "gpu-feature-discovery-image"
-        },
-        {
-          "digest": "sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
-          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
-          "name": "mig-manager-image"
-        },
-        {
-          "digest": "sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
-          "image": "docker.io/nvidia/cuda@sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
-          "name": "init-container-image"
-        },
-        {
-          "digest": "sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
-          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
-          "name": "gpu-operator-validator-image"
-        },
-        {
-          "digest": "sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
-          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
-          "name": "k8s-driver-manager-image"
-        },
-        {
-          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "name": "gpu-operator-e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be-annotation"
-        },
-        {
-          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "name": "gpu-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.10.0",
-      "version_original": "1.10.0"
-    },
-    {
-      "_id": "623a0efef2605d1718604401",
-      "alm_examples": [
-        {
-          "api_version": "nvidia.com/v1",
-          "kind": "ClusterPolicy",
-          "metadata": {
-            "name": "gpu-cluster-policy"
-          },
-          "spec": {
-            "daemonsets": {},
-            "dcgm": {
-              "enabled": true
-            },
-            "dcgmExporter": {
-              "config": {
-                "name": ""
-              }
-            },
-            "devicePlugin": {},
-            "driver": {
-              "certConfig": {
-                "name": ""
-              },
-              "enabled": true,
-              "kernelModuleConfig": {
-                "name": ""
-              },
-              "licensingConfig": {
-                "configMapName": "",
-                "nlsEnabled": false
-              },
-              "repoConfig": {
-                "configMapName": ""
-              },
-              "use_ocp_driver_toolkit": true,
-              "virtualTopology": {
-                "config": ""
-              }
-            },
-            "gfd": {},
-            "mig": {
-              "strategy": "single"
-            },
-            "migManager": {
-              "enabled": true
-            },
-            "nodeStatusExporter": {
-              "enabled": true
-            },
-            "operator": {
-              "defaultRuntime": "crio",
-              "deployGFD": true,
-              "initContainer": {}
-            },
-            "toolkit": {
-              "enabled": true
-            },
-            "validator": {
-              "plugin": {
-                "env": [
-                  {
-                    "name": "WITH_WORKLOAD",
-                    "value": "true"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
-      "bundle_path_digest": "sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "v1.10",
-      "creation_date": "2022-03-22T18:01:34.039000+00:00",
-      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
-      "csv_display_name": "NVIDIA GPU Operator",
-      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
-      "csv_name": "gpu-operator-certified.v1.10.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:56:04.029000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "gpu-operator-certified",
-      "provided_apis": [
-        {
-          "group": "nvidia.com",
-          "kind": "ClusterPolicy",
-          "plural": "clusterpolicies",
-          "version": "v1"
-        }
-      ],
-      "provider": "NVIDIA Corporation",
-      "related_images": [
-        {
-          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "name": "gpu-operator-image"
-        },
-        {
-          "digest": "sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
-          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
-          "name": "dcgm-exporter-image"
-        },
-        {
-          "digest": "sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
-          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
-          "name": "dcgm-image"
-        },
-        {
-          "digest": "sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
-          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
-          "name": "container-toolkit-image"
-        },
-        {
-          "digest": "sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
-          "image": "nvcr.io/nvidia/driver@sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
-          "name": "driver-image"
-        },
-        {
-          "digest": "sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
-          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
-          "name": "device-plugin-image"
-        },
-        {
-          "digest": "sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
-          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
-          "name": "gpu-feature-discovery-image"
-        },
-        {
-          "digest": "sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
-          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
-          "name": "mig-manager-image"
-        },
-        {
-          "digest": "sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
-          "image": "docker.io/nvidia/cuda@sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
-          "name": "init-container-image"
-        },
-        {
-          "digest": "sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
-          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
-          "name": "gpu-operator-validator-image"
-        },
-        {
-          "digest": "sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
-          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
-          "name": "k8s-driver-manager-image"
-        },
-        {
-          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "name": "gpu-operator-e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be-annotation"
-        },
-        {
-          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
-          "name": "gpu-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.10.0",
-      "version_original": "1.10.0"
-    },
-    {
-      "_id": "623d8a666d7cc84677b2e8b3",
-      "alm_examples": [
-        {
-          "api_version": "ako.vmware.com/v1alpha1",
-          "kind": "AKOConfig",
-          "metadata": {
-            "name": "ako-sample",
-            "namespace": "avi-system"
-          },
-          "spec": {
-            "akoSettings": {
-              "apiServerPort": 8080,
-              "clusterName": "my-cluster",
-              "cniPlugin": "openshift",
-              "deleteConfig": false,
-              "disableStaticRouteSync": false,
-              "enableEVH": false,
-              "enableEvents": "true",
-              "fullSyncFrequency": "1800",
-              "layer7Only": false,
-              "logLevel": "INFO",
-              "namespaceSelector": {
-                "labelKey": "",
-                "labelValue": ""
-              },
-              "servicesAPI": false,
-              "vipPerNamespace": "false"
-            },
-            "controllerSettings": {
-              "cloudName": "Default-Cloud",
-              "controllerHost": "",
-              "controllerVersion": "20.1.5",
-              "serviceEngineGroupName": "Default-Group",
-              "tenantName": "admin",
-              "tenantsPerCluster": "false"
-            },
-            "imagePullPolicy": "IfNotPresent",
-            "imageRepository": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-            "l4Settings": {
-              "advancedL4": false,
-              "autoFQDN": "default",
-              "defaultDomain": ""
-            },
-            "l7Settings": {
-              "defaultIngController": true,
-              "noPGForSNI": false,
-              "passthroughShardSize": "SMALL",
-              "serviceType": "ClusterIP",
-              "shardVSSize": "LARGE"
-            },
-            "logFile": "avi.log",
-            "mountPath": "/log",
-            "networkSettings": {
-              "bgpPeerLabels": [],
-              "enableRHI": false,
-              "nodeNetworkList": [
-                {
-                  "cidrs": [],
-                  "networkName": ""
-                }
-              ],
-              "nsxtT1LR": "",
-              "vipNetworkList": [
-                {
-                  "cidr": "",
-                  "networkName": ""
-                }
-              ]
-            },
-            "nodePortSelector": {
-              "key": "",
-              "value": ""
-            },
-            "resources": {
-              "limits": {
-                "cpu": "250m",
-                "memory": "300Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "200Mi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/wavefronthq/ako-operator-bundle@sha256:7b318b8ae2f90210bda94e4c88b1187a7e92b696dc00cbc3e894c0f285c83f9e",
-      "bundle_path_digest": "sha256:7b318b8ae2f90210bda94e4c88b1187a7e92b696dc00cbc3e894c0f285c83f9e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-25T09:24:54.092000+00:00",
-      "csv_description": "Operator to manage the artifacts of the AKO Controller",
-      "csv_display_name": "AKO Operator",
-      "csv_metadata_description": "",
-      "csv_name": "ako-operator.v1.6.3-stable",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:26:05.377000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "ako-operator",
-      "provided_apis": [
-        {
-          "group": "ako.vmware.com",
-          "kind": "AKOConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "VMware",
-      "related_images": [
-        {
-          "digest": "sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "name": "ako-operator"
-        },
-        {
-          "digest": "sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "name": "ako-operator-378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.6.3",
-      "version_original": "1.6.3"
-    },
-    {
       "_id": "623d8c0cad5091e14e579f73",
       "alm_examples": [
         {
@@ -1324,375 +775,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.6.3",
       "version_original": "1.6.3"
-    },
-    {
-      "_id": "623dc670456d2e626dd77291",
-      "alm_examples": [
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaAuth",
-          "metadata": {
-            "name": "mantaauth-sample"
-          },
-          "spec": {
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaVersion": "35.1.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        },
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaFlow",
-          "metadata": {
-            "name": "mantaflow-sample"
-          },
-          "spec": {
-            "connectors": {
-              "wkc": {
-                "enabled": false,
-                "logInfo": true,
-                "routeName": "cpd",
-                "tlsSecretName": "internal-tls"
-              }
-            },
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaFlowKeys": "mantaflow-keys",
-            "mantaVersion": "35.1.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/manta-ubi8/mantaflow-operator-bundle@sha256:5f437b941bfd25035b2776de0ec983f6f0cfecd183403379351a8f22d0e85691",
-      "bundle_path_digest": "sha256:5f437b941bfd25035b2776de0ec983f6f0cfecd183403379351a8f22d0e85691",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-25T13:41:04.697000+00:00",
-      "csv_description": "# MANTA Flow\nMANTA is a Unified Lineage Platform for Data Lineage.  MANTA performs code scanning for lineage that is illustrated to the detailed attribute level with transformations.   Extreme color coding and filtering to make lineage consumable.  Also includes time-slicing for historical lineage analysis.\n\n## Features\n* **Create/Destroy**: Launch MANTA Flow Container deployment.\n* **Scaling to zero**: Scale down the deployment (turn off the container).\n\n## Prerequisites and Requirements\n### MANTA Flow Namespace\nMANTA should be installed into its own namespace.\n\nFor additional installation documentation see a [MANTA Flow Container documentation](https://mantatools.atlassian.net/wiki/spaces/MTKB/pages/2450620467/MANTA+Flow+Container)\nin the MANTA Flow Knowledge Base.\n\n### MANTA Flow Operator\nThe MANTA Flow Operator is responsible for deployment and management of MANTA Flow container deployment.\n\n### Memory Considerations\nMANTA Flow is a memory intensive application. The MANTA Flow Container will specify the memory and cpu requirements for both request and limits. Also, the minimum storage requirements are specified for the persistent volumes (PVs).\n\n### MANTA Flow license.key\nValid license.key needs to be provided in order to successfully launch MANTA Flow Container.\n\n## MANTA Flow Deployment\n\n### Secrets\nCreate a secret for MANTA Flow license.key by:\n    \n    oc create secret generic mantaflow-keys --from-file=<path to license.key>/license.key\n\nCreate an initial admin credentials `username` and `password` and a MANTA master password, which is used for encryption of sensitive data in the persistent storage.\n\n    oc create secret generic mantaflow-credentials --from-literal=username=<manta admin username> --from-literal=password=<manta admin password> --from-literal=MANTA_MASTERPASSWORD=<password for encryption>\n\n### Create MANTA Auth Custom Resource\nCreate a MANTA Auth custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n### Create MANTA Flow Custom Resource\nCreate a MANTA Flow custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n## Scaling\nMANTA Flow currently supports scaling to zero. This means you can set `replicas: 0` in MANTA Flow Custom Resource Definition (CRD) and MANTA Flow container will be stopped.\n\nBy setting `replicas: 1` MANTA Flow will be scaled to be running on 1 container. All other values of `replicas` are considered invalid.\n",
-      "csv_display_name": "MANTA Flow Operator",
-      "csv_metadata_description": "",
-      "csv_name": "mantaflow-operator.v35.1.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:02:39.535000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "mantaflow-operator",
-      "provided_apis": [
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaFlow",
-          "plural": "mantaflows",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaAuth",
-          "plural": "mantaauths",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "MANTA Software",
-      "related_images": [
-        {
-          "digest": "sha256:8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa",
-          "name": "mantaflow-operator-8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "35.1.1",
-      "version_original": "35.1.1"
-    },
-    {
-      "_id": "623dc708ca2c1e0c9df285aa",
-      "alm_examples": [
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaAuth",
-          "metadata": {
-            "name": "mantaauth-sample"
-          },
-          "spec": {
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaVersion": "35.1.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        },
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaFlow",
-          "metadata": {
-            "name": "mantaflow-sample"
-          },
-          "spec": {
-            "connectors": {
-              "wkc": {
-                "enabled": false,
-                "logInfo": true,
-                "routeName": "cpd",
-                "tlsSecretName": "internal-tls"
-              }
-            },
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaFlowKeys": "mantaflow-keys",
-            "mantaVersion": "35.1.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/manta-ubi8/mantaflow-operator-bundle@sha256:5f437b941bfd25035b2776de0ec983f6f0cfecd183403379351a8f22d0e85691",
-      "bundle_path_digest": "sha256:5f437b941bfd25035b2776de0ec983f6f0cfecd183403379351a8f22d0e85691",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-25T13:43:36.668000+00:00",
-      "csv_description": "# MANTA Flow\nMANTA is a Unified Lineage Platform for Data Lineage.  MANTA performs code scanning for lineage that is illustrated to the detailed attribute level with transformations.   Extreme color coding and filtering to make lineage consumable.  Also includes time-slicing for historical lineage analysis.\n\n## Features\n* **Create/Destroy**: Launch MANTA Flow Container deployment.\n* **Scaling to zero**: Scale down the deployment (turn off the container).\n\n## Prerequisites and Requirements\n### MANTA Flow Namespace\nMANTA should be installed into its own namespace.\n\nFor additional installation documentation see a [MANTA Flow Container documentation](https://mantatools.atlassian.net/wiki/spaces/MTKB/pages/2450620467/MANTA+Flow+Container)\nin the MANTA Flow Knowledge Base.\n\n### MANTA Flow Operator\nThe MANTA Flow Operator is responsible for deployment and management of MANTA Flow container deployment.\n\n### Memory Considerations\nMANTA Flow is a memory intensive application. The MANTA Flow Container will specify the memory and cpu requirements for both request and limits. Also, the minimum storage requirements are specified for the persistent volumes (PVs).\n\n### MANTA Flow license.key\nValid license.key needs to be provided in order to successfully launch MANTA Flow Container.\n\n## MANTA Flow Deployment\n\n### Secrets\nCreate a secret for MANTA Flow license.key by:\n    \n    oc create secret generic mantaflow-keys --from-file=<path to license.key>/license.key\n\nCreate an initial admin credentials `username` and `password` and a MANTA master password, which is used for encryption of sensitive data in the persistent storage.\n\n    oc create secret generic mantaflow-credentials --from-literal=username=<manta admin username> --from-literal=password=<manta admin password> --from-literal=MANTA_MASTERPASSWORD=<password for encryption>\n\n### Create MANTA Auth Custom Resource\nCreate a MANTA Auth custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n### Create MANTA Flow Custom Resource\nCreate a MANTA Flow custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n## Scaling\nMANTA Flow currently supports scaling to zero. This means you can set `replicas: 0` in MANTA Flow Custom Resource Definition (CRD) and MANTA Flow container will be stopped.\n\nBy setting `replicas: 1` MANTA Flow will be scaled to be running on 1 container. All other values of `replicas` are considered invalid.\n",
-      "csv_display_name": "MANTA Flow Operator",
-      "csv_metadata_description": "",
-      "csv_name": "mantaflow-operator.v35.1.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:53:48.810000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "mantaflow-operator",
-      "provided_apis": [
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaAuth",
-          "plural": "mantaauths",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaFlow",
-          "plural": "mantaflows",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "MANTA Software",
-      "related_images": [
-        {
-          "digest": "sha256:8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa",
-          "name": "mantaflow-operator-8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "35.1.1",
-      "version_original": "35.1.1"
-    },
-    {
-      "_id": "623dc7ce456d2e626dd77292",
-      "alm_examples": [
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaAuth",
-          "metadata": {
-            "name": "mantaauth-sample"
-          },
-          "spec": {
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaVersion": "35.1.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        },
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaFlow",
-          "metadata": {
-            "name": "mantaflow-sample"
-          },
-          "spec": {
-            "connectors": {
-              "wkc": {
-                "enabled": false,
-                "logInfo": true,
-                "routeName": "cpd",
-                "tlsSecretName": "internal-tls"
-              }
-            },
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaFlowKeys": "mantaflow-keys",
-            "mantaVersion": "35.1.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/manta-ubi8/mantaflow-operator-bundle@sha256:5f437b941bfd25035b2776de0ec983f6f0cfecd183403379351a8f22d0e85691",
-      "bundle_path_digest": "sha256:5f437b941bfd25035b2776de0ec983f6f0cfecd183403379351a8f22d0e85691",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-25T13:46:54.943000+00:00",
-      "csv_description": "# MANTA Flow\nMANTA is a Unified Lineage Platform for Data Lineage.  MANTA performs code scanning for lineage that is illustrated to the detailed attribute level with transformations.   Extreme color coding and filtering to make lineage consumable.  Also includes time-slicing for historical lineage analysis.\n\n## Features\n* **Create/Destroy**: Launch MANTA Flow Container deployment.\n* **Scaling to zero**: Scale down the deployment (turn off the container).\n\n## Prerequisites and Requirements\n### MANTA Flow Namespace\nMANTA should be installed into its own namespace.\n\nFor additional installation documentation see a [MANTA Flow Container documentation](https://mantatools.atlassian.net/wiki/spaces/MTKB/pages/2450620467/MANTA+Flow+Container)\nin the MANTA Flow Knowledge Base.\n\n### MANTA Flow Operator\nThe MANTA Flow Operator is responsible for deployment and management of MANTA Flow container deployment.\n\n### Memory Considerations\nMANTA Flow is a memory intensive application. The MANTA Flow Container will specify the memory and cpu requirements for both request and limits. Also, the minimum storage requirements are specified for the persistent volumes (PVs).\n\n### MANTA Flow license.key\nValid license.key needs to be provided in order to successfully launch MANTA Flow Container.\n\n## MANTA Flow Deployment\n\n### Secrets\nCreate a secret for MANTA Flow license.key by:\n    \n    oc create secret generic mantaflow-keys --from-file=<path to license.key>/license.key\n\nCreate an initial admin credentials `username` and `password` and a MANTA master password, which is used for encryption of sensitive data in the persistent storage.\n\n    oc create secret generic mantaflow-credentials --from-literal=username=<manta admin username> --from-literal=password=<manta admin password> --from-literal=MANTA_MASTERPASSWORD=<password for encryption>\n\n### Create MANTA Auth Custom Resource\nCreate a MANTA Auth custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n### Create MANTA Flow Custom Resource\nCreate a MANTA Flow custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n## Scaling\nMANTA Flow currently supports scaling to zero. This means you can set `replicas: 0` in MANTA Flow Custom Resource Definition (CRD) and MANTA Flow container will be stopped.\n\nBy setting `replicas: 1` MANTA Flow will be scaled to be running on 1 container. All other values of `replicas` are considered invalid.\n",
-      "csv_display_name": "MANTA Flow Operator",
-      "csv_metadata_description": "",
-      "csv_name": "mantaflow-operator.v35.1.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:55:00.711000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "mantaflow-operator",
-      "provided_apis": [
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaAuth",
-          "plural": "mantaauths",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaFlow",
-          "plural": "mantaflows",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "MANTA Software",
-      "related_images": [
-        {
-          "digest": "sha256:8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa",
-          "name": "mantaflow-operator-8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:8c59b526db248c3b4cae700fa0ae7b87f47cf4134d5c377d0a9fc1e58f7989aa",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "35.1.1",
-      "version_original": "35.1.1"
     },
     {
       "_id": "623e5d5e6d7cc84677b2e8e6",
@@ -3311,129 +2393,6 @@
       "version_original": "22.3.0"
     },
     {
-      "_id": "62475315485b927808ef1402",
-      "alm_examples": [
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaAuth",
-          "metadata": {
-            "name": "mantaauth-sample"
-          },
-          "spec": {
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaVersion": "36.0.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        },
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaFlow",
-          "metadata": {
-            "name": "mantaflow-sample"
-          },
-          "spec": {
-            "connectors": {
-              "wkc": {
-                "enabled": false,
-                "logInfo": true,
-                "routeName": "cpd",
-                "tlsSecretName": "internal-tls"
-              }
-            },
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaFlowKeys": "mantaflow-keys",
-            "mantaVersion": "36.0.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/manta-ubi8/mantaflow-operator-bundle@sha256:090101b2aa091e12e08ea5dbd719fb7ebc8ee86c170fba82641c714776667061",
-      "bundle_path_digest": "sha256:090101b2aa091e12e08ea5dbd719fb7ebc8ee86c170fba82641c714776667061",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-01T19:31:33.175000+00:00",
-      "csv_description": "# MANTA Flow\nMANTA is a Unified Lineage Platform for Data Lineage.  MANTA performs code scanning for lineage that is illustrated to the detailed attribute level with transformations.   Extreme color coding and filtering to make lineage consumable.  Also includes time-slicing for historical lineage analysis.\n\n## Features\n* **Create/Destroy**: Launch MANTA Flow Container deployment.\n* **Scaling to zero**: Scale down the deployment (turn off the container).\n\n## Prerequisites and Requirements\n### MANTA Flow Namespace\nMANTA should be installed into its own namespace.\n\nFor additional installation documentation see a [MANTA Flow Container documentation](https://mantatools.atlassian.net/wiki/spaces/MTKB/pages/2450620467/MANTA+Flow+Container)\nin the MANTA Flow Knowledge Base.\n\n### MANTA Flow Operator\nThe MANTA Flow Operator is responsible for deployment and management of MANTA Flow container deployment.\n\n### Memory Considerations\nMANTA Flow is a memory intensive application. The MANTA Flow Container will specify the memory and cpu requirements for both request and limits. Also, the minimum storage requirements are specified for the persistent volumes (PVs).\n\n### MANTA Flow license.key\nValid license.key needs to be provided in order to successfully launch MANTA Flow Container.\n\n## MANTA Flow Deployment\n\n### Secrets\nCreate a secret for MANTA Flow license.key by:\n    \n    oc create secret generic mantaflow-keys --from-file=<path to license.key>/license.key\n\nCreate an initial admin credentials `username` and `password` and a MANTA master password, which is used for encryption of sensitive data in the persistent storage.\n\n    oc create secret generic mantaflow-credentials --from-literal=username=<manta admin username> --from-literal=password=<manta admin password> --from-literal=MANTA_MASTERPASSWORD=<password for encryption>\n\n### Create MANTA Auth Custom Resource\nCreate a MANTA Auth custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n### Create MANTA Flow Custom Resource\nCreate a MANTA Flow custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n## Scaling\nMANTA Flow currently supports scaling to zero. This means you can set `replicas: 0` in MANTA Flow Custom Resource Definition (CRD) and MANTA Flow container will be stopped.\n\nBy setting `replicas: 1` MANTA Flow will be scaled to be running on 1 container. All other values of `replicas` are considered invalid.\n",
-      "csv_display_name": "MANTA Flow Operator",
-      "csv_metadata_description": "",
-      "csv_name": "mantaflow-operator.v36.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:02:44.144000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "mantaflow-operator",
-      "provided_apis": [
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaAuth",
-          "plural": "mantaauths",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaFlow",
-          "plural": "mantaflows",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "MANTA Software",
-      "related_images": [
-        {
-          "digest": "sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
-          "name": "mantaflow-operator-083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3-annotation"
-        },
-        {
-          "digest": "sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "36.0.0",
-      "version_original": "36.0.0"
-    },
-    {
       "_id": "624756844a140551e01d26f2",
       "alm_examples": [
         {
@@ -3603,129 +2562,6 @@
       "version_original": "22.3.0"
     },
     {
-      "_id": "624756864a140551e01d26f3",
-      "alm_examples": [
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaAuth",
-          "metadata": {
-            "name": "mantaauth-sample"
-          },
-          "spec": {
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaVersion": "36.0.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        },
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaFlow",
-          "metadata": {
-            "name": "mantaflow-sample"
-          },
-          "spec": {
-            "connectors": {
-              "wkc": {
-                "enabled": false,
-                "logInfo": true,
-                "routeName": "cpd",
-                "tlsSecretName": "internal-tls"
-              }
-            },
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaFlowKeys": "mantaflow-keys",
-            "mantaVersion": "36.0.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/manta-ubi8/mantaflow-operator-bundle@sha256:090101b2aa091e12e08ea5dbd719fb7ebc8ee86c170fba82641c714776667061",
-      "bundle_path_digest": "sha256:090101b2aa091e12e08ea5dbd719fb7ebc8ee86c170fba82641c714776667061",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-01T19:46:14.941000+00:00",
-      "csv_description": "# MANTA Flow\nMANTA is a Unified Lineage Platform for Data Lineage.  MANTA performs code scanning for lineage that is illustrated to the detailed attribute level with transformations.   Extreme color coding and filtering to make lineage consumable.  Also includes time-slicing for historical lineage analysis.\n\n## Features\n* **Create/Destroy**: Launch MANTA Flow Container deployment.\n* **Scaling to zero**: Scale down the deployment (turn off the container).\n\n## Prerequisites and Requirements\n### MANTA Flow Namespace\nMANTA should be installed into its own namespace.\n\nFor additional installation documentation see a [MANTA Flow Container documentation](https://mantatools.atlassian.net/wiki/spaces/MTKB/pages/2450620467/MANTA+Flow+Container)\nin the MANTA Flow Knowledge Base.\n\n### MANTA Flow Operator\nThe MANTA Flow Operator is responsible for deployment and management of MANTA Flow container deployment.\n\n### Memory Considerations\nMANTA Flow is a memory intensive application. The MANTA Flow Container will specify the memory and cpu requirements for both request and limits. Also, the minimum storage requirements are specified for the persistent volumes (PVs).\n\n### MANTA Flow license.key\nValid license.key needs to be provided in order to successfully launch MANTA Flow Container.\n\n## MANTA Flow Deployment\n\n### Secrets\nCreate a secret for MANTA Flow license.key by:\n    \n    oc create secret generic mantaflow-keys --from-file=<path to license.key>/license.key\n\nCreate an initial admin credentials `username` and `password` and a MANTA master password, which is used for encryption of sensitive data in the persistent storage.\n\n    oc create secret generic mantaflow-credentials --from-literal=username=<manta admin username> --from-literal=password=<manta admin password> --from-literal=MANTA_MASTERPASSWORD=<password for encryption>\n\n### Create MANTA Auth Custom Resource\nCreate a MANTA Auth custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n### Create MANTA Flow Custom Resource\nCreate a MANTA Flow custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n## Scaling\nMANTA Flow currently supports scaling to zero. This means you can set `replicas: 0` in MANTA Flow Custom Resource Definition (CRD) and MANTA Flow container will be stopped.\n\nBy setting `replicas: 1` MANTA Flow will be scaled to be running on 1 container. All other values of `replicas` are considered invalid.\n",
-      "csv_display_name": "MANTA Flow Operator",
-      "csv_metadata_description": "",
-      "csv_name": "mantaflow-operator.v36.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:07:19.533000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "mantaflow-operator",
-      "provided_apis": [
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaAuth",
-          "plural": "mantaauths",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaFlow",
-          "plural": "mantaflows",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "MANTA Software",
-      "related_images": [
-        {
-          "digest": "sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
-          "name": "mantaflow-operator-083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3-annotation"
-        },
-        {
-          "digest": "sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "36.0.0",
-      "version_original": "36.0.0"
-    },
-    {
       "_id": "6247575c485b927808ef1403",
       "alm_examples": [
         {
@@ -3893,129 +2729,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "22.3.0",
       "version_original": "22.3.0"
-    },
-    {
-      "_id": "624757654a140551e01d26f5",
-      "alm_examples": [
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaAuth",
-          "metadata": {
-            "name": "mantaauth-sample"
-          },
-          "spec": {
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaVersion": "36.0.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        },
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaFlow",
-          "metadata": {
-            "name": "mantaflow-sample"
-          },
-          "spec": {
-            "connectors": {
-              "wkc": {
-                "enabled": false,
-                "logInfo": true,
-                "routeName": "cpd",
-                "tlsSecretName": "internal-tls"
-              }
-            },
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaFlowKeys": "mantaflow-keys",
-            "mantaVersion": "36.0.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/manta-ubi8/mantaflow-operator-bundle@sha256:090101b2aa091e12e08ea5dbd719fb7ebc8ee86c170fba82641c714776667061",
-      "bundle_path_digest": "sha256:090101b2aa091e12e08ea5dbd719fb7ebc8ee86c170fba82641c714776667061",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-01T19:49:57.149000+00:00",
-      "csv_description": "# MANTA Flow\nMANTA is a Unified Lineage Platform for Data Lineage.  MANTA performs code scanning for lineage that is illustrated to the detailed attribute level with transformations.   Extreme color coding and filtering to make lineage consumable.  Also includes time-slicing for historical lineage analysis.\n\n## Features\n* **Create/Destroy**: Launch MANTA Flow Container deployment.\n* **Scaling to zero**: Scale down the deployment (turn off the container).\n\n## Prerequisites and Requirements\n### MANTA Flow Namespace\nMANTA should be installed into its own namespace.\n\nFor additional installation documentation see a [MANTA Flow Container documentation](https://mantatools.atlassian.net/wiki/spaces/MTKB/pages/2450620467/MANTA+Flow+Container)\nin the MANTA Flow Knowledge Base.\n\n### MANTA Flow Operator\nThe MANTA Flow Operator is responsible for deployment and management of MANTA Flow container deployment.\n\n### Memory Considerations\nMANTA Flow is a memory intensive application. The MANTA Flow Container will specify the memory and cpu requirements for both request and limits. Also, the minimum storage requirements are specified for the persistent volumes (PVs).\n\n### MANTA Flow license.key\nValid license.key needs to be provided in order to successfully launch MANTA Flow Container.\n\n## MANTA Flow Deployment\n\n### Secrets\nCreate a secret for MANTA Flow license.key by:\n    \n    oc create secret generic mantaflow-keys --from-file=<path to license.key>/license.key\n\nCreate an initial admin credentials `username` and `password` and a MANTA master password, which is used for encryption of sensitive data in the persistent storage.\n\n    oc create secret generic mantaflow-credentials --from-literal=username=<manta admin username> --from-literal=password=<manta admin password> --from-literal=MANTA_MASTERPASSWORD=<password for encryption>\n\n### Create MANTA Auth Custom Resource\nCreate a MANTA Auth custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n### Create MANTA Flow Custom Resource\nCreate a MANTA Flow custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n## Scaling\nMANTA Flow currently supports scaling to zero. This means you can set `replicas: 0` in MANTA Flow Custom Resource Definition (CRD) and MANTA Flow container will be stopped.\n\nBy setting `replicas: 1` MANTA Flow will be scaled to be running on 1 container. All other values of `replicas` are considered invalid.\n",
-      "csv_display_name": "MANTA Flow Operator",
-      "csv_metadata_description": "",
-      "csv_name": "mantaflow-operator.v36.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:57:33.138000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "mantaflow-operator",
-      "provided_apis": [
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaFlow",
-          "plural": "mantaflows",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaAuth",
-          "plural": "mantaauths",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "MANTA Software",
-      "related_images": [
-        {
-          "digest": "sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
-          "name": "mantaflow-operator-083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3-annotation"
-        },
-        {
-          "digest": "sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:083aa1452b365d30f7705f63468338d2673128442b091f0e02004532783cf0a3",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "36.0.0",
-      "version_original": "36.0.0"
     },
     {
       "_id": "62476622485b927808ef1404",
@@ -9087,9 +7800,425 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.1",
       "version_original": "1.4.1"
+    },
+    {
+      "_id": "6262a63c834f257293b60f7f",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:9e558f919dcde8725e92e313fa50263273b2eb785fc4c6cbc671af63b2b0b7bc",
+      "bundle_path_digest": "sha256:9e558f919dcde8725e92e313fa50263273b2eb785fc4c6cbc671af63b2b0b7bc",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:57:32.363000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "artifactory-ha-operator.v1.1.4",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:14:07.596000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "openshiftartifactoryha-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftArtifactoryHa",
+          "plural": "openshiftartifactoryhas",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.1.4",
+      "version_original": "1.1.4"
+    },
+    {
+      "_id": "6262a645cde83e2b177c20d4",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-bundle@sha256:88485817f37b79ef5d8cf84552a956d7989504c2f031f21ca6f487387074ed27",
+      "bundle_path_digest": "sha256:88485817f37b79ef5d8cf84552a956d7989504c2f031f21ca6f487387074ed27",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:57:41.144000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cpx-cic-operator.v130.36.29",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:04:21.124000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "citrix-cpx-with-ingress-controller-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "CitrixCPXIngressController",
+          "plural": "citrixcpxingresscontrollers",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "130.36.29",
+      "version_original": "130.36.29"
+    },
+    {
+      "_id": "6262a64b173a0d36cf5d6970",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:3a70920f1aca227ebe5b1db44125c4370bad00379a941f0bac301d61ee112ba2",
+      "bundle_path_digest": "sha256:3a70920f1aca227ebe5b1db44125c4370bad00379a941f0bac301d61ee112ba2",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:57:47.620000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "gpu-operator-certified.v1.3.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:19:27.934000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.3.0",
+      "version_original": "1.3.0"
+    },
+    {
+      "_id": "6262a64fcde83e2b177c20d5",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-certifai-operator-bundle@sha256:2ff2df4e61105cb9cc1905f504ed0e74907fcd43f85d200f729e464e824e928f",
+      "bundle_path_digest": "sha256:2ff2df4e61105cb9cc1905f504ed0e74907fcd43f85d200f729e464e824e928f",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:57:51.259000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cortex-certifai-operator.v1.3.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:12:22.818000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "cortex-certifai-operator",
+      "provided_apis": [
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "Certifai",
+          "plural": "certifais",
+          "version": "v1"
+        },
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "CertifaiScan",
+          "plural": "certifaiscans",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.3.2",
+      "version_original": "1.3.2"
+    },
+    {
+      "_id": "6262a652834f257293b60f81",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.8",
+      "creation_date": "2022-04-22T12:57:54.647000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:29:29.933000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "6262a662cde83e2b177c20d6",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:2098ab48bafee24a19a6bd6592a2b177b5d863e9c1d2519bf095325dcd4476e1",
+      "bundle_path_digest": "sha256:2098ab48bafee24a19a6bd6592a2b177b5d863e9c1d2519bf095325dcd4476e1",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:58:10.043000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.1.4",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:21:49.889000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "plural": "dashboardwithjupyterhubs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.1.4",
+      "version_original": "0.1.4"
+    },
+    {
+      "_id": "6262a667834f257293b60f85",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/triggermesh/aws-event-sources-operator-bundle@sha256:b9d8f05aa217db6847aed2b06cff677777bbdd5606191b832ff53000dea489cd",
+      "bundle_path_digest": "sha256:b9d8f05aa217db6847aed2b06cff677777bbdd5606191b832ff53000dea489cd",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T12:58:15.771000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "aws-sources-operator.v0.2.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:16:26.868000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "aws-event-sources-operator-certified",
+      "provided_apis": [
+        {
+          "group": "sources.triggermesh.com",
+          "kind": "AwsEventSources",
+          "plural": "awseventsources",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.2.2",
+      "version_original": "0.2.2"
+    },
+    {
+      "_id": "6262a66a173a0d36cf5d6973",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-fabric-operator-bundle@sha256:de8cf8423ab8ea22f2090947fb51c3091407fcca623d5a83137b266c43e00f6d",
+      "bundle_path_digest": "sha256:de8cf8423ab8ea22f2090947fb51c3091407fcca623d5a83137b266c43e00f6d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:58:18.822000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cortex-fabric-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:05:43.813000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "cortex-fabric-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Cortex5",
+          "plural": "cortex5s",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "6262a672834f257293b60f88",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/iomesh/iomesh@sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "bundle_path_digest": "sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:58:26.012000+00:00",
+      "csv_description": "IOMesh (https://www.iomesh.com/) is a cloud-native storage product specifically designed and developed for Kubernetes. It takes ZBS as its core, a \u201cproduction-ready\u201d distributed storage system developed independently by SmartX, to provide production-level high performance and reliable persistent storage for business-critical applications such as MySQL, Cassandra, MongoDB, etc., contributing to the containerized transformation of stateful applications.      \n## Pre-Requisites\n* According to https://docs.iomesh.com/deploy/prerequisites, make sure that your openshift cluster meets the \"Installation Requirements\" and set up the worker nodes correctly according to the \"Setup Worker Node\" chapter.\n* Run IOMesh Operator pre-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install the dependencies of IOMesh Operator and specific IOMesh settings for the openshift cluster:\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-pre-install-openshift.sh | sh -\n```\n## Install IOMesh Operator and IOMesh Cluster\n* Click install button on the current web page to install IOMesh Operator\n* On the **Installed Operators** -> **IOMesh Operator** -> **Create instance** -> **YAML view**, fill in an IOMesh Custom Resources according https://iomesh.run/iomesh.yaml, change the `spec.*.dataCIDR` to your own data network CIDR:\n## Post Install\n* Run IOMesh Operator post-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install IOMesh CSI Driver\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-post-install-openshift.sh | sh -\n```\n## Getting Started\n* Try to quickstart setup and use IOMesh: https://docs.iomesh.com/deploy/setup-iomesh\n",
+      "csv_display_name": "IOMesh Operator",
+      "csv_metadata_description": "",
+      "csv_name": "iomesh-operator.0.10.1-rc4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:14:53.871000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "iomesh-operator",
+      "provided_apis": [
+        {
+          "group": "iomesh.com",
+          "kind": "IOMeshCluster",
+          "plural": "iomeshclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator-52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3-annotation"
+        },
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.10.1-rc4",
+      "version_original": "0.10.1-rc4"
     }
   ],
   "page": 23,
   "page_size": 100,
-  "total": 4862
+  "total": 4873
 }

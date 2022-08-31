@@ -1,433 +1,6 @@
 {
   "data": [
     {
-      "_id": "62345f18314381d2b0756b27",
-      "alm_examples": [
-        {
-          "api_version": "hazelcast.com/v1alpha1",
-          "kind": "HazelcastEnterprise",
-          "metadata": {
-            "name": "hz"
-          },
-          "spec": {
-            "hazelcast": {
-              "licenseKeySecretName": "hz-license-key-secret"
-            },
-            "securityContext": {
-              "fsGroup": "",
-              "runAsGroup": "",
-              "runAsUser": ""
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hazelcast/hazelcast-enterprise-operator-bundle@sha256:b1d7468e045f4c0964b4c4b7950a674ee96850c41a0f4014aa0e62273b69f4b4",
-      "bundle_path_digest": "sha256:b1d7468e045f4c0964b4c4b7950a674ee96850c41a0f4014aa0e62273b69f4b4",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-18T10:29:44.647000+00:00",
-      "csv_description": "Hazelcast IMDG Enterprise is the most widely used in-memory data grid with hundreds of thousands of installed clusters around the world. It offers caching solutions ensuring that data is in the right place when it\u2019s needed for optimal performance.\n\n   ### Before Your Start\n\nYou need Hazelcast Enterprise License Key. If you don't have one, get a trial key from this [link](https://hazelcast.com/hazelcast-enterprise-download/trial/).\n\n### Installation Guide & Configuration\n\nFor the complete installation guide and all configuration options please refer to [Hazelcast RHM Deployment Instructions](https://github.com/hazelcast/hazelcast-operator/tree/master/hazelcast-enterprise-operator#step-4-hazelcast-enterprise-cluster-and-management-center-installation).\n",
-      "csv_display_name": "Hazelcast Enterprise Operator",
-      "csv_metadata_description": "Install Hazelcast Enterprise cluster.",
-      "csv_name": "hazelcast-enterprise-operator.v0.3.8",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:22:39.982000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "hazelcast-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "hazelcast.com",
-          "kind": "HazelcastEnterprise",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Hazelcast, Inc",
-      "related_images": [
-        {
-          "digest": "sha256:ff2abf2506ede16ed998f36061b90746b239b694e950ca86a58f3d5df7f2bde6",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-enterprise-operator@sha256:ff2abf2506ede16ed998f36061b90746b239b694e950ca86a58f3d5df7f2bde6",
-          "name": "hazelcast-enterprise-operator-ff2abf2506ede16ed998f36061b90746b239b694e950ca86a58f3d5df7f2bde6-annotation"
-        },
-        {
-          "digest": "sha256:ff2abf2506ede16ed998f36061b90746b239b694e950ca86a58f3d5df7f2bde6",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-enterprise-operator@sha256:ff2abf2506ede16ed998f36061b90746b239b694e950ca86a58f3d5df7f2bde6",
-          "name": "hazelcast-enterprise-operator"
-        },
-        {
-          "digest": "sha256:c54fcdc49dd23bb3c1aa7e727b2d664f954bd0b614cb67577165391cfad0f832",
-          "image": "registry.connect.redhat.com/hazelcast/hazelcast-enterprise-5-rhel8@sha256:c54fcdc49dd23bb3c1aa7e727b2d664f954bd0b614cb67577165391cfad0f832",
-          "name": "hazelcast"
-        },
-        {
-          "digest": "sha256:e9a11e785a7b3c6ec5292ceb25a54c78a8d9e536788b945f64fb746ee7a1f030",
-          "image": "registry.connect.redhat.com/hazelcast/management-center-5-rhel8@sha256:e9a11e785a7b3c6ec5292ceb25a54c78a8d9e536788b945f64fb746ee7a1f030",
-          "name": "mancenter"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.3.8",
-      "version_original": "0.3.8"
-    },
-    {
-      "_id": "62345f2b314381d2b0756b28",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "OpenshiftXray",
-          "metadata": {
-            "name": "openshiftxray"
-          },
-          "spec": {
-            "xray": {
-              "analysis": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-analysis"
-                },
-                "name": "xray-analysis",
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "common": {
-                "xrayGroupId": "1000721035",
-                "xrayUserId": "1000721035",
-                "xrayVersion": "3.33.3-1"
-              },
-              "database": {
-                "password": "OVERRIDE",
-                "url": "OVERRIDE",
-                "user": "OVERRIDE"
-              },
-              "global": {},
-              "indexer": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-indexer"
-                },
-                "name": "xray-indexer",
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
-              "persist": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-persist"
-                },
-                "name": "xray-persist",
-                "persistence": {
-                  "size": "10Gi"
-                },
-                "podManagementPolicy": "Parallel",
-                "updateStrategy": "RollingUpdate"
-              },
-              "postgresql": {
-                "enabled": false
-              },
-              "rabbitmq": {
-                "auth": {
-                  "erlangCookie": "XRAYRABBITMQCLUSTER",
-                  "password": "xray",
-                  "tls": {
-                    "caCertificate": "",
-                    "enabled": false,
-                    "failIfNoPeerCert": true,
-                    "serverCertificate": "",
-                    "serverKey": "",
-                    "sslOptionsVerify": "verify_peer"
-                  },
-                  "username": "xray"
-                },
-                "enabled": true,
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-rabbitmq",
-                  "tag": "3.33.3-1"
-                },
-                "podSecurityContext": {
-                  "fsGroup": 1000721001,
-                  "runAsUser": 1000721001
-                },
-                "rbac": {
-                  "create": true
-                },
-                "replicaCount": 1
-              },
-              "rabbitmq-ha": {
-                "enabled": false,
-                "image": {
-                  "repository": "registry.connect.redhat.com/jfrog/xray-rabbitmq",
-                  "tag": "3.33.3-1"
-                },
-                "initContainer": {
-                  "enabled": false
-                },
-                "managementPassword": "guest",
-                "managementUsername": "guest",
-                "rabbitmqPassword": "guest",
-                "rabbitmqUsername": "guest",
-                "replicaCount": 1,
-                "securityContext": {
-                  "fsGroup": 1000721035,
-                  "runAsGroup": 1000721035,
-                  "runAsUser": 1000721035
-                }
-              },
-              "replicaCount": 1,
-              "router": {
-                "image": {
-                  "imagePullPolicy": "IfNotPresent",
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-router",
-                  "tag": "3.33.3-1"
-                },
-                "name": "router"
-              },
-              "server": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/xray-server"
-                },
-                "name": "xray-server",
-                "podManagementPolicy": "Parallel",
-                "replicaCount": 1,
-                "updateStrategy": "RollingUpdate"
-              },
-              "unifiedUpgradeAllowed": "true",
-              "xray": {
-                "consoleLog": false,
-                "jfrogUrl": "OVERRIDE",
-                "joinKey": "OVERRIDE",
-                "masterKey": "OVERRIDE"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/jfrog/xray-operator-bundle@sha256:57874a477ec87a6f1b54d45c821f42cde38291c7f8a412263a6a8a40832cbb16",
-      "bundle_path_digest": "sha256:57874a477ec87a6f1b54d45c821f42cde38291c7f8a412263a6a8a40832cbb16",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-18T10:30:03.973000+00:00",
-      "csv_description": "## Overview\nOpenshift Operator to deploy JFrog Xray Continuous Security scanner into your Openshift cluster.\nNOTE: Artifactory is required for JFrog Xray to connect with and scan artifacts against.\n### Major version v2.0.4 Breaking change notification !!!\nThis release has major bug fix for Rabbitmq Pod.\nPlease update to version 2.0.4 of the operator.\n### Major version v2.0.0 Breaking change notification !!!\nXray is dependent upon Rabbitmq. The version of Rabbitmq that this chart uses has significantly changed from version 1.1.8 of the operator.\nFor full details on how to migrate please visit:\n`https://github.com/jfrog/charts/blob/master/stable/xray/RABBITMQ_MIGRATION_NOTES.md`\n### Security Context Constraints\nTo deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc.\n\n```\noc adm policy add-scc-to-user anyuid -z xray-operator\n```\n```\noc adm policy add-scc-to-user anyuid -z openshiftxray\n```\n```\noc adm policy add-scc-to-user anyuid -z openshiftxray-rabbitmq-ha\n```\n\n## Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Xray Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Xray Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Xray\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nJFROG_URL\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\n\nJFROG_URL is the external ip or DNS of your Artifactory to connect Xray to. Artifactory is required to use this operator.\nYou can set your JFROG_URL to the service name of your Artifactory Nginx:\n``` oc get svc -n my_namespace | grep nginx ```\nDATABASE_URL must be a Postgresql URL in the format:\n``\npostgres://postgres-postgresql:5432/xraydb?sslmode=disable\n``\nDATABASE_USER and DATABASE_PASSWORD must supply a valid user on Postgresql.\n\nClick Create for Xray to deploy into OpenShift.\n\nOpen Artifactory in a web browser to complete the onboarding wizard for Xray!\n\n### Air gap environments\n\nTo use Xray Operator in an air gap environment you will need to download the images as image streams into your Openshift air gap cluster manually.\n\nUse the image overrides to then specify the image stream locations that are local to your cluster.\n\nNext you will need to setup the database of index data for xray to use when scanning artifacts.\n\nFollow the link below for instructions on setup:\n\nhttps://www.jfrog.com/confluence/display/JFROG/Configuring+Xray#ConfiguringXray-SynchronizingtheDatabase\n\n",
-      "csv_display_name": "JFrog Xray Continuous Security Operator",
-      "csv_metadata_description": "JFrog Xray Enterprise deploys Xray continuous security scanner into Openshift (Requires Jfrog Artifactory)",
-      "csv_name": "xray-operator.v2.0.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:22:04.586000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "openshiftxray-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "OpenshiftXray",
-          "version": "v1"
-        }
-      ],
-      "provider": "JFrog",
-      "related_images": [
-        {
-          "digest": "sha256:79fcd178d5f5f0d69daf714edd9fbf8f1bebb784513cf5d45ccbd7fd8c3a3a2c",
-          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:79fcd178d5f5f0d69daf714edd9fbf8f1bebb784513cf5d45ccbd7fd8c3a3a2c",
-          "name": "xray-operator-79fcd178d5f5f0d69daf714edd9fbf8f1bebb784513cf5d45ccbd7fd8c3a3a2c-annotation"
-        },
-        {
-          "digest": "sha256:79fcd178d5f5f0d69daf714edd9fbf8f1bebb784513cf5d45ccbd7fd8c3a3a2c",
-          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:79fcd178d5f5f0d69daf714edd9fbf8f1bebb784513cf5d45ccbd7fd8c3a3a2c",
-          "name": "xray-operator"
-        },
-        {
-          "digest": "sha256:8321f4971e7f65f8eb39cda6b6fde2e504cbdbce2139849593d8d8431484cba0",
-          "image": "registry.connect.redhat.com/jfrog/xray-server@sha256:8321f4971e7f65f8eb39cda6b6fde2e504cbdbce2139849593d8d8431484cba0",
-          "name": "xray_server_image_repository"
-        },
-        {
-          "digest": "sha256:c96159770e67caa4004444361549292732d7a080d3ffe44900c148e387ae5f85",
-          "image": "registry.connect.redhat.com/jfrog/xray-analysis@sha256:c96159770e67caa4004444361549292732d7a080d3ffe44900c148e387ae5f85",
-          "name": "xray_analysis_image_repository"
-        },
-        {
-          "digest": "sha256:ddf1b7980fcc690947c5385141725b20af250cf0e332ededc50babb217840265",
-          "image": "registry.connect.redhat.com/jfrog/xray-persist@sha256:ddf1b7980fcc690947c5385141725b20af250cf0e332ededc50babb217840265",
-          "name": "xray_persist_image_repository"
-        },
-        {
-          "digest": "sha256:68f5d645dcdfeeb8d3364e176012518faaa995e5a585113fe7904fdf04f9adfc",
-          "image": "registry.connect.redhat.com/jfrog/xray-indexer@sha256:68f5d645dcdfeeb8d3364e176012518faaa995e5a585113fe7904fdf04f9adfc",
-          "name": "xray_indexer_image_repository"
-        },
-        {
-          "digest": "sha256:1bf671848a06330b350ffeb0c2e90c1591cce5930d1398126377c01c70841319",
-          "image": "registry.connect.redhat.com/jfrog/xray-router@sha256:1bf671848a06330b350ffeb0c2e90c1591cce5930d1398126377c01c70841319",
-          "name": "xray_router_image_repository"
-        },
-        {
-          "digest": "sha256:65a95da372693c96bdf9b7bcf21e757dc09569cf2eb66afd9bca4c552ad78f01",
-          "image": "registry.connect.redhat.com/jfrog/xray-rabbitmq@sha256:65a95da372693c96bdf9b7bcf21e757dc09569cf2eb66afd9bca4c552ad78f01",
-          "name": "xray_rabbitmq_image_repository"
-        },
-        {
-          "digest": "sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
-          "image": "registry.connect.redhat.com/jfrog/init@sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
-          "name": "init-164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2.0.9",
-      "version_original": "2.0.9"
-    },
-    {
-      "_id": "62345f2f06c5dada0193e074",
-      "alm_examples": [
-        {
-          "api_version": "aikit.intel/v1alpha1",
-          "kind": "AIKitContainer",
-          "metadata": {
-            "name": "intel-aikit-container",
-            "namespace": "redhat-ods-applications"
-          },
-          "spec": {
-            "fullnameOverride": "",
-            "imagestream": {
-              "name": "oneapi-aikit",
-              "namespace": "redhat-ods-applications",
-              "registry": {
-                "name": "oneapi-aikit",
-                "repo": "intel",
-                "root": "registry.connect.redhat.com",
-                "version": "latest"
-              }
-            },
-            "nameOverride": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/intel/aikit-operator-bundle@sha256:db2074b8ef12a3037a7aaa515c9055f080e546706f769404d6f9005a28f57e61",
-      "bundle_path_digest": "sha256:db2074b8ef12a3037a7aaa515c9055f080e546706f769404d6f9005a28f57e61",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-18T10:30:07.419000+00:00",
-      "csv_description": "The Intel\u00ae oneAPI AI Analytics Toolkit gives data scientists, AI developers, and researchers familiar Python* tools and frameworks to accelerate end-to-end data science and machine learning pipelines on Intel\u00ae architectures. The components are built using oneAPI libraries for low-level compute optimizations. This toolkit maximizes performance from preprocessing through machine and deep learning phases and provides interoperability for efficient model development and deployment across single and multinodes.\n",
-      "csv_display_name": "Intel\u00ae oneAPI AI Analytics Toolkit Operator",
-      "csv_metadata_description": "",
-      "csv_name": "aikit-operator.v2021.2.92911",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:29:29.081000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "aikit-operator",
-      "provided_apis": [
-        {
-          "group": "aikit.intel",
-          "kind": "AIKitContainer",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Intel",
-      "related_images": [
-        {
-          "digest": "sha256:6c55351004f5b04f901a2a3ad3ffab01c7b7d237dde9943dda3116e354d3cfe7",
-          "image": "registry.connect.redhat.com/intel/aikit-operator@sha256:6c55351004f5b04f901a2a3ad3ffab01c7b7d237dde9943dda3116e354d3cfe7",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2021.2.92911",
-      "version_original": "2021.2.92911"
-    },
-    {
       "_id": "62345f335593ce895a7b5346",
       "alm_examples": [
         {
@@ -19512,9 +19085,558 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "1.10.0",
       "version_original": "1.10.0"
+    },
+    {
+      "_id": "623a0efc5216f202c0697686",
+      "alm_examples": [
+        {
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
+          "metadata": {
+            "name": "gpu-cluster-policy"
+          },
+          "spec": {
+            "daemonsets": {},
+            "dcgm": {
+              "enabled": true
+            },
+            "dcgmExporter": {
+              "config": {
+                "name": ""
+              }
+            },
+            "devicePlugin": {},
+            "driver": {
+              "certConfig": {
+                "name": ""
+              },
+              "enabled": true,
+              "kernelModuleConfig": {
+                "name": ""
+              },
+              "licensingConfig": {
+                "configMapName": "",
+                "nlsEnabled": false
+              },
+              "repoConfig": {
+                "configMapName": ""
+              },
+              "use_ocp_driver_toolkit": true,
+              "virtualTopology": {
+                "config": ""
+              }
+            },
+            "gfd": {},
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "enabled": true
+            },
+            "nodeStatusExporter": {
+              "enabled": true
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "deployGFD": true,
+              "initContainer": {}
+            },
+            "toolkit": {
+              "enabled": true
+            },
+            "validator": {
+              "plugin": {
+                "env": [
+                  {
+                    "name": "WITH_WORKLOAD",
+                    "value": "true"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
+      "bundle_path_digest": "sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-22T18:01:32.719000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:55:58.862000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "plural": "clusterpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": "NVIDIA Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "name": "dcgm-image"
+        },
+        {
+          "digest": "sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
+          "image": "nvcr.io/nvidia/driver@sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
+          "image": "docker.io/nvidia/cuda@sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
+          "name": "gpu-operator-validator-image"
+        },
+        {
+          "digest": "sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "name": "k8s-driver-manager-image"
+        },
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator-e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be-annotation"
+        },
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
+    },
+    {
+      "_id": "623a0efef2605d1718604401",
+      "alm_examples": [
+        {
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
+          "metadata": {
+            "name": "gpu-cluster-policy"
+          },
+          "spec": {
+            "daemonsets": {},
+            "dcgm": {
+              "enabled": true
+            },
+            "dcgmExporter": {
+              "config": {
+                "name": ""
+              }
+            },
+            "devicePlugin": {},
+            "driver": {
+              "certConfig": {
+                "name": ""
+              },
+              "enabled": true,
+              "kernelModuleConfig": {
+                "name": ""
+              },
+              "licensingConfig": {
+                "configMapName": "",
+                "nlsEnabled": false
+              },
+              "repoConfig": {
+                "configMapName": ""
+              },
+              "use_ocp_driver_toolkit": true,
+              "virtualTopology": {
+                "config": ""
+              }
+            },
+            "gfd": {},
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "enabled": true
+            },
+            "nodeStatusExporter": {
+              "enabled": true
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "deployGFD": true,
+              "initContainer": {}
+            },
+            "toolkit": {
+              "enabled": true
+            },
+            "validator": {
+              "plugin": {
+                "env": [
+                  {
+                    "name": "WITH_WORKLOAD",
+                    "value": "true"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
+      "bundle_path_digest": "sha256:4d1268054559b7678028a7a66e36567c55417b729101ef131dec8d989cbef1d3",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "v1.10",
+      "creation_date": "2022-03-22T18:01:34.039000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:56:04.029000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "plural": "clusterpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": "NVIDIA Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:67c48a8370c34f68b46eb57339e87d01c04198368a0423553fab7565c862c4df",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:ac13256c295126b854a07421c45de0721e7a57974b38b3e66eb1fdc3a4e29f2e",
+          "name": "dcgm-image"
+        },
+        {
+          "digest": "sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:9abb063e6b74085728fead5ed5bbe3bd7b3f57de60e87f6b964bba2d46f1bc67",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
+          "image": "nvcr.io/nvidia/driver@sha256:d46393d6bd5be020c78e1d45669d2bb3ac8681df13369ddbbbf90740e354c0cf",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:aa95c16106280e36a5e32d2fe4c66e8b70f5a114860c6f4ed5b1a4085c63601b",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:c2e3d0fe41a0d227dbb70caec03c780cc76317515e5ab3875f31d50c63f41c66",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:e8f06ce53415e8572f633b2169289d973993cb1e49d4dcc686ac134194d88f33",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
+          "image": "docker.io/nvidia/cuda@sha256:c7609c27c68ae6520ff21862665d10e1dd0dc99fe0615968310478632187341b",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:6819f4c9136e82e44ec34b03ba71c72cbbeebe1db49c596a8bc245fea3bee596",
+          "name": "gpu-operator-validator-image"
+        },
+        {
+          "digest": "sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:5b16056257acc51b517d9cdb1da3218693cefc214af93789e6e214fd2b4cacf1",
+          "name": "k8s-driver-manager-image"
+        },
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator-e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be-annotation"
+        },
+        {
+          "digest": "sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:e2da1a42a885482a6b40b397397e79c037a10e71abd08e4658eb0b9fc2a761be",
+          "name": "gpu-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
+    },
+    {
+      "_id": "623d8a666d7cc84677b2e8b3",
+      "alm_examples": [
+        {
+          "api_version": "ako.vmware.com/v1alpha1",
+          "kind": "AKOConfig",
+          "metadata": {
+            "name": "ako-sample",
+            "namespace": "avi-system"
+          },
+          "spec": {
+            "akoSettings": {
+              "apiServerPort": 8080,
+              "clusterName": "my-cluster",
+              "cniPlugin": "openshift",
+              "deleteConfig": false,
+              "disableStaticRouteSync": false,
+              "enableEVH": false,
+              "enableEvents": "true",
+              "fullSyncFrequency": "1800",
+              "layer7Only": false,
+              "logLevel": "INFO",
+              "namespaceSelector": {
+                "labelKey": "",
+                "labelValue": ""
+              },
+              "servicesAPI": false,
+              "vipPerNamespace": "false"
+            },
+            "controllerSettings": {
+              "cloudName": "Default-Cloud",
+              "controllerHost": "",
+              "controllerVersion": "20.1.5",
+              "serviceEngineGroupName": "Default-Group",
+              "tenantName": "admin",
+              "tenantsPerCluster": "false"
+            },
+            "imagePullPolicy": "IfNotPresent",
+            "imageRepository": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
+            "l4Settings": {
+              "advancedL4": false,
+              "autoFQDN": "default",
+              "defaultDomain": ""
+            },
+            "l7Settings": {
+              "defaultIngController": true,
+              "noPGForSNI": false,
+              "passthroughShardSize": "SMALL",
+              "serviceType": "ClusterIP",
+              "shardVSSize": "LARGE"
+            },
+            "logFile": "avi.log",
+            "mountPath": "/log",
+            "networkSettings": {
+              "bgpPeerLabels": [],
+              "enableRHI": false,
+              "nodeNetworkList": [
+                {
+                  "cidrs": [],
+                  "networkName": ""
+                }
+              ],
+              "nsxtT1LR": "",
+              "vipNetworkList": [
+                {
+                  "cidr": "",
+                  "networkName": ""
+                }
+              ]
+            },
+            "nodePortSelector": {
+              "key": "",
+              "value": ""
+            },
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "300Mi"
+              },
+              "requests": {
+                "cpu": "100m",
+                "memory": "200Mi"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/wavefronthq/ako-operator-bundle@sha256:7b318b8ae2f90210bda94e4c88b1187a7e92b696dc00cbc3e894c0f285c83f9e",
+      "bundle_path_digest": "sha256:7b318b8ae2f90210bda94e4c88b1187a7e92b696dc00cbc3e894c0f285c83f9e",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-03-25T09:24:54.092000+00:00",
+      "csv_description": "Operator to manage the artifacts of the AKO Controller",
+      "csv_display_name": "AKO Operator",
+      "csv_metadata_description": "",
+      "csv_name": "ako-operator.v1.6.3-stable",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:26:05.377000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "ako-operator",
+      "provided_apis": [
+        {
+          "group": "ako.vmware.com",
+          "kind": "AKOConfig",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "VMware",
+      "related_images": [
+        {
+          "digest": "sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
+          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
+          "name": "ako-operator"
+        },
+        {
+          "digest": "sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
+          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
+          "name": "ako-operator-378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.6.3",
+      "version_original": "1.6.3"
     }
   ],
   "page": 22,
   "page_size": 100,
-  "total": 4862
+  "total": 4873
 }
