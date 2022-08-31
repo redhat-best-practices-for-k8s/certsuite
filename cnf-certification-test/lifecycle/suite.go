@@ -24,7 +24,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/isolation"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/ownerreference"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podrecreation"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
@@ -496,40 +495,18 @@ func testCPUIsolation(env *provider.TestEnvironment) {
 	ginkgo.By("Testing pods for CPU isolation requirements")
 
 	// Individual requirements we are looking for:
-	// - Resource Requests and Limits must be provided and identical. This determines whether or not we run the rest of the tests.
+	// - Annotations must be provided disabling CPU and IRQ load-balancing.
+	// - Resource Requests and Limits must be provided and identical
+
+	// Additional checks if the above pass
 	// - CPU Requests and Limits must be in the form of whole units
 	// - 'runtimeClassName' must be specified
-	// - Annotations must be provided disabling CPU and IRQ load-balancing
 
 	podsMissingIsolationRequirements := make(map[string]bool)
 
 	for _, put := range env.Pods {
-		it := isolation.NewCPUIsolationTester(put)
-
-		// Pods that have identical resources, are considered CPU isolated.
-		if it.LoadBalancingDisabled() {
-			if !it.AreCPUResourcesWholeUnits() {
-				errMsg := fmt.Sprintf("%s has been found to not have CPU resources that are whole units.", put.String())
-				logrus.Debugf(errMsg)
-				tnf.ClaimFilePrintf(errMsg)
-				podsMissingIsolationRequirements[put.Data.Name] = true
-			}
-
-			if !it.IsRuntimeClassNameSpecified() {
-				errMsg := fmt.Sprintf("%s has been found to not have runtimeClassName specified.", put.String())
-				logrus.Debugf(errMsg)
-				tnf.ClaimFilePrintf(errMsg)
-				podsMissingIsolationRequirements[put.Data.Name] = true
-			}
-
-			if !it.AreResourcesIdentical() {
-				errMsg := fmt.Sprintf("%s has been found to not have identical resources specified.", put.String())
-				logrus.Debugf(errMsg)
-				tnf.ClaimFilePrintf(errMsg)
-				podsMissingIsolationRequirements[put.Data.Name] = true
-			}
-		} else {
-			logrus.Debugf("%s is not an isolated pod. Skipping.", put.String())
+		if put.IsCPUIsolationEnabled() && !put.IsCPUIsolationCompliant() {
+			podsMissingIsolationRequirements[put.Data.Name] = true
 		}
 	}
 

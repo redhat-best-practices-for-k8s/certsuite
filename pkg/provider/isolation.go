@@ -14,11 +14,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package isolation
+package provider
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
 type TesterFuncs interface {
@@ -28,19 +27,9 @@ type TesterFuncs interface {
 	LoadBalancingDisabled() bool
 }
 
-type CPUIsolationTester struct {
-	pod *provider.Pod
-}
-
-func NewCPUIsolationTester(p *provider.Pod) *CPUIsolationTester {
-	return &CPUIsolationTester{
-		pod: p,
-	}
-}
-
-func (it *CPUIsolationTester) AreResourcesIdentical() bool {
+func AreResourcesIdentical(p *Pod) bool {
 	// Pods may contain more than one container.  All containers must conform to the CPU isolation requirements.
-	for _, cut := range it.pod.Containers {
+	for _, cut := range p.Containers {
 		// Resources must be specified
 		if len(cut.Data.Resources.Requests) == 0 || len(cut.Data.Resources.Limits) == 0 {
 			logrus.Debugf("%s has been found with undefined requests or limits.", cut.String())
@@ -68,13 +57,13 @@ func (it *CPUIsolationTester) AreResourcesIdentical() bool {
 	return true
 }
 
-func (it *CPUIsolationTester) AreCPUResourcesWholeUnits() bool {
+func AreCPUResourcesWholeUnits(p *Pod) bool {
 	isInteger := func(val float64) bool {
 		return val == float64(int(val))
 	}
 
 	// Pods may contain more than one container.  All containers must conform to the CPU isolation requirements.
-	for _, cut := range it.pod.Containers {
+	for _, cut := range p.Containers {
 		// Resources must be specified
 		if len(cut.Data.Resources.Requests) == 0 || len(cut.Data.Resources.Limits) == 0 {
 			logrus.Debugf("%s has been found with undefined requests or limits.", cut.String())
@@ -98,11 +87,11 @@ func (it *CPUIsolationTester) AreCPUResourcesWholeUnits() bool {
 	return true
 }
 
-func (it *CPUIsolationTester) IsRuntimeClassNameSpecified() bool {
-	return it.pod.Data.Spec.RuntimeClassName != nil
+func IsRuntimeClassNameSpecified(p *Pod) bool {
+	return p.Data.Spec.RuntimeClassName != nil
 }
 
-func (it *CPUIsolationTester) LoadBalancingDisabled() bool {
+func LoadBalancingDisabled(p *Pod) bool {
 	const (
 		disableVar = "disable"
 	)
@@ -110,7 +99,7 @@ func (it *CPUIsolationTester) LoadBalancingDisabled() bool {
 	cpuLoadBalancingDisabled := false
 	irqLoadBalancingDisabled := false
 
-	if v, ok := it.pod.Data.ObjectMeta.Annotations["cpu-load-balancing.crio.io"]; ok {
+	if v, ok := p.Data.ObjectMeta.Annotations["cpu-load-balancing.crio.io"]; ok {
 		if v == disableVar {
 			cpuLoadBalancingDisabled = true
 		} else {
@@ -120,7 +109,7 @@ func (it *CPUIsolationTester) LoadBalancingDisabled() bool {
 		logrus.Debugf("Annotation cpu-load-balancing.crio.io is missing.")
 	}
 
-	if v, ok := it.pod.Data.ObjectMeta.Annotations["irq-load-balancing.crio.io"]; ok {
+	if v, ok := p.Data.ObjectMeta.Annotations["irq-load-balancing.crio.io"]; ok {
 		if v == disableVar {
 			irqLoadBalancingDisabled = true
 		} else {

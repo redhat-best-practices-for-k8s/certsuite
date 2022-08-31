@@ -14,13 +14,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package isolation
+package provider
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -39,15 +38,15 @@ const (
 func TestCPUIsolation(t *testing.T) {
 	testClassName := "testRuntimeClassName"
 	testCases := []struct {
-		testPod                  *provider.Pod
+		testPod                  *Pod
 		resourcesIdenticalResult bool
 		wholeUnitsResult         bool
 		runtimeClassNameResult   bool
 		loadBalancingResult      bool
 	}{
 		{ // Test Case #1 - Happy Path, all CPU isolation requirements are met
-			testPod: &provider.Pod{
-				Containers: []*provider.Container{
+			testPod: &Pod{
+				Containers: []*Container{
 					{
 						Data: &v1.Container{
 							Resources: v1.ResourceRequirements{
@@ -81,8 +80,8 @@ func TestCPUIsolation(t *testing.T) {
 			loadBalancingResult:      true,
 		},
 		{ // Test Case #2 - Resources not identical
-			testPod: &provider.Pod{
-				Containers: []*provider.Container{
+			testPod: &Pod{
+				Containers: []*Container{
 					{
 						Data: &v1.Container{
 							Resources: v1.ResourceRequirements{
@@ -116,8 +115,8 @@ func TestCPUIsolation(t *testing.T) {
 			loadBalancingResult:      true,
 		},
 		{ // Test Case #3 - Resources are not whole units
-			testPod: &provider.Pod{
-				Containers: []*provider.Container{
+			testPod: &Pod{
+				Containers: []*Container{
 					{
 						Data: &v1.Container{
 							Resources: v1.ResourceRequirements{
@@ -151,8 +150,8 @@ func TestCPUIsolation(t *testing.T) {
 			loadBalancingResult:      true,
 		},
 		{ // Test Case #4 - runtimeClassName not set
-			testPod: &provider.Pod{
-				Containers: []*provider.Container{
+			testPod: &Pod{
+				Containers: []*Container{
 					{
 						Data: &v1.Container{
 							Resources: v1.ResourceRequirements{
@@ -186,8 +185,8 @@ func TestCPUIsolation(t *testing.T) {
 			loadBalancingResult:      true,
 		},
 		{ // Test Case #5 - Annotations not set
-			testPod: &provider.Pod{
-				Containers: []*provider.Container{
+			testPod: &Pod{
+				Containers: []*Container{
 					{
 						Data: &v1.Container{
 							Resources: v1.ResourceRequirements{
@@ -223,10 +222,9 @@ func TestCPUIsolation(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		it := NewCPUIsolationTester(tc.testPod)
-		assert.Equal(t, tc.resourcesIdenticalResult, it.AreResourcesIdentical())
-		assert.Equal(t, tc.wholeUnitsResult, it.AreCPUResourcesWholeUnits())
-		assert.Equal(t, tc.runtimeClassNameResult, it.IsRuntimeClassNameSpecified())
-		assert.Equal(t, tc.loadBalancingResult, it.LoadBalancingDisabled())
+		assert.Equal(t, tc.resourcesIdenticalResult, AreResourcesIdentical(tc.testPod))
+		assert.Equal(t, tc.wholeUnitsResult, AreCPUResourcesWholeUnits(tc.testPod))
+		assert.Equal(t, tc.runtimeClassNameResult, IsRuntimeClassNameSpecified(tc.testPod))
+		assert.Equal(t, tc.loadBalancingResult, LoadBalancingDisabled(tc.testPod))
 	}
 }

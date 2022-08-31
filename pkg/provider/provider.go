@@ -35,6 +35,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	"helm.sh/helm/v3/pkg/release"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
@@ -497,6 +498,30 @@ func (p *Pod) String() string {
 		p.Data.Name,
 		p.Data.Namespace,
 	)
+}
+
+func (p *Pod) IsCPUIsolationEnabled() bool {
+	return LoadBalancingDisabled(p) && AreResourcesIdentical(p)
+}
+
+func (p *Pod) IsCPUIsolationCompliant() bool {
+	isCPUIsolated := true
+
+	if !AreCPUResourcesWholeUnits(p) {
+		errMsg := fmt.Sprintf("%s has been found to not have CPU resources that are whole units.", p.String())
+		logrus.Debugf(errMsg)
+		tnf.ClaimFilePrintf(errMsg)
+		isCPUIsolated = false
+	}
+
+	if !IsRuntimeClassNameSpecified(p) {
+		errMsg := fmt.Sprintf("%s has been found to not have runtimeClassName specified.", p.String())
+		logrus.Debugf(errMsg)
+		tnf.ClaimFilePrintf(errMsg)
+		isCPUIsolated = false
+	}
+
+	return isCPUIsolated
 }
 
 func DeploymentToString(d *appsv1.Deployment) string {
