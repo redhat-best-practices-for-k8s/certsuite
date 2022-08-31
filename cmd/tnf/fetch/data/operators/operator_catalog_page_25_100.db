@@ -1,411 +1,6 @@
 {
   "data": [
     {
-      "_id": "6262a8e1834f257293b60fda",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "production",
-      "creation_date": "2022-04-22T13:08:49.361000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:09:21.056000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.8-1",
-      "version_original": "6.0.8-1"
-    },
-    {
-      "_id": "6262a8e2173a0d36cf5d69bc",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "production",
-      "creation_date": "2022-04-22T13:08:50.525000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-6",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:04:46.209000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.6-6",
-      "version_original": "6.0.6-6"
-    },
-    {
-      "_id": "6262a8ea84481d5f5229999a",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:0cc69f7bb40a40bf02485677bc01ae3768b3ae8015c4d3bd1c1d088ee487117a",
-      "bundle_path_digest": "sha256:0cc69f7bb40a40bf02485677bc01ae3768b3ae8015c4d3bd1c1d088ee487117a",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-04-22T13:08:58.056000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "neuvector-operator.v1.2.1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:13:31.859000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "neuvector-certified-operator",
-      "provided_apis": [
-        {
-          "group": "apm.neuvector.com",
-          "kind": "Neuvector",
-          "plural": "neuvectors",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.2.1",
-      "version_original": "1.2.1"
-    },
-    {
-      "_id": "6262a8ea834f257293b60fdd",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:ced5bc02c7bec13ba5d10b5fcfc559af8499eac9bad9688401d1caf8beb6d3b2",
-      "bundle_path_digest": "sha256:ced5bc02c7bec13ba5d10b5fcfc559af8499eac9bad9688401d1caf8beb6d3b2",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T13:08:58.960000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "data-explorer-operator.v0.1.3",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:02:50.011000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "data-explorer-operator-certified",
-      "provided_apis": [
-        {
-          "group": "data-explorer.com",
-          "kind": "DashboardWithJupyterHub",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.1.3",
-      "version_original": "0.1.3"
-    },
-    {
-      "_id": "6262a8f2834f257293b60fde",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator-bundle@sha256:68dbfe15d1fd859b294bea3f88dbe94ff61c788b3aa923ad8e029ce52a35a2ec",
-      "bundle_path_digest": "sha256:68dbfe15d1fd859b294bea3f88dbe94ff61c788b3aa923ad8e029ce52a35a2ec",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T13:09:06.845000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "dynatrace-monitoring.v0.9.1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:53:07.443000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "oneagent-certified",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.9.1",
-      "version_original": "0.9.1"
-    },
-    {
-      "_id": "6262a8f3173a0d36cf5d69be",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tufin/orca-operator-bundle@sha256:95250ad63b44b9c3c4cca17514d4fa0396c7a8f1d0c5394383c70f4cee653cfa",
-      "bundle_path_digest": "sha256:95250ad63b44b9c3c4cca17514d4fa0396c7a8f1d0c5394383c70f4cee653cfa",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-04-22T13:09:07.064000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "orca-operator.v1.0.193",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:06:27.072000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "orca",
-      "provided_apis": [
-        {
-          "group": "tufin.io",
-          "kind": "Orca",
-          "plural": "orcas",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "networking.tufin.io",
-          "kind": "Policy",
-          "plural": "policies",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.0.193",
-      "version_original": "1.0.193"
-    },
-    {
-      "_id": "6262a8f7cde83e2b177c2118",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/memsql/operator-bundle@sha256:12cf4fdab07a4a3d97489de54b80231af171494de7cd686d1b792a3643c15142",
-      "bundle_path_digest": "sha256:12cf4fdab07a4a3d97489de54b80231af171494de7cd686d1b792a3643c15142",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T13:09:11.853000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "memsql-operator.v1.1.1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:14:36.050000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "memql-certified",
-      "provided_apis": [
-        {
-          "group": "memsql.com",
-          "kind": "MemsqlCluster",
-          "plural": "memsqlclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.1.1",
-      "version_original": "1.1.1"
-    },
-    {
-      "_id": "6262a8fccde83e2b177c2119",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "6.0.8",
-      "creation_date": "2022-04-22T13:09:16.575000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:00:42.556000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "6.0.8-1",
-      "version_original": "6.0.8-1"
-    },
-    {
-      "_id": "6262a90384481d5f5229999b",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:30cc380829d5185e535c6ce2862fdfbe725694e638edade24d1d2ead76f063ca",
-      "bundle_path_digest": "sha256:30cc380829d5185e535c6ce2862fdfbe725694e638edade24d1d2ead76f063ca",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-04-22T13:09:23.562000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "instana-agent-operator.v0.3.4",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:04:20.116000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "instana-agent",
-      "provided_apis": [
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1beta1"
-        },
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.3.4",
-      "version_original": "0.3.4"
-    },
-    {
       "_id": "6262a90a173a0d36cf5d69c2",
       "alm_examples": [],
       "annotations": {
@@ -4857,9 +4452,509 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.0.7",
       "version_original": "0.0.7"
+    },
+    {
+      "_id": "6262ab7284481d5f522999df",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:02820de3e0134fbca92a2d59286dfc4c873a2df593d9b08e1e17481554c9c717",
+      "bundle_path_digest": "sha256:02820de3e0134fbca92a2d59286dfc4c873a2df593d9b08e1e17481554c9c717",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:19:46.082000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "tigera-operator.v1.5.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:16:35.014000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.5.2",
+      "version_original": "1.5.2"
+    },
+    {
+      "_id": "6262ab7b84481d5f522999e0",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/memsql/operator-bundle@sha256:43d4b83cd44b220ff97974e49f5a451f93058bbf5ed52ef8a650f199bdc0ebdb",
+      "bundle_path_digest": "sha256:43d4b83cd44b220ff97974e49f5a451f93058bbf5ed52ef8a650f199bdc0ebdb",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:19:55.766000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "memsql-operator.v0.0.3",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:14:40.014000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "memql-certified",
+      "provided_apis": [
+        {
+          "group": "memsql.com",
+          "kind": "MemsqlCluster",
+          "plural": "memsqlclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.3",
+      "version_original": "0.0.3"
+    },
+    {
+      "_id": "6262ab8784481d5f522999e2",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:243b8f0bbc2bda6bb13395f165fe5ec01999331e9b61878686d2073df3bf906c",
+      "bundle_path_digest": "sha256:243b8f0bbc2bda6bb13395f165fe5ec01999331e9b61878686d2073df3bf906c",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:20:07.046000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "gpu-operator-certified.v1.3.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:52:23.367000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "plural": "clusterpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.3.1",
+      "version_original": "1.3.1"
+    },
+    {
+      "_id": "6262ab93173a0d36cf5d6a15",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-04-22T13:20:19.388000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:15:56.562000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
+    },
+    {
+      "_id": "6262ab94834f257293b6102e",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jetstack/cert-manager-operator-bundle@sha256:e0898bd5df18e2dccbe2d648cc4533e064e584166675e02260cb856817ece844",
+      "bundle_path_digest": "sha256:e0898bd5df18e2dccbe2d648cc4533e064e584166675e02260cb856817ece844",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:20:20.176000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cert-manager-operator.v0.15.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:22:41.543000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "cert-manager-operator",
+      "provided_apis": [
+        {
+          "group": "operator.cert-manager.io",
+          "kind": "CertManager",
+          "plural": "certmanagers",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.15.2",
+      "version_original": "0.15.2"
+    },
+    {
+      "_id": "6262ab9e84481d5f522999e6",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:a065ec9f129f79e21881ee4644c1e34c3f13b90bdc76d72cb76bf8216d45ee44",
+      "bundle_path_digest": "sha256:a065ec9f129f79e21881ee4644c1e34c3f13b90bdc76d72cb76bf8216d45ee44",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "v1.3",
+      "creation_date": "2022-04-22T13:20:30.657000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "couchdb-operator.v1.3.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:58:21.097000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "couchdb-operator-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": ">=1.0.0 <1.3.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.3.0",
+      "version_original": "1.3.0"
+    },
+    {
+      "_id": "6262aba2cde83e2b177c216b",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/memsql/operator-bundle@sha256:abaf5a3965617a0555757344b802e6112317de9c343cc018f15c74a6843c55fd",
+      "bundle_path_digest": "sha256:abaf5a3965617a0555757344b802e6112317de9c343cc018f15c74a6843c55fd",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:20:34.725000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "memsql-operator.v1.0.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:20:44.007000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "memql-certified",
+      "provided_apis": [
+        {
+          "group": "memsql.com",
+          "kind": "MemsqlCluster",
+          "plural": "memsqlclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.0.0",
+      "version_original": "1.0.0"
+    },
+    {
+      "_id": "6262aba9cde83e2b177c216d",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:2098ab48bafee24a19a6bd6592a2b177b5d863e9c1d2519bf095325dcd4476e1",
+      "bundle_path_digest": "sha256:2098ab48bafee24a19a6bd6592a2b177b5d863e9c1d2519bf095325dcd4476e1",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:20:41.948000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.1.4",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:31:04.713000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.1.4",
+      "version_original": "0.1.4"
+    },
+    {
+      "_id": "6262abb2cde83e2b177c2170",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sonatype/nxiq-operator-bundle@sha256:62ca1e8c6114e2ebecd5664491c22c283f406d584507a3619bae3967de8c9726",
+      "bundle_path_digest": "sha256:62ca1e8c6114e2ebecd5664491c22c283f406d584507a3619bae3967de8c9726",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:20:50.803000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nxiq-operator-certified.v1.90.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:55:53.353000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nxiq-operator-certified",
+      "provided_apis": [
+        {
+          "group": "sonatype.com",
+          "kind": "NexusIQ",
+          "plural": "nexusiqs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.90.0",
+      "version_original": "1.90.0"
     }
   ],
   "page": 25,
   "page_size": 100,
-  "total": 4862
+  "total": 4873
 }

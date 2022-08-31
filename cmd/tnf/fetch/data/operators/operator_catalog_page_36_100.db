@@ -1,2106 +1,6 @@
 {
   "data": [
     {
-      "_id": "62bf35a009a31e274258a330",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "prometheus": {
-                "serviceMonitor": {
-                  "enabled": false
-                }
-              }
-            },
-            "kubeProxyReplacement": "probe"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:fc5df4c58c447c10ba6dc27b32f0d3b8119f63b43bc8eaac219225d65041d981",
-      "bundle_path_digest": "sha256:fc5df4c58c447c10ba6dc27b32f0d3b8119f63b43bc8eaac219225d65041d981",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.10",
-      "creation_date": "2022-07-01T17:57:52.087000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.11-x10ae342",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-07-02T11:49:34.443000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "image": "quay.io/isovalent/cilium@sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "image": "quay.io/isovalent/hubble-relay@sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "image": "quay.io/isovalent/operator-generic@sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "image": "quay.io/isovalent/cilium@sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:4fd93c4171f469fe681e95398a75f101e18ff99ab9ce880740d1d3d7d8be60b3",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:4fd93c4171f469fe681e95398a75f101e18ff99ab9ce880740d1d3d7d8be60b3",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "image": "quay.io/isovalent/hubble-export-stdout@sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:0a80a63c5514f2c00634e5efe4a6d133143d8868c0e8b9af878e5da9012d844d",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:0a80a63c5514f2c00634e5efe4a6d133143d8868c0e8b9af878e5da9012d844d",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "image": "quay.io/isovalent/hubble-relay@sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "image": "quay.io/isovalent/operator-generic@sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "image": "quay.io/isovalent/hubble-export-stdout@sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.10.11+x10ae342",
-      "version_original": "1.10.11+x10ae342"
-    },
-    {
-      "_id": "62bf3757b490e03bc2bd4435",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "prometheus": {
-                "serviceMonitor": {
-                  "enabled": false
-                }
-              }
-            },
-            "kubeProxyReplacement": "probe"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:fc5df4c58c447c10ba6dc27b32f0d3b8119f63b43bc8eaac219225d65041d981",
-      "bundle_path_digest": "sha256:fc5df4c58c447c10ba6dc27b32f0d3b8119f63b43bc8eaac219225d65041d981",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.10",
-      "creation_date": "2022-07-01T18:05:11.332000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.11-x10ae342",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-07-02T11:41:09.313000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "image": "quay.io/isovalent/cilium@sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "image": "quay.io/isovalent/hubble-relay@sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "image": "quay.io/isovalent/operator-generic@sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "image": "quay.io/isovalent/cilium@sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:4fd93c4171f469fe681e95398a75f101e18ff99ab9ce880740d1d3d7d8be60b3",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:4fd93c4171f469fe681e95398a75f101e18ff99ab9ce880740d1d3d7d8be60b3",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "image": "quay.io/isovalent/hubble-export-stdout@sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:0a80a63c5514f2c00634e5efe4a6d133143d8868c0e8b9af878e5da9012d844d",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:0a80a63c5514f2c00634e5efe4a6d133143d8868c0e8b9af878e5da9012d844d",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "image": "quay.io/isovalent/hubble-relay@sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "image": "quay.io/isovalent/operator-generic@sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "image": "quay.io/isovalent/hubble-export-stdout@sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.10.11+x10ae342",
-      "version_original": "1.10.11+x10ae342"
-    },
-    {
-      "_id": "62bf38ff0ad353df5d004894",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "prometheus": {
-                "serviceMonitor": {
-                  "enabled": false
-                }
-              }
-            },
-            "kubeProxyReplacement": "probe"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:fc5df4c58c447c10ba6dc27b32f0d3b8119f63b43bc8eaac219225d65041d981",
-      "bundle_path_digest": "sha256:fc5df4c58c447c10ba6dc27b32f0d3b8119f63b43bc8eaac219225d65041d981",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.10",
-      "creation_date": "2022-07-01T18:12:15.454000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.11-x10ae342",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-07-02T11:53:22.516000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "image": "quay.io/isovalent/cilium@sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "image": "quay.io/isovalent/hubble-relay@sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "image": "quay.io/isovalent/operator-generic@sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "image": "quay.io/isovalent/cilium@sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:4fd93c4171f469fe681e95398a75f101e18ff99ab9ce880740d1d3d7d8be60b3",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:4fd93c4171f469fe681e95398a75f101e18ff99ab9ce880740d1d3d7d8be60b3",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "image": "quay.io/isovalent/hubble-export-stdout@sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:0a80a63c5514f2c00634e5efe4a6d133143d8868c0e8b9af878e5da9012d844d",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:0a80a63c5514f2c00634e5efe4a6d133143d8868c0e8b9af878e5da9012d844d",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "image": "quay.io/isovalent/hubble-relay@sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "image": "quay.io/isovalent/operator-generic@sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "image": "quay.io/isovalent/hubble-export-stdout@sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.10.11+x10ae342",
-      "version_original": "1.10.11+x10ae342"
-    },
-    {
-      "_id": "62bf6bd30ad353df5d00558b",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "operator": {
-                "clusterPoolIPv4MaskSize": "23",
-                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
-              }
-            },
-            "kubeProxyReplacement": "probe",
-            "nativeRoutingCIDR": "10.128.0.0/14",
-            "prometheus": {
-              "serviceMonitor": {
-                "enabled": false
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:f8baf169cb70250af6c00589d76d9799126407ae528e035918d6e85654bfc927",
-      "bundle_path_digest": "sha256:f8baf169cb70250af6c00589d76d9799126407ae528e035918d6e85654bfc927",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.10",
-      "creation_date": "2022-07-01T21:49:07.771000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.12-x362ea11",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-07-27T18:38:00.980000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "image": "quay.io/cilium/cilium@sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "image": "quay.io/cilium/hubble-relay@sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "image": "quay.io/cilium/operator-generic@sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "image": "quay.io/cilium/cilium@sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:0dd9df6e4b20f7120f10ddee560e0c285875657f0db0e2a18bc0cd748f86a84c",
-          "image": "quay.io/cilium/clustermesh-apiserver@sha256:0dd9df6e4b20f7120f10ddee560e0c285875657f0db0e2a18bc0cd748f86a84c",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1529d655812265dfbfae28a88e6e03f37f1040f218892b6844dfb6d9dc651360",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:1529d655812265dfbfae28a88e6e03f37f1040f218892b6844dfb6d9dc651360",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "image": "quay.io/cilium/hubble-relay@sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "image": "quay.io/cilium/operator-generic@sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.10.12+x362ea11",
-      "version_original": "1.10.12+x362ea11"
-    },
-    {
-      "_id": "62bf6d560ad353df5d00559a",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "operator": {
-                "clusterPoolIPv4MaskSize": "23",
-                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
-              }
-            },
-            "kubeProxyReplacement": "probe",
-            "nativeRoutingCIDR": "10.128.0.0/14",
-            "prometheus": {
-              "serviceMonitor": {
-                "enabled": false
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:f8baf169cb70250af6c00589d76d9799126407ae528e035918d6e85654bfc927",
-      "bundle_path_digest": "sha256:f8baf169cb70250af6c00589d76d9799126407ae528e035918d6e85654bfc927",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.10",
-      "creation_date": "2022-07-01T21:55:34.032000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.12-x362ea11",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-07-27T18:38:10.008000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "image": "quay.io/cilium/cilium@sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "image": "quay.io/cilium/hubble-relay@sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "image": "quay.io/cilium/operator-generic@sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "image": "quay.io/cilium/cilium@sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:0dd9df6e4b20f7120f10ddee560e0c285875657f0db0e2a18bc0cd748f86a84c",
-          "image": "quay.io/cilium/clustermesh-apiserver@sha256:0dd9df6e4b20f7120f10ddee560e0c285875657f0db0e2a18bc0cd748f86a84c",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1529d655812265dfbfae28a88e6e03f37f1040f218892b6844dfb6d9dc651360",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:1529d655812265dfbfae28a88e6e03f37f1040f218892b6844dfb6d9dc651360",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "image": "quay.io/cilium/hubble-relay@sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "image": "quay.io/cilium/operator-generic@sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.10.12+x362ea11",
-      "version_original": "1.10.12+x362ea11"
-    },
-    {
-      "_id": "62bf7049b490e03bc2bd5152",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "operator": {
-                "clusterPoolIPv4MaskSize": "23",
-                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
-              }
-            },
-            "kubeProxyReplacement": "probe",
-            "nativeRoutingCIDR": "10.128.0.0/14",
-            "prometheus": {
-              "serviceMonitor": {
-                "enabled": false
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:f8baf169cb70250af6c00589d76d9799126407ae528e035918d6e85654bfc927",
-      "bundle_path_digest": "sha256:f8baf169cb70250af6c00589d76d9799126407ae528e035918d6e85654bfc927",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.10",
-      "creation_date": "2022-07-01T22:08:09.936000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.12-x362ea11",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-07-27T18:43:14.933000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "image": "quay.io/cilium/cilium@sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "image": "quay.io/cilium/hubble-relay@sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "image": "quay.io/cilium/operator-generic@sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "image": "quay.io/cilium/cilium@sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:0dd9df6e4b20f7120f10ddee560e0c285875657f0db0e2a18bc0cd748f86a84c",
-          "image": "quay.io/cilium/clustermesh-apiserver@sha256:0dd9df6e4b20f7120f10ddee560e0c285875657f0db0e2a18bc0cd748f86a84c",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1529d655812265dfbfae28a88e6e03f37f1040f218892b6844dfb6d9dc651360",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:1529d655812265dfbfae28a88e6e03f37f1040f218892b6844dfb6d9dc651360",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "image": "quay.io/cilium/hubble-relay@sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "image": "quay.io/cilium/operator-generic@sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.10.12+x362ea11",
-      "version_original": "1.10.12+x362ea11"
-    },
-    {
-      "_id": "62bf77e8b490e03bc2bd52d7",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:c593ed2375c6a44d041636b256ea909e8c06a914e0e3a07f7162f3959fdb0120",
-      "bundle_path_digest": "sha256:c593ed2375c6a44d041636b256ea909e8c06a914e0e3a07f7162f3959fdb0120",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.11",
-      "creation_date": "2022-07-01T22:40:40.109000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.11.6-x5140b7a",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-07-28T16:05:30.922000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "image": "quay.io/isovalent/cilium@sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "image": "quay.io/isovalent/hubble-relay@sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "image": "quay.io/isovalent/operator-generic@sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "image": "quay.io/isovalent/cilium@sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:f3a647c73cc33196c15da0c4ec758520134235a4332d79e1f44a88d1aa84ab75",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:f3a647c73cc33196c15da0c4ec758520134235a4332d79e1f44a88d1aa84ab75",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:27c47c8d653f746b7574d24695c621783e4b6b37e7df2fb510c51bc01fabd6b7",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:27c47c8d653f746b7574d24695c621783e4b6b37e7df2fb510c51bc01fabd6b7",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "image": "quay.io/isovalent/hubble-relay@sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "image": "quay.io/isovalent/operator-generic@sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.11.6+x5140b7a",
-      "version_original": "1.11.6+x5140b7a"
-    },
-    {
-      "_id": "62bf78dc09a31e274258b243",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:c593ed2375c6a44d041636b256ea909e8c06a914e0e3a07f7162f3959fdb0120",
-      "bundle_path_digest": "sha256:c593ed2375c6a44d041636b256ea909e8c06a914e0e3a07f7162f3959fdb0120",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.11",
-      "creation_date": "2022-07-01T22:44:44.185000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.11.6-x5140b7a",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-07-28T15:51:51.912000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "image": "quay.io/isovalent/cilium@sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "image": "quay.io/isovalent/hubble-relay@sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "image": "quay.io/isovalent/operator-generic@sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "image": "quay.io/isovalent/cilium@sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:f3a647c73cc33196c15da0c4ec758520134235a4332d79e1f44a88d1aa84ab75",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:f3a647c73cc33196c15da0c4ec758520134235a4332d79e1f44a88d1aa84ab75",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:27c47c8d653f746b7574d24695c621783e4b6b37e7df2fb510c51bc01fabd6b7",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:27c47c8d653f746b7574d24695c621783e4b6b37e7df2fb510c51bc01fabd6b7",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "image": "quay.io/isovalent/hubble-relay@sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "image": "quay.io/isovalent/operator-generic@sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.11.6+x5140b7a",
-      "version_original": "1.11.6+x5140b7a"
-    },
-    {
-      "_id": "62bf7ad609a31e274258b2e9",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:c593ed2375c6a44d041636b256ea909e8c06a914e0e3a07f7162f3959fdb0120",
-      "bundle_path_digest": "sha256:c593ed2375c6a44d041636b256ea909e8c06a914e0e3a07f7162f3959fdb0120",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.11",
-      "creation_date": "2022-07-01T22:53:10.665000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.11.6-x5140b7a",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-07-28T16:06:16.162000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "image": "quay.io/isovalent/cilium@sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "image": "quay.io/isovalent/hubble-relay@sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "image": "quay.io/isovalent/operator-generic@sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "image": "quay.io/isovalent/cilium@sha256:3cd5fb5d7ebe2d2dbfe9279903c1cc1acee0d92e4c3108c1fd3671241bae5eae",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:f3a647c73cc33196c15da0c4ec758520134235a4332d79e1f44a88d1aa84ab75",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:f3a647c73cc33196c15da0c4ec758520134235a4332d79e1f44a88d1aa84ab75",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:27c47c8d653f746b7574d24695c621783e4b6b37e7df2fb510c51bc01fabd6b7",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:27c47c8d653f746b7574d24695c621783e4b6b37e7df2fb510c51bc01fabd6b7",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "image": "quay.io/isovalent/hubble-relay@sha256:809fb167c9d8beea96a39fd5e7a2cba4d151cbef388e41430271608913fd451a",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "image": "quay.io/isovalent/operator-generic@sha256:230fd3e1d56c1a78997db7354e084b1b27973979a0feb68c671584ebcf3ee039",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.11.6+x5140b7a",
-      "version_original": "1.11.6+x5140b7a"
-    },
-    {
       "_id": "62bfb049b490e03bc2bd5fce",
       "alm_examples": [
         {
@@ -3747,8 +1647,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:57:49.296000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-08-30T13:57:49.373000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
       "package": "elasticsearch-eck-operator-certified",
@@ -4116,8 +2016,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:27:00.737000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-08-30T13:57:06.459000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
       "package": "elasticsearch-eck-operator-certified",
@@ -4471,8 +2371,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:54:55.395000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-08-30T14:02:15.059000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
       "package": "elasticsearch-eck-operator-certified",
@@ -4840,8 +2740,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:24:46.051000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-08-30T14:16:59.471000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
       "package": "elasticsearch-eck-operator-certified",
@@ -5209,8 +3109,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:17:56.028000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-08-30T14:20:42.472000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
       "package": "elasticsearch-eck-operator-certified",
@@ -5578,8 +3478,8 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:56:58.579000+00:00",
-      "latest_in_channel": true,
+      "last_update_date": "2022-08-30T14:28:34.757000+00:00",
+      "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
       "package": "elasticsearch-eck-operator-certified",
@@ -20887,9 +18787,960 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "6.2.8-2",
       "version_original": "6.2.8-2"
+    },
+    {
+      "_id": "62cee2e9c942619c6bc53d04",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-07-13T15:21:13.288000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:09:11.431000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "62cee2e9c942619c6bc53d06",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.2.8-53.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
+      "bundle_path_digest": "sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-07-13T15:21:13.674000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.8-11",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:25:09.595000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1"
+        }
+      ],
+      "provider": "Redis",
+      "related_images": [
+        {
+          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
+          "name": "redis-enterprise-operator-5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59-annotation"
+        },
+        {
+          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
+          "name": "admission"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.2.8-11",
+      "version_original": "6.2.8-11"
+    },
+    {
+      "_id": "62cee2e9e42974b7999e4d28",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "bootstrapperImageSpec": {
+              "repository": "registry.connect.redhat.com/redislabs/outbound",
+              "versionTag": "6.2.10-41"
+            },
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise",
+              "versionTag": "6.2.14-9.rhel8-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "redisEnterpriseServicesRiggerImageSpec": {
+              "repository": "registry.connect.redhat.com/redislabs/services-manager",
+              "versionTag": "6.2.10-41"
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:4981d96081cc3d10cd26f20aab792e9c195b05bdcd609367011b7e9c7e6759b1",
+      "bundle_path_digest": "sha256:4981d96081cc3d10cd26f20aab792e9c195b05bdcd609367011b7e9c7e6759b1",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-07-13T15:21:13.679000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n*  Changing the name of the Redis Enterprise Cluster in the spec from the\n  default requires running commands to grant permissions to the pods:\n\n  Operator service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\n    Redis Enterprise Cluster service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\n    Replace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.\n\n* When creating a Redis Enterprise Cluster without specifying in its spec a `persistentSpec` with explicit `storageClassName`,\nthe default Storage Class of the Kubernetes cluster will be used to dynamically provision storage for the Redis Enterprise Cluster's nodes.\nHowever, if the Kubernetes cluster doesn't have a default Storage Class configured\nand no specific Storage Class was specified in the Redis Enterprise Cluster Spec, the installation of the cluster could fail.\nTo avoid such scenario in cases where a specific Storage Class isn't specified, make sure the Kubernetes Cluster has a default Storage Cluster configured.\nThis can be done by running a `kubectl get storageclass` command and see if one of the Storage Classes' names contains a `(default)` mark.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.10-41",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:57:06.296000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis",
+      "related_images": [
+        {
+          "digest": "sha256:3c251754ae8650157465a56ef3a7b41d5a0ad4e9db09ef042e0014076f25e8a2",
+          "image": "registry.connect.redhat.com/redislabs/outbound@sha256:3c251754ae8650157465a56ef3a7b41d5a0ad4e9db09ef042e0014076f25e8a2",
+          "name": "outbound-3c251754ae8650157465a56ef3a7b41d5a0ad4e9db09ef042e0014076f25e8a2-annotation"
+        },
+        {
+          "digest": "sha256:3c251754ae8650157465a56ef3a7b41d5a0ad4e9db09ef042e0014076f25e8a2",
+          "image": "registry.connect.redhat.com/redislabs/outbound@sha256:3c251754ae8650157465a56ef3a7b41d5a0ad4e9db09ef042e0014076f25e8a2",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:3c251754ae8650157465a56ef3a7b41d5a0ad4e9db09ef042e0014076f25e8a2",
+          "image": "registry.connect.redhat.com/redislabs/outbound@sha256:3c251754ae8650157465a56ef3a7b41d5a0ad4e9db09ef042e0014076f25e8a2",
+          "name": "admission"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.2.10-41",
+      "version_original": "6.2.10-41"
+    },
+    {
+      "_id": "62cee2eaf403f71942667f6b",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.8-30.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
+      "bundle_path_digest": "sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-07-13T15:21:14.155000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-20",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:22:07.854000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "name": "redis-enterprise-operator-0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1-annotation"
+        },
+        {
+          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.8-20",
+      "version_original": "6.0.8-20"
+    },
+    {
+      "_id": "62cee2ea6537ee32f3d77395",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.20-69.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:6eba0d4cdc724698aa1d42dd74ae6b19e9446f601f337d5752531a14f10e41ef",
+      "bundle_path_digest": "sha256:6eba0d4cdc724698aa1d42dd74ae6b19e9446f601f337d5752531a14f10e41ef",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-07-13T15:21:14.160000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.20-4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:15:22.655000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
+          "name": "redis-enterprise-operator-3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f-annotation"
+        },
+        {
+          "digest": "sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.20-4",
+      "version_original": "6.0.20-4"
+    },
+    {
+      "_id": "62cee2ea83bbf6bb3ddf86cb",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.2.4-55.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
+      "bundle_path_digest": "sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-07-13T15:21:14.568000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.4-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:00:38.842000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "redis-enterprise-operator-8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9-annotation"
+        },
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "admission"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.2.4-1",
+      "version_original": "6.2.4-1"
+    },
+    {
+      "_id": "62cee2eaf403f71942667f6d",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.20-97.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:5666acf5598f96dfbfac5704bb70e6578522979ef63b418ed2d1438a32d2440f",
+      "bundle_path_digest": "sha256:5666acf5598f96dfbfac5704bb70e6578522979ef63b418ed2d1438a32d2440f",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-07-13T15:21:14.619000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.20-12a",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:58:11.094000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "name": "redis-enterprise-operator-f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730-annotation"
+        },
+        {
+          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "name": "admission"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.20-12a",
+      "version_original": "6.0.20-12a"
+    },
+    {
+      "_id": "62cee2eb6537ee32f3d77397",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.12-57.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
+      "bundle_path_digest": "sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-07-13T15:21:15.177000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.12-5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:31:25.644000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "name": "redis-enterprise-operator-b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f-annotation"
+        },
+        {
+          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.12-5",
+      "version_original": "6.0.12-5"
+    },
+    {
+      "_id": "62cee2ebf403f71942667f6f",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-07-13T15:21:15.205000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:55:52.466000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.8-1",
+      "version_original": "6.0.8-1"
     }
   ],
   "page": 36,
   "page_size": 100,
-  "total": 4862
+  "total": 4873
 }

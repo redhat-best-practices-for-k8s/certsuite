@@ -12139,375 +12139,6 @@
       "version_original": "1.6.2-alpha"
     },
     {
-      "_id": "622d07f6353810fe31bdf858",
-      "alm_examples": [
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaAuth",
-          "metadata": {
-            "name": "mantaauth-sample"
-          },
-          "spec": {
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaVersion": "35.1.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        },
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaFlow",
-          "metadata": {
-            "name": "mantaflow-sample"
-          },
-          "spec": {
-            "connectors": {
-              "wkc": {
-                "enabled": false,
-                "logInfo": true,
-                "routeName": "cpd",
-                "tlsSecretName": "internal-tls"
-              }
-            },
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaFlowKeys": "mantaflow-keys",
-            "mantaVersion": "35.1.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/manta-ubi8/mantaflow-operator-bundle@sha256:7bf755c3a71510a8c83d993ea233ca7ebde44cda083b4ca4f481fa0521d3dd62",
-      "bundle_path_digest": "sha256:7bf755c3a71510a8c83d993ea233ca7ebde44cda083b4ca4f481fa0521d3dd62",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-12T20:52:06.888000+00:00",
-      "csv_description": "# MANTA Flow\nMANTA is a Unified Lineage Platform for Data Lineage.  MANTA performs code scanning for lineage that is illustrated to the detailed attribute level with transformations.   Extreme color coding and filtering to make lineage consumable.  Also includes time-slicing for historical lineage analysis.\n\n## Features\n* **Create/Destroy**: Launch MANTA Flow Container deployment.\n* **Scaling to zero**: Scale down the deployment (turn off the container).\n\n## Prerequisites and Requirements\n### MANTA Flow Namespace\nMANTA should be installed into its own namespace.\n\nFor additional installation documentation see a [MANTA Flow Container documentation](https://mantatools.atlassian.net/wiki/spaces/MTKB/pages/2450620467/MANTA+Flow+Container)\nin the MANTA Flow Knowledge Base.\n\n### MANTA Flow Operator\nThe MANTA Flow Operator is responsible for deployment and management of MANTA Flow container deployment.\n\n### Memory Considerations\nMANTA Flow is a memory intensive application. The MANTA Flow Container will specify the memory and cpu requirements for both request and limits. Also, the minimum storage requirements are specified for the persistent volumes (PVs).\n\n### MANTA Flow license.key\nValid license.key needs to be provided in order to successfully launch MANTA Flow Container.\n\n## MANTA Flow Deployment\n\n### Secrets\nCreate a secret for MANTA Flow license.key by:\n    \n    oc create secret generic mantaflow-keys --from-file=<path to license.key>/license.key\n\nCreate an initial admin credentials `username` and `password` and a MANTA master password, which is used for encryption of sensitive data in the persistent storage.\n\n    oc create secret generic mantaflow-credentials --from-literal=username=<manta admin username> --from-literal=password=<manta admin password> --from-literal=MANTA_MASTERPASSWORD=<password for encryption>\n\n### Create MANTA Auth Custom Resource\nCreate a MANTA Auth custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n### Create MANTA Flow Custom Resource\nCreate a MANTA Flow custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n## Scaling\nMANTA Flow currently supports scaling to zero. This means you can set `replicas: 0` in MANTA Flow Custom Resource Definition (CRD) and MANTA Flow container will be stopped.\n\nBy setting `replicas: 1` MANTA Flow will be scaled to be running on 1 container. All other values of `replicas` are considered invalid.\n",
-      "csv_display_name": "MANTA Flow Operator",
-      "csv_metadata_description": "",
-      "csv_name": "mantaflow-operator.v35.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:02:35.034000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "mantaflow-operator",
-      "provided_apis": [
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaFlow",
-          "plural": "mantaflows",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaAuth",
-          "plural": "mantaauths",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "MANTA Software",
-      "related_images": [
-        {
-          "digest": "sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
-          "name": "mantaflow-operator-15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "35.1.0",
-      "version_original": "35.1.0"
-    },
-    {
-      "_id": "622d0bdc353810fe31bdf859",
-      "alm_examples": [
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaAuth",
-          "metadata": {
-            "name": "mantaauth-sample"
-          },
-          "spec": {
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaVersion": "35.1.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        },
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaFlow",
-          "metadata": {
-            "name": "mantaflow-sample"
-          },
-          "spec": {
-            "connectors": {
-              "wkc": {
-                "enabled": false,
-                "logInfo": true,
-                "routeName": "cpd",
-                "tlsSecretName": "internal-tls"
-              }
-            },
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaFlowKeys": "mantaflow-keys",
-            "mantaVersion": "35.1.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/manta-ubi8/mantaflow-operator-bundle@sha256:7bf755c3a71510a8c83d993ea233ca7ebde44cda083b4ca4f481fa0521d3dd62",
-      "bundle_path_digest": "sha256:7bf755c3a71510a8c83d993ea233ca7ebde44cda083b4ca4f481fa0521d3dd62",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-12T21:08:44.462000+00:00",
-      "csv_description": "# MANTA Flow\nMANTA is a Unified Lineage Platform for Data Lineage.  MANTA performs code scanning for lineage that is illustrated to the detailed attribute level with transformations.   Extreme color coding and filtering to make lineage consumable.  Also includes time-slicing for historical lineage analysis.\n\n## Features\n* **Create/Destroy**: Launch MANTA Flow Container deployment.\n* **Scaling to zero**: Scale down the deployment (turn off the container).\n\n## Prerequisites and Requirements\n### MANTA Flow Namespace\nMANTA should be installed into its own namespace.\n\nFor additional installation documentation see a [MANTA Flow Container documentation](https://mantatools.atlassian.net/wiki/spaces/MTKB/pages/2450620467/MANTA+Flow+Container)\nin the MANTA Flow Knowledge Base.\n\n### MANTA Flow Operator\nThe MANTA Flow Operator is responsible for deployment and management of MANTA Flow container deployment.\n\n### Memory Considerations\nMANTA Flow is a memory intensive application. The MANTA Flow Container will specify the memory and cpu requirements for both request and limits. Also, the minimum storage requirements are specified for the persistent volumes (PVs).\n\n### MANTA Flow license.key\nValid license.key needs to be provided in order to successfully launch MANTA Flow Container.\n\n## MANTA Flow Deployment\n\n### Secrets\nCreate a secret for MANTA Flow license.key by:\n    \n    oc create secret generic mantaflow-keys --from-file=<path to license.key>/license.key\n\nCreate an initial admin credentials `username` and `password` and a MANTA master password, which is used for encryption of sensitive data in the persistent storage.\n\n    oc create secret generic mantaflow-credentials --from-literal=username=<manta admin username> --from-literal=password=<manta admin password> --from-literal=MANTA_MASTERPASSWORD=<password for encryption>\n\n### Create MANTA Auth Custom Resource\nCreate a MANTA Auth custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n### Create MANTA Flow Custom Resource\nCreate a MANTA Flow custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n## Scaling\nMANTA Flow currently supports scaling to zero. This means you can set `replicas: 0` in MANTA Flow Custom Resource Definition (CRD) and MANTA Flow container will be stopped.\n\nBy setting `replicas: 1` MANTA Flow will be scaled to be running on 1 container. All other values of `replicas` are considered invalid.\n",
-      "csv_display_name": "MANTA Flow Operator",
-      "csv_metadata_description": "",
-      "csv_name": "mantaflow-operator.v35.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:37:26.086000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "mantaflow-operator",
-      "provided_apis": [
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaAuth",
-          "plural": "mantaauths",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaFlow",
-          "plural": "mantaflows",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "MANTA Software",
-      "related_images": [
-        {
-          "digest": "sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
-          "name": "mantaflow-operator-15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "35.1.0",
-      "version_original": "35.1.0"
-    },
-    {
-      "_id": "622d29a9f19c93b02846c88d",
-      "alm_examples": [
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaAuth",
-          "metadata": {
-            "name": "mantaauth-sample"
-          },
-          "spec": {
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaVersion": "35.1.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        },
-        {
-          "api_version": "manta.getmanta.com/v1alpha1",
-          "kind": "MantaFlow",
-          "metadata": {
-            "name": "mantaflow-sample"
-          },
-          "spec": {
-            "connectors": {
-              "wkc": {
-                "enabled": false,
-                "logInfo": true,
-                "routeName": "cpd",
-                "tlsSecretName": "internal-tls"
-              }
-            },
-            "imagePullSecrets": "manta-registry-credentials",
-            "imageRepoPrefix": "repo.getmanta.com/manta-ubi8/",
-            "mantaFlowCredentials": "mantaflow-credentials",
-            "mantaFlowKeys": "mantaflow-keys",
-            "mantaVersion": "35.1.0",
-            "replicas": 1,
-            "storageClassName": "ibmc-block-custom"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/manta-ubi8/mantaflow-operator-bundle@sha256:7bf755c3a71510a8c83d993ea233ca7ebde44cda083b4ca4f481fa0521d3dd62",
-      "bundle_path_digest": "sha256:7bf755c3a71510a8c83d993ea233ca7ebde44cda083b4ca4f481fa0521d3dd62",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-12T23:15:53.616000+00:00",
-      "csv_description": "# MANTA Flow\nMANTA is a Unified Lineage Platform for Data Lineage.  MANTA performs code scanning for lineage that is illustrated to the detailed attribute level with transformations.   Extreme color coding and filtering to make lineage consumable.  Also includes time-slicing for historical lineage analysis.\n\n## Features\n* **Create/Destroy**: Launch MANTA Flow Container deployment.\n* **Scaling to zero**: Scale down the deployment (turn off the container).\n\n## Prerequisites and Requirements\n### MANTA Flow Namespace\nMANTA should be installed into its own namespace.\n\nFor additional installation documentation see a [MANTA Flow Container documentation](https://mantatools.atlassian.net/wiki/spaces/MTKB/pages/2450620467/MANTA+Flow+Container)\nin the MANTA Flow Knowledge Base.\n\n### MANTA Flow Operator\nThe MANTA Flow Operator is responsible for deployment and management of MANTA Flow container deployment.\n\n### Memory Considerations\nMANTA Flow is a memory intensive application. The MANTA Flow Container will specify the memory and cpu requirements for both request and limits. Also, the minimum storage requirements are specified for the persistent volumes (PVs).\n\n### MANTA Flow license.key\nValid license.key needs to be provided in order to successfully launch MANTA Flow Container.\n\n## MANTA Flow Deployment\n\n### Secrets\nCreate a secret for MANTA Flow license.key by:\n    \n    oc create secret generic mantaflow-keys --from-file=<path to license.key>/license.key\n\nCreate an initial admin credentials `username` and `password` and a MANTA master password, which is used for encryption of sensitive data in the persistent storage.\n\n    oc create secret generic mantaflow-credentials --from-literal=username=<manta admin username> --from-literal=password=<manta admin password> --from-literal=MANTA_MASTERPASSWORD=<password for encryption>\n\n### Create MANTA Auth Custom Resource\nCreate a MANTA Auth custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n### Create MANTA Flow Custom Resource\nCreate a MANTA Flow custom resource. Please use the default parameters provided by the operator and the name of the keys above.\n\n## Scaling\nMANTA Flow currently supports scaling to zero. This means you can set `replicas: 0` in MANTA Flow Custom Resource Definition (CRD) and MANTA Flow container will be stopped.\n\nBy setting `replicas: 1` MANTA Flow will be scaled to be running on 1 container. All other values of `replicas` are considered invalid.\n",
-      "csv_display_name": "MANTA Flow Operator",
-      "csv_metadata_description": "",
-      "csv_name": "mantaflow-operator.v35.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:49:26.784000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "mantaflow-operator",
-      "provided_apis": [
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaFlow",
-          "plural": "mantaflows",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "manta.getmanta.com",
-          "kind": "MantaAuth",
-          "plural": "mantaauths",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "MANTA Software",
-      "related_images": [
-        {
-          "digest": "sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
-          "name": "mantaflow-operator-15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
-          "image": "repo.getmanta.com/manta-ubi8/mantaflow-operator@sha256:15e281091214bdaa6892b27bbabc646f79cac30ccc27cb26b955858689a1875d",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "35.1.0",
-      "version_original": "35.1.0"
-    },
-    {
       "_id": "622f9556353810fe31bdf8d9",
       "alm_examples": [
         {
@@ -15393,9 +15024,436 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "0.3.7",
       "version_original": "0.3.7"
+    },
+    {
+      "_id": "62345f18314381d2b0756b27",
+      "alm_examples": [
+        {
+          "api_version": "hazelcast.com/v1alpha1",
+          "kind": "HazelcastEnterprise",
+          "metadata": {
+            "name": "hz"
+          },
+          "spec": {
+            "hazelcast": {
+              "licenseKeySecretName": "hz-license-key-secret"
+            },
+            "securityContext": {
+              "fsGroup": "",
+              "runAsGroup": "",
+              "runAsUser": ""
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/hazelcast/hazelcast-enterprise-operator-bundle@sha256:b1d7468e045f4c0964b4c4b7950a674ee96850c41a0f4014aa0e62273b69f4b4",
+      "bundle_path_digest": "sha256:b1d7468e045f4c0964b4c4b7950a674ee96850c41a0f4014aa0e62273b69f4b4",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-18T10:29:44.647000+00:00",
+      "csv_description": "Hazelcast IMDG Enterprise is the most widely used in-memory data grid with hundreds of thousands of installed clusters around the world. It offers caching solutions ensuring that data is in the right place when it\u2019s needed for optimal performance.\n\n   ### Before Your Start\n\nYou need Hazelcast Enterprise License Key. If you don't have one, get a trial key from this [link](https://hazelcast.com/hazelcast-enterprise-download/trial/).\n\n### Installation Guide & Configuration\n\nFor the complete installation guide and all configuration options please refer to [Hazelcast RHM Deployment Instructions](https://github.com/hazelcast/hazelcast-operator/tree/master/hazelcast-enterprise-operator#step-4-hazelcast-enterprise-cluster-and-management-center-installation).\n",
+      "csv_display_name": "Hazelcast Enterprise Operator",
+      "csv_metadata_description": "Install Hazelcast Enterprise cluster.",
+      "csv_name": "hazelcast-enterprise-operator.v0.3.8",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:22:39.982000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "hazelcast-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "hazelcast.com",
+          "kind": "HazelcastEnterprise",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Hazelcast, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:ff2abf2506ede16ed998f36061b90746b239b694e950ca86a58f3d5df7f2bde6",
+          "image": "registry.connect.redhat.com/hazelcast/hazelcast-enterprise-operator@sha256:ff2abf2506ede16ed998f36061b90746b239b694e950ca86a58f3d5df7f2bde6",
+          "name": "hazelcast-enterprise-operator-ff2abf2506ede16ed998f36061b90746b239b694e950ca86a58f3d5df7f2bde6-annotation"
+        },
+        {
+          "digest": "sha256:ff2abf2506ede16ed998f36061b90746b239b694e950ca86a58f3d5df7f2bde6",
+          "image": "registry.connect.redhat.com/hazelcast/hazelcast-enterprise-operator@sha256:ff2abf2506ede16ed998f36061b90746b239b694e950ca86a58f3d5df7f2bde6",
+          "name": "hazelcast-enterprise-operator"
+        },
+        {
+          "digest": "sha256:c54fcdc49dd23bb3c1aa7e727b2d664f954bd0b614cb67577165391cfad0f832",
+          "image": "registry.connect.redhat.com/hazelcast/hazelcast-enterprise-5-rhel8@sha256:c54fcdc49dd23bb3c1aa7e727b2d664f954bd0b614cb67577165391cfad0f832",
+          "name": "hazelcast"
+        },
+        {
+          "digest": "sha256:e9a11e785a7b3c6ec5292ceb25a54c78a8d9e536788b945f64fb746ee7a1f030",
+          "image": "registry.connect.redhat.com/hazelcast/management-center-5-rhel8@sha256:e9a11e785a7b3c6ec5292ceb25a54c78a8d9e536788b945f64fb746ee7a1f030",
+          "name": "mancenter"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "0.3.8",
+      "version_original": "0.3.8"
+    },
+    {
+      "_id": "62345f2b314381d2b0756b28",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "OpenshiftXray",
+          "metadata": {
+            "name": "openshiftxray"
+          },
+          "spec": {
+            "xray": {
+              "analysis": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-analysis"
+                },
+                "name": "xray-analysis",
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "common": {
+                "xrayGroupId": "1000721035",
+                "xrayUserId": "1000721035",
+                "xrayVersion": "3.33.3-1"
+              },
+              "database": {
+                "password": "OVERRIDE",
+                "url": "OVERRIDE",
+                "user": "OVERRIDE"
+              },
+              "global": {},
+              "indexer": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-indexer"
+                },
+                "name": "xray-indexer",
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
+              "persist": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-persist"
+                },
+                "name": "xray-persist",
+                "persistence": {
+                  "size": "10Gi"
+                },
+                "podManagementPolicy": "Parallel",
+                "updateStrategy": "RollingUpdate"
+              },
+              "postgresql": {
+                "enabled": false
+              },
+              "rabbitmq": {
+                "auth": {
+                  "erlangCookie": "XRAYRABBITMQCLUSTER",
+                  "password": "xray",
+                  "tls": {
+                    "caCertificate": "",
+                    "enabled": false,
+                    "failIfNoPeerCert": true,
+                    "serverCertificate": "",
+                    "serverKey": "",
+                    "sslOptionsVerify": "verify_peer"
+                  },
+                  "username": "xray"
+                },
+                "enabled": true,
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-rabbitmq",
+                  "tag": "3.33.3-1"
+                },
+                "podSecurityContext": {
+                  "fsGroup": 1000721001,
+                  "runAsUser": 1000721001
+                },
+                "rbac": {
+                  "create": true
+                },
+                "replicaCount": 1
+              },
+              "rabbitmq-ha": {
+                "enabled": false,
+                "image": {
+                  "repository": "registry.connect.redhat.com/jfrog/xray-rabbitmq",
+                  "tag": "3.33.3-1"
+                },
+                "initContainer": {
+                  "enabled": false
+                },
+                "managementPassword": "guest",
+                "managementUsername": "guest",
+                "rabbitmqPassword": "guest",
+                "rabbitmqUsername": "guest",
+                "replicaCount": 1,
+                "securityContext": {
+                  "fsGroup": 1000721035,
+                  "runAsGroup": 1000721035,
+                  "runAsUser": 1000721035
+                }
+              },
+              "replicaCount": 1,
+              "router": {
+                "image": {
+                  "imagePullPolicy": "IfNotPresent",
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-router",
+                  "tag": "3.33.3-1"
+                },
+                "name": "router"
+              },
+              "server": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/xray-server"
+                },
+                "name": "xray-server",
+                "podManagementPolicy": "Parallel",
+                "replicaCount": 1,
+                "updateStrategy": "RollingUpdate"
+              },
+              "unifiedUpgradeAllowed": "true",
+              "xray": {
+                "consoleLog": false,
+                "jfrogUrl": "OVERRIDE",
+                "joinKey": "OVERRIDE",
+                "masterKey": "OVERRIDE"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/xray-operator-bundle@sha256:57874a477ec87a6f1b54d45c821f42cde38291c7f8a412263a6a8a40832cbb16",
+      "bundle_path_digest": "sha256:57874a477ec87a6f1b54d45c821f42cde38291c7f8a412263a6a8a40832cbb16",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-18T10:30:03.973000+00:00",
+      "csv_description": "## Overview\nOpenshift Operator to deploy JFrog Xray Continuous Security scanner into your Openshift cluster.\nNOTE: Artifactory is required for JFrog Xray to connect with and scan artifacts against.\n### Major version v2.0.4 Breaking change notification !!!\nThis release has major bug fix for Rabbitmq Pod.\nPlease update to version 2.0.4 of the operator.\n### Major version v2.0.0 Breaking change notification !!!\nXray is dependent upon Rabbitmq. The version of Rabbitmq that this chart uses has significantly changed from version 1.1.8 of the operator.\nFor full details on how to migrate please visit:\n`https://github.com/jfrog/charts/blob/master/stable/xray/RABBITMQ_MIGRATION_NOTES.md`\n### Security Context Constraints\nTo deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc.\n\n```\noc adm policy add-scc-to-user anyuid -z xray-operator\n```\n```\noc adm policy add-scc-to-user anyuid -z openshiftxray\n```\n```\noc adm policy add-scc-to-user anyuid -z openshiftxray-rabbitmq-ha\n```\n\n## Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Xray Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Xray Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Xray\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nJFROG_URL\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\n\nJFROG_URL is the external ip or DNS of your Artifactory to connect Xray to. Artifactory is required to use this operator.\nYou can set your JFROG_URL to the service name of your Artifactory Nginx:\n``` oc get svc -n my_namespace | grep nginx ```\nDATABASE_URL must be a Postgresql URL in the format:\n``\npostgres://postgres-postgresql:5432/xraydb?sslmode=disable\n``\nDATABASE_USER and DATABASE_PASSWORD must supply a valid user on Postgresql.\n\nClick Create for Xray to deploy into OpenShift.\n\nOpen Artifactory in a web browser to complete the onboarding wizard for Xray!\n\n### Air gap environments\n\nTo use Xray Operator in an air gap environment you will need to download the images as image streams into your Openshift air gap cluster manually.\n\nUse the image overrides to then specify the image stream locations that are local to your cluster.\n\nNext you will need to setup the database of index data for xray to use when scanning artifacts.\n\nFollow the link below for instructions on setup:\n\nhttps://www.jfrog.com/confluence/display/JFROG/Configuring+Xray#ConfiguringXray-SynchronizingtheDatabase\n\n",
+      "csv_display_name": "JFrog Xray Continuous Security Operator",
+      "csv_metadata_description": "JFrog Xray Enterprise deploys Xray continuous security scanner into Openshift (Requires Jfrog Artifactory)",
+      "csv_name": "xray-operator.v2.0.9",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:22:04.586000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "openshiftxray-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftXray",
+          "version": "v1"
+        }
+      ],
+      "provider": "JFrog",
+      "related_images": [
+        {
+          "digest": "sha256:79fcd178d5f5f0d69daf714edd9fbf8f1bebb784513cf5d45ccbd7fd8c3a3a2c",
+          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:79fcd178d5f5f0d69daf714edd9fbf8f1bebb784513cf5d45ccbd7fd8c3a3a2c",
+          "name": "xray-operator-79fcd178d5f5f0d69daf714edd9fbf8f1bebb784513cf5d45ccbd7fd8c3a3a2c-annotation"
+        },
+        {
+          "digest": "sha256:79fcd178d5f5f0d69daf714edd9fbf8f1bebb784513cf5d45ccbd7fd8c3a3a2c",
+          "image": "registry.connect.redhat.com/jfrog/xray-operator@sha256:79fcd178d5f5f0d69daf714edd9fbf8f1bebb784513cf5d45ccbd7fd8c3a3a2c",
+          "name": "xray-operator"
+        },
+        {
+          "digest": "sha256:8321f4971e7f65f8eb39cda6b6fde2e504cbdbce2139849593d8d8431484cba0",
+          "image": "registry.connect.redhat.com/jfrog/xray-server@sha256:8321f4971e7f65f8eb39cda6b6fde2e504cbdbce2139849593d8d8431484cba0",
+          "name": "xray_server_image_repository"
+        },
+        {
+          "digest": "sha256:c96159770e67caa4004444361549292732d7a080d3ffe44900c148e387ae5f85",
+          "image": "registry.connect.redhat.com/jfrog/xray-analysis@sha256:c96159770e67caa4004444361549292732d7a080d3ffe44900c148e387ae5f85",
+          "name": "xray_analysis_image_repository"
+        },
+        {
+          "digest": "sha256:ddf1b7980fcc690947c5385141725b20af250cf0e332ededc50babb217840265",
+          "image": "registry.connect.redhat.com/jfrog/xray-persist@sha256:ddf1b7980fcc690947c5385141725b20af250cf0e332ededc50babb217840265",
+          "name": "xray_persist_image_repository"
+        },
+        {
+          "digest": "sha256:68f5d645dcdfeeb8d3364e176012518faaa995e5a585113fe7904fdf04f9adfc",
+          "image": "registry.connect.redhat.com/jfrog/xray-indexer@sha256:68f5d645dcdfeeb8d3364e176012518faaa995e5a585113fe7904fdf04f9adfc",
+          "name": "xray_indexer_image_repository"
+        },
+        {
+          "digest": "sha256:1bf671848a06330b350ffeb0c2e90c1591cce5930d1398126377c01c70841319",
+          "image": "registry.connect.redhat.com/jfrog/xray-router@sha256:1bf671848a06330b350ffeb0c2e90c1591cce5930d1398126377c01c70841319",
+          "name": "xray_router_image_repository"
+        },
+        {
+          "digest": "sha256:65a95da372693c96bdf9b7bcf21e757dc09569cf2eb66afd9bca4c552ad78f01",
+          "image": "registry.connect.redhat.com/jfrog/xray-rabbitmq@sha256:65a95da372693c96bdf9b7bcf21e757dc09569cf2eb66afd9bca4c552ad78f01",
+          "name": "xray_rabbitmq_image_repository"
+        },
+        {
+          "digest": "sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
+          "image": "registry.connect.redhat.com/jfrog/init@sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
+          "name": "init-164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.0.9",
+      "version_original": "2.0.9"
+    },
+    {
+      "_id": "62345f2f06c5dada0193e074",
+      "alm_examples": [
+        {
+          "api_version": "aikit.intel/v1alpha1",
+          "kind": "AIKitContainer",
+          "metadata": {
+            "name": "intel-aikit-container",
+            "namespace": "redhat-ods-applications"
+          },
+          "spec": {
+            "fullnameOverride": "",
+            "imagestream": {
+              "name": "oneapi-aikit",
+              "namespace": "redhat-ods-applications",
+              "registry": {
+                "name": "oneapi-aikit",
+                "repo": "intel",
+                "root": "registry.connect.redhat.com",
+                "version": "latest"
+              }
+            },
+            "nameOverride": ""
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/aikit-operator-bundle@sha256:db2074b8ef12a3037a7aaa515c9055f080e546706f769404d6f9005a28f57e61",
+      "bundle_path_digest": "sha256:db2074b8ef12a3037a7aaa515c9055f080e546706f769404d6f9005a28f57e61",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-03-18T10:30:07.419000+00:00",
+      "csv_description": "The Intel\u00ae oneAPI AI Analytics Toolkit gives data scientists, AI developers, and researchers familiar Python* tools and frameworks to accelerate end-to-end data science and machine learning pipelines on Intel\u00ae architectures. The components are built using oneAPI libraries for low-level compute optimizations. This toolkit maximizes performance from preprocessing through machine and deep learning phases and provides interoperability for efficient model development and deployment across single and multinodes.\n",
+      "csv_display_name": "Intel\u00ae oneAPI AI Analytics Toolkit Operator",
+      "csv_metadata_description": "",
+      "csv_name": "aikit-operator.v2021.2.92911",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:29:29.081000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "aikit-operator",
+      "provided_apis": [
+        {
+          "group": "aikit.intel",
+          "kind": "AIKitContainer",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Intel",
+      "related_images": [
+        {
+          "digest": "sha256:6c55351004f5b04f901a2a3ad3ffab01c7b7d237dde9943dda3116e354d3cfe7",
+          "image": "registry.connect.redhat.com/intel/aikit-operator@sha256:6c55351004f5b04f901a2a3ad3ffab01c7b7d237dde9943dda3116e354d3cfe7",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2021.2.92911",
+      "version_original": "2021.2.92911"
     }
   ],
   "page": 21,
   "page_size": 100,
-  "total": 4862
+  "total": 4873
 }
