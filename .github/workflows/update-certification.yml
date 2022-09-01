@@ -30,7 +30,7 @@ jobs:
           ref: main
 
       - name: Install ginkgo
-        run: go install github.com/onsi/ginkgo/v2/ginkgo@v2.1.5
+        run: go install github.com/onsi/ginkgo/v2/ginkgo@v2.1.6
 
       - name: Execute `make build`
         run: make build
