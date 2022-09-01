@@ -19,6 +19,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
 
 func TestGetRequest(t *testing.T) {
@@ -27,4 +28,43 @@ func TestGetRequest(t *testing.T) {
 	assert.NotNil(t, err)
 	_, err = checker.GetRequest(redhatCatalogPingURL)
 	assert.Nil(t, err)
+}
+
+func TestCreateContainerCatalogQueryURL(t *testing.T) {
+	testCases := []struct {
+		testContainerImageID configuration.ContainerImageIdentifier
+		expectedResult       string
+	}{
+		{
+			testContainerImageID: configuration.ContainerImageIdentifier{
+				Name:       "name1",
+				Repository: "repo1",
+				Tag:        "tag1",
+				Digest:     "digest1",
+			},
+			expectedResult: apiCatalogByRepositoriesBaseEndPoint + "/repo1/name1/images?filter=architecture==amd64;image_id==digest1",
+		},
+		{
+			testContainerImageID: configuration.ContainerImageIdentifier{
+				Name:       "name1",
+				Repository: "repo1",
+				Tag:        "tag1",
+				// Digest:     "digest1",
+			},
+			expectedResult: apiCatalogByRepositoriesBaseEndPoint + "/repo1/name1/images?filter=architecture==amd64;repositories.repository==repo1/name1;repositories.tags.name==tag1",
+		},
+		{
+			testContainerImageID: configuration.ContainerImageIdentifier{
+				Name:       "name1",
+				Repository: "repo1",
+				// Tag:        "tag1",
+				// Digest:     "digest1",
+			},
+			expectedResult: apiCatalogByRepositoriesBaseEndPoint + "/repo1/name1/images?filter=architecture==amd64;repositories.repository==repo1/name1;repositories.tags.name==latest",
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedResult, CreateContainerCatalogQueryURL(tc.testContainerImageID))
+	}
 }
