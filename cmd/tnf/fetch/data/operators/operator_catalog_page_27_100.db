@@ -1,160 +1,6 @@
 {
   "data": [
     {
-      "_id": "6262ad6684481d5f52299a7c",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:30cc380829d5185e535c6ce2862fdfbe725694e638edade24d1d2ead76f063ca",
-      "bundle_path_digest": "sha256:30cc380829d5185e535c6ce2862fdfbe725694e638edade24d1d2ead76f063ca",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-04-22T13:28:06.365000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "instana-agent-operator.v0.3.4",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:58:12.709000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "instana-agent",
-      "provided_apis": [
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1beta1"
-        },
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.3.4",
-      "version_original": "0.3.4"
-    },
-    {
-      "_id": "6262ad6a173a0d36cf5d6aa9",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:9462f3735254b047f4b80b539797b83c31faa0ad923fe4a351dba693e51cadef",
-      "bundle_path_digest": "sha256:9462f3735254b047f4b80b539797b83c31faa0ad923fe4a351dba693e51cadef",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T13:28:10.797000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "couchbase-operator.v2.0.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:22:46.639000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "plural": "couchbaserolebindings",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "plural": "couchbaseusers",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "plural": "couchbasebackups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "plural": "couchbasebuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "plural": "couchbaseclusters",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "plural": "couchbasegroups",
-          "version": "v2"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.0.0",
-      "version_original": "2.0.0"
-    },
-    {
       "_id": "6262ad72cde83e2b177c21fc",
       "alm_examples": [],
       "annotations": {
@@ -6290,9 +6136,367 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "2.1.2",
       "version_original": "2.1.2"
+    },
+    {
+      "_id": "627be62fb2139e17bacb7568",
+      "alm_examples": [
+        {
+          "api_version": "helm.infinidat.com/v1alpha1",
+          "kind": "InfiniboxCsiDriver",
+          "metadata": {
+            "name": "infiniboxcsidriver-sample"
+          },
+          "spec": {
+            "Infinibox_Cred": {
+              "SecretName": "infinibox-creds",
+              "hostname": "my-infinibox-hostname",
+              "inbound_secret": "0.0000000000000",
+              "inbound_user": "iqn.2020-06.com.csi-driver-iscsi.infinidat:commonout",
+              "outbound_secret": "0.0000000000000",
+              "outbound_user": "iqn.2020-06.com.csi-driver-iscsi.infinidat:commonin",
+              "password": "my-infinibox-password",
+              "username": "my-infinibox-username"
+            },
+            "csiDriverName": "infinibox-csi-driver",
+            "csiDriverVersion": "v2.1.2",
+            "images": {
+              "attachersidecar": "k8s.gcr.io/sig-storage/csi-attacher@sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
+              "attachersidecar_pull_policy": "IfNotPresent",
+              "csidriver": "registry.connect.redhat.com/infinidat/infinibox-csidriver-certified@sha256:5a8f8dc3e2ec2c022dfd756f47ae6db1695ea5f3e4ed279476b5535bf01aa921",
+              "csidriver_pull_policy": "Always",
+              "imagePullSecret": "private-docker-reg-secret",
+              "provisionersidecar": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
+              "provisionersidecar_pull_policy": "IfNotPresent",
+              "registrarsidecar": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
+              "registrarsidecar_pull_policy": "IfNotPresent",
+              "resizersidecar": "k8s.gcr.io/sig-storage/csi-resizer@sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
+              "resizersidecar_pull_policy": "IfNotPresent",
+              "snapshottersidecar": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
+              "snapshottersidecar_pull_policy": "IfNotPresent"
+            },
+            "instanceCount": 1,
+            "logLevel": "debug",
+            "replicaCount": 1,
+            "volumeNamePrefix": "csi"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/infinidat/infinibox-operator-certified-bundle@sha256:1a84ae49568109a00190cfd9dcfc1ed8aef23f14f5c93152e0a8fb3619191f67",
+      "bundle_path_digest": "sha256:1a84ae49568109a00190cfd9dcfc1ed8aef23f14f5c93152e0a8fb3619191f67",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-05-11T16:37:03.566000+00:00",
+      "csv_description": "Infinidat InfiniBox Container Storage Interface (CSI) Driver is a CNCF-compliant Kubernetes integration for InfiniBox storage systems, offering advanced enterprise functionality for petabyte-scale Kubernetes deployments including Red Hat OpenShift.\n \n## Features and Benefits\n  \n* **Multi-protocol flexibility** - manage Kubernetes Persistent Volumes attached via block and file protocols, including Fibre Channel, iSCSI, and NFS, with all Kubernetes PV access modes\n* **Multi-petabyte scalability** - support hundreds of thousands of PVs per InfiniBox system and control multiple InfiniBox arrays within a single Kubernetes cluster  \n* **Advanced enterprise features** - manage native InfiniBox snapshots and clones, including restoring from snapshots, and import PVs created outside of InfiniBox CSI Driver\n  \n## Required Parameters\n  \n* `hostname` - IP address or hostname of the InfiniBox management interface\n* `username` / `password` - InfiniBox credentials\n* `SecretName` - secret name, to be used in the StorageClass to define a specific InfiniBox for persistent volumes\n\n## Optional Parameters\n* `inbound_user` / `inbound_secret` / `outbound_user` / `outbound_secret` - credentials for iSCSI CHAP authentication\n",
+      "csv_display_name": "InfiniBox CSI Driver - Operator",
+      "csv_metadata_description": "CNCF-compliant Kubernetes integration for Infinidat InfiniBox storage systems, offering advanced enterprise functionality for petabyte-scale Kubernetes deployments including Red Hat OpenShift Platform.",
+      "csv_name": "infinibox-operator.v2.1.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:38:38.992000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "infinibox-operator-certified",
+      "provided_apis": [
+        {
+          "group": "snapshot.storage.k8s.io",
+          "kind": "VolumeSnapshotContent",
+          "plural": "volumesnapshotcontents",
+          "version": "v1"
+        },
+        {
+          "group": "snapshot.storage.k8s.io",
+          "kind": "VolumeSnapshotContent",
+          "plural": "volumesnapshotcontents",
+          "version": "v1beta1"
+        },
+        {
+          "group": "snapshot.storage.k8s.io",
+          "kind": "VolumeSnapshot",
+          "plural": "volumesnapshots",
+          "version": "v1"
+        },
+        {
+          "group": "snapshot.storage.k8s.io",
+          "kind": "VolumeSnapshot",
+          "plural": "volumesnapshots",
+          "version": "v1beta1"
+        },
+        {
+          "group": "helm.infinidat.com",
+          "kind": "InfiniboxCsiDriver",
+          "plural": "infiniboxcsidrivers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "snapshot.storage.k8s.io",
+          "kind": "VolumeSnapshotClass",
+          "plural": "volumesnapshotclasses",
+          "version": "v1"
+        },
+        {
+          "group": "snapshot.storage.k8s.io",
+          "kind": "VolumeSnapshotClass",
+          "plural": "volumesnapshotclasses",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Infinidat",
+      "related_images": [
+        {
+          "digest": "sha256:5a8f8dc3e2ec2c022dfd756f47ae6db1695ea5f3e4ed279476b5535bf01aa921",
+          "image": "registry.connect.redhat.com/infinidat/infinibox-csidriver-certified@sha256:5a8f8dc3e2ec2c022dfd756f47ae6db1695ea5f3e4ed279476b5535bf01aa921",
+          "name": "infinibox-csidriver-certified-5a8f8dc3e2ec2c022dfd756f47ae6db1695ea5f3e4ed279476b5535bf01aa921-annotation"
+        },
+        {
+          "digest": "sha256:12c1619c65183cec6cf2b228fc327cecc73e343ffb15c99b9ca6dc01f7346e7c",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:12c1619c65183cec6cf2b228fc327cecc73e343ffb15c99b9ca6dc01f7346e7c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:5f2e1133319195ec5a2028da0f064240dba72500d1105535ad40fd3ab794fe43",
+          "image": "registry.connect.redhat.com/infinidat/infinibox-operator-certified@sha256:5f2e1133319195ec5a2028da0f064240dba72500d1105535ad40fd3ab794fe43",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
+          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
+          "name": "csi-snapshotter-89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709-annotation"
+        },
+        {
+          "digest": "sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
+          "image": "k8s.gcr.io/sig-storage/csi-resizer@sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
+          "name": "csi-resizer-9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4-annotation"
+        },
+        {
+          "digest": "sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
+          "image": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
+          "name": "csi-node-driver-registrar-4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6-annotation"
+        },
+        {
+          "digest": "sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
+          "image": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
+          "name": "csi-provisioner-122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119-annotation"
+        },
+        {
+          "digest": "sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
+          "image": "k8s.gcr.io/sig-storage/csi-attacher@sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
+          "name": "csi-attacher-8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.1.2",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.1.2",
+      "version_original": "2.1.2"
+    },
+    {
+      "_id": "627be6594be4723d90ee61ed",
+      "alm_examples": [
+        {
+          "api_version": "helm.infinidat.com/v1alpha1",
+          "kind": "InfiniboxCsiDriver",
+          "metadata": {
+            "name": "infiniboxcsidriver-sample"
+          },
+          "spec": {
+            "Infinibox_Cred": {
+              "SecretName": "infinibox-creds",
+              "hostname": "my-infinibox-hostname",
+              "inbound_secret": "0.0000000000000",
+              "inbound_user": "iqn.2020-06.com.csi-driver-iscsi.infinidat:commonout",
+              "outbound_secret": "0.0000000000000",
+              "outbound_user": "iqn.2020-06.com.csi-driver-iscsi.infinidat:commonin",
+              "password": "my-infinibox-password",
+              "username": "my-infinibox-username"
+            },
+            "csiDriverName": "infinibox-csi-driver",
+            "csiDriverVersion": "v2.1.2",
+            "images": {
+              "attachersidecar": "k8s.gcr.io/sig-storage/csi-attacher@sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
+              "attachersidecar_pull_policy": "IfNotPresent",
+              "csidriver": "registry.connect.redhat.com/infinidat/infinibox-csidriver-certified@sha256:5a8f8dc3e2ec2c022dfd756f47ae6db1695ea5f3e4ed279476b5535bf01aa921",
+              "csidriver_pull_policy": "Always",
+              "imagePullSecret": "private-docker-reg-secret",
+              "provisionersidecar": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
+              "provisionersidecar_pull_policy": "IfNotPresent",
+              "registrarsidecar": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
+              "registrarsidecar_pull_policy": "IfNotPresent",
+              "resizersidecar": "k8s.gcr.io/sig-storage/csi-resizer@sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
+              "resizersidecar_pull_policy": "IfNotPresent",
+              "snapshottersidecar": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
+              "snapshottersidecar_pull_policy": "IfNotPresent"
+            },
+            "instanceCount": 1,
+            "logLevel": "debug",
+            "replicaCount": 1,
+            "volumeNamePrefix": "csi"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/infinidat/infinibox-operator-certified-bundle@sha256:1a84ae49568109a00190cfd9dcfc1ed8aef23f14f5c93152e0a8fb3619191f67",
+      "bundle_path_digest": "sha256:1a84ae49568109a00190cfd9dcfc1ed8aef23f14f5c93152e0a8fb3619191f67",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-11T16:37:45.278000+00:00",
+      "csv_description": "Infinidat InfiniBox Container Storage Interface (CSI) Driver is a CNCF-compliant Kubernetes integration for InfiniBox storage systems, offering advanced enterprise functionality for petabyte-scale Kubernetes deployments including Red Hat OpenShift.\n \n## Features and Benefits\n  \n* **Multi-protocol flexibility** - manage Kubernetes Persistent Volumes attached via block and file protocols, including Fibre Channel, iSCSI, and NFS, with all Kubernetes PV access modes\n* **Multi-petabyte scalability** - support hundreds of thousands of PVs per InfiniBox system and control multiple InfiniBox arrays within a single Kubernetes cluster  \n* **Advanced enterprise features** - manage native InfiniBox snapshots and clones, including restoring from snapshots, and import PVs created outside of InfiniBox CSI Driver\n  \n## Required Parameters\n  \n* `hostname` - IP address or hostname of the InfiniBox management interface\n* `username` / `password` - InfiniBox credentials\n* `SecretName` - secret name, to be used in the StorageClass to define a specific InfiniBox for persistent volumes\n\n## Optional Parameters\n* `inbound_user` / `inbound_secret` / `outbound_user` / `outbound_secret` - credentials for iSCSI CHAP authentication\n",
+      "csv_display_name": "InfiniBox CSI Driver - Operator",
+      "csv_metadata_description": "CNCF-compliant Kubernetes integration for Infinidat InfiniBox storage systems, offering advanced enterprise functionality for petabyte-scale Kubernetes deployments including Red Hat OpenShift Platform.",
+      "csv_name": "infinibox-operator.v2.1.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:00:45.086000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "infinibox-operator-certified",
+      "provided_apis": [
+        {
+          "group": "snapshot.storage.k8s.io",
+          "kind": "VolumeSnapshotContent",
+          "plural": "volumesnapshotcontents",
+          "version": "v1"
+        },
+        {
+          "group": "snapshot.storage.k8s.io",
+          "kind": "VolumeSnapshotContent",
+          "plural": "volumesnapshotcontents",
+          "version": "v1beta1"
+        },
+        {
+          "group": "snapshot.storage.k8s.io",
+          "kind": "VolumeSnapshot",
+          "plural": "volumesnapshots",
+          "version": "v1"
+        },
+        {
+          "group": "snapshot.storage.k8s.io",
+          "kind": "VolumeSnapshot",
+          "plural": "volumesnapshots",
+          "version": "v1beta1"
+        },
+        {
+          "group": "helm.infinidat.com",
+          "kind": "InfiniboxCsiDriver",
+          "plural": "infiniboxcsidrivers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "snapshot.storage.k8s.io",
+          "kind": "VolumeSnapshotClass",
+          "plural": "volumesnapshotclasses",
+          "version": "v1"
+        },
+        {
+          "group": "snapshot.storage.k8s.io",
+          "kind": "VolumeSnapshotClass",
+          "plural": "volumesnapshotclasses",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Infinidat",
+      "related_images": [
+        {
+          "digest": "sha256:5a8f8dc3e2ec2c022dfd756f47ae6db1695ea5f3e4ed279476b5535bf01aa921",
+          "image": "registry.connect.redhat.com/infinidat/infinibox-csidriver-certified@sha256:5a8f8dc3e2ec2c022dfd756f47ae6db1695ea5f3e4ed279476b5535bf01aa921",
+          "name": "infinibox-csidriver-certified-5a8f8dc3e2ec2c022dfd756f47ae6db1695ea5f3e4ed279476b5535bf01aa921-annotation"
+        },
+        {
+          "digest": "sha256:12c1619c65183cec6cf2b228fc327cecc73e343ffb15c99b9ca6dc01f7346e7c",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:12c1619c65183cec6cf2b228fc327cecc73e343ffb15c99b9ca6dc01f7346e7c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:5f2e1133319195ec5a2028da0f064240dba72500d1105535ad40fd3ab794fe43",
+          "image": "registry.connect.redhat.com/infinidat/infinibox-operator-certified@sha256:5f2e1133319195ec5a2028da0f064240dba72500d1105535ad40fd3ab794fe43",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
+          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
+          "name": "csi-snapshotter-89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709-annotation"
+        },
+        {
+          "digest": "sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
+          "image": "k8s.gcr.io/sig-storage/csi-resizer@sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
+          "name": "csi-resizer-9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4-annotation"
+        },
+        {
+          "digest": "sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
+          "image": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
+          "name": "csi-node-driver-registrar-4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6-annotation"
+        },
+        {
+          "digest": "sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
+          "image": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
+          "name": "csi-provisioner-122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119-annotation"
+        },
+        {
+          "digest": "sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
+          "image": "k8s.gcr.io/sig-storage/csi-attacher@sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
+          "name": "csi-attacher-8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.1.2",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.1.2",
+      "version_original": "2.1.2"
     }
   ],
   "page": 27,
   "page_size": 100,
-  "total": 4873
+  "total": 4887
 }

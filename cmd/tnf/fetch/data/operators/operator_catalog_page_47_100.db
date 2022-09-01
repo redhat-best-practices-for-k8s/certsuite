@@ -1,493 +1,6 @@
 {
   "data": [
     {
-      "_id": "62ffdf5a051dd1e2227ebc73",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:8ec87e78e7bb6c6983d9b84f2cf82c084aea33e8ebbd8e40e26356f1a6d53d36",
-      "bundle_path_digest": "sha256:8ec87e78e7bb6c6983d9b84f2cf82c084aea33e8ebbd8e40e26356f1a6d53d36",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.11",
-      "creation_date": "2022-08-19T19:07:06.767000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.11.8-x9da5374",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-19T19:07:06.767000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Isovalent",
-      "related_images": [
-        {
-          "digest": "sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "image": "quay.io/isovalent/cilium@sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "image": "quay.io/isovalent/hubble-relay@sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "image": "quay.io/isovalent/operator-generic@sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "image": "quay.io/isovalent/cilium@sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:856339f0735c08f8ab7cc229e8d52e4b881a020128777b17527f0e62de990ed1",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:856339f0735c08f8ab7cc229e8d52e4b881a020128777b17527f0e62de990ed1",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:e88657808b3e3f3d43fb1b8051f8c1dffb39879ce134eb0389a8e4340e7ad11b",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:e88657808b3e3f3d43fb1b8051f8c1dffb39879ce134eb0389a8e4340e7ad11b",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "image": "quay.io/isovalent/hubble-relay@sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "image": "quay.io/isovalent/operator-generic@sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.11.8+x9da5374",
-      "version_original": "1.11.8+x9da5374"
-    },
-    {
-      "_id": "62ffdf707892413c524f82b0",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:8ec87e78e7bb6c6983d9b84f2cf82c084aea33e8ebbd8e40e26356f1a6d53d36",
-      "bundle_path_digest": "sha256:8ec87e78e7bb6c6983d9b84f2cf82c084aea33e8ebbd8e40e26356f1a6d53d36",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.11",
-      "creation_date": "2022-08-19T19:07:28.484000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.11.8-x9da5374",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-19T19:07:28.484000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Isovalent",
-      "related_images": [
-        {
-          "digest": "sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "image": "quay.io/isovalent/cilium@sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "image": "quay.io/isovalent/hubble-relay@sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "image": "quay.io/isovalent/operator-generic@sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "image": "quay.io/isovalent/cilium@sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:856339f0735c08f8ab7cc229e8d52e4b881a020128777b17527f0e62de990ed1",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:856339f0735c08f8ab7cc229e8d52e4b881a020128777b17527f0e62de990ed1",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:e88657808b3e3f3d43fb1b8051f8c1dffb39879ce134eb0389a8e4340e7ad11b",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:e88657808b3e3f3d43fb1b8051f8c1dffb39879ce134eb0389a8e4340e7ad11b",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "image": "quay.io/isovalent/hubble-relay@sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "image": "quay.io/isovalent/operator-generic@sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.11.8+x9da5374",
-      "version_original": "1.11.8+x9da5374"
-    },
-    {
       "_id": "62ffe2f6051dd1e2227ebcb0",
       "alm_examples": [
         {
@@ -22216,751 +21729,6 @@
       "version_original": "1.11.0"
     },
     {
-      "_id": "63081cfe609bfce90f1463bc",
-      "alm_examples": [
-        {
-          "api_version": "rtf.operators.mulesoft.com/v1",
-          "kind": "RuntimeFabric",
-          "metadata": {
-            "name": "runtime-fabric"
-          },
-          "spec": {
-            "agent": {
-              "app": {
-                "resources": {
-                  "limits": {
-                    "cpu": "1000m",
-                    "memory": "500Mi"
-                  },
-                  "requests": {
-                    "cpu": "100m",
-                    "memory": "200Mi"
-                  }
-                }
-              },
-              "rtfd": {
-                "resources": {
-                  "limits": {
-                    "cpu": "50m",
-                    "memory": "50Mi"
-                  },
-                  "requests": {
-                    "cpu": "20m",
-                    "memory": "50Mi"
-                  }
-                }
-              }
-            },
-            "global": {
-              "cluster": {
-                "flavor": "byok",
-                "type": "openshift"
-              },
-              "containerLogPaths": [
-                "/var/lib/docker/containers",
-                "/var/log/containers",
-                "/var/log/pods"
-              ],
-              "core": {
-                "affinity": {},
-                "tolerations": []
-              },
-              "deployment": {
-                "nodeSelector": ""
-              },
-              "image": {
-                "provider": "aws",
-                "pullSecretName": "rtf-pull-secret",
-                "rtfRegistry": "rtf-runtime-registry.kprod.msap.io"
-              },
-              "logForwarding": {
-                "anypointMonitoring": false
-              },
-              "mule": {
-                "disablePerAppSA": false
-              },
-              "service": {}
-            },
-            "proxy": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/oscargcervantes/runtime-fabric-operator@sha256:efb6bdb97f87c2b688d660fa0a280597d0fe3a5a440947e70e4a253a9b9504f8",
-      "bundle_path_digest": "sha256:efb6bdb97f87c2b688d660fa0a280597d0fe3a5a440947e70e4a253a9b9504f8",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-08-26T01:08:14.850000+00:00",
-      "csv_description": "What is Runtime Fabric? Runtime Fabric (RTF) is a container service to deploy mule runtime on cloud (AWS / Azure) or on a data center (on-premise). It provides all cloud (PaaS) benefits such as high availability, automatic failover, rolling upgrade, etc. RTF is based on Docker containers and Kubernetes for orchestration and has been packaged/maintained in such a way that very little or no knowledge of docker is required to run RTF. With the help of RTF we can deploy multiple versions of mule-runtime. RTF helps to achieve consistency and portability with the support of container service. We can deploy our API/Integration solution across many platforms like AWS, AZure or on-premise data centers. Runtime fabric automates the deployment and orchestration of Mule application and API gateway.\n\nRFT is based on docker and kubernetes to achieve portability and horizontal scalability. It includes all the components required to run the mule application. We can manage the from our Anytime platform ( control plane).It provides the same feature as Cudhub with added benefits of our own deployment on AWS / Azure.",
-      "csv_display_name": "Runtime Fabric Operator Development",
-      "csv_metadata_description": "Runtime Fabric Operator Application from Mulesoft",
-      "csv_name": "runtime-fabric-operator.v1.13.74",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-26T01:08:14.850000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "runtime-fabric-operator",
-      "provided_apis": [
-        {
-          "group": "rtf.operators.mulesoft.com",
-          "kind": "RuntimeFabric",
-          "plural": "runtimefabrics",
-          "version": "v1"
-        }
-      ],
-      "provider": "MuleSoft",
-      "related_images": [
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "runtime-fabric-operator"
-        },
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "runtime-fabric-operator-3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8-annotation"
-        },
-        {
-          "digest": "sha256:a4f6c39b17f2ba68366c6d4e139ed18ede2ad9f3f9d5bf7477bdcbef73b43e54",
-          "image": "quay.io/oscargcervantes/kube-rbac-proxy@sha256:a4f6c39b17f2ba68366c6d4e139ed18ede2ad9f3f9d5bf7477bdcbef73b43e54",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.13.74",
-      "version_original": "1.13.74"
-    },
-    {
-      "_id": "630820ba33ce7a8daa2aaa92",
-      "alm_examples": [
-        {
-          "api_version": "rtf.operators.mulesoft.com/v1",
-          "kind": "RuntimeFabric",
-          "metadata": {
-            "name": "runtime-fabric"
-          },
-          "spec": {
-            "agent": {
-              "app": {
-                "resources": {
-                  "limits": {
-                    "cpu": "1000m",
-                    "memory": "500Mi"
-                  },
-                  "requests": {
-                    "cpu": "100m",
-                    "memory": "200Mi"
-                  }
-                }
-              },
-              "rtfd": {
-                "resources": {
-                  "limits": {
-                    "cpu": "50m",
-                    "memory": "50Mi"
-                  },
-                  "requests": {
-                    "cpu": "20m",
-                    "memory": "50Mi"
-                  }
-                }
-              }
-            },
-            "global": {
-              "cluster": {
-                "flavor": "byok",
-                "type": "openshift"
-              },
-              "containerLogPaths": [
-                "/var/lib/docker/containers",
-                "/var/log/containers",
-                "/var/log/pods"
-              ],
-              "core": {
-                "affinity": {},
-                "tolerations": []
-              },
-              "deployment": {
-                "nodeSelector": ""
-              },
-              "image": {
-                "provider": "aws",
-                "pullSecretName": "rtf-pull-secret",
-                "rtfRegistry": "rtf-runtime-registry.kprod.msap.io"
-              },
-              "logForwarding": {
-                "anypointMonitoring": false
-              },
-              "mule": {
-                "disablePerAppSA": false
-              },
-              "service": {}
-            },
-            "proxy": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/oscargcervantes/runtime-fabric-operator@sha256:efb6bdb97f87c2b688d660fa0a280597d0fe3a5a440947e70e4a253a9b9504f8",
-      "bundle_path_digest": "sha256:efb6bdb97f87c2b688d660fa0a280597d0fe3a5a440947e70e4a253a9b9504f8",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-08-26T01:24:10.074000+00:00",
-      "csv_description": "What is Runtime Fabric? Runtime Fabric (RTF) is a container service to deploy mule runtime on cloud (AWS / Azure) or on a data center (on-premise). It provides all cloud (PaaS) benefits such as high availability, automatic failover, rolling upgrade, etc. RTF is based on Docker containers and Kubernetes for orchestration and has been packaged/maintained in such a way that very little or no knowledge of docker is required to run RTF. With the help of RTF we can deploy multiple versions of mule-runtime. RTF helps to achieve consistency and portability with the support of container service. We can deploy our API/Integration solution across many platforms like AWS, AZure or on-premise data centers. Runtime fabric automates the deployment and orchestration of Mule application and API gateway.\n\nRFT is based on docker and kubernetes to achieve portability and horizontal scalability. It includes all the components required to run the mule application. We can manage the from our Anytime platform ( control plane).It provides the same feature as Cudhub with added benefits of our own deployment on AWS / Azure.",
-      "csv_display_name": "Runtime Fabric Operator Development",
-      "csv_metadata_description": "Runtime Fabric Operator Application from Mulesoft",
-      "csv_name": "runtime-fabric-operator.v1.13.74",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-26T01:24:10.074000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "runtime-fabric-operator",
-      "provided_apis": [
-        {
-          "group": "rtf.operators.mulesoft.com",
-          "kind": "RuntimeFabric",
-          "plural": "runtimefabrics",
-          "version": "v1"
-        }
-      ],
-      "provider": "MuleSoft",
-      "related_images": [
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "runtime-fabric-operator"
-        },
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "runtime-fabric-operator-3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8-annotation"
-        },
-        {
-          "digest": "sha256:a4f6c39b17f2ba68366c6d4e139ed18ede2ad9f3f9d5bf7477bdcbef73b43e54",
-          "image": "quay.io/oscargcervantes/kube-rbac-proxy@sha256:a4f6c39b17f2ba68366c6d4e139ed18ede2ad9f3f9d5bf7477bdcbef73b43e54",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.13.74",
-      "version_original": "1.13.74"
-    },
-    {
-      "_id": "630821bd0b35776a1d48227c",
-      "alm_examples": [
-        {
-          "api_version": "rtf.operators.mulesoft.com/v1",
-          "kind": "RuntimeFabric",
-          "metadata": {
-            "name": "runtime-fabric"
-          },
-          "spec": {
-            "agent": {
-              "app": {
-                "resources": {
-                  "limits": {
-                    "cpu": "1000m",
-                    "memory": "500Mi"
-                  },
-                  "requests": {
-                    "cpu": "100m",
-                    "memory": "200Mi"
-                  }
-                }
-              },
-              "rtfd": {
-                "resources": {
-                  "limits": {
-                    "cpu": "50m",
-                    "memory": "50Mi"
-                  },
-                  "requests": {
-                    "cpu": "20m",
-                    "memory": "50Mi"
-                  }
-                }
-              }
-            },
-            "global": {
-              "cluster": {
-                "flavor": "byok",
-                "type": "openshift"
-              },
-              "containerLogPaths": [
-                "/var/lib/docker/containers",
-                "/var/log/containers",
-                "/var/log/pods"
-              ],
-              "core": {
-                "affinity": {},
-                "tolerations": []
-              },
-              "deployment": {
-                "nodeSelector": ""
-              },
-              "image": {
-                "provider": "aws",
-                "pullSecretName": "rtf-pull-secret",
-                "rtfRegistry": "rtf-runtime-registry.kprod.msap.io"
-              },
-              "logForwarding": {
-                "anypointMonitoring": false
-              },
-              "mule": {
-                "disablePerAppSA": false
-              },
-              "service": {}
-            },
-            "proxy": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/oscargcervantes/runtime-fabric-operator@sha256:efb6bdb97f87c2b688d660fa0a280597d0fe3a5a440947e70e4a253a9b9504f8",
-      "bundle_path_digest": "sha256:efb6bdb97f87c2b688d660fa0a280597d0fe3a5a440947e70e4a253a9b9504f8",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-08-26T01:28:29.572000+00:00",
-      "csv_description": "What is Runtime Fabric? Runtime Fabric (RTF) is a container service to deploy mule runtime on cloud (AWS / Azure) or on a data center (on-premise). It provides all cloud (PaaS) benefits such as high availability, automatic failover, rolling upgrade, etc. RTF is based on Docker containers and Kubernetes for orchestration and has been packaged/maintained in such a way that very little or no knowledge of docker is required to run RTF. With the help of RTF we can deploy multiple versions of mule-runtime. RTF helps to achieve consistency and portability with the support of container service. We can deploy our API/Integration solution across many platforms like AWS, AZure or on-premise data centers. Runtime fabric automates the deployment and orchestration of Mule application and API gateway.\n\nRFT is based on docker and kubernetes to achieve portability and horizontal scalability. It includes all the components required to run the mule application. We can manage the from our Anytime platform ( control plane).It provides the same feature as Cudhub with added benefits of our own deployment on AWS / Azure.",
-      "csv_display_name": "Runtime Fabric Operator Development",
-      "csv_metadata_description": "Runtime Fabric Operator Application from Mulesoft",
-      "csv_name": "runtime-fabric-operator.v1.13.74",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-26T01:28:29.572000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "runtime-fabric-operator",
-      "provided_apis": [
-        {
-          "group": "rtf.operators.mulesoft.com",
-          "kind": "RuntimeFabric",
-          "plural": "runtimefabrics",
-          "version": "v1"
-        }
-      ],
-      "provider": "MuleSoft",
-      "related_images": [
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "runtime-fabric-operator"
-        },
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "runtime-fabric-operator-3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8-annotation"
-        },
-        {
-          "digest": "sha256:a4f6c39b17f2ba68366c6d4e139ed18ede2ad9f3f9d5bf7477bdcbef73b43e54",
-          "image": "quay.io/oscargcervantes/kube-rbac-proxy@sha256:a4f6c39b17f2ba68366c6d4e139ed18ede2ad9f3f9d5bf7477bdcbef73b43e54",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.13.74",
-      "version_original": "1.13.74"
-    },
-    {
-      "_id": "63082205609bfce90f14656f",
-      "alm_examples": [
-        {
-          "api_version": "rtf.operators.mulesoft.com/v1",
-          "kind": "RuntimeFabric",
-          "metadata": {
-            "name": "runtime-fabric"
-          },
-          "spec": {
-            "agent": {
-              "app": {
-                "resources": {
-                  "limits": {
-                    "cpu": "1000m",
-                    "memory": "500Mi"
-                  },
-                  "requests": {
-                    "cpu": "100m",
-                    "memory": "200Mi"
-                  }
-                }
-              },
-              "rtfd": {
-                "resources": {
-                  "limits": {
-                    "cpu": "50m",
-                    "memory": "50Mi"
-                  },
-                  "requests": {
-                    "cpu": "20m",
-                    "memory": "50Mi"
-                  }
-                }
-              }
-            },
-            "global": {
-              "cluster": {
-                "flavor": "byok",
-                "type": "openshift"
-              },
-              "containerLogPaths": [
-                "/var/lib/docker/containers",
-                "/var/log/containers",
-                "/var/log/pods"
-              ],
-              "core": {
-                "affinity": {},
-                "tolerations": []
-              },
-              "deployment": {
-                "nodeSelector": ""
-              },
-              "image": {
-                "provider": "aws",
-                "pullSecretName": "rtf-pull-secret",
-                "rtfRegistry": "rtf-runtime-registry.kprod.msap.io"
-              },
-              "logForwarding": {
-                "anypointMonitoring": false
-              },
-              "mule": {
-                "disablePerAppSA": false
-              },
-              "service": {}
-            },
-            "proxy": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/oscargcervantes/runtime-fabric-operator@sha256:efb6bdb97f87c2b688d660fa0a280597d0fe3a5a440947e70e4a253a9b9504f8",
-      "bundle_path_digest": "sha256:efb6bdb97f87c2b688d660fa0a280597d0fe3a5a440947e70e4a253a9b9504f8",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-08-26T01:29:41.653000+00:00",
-      "csv_description": "What is Runtime Fabric? Runtime Fabric (RTF) is a container service to deploy mule runtime on cloud (AWS / Azure) or on a data center (on-premise). It provides all cloud (PaaS) benefits such as high availability, automatic failover, rolling upgrade, etc. RTF is based on Docker containers and Kubernetes for orchestration and has been packaged/maintained in such a way that very little or no knowledge of docker is required to run RTF. With the help of RTF we can deploy multiple versions of mule-runtime. RTF helps to achieve consistency and portability with the support of container service. We can deploy our API/Integration solution across many platforms like AWS, AZure or on-premise data centers. Runtime fabric automates the deployment and orchestration of Mule application and API gateway.\n\nRFT is based on docker and kubernetes to achieve portability and horizontal scalability. It includes all the components required to run the mule application. We can manage the from our Anytime platform ( control plane).It provides the same feature as Cudhub with added benefits of our own deployment on AWS / Azure.",
-      "csv_display_name": "Runtime Fabric Operator Development",
-      "csv_metadata_description": "Runtime Fabric Operator Application from Mulesoft",
-      "csv_name": "runtime-fabric-operator.v1.13.74",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-26T01:29:41.653000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "runtime-fabric-operator",
-      "provided_apis": [
-        {
-          "group": "rtf.operators.mulesoft.com",
-          "kind": "RuntimeFabric",
-          "plural": "runtimefabrics",
-          "version": "v1"
-        }
-      ],
-      "provider": "MuleSoft",
-      "related_images": [
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "runtime-fabric-operator"
-        },
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "runtime-fabric-operator-3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8-annotation"
-        },
-        {
-          "digest": "sha256:a4f6c39b17f2ba68366c6d4e139ed18ede2ad9f3f9d5bf7477bdcbef73b43e54",
-          "image": "quay.io/oscargcervantes/kube-rbac-proxy@sha256:a4f6c39b17f2ba68366c6d4e139ed18ede2ad9f3f9d5bf7477bdcbef73b43e54",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.13.74",
-      "version_original": "1.13.74"
-    },
-    {
-      "_id": "6308222b675c7ed5dfaa7857",
-      "alm_examples": [
-        {
-          "api_version": "rtf.operators.mulesoft.com/v1",
-          "kind": "RuntimeFabric",
-          "metadata": {
-            "name": "runtime-fabric"
-          },
-          "spec": {
-            "agent": {
-              "app": {
-                "resources": {
-                  "limits": {
-                    "cpu": "1000m",
-                    "memory": "500Mi"
-                  },
-                  "requests": {
-                    "cpu": "100m",
-                    "memory": "200Mi"
-                  }
-                }
-              },
-              "rtfd": {
-                "resources": {
-                  "limits": {
-                    "cpu": "50m",
-                    "memory": "50Mi"
-                  },
-                  "requests": {
-                    "cpu": "20m",
-                    "memory": "50Mi"
-                  }
-                }
-              }
-            },
-            "global": {
-              "cluster": {
-                "flavor": "byok",
-                "type": "openshift"
-              },
-              "containerLogPaths": [
-                "/var/lib/docker/containers",
-                "/var/log/containers",
-                "/var/log/pods"
-              ],
-              "core": {
-                "affinity": {},
-                "tolerations": []
-              },
-              "deployment": {
-                "nodeSelector": ""
-              },
-              "image": {
-                "provider": "aws",
-                "pullSecretName": "rtf-pull-secret",
-                "rtfRegistry": "rtf-runtime-registry.kprod.msap.io"
-              },
-              "logForwarding": {
-                "anypointMonitoring": false
-              },
-              "mule": {
-                "disablePerAppSA": false
-              },
-              "service": {}
-            },
-            "proxy": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/oscargcervantes/runtime-fabric-operator@sha256:efb6bdb97f87c2b688d660fa0a280597d0fe3a5a440947e70e4a253a9b9504f8",
-      "bundle_path_digest": "sha256:efb6bdb97f87c2b688d660fa0a280597d0fe3a5a440947e70e4a253a9b9504f8",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-08-26T01:30:19.792000+00:00",
-      "csv_description": "What is Runtime Fabric? Runtime Fabric (RTF) is a container service to deploy mule runtime on cloud (AWS / Azure) or on a data center (on-premise). It provides all cloud (PaaS) benefits such as high availability, automatic failover, rolling upgrade, etc. RTF is based on Docker containers and Kubernetes for orchestration and has been packaged/maintained in such a way that very little or no knowledge of docker is required to run RTF. With the help of RTF we can deploy multiple versions of mule-runtime. RTF helps to achieve consistency and portability with the support of container service. We can deploy our API/Integration solution across many platforms like AWS, AZure or on-premise data centers. Runtime fabric automates the deployment and orchestration of Mule application and API gateway.\n\nRFT is based on docker and kubernetes to achieve portability and horizontal scalability. It includes all the components required to run the mule application. We can manage the from our Anytime platform ( control plane).It provides the same feature as Cudhub with added benefits of our own deployment on AWS / Azure.",
-      "csv_display_name": "Runtime Fabric Operator Development",
-      "csv_metadata_description": "Runtime Fabric Operator Application from Mulesoft",
-      "csv_name": "runtime-fabric-operator.v1.13.74",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-26T01:30:19.792000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "runtime-fabric-operator",
-      "provided_apis": [
-        {
-          "group": "rtf.operators.mulesoft.com",
-          "kind": "RuntimeFabric",
-          "plural": "runtimefabrics",
-          "version": "v1"
-        }
-      ],
-      "provider": "MuleSoft",
-      "related_images": [
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "runtime-fabric-operator"
-        },
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "runtime-fabric-operator-3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8-annotation"
-        },
-        {
-          "digest": "sha256:a4f6c39b17f2ba68366c6d4e139ed18ede2ad9f3f9d5bf7477bdcbef73b43e54",
-          "image": "quay.io/oscargcervantes/kube-rbac-proxy@sha256:a4f6c39b17f2ba68366c6d4e139ed18ede2ad9f3f9d5bf7477bdcbef73b43e54",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "image": "quay.io/oscargcervantes/runtime-fabric-operator@sha256:3c12d483195e16e5ad661ad3592e06fd9ac327ea47d84a8a97b8152b468e4dc8",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.13.74",
-      "version_original": "1.13.74"
-    },
-    {
       "_id": "6308d3823832081c9baa63b3",
       "alm_examples": [
         {
@@ -24531,9 +23299,694 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "8.5.5",
       "version_original": "8.5.5"
+    },
+    {
+      "_id": "6308d3ba1d920575dc1461df",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:bea7192e07456b6f23901e623137f7bde8c3a2313d80c3c6a8007f04e1fb3687",
+      "bundle_path_digest": "sha256:bea7192e07456b6f23901e623137f7bde8c3a2313d80c3c6a8007f04e1fb3687",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:07:54.233000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.6.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-26T14:07:54.233000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
+          "name": "kubeturbo-operator-08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62-annotation"
+        },
+        {
+          "digest": "sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:1af800b95cb2a80edb0359b46ab10d609acb3ebe062e019f9dfc7c4b40ae58c2",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:1af800b95cb2a80edb0359b46ab10d609acb3ebe062e019f9dfc7c4b40ae58c2",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "8.6.0",
+      "version_original": "8.6.0"
+    },
+    {
+      "_id": "6308d3ba1d920575dc1461e2",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:c6559cc748028d2098791b277d6316570b1985c616a7e3182fc6dde64296aa11",
+      "bundle_path_digest": "sha256:c6559cc748028d2098791b277d6316570b1985c616a7e3182fc6dde64296aa11",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:07:54.661000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.6.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-26T14:07:54.661000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "name": "kubeturbo-operator-352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec-annotation"
+        },
+        {
+          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:acbf1a49c061d80c76468137991816401b1c43f4921179013c682d6dfcf814fe",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:acbf1a49c061d80c76468137991816401b1c43f4921179013c682d6dfcf814fe",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "8.6.1",
+      "version_original": "8.6.1"
+    },
+    {
+      "_id": "6308d3bb07bb65fa2c2ab21a",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
+      "bundle_path_digest": "sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:07:55.094000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.6.2-beta.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-26T14:07:55.094000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
+          "name": "kubeturbo-operator-ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2-annotation"
+        },
+        {
+          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "8.6.2-beta.1",
+      "version_original": "8.6.2-beta.1"
+    },
+    {
+      "_id": "6308d3bb07bb65fa2c2ab21c",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
+      "bundle_path_digest": "sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:07:55.621000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-26T14:07:55.621000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "8.5.2",
+      "version_original": "8.5.2"
+    },
+    {
+      "_id": "6308d40007bb65fa2c2ab225",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:d01e9da1a9897bb6f12ad4034bea571b53ea08d53d0fd7eebe30298a44ea4f65",
+      "bundle_path_digest": "sha256:d01e9da1a9897bb6f12ad4034bea571b53ea08d53d0fd7eebe30298a44ea4f65",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:09:04.843000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-26T14:09:04.843000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:fc69790f6713bd3f2f4d1cefd9eadac7ebe776cd0f83ae1ec523d80f2c276f59",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:fc69790f6713bd3f2f4d1cefd9eadac7ebe776cd0f83ae1ec523d80f2c276f59",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "8.5.0",
+      "version_original": "8.5.0"
+    },
+    {
+      "_id": "6308d40138a6fe67b681f019",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
+      "bundle_path_digest": "sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:09:05.314000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-26T14:09:05.314000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "8.5.1",
+      "version_original": "8.5.1"
+    },
+    {
+      "_id": "6308d4011d920575dc1461f1",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
+      "bundle_path_digest": "sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:09:05.738000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-26T14:09:05.738000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "8.5.2",
+      "version_original": "8.5.2"
     }
   ],
   "page": 47,
   "page_size": 100,
-  "total": 4873
+  "total": 4887
 }

@@ -1,458 +1,6 @@
 {
   "data": [
     {
-      "_id": "62e0f72b481e03591bf164a5",
-      "alm_examples": [
-        {
-          "api_version": "tenantoperator.stakater.com/v1beta1",
-          "kind": "Tenant",
-          "metadata": {
-            "name": "bluesky"
-          },
-          "spec": {
-            "editors": {
-              "groups": [
-                "alpha"
-              ],
-              "users": [
-                "john@aurora.org"
-              ]
-            },
-            "namespaces": [
-              "dev",
-              "build",
-              "prod"
-            ],
-            "owners": {
-              "users": [
-                "anna@aurora.org",
-                "anthony@aurora.org"
-              ]
-            },
-            "quota": "small"
-          }
-        },
-        {
-          "api_version": "tenantoperator.stakater.com/v1alpha1",
-          "kind": "IntegrationConfig",
-          "metadata": {
-            "name": "tenant-operator-config",
-            "namespace": "stakater-tenant-operator"
-          },
-          "spec": {
-            "argocd": {
-              "clusterResourceWhitelist": [
-                {
-                  "group": "tronador.stakater.com",
-                  "kind": "EnvironmentProvisioner"
-                }
-              ],
-              "namespace": "openshift-operators",
-              "namespaceResourceBlacklist": [
-                {
-                  "group": "",
-                  "kind": "ResourceQuota"
-                }
-              ]
-            },
-            "openshift": {
-              "clusterAdminGroups": [
-                "cluster-admins"
-              ],
-              "group": {
-                "labels": {
-                  "role": "customer-reader"
-                }
-              },
-              "namespaceAccessPolicy": {
-                "deny": {
-                  "privilegedNamespaces": {
-                    "groups": [
-                      "cluster-admins"
-                    ],
-                    "users": [
-                      "system:serviceaccount:openshift-argocd:argocd-application-controller",
-                      "adam@stakater.com"
-                    ]
-                  }
-                }
-              },
-              "privilegedNamespaces": [
-                "default",
-                "^openshift-*",
-                "^kube-*"
-              ],
-              "privilegedServiceAccounts": [
-                "^system:serviceaccount:openshift-*",
-                "^system:serviceaccount:kube-*"
-              ],
-              "project": {
-                "annotations": {
-                  "openshift.io/node-selector": "node-role.kubernetes.io/worker="
-                },
-                "labels": {
-                  "stakater.com/workload-monitoring": "true"
-                }
-              },
-              "sandbox": {
-                "labels": {
-                  "stakater.com/kind": "sandbox"
-                }
-              }
-            },
-            "rhsso": {
-              "enabled": true,
-              "endpoint": {
-                "secretReference": {
-                  "name": "auth-secrets",
-                  "namespace": "openshift-auth"
-                },
-                "url": "https://iam-keycloak-auth.apps.prod.abcdefghi.kubeapp.cloud/"
-              }
-            },
-            "vault": {
-              "enabled": true,
-              "endpoint": {
-                "secretReference": {
-                  "name": "vault-root-token",
-                  "namespace": "vault"
-                },
-                "url": "https://vault.apps.prod.abcdefghi.kubeapp.cloud/"
-              },
-              "sso": {
-                "accessorID": "<ACCESSOR_ID_TOKEN>",
-                "clientName": "vault"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/stakater/tenant-operator-0@sha256:692afdc700427f30f370c443e1397d106c5ae0afe35e90de33ed161ff22fb3cd",
-      "bundle_path_digest": "sha256:692afdc700427f30f370c443e1397d106c5ae0afe35e90de33ed161ff22fb3cd",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-07-27T08:28:26.979000+00:00",
-      "csv_description": "tenant operator",
-      "csv_display_name": "tenant-operator",
-      "csv_metadata_description": "",
-      "csv_name": "tenant-operator.v0.5.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:09:06.411000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "tenant-operator",
-      "provided_apis": [
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Quota",
-          "version": "v1beta1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "ResourceSupervisor",
-          "plural": "resourcesupervisors",
-          "version": "v1beta1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "TemplateGroupInstance",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "TemplateInstance",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Template",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Tenant",
-          "version": "v1beta1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "IntegrationConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "stakater",
-      "related_images": [
-        {
-          "digest": "sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:43cca4aea9c610534cf8529fcc8a0c64a48b659112c075dd27a9f0f88e26dd07",
-          "image": "registry.connect.redhat.com/stakater/tenant-operator@sha256:43cca4aea9c610534cf8529fcc8a0c64a48b659112c075dd27a9f0f88e26dd07",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.5.2",
-      "version_original": "0.5.2"
-    },
-    {
-      "_id": "62e0f87c8c5fb37500dd02c4",
-      "alm_examples": [
-        {
-          "api_version": "tenantoperator.stakater.com/v1beta1",
-          "kind": "Tenant",
-          "metadata": {
-            "name": "bluesky"
-          },
-          "spec": {
-            "editors": {
-              "groups": [
-                "alpha"
-              ],
-              "users": [
-                "john@aurora.org"
-              ]
-            },
-            "namespaces": [
-              "dev",
-              "build",
-              "prod"
-            ],
-            "owners": {
-              "users": [
-                "anna@aurora.org",
-                "anthony@aurora.org"
-              ]
-            },
-            "quota": "small"
-          }
-        },
-        {
-          "api_version": "tenantoperator.stakater.com/v1alpha1",
-          "kind": "IntegrationConfig",
-          "metadata": {
-            "name": "tenant-operator-config",
-            "namespace": "stakater-tenant-operator"
-          },
-          "spec": {
-            "argocd": {
-              "clusterResourceWhitelist": [
-                {
-                  "group": "tronador.stakater.com",
-                  "kind": "EnvironmentProvisioner"
-                }
-              ],
-              "namespace": "openshift-operators",
-              "namespaceResourceBlacklist": [
-                {
-                  "group": "",
-                  "kind": "ResourceQuota"
-                }
-              ]
-            },
-            "openshift": {
-              "clusterAdminGroups": [
-                "cluster-admins"
-              ],
-              "group": {
-                "labels": {
-                  "role": "customer-reader"
-                }
-              },
-              "namespaceAccessPolicy": {
-                "deny": {
-                  "privilegedNamespaces": {
-                    "groups": [
-                      "cluster-admins"
-                    ],
-                    "users": [
-                      "system:serviceaccount:openshift-argocd:argocd-application-controller",
-                      "adam@stakater.com"
-                    ]
-                  }
-                }
-              },
-              "privilegedNamespaces": [
-                "default",
-                "^openshift-*",
-                "^kube-*"
-              ],
-              "privilegedServiceAccounts": [
-                "^system:serviceaccount:openshift-*",
-                "^system:serviceaccount:kube-*"
-              ],
-              "project": {
-                "annotations": {
-                  "openshift.io/node-selector": "node-role.kubernetes.io/worker="
-                },
-                "labels": {
-                  "stakater.com/workload-monitoring": "true"
-                }
-              },
-              "sandbox": {
-                "labels": {
-                  "stakater.com/kind": "sandbox"
-                }
-              }
-            },
-            "rhsso": {
-              "enabled": true,
-              "endpoint": {
-                "secretReference": {
-                  "name": "auth-secrets",
-                  "namespace": "openshift-auth"
-                },
-                "url": "https://iam-keycloak-auth.apps.prod.abcdefghi.kubeapp.cloud/"
-              }
-            },
-            "vault": {
-              "enabled": true,
-              "endpoint": {
-                "secretReference": {
-                  "name": "vault-root-token",
-                  "namespace": "vault"
-                },
-                "url": "https://vault.apps.prod.abcdefghi.kubeapp.cloud/"
-              },
-              "sso": {
-                "accessorID": "<ACCESSOR_ID_TOKEN>",
-                "clientName": "vault"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/stakater/tenant-operator-0@sha256:692afdc700427f30f370c443e1397d106c5ae0afe35e90de33ed161ff22fb3cd",
-      "bundle_path_digest": "sha256:692afdc700427f30f370c443e1397d106c5ae0afe35e90de33ed161ff22fb3cd",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-07-27T08:34:04.376000+00:00",
-      "csv_description": "tenant operator",
-      "csv_display_name": "tenant-operator",
-      "csv_metadata_description": "",
-      "csv_name": "tenant-operator.v0.5.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:08:49.905000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "tenant-operator",
-      "provided_apis": [
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "IntegrationConfig",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Quota",
-          "version": "v1beta1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "ResourceSupervisor",
-          "plural": "resourcesupervisors",
-          "version": "v1beta1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "TemplateGroupInstance",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "TemplateInstance",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Template",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "tenantoperator.stakater.com",
-          "kind": "Tenant",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "stakater",
-      "related_images": [
-        {
-          "digest": "sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:665540a140c30a7f8a31a1ca5fe519a1f0e91dddc597d7a9108926dc174f3b89",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:43cca4aea9c610534cf8529fcc8a0c64a48b659112c075dd27a9f0f88e26dd07",
-          "image": "registry.connect.redhat.com/stakater/tenant-operator@sha256:43cca4aea9c610534cf8529fcc8a0c64a48b659112c075dd27a9f0f88e26dd07",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.5.2",
-      "version_original": "0.5.2"
-    },
-    {
       "_id": "62e162e61d117639faa634d7",
       "alm_examples": [
         {
@@ -14985,9 +14533,454 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "1.10.13+xed86eae",
       "version_original": "1.10.13+xed86eae"
+    },
+    {
+      "_id": "62e97a10d4f57d92a9def68d",
+      "alm_examples": [
+        {
+          "api_version": "cilium.io/v1alpha1",
+          "kind": "CiliumConfig",
+          "metadata": {
+            "name": "cilium-openshift-default",
+            "namespace": "placeholder"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:2c5164ec8369a7aff720ffd3d43d2f698adec22ea4b69a7df7833d5714e79db3",
+      "bundle_path_digest": "sha256:2c5164ec8369a7aff720ffd3d43d2f698adec22ea4b69a7df7833d5714e79db3",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "1.11",
+      "creation_date": "2022-08-02T19:25:04.331000+00:00",
+      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
+      "csv_display_name": "Cilium Enterprise",
+      "csv_metadata_description": "",
+      "csv_name": "cilium.v1.11.5-xeb3a68e",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-02T19:25:04.331000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "cilium-enterprise",
+      "provided_apis": [
+        {
+          "group": "cilium.io",
+          "kind": "CiliumConfig",
+          "plural": "ciliumconfigs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:b357efdc6b328f607aaeac4ea629fc8d8b0e70c3734548b0f14855303c99dee5",
+          "image": "quay.io/isovalent/cilium@sha256:b357efdc6b328f607aaeac4ea629fc8d8b0e70c3734548b0f14855303c99dee5",
+          "name": "cilium"
+        },
+        {
+          "digest": "sha256:77feb78e0a0d1d072ff13dc4d7e1f784a0f51fa6ab88ff78bc7954ebb4f59b7a",
+          "image": "quay.io/isovalent/hubble-relay@sha256:77feb78e0a0d1d072ff13dc4d7e1f784a0f51fa6ab88ff78bc7954ebb4f59b7a",
+          "name": "hubble-relay"
+        },
+        {
+          "digest": "sha256:464a67c1a04a2df8bd529783f1a0169df9a8f313af9c9e12bd61a3b5c482460e",
+          "image": "quay.io/isovalent/operator-generic@sha256:464a67c1a04a2df8bd529783f1a0169df9a8f313af9c9e12bd61a3b5c482460e",
+          "name": "cilium-operator"
+        },
+        {
+          "digest": "sha256:b357efdc6b328f607aaeac4ea629fc8d8b0e70c3734548b0f14855303c99dee5",
+          "image": "quay.io/isovalent/cilium@sha256:b357efdc6b328f607aaeac4ea629fc8d8b0e70c3734548b0f14855303c99dee5",
+          "name": "preflight"
+        },
+        {
+          "digest": "sha256:97b10d36bc9903c74c66a5ab95960184258999b6510b413cc5dde7d4168cfb7e",
+          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:97b10d36bc9903c74c66a5ab95960184258999b6510b413cc5dde7d4168cfb7e",
+          "name": "clustermesh"
+        },
+        {
+          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "name": "certgen"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble-ui-backend"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble-ui-frontend"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble-ui-oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd-operator"
+        },
+        {
+          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "name": "nodeinit"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh-etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble-enterprise"
+        },
+        {
+          "digest": "sha256:7d6865502729b67f12a3a734f1e9db14775c2a1867910e60922a194767e3b25b",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:7d6865502729b67f12a3a734f1e9db14775c2a1867910e60922a194767e3b25b",
+          "name": "hubble-enterprise-metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble-enterprise-operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble-export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble-export-fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble-export-s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble-rbac"
+        },
+        {
+          "digest": "sha256:e867d348af25d628982adac2c6ed195632418ee2dc687312dceb7133594efd12",
+          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:e867d348af25d628982adac2c6ed195632418ee2dc687312dceb7133594efd12",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:77feb78e0a0d1d072ff13dc4d7e1f784a0f51fa6ab88ff78bc7954ebb4f59b7a",
+          "image": "quay.io/isovalent/hubble-relay@sha256:77feb78e0a0d1d072ff13dc4d7e1f784a0f51fa6ab88ff78bc7954ebb4f59b7a",
+          "name": "hubble_relay"
+        },
+        {
+          "digest": "sha256:464a67c1a04a2df8bd529783f1a0169df9a8f313af9c9e12bd61a3b5c482460e",
+          "image": "quay.io/isovalent/operator-generic@sha256:464a67c1a04a2df8bd529783f1a0169df9a8f313af9c9e12bd61a3b5c482460e",
+          "name": "cilium_operator"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble_ui_be"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble_ui_fe"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble_ui_oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd_operator"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh_etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble_enterprise"
+        },
+        {
+          "digest": "sha256:7d6865502729b67f12a3a734f1e9db14775c2a1867910e60922a194767e3b25b",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:7d6865502729b67f12a3a734f1e9db14775c2a1867910e60922a194767e3b25b",
+          "name": "hubble_enterprise_metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble_enterprise_operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble_export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble_export_fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble_export_s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble_rbac"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.11.5+xeb3a68e",
+      "version_original": "1.11.5+xeb3a68e"
+    },
+    {
+      "_id": "62e97a190f371fa893a6d522",
+      "alm_examples": [
+        {
+          "api_version": "cilium.io/v1alpha1",
+          "kind": "CiliumConfig",
+          "metadata": {
+            "name": "cilium-openshift-default",
+            "namespace": "placeholder"
+          },
+          "spec": {
+            "cni": {
+              "binPath": "/var/lib/cni/bin",
+              "confPath": "/var/run/multus/cni/net.d"
+            },
+            "endpointRoutes": {
+              "enabled": true
+            },
+            "hubble": {
+              "tls": {
+                "enabled": false
+              }
+            },
+            "ipam": {
+              "mode": "cluster-pool",
+              "operator": {
+                "clusterPoolIPv4MaskSize": "23",
+                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
+              }
+            },
+            "kubeProxyReplacement": "probe",
+            "nativeRoutingCIDR": "10.128.0.0/14",
+            "prometheus": {
+              "serviceMonitor": {
+                "enabled": false
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:149c733a4c1dfa4cccb6b89d418047c97e5f381b6f8e0d9cf81b1394b5a5e6b4",
+      "bundle_path_digest": "sha256:149c733a4c1dfa4cccb6b89d418047c97e5f381b6f8e0d9cf81b1394b5a5e6b4",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "1.11",
+      "creation_date": "2022-08-02T19:25:13.482000+00:00",
+      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
+      "csv_display_name": "Cilium",
+      "csv_metadata_description": "",
+      "csv_name": "cilium.v1.11.5-xf646bca",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-02T19:25:13.482000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "cilium",
+      "provided_apis": [
+        {
+          "group": "cilium.io",
+          "kind": "CiliumConfig",
+          "plural": "ciliumconfigs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:79e66c3c2677e9ecc3fd5b2ed8e4ea7e49cf99ed6ee181f2ef43400c4db5eef0",
+          "image": "quay.io/cilium/cilium@sha256:79e66c3c2677e9ecc3fd5b2ed8e4ea7e49cf99ed6ee181f2ef43400c4db5eef0",
+          "name": "cilium"
+        },
+        {
+          "digest": "sha256:8498f27a9c85ff74e56e18cfce4f0ccfae6f55d4134d708d364d273f3043f817",
+          "image": "quay.io/cilium/hubble-relay@sha256:8498f27a9c85ff74e56e18cfce4f0ccfae6f55d4134d708d364d273f3043f817",
+          "name": "hubble-relay"
+        },
+        {
+          "digest": "sha256:8ace281328b27d4216218c604d720b9a63a8aec2bd1996057c79ab0168f9d6d8",
+          "image": "quay.io/cilium/operator-generic@sha256:8ace281328b27d4216218c604d720b9a63a8aec2bd1996057c79ab0168f9d6d8",
+          "name": "cilium-operator"
+        },
+        {
+          "digest": "sha256:79e66c3c2677e9ecc3fd5b2ed8e4ea7e49cf99ed6ee181f2ef43400c4db5eef0",
+          "image": "quay.io/cilium/cilium@sha256:79e66c3c2677e9ecc3fd5b2ed8e4ea7e49cf99ed6ee181f2ef43400c4db5eef0",
+          "name": "preflight"
+        },
+        {
+          "digest": "sha256:5514ab415aa8986a45876490a14957489f73d86d55513242153d6893fd0fdaf3",
+          "image": "quay.io/cilium/clustermesh-apiserver@sha256:5514ab415aa8986a45876490a14957489f73d86d55513242153d6893fd0fdaf3",
+          "name": "clustermesh"
+        },
+        {
+          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "name": "certgen"
+        },
+        {
+          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
+          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
+          "name": "hubble-ui-backend"
+        },
+        {
+          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
+          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
+          "name": "hubble-ui-frontend"
+        },
+        {
+          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
+          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
+          "name": "hubble-ui-proxy"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd-operator"
+        },
+        {
+          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "name": "nodeinit"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh-etcd"
+        },
+        {
+          "digest": "sha256:9fa791063d489a78f54d61f0b614e073a17941a5c62b9ac21fabf3a884f97328",
+          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:9fa791063d489a78f54d61f0b614e073a17941a5c62b9ac21fabf3a884f97328",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:8498f27a9c85ff74e56e18cfce4f0ccfae6f55d4134d708d364d273f3043f817",
+          "image": "quay.io/cilium/hubble-relay@sha256:8498f27a9c85ff74e56e18cfce4f0ccfae6f55d4134d708d364d273f3043f817",
+          "name": "hubble_relay"
+        },
+        {
+          "digest": "sha256:8ace281328b27d4216218c604d720b9a63a8aec2bd1996057c79ab0168f9d6d8",
+          "image": "quay.io/cilium/operator-generic@sha256:8ace281328b27d4216218c604d720b9a63a8aec2bd1996057c79ab0168f9d6d8",
+          "name": "cilium_operator"
+        },
+        {
+          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
+          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
+          "name": "hubble_ui_be"
+        },
+        {
+          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
+          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
+          "name": "hubble_ui_fe"
+        },
+        {
+          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
+          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
+          "name": "hubble_ui_proxy"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd_operator"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh_etcd"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.11.5+xf646bca",
+      "version_original": "1.11.5+xf646bca"
     }
   ],
   "page": 38,
   "page_size": 100,
-  "total": 4873
+  "total": 4887
 }
