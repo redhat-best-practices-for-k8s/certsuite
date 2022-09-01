@@ -48,7 +48,7 @@ func parseSysctlSystemOutput(sysctlSystemOutput string) map[string]string {
 
 func GetSysctlSettings(env *provider.TestEnvironment, nodeName string) (map[string]string, error) {
 	const (
-		sysctlCommand = "sysctl --system"
+		sysctlCommand = "chroot /host sysctl --system"
 	)
 
 	o := clientsholder.GetClientsHolder()
