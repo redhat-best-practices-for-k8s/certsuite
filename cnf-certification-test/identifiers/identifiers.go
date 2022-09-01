@@ -93,7 +93,8 @@ func AddCatalogEntry(testID, description, remediation, testType, exception, vers
 }
 
 var (
-	TestICMPv4ConnectivityIdentifier claim.Identifier
+	TestICMPv4ConnectivityIdentifier   claim.Identifier
+	TestNetworkPolicyDenyAllIdentifier claim.Identifier
 )
 
 func InitCatalog() map[claim.Identifier]TestCaseDescription {
@@ -109,6 +110,16 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		versionOne,
 		bestPracticeDocV1dot3URL+" Section 5.2",
+		tagCommon)
+
+	TestNetworkPolicyDenyAllIdentifier = AddCatalogEntry(
+		"network-policy-deny-all",
+		`Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic`,
+		NetworkPolicyDenyAllRemediation,
+		informativeResult,
+		NoDocumentedProcess,
+		versionOne,
+		bestPracticeDocV1dot3URL+" Section 10.6",
 		tagCommon)
 
 	return Catalog
@@ -494,11 +505,6 @@ var (
 		Tags:    formTestTags(tagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "ssh-daemons"),
 		Version: versionOne,
-	}
-	TestNetworkPolicyDenyAllIdentifier = claim.Identifier{
-		Url:     formTestURL(common.AccessControlTestKey, "network-policy-deny-all"),
-		Version: versionOne,
-		Tags:    formTestTags(tagCommon),
 	}
 )
 
@@ -1177,14 +1183,6 @@ that there are no changes to the following directories:
 		Description:           formDescription(TestNoSSHDaemonsAllowedIdentifier, `Check that pods do not run SSH daemons.`),
 		Remediation:           NoSSHDaemonsAllowedRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
-		ExceptionProcess:      NoDocumentedProcess,
-	},
-	TestNetworkPolicyDenyAllIdentifier: {
-		Identifier:            TestNetworkPolicyDenyAllIdentifier,
-		Type:                  informativeResult,
-		Description:           formDescription(TestNetworkPolicyDenyAllIdentifier, `Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic`),
-		Remediation:           NetworkPolicyDenyAllRemediation,
-		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.6",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 }
