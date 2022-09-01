@@ -4366,369 +4366,6 @@
       "version_original": "2.1.3"
     },
     {
-      "_id": "624ceec4efa705f49f5dfd59",
-      "alm_examples": [
-        {
-          "api_version": "csi.hpe.com/v1",
-          "kind": "XSPC",
-          "metadata": {
-            "name": "xspc",
-            "namespace": "kube-system"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hpestorage/xspc-csi-operator-bundle@sha256:ca3b0ac75d8cd0b9ec35b0cdacd53c063548951420239f92de3a8014f71b9270",
-      "bundle_path_digest": "sha256:ca3b0ac75d8cd0b9ec35b0cdacd53c063548951420239f92de3a8014f71b9270",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-06T01:37:08.231000+00:00",
-      "csv_description": "## About\nHPE XP Storage Plug-in for Containers (XSPC) is a plugin that integrates HPE XP storage into Kubernetes based clusters.\nXSPC provides dynamic persistent volume provisioning capabilities from HPE's block storage arrays.",
-      "csv_display_name": "HPE XP Storage CSI Driver Operator for Kubernetes",
-      "csv_metadata_description": "An operator for managing HPE XP Storage Plug-in for Containers CSI driver",
-      "csv_name": "xspc-csi-driver-operator.1.9.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:14:26.416000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "xspc-operator",
-      "provided_apis": [
-        {
-          "group": "csi.hpe.com",
-          "kind": "XSPC",
-          "plural": "xspcs",
-          "version": "v1"
-        }
-      ],
-      "provider": "HPE",
-      "related_images": [
-        {
-          "digest": "sha256:c431ec11e680aa246032326ba5a9695648d1c7d87eb275a6d6219e9102a3cc1b",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver@sha256:c431ec11e680aa246032326ba5a9695648d1c7d87eb275a6d6219e9102a3cc1b",
-          "name": "xspc-csi-driver"
-        },
-        {
-          "digest": "sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver-operator@sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "name": "xspc-csi-driver-operator"
-        },
-        {
-          "digest": "sha256:e4ce5adf0abe5add640b166bc9f658d069ca4783ed37fcd8774f20da89a7cad1",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:e4ce5adf0abe5add640b166bc9f658d069ca4783ed37fcd8774f20da89a7cad1",
-          "name": "ose-csi-external-attacher-v4.7"
-        },
-        {
-          "digest": "sha256:d99597158ef4baf204e0fe7ed24c1dbc7b0218305077cdaf22c3899a1b3988c7",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:d99597158ef4baf204e0fe7ed24c1dbc7b0218305077cdaf22c3899a1b3988c7",
-          "name": "ose-csi-external-provisioner-v4.7"
-        },
-        {
-          "digest": "sha256:2c7bb13d648a5048584530fddc62deb4b2e47bb7d389b77992e1077b920867e8",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:2c7bb13d648a5048584530fddc62deb4b2e47bb7d389b77992e1077b920867e8",
-          "name": "ose-csi-node-driver-registrar-v4.7"
-        },
-        {
-          "digest": "sha256:221cda173d5ad2be44655dd8ab697a80bd94149358183b3375b09280ba025f92",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:221cda173d5ad2be44655dd8ab697a80bd94149358183b3375b09280ba025f92",
-          "name": "ose-csi-livenessprobe-v4.7"
-        },
-        {
-          "digest": "sha256:890729e261e87ad12bf7c523f9c2c39a20fb07e18aa269cd015f86ed23ac22b7",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:890729e261e87ad12bf7c523f9c2c39a20fb07e18aa269cd015f86ed23ac22b7",
-          "name": "ose-csi-external-resizer-rhel8-v4.7"
-        },
-        {
-          "digest": "sha256:727b6317ef2575c905cd87c9d6d14b7c45886c4f20f0d75904641c55bb1e1814",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:727b6317ef2575c905cd87c9d6d14b7c45886c4f20f0d75904641c55bb1e1814",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.7"
-        },
-        {
-          "digest": "sha256:89e05898626e7689113d46ffb98c98e95a2a49b71c6a8b32409699eab8f32ea4",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:89e05898626e7689113d46ffb98c98e95a2a49b71c6a8b32409699eab8f32ea4",
-          "name": "ose-csi-external-attacher-v4.8"
-        },
-        {
-          "digest": "sha256:f91ba2c92c97f9b4c4afe789040250c9a6cb675fbe24cbae3ad381e58bc3b83a",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:f91ba2c92c97f9b4c4afe789040250c9a6cb675fbe24cbae3ad381e58bc3b83a",
-          "name": "ose-csi-external-provisioner-v4.8"
-        },
-        {
-          "digest": "sha256:2e01a77235d1b692b87ec7e3e842dab52762032fbf3988f258960e2cece04225",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:2e01a77235d1b692b87ec7e3e842dab52762032fbf3988f258960e2cece04225",
-          "name": "ose-csi-node-driver-registrar-v4.8"
-        },
-        {
-          "digest": "sha256:2f0c069bd085951f864c268ebbb28d5044e912327cf1de13cb40e082a2aaf4db",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:2f0c069bd085951f864c268ebbb28d5044e912327cf1de13cb40e082a2aaf4db",
-          "name": "ose-csi-livenessprobe-v4.8"
-        },
-        {
-          "digest": "sha256:e55efd04b15565bfcfcb8bd64b4da3a58461d8a6e2cfbbf1b1ac4bc537cf307b",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:e55efd04b15565bfcfcb8bd64b4da3a58461d8a6e2cfbbf1b1ac4bc537cf307b",
-          "name": "ose-csi-external-resizer-rhel8-v4.8"
-        },
-        {
-          "digest": "sha256:bca38e3c695cf2bbb338b4933982f6892782b7fec14a1c835cb5a08c1cc7a14c",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:bca38e3c695cf2bbb338b4933982f6892782b7fec14a1c835cb5a08c1cc7a14c",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.8"
-        },
-        {
-          "digest": "sha256:9ffed943cdc9597803faedfac8891b963e08ec86f4cb21a59ae7c37adc5ce349",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:9ffed943cdc9597803faedfac8891b963e08ec86f4cb21a59ae7c37adc5ce349",
-          "name": "ose-csi-external-attacher-v4.9"
-        },
-        {
-          "digest": "sha256:ea0797b04595d1bf46ca5d3b205cead25c70e8c252e844551944079000a3fbe1",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:ea0797b04595d1bf46ca5d3b205cead25c70e8c252e844551944079000a3fbe1",
-          "name": "ose-csi-external-provisioner-v4.9"
-        },
-        {
-          "digest": "sha256:4ca6d4d2f88eb0435084e1e0703330181e69e9c5c205ce21071d30fce864efde",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:4ca6d4d2f88eb0435084e1e0703330181e69e9c5c205ce21071d30fce864efde",
-          "name": "ose-csi-node-driver-registrar-v4.9"
-        },
-        {
-          "digest": "sha256:7c9816e9265dcc83af534a61175814e174ec10c1b411e71baf5d379ceeca1ecd",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:7c9816e9265dcc83af534a61175814e174ec10c1b411e71baf5d379ceeca1ecd",
-          "name": "ose-csi-livenessprobe-v4.9"
-        },
-        {
-          "digest": "sha256:49ed3001a156015c3acbe5ef058f9acbb471b456535e7d56f6baec742527de74",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:49ed3001a156015c3acbe5ef058f9acbb471b456535e7d56f6baec742527de74",
-          "name": "ose-csi-external-resizer-rhel8-v4.9"
-        },
-        {
-          "digest": "sha256:3ce747b7e19c5d0fa095fdeb29db3c9133575d24d941bad8ef6e71130c3f3883",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:3ce747b7e19c5d0fa095fdeb29db3c9133575d24d941bad8ef6e71130c3f3883",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.9"
-        },
-        {
-          "digest": "sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver-operator@sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "name": "xspc-csi-driver-operator-52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2-annotation"
-        },
-        {
-          "digest": "sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver-operator@sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.9.0",
-      "version_original": "1.9.0"
-    },
-    {
-      "_id": "624cf0e2efa705f49f5dfd5a",
-      "alm_examples": [
-        {
-          "api_version": "csi.hpe.com/v1",
-          "kind": "XSPC",
-          "metadata": {
-            "name": "xspc",
-            "namespace": "kube-system"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hpestorage/xspc-csi-operator-bundle@sha256:ca3b0ac75d8cd0b9ec35b0cdacd53c063548951420239f92de3a8014f71b9270",
-      "bundle_path_digest": "sha256:ca3b0ac75d8cd0b9ec35b0cdacd53c063548951420239f92de3a8014f71b9270",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-06T01:46:10.772000+00:00",
-      "csv_description": "## About\nHPE XP Storage Plug-in for Containers (XSPC) is a plugin that integrates HPE XP storage into Kubernetes based clusters.\nXSPC provides dynamic persistent volume provisioning capabilities from HPE's block storage arrays.",
-      "csv_display_name": "HPE XP Storage CSI Driver Operator for Kubernetes",
-      "csv_metadata_description": "An operator for managing HPE XP Storage Plug-in for Containers CSI driver",
-      "csv_name": "xspc-csi-driver-operator.1.9.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:57:01.068000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "xspc-operator",
-      "provided_apis": [
-        {
-          "group": "csi.hpe.com",
-          "kind": "XSPC",
-          "version": "v1"
-        }
-      ],
-      "provider": "HPE",
-      "related_images": [
-        {
-          "digest": "sha256:c431ec11e680aa246032326ba5a9695648d1c7d87eb275a6d6219e9102a3cc1b",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver@sha256:c431ec11e680aa246032326ba5a9695648d1c7d87eb275a6d6219e9102a3cc1b",
-          "name": "xspc-csi-driver"
-        },
-        {
-          "digest": "sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver-operator@sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "name": "xspc-csi-driver-operator"
-        },
-        {
-          "digest": "sha256:e4ce5adf0abe5add640b166bc9f658d069ca4783ed37fcd8774f20da89a7cad1",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:e4ce5adf0abe5add640b166bc9f658d069ca4783ed37fcd8774f20da89a7cad1",
-          "name": "ose-csi-external-attacher-v4.7"
-        },
-        {
-          "digest": "sha256:d99597158ef4baf204e0fe7ed24c1dbc7b0218305077cdaf22c3899a1b3988c7",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:d99597158ef4baf204e0fe7ed24c1dbc7b0218305077cdaf22c3899a1b3988c7",
-          "name": "ose-csi-external-provisioner-v4.7"
-        },
-        {
-          "digest": "sha256:2c7bb13d648a5048584530fddc62deb4b2e47bb7d389b77992e1077b920867e8",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:2c7bb13d648a5048584530fddc62deb4b2e47bb7d389b77992e1077b920867e8",
-          "name": "ose-csi-node-driver-registrar-v4.7"
-        },
-        {
-          "digest": "sha256:221cda173d5ad2be44655dd8ab697a80bd94149358183b3375b09280ba025f92",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:221cda173d5ad2be44655dd8ab697a80bd94149358183b3375b09280ba025f92",
-          "name": "ose-csi-livenessprobe-v4.7"
-        },
-        {
-          "digest": "sha256:890729e261e87ad12bf7c523f9c2c39a20fb07e18aa269cd015f86ed23ac22b7",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:890729e261e87ad12bf7c523f9c2c39a20fb07e18aa269cd015f86ed23ac22b7",
-          "name": "ose-csi-external-resizer-rhel8-v4.7"
-        },
-        {
-          "digest": "sha256:727b6317ef2575c905cd87c9d6d14b7c45886c4f20f0d75904641c55bb1e1814",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:727b6317ef2575c905cd87c9d6d14b7c45886c4f20f0d75904641c55bb1e1814",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.7"
-        },
-        {
-          "digest": "sha256:89e05898626e7689113d46ffb98c98e95a2a49b71c6a8b32409699eab8f32ea4",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:89e05898626e7689113d46ffb98c98e95a2a49b71c6a8b32409699eab8f32ea4",
-          "name": "ose-csi-external-attacher-v4.8"
-        },
-        {
-          "digest": "sha256:f91ba2c92c97f9b4c4afe789040250c9a6cb675fbe24cbae3ad381e58bc3b83a",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:f91ba2c92c97f9b4c4afe789040250c9a6cb675fbe24cbae3ad381e58bc3b83a",
-          "name": "ose-csi-external-provisioner-v4.8"
-        },
-        {
-          "digest": "sha256:2e01a77235d1b692b87ec7e3e842dab52762032fbf3988f258960e2cece04225",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:2e01a77235d1b692b87ec7e3e842dab52762032fbf3988f258960e2cece04225",
-          "name": "ose-csi-node-driver-registrar-v4.8"
-        },
-        {
-          "digest": "sha256:2f0c069bd085951f864c268ebbb28d5044e912327cf1de13cb40e082a2aaf4db",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:2f0c069bd085951f864c268ebbb28d5044e912327cf1de13cb40e082a2aaf4db",
-          "name": "ose-csi-livenessprobe-v4.8"
-        },
-        {
-          "digest": "sha256:e55efd04b15565bfcfcb8bd64b4da3a58461d8a6e2cfbbf1b1ac4bc537cf307b",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:e55efd04b15565bfcfcb8bd64b4da3a58461d8a6e2cfbbf1b1ac4bc537cf307b",
-          "name": "ose-csi-external-resizer-rhel8-v4.8"
-        },
-        {
-          "digest": "sha256:bca38e3c695cf2bbb338b4933982f6892782b7fec14a1c835cb5a08c1cc7a14c",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:bca38e3c695cf2bbb338b4933982f6892782b7fec14a1c835cb5a08c1cc7a14c",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.8"
-        },
-        {
-          "digest": "sha256:9ffed943cdc9597803faedfac8891b963e08ec86f4cb21a59ae7c37adc5ce349",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:9ffed943cdc9597803faedfac8891b963e08ec86f4cb21a59ae7c37adc5ce349",
-          "name": "ose-csi-external-attacher-v4.9"
-        },
-        {
-          "digest": "sha256:ea0797b04595d1bf46ca5d3b205cead25c70e8c252e844551944079000a3fbe1",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:ea0797b04595d1bf46ca5d3b205cead25c70e8c252e844551944079000a3fbe1",
-          "name": "ose-csi-external-provisioner-v4.9"
-        },
-        {
-          "digest": "sha256:4ca6d4d2f88eb0435084e1e0703330181e69e9c5c205ce21071d30fce864efde",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:4ca6d4d2f88eb0435084e1e0703330181e69e9c5c205ce21071d30fce864efde",
-          "name": "ose-csi-node-driver-registrar-v4.9"
-        },
-        {
-          "digest": "sha256:7c9816e9265dcc83af534a61175814e174ec10c1b411e71baf5d379ceeca1ecd",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:7c9816e9265dcc83af534a61175814e174ec10c1b411e71baf5d379ceeca1ecd",
-          "name": "ose-csi-livenessprobe-v4.9"
-        },
-        {
-          "digest": "sha256:49ed3001a156015c3acbe5ef058f9acbb471b456535e7d56f6baec742527de74",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:49ed3001a156015c3acbe5ef058f9acbb471b456535e7d56f6baec742527de74",
-          "name": "ose-csi-external-resizer-rhel8-v4.9"
-        },
-        {
-          "digest": "sha256:3ce747b7e19c5d0fa095fdeb29db3c9133575d24d941bad8ef6e71130c3f3883",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:3ce747b7e19c5d0fa095fdeb29db3c9133575d24d941bad8ef6e71130c3f3883",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.9"
-        },
-        {
-          "digest": "sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver-operator@sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "name": "xspc-csi-driver-operator-52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2-annotation"
-        },
-        {
-          "digest": "sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver-operator@sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.9.0",
-      "version_original": "1.9.0"
-    },
-    {
       "_id": "624cf3332793d604991edf9d",
       "alm_examples": [
         {
@@ -8216,9 +7853,97 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.10.1-rc4",
       "version_original": "0.10.1-rc4"
+    },
+    {
+      "_id": "6262a67f84481d5f5229995c",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-hub-operator-bundle@sha256:53ed857edafa5f90ad45ee3c67be454e8b42cc8a12fabdfcb87b93fcbb4bd1fc",
+      "bundle_path_digest": "sha256:53ed857edafa5f90ad45ee3c67be454e8b42cc8a12fabdfcb87b93fcbb4bd1fc",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:58:39.683000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cortex-hub-operator.v0.0.24",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:55:48.115000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "cortex-hub-operator",
+      "provided_apis": [
+        {
+          "group": "hubs.cortex.cognitivescale.com",
+          "kind": "Hub",
+          "plural": "hubs",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.24",
+      "version_original": "0.0.24"
+    },
+    {
+      "_id": "6262a686834f257293b60f8b",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/ibm-spectrum-scale-csi-operator-bundle@sha256:70f310cb36f6f58221377ac77bfacce3ea80d11811b407131d9723507eaada42",
+      "bundle_path_digest": "sha256:70f310cb36f6f58221377ac77bfacce3ea80d11811b407131d9723507eaada42",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:58:46.539000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "ibm-spectrum-scale-csi-operator.v2.0.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:02:32.661000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "ibm-spectrum-scale-csi",
+      "provided_apis": [
+        {
+          "group": "csi.ibm.com",
+          "kind": "CSIScaleOperator",
+          "plural": "csiscaleoperators",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "2.0.0",
+      "version_original": "2.0.0"
     }
   ],
   "page": 23,
   "page_size": 100,
-  "total": 4873
+  "total": 4887
 }
