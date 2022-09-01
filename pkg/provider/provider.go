@@ -79,7 +79,7 @@ func NewPod(aPod *corev1.Pod) (out Pod) {
 	out.MultusIPs = make(map[string][]string)
 	out.MultusIPs, err = GetPodIPsPerNet(aPod.GetAnnotations()[CniNetworksStatusKey])
 	if err != nil {
-		logrus.Errorf("Could not decode networks-status annotation")
+		logrus.Errorf("Could not decode networks-status annotation, error: %s", err)
 	}
 
 	if _, ok := aPod.GetLabels()[skipConnectivityTestsLabel]; ok {
