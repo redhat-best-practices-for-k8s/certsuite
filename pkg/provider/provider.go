@@ -39,6 +39,7 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
+	networkingv1 "k8s.io/api/networking/v1"
 	policyv1 "k8s.io/api/policy/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -121,6 +122,7 @@ type TestEnvironment struct { // rename this with testTarget
 	HelmChartReleases    []*release.Release                            `json:"testHelmChartReleases"`
 	ResourceQuotas       []corev1.ResourceQuota
 	PodDisruptionBudgets []policyv1.PodDisruptionBudget
+	NetworkPolicies      []networkingv1.NetworkPolicy
 	IstioServiceMesh     bool
 }
 
@@ -306,6 +308,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.PodDisruptionBudgets = data.PodDisruptionBudgets
 	env.PersistentVolumes = data.PersistentVolumes
 	env.Services = data.Services
+	env.NetworkPolicies = data.NetworkPolicies
 	for _, nsHelmChartReleases := range data.HelmChartReleases {
 		for _, helmChartRelease := range nsHelmChartReleases {
 			if !isSkipHelmChart(helmChartRelease.Name, data.TestData.SkipHelmChartList) {

@@ -33,6 +33,7 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
+	networkingv1 "k8s.io/api/networking/v1"
 	policyv1 "k8s.io/api/policy/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
@@ -55,6 +56,7 @@ type DiscoveredTestData struct {
 	DebugPods            []corev1.Pod
 	ResourceQuotaItems   []corev1.ResourceQuota
 	PodDisruptionBudgets []policyv1.PodDisruptionBudget
+	NetworkPolicies      []networkingv1.NetworkPolicy
 	Crds                 []*apiextv1.CustomResourceDefinition
 	Namespaces           []string
 	Csvs                 []olmv1Alpha.ClusterServiceVersion
@@ -120,6 +122,10 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.PodDisruptionBudgets, err = getPodDisruptionBudgets(oc.K8sClient.PolicyV1(), data.Namespaces)
 	if err != nil {
 		logrus.Fatalln("Cannot get pod disruption budgets")
+	}
+	data.NetworkPolicies, err = getNetworkPolicies(oc.K8sNetworkingClient)
+	if err != nil {
+		logrus.Fatalln("Cannot get network policies")
 	}
 	data.Crds = FindTestCrdNames(data.TestData.CrdFilters)
 	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)

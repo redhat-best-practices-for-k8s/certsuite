@@ -26,12 +26,14 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/icmp"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/policies"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/services"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
+	networkingv1 "k8s.io/api/networking/v1"
 )
 
 const (
@@ -108,6 +110,11 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		testIsIPTablesConfigPresent(&env)
+	})
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetworkPolicyDenyAllIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		testNetworkPolicyDenyAll(&env)
 	})
 })
 
@@ -245,6 +252,7 @@ func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 		ginkgo.Fail(errMsg)
 	}
 }
+
 func testDualStackServices(env *provider.TestEnvironment) {
 	var nonCompliantServices []*corev1.Service
 	var errorServices []*corev1.Service
@@ -311,4 +319,54 @@ func testIsNFTablesConfigPresent(env *provider.TestEnvironment) {
 func testIsIPTablesConfigPresent(env *provider.TestEnvironment) {
 	testIsConfigPresent(env, ipTables)
 	testIsConfigPresent(env, ip6Tables)
+}
+
+func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
+	ginkgo.By("Test for Deny All in network policies")
+	var podsMissingDenyAllDefaultPolicies []string
+
+	// Loop through the pods, looking for corresponding entries within a deny-all network policy (both ingress and egress).
+	// This ensures that each pod is accounted for that we are tasked with testing and excludes any pods that are not marked
+	// for testing (via the labels).
+	for _, put := range env.Pods {
+		denyAllEgressFound := false
+		denyAllIngressFound := false
+
+		// Look through all of the network policies for a matching namespace.
+		for index := range env.NetworkPolicies {
+			logrus.Debugf("Testing network policy %s against pod %s", env.NetworkPolicies[index].Name, put.String())
+
+			// Skip any network policies that don't match the namespace of the pod we are testing.
+			if env.NetworkPolicies[index].Namespace != put.Data.Namespace {
+				continue
+			}
+
+			// Match the pod namespace with the network policy namespace.
+			if policies.LabelsMatch(env.NetworkPolicies[index].Spec.PodSelector, put.Data.Labels) {
+				if !denyAllEgressFound {
+					denyAllEgressFound = policies.IsNetworkPolicyCompliant(&env.NetworkPolicies[index], networkingv1.PolicyTypeEgress)
+				}
+				if !denyAllIngressFound {
+					denyAllIngressFound = policies.IsNetworkPolicyCompliant(&env.NetworkPolicies[index], networkingv1.PolicyTypeIngress)
+				}
+			}
+		}
+
+		// Network policy has not been found that contains a deny-all rule for both ingress and egress.
+		if !denyAllIngressFound {
+			podsMissingDenyAllDefaultPolicies = append(podsMissingDenyAllDefaultPolicies, put.Data.Name)
+			tnf.ClaimFilePrintf("%s was found to not have a default ingress deny-all network policy.", put.Data.Name)
+		}
+
+		if !denyAllEgressFound {
+			podsMissingDenyAllDefaultPolicies = append(podsMissingDenyAllDefaultPolicies, put.Data.Name)
+			tnf.ClaimFilePrintf("%s was found to not have a default egress deny-all network policy.", put.Data.Name)
+		}
+	}
+
+	if n := len(podsMissingDenyAllDefaultPolicies); n > 0 {
+		errMsg := fmt.Sprintf("Number of pods running CNF pods that do not have default deny-all network policies: %d", n)
+		tnf.ClaimFilePrintf(errMsg)
+		ginkgo.Fail(errMsg)
+	}
 }
