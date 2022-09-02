@@ -72,10 +72,10 @@ func formTestTags(tags ...string) string {
 	return strings.Join(tags, ",")
 }
 
-func AddCatalogEntry(testID, description, remediation, testType, exception, version, reference string, tags ...string) (aID claim.Identifier) {
+func AddCatalogEntry(testID, suiteName, description, remediation, testType, exception, version, reference string, tags ...string) (aID claim.Identifier) {
 	aID = claim.Identifier{
 		Tags:    formTestTags(tags...),
-		Url:     formTestURL(common.NetworkingTestKey, testID),
+		Url:     formTestURL(suiteName, testID),
 		Version: version,
 	}
 
@@ -99,6 +99,7 @@ var (
 func InitCatalog() map[claim.Identifier]TestCaseDescription {
 	TestICMPv4ConnectivityIdentifier = AddCatalogEntry(
 		"icmpv4-connectivity",
+		common.NetworkingTestKey,
 		`Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network.
 This test case requires the Deployment of the debug daemonset.`,
 		`Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases,
