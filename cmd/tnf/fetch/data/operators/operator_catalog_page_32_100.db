@@ -1,517 +1,6 @@
 {
   "data": [
     {
-      "_id": "627e446f9b640f138405c513",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "operator": {
-                "clusterPoolIPv4MaskSize": "23",
-                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
-              }
-            },
-            "kubeProxyReplacement": "probe",
-            "nativeRoutingCIDR": "10.128.0.0/14",
-            "prometheus": {
-              "serviceMonitor": {
-                "enabled": false
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:a20d66bf3efda232b27631304f86eb54f0363a9435771c374d4e1357387be2af",
-      "bundle_path_digest": "sha256:a20d66bf3efda232b27631304f86eb54f0363a9435771c374d4e1357387be2af",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "1.10",
-      "creation_date": "2022-05-13T11:43:43.417000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.10-x6adc6ff",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-05-13T11:43:43.417000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:83bfc1052543e8b1e31f06fa2b5bbd2bd41cc79f264010241fc1994e35281616",
-          "image": "quay.io/cilium/cilium@sha256:83bfc1052543e8b1e31f06fa2b5bbd2bd41cc79f264010241fc1994e35281616",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:a0769e44299bba301dee08d489f4e2d3b3924916bed985346dcf9fcf10861c8a",
-          "image": "quay.io/cilium/hubble-relay@sha256:a0769e44299bba301dee08d489f4e2d3b3924916bed985346dcf9fcf10861c8a",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:8a317287b6ac8fe0ba4999342c9627dc913e0c1591552164f96d0aadf5d1a740",
-          "image": "quay.io/cilium/operator-generic@sha256:8a317287b6ac8fe0ba4999342c9627dc913e0c1591552164f96d0aadf5d1a740",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:83bfc1052543e8b1e31f06fa2b5bbd2bd41cc79f264010241fc1994e35281616",
-          "image": "quay.io/cilium/cilium@sha256:83bfc1052543e8b1e31f06fa2b5bbd2bd41cc79f264010241fc1994e35281616",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:e13d41db3f5ee93d8b3abcaa10cc4005522bc797be3d69fc96ac5e03b60c7b11",
-          "image": "quay.io/cilium/clustermesh-apiserver@sha256:e13d41db3f5ee93d8b3abcaa10cc4005522bc797be3d69fc96ac5e03b60c7b11",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "name": "hubble-ui-proxy"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:4245ae5650f075cea29ebce2c2eb7dc59c223cb6cae50a0ab2efe6004ef2363f",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:4245ae5650f075cea29ebce2c2eb7dc59c223cb6cae50a0ab2efe6004ef2363f",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:a0769e44299bba301dee08d489f4e2d3b3924916bed985346dcf9fcf10861c8a",
-          "image": "quay.io/cilium/hubble-relay@sha256:a0769e44299bba301dee08d489f4e2d3b3924916bed985346dcf9fcf10861c8a",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:8a317287b6ac8fe0ba4999342c9627dc913e0c1591552164f96d0aadf5d1a740",
-          "image": "quay.io/cilium/operator-generic@sha256:8a317287b6ac8fe0ba4999342c9627dc913e0c1591552164f96d0aadf5d1a740",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "name": "hubble_ui_proxy"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.10.10+x6adc6ff",
-      "version_original": "1.10.10+x6adc6ff"
-    },
-    {
-      "_id": "627e44779b640f138405c522",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "operator": {
-                "clusterPoolIPv4MaskSize": "23",
-                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
-              }
-            },
-            "kubeProxyReplacement": "probe",
-            "nativeRoutingCIDR": "10.128.0.0/14",
-            "prometheus": {
-              "serviceMonitor": {
-                "enabled": false
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:3f69a124f9c31ebc0c78f249872a69b1289622bf4f5aad4c739f6e8caf9cb85b",
-      "bundle_path_digest": "sha256:3f69a124f9c31ebc0c78f249872a69b1289622bf4f5aad4c739f6e8caf9cb85b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "1.9",
-      "creation_date": "2022-05-13T11:43:51.579000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.9.14-x70dc065",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-05-13T11:43:51.579000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:2c6ce93fa7e625979043a387eb998c17ad57df8768d89facb9b715da42a4c51c",
-          "image": "quay.io/cilium/cilium@sha256:2c6ce93fa7e625979043a387eb998c17ad57df8768d89facb9b715da42a4c51c",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:fd6ab1aea260abc5f64eca26c1b1e7009983e4aaa8e5d098e8d442f7659603fb",
-          "image": "quay.io/cilium/hubble-relay@sha256:fd6ab1aea260abc5f64eca26c1b1e7009983e4aaa8e5d098e8d442f7659603fb",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:bdcfd2eade99933f2fda55ef79ea697ddfad3512f65b15bcd0ba7702518c1ba3",
-          "image": "quay.io/cilium/operator-generic@sha256:bdcfd2eade99933f2fda55ef79ea697ddfad3512f65b15bcd0ba7702518c1ba3",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:2c6ce93fa7e625979043a387eb998c17ad57df8768d89facb9b715da42a4c51c",
-          "image": "quay.io/cilium/cilium@sha256:2c6ce93fa7e625979043a387eb998c17ad57df8768d89facb9b715da42a4c51c",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:a0da5edf0372899647da51de1b277f0bab8e676d694aee7f939cddfdd3172010",
-          "image": "quay.io/cilium/clustermesh-apiserver@sha256:a0da5edf0372899647da51de1b277f0bab8e676d694aee7f939cddfdd3172010",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "name": "hubble-ui-proxy"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:3a9ca9a4c2f78109f265c4758f5f693d01865f2d0e31bc5f1ecbc065e878628b",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:3a9ca9a4c2f78109f265c4758f5f693d01865f2d0e31bc5f1ecbc065e878628b",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:fd6ab1aea260abc5f64eca26c1b1e7009983e4aaa8e5d098e8d442f7659603fb",
-          "image": "quay.io/cilium/hubble-relay@sha256:fd6ab1aea260abc5f64eca26c1b1e7009983e4aaa8e5d098e8d442f7659603fb",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:bdcfd2eade99933f2fda55ef79ea697ddfad3512f65b15bcd0ba7702518c1ba3",
-          "image": "quay.io/cilium/operator-generic@sha256:bdcfd2eade99933f2fda55ef79ea697ddfad3512f65b15bcd0ba7702518c1ba3",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:2cf1c7b1fde6161f575f3147c2ef885739e60b8c59a1ed444fe74edbdf22c7c1",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "image": "quay.io/cilium/hubble-ui@sha256:c267219946b84f79a5fd2849f5cc71f39453e29d93039e57b9cef2b5802e9c50",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "image": "docker.io/envoyproxy/envoy@sha256:55a141c0b8e39497b32074cb758b4e5dc2384bd6d9926144969a4452eaa611fd",
-          "name": "hubble_ui_proxy"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.9.14+x70dc065",
-      "version_original": "1.9.14+x70dc065"
-    },
-    {
-      "_id": "627e44aaded3b14cfb8070a6",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.6-35.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-05-13T11:44:42.107000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-6",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-05-13T11:44:42.107000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67",
-          "image": "redislabs/operator@sha256:6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67",
-          "name": "operator-6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67-annotation"
-        },
-        {
-          "digest": "sha256:6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.0.6-6",
-      "version_original": "6.0.6-6"
-    },
-    {
       "_id": "627e44bb5cbc1cba9c784a8b",
       "alm_examples": [],
       "annotations": {
@@ -6303,986 +5792,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.0.29",
       "version_original": "0.0.29"
-    },
-    {
-      "_id": "6283f5167aa88cb2990559c1",
-      "alm_examples": [
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "gm-1",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              }
-            ],
-            "mode": "T-GM.8275.1",
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "gm-1"
-            }
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "bc-1"
-          },
-          "spec": {
-            "aprLevel": 0,
-            "domainNumber": 24,
-            "esmcMode": 1,
-            "forwardable": 0,
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Slave",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f2",
-                "ethPort": 2,
-                "holdoff": 500,
-                "ipv4": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              }
-            ],
-            "mode": "T-TBC.8275.1",
-            "mode10MHz": 2,
-            "modePPS": 2,
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "bc-1"
-            },
-            "phyLedsCtl": 0,
-            "priority2": 128,
-            "src10MHz": 1,
-            "srcPPS": 1,
-            "syncOption": 1,
-            "synceCpu": 10,
-            "synceRecClkPort": 0,
-            "tracePtpMsg": -1,
-            "twoStep": 0
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsNode",
-          "metadata": {
-            "name": "worker2"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsOperatorConfig",
-          "metadata": {
-            "name": "sts-operator-config",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "images": {},
-            "sro": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/silicomltd/silicom-sts-operator@sha256:3d60984e2c198e8defe3cbd56dd784d2bdf0b30c9b4cfcd1709f19e10aa227b5",
-      "bundle_path_digest": "sha256:3d60984e2c198e8defe3cbd56dd784d2bdf0b30c9b4cfcd1709f19e10aa227b5",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-05-17T19:18:46.766000+00:00",
-      "csv_description": "Silicom STS line card for 4G and 5G NIC enable real-time data transmission\nwith high timing accuracy at the lowest cost to power 5G DRAN and CRAN edge\ndeployments.\n\n* Support 1588/PTP over IPv4 / IPV6, IEEE1588v2\n* Support SyncE /ITU-T G.8262\n* T-BC/T-TSC Boundary Clock and TSC Slave Clock /G.8273.2\n* T-GM Grand Master /G.8273.1 per G.8275.1 PTP Profile\n* PRTC Primary Reference Time Clock Class B/G.8272\n* T-TC Transparent Clock /G.8273.3\n* 1588 Software Stack and Servo Software in x86\n* [Silicom STS2 Card](https://www.silicom-usa.com/pr/server-adapters/networking-adapters/10-gigabit-ethernet-networking-adapters/p410g8ts81-timesync-server-adapter)\n\n### Prequisites:\n* [NFD Operator](https://operatorhub.io/operator/nfd-operator \"NFD operator needed for the discovery of STS cards\").\n* [SRO Operator](https://github.com/openshift/special-resource-operator)\n",
-      "csv_display_name": "Silicom STS Operator",
-      "csv_metadata_description": "This Operator is a Kubernetes custom controller whose goal\nis to serve the installation and lifecycle management of\nSilicom STS device plugins for Kubernetes.\n",
-      "csv_name": "silicom-sts-operator.v0.0.7",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:17:47.521000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "silicom-sts-operator",
-      "provided_apis": [
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsConfig",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsNode",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsOperatorConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Silicom Ltd.",
-      "related_images": [
-        {
-          "digest": "sha256:649e8a6c524920e1c564d8f797b8d64235b2527aa923f94bc9c7a0b7aba8ae7f",
-          "image": "quay.io/silicom/gpsd@sha256:649e8a6c524920e1c564d8f797b8d64235b2527aa923f94bc9c7a0b7aba8ae7f",
-          "name": "gpsd"
-        },
-        {
-          "digest": "sha256:0f3b63a3059b7d6158a916814281097f0d418b99a5fac9e8e5fd9bae58fb0b74",
-          "image": "quay.io/silicom/phc2sys@sha256:0f3b63a3059b7d6158a916814281097f0d418b99a5fac9e8e5fd9bae58fb0b74",
-          "name": "phc2sys"
-        },
-        {
-          "digest": "sha256:78be78ec8939f025f9a8b899693ab77b3990116d1c7ffb2115c620b7c3382d9d",
-          "image": "quay.io/silicom/tsyncd@sha256:78be78ec8939f025f9a8b899693ab77b3990116d1c7ffb2115c620b7c3382d9d",
-          "name": "tsyncd"
-        },
-        {
-          "digest": "sha256:aac7233423439e352d8eb39cef63e479c30c2f80b063c84ffc8797cc5a045117",
-          "image": "quay.io/silicom/grpc-tsyncd@sha256:aac7233423439e352d8eb39cef63e479c30c2f80b063c84ffc8797cc5a045117",
-          "name": "grpc-tsyncd"
-        },
-        {
-          "digest": "sha256:be6a5950a5fdc6fdf8015767901856bf173d01bdc803be7141e4f9795ab1478a",
-          "image": "quay.io/silicom/tsync_extts@sha256:be6a5950a5fdc6fdf8015767901856bf173d01bdc803be7141e4f9795ab1478a",
-          "name": "tsync_extts"
-        },
-        {
-          "digest": "sha256:86562c40a07ef8dc198bd53562ae332d89d9ea5d45b8e8aa9d3685bc6f7ee60f",
-          "image": "quay.io/silicom/sts-plugin@sha256:86562c40a07ef8dc198bd53562ae332d89d9ea5d45b8e8aa9d3685bc6f7ee60f",
-          "name": "sts-plugin"
-        },
-        {
-          "digest": "sha256:6bb07b26f669d9fe853a06a0262c5ee033fbb26bab202d84572b099ef852751c",
-          "image": "quay.io/silicom/ice-driver-src@sha256:6bb07b26f669d9fe853a06a0262c5ee033fbb26bab202d84572b099ef852751c",
-          "name": "ice-driver-src"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator-a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5-annotation"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.0.7",
-      "version_original": "0.0.7"
-    },
-    {
-      "_id": "6283f5ad5a88c04949a599c7",
-      "alm_examples": [
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "gm-1",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              }
-            ],
-            "mode": "T-GM.8275.1",
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "gm-1"
-            }
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "bc-1"
-          },
-          "spec": {
-            "aprLevel": 0,
-            "domainNumber": 24,
-            "esmcMode": 1,
-            "forwardable": 0,
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Slave",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f2",
-                "ethPort": 2,
-                "holdoff": 500,
-                "ipv4": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              }
-            ],
-            "mode": "T-TBC.8275.1",
-            "mode10MHz": 2,
-            "modePPS": 2,
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "bc-1"
-            },
-            "phyLedsCtl": 0,
-            "priority2": 128,
-            "src10MHz": 1,
-            "srcPPS": 1,
-            "syncOption": 1,
-            "synceCpu": 10,
-            "synceRecClkPort": 0,
-            "tracePtpMsg": -1,
-            "twoStep": 0
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsNode",
-          "metadata": {
-            "name": "worker2"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsOperatorConfig",
-          "metadata": {
-            "name": "sts-operator-config",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "images": {},
-            "sro": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/silicomltd/silicom-sts-operator@sha256:3d60984e2c198e8defe3cbd56dd784d2bdf0b30c9b4cfcd1709f19e10aa227b5",
-      "bundle_path_digest": "sha256:3d60984e2c198e8defe3cbd56dd784d2bdf0b30c9b4cfcd1709f19e10aa227b5",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-05-17T19:21:17.813000+00:00",
-      "csv_description": "Silicom STS line card for 4G and 5G NIC enable real-time data transmission\nwith high timing accuracy at the lowest cost to power 5G DRAN and CRAN edge\ndeployments.\n\n* Support 1588/PTP over IPv4 / IPV6, IEEE1588v2\n* Support SyncE /ITU-T G.8262\n* T-BC/T-TSC Boundary Clock and TSC Slave Clock /G.8273.2\n* T-GM Grand Master /G.8273.1 per G.8275.1 PTP Profile\n* PRTC Primary Reference Time Clock Class B/G.8272\n* T-TC Transparent Clock /G.8273.3\n* 1588 Software Stack and Servo Software in x86\n* [Silicom STS2 Card](https://www.silicom-usa.com/pr/server-adapters/networking-adapters/10-gigabit-ethernet-networking-adapters/p410g8ts81-timesync-server-adapter)\n\n### Prequisites:\n* [NFD Operator](https://operatorhub.io/operator/nfd-operator \"NFD operator needed for the discovery of STS cards\").\n* [SRO Operator](https://github.com/openshift/special-resource-operator)\n",
-      "csv_display_name": "Silicom STS Operator",
-      "csv_metadata_description": "This Operator is a Kubernetes custom controller whose goal\nis to serve the installation and lifecycle management of\nSilicom STS device plugins for Kubernetes.\n",
-      "csv_name": "silicom-sts-operator.v0.0.7",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:11:15.180000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "silicom-sts-operator",
-      "provided_apis": [
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsConfig",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsNode",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsOperatorConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Silicom Ltd.",
-      "related_images": [
-        {
-          "digest": "sha256:649e8a6c524920e1c564d8f797b8d64235b2527aa923f94bc9c7a0b7aba8ae7f",
-          "image": "quay.io/silicom/gpsd@sha256:649e8a6c524920e1c564d8f797b8d64235b2527aa923f94bc9c7a0b7aba8ae7f",
-          "name": "gpsd"
-        },
-        {
-          "digest": "sha256:0f3b63a3059b7d6158a916814281097f0d418b99a5fac9e8e5fd9bae58fb0b74",
-          "image": "quay.io/silicom/phc2sys@sha256:0f3b63a3059b7d6158a916814281097f0d418b99a5fac9e8e5fd9bae58fb0b74",
-          "name": "phc2sys"
-        },
-        {
-          "digest": "sha256:78be78ec8939f025f9a8b899693ab77b3990116d1c7ffb2115c620b7c3382d9d",
-          "image": "quay.io/silicom/tsyncd@sha256:78be78ec8939f025f9a8b899693ab77b3990116d1c7ffb2115c620b7c3382d9d",
-          "name": "tsyncd"
-        },
-        {
-          "digest": "sha256:aac7233423439e352d8eb39cef63e479c30c2f80b063c84ffc8797cc5a045117",
-          "image": "quay.io/silicom/grpc-tsyncd@sha256:aac7233423439e352d8eb39cef63e479c30c2f80b063c84ffc8797cc5a045117",
-          "name": "grpc-tsyncd"
-        },
-        {
-          "digest": "sha256:be6a5950a5fdc6fdf8015767901856bf173d01bdc803be7141e4f9795ab1478a",
-          "image": "quay.io/silicom/tsync_extts@sha256:be6a5950a5fdc6fdf8015767901856bf173d01bdc803be7141e4f9795ab1478a",
-          "name": "tsync_extts"
-        },
-        {
-          "digest": "sha256:86562c40a07ef8dc198bd53562ae332d89d9ea5d45b8e8aa9d3685bc6f7ee60f",
-          "image": "quay.io/silicom/sts-plugin@sha256:86562c40a07ef8dc198bd53562ae332d89d9ea5d45b8e8aa9d3685bc6f7ee60f",
-          "name": "sts-plugin"
-        },
-        {
-          "digest": "sha256:6bb07b26f669d9fe853a06a0262c5ee033fbb26bab202d84572b099ef852751c",
-          "image": "quay.io/silicom/ice-driver-src@sha256:6bb07b26f669d9fe853a06a0262c5ee033fbb26bab202d84572b099ef852751c",
-          "name": "ice-driver-src"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator-a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5-annotation"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.0.7",
-      "version_original": "0.0.7"
-    },
-    {
-      "_id": "6283f7f23fcd237f697187d6",
-      "alm_examples": [
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "gm-1",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              }
-            ],
-            "mode": "T-GM.8275.1",
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "gm-1"
-            }
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "bc-1"
-          },
-          "spec": {
-            "aprLevel": 0,
-            "domainNumber": 24,
-            "esmcMode": 1,
-            "forwardable": 0,
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Slave",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f2",
-                "ethPort": 2,
-                "holdoff": 500,
-                "ipv4": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              }
-            ],
-            "mode": "T-TBC.8275.1",
-            "mode10MHz": 2,
-            "modePPS": 2,
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "bc-1"
-            },
-            "phyLedsCtl": 0,
-            "priority2": 128,
-            "src10MHz": 1,
-            "srcPPS": 1,
-            "syncOption": 1,
-            "synceCpu": 10,
-            "synceRecClkPort": 0,
-            "tracePtpMsg": -1,
-            "twoStep": 0
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsNode",
-          "metadata": {
-            "name": "worker2"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsOperatorConfig",
-          "metadata": {
-            "name": "sts-operator-config",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "images": {},
-            "sro": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/silicomltd/silicom-sts-operator@sha256:3d60984e2c198e8defe3cbd56dd784d2bdf0b30c9b4cfcd1709f19e10aa227b5",
-      "bundle_path_digest": "sha256:3d60984e2c198e8defe3cbd56dd784d2bdf0b30c9b4cfcd1709f19e10aa227b5",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-05-17T19:30:58.745000+00:00",
-      "csv_description": "Silicom STS line card for 4G and 5G NIC enable real-time data transmission\nwith high timing accuracy at the lowest cost to power 5G DRAN and CRAN edge\ndeployments.\n\n* Support 1588/PTP over IPv4 / IPV6, IEEE1588v2\n* Support SyncE /ITU-T G.8262\n* T-BC/T-TSC Boundary Clock and TSC Slave Clock /G.8273.2\n* T-GM Grand Master /G.8273.1 per G.8275.1 PTP Profile\n* PRTC Primary Reference Time Clock Class B/G.8272\n* T-TC Transparent Clock /G.8273.3\n* 1588 Software Stack and Servo Software in x86\n* [Silicom STS2 Card](https://www.silicom-usa.com/pr/server-adapters/networking-adapters/10-gigabit-ethernet-networking-adapters/p410g8ts81-timesync-server-adapter)\n\n### Prequisites:\n* [NFD Operator](https://operatorhub.io/operator/nfd-operator \"NFD operator needed for the discovery of STS cards\").\n* [SRO Operator](https://github.com/openshift/special-resource-operator)\n",
-      "csv_display_name": "Silicom STS Operator",
-      "csv_metadata_description": "This Operator is a Kubernetes custom controller whose goal\nis to serve the installation and lifecycle management of\nSilicom STS device plugins for Kubernetes.\n",
-      "csv_name": "silicom-sts-operator.v0.0.7",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:11:07.494000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "silicom-sts-operator",
-      "provided_apis": [
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsConfig",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsNode",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsOperatorConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Silicom Ltd.",
-      "related_images": [
-        {
-          "digest": "sha256:649e8a6c524920e1c564d8f797b8d64235b2527aa923f94bc9c7a0b7aba8ae7f",
-          "image": "quay.io/silicom/gpsd@sha256:649e8a6c524920e1c564d8f797b8d64235b2527aa923f94bc9c7a0b7aba8ae7f",
-          "name": "gpsd"
-        },
-        {
-          "digest": "sha256:0f3b63a3059b7d6158a916814281097f0d418b99a5fac9e8e5fd9bae58fb0b74",
-          "image": "quay.io/silicom/phc2sys@sha256:0f3b63a3059b7d6158a916814281097f0d418b99a5fac9e8e5fd9bae58fb0b74",
-          "name": "phc2sys"
-        },
-        {
-          "digest": "sha256:78be78ec8939f025f9a8b899693ab77b3990116d1c7ffb2115c620b7c3382d9d",
-          "image": "quay.io/silicom/tsyncd@sha256:78be78ec8939f025f9a8b899693ab77b3990116d1c7ffb2115c620b7c3382d9d",
-          "name": "tsyncd"
-        },
-        {
-          "digest": "sha256:aac7233423439e352d8eb39cef63e479c30c2f80b063c84ffc8797cc5a045117",
-          "image": "quay.io/silicom/grpc-tsyncd@sha256:aac7233423439e352d8eb39cef63e479c30c2f80b063c84ffc8797cc5a045117",
-          "name": "grpc-tsyncd"
-        },
-        {
-          "digest": "sha256:be6a5950a5fdc6fdf8015767901856bf173d01bdc803be7141e4f9795ab1478a",
-          "image": "quay.io/silicom/tsync_extts@sha256:be6a5950a5fdc6fdf8015767901856bf173d01bdc803be7141e4f9795ab1478a",
-          "name": "tsync_extts"
-        },
-        {
-          "digest": "sha256:86562c40a07ef8dc198bd53562ae332d89d9ea5d45b8e8aa9d3685bc6f7ee60f",
-          "image": "quay.io/silicom/sts-plugin@sha256:86562c40a07ef8dc198bd53562ae332d89d9ea5d45b8e8aa9d3685bc6f7ee60f",
-          "name": "sts-plugin"
-        },
-        {
-          "digest": "sha256:6bb07b26f669d9fe853a06a0262c5ee033fbb26bab202d84572b099ef852751c",
-          "image": "quay.io/silicom/ice-driver-src@sha256:6bb07b26f669d9fe853a06a0262c5ee033fbb26bab202d84572b099ef852751c",
-          "name": "ice-driver-src"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator-a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5-annotation"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.0.7",
-      "version_original": "0.0.7"
-    },
-    {
-      "_id": "6283fbff5a88c04949a599f5",
-      "alm_examples": [
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "gm-1",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              }
-            ],
-            "mode": "T-GM.8275.1",
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "gm-1"
-            }
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "bc-1"
-          },
-          "spec": {
-            "aprLevel": 0,
-            "domainNumber": 24,
-            "esmcMode": 1,
-            "forwardable": 0,
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Slave",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f2",
-                "ethPort": 2,
-                "holdoff": 500,
-                "ipv4": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              }
-            ],
-            "mode": "T-TBC.8275.1",
-            "mode10MHz": 2,
-            "modePPS": 2,
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "bc-1"
-            },
-            "phyLedsCtl": 0,
-            "priority2": 128,
-            "src10MHz": 1,
-            "srcPPS": 1,
-            "syncOption": 1,
-            "synceCpu": 10,
-            "synceRecClkPort": 0,
-            "tracePtpMsg": -1,
-            "twoStep": 0
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsNode",
-          "metadata": {
-            "name": "worker2"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsOperatorConfig",
-          "metadata": {
-            "name": "sts-operator-config",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "images": {},
-            "sro": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/silicomltd/silicom-sts-operator@sha256:3d60984e2c198e8defe3cbd56dd784d2bdf0b30c9b4cfcd1709f19e10aa227b5",
-      "bundle_path_digest": "sha256:3d60984e2c198e8defe3cbd56dd784d2bdf0b30c9b4cfcd1709f19e10aa227b5",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-05-17T19:48:15.422000+00:00",
-      "csv_description": "Silicom STS line card for 4G and 5G NIC enable real-time data transmission\nwith high timing accuracy at the lowest cost to power 5G DRAN and CRAN edge\ndeployments.\n\n* Support 1588/PTP over IPv4 / IPV6, IEEE1588v2\n* Support SyncE /ITU-T G.8262\n* T-BC/T-TSC Boundary Clock and TSC Slave Clock /G.8273.2\n* T-GM Grand Master /G.8273.1 per G.8275.1 PTP Profile\n* PRTC Primary Reference Time Clock Class B/G.8272\n* T-TC Transparent Clock /G.8273.3\n* 1588 Software Stack and Servo Software in x86\n* [Silicom STS2 Card](https://www.silicom-usa.com/pr/server-adapters/networking-adapters/10-gigabit-ethernet-networking-adapters/p410g8ts81-timesync-server-adapter)\n\n### Prequisites:\n* [NFD Operator](https://operatorhub.io/operator/nfd-operator \"NFD operator needed for the discovery of STS cards\").\n* [SRO Operator](https://github.com/openshift/special-resource-operator)\n",
-      "csv_display_name": "Silicom STS Operator",
-      "csv_metadata_description": "This Operator is a Kubernetes custom controller whose goal\nis to serve the installation and lifecycle management of\nSilicom STS device plugins for Kubernetes.\n",
-      "csv_name": "silicom-sts-operator.v0.0.7",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:53:56.654000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "silicom-sts-operator",
-      "provided_apis": [
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsConfig",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsNode",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsOperatorConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Silicom Ltd.",
-      "related_images": [
-        {
-          "digest": "sha256:649e8a6c524920e1c564d8f797b8d64235b2527aa923f94bc9c7a0b7aba8ae7f",
-          "image": "quay.io/silicom/gpsd@sha256:649e8a6c524920e1c564d8f797b8d64235b2527aa923f94bc9c7a0b7aba8ae7f",
-          "name": "gpsd"
-        },
-        {
-          "digest": "sha256:0f3b63a3059b7d6158a916814281097f0d418b99a5fac9e8e5fd9bae58fb0b74",
-          "image": "quay.io/silicom/phc2sys@sha256:0f3b63a3059b7d6158a916814281097f0d418b99a5fac9e8e5fd9bae58fb0b74",
-          "name": "phc2sys"
-        },
-        {
-          "digest": "sha256:78be78ec8939f025f9a8b899693ab77b3990116d1c7ffb2115c620b7c3382d9d",
-          "image": "quay.io/silicom/tsyncd@sha256:78be78ec8939f025f9a8b899693ab77b3990116d1c7ffb2115c620b7c3382d9d",
-          "name": "tsyncd"
-        },
-        {
-          "digest": "sha256:aac7233423439e352d8eb39cef63e479c30c2f80b063c84ffc8797cc5a045117",
-          "image": "quay.io/silicom/grpc-tsyncd@sha256:aac7233423439e352d8eb39cef63e479c30c2f80b063c84ffc8797cc5a045117",
-          "name": "grpc-tsyncd"
-        },
-        {
-          "digest": "sha256:be6a5950a5fdc6fdf8015767901856bf173d01bdc803be7141e4f9795ab1478a",
-          "image": "quay.io/silicom/tsync_extts@sha256:be6a5950a5fdc6fdf8015767901856bf173d01bdc803be7141e4f9795ab1478a",
-          "name": "tsync_extts"
-        },
-        {
-          "digest": "sha256:86562c40a07ef8dc198bd53562ae332d89d9ea5d45b8e8aa9d3685bc6f7ee60f",
-          "image": "quay.io/silicom/sts-plugin@sha256:86562c40a07ef8dc198bd53562ae332d89d9ea5d45b8e8aa9d3685bc6f7ee60f",
-          "name": "sts-plugin"
-        },
-        {
-          "digest": "sha256:6bb07b26f669d9fe853a06a0262c5ee033fbb26bab202d84572b099ef852751c",
-          "image": "quay.io/silicom/ice-driver-src@sha256:6bb07b26f669d9fe853a06a0262c5ee033fbb26bab202d84572b099ef852751c",
-          "name": "ice-driver-src"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator-a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5-annotation"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.0.7",
-      "version_original": "0.0.7"
     },
     {
       "_id": "628670c65a88c04949a66fd5",
@@ -14573,9 +13082,684 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "8.5.4",
       "version_original": "8.5.4"
+    },
+    {
+      "_id": "62982cca8c1a626fc9ae9740",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Xl",
+          "metadata": {
+            "name": "xl-release"
+          },
+          "spec": {
+            "global": {
+              "customImageNames": false,
+              "repository": "registry.connect.redhat.com/turbonomic",
+              "tag": "8.5.3"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:de272015802808cfe5784f1d1326ccce008179d35f39793bb4a6b92d914bf72f",
+      "bundle_path_digest": "sha256:de272015802808cfe5784f1d1326ccce008179d35f39793bb4a6b92d914bf72f",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-06-02T03:21:46.005000+00:00",
+      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
+      "csv_display_name": "Turbonomic Platform Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "t8c-operator.v42.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:24:22.986000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "t8c-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:5721ddea33cb3cdb4562f9f8867fb1a2de8c7bc51db077459054557bd094dfa6",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:5721ddea33cb3cdb4562f9f8867fb1a2de8c7bc51db077459054557bd094dfa6",
+          "name": "t8c-operator-5721ddea33cb3cdb4562f9f8867fb1a2de8c7bc51db077459054557bd094dfa6-annotation"
+        },
+        {
+          "digest": "sha256:5721ddea33cb3cdb4562f9f8867fb1a2de8c7bc51db077459054557bd094dfa6",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:5721ddea33cb3cdb4562f9f8867fb1a2de8c7bc51db077459054557bd094dfa6",
+          "name": "t8c-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "42.10.0",
+      "version_original": "42.10.0"
+    },
+    {
+      "_id": "62982cd48c1a626fc9ae9749",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
+      "bundle_path_digest": "sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-06-02T03:21:56.485000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:03:42.609000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "8.5.4",
+      "version_original": "8.5.4"
+    },
+    {
+      "_id": "62982d74554afbde4c9b9388",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
+      "bundle_path_digest": "sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-06-02T03:24:36.584000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:02:02.462000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "8.5.4",
+      "version_original": "8.5.4"
+    },
+    {
+      "_id": "62982d9d8c1a626fc9ae97b9",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
+      "bundle_path_digest": "sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-06-02T03:25:17.647000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:05:31.996000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "8.5.4",
+      "version_original": "8.5.4"
+    },
+    {
+      "_id": "62982db58c1a626fc9ae97c6",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
+      "bundle_path_digest": "sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-06-02T03:25:41.377000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:57:27.837000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "8.5.4",
+      "version_original": "8.5.4"
+    },
+    {
+      "_id": "629830e0e0c0938179ef42a9",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
+      "bundle_path_digest": "sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-06-02T03:39:12.098000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:55:42.794000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "8.5.4",
+      "version_original": "8.5.4"
+    },
+    {
+      "_id": "629852008c1a626fc9aea927",
+      "alm_examples": [
+        {
+          "api_version": "ibm.com/v1",
+          "kind": "IBMSecurityVerify",
+          "metadata": {
+            "name": "ibmsecurityverify-sample"
+          },
+          "spec": {
+            "clientSecret": "--secret--",
+            "sessionLifetime": 3600,
+            "ssoPath": "/verify-sso"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/verify-operator-bundle@sha256:0deef311d65c60bedc0af39fb6dfde09b0b1a60825eaa37188b21b5a692397e9",
+      "bundle_path_digest": "sha256:0deef311d65c60bedc0af39fb6dfde09b0b1a60825eaa37188b21b5a692397e9",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-06-02T06:00:32.638000+00:00",
+      "csv_description": "[IBM Security Verify](https://www.ibm.com/products/verify-saas) is an Identity-as-a-Service platform that allows IT, security and business leaders to protect their digital users, assets and data in a hybrid, multi-cloud world by enabling technical agility and operational efficiency. IBM Security Verify SaaS provides single sign-on (SSO), multi-factor authentication (MFA), AI-powered context for risk-based authentication for adaptive access decisions, user management, access recertification campaigns and identity analytics.\n\nAs part of using Red Hat OpenShift, you are entitled to Verify SaaS SSO for unlimited apps and users.  If you do not already have a Verify SaaS SSO tenant a new one can be [created](https://www.ibm.com/account/reg/us-en/signup?formid=urx-51255).\n\nFor a detailed description of IBM Security Verify refer to the [Official documentation](https://www.ibm.com/docs/en/security-verify).\n\nThe IBM Security Verify operator can consistently enforce policy-driven security by using the Ingress networking capability of OpenShift in conjunction with the [Nginx Ingress operator](https://www.nginx.com/blog/getting-started-nginx-ingress-operator-red-hat-openshift/). With this approach, you can enforce authentication and authorization policies for all of the applications in your cluster at the same time, without ever changing your application code. You can also dynamically register your application to start protecting them centrally from the cloud via Verify SaaS. \n\nSee the project [Readme](https://github.com/IBM-Security/verify-operator/blob/master/README.md) for further information and details.\n\n",
+      "csv_display_name": "IBM Security Verify Operator",
+      "csv_metadata_description": "The IBM Security Verify operator can consistently enforce policy-driven security, including authentication and authorization, using the Ingress networking capability of OpenShift.",
+      "csv_name": "ibm-security-verify-operator.v22.6.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:12:20.158000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "ibm-security-verify-operator",
+      "provided_apis": [
+        {
+          "group": "ibm.com",
+          "kind": "IBMSecurityVerify",
+          "version": "v1"
+        }
+      ],
+      "provider": "IBM",
+      "related_images": [
+        {
+          "digest": "sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
+          "image": "ibmcom/verify-operator@sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
+          "name": "verify-operator-3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a-annotation"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
+          "image": "ibmcom/verify-operator@sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "22.6.0",
+      "version_original": "22.6.0"
     }
   ],
   "page": 32,
   "page_size": 100,
-  "total": 4887
+  "total": 4900
 }
