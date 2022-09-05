@@ -161,19 +161,18 @@ There are several required arguments:
 * `-o` gives the local directory that the test results will be available in once the container exits. This directory must exist in order for the claim file to be written.
 
 Optional arguments are:
-* `-f` gives the list of suites to be run, space separated.
-* `-s` gives the name of tests that should be skipped. This flag is discarded if no `-f` was set.
+* `-l` gives the list of labels to be run. See [Ginkgo Spec Labels](https://onsi.github.io/ginkgo/#spec-labels) for more information on how to filter tests with labels.
 * `-i` gives a name to a custom TNF container image. Supports local images, as well as images from external registries.
 * `-k` gives a path to one or more kubeconfig files to be used by the container to authenticate with the cluster. Paths must be separated by a colon.
 * `-n` gives the network mode of the container. Defaults set to `host`, which requires selinux to be disabled. Alternatively, `bridge` mode can be used with selinux if TNF_CONTAINER_CLIENT is set to `docker` or running the test as root. See the [docker run --network parameter reference](https://docs.docker.com/engine/reference/run/#network-settings) for more information on how to configure network settings.
 
-If `-f` is not specified, the tnf will run in 'diagnostic' mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc...) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds...
+If `-l` is not specified, the tnf will run in 'diagnostic' mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc...) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds...
 
 If `-k` is not specified, autodiscovery is performed.
 The autodiscovery first looks for paths in the `$KUBECONFIG` environment variable on the host system, and if the variable is not set or is empty, the default configuration stored in `$HOME/.kube/config` is checked.
 
 ```shell script
-./run-tnf-container.sh -k ~/.kube/config -t ~/tnf/config -o ~/tnf/output -f networking access-control -s access-control-host-resource-PRIVILEGED_POD
+./run-tnf-container.sh -k ~/.kube/config -t ~/tnf/config -o ~/tnf/output -l "networking,access-control"
 ```
 
 See [General tests](#general-tests) for a list of available keywords.
@@ -211,7 +210,7 @@ docker build -t cnf-certification-test:v1.0.5 \
 To make `run-tnf-container.sh` use the newly built image, specify the custom TNF image using the `-i` parameter.
 
 ```shell script
-./run-tnf-container.sh -i test-network-function:v1.0.5 -t ~/tnf/config -o ~/tnf/output -f networking access-control
+./run-tnf-container.sh -i test-network-function:v1.0.5 -t ~/tnf/config -o ~/tnf/output -l "networking,access-control"
 ```
  Note: see [General tests](#general-tests) for a list of available keywords.
 
@@ -271,14 +270,14 @@ script.
 Run any combination of the suites keywords listed at in the [General tests](#general-tests) section, e.g.
 
 ```shell script
-./run-cnf-suites.sh -f lifecycle
-./run-cnf-suites.sh -f networking lifecycle
-./run-cnf-suites.sh -f operator networking
-./run-cnf-suites.sh -f networking platform-alteration
-./run-cnf-suites.sh -f networking lifecycle affiliated-certification operator
+./run-cnf-suites.sh -l "lifecycle"
+./run-cnf-suites.sh -l "networking,lifecycle"
+./run-cnf-suites.sh -l "operator,networking"
+./run-cnf-suites.sh -l "networking,platform-alteration"
+./run-cnf-suites.sh -l "networking,lifecycle,affiliated-certification,operator"
 ```
 
-As with "run-tnf-container.sh", if `-f` is not specified here, the tnf will run in 'diagnostic' mode. See [Run the tests](#run-the-tests) section for more info.
+As with "run-tnf-container.sh", if `-l` is not specified here, the tnf will run in 'diagnostic' mode. See [Run the tests](#run-the-tests) section for more info.
 
 By default the claim file will be output into the same location as the test executable. The `-o` argument for
 `run-cnf-suites.sh` can be used to provide a new location that the output files will be saved to. For more detailed
@@ -296,13 +295,12 @@ a single test.
 
 You can select the test to be executed when running `run-cnf-suites.sh` with the following command-line:
 ```shell script
-./run-cnf-suites.sh -f operator -l operator-install-source
+./run-cnf-suites.sh -l operator-install-source
 ```
 
-Note that the `-l` parameter will be treated as a regular expression, so you can select more than one test by
-their labels.
+Note that the test labels work the same as the suite labels, so you can select more than one test with the filtering mechanism shown before.
 
-You can find all test labels by running the following command:
+You can find all the labels attached to the tests by running the following command:
 ```shell script
 ./run-cnf-suites.sh --list
 ```

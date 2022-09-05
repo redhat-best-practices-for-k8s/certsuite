@@ -48,7 +48,7 @@ usage() {
 	  -n: set the network mode of the container.
 	  -d: set the DNS resolver address for the test containers started by docker, may be required with 
 	      certain docker version if the kubeconfig contains host names
-    -f: Set the test labels that should be tested
+	  -l: Set the test labels that should be tested
 
 	Kubeconfig lookup order
 	  1. If -k is specified, use the paths provided with the -k option.
