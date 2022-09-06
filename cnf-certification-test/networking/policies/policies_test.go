@@ -187,7 +187,7 @@ func TestLabelsMatch(t *testing.T) {
 		testPodLabels         map[string]string
 		expectedOutput        bool
 	}{
-		{
+		{ // Test Case #1 - Happy path, same label, same value
 			testPodSelectorLabels: metav1.LabelSelector{
 				MatchLabels: map[string]string{
 					"label1": "value1",
@@ -198,7 +198,7 @@ func TestLabelsMatch(t *testing.T) {
 			},
 			expectedOutput: true,
 		},
-		{
+		{ // Test Case #2 - different labels, different values
 			testPodSelectorLabels: metav1.LabelSelector{
 				MatchLabels: map[string]string{
 					"label1": "value1",
@@ -206,6 +206,17 @@ func TestLabelsMatch(t *testing.T) {
 			},
 			testPodLabels: map[string]string{
 				"label2": "value2",
+			},
+			expectedOutput: false,
+		},
+		{ // Test Case #3 - same label, different value
+			testPodSelectorLabels: metav1.LabelSelector{
+				MatchLabels: map[string]string{
+					"label1": "value1",
+				},
+			},
+			testPodLabels: map[string]string{
+				"label1": "value2",
 			},
 			expectedOutput: false,
 		},
