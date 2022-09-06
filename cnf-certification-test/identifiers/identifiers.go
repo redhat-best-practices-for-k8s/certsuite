@@ -115,6 +115,7 @@ The label value is not important, only its presence.`,
 
 	TestNetworkPolicyDenyAllIdentifier = AddCatalogEntry(
 		"network-policy-deny-all",
+		common.NetworkingTestKey,
 		`Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic`,
 		NetworkPolicyDenyAllRemediation,
 		informativeResult,
