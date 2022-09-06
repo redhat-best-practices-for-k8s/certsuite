@@ -20,13 +20,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type TesterFuncs interface {
-	AreResourcesIdentical() bool
-	AreCPUResourcesWholeUnits() bool
-	IsRuntimeClassNameSpecified() bool
-	LoadBalancingDisabled() bool
-}
-
 func AreResourcesIdentical(p *Pod) bool {
 	// Pods may contain more than one container.  All containers must conform to the CPU isolation requirements.
 	for _, cut := range p.Containers {

@@ -500,15 +500,15 @@ func (p *Pod) String() string {
 	)
 }
 
-func (p *Pod) IsCPUIsolationEnabled() bool {
-	return LoadBalancingDisabled(p) && AreResourcesIdentical(p)
+func (p *Pod) IsPodGuaranteed() bool {
+	return AreCPUResourcesWholeUnits(p) && AreResourcesIdentical(p)
 }
 
 func (p *Pod) IsCPUIsolationCompliant() bool {
 	isCPUIsolated := true
 
-	if !AreCPUResourcesWholeUnits(p) {
-		errMsg := fmt.Sprintf("%s has been found to not have CPU resources that are whole units.", p.String())
+	if !LoadBalancingDisabled(p) {
+		errMsg := fmt.Sprintf("%s has been found to not have annotations set correctly for CPU isolation.", p.String())
 		logrus.Debugf(errMsg)
 		tnf.ClaimFilePrintf(errMsg)
 		isCPUIsolated = false

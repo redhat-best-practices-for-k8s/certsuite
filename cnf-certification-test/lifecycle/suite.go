@@ -149,7 +149,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testPodPersistentVolumeReclaimPolicy(&env)
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCPUIsolation)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCPUIsolationIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		testCPUIsolation(&env)
@@ -495,23 +495,23 @@ func testCPUIsolation(env *provider.TestEnvironment) {
 	ginkgo.By("Testing pods for CPU isolation requirements")
 
 	// Individual requirements we are looking for:
-	// - Annotations must be provided disabling CPU and IRQ load-balancing.
+	//  - CPU Requests and Limits must be in the form of whole units
 	// - Resource Requests and Limits must be provided and identical
 
 	// Additional checks if the above pass
-	// - CPU Requests and Limits must be in the form of whole units
 	// - 'runtimeClassName' must be specified
+	// - Annotations must be provided disabling CPU and IRQ load-balancing.
 
 	podsMissingIsolationRequirements := make(map[string]bool)
 
 	for _, put := range env.Pods {
-		if put.IsCPUIsolationEnabled() && !put.IsCPUIsolationCompliant() {
+		if put.IsPodGuaranteed() && !put.IsCPUIsolationCompliant() {
 			podsMissingIsolationRequirements[put.Data.Name] = true
 		}
 	}
 
 	if n := len(podsMissingIsolationRequirements); n > 0 {
-		errMsg := fmt.Sprintf("Number of pods found that are not compliant with CPU isolation requirements: %d. See logs for more detail.", n)
+		errMsg := fmt.Sprintf("Number of guaranteed pods found that are not compliant with CPU isolation requirements: %d. See logs for more detail.", n)
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
 	}

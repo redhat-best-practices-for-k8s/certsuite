@@ -508,7 +508,7 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "ssh-daemons"),
 		Version: versionOne,
 	}
-	TestCPUIsolation = claim.Identifier{
+	TestCPUIsolationIdentifier = claim.Identifier{
 		Tags:    formTestTags(tagCommon),
 		Url:     formTestURL(common.LifecycleTestKey, "cpu-isolation"),
 		Version: versionOne,
@@ -1192,10 +1192,10 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
 	},
-	TestCPUIsolation: {
-		Identifier: TestCPUIsolation,
+	TestCPUIsolationIdentifier: {
+		Identifier: TestCPUIsolationIdentifier,
 		Type:       informativeResult,
-		Description: formDescription(TestCPUIsolation, `CPU isolation requires: For each container within the pod, resource requests and limits must be identical.
+		Description: formDescription(TestCPUIsolationIdentifier, `CPU isolation requires: For each container within the pod, resource requests and limits must be identical.
 		Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.`),
 		Remediation:           CPUIsolationRemediation,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.5.5",
