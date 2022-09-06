@@ -51,8 +51,8 @@ func AreResourcesIdentical(p *Pod) bool {
 }
 
 func AreCPUResourcesWholeUnits(p *Pod) bool {
-	isInteger := func(val float64) bool {
-		return val == float64(int(val))
+	isInteger := func(val int64) bool {
+		return val%1000 == 0
 	}
 
 	// Pods may contain more than one container.  All containers must conform to the CPU isolation requirements.
@@ -64,15 +64,15 @@ func AreCPUResourcesWholeUnits(p *Pod) bool {
 		}
 
 		// Gather the values
-		cpuRequests := cut.Data.Resources.Requests.Cpu().AsApproximateFloat64()
-		cpuLimits := cut.Data.Resources.Limits.Cpu().AsApproximateFloat64()
+		cpuRequests := cut.Data.Resources.Requests.Cpu().MilliValue()
+		cpuLimits := cut.Data.Resources.Limits.Cpu().MilliValue()
 
 		if !isInteger(cpuRequests) {
-			logrus.Debugf("%s has CPU requests %f that has to be a whole unit.", cut.String(), cpuRequests)
+			logrus.Debugf("%s has CPU requests %d (milli) that has to be a whole unit.", cut.String(), cpuRequests)
 			return false
 		}
 		if !isInteger(cpuLimits) {
-			logrus.Debugf("%s has CPU limits %f that has to be a whole unit.", cut.String(), cpuLimits)
+			logrus.Debugf("%s has CPU limits %d (milli) that has to be a whole unit.", cut.String(), cpuLimits)
 			return false
 		}
 	}

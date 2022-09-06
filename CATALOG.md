@@ -5,22 +5,6 @@ The catalog for cnf-certification-test contains a variety of `Test Cases`, which
 
 Test Cases are the specifications used to perform a meaningful test.  Test cases may run once, or several times against several targets.  CNF Certification includes a number of normative and informative tests to ensure CNFs follow best practices.  Here is the list of available Test Cases:
 
-### Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic
-
-#### network-policy-deny-all
-
-Property|Description
----|---
-Test Case Name|network-policy-deny-all
-Test Case Label|Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic-network-policy-deny-all
-Unique ID|http://test-network-function.com/testcases/Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic/network-policy-deny-all
-Version|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 10.6
-Description|http://test-network-function.com/testcases/Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic/network-policy-deny-all Ensure that a NetworkPolicy with a default deny-all is applied. After the default is applied, apply a network policy to allow the traffic your application requires.
-Result Type|There is no documented exception process for this.
-Suggested Remediation|informative
-Best Practice Reference|common
-Exception Process|v1.0.0
-
 ### access-control
 
 #### cluster-role-bindings
@@ -606,6 +590,19 @@ Description|http://test-network-function.com/testcases/networking/iptables Check
 Result Type|normative
 Suggested Remediation|Do not configure iptables on any CNF container.
 Best Practice Reference|https://TODO Section 4.6.23
+Exception Process|There is no documented exception process for this.
+#### network-policy-deny-all
+
+Property|Description
+---|---
+Test Case Name|network-policy-deny-all
+Test Case Label|networking-network-policy-deny-all
+Unique ID|http://test-network-function.com/testcases/networking/network-policy-deny-all
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/networking/network-policy-deny-all Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic
+Result Type|informative
+Suggested Remediation|Ensure that a NetworkPolicy with a default deny-all is applied. After the default is applied, apply a network policy to allow the traffic your application requires.
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 10.6
 Exception Process|There is no documented exception process for this.
 #### nftables
 
