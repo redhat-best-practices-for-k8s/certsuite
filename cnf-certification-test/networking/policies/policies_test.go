@@ -180,3 +180,49 @@ func TestIsNetworkPolicyCompliant(t *testing.T) {
 		assert.Equal(t, tc.expectedIngressOutput, IsNetworkPolicyCompliant(&tc.testNP, networkingv1.PolicyTypeIngress))
 	}
 }
+
+func TestLabelsMatch(t *testing.T) {
+	testCases := []struct {
+		testPodSelectorLabels metav1.LabelSelector
+		testPodLabels         map[string]string
+		expectedOutput        bool
+	}{
+		{ // Test Case #1 - Happy path, same label, same value
+			testPodSelectorLabels: metav1.LabelSelector{
+				MatchLabels: map[string]string{
+					"label1": "value1",
+				},
+			},
+			testPodLabels: map[string]string{
+				"label1": "value1",
+			},
+			expectedOutput: true,
+		},
+		{ // Test Case #2 - different labels, different values
+			testPodSelectorLabels: metav1.LabelSelector{
+				MatchLabels: map[string]string{
+					"label1": "value1",
+				},
+			},
+			testPodLabels: map[string]string{
+				"label2": "value2",
+			},
+			expectedOutput: false,
+		},
+		{ // Test Case #3 - same label, different value
+			testPodSelectorLabels: metav1.LabelSelector{
+				MatchLabels: map[string]string{
+					"label1": "value1",
+				},
+			},
+			testPodLabels: map[string]string{
+				"label1": "value2",
+			},
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, LabelsMatch(tc.testPodSelectorLabels, tc.testPodLabels))
+	}
+}
