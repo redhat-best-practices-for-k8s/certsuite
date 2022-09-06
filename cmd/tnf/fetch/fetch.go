@@ -155,6 +155,7 @@ func serializeData(data CertifiedCatalog) {
 	}
 	log.Info("serialization time", time.Since(start))
 }
+
 func getOperatorCatalogSize() (size, pagesize uint, err error) {
 	log.Infof("Getting operators catalog size, url: %s", operatorsCatalogSizeURL)
 
@@ -173,12 +174,25 @@ func getOperatorCatalogSize() (size, pagesize uint, err error) {
 	return aCatalog.Total, aCatalog.PageSize, nil
 }
 
-func getOperatorCatalogPage(page, size uint) error {
+func getOperatorCatalogPage(page, size uint, isLastPage bool) error {
+	const (
+		excludeFilter            = "&exclude=page,total,page_size"
+		excludeFilterForLastPage = "&exclude=page,page_size"
+	)
+
 	path, err := os.Getwd()
 	if err != nil {
 		return fmt.Errorf("failed to get working directory: %w", err)
 	}
+
 	url := fmt.Sprintf(operatorsCatalogPageURL, size, page)
+	// Add "total" count only in the last page.
+	if isLastPage {
+		url += excludeFilterForLastPage
+	} else {
+		url += excludeFilter
+	}
+
 	log.Infof("Getting operators catalog page %d, url: %s", page, url)
 
 	body, err := getHTTPBody(url)
@@ -199,6 +213,7 @@ func getOperatorCatalogPage(page, size uint) error {
 	return nil
 }
 
+//nolint:funlen
 func getOperatorCatalog(data *CertifiedCatalog) error {
 	start := time.Now()
 	total, pageSize, err := getOperatorCatalogSize()
@@ -223,13 +238,14 @@ func getOperatorCatalog(data *CertifiedCatalog) error {
 		pages, pageSize, remaining)
 
 	for page := uint(0); page < pages; page++ {
-		err = getOperatorCatalogPage(page, pageSize)
+		isLastPage := remaining == 0 && page == (pages-1)
+		err = getOperatorCatalogPage(page, pageSize, isLastPage)
 		if err != nil {
 			return fmt.Errorf("failed to get operators page %d (total %d)", page, total)
 		}
 	}
 	if remaining != 0 {
-		err = getOperatorCatalogPage(pages, remaining)
+		err = getOperatorCatalogPage(pages, remaining, true)
 		if err != nil {
 			return fmt.Errorf("failed to get remaining operators page %d (total %d)", pages, total)
 		}
