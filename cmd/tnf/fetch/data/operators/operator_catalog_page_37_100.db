@@ -1,1218 +1,6 @@
 {
   "data": [
     {
-      "_id": "62cee2eee42974b7999e4d32",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "bootstrapperImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise-operator"
-            },
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise",
-              "versionTag": "6.2.10-107.rhel8-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "redisEnterpriseServicesRiggerImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/services-manager"
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a6a5a8925abe7ed7899b1c0cbfa7808223ad5a641adf6d537dbc197be3eb6c16",
-      "bundle_path_digest": "sha256:a6a5a8925abe7ed7899b1c0cbfa7808223ad5a641adf6d537dbc197be3eb6c16",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-07-13T15:21:18.066000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n*  Changing the name of the Redis Enterprise Cluster in the spec from the\n  default requires running commands to grant permissions to the pods:\n\n  Operator service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\n    Redis Enterprise Cluster service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\n    Replace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.\n\n* When creating a Redis Enterprise Cluster without specifying in its spec a `persistentSpec` with explicit `storageClassName`,\nthe default Storage Class of the Kubernetes cluster will be used to dynamically provision storage for the Redis Enterprise Cluster's nodes.\nHowever, if the Kubernetes cluster doesn't have a default Storage Class configured\nand no specific Storage Class was specified in the Redis Enterprise Cluster Spec, the installation of the cluster could fail.\nTo avoid such scenario in cases where a specific Storage Class isn't specified, make sure the Kubernetes Cluster has a default Storage Cluster configured.\nThis can be done by running a `kubectl get storageclass` command and see if one of the Storage Classes' names contains a `(default)` mark.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.10-34",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:19:56.602000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis",
-      "related_images": [
-        {
-          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "name": "redis-enterprise-operator-53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb-annotation"
-        },
-        {
-          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:53b008cecf3807d51f027f21029b63dc5ad8c002c5278554ce79c008f1b97bbb",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.2.10-34",
-      "version_original": "6.2.10-34"
-    },
-    {
-      "_id": "62cee2eec942619c6bc53d0f",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.20-97.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:5666acf5598f96dfbfac5704bb70e6578522979ef63b418ed2d1438a32d2440f",
-      "bundle_path_digest": "sha256:5666acf5598f96dfbfac5704bb70e6578522979ef63b418ed2d1438a32d2440f",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-07-13T15:21:18.377000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.20-12a",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:38:11.936000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "name": "redis-enterprise-operator-f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730-annotation"
-        },
-        {
-          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.20-12a",
-      "version_original": "6.0.20-12a"
-    },
-    {
-      "_id": "62cee2eee42974b7999e4d34",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.6-39.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
-      "bundle_path_digest": "sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-07-13T15:21:18.445000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-24",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:46:02.691000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "image": "redislabs/operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "name": "operator-998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b-annotation"
-        },
-        {
-          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.6-24",
-      "version_original": "6.0.6-24"
-    },
-    {
-      "_id": "62cee2eefe766184e15e98d0",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-07-13T15:21:18.797000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-6",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:42:56.693000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "",
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.6-6",
-      "version_original": "6.0.6-6"
-    },
-    {
-      "_id": "62cee2eefe766184e15e98d2",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.4-55.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
-      "bundle_path_digest": "sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-07-13T15:21:18.858000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.4-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:56:07.609000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "redis-enterprise-operator-8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9-annotation"
-        },
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.2.4-1",
-      "version_original": "6.2.4-1"
-    },
-    {
-      "_id": "62cee2effe766184e15e98d5",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.8-41.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:cf89cfbb1c39ac9a7fd925f1e8b5bec94535e4eb64dd6e2da102e9f7b44f9f5e",
-      "bundle_path_digest": "sha256:cf89cfbb1c39ac9a7fd925f1e8b5bec94535e4eb64dd6e2da102e9f7b44f9f5e",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-07-13T15:21:19.273000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.8-2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:53:47.188000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis",
-      "related_images": [
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "redis-enterprise-operator-f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353-annotation"
-        },
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.2.8-2",
-      "version_original": "6.2.8-2"
-    },
-    {
-      "_id": "62cee2efc942619c6bc53d12",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "bootstrapperImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise-operator"
-            },
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise",
-              "versionTag": "6.2.10-90.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "redisEnterpriseServicesRiggerImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/services-manager"
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:95644b2ccc560118c16350bcd4380db7c08d97258bf1034387e96a9b1814fef5",
-      "bundle_path_digest": "sha256:95644b2ccc560118c16350bcd4380db7c08d97258bf1034387e96a9b1814fef5",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-07-13T15:21:19.316000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.10-4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:40:17.850000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis",
-      "related_images": [
-        {
-          "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
-          "name": "redis-enterprise-operator-97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31-annotation"
-        },
-        {
-          "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.2.10-4",
-      "version_original": "6.2.10-4"
-    },
-    {
-      "_id": "62cee2effe766184e15e98d8",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.6-39.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
-      "bundle_path_digest": "sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-07-13T15:21:19.760000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-24",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:49:43.392000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "image": "redislabs/operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "name": "operator-998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b-annotation"
-        },
-        {
-          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.6-24",
-      "version_original": "6.0.6-24"
-    },
-    {
-      "_id": "62cee2f0f403f71942667f73",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
-      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-07-13T15:21:20.176000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-11",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:14:30.486000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "",
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.6-11",
-      "version_original": "6.0.6-11"
-    },
-    {
-      "_id": "62cefa01fe766184e15e9d76",
-      "alm_examples": [
-        {
-          "api_version": "charts.konghq.com/v1alpha1",
-          "kind": "Kong",
-          "metadata": {
-            "name": "example-kong"
-          },
-          "spec": {
-            "env": {
-              "prefix": "/kong_prefix/"
-            },
-            "ingressController": {
-              "enabled": true,
-              "installCRDs": false
-            },
-            "proxy": {
-              "type": "NodePort"
-            },
-            "resources": {
-              "limits": {
-                "cpu": "500m",
-                "memory": "2G"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "512Mi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/kong/kong-offline-operator1-bundle@sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
-      "bundle_path_digest": "sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-07-13T16:59:45.100000+00:00",
-      "csv_description": "Kong is a popular open-source cloud-native API gateway. Kong Operator is a Kubernetes operator which manages [Kong](https://konghq.com/kong/) and [Kong Enterprise](https://konghq.com/products/kong-enterprise/) clusters.\n\nKong Operator can deploy Kong in various configurations, for example:\n* as a [Kubernetes ingress controller](https://github.com/Kong/kubernetes-ingress-controller), enabling you to expose Kubernetes `Service`s via Kong,\n* a standalone Kong gateway (without the ingress controller; either DB-enabled or DB-less)\n* a standalone Ingress Controller (configuring an external instance of Kong)\n\nThose configurations are further described in the [_Deployment Options_](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md#deployment-options) section of documentation.\n\n### Quick Start\n\nThe [Quick Start guide](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#quick-start) uses Kong Operator to deploy\nour recommended Kong setup for Kubernetes users (Kong DB-less with Ingress Controller), which includes an instance of Kong\nserving as a proxy to an example Kubernetes service.\n\n### Documentation\n\nThe primary documentation site for Kong Operator is located [in its GitHub repository](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md).\n\nKong Operator provides the same configuration flexibility as the Kong Helm chart.\nRefer to the [Helm chart documentation](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md),\nthe [Configuration](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#configuration) section of Kong Operator docs, and the example `Kong` resource below.\n\n### Upgrading from versions 0.8.0 and earlier\n\n0.10.0 changes the operator CRD to comply with Kubernetes requirements. Upgrades require manual work to move configuration into the new CRs.\nSee the [0.10.0 upgrade guide](https://github.com/Kong/kong-operator/blob/main/CHANGELOG.md#upgrading-from-previous-versions)\nfor steps to upgrade past 0.8.0.\n",
-      "csv_display_name": "Kong Operator",
-      "csv_metadata_description": "The world\u2019s most popular open source API gateway. Built for multi-cloud and hybrid, optimized for microservices and distributed architectures.",
-      "csv_name": "kong.v0.10.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:03:17.762000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "kong-offline-operator",
-      "provided_apis": [
-        {
-          "group": "charts.konghq.com",
-          "kind": "Kong",
-          "plural": "kongs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Kong Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "name": "kong-offline-operator1-df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d-annotation"
-        },
-        {
-          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "name": "kong-operator"
-        },
-        {
-          "digest": "sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
-          "image": "registry.connect.redhat.com/kong/kong@sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
-          "name": "kong"
-        },
-        {
-          "digest": "sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
-          "image": "registry.connect.redhat.com/kong/kong-ingress-controller@sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
-          "name": "kong_controller"
-        },
-        {
-          "digest": "sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
-          "image": "registry.access.redhat.com/ubi8/ubi@sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
-          "name": "utility"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.10.1",
-      "version_original": "0.10.1"
-    },
-    {
-      "_id": "62cefd626537ee32f3d7789f",
-      "alm_examples": [
-        {
-          "api_version": "charts.konghq.com/v1alpha1",
-          "kind": "Kong",
-          "metadata": {
-            "name": "example-kong"
-          },
-          "spec": {
-            "env": {
-              "prefix": "/kong_prefix/"
-            },
-            "ingressController": {
-              "enabled": true,
-              "installCRDs": false
-            },
-            "proxy": {
-              "type": "NodePort"
-            },
-            "resources": {
-              "limits": {
-                "cpu": "500m",
-                "memory": "2G"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "512Mi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/kong/kong-offline-operator1-bundle@sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
-      "bundle_path_digest": "sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-07-13T17:14:10.048000+00:00",
-      "csv_description": "Kong is a popular open-source cloud-native API gateway. Kong Operator is a Kubernetes operator which manages [Kong](https://konghq.com/kong/) and [Kong Enterprise](https://konghq.com/products/kong-enterprise/) clusters.\n\nKong Operator can deploy Kong in various configurations, for example:\n* as a [Kubernetes ingress controller](https://github.com/Kong/kubernetes-ingress-controller), enabling you to expose Kubernetes `Service`s via Kong,\n* a standalone Kong gateway (without the ingress controller; either DB-enabled or DB-less)\n* a standalone Ingress Controller (configuring an external instance of Kong)\n\nThose configurations are further described in the [_Deployment Options_](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md#deployment-options) section of documentation.\n\n### Quick Start\n\nThe [Quick Start guide](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#quick-start) uses Kong Operator to deploy\nour recommended Kong setup for Kubernetes users (Kong DB-less with Ingress Controller), which includes an instance of Kong\nserving as a proxy to an example Kubernetes service.\n\n### Documentation\n\nThe primary documentation site for Kong Operator is located [in its GitHub repository](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md).\n\nKong Operator provides the same configuration flexibility as the Kong Helm chart.\nRefer to the [Helm chart documentation](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md),\nthe [Configuration](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#configuration) section of Kong Operator docs, and the example `Kong` resource below.\n\n### Upgrading from versions 0.8.0 and earlier\n\n0.10.0 changes the operator CRD to comply with Kubernetes requirements. Upgrades require manual work to move configuration into the new CRs.\nSee the [0.10.0 upgrade guide](https://github.com/Kong/kong-operator/blob/main/CHANGELOG.md#upgrading-from-previous-versions)\nfor steps to upgrade past 0.8.0.\n",
-      "csv_display_name": "Kong Operator",
-      "csv_metadata_description": "The world\u2019s most popular open source API gateway. Built for multi-cloud and hybrid, optimized for microservices and distributed architectures.",
-      "csv_name": "kong.v0.10.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:59:45.318000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kong-offline-operator",
-      "provided_apis": [
-        {
-          "group": "charts.konghq.com",
-          "kind": "Kong",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Kong Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "name": "kong-offline-operator1-df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d-annotation"
-        },
-        {
-          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "name": "kong-operator"
-        },
-        {
-          "digest": "sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
-          "image": "registry.connect.redhat.com/kong/kong@sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
-          "name": "kong"
-        },
-        {
-          "digest": "sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
-          "image": "registry.connect.redhat.com/kong/kong-ingress-controller@sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
-          "name": "kong_controller"
-        },
-        {
-          "digest": "sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
-          "image": "registry.access.redhat.com/ubi8/ubi@sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
-          "name": "utility"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.10.1",
-      "version_original": "0.10.1"
-    },
-    {
       "_id": "62cefeecc942619c6bc54225",
       "alm_examples": [
         {
@@ -16761,9 +15549,1885 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.10.13+xa8bb1e5",
       "version_original": "1.10.13+xa8bb1e5"
+    },
+    {
+      "_id": "62e1c745e33fbe39ae865ac2",
+      "alm_examples": [
+        {
+          "api_version": "cilium.io/v1alpha1",
+          "kind": "CiliumConfig",
+          "metadata": {
+            "name": "cilium-openshift-default",
+            "namespace": "placeholder"
+          },
+          "spec": {
+            "cni": {
+              "binPath": "/var/lib/cni/bin",
+              "confPath": "/var/run/multus/cni/net.d"
+            },
+            "endpointRoutes": {
+              "enabled": true
+            },
+            "hubble": {
+              "tls": {
+                "enabled": false
+              }
+            },
+            "ipam": {
+              "mode": "cluster-pool",
+              "prometheus": {
+                "serviceMonitor": {
+                  "enabled": false
+                }
+              }
+            },
+            "kubeProxyReplacement": "probe"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:3dbb71004362a70683a5ee9f0916bca75c0d1c351d144677fd9d85bcb2ca8bf7",
+      "bundle_path_digest": "sha256:3dbb71004362a70683a5ee9f0916bca75c0d1c351d144677fd9d85bcb2ca8bf7",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "1.10",
+      "creation_date": "2022-07-27T23:16:21.921000+00:00",
+      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
+      "csv_display_name": "Cilium Enterprise",
+      "csv_metadata_description": "",
+      "csv_name": "cilium.v1.10.13-xed86eae",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-07-27T23:16:21.921000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "cilium-enterprise",
+      "provided_apis": [
+        {
+          "group": "cilium.io",
+          "kind": "CiliumConfig",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "image": "quay.io/isovalent/cilium@sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "name": "cilium"
+        },
+        {
+          "digest": "sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "image": "quay.io/isovalent/hubble-relay@sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "name": "hubble-relay"
+        },
+        {
+          "digest": "sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "image": "quay.io/isovalent/operator-generic@sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "name": "cilium-operator"
+        },
+        {
+          "digest": "sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "image": "quay.io/isovalent/cilium@sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "name": "preflight"
+        },
+        {
+          "digest": "sha256:eb3ee3d2cb07e6c5966e4bc2e50615949303be5d5128e156d5c0dbe8404dc093",
+          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:eb3ee3d2cb07e6c5966e4bc2e50615949303be5d5128e156d5c0dbe8404dc093",
+          "name": "clustermesh"
+        },
+        {
+          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "name": "certgen"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble-ui-backend"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble-ui-frontend"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble-ui-oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd-operator"
+        },
+        {
+          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "name": "nodeinit"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh-etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble-enterprise"
+        },
+        {
+          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "name": "hubble-enterprise-metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble-enterprise-operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble-export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble-export-fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble-export-s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble-rbac"
+        },
+        {
+          "digest": "sha256:cc1f0e6b27ccda8a843dfb7fa4a8fef052ba29716646557815677c5d1bea2a1a",
+          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:cc1f0e6b27ccda8a843dfb7fa4a8fef052ba29716646557815677c5d1bea2a1a",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "image": "quay.io/isovalent/hubble-relay@sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "name": "hubble_relay"
+        },
+        {
+          "digest": "sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "image": "quay.io/isovalent/operator-generic@sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "name": "cilium_operator"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble_ui_be"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble_ui_fe"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble_ui_oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd_operator"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh_etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble_enterprise"
+        },
+        {
+          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "name": "hubble_enterprise_metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble_enterprise_operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble_export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble_export_fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble_export_s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble_rbac"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.10.13+xed86eae",
+      "version_original": "1.10.13+xed86eae"
+    },
+    {
+      "_id": "62e1cb1fea8230d4fd506e73",
+      "alm_examples": [
+        {
+          "api_version": "cilium.io/v1alpha1",
+          "kind": "CiliumConfig",
+          "metadata": {
+            "name": "cilium-openshift-default",
+            "namespace": "placeholder"
+          },
+          "spec": {
+            "cni": {
+              "binPath": "/var/lib/cni/bin",
+              "confPath": "/var/run/multus/cni/net.d"
+            },
+            "endpointRoutes": {
+              "enabled": true
+            },
+            "hubble": {
+              "tls": {
+                "enabled": false
+              }
+            },
+            "ipam": {
+              "mode": "cluster-pool",
+              "prometheus": {
+                "serviceMonitor": {
+                  "enabled": false
+                }
+              }
+            },
+            "kubeProxyReplacement": "probe"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:3dbb71004362a70683a5ee9f0916bca75c0d1c351d144677fd9d85bcb2ca8bf7",
+      "bundle_path_digest": "sha256:3dbb71004362a70683a5ee9f0916bca75c0d1c351d144677fd9d85bcb2ca8bf7",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "1.10",
+      "creation_date": "2022-07-27T23:32:47.237000+00:00",
+      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
+      "csv_display_name": "Cilium Enterprise",
+      "csv_metadata_description": "",
+      "csv_name": "cilium.v1.10.13-xed86eae",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-07-27T23:32:47.237000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "cilium-enterprise",
+      "provided_apis": [
+        {
+          "group": "cilium.io",
+          "kind": "CiliumConfig",
+          "plural": "ciliumconfigs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "image": "quay.io/isovalent/cilium@sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "name": "cilium"
+        },
+        {
+          "digest": "sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "image": "quay.io/isovalent/hubble-relay@sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "name": "hubble-relay"
+        },
+        {
+          "digest": "sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "image": "quay.io/isovalent/operator-generic@sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "name": "cilium-operator"
+        },
+        {
+          "digest": "sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "image": "quay.io/isovalent/cilium@sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "name": "preflight"
+        },
+        {
+          "digest": "sha256:eb3ee3d2cb07e6c5966e4bc2e50615949303be5d5128e156d5c0dbe8404dc093",
+          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:eb3ee3d2cb07e6c5966e4bc2e50615949303be5d5128e156d5c0dbe8404dc093",
+          "name": "clustermesh"
+        },
+        {
+          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "name": "certgen"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble-ui-backend"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble-ui-frontend"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble-ui-oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd-operator"
+        },
+        {
+          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "name": "nodeinit"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh-etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble-enterprise"
+        },
+        {
+          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "name": "hubble-enterprise-metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble-enterprise-operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble-export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble-export-fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble-export-s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble-rbac"
+        },
+        {
+          "digest": "sha256:cc1f0e6b27ccda8a843dfb7fa4a8fef052ba29716646557815677c5d1bea2a1a",
+          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:cc1f0e6b27ccda8a843dfb7fa4a8fef052ba29716646557815677c5d1bea2a1a",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "image": "quay.io/isovalent/hubble-relay@sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "name": "hubble_relay"
+        },
+        {
+          "digest": "sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "image": "quay.io/isovalent/operator-generic@sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "name": "cilium_operator"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble_ui_be"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble_ui_fe"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble_ui_oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd_operator"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh_etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble_enterprise"
+        },
+        {
+          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "name": "hubble_enterprise_metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble_enterprise_operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble_export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble_export_fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble_export_s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble_rbac"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.10.13+xed86eae",
+      "version_original": "1.10.13+xed86eae"
+    },
+    {
+      "_id": "62e1cb48e33fbe39ae865ae7",
+      "alm_examples": [
+        {
+          "api_version": "cilium.io/v1alpha1",
+          "kind": "CiliumConfig",
+          "metadata": {
+            "name": "cilium-openshift-default",
+            "namespace": "placeholder"
+          },
+          "spec": {
+            "cni": {
+              "binPath": "/var/lib/cni/bin",
+              "confPath": "/var/run/multus/cni/net.d"
+            },
+            "endpointRoutes": {
+              "enabled": true
+            },
+            "hubble": {
+              "tls": {
+                "enabled": false
+              }
+            },
+            "ipam": {
+              "mode": "cluster-pool",
+              "prometheus": {
+                "serviceMonitor": {
+                  "enabled": false
+                }
+              }
+            },
+            "kubeProxyReplacement": "probe"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:3dbb71004362a70683a5ee9f0916bca75c0d1c351d144677fd9d85bcb2ca8bf7",
+      "bundle_path_digest": "sha256:3dbb71004362a70683a5ee9f0916bca75c0d1c351d144677fd9d85bcb2ca8bf7",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "1.10",
+      "creation_date": "2022-07-27T23:33:28.720000+00:00",
+      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
+      "csv_display_name": "Cilium Enterprise",
+      "csv_metadata_description": "",
+      "csv_name": "cilium.v1.10.13-xed86eae",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-07-27T23:33:28.720000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "cilium-enterprise",
+      "provided_apis": [
+        {
+          "group": "cilium.io",
+          "kind": "CiliumConfig",
+          "plural": "ciliumconfigs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "image": "quay.io/isovalent/cilium@sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "name": "cilium"
+        },
+        {
+          "digest": "sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "image": "quay.io/isovalent/hubble-relay@sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "name": "hubble-relay"
+        },
+        {
+          "digest": "sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "image": "quay.io/isovalent/operator-generic@sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "name": "cilium-operator"
+        },
+        {
+          "digest": "sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "image": "quay.io/isovalent/cilium@sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "name": "preflight"
+        },
+        {
+          "digest": "sha256:eb3ee3d2cb07e6c5966e4bc2e50615949303be5d5128e156d5c0dbe8404dc093",
+          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:eb3ee3d2cb07e6c5966e4bc2e50615949303be5d5128e156d5c0dbe8404dc093",
+          "name": "clustermesh"
+        },
+        {
+          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "name": "certgen"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble-ui-backend"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble-ui-frontend"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble-ui-oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd-operator"
+        },
+        {
+          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "name": "nodeinit"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh-etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble-enterprise"
+        },
+        {
+          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "name": "hubble-enterprise-metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble-enterprise-operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble-export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble-export-fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble-export-s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble-rbac"
+        },
+        {
+          "digest": "sha256:cc1f0e6b27ccda8a843dfb7fa4a8fef052ba29716646557815677c5d1bea2a1a",
+          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:cc1f0e6b27ccda8a843dfb7fa4a8fef052ba29716646557815677c5d1bea2a1a",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "image": "quay.io/isovalent/hubble-relay@sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "name": "hubble_relay"
+        },
+        {
+          "digest": "sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "image": "quay.io/isovalent/operator-generic@sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "name": "cilium_operator"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble_ui_be"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble_ui_fe"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble_ui_oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd_operator"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh_etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble_enterprise"
+        },
+        {
+          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "name": "hubble_enterprise_metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble_enterprise_operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble_export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble_export_fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble_export_s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble_rbac"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.10.13+xed86eae",
+      "version_original": "1.10.13+xed86eae"
+    },
+    {
+      "_id": "62e26b6e3913a9d9c9f84277",
+      "alm_examples": [
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarBroker",
+          "metadata": {
+            "name": "pulsarbroker-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarProxy",
+          "metadata": {
+            "name": "pulsar"
+          },
+          "spec": {
+            "configMapName": "proxy-configmap",
+            "image": "apachepulsar/pulsar:2.5.0",
+            "imagePullPolicy": "Always",
+            "replicas": 3
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "bundle_path_digest": "sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-07-28T10:56:46.205000+00:00",
+      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
+      "csv_display_name": "Pulsar Operator",
+      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
+      "csv_name": "pulsar-operator.v0.12.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:08:15.214000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "pulsar-operator",
+      "provided_apis": [
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTopic",
+          "plural": "pulsartopics",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarBroker",
+          "plural": "pulsarbrokers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarConnection",
+          "plural": "pulsarconnections",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarNamespace",
+          "plural": "pulsarnamespaces",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarPermission",
+          "plural": "pulsarpermissions",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarProxy",
+          "plural": "pulsarproxies",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTenant",
+          "plural": "pulsartenants",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "pulsar-operator-eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.12.0",
+      "version_original": "0.12.0"
+    },
+    {
+      "_id": "62e26b733913a9d9c9f8427a",
+      "alm_examples": [
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarBroker",
+          "metadata": {
+            "name": "pulsarbroker-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarProxy",
+          "metadata": {
+            "name": "pulsar"
+          },
+          "spec": {
+            "configMapName": "proxy-configmap",
+            "image": "apachepulsar/pulsar:2.5.0",
+            "imagePullPolicy": "Always",
+            "replicas": 3
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "bundle_path_digest": "sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-07-28T10:56:51.402000+00:00",
+      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
+      "csv_display_name": "Pulsar Operator",
+      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
+      "csv_name": "pulsar-operator.v0.12.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:08:20.601000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "pulsar-operator",
+      "provided_apis": [
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTopic",
+          "plural": "pulsartopics",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarBroker",
+          "plural": "pulsarbrokers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarConnection",
+          "plural": "pulsarconnections",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarNamespace",
+          "plural": "pulsarnamespaces",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarPermission",
+          "plural": "pulsarpermissions",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarProxy",
+          "plural": "pulsarproxies",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTenant",
+          "plural": "pulsartenants",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "pulsar-operator-eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.12.0",
+      "version_original": "0.12.0"
+    },
+    {
+      "_id": "62e26b785d6a9d471f4cf636",
+      "alm_examples": [
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarBroker",
+          "metadata": {
+            "name": "pulsarbroker-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarProxy",
+          "metadata": {
+            "name": "pulsar"
+          },
+          "spec": {
+            "configMapName": "proxy-configmap",
+            "image": "apachepulsar/pulsar:2.5.0",
+            "imagePullPolicy": "Always",
+            "replicas": 3
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "bundle_path_digest": "sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-28T10:56:56.292000+00:00",
+      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
+      "csv_display_name": "Pulsar Operator",
+      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
+      "csv_name": "pulsar-operator.v0.12.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:08:27.233000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "pulsar-operator",
+      "provided_apis": [
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTopic",
+          "plural": "pulsartopics",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarBroker",
+          "plural": "pulsarbrokers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarConnection",
+          "plural": "pulsarconnections",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarNamespace",
+          "plural": "pulsarnamespaces",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarPermission",
+          "plural": "pulsarpermissions",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarProxy",
+          "plural": "pulsarproxies",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTenant",
+          "plural": "pulsartenants",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "pulsar-operator-eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.12.0",
+      "version_original": "0.12.0"
+    },
+    {
+      "_id": "62e26c005aa437f2d3978c8d",
+      "alm_examples": [
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarBroker",
+          "metadata": {
+            "name": "pulsarbroker-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarProxy",
+          "metadata": {
+            "name": "pulsar"
+          },
+          "spec": {
+            "configMapName": "proxy-configmap",
+            "image": "apachepulsar/pulsar:2.5.0",
+            "imagePullPolicy": "Always",
+            "replicas": 3
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "bundle_path_digest": "sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-07-28T10:59:12.949000+00:00",
+      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
+      "csv_display_name": "Pulsar Operator",
+      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
+      "csv_name": "pulsar-operator.v0.12.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:09:38.063000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "pulsar-operator",
+      "provided_apis": [
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarPermission",
+          "plural": "pulsarpermissions",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarProxy",
+          "plural": "pulsarproxies",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTenant",
+          "plural": "pulsartenants",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTopic",
+          "plural": "pulsartopics",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarBroker",
+          "plural": "pulsarbrokers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarConnection",
+          "plural": "pulsarconnections",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarNamespace",
+          "plural": "pulsarnamespaces",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "pulsar-operator-eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.12.0",
+      "version_original": "0.12.0"
+    },
+    {
+      "_id": "62e26c045aa437f2d3978c8f",
+      "alm_examples": [
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarBroker",
+          "metadata": {
+            "name": "pulsarbroker-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarProxy",
+          "metadata": {
+            "name": "pulsar"
+          },
+          "spec": {
+            "configMapName": "proxy-configmap",
+            "image": "apachepulsar/pulsar:2.5.0",
+            "imagePullPolicy": "Always",
+            "replicas": 3
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "bundle_path_digest": "sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-07-28T10:59:16.145000+00:00",
+      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
+      "csv_display_name": "Pulsar Operator",
+      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
+      "csv_name": "pulsar-operator.v0.12.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:09:43.487000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "pulsar-operator",
+      "provided_apis": [
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarPermission",
+          "plural": "pulsarpermissions",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarProxy",
+          "plural": "pulsarproxies",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTenant",
+          "plural": "pulsartenants",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTopic",
+          "plural": "pulsartopics",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarBroker",
+          "plural": "pulsarbrokers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarConnection",
+          "plural": "pulsarconnections",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarNamespace",
+          "plural": "pulsarnamespaces",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "pulsar-operator-eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.12.0",
+      "version_original": "0.12.0"
+    },
+    {
+      "_id": "62e26c07e8ce6397d4927867",
+      "alm_examples": [
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarBroker",
+          "metadata": {
+            "name": "pulsarbroker-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarProxy",
+          "metadata": {
+            "name": "pulsar"
+          },
+          "spec": {
+            "configMapName": "proxy-configmap",
+            "image": "apachepulsar/pulsar:2.5.0",
+            "imagePullPolicy": "Always",
+            "replicas": 3
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "bundle_path_digest": "sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-28T10:59:19.307000+00:00",
+      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
+      "csv_display_name": "Pulsar Operator",
+      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
+      "csv_name": "pulsar-operator.v0.12.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:09:48.227000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "pulsar-operator",
+      "provided_apis": [
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarPermission",
+          "plural": "pulsarpermissions",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarProxy",
+          "plural": "pulsarproxies",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTenant",
+          "plural": "pulsartenants",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTopic",
+          "plural": "pulsartopics",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarBroker",
+          "plural": "pulsarbrokers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarConnection",
+          "plural": "pulsarconnections",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarNamespace",
+          "plural": "pulsarnamespaces",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "pulsar-operator-eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.12.0",
+      "version_original": "0.12.0"
+    },
+    {
+      "_id": "62e26f88e07648872d807c88",
+      "alm_examples": [
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarBroker",
+          "metadata": {
+            "name": "pulsarbroker-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarProxy",
+          "metadata": {
+            "name": "pulsar"
+          },
+          "spec": {
+            "configMapName": "proxy-configmap",
+            "image": "apachepulsar/pulsar:2.5.0",
+            "imagePullPolicy": "Always",
+            "replicas": 3
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "bundle_path_digest": "sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-07-28T11:14:16.247000+00:00",
+      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
+      "csv_display_name": "Pulsar Operator",
+      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
+      "csv_name": "pulsar-operator.v0.12.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:14:48.196000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "pulsar-operator",
+      "provided_apis": [
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarNamespace",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarPermission",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarProxy",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTenant",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTopic",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarBroker",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarConnection",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "pulsar-operator-eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.12.0",
+      "version_original": "0.12.0"
+    },
+    {
+      "_id": "62e26f90e07648872d807c8d",
+      "alm_examples": [
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarBroker",
+          "metadata": {
+            "name": "pulsarbroker-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarProxy",
+          "metadata": {
+            "name": "pulsar"
+          },
+          "spec": {
+            "configMapName": "proxy-configmap",
+            "image": "apachepulsar/pulsar:2.5.0",
+            "imagePullPolicy": "Always",
+            "replicas": 3
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "bundle_path_digest": "sha256:b371e2423b877583b045e4f43a55d7aa263303a25c3d9e9b2c41ac16fad5147f",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-07-28T11:14:24.257000+00:00",
+      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
+      "csv_display_name": "Pulsar Operator",
+      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
+      "csv_name": "pulsar-operator.v0.12.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:45:37.831000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "pulsar-operator",
+      "provided_apis": [
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarNamespace",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarPermission",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarProxy",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTenant",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTopic",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarBroker",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarConnection",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "pulsar-operator-eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:eac0ab28299f48d0df0351bbaad3e3aa87233e1157703f41802a0556e3d87a17",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.12.0",
+      "version_original": "0.12.0"
     }
-  ],
-  "page": 37,
-  "page_size": 100,
-  "total": 4900
+  ]
 }

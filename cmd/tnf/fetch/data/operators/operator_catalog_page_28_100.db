@@ -10558,189 +10558,6 @@
       "version_original": "1.1.0"
     },
     {
-      "_id": "627c6e22228d5769c56929f2",
-      "alm_examples": [
-        {
-          "api_version": "sonatype.com/v1alpha1",
-          "kind": "NexusRepo",
-          "metadata": {
-            "name": "example-nexusrepo"
-          },
-          "spec": {
-            "config": {
-              "enabled": false,
-              "mountPath": "/sonatype-nexus-conf"
-            },
-            "deployment": {
-              "annotations": {},
-              "postStart": {},
-              "preStart": {},
-              "terminationGracePeriodSeconds": 120
-            },
-            "deploymentStrategy": {},
-            "ingress": {
-              "annotations": {},
-              "enabled": false,
-              "path": "/",
-              "tls": {
-                "enabled": true,
-                "secretName": "nexus-tls"
-              }
-            },
-            "nexus": {
-              "dockerPort": 5003,
-              "env": [
-                {
-                  "name": "INSTALL4J_ADD_VM_PARAMS",
-                  "value": "-Xms2703M -Xmx2703M -XX:MaxDirectMemorySize=2703M -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
-                },
-                {
-                  "name": "NEXUS_SECURITY_RANDOMPASSWORD",
-                  "value": "false"
-                }
-              ],
-              "hostAliases": [],
-              "imageName": "registry.connect.redhat.com/sonatype/nexus-repository-manager@sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
-              "imagePullPolicy": "IfNotPresent",
-              "imagePullSecret": "",
-              "livenessProbe": {
-                "failureThreshold": 6,
-                "initialDelaySeconds": 30,
-                "path": "/",
-                "periodSeconds": 30
-              },
-              "nexusPort": 8081,
-              "podAnnotations": {},
-              "readinessProbe": {
-                "failureThreshold": 6,
-                "initialDelaySeconds": 30,
-                "path": "/",
-                "periodSeconds": 30
-              },
-              "resources": {},
-              "securityContext": {},
-              "service": {
-                "type": "NodePort"
-              }
-            },
-            "nexusProxyRoute": {
-              "enabled": false
-            },
-            "persistence": {
-              "accessMode": "ReadWriteOnce",
-              "enabled": true,
-              "storageSize": "8Gi"
-            },
-            "replicaCount": 1,
-            "route": {
-              "enabled": false,
-              "name": "docker",
-              "portName": "docker"
-            },
-            "secret": {
-              "enabled": false,
-              "mountPath": "/etc/secret-volume",
-              "readOnly": true
-            },
-            "service": {
-              "annotations": {},
-              "enabled": false,
-              "labels": {},
-              "ports": [
-                {
-                  "name": "nexus-service",
-                  "port": 80,
-                  "targetPort": 80
-                }
-              ]
-            },
-            "statefulset": {
-              "enabled": false
-            },
-            "tolerations": []
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/sonatype/nxrm-operator-bundle@sha256:fe836dd88b556e5d7d03a030e6584f546ee708bc6ecf4e1a796337ccbe1f454c",
-      "bundle_path_digest": "sha256:fe836dd88b556e5d7d03a030e6584f546ee708bc6ecf4e1a796337ccbe1f454c",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-12T02:17:06.719000+00:00",
-      "csv_description": "Nexus Repository is the central source of control to efficiently manage all binaries\nand build artifacts across your DevOps pipeline.\nThe flow of open source and third-party components into and through an organization\ncreates a complex software supply chain.\nNexus Repository delivers speed, efficiency, and quality to the governance\nand management of all dependencies, libraries, and applications for your DevOps teams.\n\n## Core Capabilities\n\n* **Dependency Management**:\n  Improves reliability with repeatable, fast access to secure dependencies\n* **Developer Productivity**:\n  Streamline developer workflows by enabling the sharing of components and applications across teams\n* **Supply Chain Performance**:\n  Improve speed-to-market and reduced build times with release advanced staging and component tagging\n* **CI/CD Integrations**:\n  Increase DevOps scalability with integrations to the most popular build and deployment tools\n\nVersion control systems and package registries do not scale when managing proprietary,\nopen source, and third-party components.\nOrganizations need a central binary and build artifact repository to manage dependencies\nacross the entire software supply chain.\n\n## Limitations\n\nHigh Availability Clustering (HA-C) is not supported for Nexus Repository Pro for OpenShift.\n\nThis operator will be released on a quarterly basis.\n\n## Usage\n\nOnce the server instance is created by the operator and running,\nyou'll want to expose the service as you see fit:\n1. Create a Route to that service for nexus.port (8081).\n\nBy default, the Nexus Repository starts up in OSS mode until a license is installed.\n\nThe Nexus Repository can be further configured via the NexusRepo custom resource definition:\n\n| Parameter                                   | Description                         | Default                                 |\n| ------------------------------------------  | ----------------------------------  | ----------------------------------------|\n| `statefulset.enabled`                       | Use statefulset instead of deployment | `false` |\n| `deploymentStrategy`                        | Deployment Strategy     |  `rollingUpdate` |\n| `nexus.env`                                 | Nexus environment variables         | `See example.` |\n| `nexus.resources`                           | Nexus resource requests and limits  | `{}`                                    |\n| `nexus.dockerPort`                          | Port to access docker               | `5003`                                  |\n| `nexus.nexusPort`                           | Internal port for Nexus service     | `8081`                                  |\n| `nexus.service.type`                        | Service for Nexus                   |`NodePort`                                |\n| `nexus.service.clusterIp`                   | Specific cluster IP when service type is cluster IP. Use None for headless service |`nil`   |\n| `nexus.securityContext`                     | Security Context |\n| `nexus.labels`                              | Service labels                      | `{}`                                    |\n| `nexus.podAnnotations`                      | Pod Annotations                     | `{}`\n| `nexus.livenessProbe.initialDelaySeconds`   | LivenessProbe initial delay         | 30                                      |\n| `nexus.livenessProbe.periodSeconds`         | Seconds between polls               | 30                                      |\n| `nexus.livenessProbe.failureThreshold`      | Number of attempts before failure   | 6                                       |\n| `nexus.livenessProbe.timeoutSeconds`        | Time in seconds after liveness probe times out    | `nil`                     |\n| `nexus.livenessProbe.path`                  | Path for LivenessProbe              | /                                       |\n| `nexus.readinessProbe.initialDelaySeconds`  | ReadinessProbe initial delay        | 30                                      |\n| `nexus.readinessProbe.periodSeconds`        | Seconds between polls               | 30                                      |\n| `nexus.readinessProbe.failureThreshold`     | Number of attempts before failure   | 6                                       |\n| `nexus.readinessProbe.timeoutSeconds`       | Time in seconds after readiness probe times out    | `nil`                    |\n| `nexus.readinessProbe.path`                 | Path for ReadinessProbe             | /                                       |\n| `nexus.hostAliases`                         | Aliases for IPs in /etc/hosts       | []                                      |\n| `ingress.enabled`                           | Create an ingress for Nexus         | `true`                                  |\n| `ingress.annotations`                       | Annotations to enhance ingress configuration  | `{}`                          |\n| `ingress.tls.enabled`                       | Enable TLS                          | `true`                                 |\n| `ingress.tls.secretName`                    | Name of the secret storing TLS cert, `false` to use the Ingress' default certificate | `nexus-tls`                             |\n| `ingress.path`                              | Path for ingress rules. GCP users should set to `/*` | `/`                    |\n| `tolerations`                               | tolerations list                    | `[]`                                    |\n| `config.enabled`                            | Enable configmap                    | `false`                                 |\n| `config.mountPath`                          | Path to mount the config            | `/sonatype-nexus-conf`                  |\n| `config.data`                               | Configmap data                      | `nil`                                   |\n| `deployment.terminationGracePeriodSeconds`  | Time to allow for clean shutdown    | 120                                     |\n| `deployment.annotations`                    | Annotations to enhance deployment configuration  | `{}`                       |\n| `deployment.initContainers`                 | Init containers to run before main containers  | `nil`                        |\n| `deployment.postStart.command`              | Command to run after starting the nexus container  | `nil`                    |\n| `deployment.preStart.command`               | Command to run before starting the nexus container  | `nil`                   |\n| `deployment.additionalContainers`           | Add additional Container         | `nil`                                      |\n| `deployment.additionalVolumes`              | Add additional Volumes           | `nil`                                      |\n| `deployment.additionalVolumeMounts`         | Add additional Volume mounts     | `nil`                                      |\n| `secret.enabled`                            | Enable secret                    | `false`                                    |\n| `secret.mountPath`                          | Path to mount the secret         | `/etc/secret-volume`                       |\n| `secret.readOnly`                           | Secret readonly state            | `true`                                     |\n| `secret.data`                               | Secret data                      | `nil`                                      |\n| `service.enabled`                           | Enable additional service        | `nil`                                      |\n| `service.name`                              | Service name                     | `nil`                                      |\n| `service.portName`                          | Service port name                | `nil`                                      |\n| `service.labels`                            | Service labels                   | `nil`                                      |\n| `service.annotations`                       | Service annotations              | `nil`                                      |\n| `service.loadBalancerSourceRanges`          | Service LoadBalancer source IP whitelist | `nil`                              |\n| `service.targetPort`                        | Service port                     | `nil`                                      |\n| `service.port`                              | Port for exposing service        | `nil`                                      |\n| `route.enabled`         | Set to true to create route for additional service | `false` |\n| `route.name`            | Name of route                                      | `docker` |\n| `route.portName`        | Target port name of service                        | `docker` |\n| `route.labels`          | Labels to be added to route                        | `{}` |\n| `route.annotations`     | Annotations to be added to route                   | `{}` |\n| `route.path`            | Host name of Route e.g jenkins.example.com         | nil |",
-      "csv_display_name": "Nexus Repository Operator",
-      "csv_metadata_description": "Nexus Repository is the central source of control to efficiently manage all binaries\nand build artifacts across your DevOps pipeline.",
-      "csv_name": "nxrm-operator-certified.v3.38.1-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:06:31.884000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "nxrm-operator-certified",
-      "provided_apis": [
-        {
-          "group": "sonatype.com",
-          "kind": "NexusRepo",
-          "plural": "nexusrepos",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Sonatype",
-      "related_images": [
-        {
-          "digest": "sha256:f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460",
-          "image": "registry.connect.redhat.com/sonatype/nxrm-operator-certified@sha256:f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460",
-          "name": "nxrm-operator-certified-f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460-annotation"
-        },
-        {
-          "digest": "sha256:f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460",
-          "image": "registry.connect.redhat.com/sonatype/nxrm-operator-certified@sha256:f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460",
-          "name": "nxrm-operator-certified"
-        },
-        {
-          "digest": "sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
-          "image": "registry.connect.redhat.com/sonatype/nexus-repository-manager@sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
-          "name": "nexus"
-        },
-        {
-          "digest": "sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
-          "image": "registry.connect.redhat.com/sonatype/nexus-repository-manager@sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
-          "name": "nexus-repository-manager-bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<3.38.1-1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "3.38.1-1",
-      "version_original": "3.38.1-1"
-    },
-    {
       "_id": "627c6e249b28cbab99bd0f86",
       "alm_examples": [
         {
@@ -11288,189 +11105,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.135.0-1",
       "version_original": "1.135.0-1"
-    },
-    {
-      "_id": "627c6e2b4be4723d90ee6de9",
-      "alm_examples": [
-        {
-          "api_version": "sonatype.com/v1alpha1",
-          "kind": "NexusRepo",
-          "metadata": {
-            "name": "example-nexusrepo"
-          },
-          "spec": {
-            "config": {
-              "enabled": false,
-              "mountPath": "/sonatype-nexus-conf"
-            },
-            "deployment": {
-              "annotations": {},
-              "postStart": {},
-              "preStart": {},
-              "terminationGracePeriodSeconds": 120
-            },
-            "deploymentStrategy": {},
-            "ingress": {
-              "annotations": {},
-              "enabled": false,
-              "path": "/",
-              "tls": {
-                "enabled": true,
-                "secretName": "nexus-tls"
-              }
-            },
-            "nexus": {
-              "dockerPort": 5003,
-              "env": [
-                {
-                  "name": "INSTALL4J_ADD_VM_PARAMS",
-                  "value": "-Xms2703M -Xmx2703M -XX:MaxDirectMemorySize=2703M -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
-                },
-                {
-                  "name": "NEXUS_SECURITY_RANDOMPASSWORD",
-                  "value": "false"
-                }
-              ],
-              "hostAliases": [],
-              "imageName": "registry.connect.redhat.com/sonatype/nexus-repository-manager@sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
-              "imagePullPolicy": "IfNotPresent",
-              "imagePullSecret": "",
-              "livenessProbe": {
-                "failureThreshold": 6,
-                "initialDelaySeconds": 30,
-                "path": "/",
-                "periodSeconds": 30
-              },
-              "nexusPort": 8081,
-              "podAnnotations": {},
-              "readinessProbe": {
-                "failureThreshold": 6,
-                "initialDelaySeconds": 30,
-                "path": "/",
-                "periodSeconds": 30
-              },
-              "resources": {},
-              "securityContext": {},
-              "service": {
-                "type": "NodePort"
-              }
-            },
-            "nexusProxyRoute": {
-              "enabled": false
-            },
-            "persistence": {
-              "accessMode": "ReadWriteOnce",
-              "enabled": true,
-              "storageSize": "8Gi"
-            },
-            "replicaCount": 1,
-            "route": {
-              "enabled": false,
-              "name": "docker",
-              "portName": "docker"
-            },
-            "secret": {
-              "enabled": false,
-              "mountPath": "/etc/secret-volume",
-              "readOnly": true
-            },
-            "service": {
-              "annotations": {},
-              "enabled": false,
-              "labels": {},
-              "ports": [
-                {
-                  "name": "nexus-service",
-                  "port": 80,
-                  "targetPort": 80
-                }
-              ]
-            },
-            "statefulset": {
-              "enabled": false
-            },
-            "tolerations": []
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/sonatype/nxrm-operator-bundle@sha256:fe836dd88b556e5d7d03a030e6584f546ee708bc6ecf4e1a796337ccbe1f454c",
-      "bundle_path_digest": "sha256:fe836dd88b556e5d7d03a030e6584f546ee708bc6ecf4e1a796337ccbe1f454c",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-05-12T02:17:15.484000+00:00",
-      "csv_description": "Nexus Repository is the central source of control to efficiently manage all binaries\nand build artifacts across your DevOps pipeline.\nThe flow of open source and third-party components into and through an organization\ncreates a complex software supply chain.\nNexus Repository delivers speed, efficiency, and quality to the governance\nand management of all dependencies, libraries, and applications for your DevOps teams.\n\n## Core Capabilities\n\n* **Dependency Management**:\n  Improves reliability with repeatable, fast access to secure dependencies\n* **Developer Productivity**:\n  Streamline developer workflows by enabling the sharing of components and applications across teams\n* **Supply Chain Performance**:\n  Improve speed-to-market and reduced build times with release advanced staging and component tagging\n* **CI/CD Integrations**:\n  Increase DevOps scalability with integrations to the most popular build and deployment tools\n\nVersion control systems and package registries do not scale when managing proprietary,\nopen source, and third-party components.\nOrganizations need a central binary and build artifact repository to manage dependencies\nacross the entire software supply chain.\n\n## Limitations\n\nHigh Availability Clustering (HA-C) is not supported for Nexus Repository Pro for OpenShift.\n\nThis operator will be released on a quarterly basis.\n\n## Usage\n\nOnce the server instance is created by the operator and running,\nyou'll want to expose the service as you see fit:\n1. Create a Route to that service for nexus.port (8081).\n\nBy default, the Nexus Repository starts up in OSS mode until a license is installed.\n\nThe Nexus Repository can be further configured via the NexusRepo custom resource definition:\n\n| Parameter                                   | Description                         | Default                                 |\n| ------------------------------------------  | ----------------------------------  | ----------------------------------------|\n| `statefulset.enabled`                       | Use statefulset instead of deployment | `false` |\n| `deploymentStrategy`                        | Deployment Strategy     |  `rollingUpdate` |\n| `nexus.env`                                 | Nexus environment variables         | `See example.` |\n| `nexus.resources`                           | Nexus resource requests and limits  | `{}`                                    |\n| `nexus.dockerPort`                          | Port to access docker               | `5003`                                  |\n| `nexus.nexusPort`                           | Internal port for Nexus service     | `8081`                                  |\n| `nexus.service.type`                        | Service for Nexus                   |`NodePort`                                |\n| `nexus.service.clusterIp`                   | Specific cluster IP when service type is cluster IP. Use None for headless service |`nil`   |\n| `nexus.securityContext`                     | Security Context |\n| `nexus.labels`                              | Service labels                      | `{}`                                    |\n| `nexus.podAnnotations`                      | Pod Annotations                     | `{}`\n| `nexus.livenessProbe.initialDelaySeconds`   | LivenessProbe initial delay         | 30                                      |\n| `nexus.livenessProbe.periodSeconds`         | Seconds between polls               | 30                                      |\n| `nexus.livenessProbe.failureThreshold`      | Number of attempts before failure   | 6                                       |\n| `nexus.livenessProbe.timeoutSeconds`        | Time in seconds after liveness probe times out    | `nil`                     |\n| `nexus.livenessProbe.path`                  | Path for LivenessProbe              | /                                       |\n| `nexus.readinessProbe.initialDelaySeconds`  | ReadinessProbe initial delay        | 30                                      |\n| `nexus.readinessProbe.periodSeconds`        | Seconds between polls               | 30                                      |\n| `nexus.readinessProbe.failureThreshold`     | Number of attempts before failure   | 6                                       |\n| `nexus.readinessProbe.timeoutSeconds`       | Time in seconds after readiness probe times out    | `nil`                    |\n| `nexus.readinessProbe.path`                 | Path for ReadinessProbe             | /                                       |\n| `nexus.hostAliases`                         | Aliases for IPs in /etc/hosts       | []                                      |\n| `ingress.enabled`                           | Create an ingress for Nexus         | `true`                                  |\n| `ingress.annotations`                       | Annotations to enhance ingress configuration  | `{}`                          |\n| `ingress.tls.enabled`                       | Enable TLS                          | `true`                                 |\n| `ingress.tls.secretName`                    | Name of the secret storing TLS cert, `false` to use the Ingress' default certificate | `nexus-tls`                             |\n| `ingress.path`                              | Path for ingress rules. GCP users should set to `/*` | `/`                    |\n| `tolerations`                               | tolerations list                    | `[]`                                    |\n| `config.enabled`                            | Enable configmap                    | `false`                                 |\n| `config.mountPath`                          | Path to mount the config            | `/sonatype-nexus-conf`                  |\n| `config.data`                               | Configmap data                      | `nil`                                   |\n| `deployment.terminationGracePeriodSeconds`  | Time to allow for clean shutdown    | 120                                     |\n| `deployment.annotations`                    | Annotations to enhance deployment configuration  | `{}`                       |\n| `deployment.initContainers`                 | Init containers to run before main containers  | `nil`                        |\n| `deployment.postStart.command`              | Command to run after starting the nexus container  | `nil`                    |\n| `deployment.preStart.command`               | Command to run before starting the nexus container  | `nil`                   |\n| `deployment.additionalContainers`           | Add additional Container         | `nil`                                      |\n| `deployment.additionalVolumes`              | Add additional Volumes           | `nil`                                      |\n| `deployment.additionalVolumeMounts`         | Add additional Volume mounts     | `nil`                                      |\n| `secret.enabled`                            | Enable secret                    | `false`                                    |\n| `secret.mountPath`                          | Path to mount the secret         | `/etc/secret-volume`                       |\n| `secret.readOnly`                           | Secret readonly state            | `true`                                     |\n| `secret.data`                               | Secret data                      | `nil`                                      |\n| `service.enabled`                           | Enable additional service        | `nil`                                      |\n| `service.name`                              | Service name                     | `nil`                                      |\n| `service.portName`                          | Service port name                | `nil`                                      |\n| `service.labels`                            | Service labels                   | `nil`                                      |\n| `service.annotations`                       | Service annotations              | `nil`                                      |\n| `service.loadBalancerSourceRanges`          | Service LoadBalancer source IP whitelist | `nil`                              |\n| `service.targetPort`                        | Service port                     | `nil`                                      |\n| `service.port`                              | Port for exposing service        | `nil`                                      |\n| `route.enabled`         | Set to true to create route for additional service | `false` |\n| `route.name`            | Name of route                                      | `docker` |\n| `route.portName`        | Target port name of service                        | `docker` |\n| `route.labels`          | Labels to be added to route                        | `{}` |\n| `route.annotations`     | Annotations to be added to route                   | `{}` |\n| `route.path`            | Host name of Route e.g jenkins.example.com         | nil |",
-      "csv_display_name": "Nexus Repository Operator",
-      "csv_metadata_description": "Nexus Repository is the central source of control to efficiently manage all binaries\nand build artifacts across your DevOps pipeline.",
-      "csv_name": "nxrm-operator-certified.v3.38.1-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:04:50.512000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "nxrm-operator-certified",
-      "provided_apis": [
-        {
-          "group": "sonatype.com",
-          "kind": "NexusRepo",
-          "plural": "nexusrepos",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Sonatype",
-      "related_images": [
-        {
-          "digest": "sha256:f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460",
-          "image": "registry.connect.redhat.com/sonatype/nxrm-operator-certified@sha256:f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460",
-          "name": "nxrm-operator-certified-f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460-annotation"
-        },
-        {
-          "digest": "sha256:f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460",
-          "image": "registry.connect.redhat.com/sonatype/nxrm-operator-certified@sha256:f2f8665e08394609f55f1f7bc20e106218a1e61bbd9b0a203bd400eadf0f5460",
-          "name": "nxrm-operator-certified"
-        },
-        {
-          "digest": "sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
-          "image": "registry.connect.redhat.com/sonatype/nexus-repository-manager@sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
-          "name": "nexus"
-        },
-        {
-          "digest": "sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
-          "image": "registry.connect.redhat.com/sonatype/nexus-repository-manager@sha256:bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598",
-          "name": "nexus-repository-manager-bf4200653ad59c50b87788265b2f12c9da6942413e2487c24e4d5407c44ad598-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<3.38.1-1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "3.38.1-1",
-      "version_original": "3.38.1-1"
     },
     {
       "_id": "627c6e34228d5769c5692a17",
@@ -16523,9 +16157,242 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.1.5",
       "version_original": "1.1.5"
+    },
+    {
+      "_id": "627c6edd228d5769c5692baf",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.2.8-64.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9d1a896c1276852d8cad7e670924f309a7a82de2f8843f23d2a6ae42ba0a8b53",
+      "bundle_path_digest": "sha256:9d1a896c1276852d8cad7e670924f309a7a82de2f8843f23d2a6ae42ba0a8b53",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-05-12T02:20:13.283000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.8-15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-05-12T02:20:13.283000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
+          "name": "redis-enterprise-operator-0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37-annotation"
+        },
+        {
+          "digest": "sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
+          "name": "admission"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.2.8-15",
+      "version_original": "6.2.8-15"
+    },
+    {
+      "_id": "627c6ee09b28cbab99bd1146",
+      "alm_examples": [
+        {
+          "api_version": "tm.solution-soft.com/v1alpha1",
+          "kind": "TimeMachine",
+          "metadata": {
+            "name": "timemachine-sample"
+          },
+          "spec": {
+            "aws": {
+              "shared_volume_name": ""
+            },
+            "cluster_provider": "ibm",
+            "ibm": {
+              "persistentvolume": {
+                "storageclass": "ibmc-file-silver-gid"
+              }
+            },
+            "imagePullSecrets": [],
+            "tm_lichost": "52.152.148.40",
+            "tm_licpass": "qwaszx",
+            "tm_licport": "57777"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/rhel-timemachine-container/timemachine-operator-bundle@sha256:84ca0942b56f65de1ca027c9491111f37862b7165c5fe1d52b4d25b618e88ba6",
+      "bundle_path_digest": "sha256:84ca0942b56f65de1ca027c9491111f37862b7165c5fe1d52b4d25b618e88ba6",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:20:16.195000+00:00",
+      "csv_description": "Time Machine operator enables time travel of OpenShift pods/deployments.\n\nTo time travel a pod where your application is, you just need to install the Time Machine operator and create a Time Machine custom resource in the same namespace, without the need of changing the container images of the application you\u2019re using, or adding containers to the pod with your application.\n\nTime travelling is done on the namespace level where all the (configured) target pods/deployments see the same virtual time.",
+      "csv_display_name": "Time Machine Operator",
+      "csv_metadata_description": "Time Machine Operator enables time travel of OpenShift pods, without the need to change the system clock on any of the cluster nodes",
+      "csv_name": "timemachine-operator.v1.0.12",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:13:10.312000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "timemachine-operator",
+      "provided_apis": [
+        {
+          "group": "tm.solution-soft.com",
+          "kind": "TimeMachine",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Solution-Soft",
+      "related_images": [
+        {
+          "digest": "sha256:aecf0041badb80885c4a08ae662676488c0f282a7eae35bd6f73e87d58a02cda",
+          "image": "registry.connect.redhat.com/rhel-timemachine-container/timemachine-operator@sha256:aecf0041badb80885c4a08ae662676488c0f282a7eae35bd6f73e87d58a02cda",
+          "name": "timemachine-operator-aecf0041badb80885c4a08ae662676488c0f282a7eae35bd6f73e87d58a02cda-annotation"
+        },
+        {
+          "digest": "sha256:b92b2a908e0b0e12632a94a8dce075aa61f11122b84f28115d4327d56c398fd8",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:b92b2a908e0b0e12632a94a8dce075aa61f11122b84f28115d4327d56c398fd8",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:aecf0041badb80885c4a08ae662676488c0f282a7eae35bd6f73e87d58a02cda",
+          "image": "registry.connect.redhat.com/rhel-timemachine-container/timemachine-operator@sha256:aecf0041badb80885c4a08ae662676488c0f282a7eae35bd6f73e87d58a02cda",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:d3698323751c95740b5086802f856def96ec9509ed0f1ad07c9571e6d31ab35a",
+          "image": "registry.connect.redhat.com/rhel-timemachine-container/virtual-clock-testing-tool@sha256:d3698323751c95740b5086802f856def96ec9509ed0f1ad07c9571e6d31ab35a",
+          "name": "timemachine"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=0.0.4 <1.0.12",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.0.12",
+      "version_original": "1.0.12"
     }
-  ],
-  "page": 28,
-  "page_size": 100,
-  "total": 4900
+  ]
 }

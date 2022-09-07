@@ -1,667 +1,6 @@
 {
   "data": [
     {
-      "_id": "62985302e0c0938179ef5250",
-      "alm_examples": [
-        {
-          "api_version": "ibm.com/v1",
-          "kind": "IBMSecurityVerify",
-          "metadata": {
-            "name": "ibmsecurityverify-sample"
-          },
-          "spec": {
-            "clientSecret": "--secret--",
-            "sessionLifetime": 3600,
-            "ssoPath": "/verify-sso"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/verify-operator-bundle@sha256:0deef311d65c60bedc0af39fb6dfde09b0b1a60825eaa37188b21b5a692397e9",
-      "bundle_path_digest": "sha256:0deef311d65c60bedc0af39fb6dfde09b0b1a60825eaa37188b21b5a692397e9",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-06-02T06:04:50.609000+00:00",
-      "csv_description": "[IBM Security Verify](https://www.ibm.com/products/verify-saas) is an Identity-as-a-Service platform that allows IT, security and business leaders to protect their digital users, assets and data in a hybrid, multi-cloud world by enabling technical agility and operational efficiency. IBM Security Verify SaaS provides single sign-on (SSO), multi-factor authentication (MFA), AI-powered context for risk-based authentication for adaptive access decisions, user management, access recertification campaigns and identity analytics.\n\nAs part of using Red Hat OpenShift, you are entitled to Verify SaaS SSO for unlimited apps and users.  If you do not already have a Verify SaaS SSO tenant a new one can be [created](https://www.ibm.com/account/reg/us-en/signup?formid=urx-51255).\n\nFor a detailed description of IBM Security Verify refer to the [Official documentation](https://www.ibm.com/docs/en/security-verify).\n\nThe IBM Security Verify operator can consistently enforce policy-driven security by using the Ingress networking capability of OpenShift in conjunction with the [Nginx Ingress operator](https://www.nginx.com/blog/getting-started-nginx-ingress-operator-red-hat-openshift/). With this approach, you can enforce authentication and authorization policies for all of the applications in your cluster at the same time, without ever changing your application code. You can also dynamically register your application to start protecting them centrally from the cloud via Verify SaaS. \n\nSee the project [Readme](https://github.com/IBM-Security/verify-operator/blob/master/README.md) for further information and details.\n\n",
-      "csv_display_name": "IBM Security Verify Operator",
-      "csv_metadata_description": "The IBM Security Verify operator can consistently enforce policy-driven security, including authentication and authorization, using the Ingress networking capability of OpenShift.",
-      "csv_name": "ibm-security-verify-operator.v22.6.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:05:18.696000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "ibm-security-verify-operator",
-      "provided_apis": [
-        {
-          "group": "ibm.com",
-          "kind": "IBMSecurityVerify",
-          "plural": "ibmsecurityverifies",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
-          "image": "ibmcom/verify-operator@sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
-          "name": "verify-operator-3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
-          "image": "ibmcom/verify-operator@sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "22.6.0",
-      "version_original": "22.6.0"
-    },
-    {
-      "_id": "629853798c1a626fc9aea9ca",
-      "alm_examples": [
-        {
-          "api_version": "ibm.com/v1",
-          "kind": "IBMSecurityVerify",
-          "metadata": {
-            "name": "ibmsecurityverify-sample"
-          },
-          "spec": {
-            "clientSecret": "--secret--",
-            "sessionLifetime": 3600,
-            "ssoPath": "/verify-sso"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/verify-operator-bundle@sha256:0deef311d65c60bedc0af39fb6dfde09b0b1a60825eaa37188b21b5a692397e9",
-      "bundle_path_digest": "sha256:0deef311d65c60bedc0af39fb6dfde09b0b1a60825eaa37188b21b5a692397e9",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-06-02T06:06:49.849000+00:00",
-      "csv_description": "[IBM Security Verify](https://www.ibm.com/products/verify-saas) is an Identity-as-a-Service platform that allows IT, security and business leaders to protect their digital users, assets and data in a hybrid, multi-cloud world by enabling technical agility and operational efficiency. IBM Security Verify SaaS provides single sign-on (SSO), multi-factor authentication (MFA), AI-powered context for risk-based authentication for adaptive access decisions, user management, access recertification campaigns and identity analytics.\n\nAs part of using Red Hat OpenShift, you are entitled to Verify SaaS SSO for unlimited apps and users.  If you do not already have a Verify SaaS SSO tenant a new one can be [created](https://www.ibm.com/account/reg/us-en/signup?formid=urx-51255).\n\nFor a detailed description of IBM Security Verify refer to the [Official documentation](https://www.ibm.com/docs/en/security-verify).\n\nThe IBM Security Verify operator can consistently enforce policy-driven security by using the Ingress networking capability of OpenShift in conjunction with the [Nginx Ingress operator](https://www.nginx.com/blog/getting-started-nginx-ingress-operator-red-hat-openshift/). With this approach, you can enforce authentication and authorization policies for all of the applications in your cluster at the same time, without ever changing your application code. You can also dynamically register your application to start protecting them centrally from the cloud via Verify SaaS. \n\nSee the project [Readme](https://github.com/IBM-Security/verify-operator/blob/master/README.md) for further information and details.\n\n",
-      "csv_display_name": "IBM Security Verify Operator",
-      "csv_metadata_description": "The IBM Security Verify operator can consistently enforce policy-driven security, including authentication and authorization, using the Ingress networking capability of OpenShift.",
-      "csv_name": "ibm-security-verify-operator.v22.6.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:00:26.762000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "ibm-security-verify-operator",
-      "provided_apis": [
-        {
-          "group": "ibm.com",
-          "kind": "IBMSecurityVerify",
-          "plural": "ibmsecurityverifies",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
-          "image": "ibmcom/verify-operator@sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
-          "name": "verify-operator-3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
-          "image": "ibmcom/verify-operator@sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "22.6.0",
-      "version_original": "22.6.0"
-    },
-    {
-      "_id": "629853978c1a626fc9aea9e3",
-      "alm_examples": [
-        {
-          "api_version": "ibm.com/v1",
-          "kind": "IBMSecurityVerify",
-          "metadata": {
-            "name": "ibmsecurityverify-sample"
-          },
-          "spec": {
-            "clientSecret": "--secret--",
-            "sessionLifetime": 3600,
-            "ssoPath": "/verify-sso"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/verify-operator-bundle@sha256:0deef311d65c60bedc0af39fb6dfde09b0b1a60825eaa37188b21b5a692397e9",
-      "bundle_path_digest": "sha256:0deef311d65c60bedc0af39fb6dfde09b0b1a60825eaa37188b21b5a692397e9",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-06-02T06:07:19.578000+00:00",
-      "csv_description": "[IBM Security Verify](https://www.ibm.com/products/verify-saas) is an Identity-as-a-Service platform that allows IT, security and business leaders to protect their digital users, assets and data in a hybrid, multi-cloud world by enabling technical agility and operational efficiency. IBM Security Verify SaaS provides single sign-on (SSO), multi-factor authentication (MFA), AI-powered context for risk-based authentication for adaptive access decisions, user management, access recertification campaigns and identity analytics.\n\nAs part of using Red Hat OpenShift, you are entitled to Verify SaaS SSO for unlimited apps and users.  If you do not already have a Verify SaaS SSO tenant a new one can be [created](https://www.ibm.com/account/reg/us-en/signup?formid=urx-51255).\n\nFor a detailed description of IBM Security Verify refer to the [Official documentation](https://www.ibm.com/docs/en/security-verify).\n\nThe IBM Security Verify operator can consistently enforce policy-driven security by using the Ingress networking capability of OpenShift in conjunction with the [Nginx Ingress operator](https://www.nginx.com/blog/getting-started-nginx-ingress-operator-red-hat-openshift/). With this approach, you can enforce authentication and authorization policies for all of the applications in your cluster at the same time, without ever changing your application code. You can also dynamically register your application to start protecting them centrally from the cloud via Verify SaaS. \n\nSee the project [Readme](https://github.com/IBM-Security/verify-operator/blob/master/README.md) for further information and details.\n\n",
-      "csv_display_name": "IBM Security Verify Operator",
-      "csv_metadata_description": "The IBM Security Verify operator can consistently enforce policy-driven security, including authentication and authorization, using the Ingress networking capability of OpenShift.",
-      "csv_name": "ibm-security-verify-operator.v22.6.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:58:23.781000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "ibm-security-verify-operator",
-      "provided_apis": [
-        {
-          "group": "ibm.com",
-          "kind": "IBMSecurityVerify",
-          "plural": "ibmsecurityverifies",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
-          "image": "ibmcom/verify-operator@sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
-          "name": "verify-operator-3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
-          "image": "ibmcom/verify-operator@sha256:3c8add266bdabd7e19ec60c097e9048e5837d7b81c225dcaeec33df9f515b21a",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "22.6.0",
-      "version_original": "22.6.0"
-    },
-    {
-      "_id": "62987f20554afbde4c9bb236",
-      "alm_examples": [
-        {
-          "api_version": "atlas.mongodb.com/v1",
-          "kind": "AtlasBackupPolicy",
-          "metadata": {
-            "name": "atlasbackuppolicy-sample"
-          },
-          "spec": {
-            "id": "1",
-            "items": [
-              {
-                "frequencyInterval": 6,
-                "frequencyType": "WEEKLY",
-                "id": "2",
-                "retentionUnit": "DAYS",
-                "retentionValue": 6
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "atlas.mongodb.com/v1",
-          "kind": "AtlasBackupSchedule",
-          "metadata": {
-            "name": "atlasbackupschedule-sample"
-          },
-          "spec": {
-            "autoExportEnabled": true,
-            "policies": [
-              {
-                "name": "atlas-default-backuppolicy",
-                "namespace": "mongodb-atlas-system"
-              },
-              {
-                "name": "atlas-default-backuppolicy2",
-                "namespace": "mongodb-atlas-system"
-              }
-            ],
-            "referenceHourOfDay": 10,
-            "referenceMinuteOfHour": 10,
-            "restoreWindowDays": 2
-          }
-        },
-        {
-          "api_version": "atlas.mongodb.com/v1",
-          "kind": "AtlasDatabaseUser",
-          "metadata": {
-            "name": "my-database-user"
-          },
-          "spec": {
-            "databaseName": "admin",
-            "passwordSecretRef": {
-              "name": "my-database-user-password"
-            },
-            "projectRef": {
-              "name": "my-project"
-            },
-            "roles": [
-              {
-                "databaseName": "admin",
-                "roleName": "readWriteAnyDatabase"
-              }
-            ],
-            "username": "david"
-          }
-        },
-        {
-          "api_version": "atlas.mongodb.com/v1",
-          "kind": "AtlasDeployment",
-          "metadata": {
-            "name": "my-atlas-cluster"
-          },
-          "spec": {
-            "deploymentSpec": {
-              "name": "test-cluster",
-              "providerSettings": {
-                "instanceSizeName": "M10",
-                "providerName": "AWS",
-                "regionName": "US_EAST_1"
-              }
-            },
-            "projectRef": {
-              "name": "my-project"
-            }
-          }
-        },
-        {
-          "api_version": "atlas.mongodb.com/v1",
-          "kind": "AtlasProject",
-          "metadata": {
-            "name": "my-project"
-          },
-          "spec": {
-            "name": "Test Atlas Operator Project",
-            "projectIpAccessList": [
-              {
-                "comment": "IP address for Application Server A",
-                "ipAddress": "192.0.2.15"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/mongodb/mongodb-atlas-kubernetes-operator-bundle@sha256:2338eaab863304250b3b1d267e9f2261c48eef1f97c280b7fa0af0ebc3ba208b",
-      "bundle_path_digest": "sha256:2338eaab863304250b3b1d267e9f2261c48eef1f97c280b7fa0af0ebc3ba208b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-06-02T09:13:04.328000+00:00",
-      "csv_description": "The MongoDB Atlas Operator provides a native integration between the Kubernetes orchestration platform and MongoDB Atlas \u2014\nthe only multi-cloud document database service that gives you the versatility you need to build sophisticated and resilient applications that can adapt to changing customer demands and market trends.\n\n> Current Status: *Beta*. The Operator gives users the ability to provision\n> Atlas projects, clusters and database users using Kubernetes Specifications and bind connection information\n> into applications deployed to Kubernetes.\n\n## Quick Start guide\n### Step 1. Deploy Kubernetes operator by clicking Install button.\n\n### Step 2. Create Atlas Cluster\n\n**1.** Create an Atlas API Key Secret\nIn order to work with the Atlas Operator you need to provide [authentication information](https://docs.atlas.mongodb.com/configure-api-access)\n to allow the Atlas Operator to communicate with Atlas API. Once you have generated a Public and Private key in Atlas, you can create a Kuberentes Secret with:\n```\nkubectl create secret generic mongodb-atlas-operator-api-key \\\n         --from-literal=\"orgId=<the_atlas_organization_id>\" \\\n         --from-literal=\"publicApiKey=<the_atlas_api_public_key>\" \\\n         --from-literal=\"privateApiKey=<the_atlas_api_private_key>\" \\\n         -n openshift-operators\n```\n(Note, that you should use the namespace where the Operator was installed - it's `openshift-operators` by default)\n\n**2.** Create an `AtlasProject` Custom Resource\n\nThe `AtlasProject` CustomResource represents Atlas Projects in our Kubernetes cluster. You need to specify\n`projectIpAccessList` with the IP addresses or CIDR blocks of any hosts that will connect to the Atlas Cluster.\n```\napiVersion: atlas.mongodb.com/v1\nkind: AtlasProject\nmetadata:\n  name: my-project\nspec:\n  name: Test Atlas Operator Project\n  projectIpAccessList:\n    - ipAddress: \"192.0.2.15\"\n      comment: \"IP address for Application Server A\"\n    - ipAddress: \"203.0.113.0/24\"\n      comment: \"CIDR block for Application Server B - D\"\n```\n**3.** Create an `AtlasDeployment` Custom Resource.\nThe example below is a minimal configuration to create an M10 Atlas cluster in the AWS US East region. For a full list of properties, check\n`atlasclusters.atlas.mongodb.com` [CRD specification](config/crd/bases/atlas.mongodb.com_atlasclusters.yaml)):\n```\napiVersion: atlas.mongodb.com/v1\nkind: AtlasDeployment\nmetadata:\n  name: my-atlas-cluster\nspec:\n  name: \"Test-cluster\"\n  projectRef:\n    name: my-project\n  providerSettings:\n    instanceSizeName: M10\n    providerName: AWS\n    regionName: US_EAST_1\n```\n\n**4.** Create a database user password Kubernetes Secret\nThe Secret must be created in the same namespace as the `AtlasDeployment` and `AtlasProject` were created.\n```\nkubectl create secret generic the-user-password --from-literal=\"password=P@@sword%\"\n```\n\n**5.** Create an `AtlasDatabaseUser` Custom Resource\n\nIn order to connect to an Atlas Cluster the database user needs to be created. `AtlasDatabaseUser` resource should reference\nthe password Kubernetes Secret created in the previous step.\n```\napiVersion: atlas.mongodb.com/v1\nkind: AtlasDatabaseUser\nmetadata:\n  name: my-database-user\nspec:\n  roles:\n    - roleName: \"readWriteAnyDatabase\"\n      databaseName: \"admin\"\n  projectRef:\n    name: my-project\n  username: theuser\n  passwordSecretRef:\n    name: the-user-password\n```\n**6.** Wait for the `AtlasDatabaseUser` Custom Resource to be ready\n\nWait until the AtlasDatabaseUser resource gets to \"ready\" status (it will wait until the cluster is created that may take around 10 minutes):\n```\nkubectl get atlasdatabaseusers my-database-user -o=jsonpath='{.status.conditions[?(@.type==\"Ready\")].status}'\nTrue\n```\n### Step 3. Connect your application to the Atlas Cluster\n\nThe Atlas Operator will create a Kubernetes Secret with the information necessary to connect to the Atlas Cluster created\nin the previous step. An application in the same Kubernetes Cluster can mount and use the Secret:\n\n```\n...\ncontainers:\n      - name: test-app\n        env:\n         - name: \"CONNECTION_STRING\"\n           valueFrom:\n             secretKeyRef:\n               name: test-atlas-operator-project-test-cluster-theuser\n               key: connectionStringStandardSrv\n\n```\n",
-      "csv_display_name": "MongoDB Atlas Operator",
-      "csv_metadata_description": "The MongoDB Atlas Kubernetes Operator enables easy management of Clusters in MongoDB Atlas",
-      "csv_name": "mongodb-atlas-kubernetes.v1.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:27:21.001000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "mongodb-atlas-kubernetes",
-      "provided_apis": [
-        {
-          "group": "atlas.mongodb.com",
-          "kind": "AtlasBackupPolicy",
-          "version": "v1"
-        },
-        {
-          "group": "atlas.mongodb.com",
-          "kind": "AtlasBackupSchedule",
-          "version": "v1"
-        },
-        {
-          "group": "atlas.mongodb.com",
-          "kind": "AtlasDatabaseUser",
-          "version": "v1"
-        },
-        {
-          "group": "atlas.mongodb.com",
-          "kind": "AtlasDeployment",
-          "version": "v1"
-        },
-        {
-          "group": "atlas.mongodb.com",
-          "kind": "AtlasProject",
-          "version": "v1"
-        }
-      ],
-      "provider": "MongoDB, Inc",
-      "related_images": [
-        {
-          "digest": "sha256:3cfbd700e4771c2c7e75c2c41cf6de57c9ef71ecd286e96a21d2567e43424bc3",
-          "image": "registry.connect.redhat.com/mongodb/mongodb-atlas-kubernetes-operator@sha256:3cfbd700e4771c2c7e75c2c41cf6de57c9ef71ecd286e96a21d2567e43424bc3",
-          "name": "mongodb-atlas-kubernetes-operator-3cfbd700e4771c2c7e75c2c41cf6de57c9ef71ecd286e96a21d2567e43424bc3-annotation"
-        },
-        {
-          "digest": "sha256:3cfbd700e4771c2c7e75c2c41cf6de57c9ef71ecd286e96a21d2567e43424bc3",
-          "image": "registry.connect.redhat.com/mongodb/mongodb-atlas-kubernetes-operator@sha256:3cfbd700e4771c2c7e75c2c41cf6de57c9ef71ecd286e96a21d2567e43424bc3",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.0.0",
-      "version_original": "1.0.0"
-    },
-    {
-      "_id": "629881448c1a626fc9aeb790",
-      "alm_examples": [
-        {
-          "api_version": "atlas.mongodb.com/v1",
-          "kind": "AtlasBackupPolicy",
-          "metadata": {
-            "name": "atlasbackuppolicy-sample"
-          },
-          "spec": {
-            "id": "1",
-            "items": [
-              {
-                "frequencyInterval": 6,
-                "frequencyType": "WEEKLY",
-                "id": "2",
-                "retentionUnit": "DAYS",
-                "retentionValue": 6
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "atlas.mongodb.com/v1",
-          "kind": "AtlasBackupSchedule",
-          "metadata": {
-            "name": "atlasbackupschedule-sample"
-          },
-          "spec": {
-            "autoExportEnabled": true,
-            "policies": [
-              {
-                "name": "atlas-default-backuppolicy",
-                "namespace": "mongodb-atlas-system"
-              },
-              {
-                "name": "atlas-default-backuppolicy2",
-                "namespace": "mongodb-atlas-system"
-              }
-            ],
-            "referenceHourOfDay": 10,
-            "referenceMinuteOfHour": 10,
-            "restoreWindowDays": 2
-          }
-        },
-        {
-          "api_version": "atlas.mongodb.com/v1",
-          "kind": "AtlasDatabaseUser",
-          "metadata": {
-            "name": "my-database-user"
-          },
-          "spec": {
-            "databaseName": "admin",
-            "passwordSecretRef": {
-              "name": "my-database-user-password"
-            },
-            "projectRef": {
-              "name": "my-project"
-            },
-            "roles": [
-              {
-                "databaseName": "admin",
-                "roleName": "readWriteAnyDatabase"
-              }
-            ],
-            "username": "david"
-          }
-        },
-        {
-          "api_version": "atlas.mongodb.com/v1",
-          "kind": "AtlasDeployment",
-          "metadata": {
-            "name": "my-atlas-cluster"
-          },
-          "spec": {
-            "deploymentSpec": {
-              "name": "test-cluster",
-              "providerSettings": {
-                "instanceSizeName": "M10",
-                "providerName": "AWS",
-                "regionName": "US_EAST_1"
-              }
-            },
-            "projectRef": {
-              "name": "my-project"
-            }
-          }
-        },
-        {
-          "api_version": "atlas.mongodb.com/v1",
-          "kind": "AtlasProject",
-          "metadata": {
-            "name": "my-project"
-          },
-          "spec": {
-            "name": "Test Atlas Operator Project",
-            "projectIpAccessList": [
-              {
-                "comment": "IP address for Application Server A",
-                "ipAddress": "192.0.2.15"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/mongodb/mongodb-atlas-kubernetes-operator-bundle@sha256:2338eaab863304250b3b1d267e9f2261c48eef1f97c280b7fa0af0ebc3ba208b",
-      "bundle_path_digest": "sha256:2338eaab863304250b3b1d267e9f2261c48eef1f97c280b7fa0af0ebc3ba208b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-06-02T09:22:12.298000+00:00",
-      "csv_description": "The MongoDB Atlas Operator provides a native integration between the Kubernetes orchestration platform and MongoDB Atlas \u2014\nthe only multi-cloud document database service that gives you the versatility you need to build sophisticated and resilient applications that can adapt to changing customer demands and market trends.\n\n> Current Status: *Beta*. The Operator gives users the ability to provision\n> Atlas projects, clusters and database users using Kubernetes Specifications and bind connection information\n> into applications deployed to Kubernetes.\n\n## Quick Start guide\n### Step 1. Deploy Kubernetes operator by clicking Install button.\n\n### Step 2. Create Atlas Cluster\n\n**1.** Create an Atlas API Key Secret\nIn order to work with the Atlas Operator you need to provide [authentication information](https://docs.atlas.mongodb.com/configure-api-access)\n to allow the Atlas Operator to communicate with Atlas API. Once you have generated a Public and Private key in Atlas, you can create a Kuberentes Secret with:\n```\nkubectl create secret generic mongodb-atlas-operator-api-key \\\n         --from-literal=\"orgId=<the_atlas_organization_id>\" \\\n         --from-literal=\"publicApiKey=<the_atlas_api_public_key>\" \\\n         --from-literal=\"privateApiKey=<the_atlas_api_private_key>\" \\\n         -n openshift-operators\n```\n(Note, that you should use the namespace where the Operator was installed - it's `openshift-operators` by default)\n\n**2.** Create an `AtlasProject` Custom Resource\n\nThe `AtlasProject` CustomResource represents Atlas Projects in our Kubernetes cluster. You need to specify\n`projectIpAccessList` with the IP addresses or CIDR blocks of any hosts that will connect to the Atlas Cluster.\n```\napiVersion: atlas.mongodb.com/v1\nkind: AtlasProject\nmetadata:\n  name: my-project\nspec:\n  name: Test Atlas Operator Project\n  projectIpAccessList:\n    - ipAddress: \"192.0.2.15\"\n      comment: \"IP address for Application Server A\"\n    - ipAddress: \"203.0.113.0/24\"\n      comment: \"CIDR block for Application Server B - D\"\n```\n**3.** Create an `AtlasDeployment` Custom Resource.\nThe example below is a minimal configuration to create an M10 Atlas cluster in the AWS US East region. For a full list of properties, check\n`atlasclusters.atlas.mongodb.com` [CRD specification](config/crd/bases/atlas.mongodb.com_atlasclusters.yaml)):\n```\napiVersion: atlas.mongodb.com/v1\nkind: AtlasDeployment\nmetadata:\n  name: my-atlas-cluster\nspec:\n  name: \"Test-cluster\"\n  projectRef:\n    name: my-project\n  providerSettings:\n    instanceSizeName: M10\n    providerName: AWS\n    regionName: US_EAST_1\n```\n\n**4.** Create a database user password Kubernetes Secret\nThe Secret must be created in the same namespace as the `AtlasDeployment` and `AtlasProject` were created.\n```\nkubectl create secret generic the-user-password --from-literal=\"password=P@@sword%\"\n```\n\n**5.** Create an `AtlasDatabaseUser` Custom Resource\n\nIn order to connect to an Atlas Cluster the database user needs to be created. `AtlasDatabaseUser` resource should reference\nthe password Kubernetes Secret created in the previous step.\n```\napiVersion: atlas.mongodb.com/v1\nkind: AtlasDatabaseUser\nmetadata:\n  name: my-database-user\nspec:\n  roles:\n    - roleName: \"readWriteAnyDatabase\"\n      databaseName: \"admin\"\n  projectRef:\n    name: my-project\n  username: theuser\n  passwordSecretRef:\n    name: the-user-password\n```\n**6.** Wait for the `AtlasDatabaseUser` Custom Resource to be ready\n\nWait until the AtlasDatabaseUser resource gets to \"ready\" status (it will wait until the cluster is created that may take around 10 minutes):\n```\nkubectl get atlasdatabaseusers my-database-user -o=jsonpath='{.status.conditions[?(@.type==\"Ready\")].status}'\nTrue\n```\n### Step 3. Connect your application to the Atlas Cluster\n\nThe Atlas Operator will create a Kubernetes Secret with the information necessary to connect to the Atlas Cluster created\nin the previous step. An application in the same Kubernetes Cluster can mount and use the Secret:\n\n```\n...\ncontainers:\n      - name: test-app\n        env:\n         - name: \"CONNECTION_STRING\"\n           valueFrom:\n             secretKeyRef:\n               name: test-atlas-operator-project-test-cluster-theuser\n               key: connectionStringStandardSrv\n\n```\n",
-      "csv_display_name": "MongoDB Atlas Operator",
-      "csv_metadata_description": "The MongoDB Atlas Kubernetes Operator enables easy management of Clusters in MongoDB Atlas",
-      "csv_name": "mongodb-atlas-kubernetes.v1.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:03:07.063000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "mongodb-atlas-kubernetes",
-      "provided_apis": [
-        {
-          "group": "atlas.mongodb.com",
-          "kind": "AtlasDatabaseUser",
-          "plural": "atlasdatabaseusers",
-          "version": "v1"
-        },
-        {
-          "group": "atlas.mongodb.com",
-          "kind": "AtlasDeployment",
-          "plural": "atlasdeployments",
-          "version": "v1"
-        },
-        {
-          "group": "atlas.mongodb.com",
-          "kind": "AtlasProject",
-          "plural": "atlasprojects",
-          "version": "v1"
-        },
-        {
-          "group": "atlas.mongodb.com",
-          "kind": "AtlasBackupPolicy",
-          "plural": "atlasbackuppolicies",
-          "version": "v1"
-        },
-        {
-          "group": "atlas.mongodb.com",
-          "kind": "AtlasBackupSchedule",
-          "plural": "atlasbackupschedules",
-          "version": "v1"
-        }
-      ],
-      "provider": "MongoDB, Inc",
-      "related_images": [
-        {
-          "digest": "sha256:3cfbd700e4771c2c7e75c2c41cf6de57c9ef71ecd286e96a21d2567e43424bc3",
-          "image": "registry.connect.redhat.com/mongodb/mongodb-atlas-kubernetes-operator@sha256:3cfbd700e4771c2c7e75c2c41cf6de57c9ef71ecd286e96a21d2567e43424bc3",
-          "name": "mongodb-atlas-kubernetes-operator-3cfbd700e4771c2c7e75c2c41cf6de57c9ef71ecd286e96a21d2567e43424bc3-annotation"
-        },
-        {
-          "digest": "sha256:3cfbd700e4771c2c7e75c2c41cf6de57c9ef71ecd286e96a21d2567e43424bc3",
-          "image": "registry.connect.redhat.com/mongodb/mongodb-atlas-kubernetes-operator@sha256:3cfbd700e4771c2c7e75c2c41cf6de57c9ef71ecd286e96a21d2567e43424bc3",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.0.0",
-      "version_original": "1.0.0"
-    },
-    {
       "_id": "6298820e554afbde4c9bb2f5",
       "alm_examples": [
         {
@@ -16849,9 +16188,648 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "6.0.6-24",
       "version_original": "6.0.6-24"
+    },
+    {
+      "_id": "62abd6b5150d8182de8eb1ae",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-06-17T01:19:49.843000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:19:49.843000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "62abd6eedd92c1f1f12a81bf",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-06-17T01:20:46.464000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:20:46.464000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "62abd6f3dd92c1f1f12a81cb",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.2.8-53.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
+      "bundle_path_digest": "sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-06-17T01:20:51.377000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.8-11",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:20:51.377000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
+          "name": "redis-enterprise-operator-5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59-annotation"
+        },
+        {
+          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
+          "name": "admission"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.2.8-11",
+      "version_original": "6.2.8-11"
+    },
+    {
+      "_id": "62abd6f5be1fd3a96e05751e",
+      "alm_examples": [
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaCsp",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "db-password",
+                "name": "aqua-database-password"
+              },
+              "dbDiskSize": 10
+            },
+            "database": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "gateway": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "infra": {
+              "namespace": "aqua",
+              "requirements": true,
+              "serviceAccount": "aqua-sa",
+              "version": "6.2"
+            },
+            "route": true,
+            "server": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaDatabase",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "diskSize": 10,
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.2"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "gateway": {
+              "host": "aqua-gateway",
+              "port": 8443
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.2"
+            },
+            "token": "<<your-token>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaKubeEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "config": {
+              "cluster_name": "aqua-secure",
+              "gateway_address": "aqua-gateway.aqua:8443",
+              "imagePullSecret": "aqua-registry"
+            },
+            "deploy": {
+              "service": "ClusterIP"
+            },
+            "infra": {
+              "serviceAccount": "aqua-kube-enforcer-sa",
+              "version": "6.2"
+            },
+            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaGateway",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.2"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaScanner",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "deploy": {
+              "replicas": 1
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.2"
+            },
+            "login": {
+              "host": "http://aqua-server:8080",
+              "password": "<<YOUR AQUA USER PASSWORD>>",
+              "username": "<<YOUR AQUA USER NAME>>"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaServer",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.2"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:5b52a4f073c00a03805d9eb815f5a69a044822431b0b1224c44ba85f5f8a5e52",
+      "bundle_path_digest": "sha256:5b52a4f073c00a03805d9eb815f5a69a044822431b0b1224c44ba85f5f8a5e52",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "6.2",
+      "creation_date": "2022-06-17T01:20:53.553000+00:00",
+      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
+      "csv_display_name": "Aqua Security Operator",
+      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
+      "csv_name": "aqua-operator.v6.2.22020",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:20:53.553000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "aqua-operator-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:5e4742e82b54d834bd07ade4469d03e2b5994b4e14ab9d8514d4274811d66031",
+          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:5e4742e82b54d834bd07ade4469d03e2b5994b4e14ab9d8514d4274811d66031",
+          "name": "aquasec-5e4742e82b54d834bd07ade4469d03e2b5994b4e14ab9d8514d4274811d66031-annotation"
+        },
+        {
+          "digest": "sha256:5e4742e82b54d834bd07ade4469d03e2b5994b4e14ab9d8514d4274811d66031",
+          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:5e4742e82b54d834bd07ade4469d03e2b5994b4e14ab9d8514d4274811d66031",
+          "name": "aqua-operator"
+        },
+        {
+          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
+          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
+          "name": "database"
+        },
+        {
+          "digest": "sha256:058cf7349adc4e91ab980132ba9229ebd388cd49296c547f7074e118e928ace6",
+          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:058cf7349adc4e91ab980132ba9229ebd388cd49296c547f7074e118e928ace6",
+          "name": "gateway"
+        },
+        {
+          "digest": "sha256:65ebfa69753987e407876a69fba7985c39d3cf7590a9a3546bc5798f98f1ccc9",
+          "image": "registry.connect.redhat.com/aquasec/console@sha256:65ebfa69753987e407876a69fba7985c39d3cf7590a9a3546bc5798f98f1ccc9",
+          "name": "server"
+        },
+        {
+          "digest": "sha256:33efebe75e947f5769afe5337c89a00583aafc7925d881db5df672f3da2fbc0b",
+          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:33efebe75e947f5769afe5337c89a00583aafc7925d881db5df672f3da2fbc0b",
+          "name": "scanner"
+        },
+        {
+          "digest": "sha256:f9028eb7724ffadc119fe3a126c5d276844ec7ca562285445e3f4ab7229e8c1a",
+          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:f9028eb7724ffadc119fe3a126c5d276844ec7ca562285445e3f4ab7229e8c1a",
+          "name": "enforcer"
+        },
+        {
+          "digest": "sha256:a6866c31c235a038c47a0ff252973e1ce98cc8df21c0f69f1af27784ce3814b0",
+          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:a6866c31c235a038c47a0ff252973e1ce98cc8df21c0f69f1af27784ce3814b0",
+          "name": "kube_enforcer"
+        }
+      ],
+      "replaces": "",
+      "skip_range": ">=1.0.2 <6.2.22020",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.2.22020",
+      "version_original": "6.2.22020"
+    },
+    {
+      "_id": "62abd6fc150d8182de8eb2aa",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.20-97.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:5666acf5598f96dfbfac5704bb70e6578522979ef63b418ed2d1438a32d2440f",
+      "bundle_path_digest": "sha256:5666acf5598f96dfbfac5704bb70e6578522979ef63b418ed2d1438a32d2440f",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.4",
+      "creation_date": "2022-06-17T01:21:00.514000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.20-12a",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:21:00.514000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "name": "redis-enterprise-operator-f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730-annotation"
+        },
+        {
+          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "name": "admission"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.20-12a",
+      "version_original": "6.0.20-12a"
     }
-  ],
-  "page": 33,
-  "page_size": 100,
-  "total": 4900
+  ]
 }
