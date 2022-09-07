@@ -191,4 +191,6 @@ const (
 	NoSSHDaemonsAllowedRemediation = `Ensure that no SSH daemons are running inside a pod`
 
 	NetworkPolicyDenyAllRemediation = `Ensure that a NetworkPolicy with a default deny-all is applied. After the default is applied, apply a network policy to allow the traffic your application requires.`
+
+	CPUIsolationRemediation = `CPU isolation testing is enabled.  Please ensure that all pods adhere to the CPU isolation requirements`
 )

@@ -35,6 +35,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	"helm.sh/helm/v3/pkg/release"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
@@ -108,6 +109,7 @@ type TestEnvironment struct { // rename this with testTarget
 	Operators            []Operator   `json:"testOperators"`
 	PersistentVolumes    []corev1.PersistentVolume
 	DebugPods            map[string]*corev1.Pod // map from nodename to debugPod
+	GuaranteedPods       []*Pod
 	Config               configuration.TestConfiguration
 	variables            configuration.TestParameters
 	Crds                 []*apiextv1.CustomResourceDefinition          `json:"testCrds"`
@@ -292,6 +294,11 @@ func buildTestEnvironment() { //nolint:funlen
 	for i := 0; i < len(pods); i++ {
 		aNewPod := NewPod(&pods[i])
 		env.Pods = append(env.Pods, &aNewPod)
+
+		// Build slice of guaranteed pods (if any)
+		if aNewPod.IsPodGuaranteed() {
+			env.GuaranteedPods = append(env.GuaranteedPods, &aNewPod)
+		}
 		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
 
@@ -497,6 +504,30 @@ func (p *Pod) String() string {
 		p.Data.Name,
 		p.Data.Namespace,
 	)
+}
+
+func (p *Pod) IsPodGuaranteed() bool {
+	return AreCPUResourcesWholeUnits(p) && AreResourcesIdentical(p)
+}
+
+func (p *Pod) IsCPUIsolationCompliant() bool {
+	isCPUIsolated := true
+
+	if !LoadBalancingDisabled(p) {
+		errMsg := fmt.Sprintf("%s has been found to not have annotations set correctly for CPU isolation.", p.String())
+		logrus.Debugf(errMsg)
+		tnf.ClaimFilePrintf(errMsg)
+		isCPUIsolated = false
+	}
+
+	if !IsRuntimeClassNameSpecified(p) {
+		errMsg := fmt.Sprintf("%s has been found to not have runtimeClassName specified.", p.String())
+		logrus.Debugf(errMsg)
+		tnf.ClaimFilePrintf(errMsg)
+		isCPUIsolated = false
+	}
+
+	return isCPUIsolated
 }
 
 func DeploymentToString(d *appsv1.Deployment) string {
