@@ -656,6 +656,19 @@ Result Type|normative
 Suggested Remediation|Ensure that CNF apps do not listen on ports that are reserved by OpenShift
 Best Practice Reference|https://TODO Section 3.5.9
 Exception Process|There is no documented exception process for this.
+#### reserved-partner-ports
+
+Property|Description
+---|---
+Test Case Name|reserved-partner-ports
+Test Case Label|networking-reserved-partner-ports
+Unique ID|http://test-network-function.com/testcases/networking/reserved-partner-ports
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/networking/reserved-partner-ports Checks that pods and containers are not consuming ports designated as reserved by partner
+Result Type|informative
+Suggested Remediation|Ensure ports are not being used that are reserved by our partner
+Best Practice Reference|https://TODO Section 4.6.24
+Exception Process|There is no documented exception process for this.
 #### service-type
 
 Property|Description

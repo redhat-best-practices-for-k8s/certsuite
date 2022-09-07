@@ -195,4 +195,6 @@ const (
 	CPUIsolationRemediation = `CPU isolation testing is enabled.  Please ensure that all pods adhere to the CPU isolation requirements`
 
 	UID1337Remediation = `Use another process UID that is not 1337`
+
+	ReservedPartnerPortsRemediation = `Ensure ports are not being used that are reserved by our partner`
 )
