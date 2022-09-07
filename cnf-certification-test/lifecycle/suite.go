@@ -145,6 +145,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPersistentVolumeReclaimPolicyIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods, env.PersistentVolumes)
 		testPodPersistentVolumeReclaimPolicy(&env)
 	})
 
