@@ -114,12 +114,6 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testPodsRecreation(&env)
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRequestsAndLimitsIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		testPodRequestsAndLimits(&env)
-	})
-
 	if env.IsIntrusive() {
 		testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDeploymentScalingIdentifier)
 		ginkgo.It(testID, ginkgo.Label(tags...), func() {
@@ -408,58 +402,6 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 		if err != nil {
 			logrus.Fatalf("error uncordoning the node: %s", n)
 		}
-	}
-}
-
-func testPodRequestsAndLimits(env *provider.TestEnvironment) {
-	var containersMissingRequestsOrLimits []string
-	ginkgo.By("Testing container resource requests and limits")
-
-	// Loop through the containers, looking for containers that are missing requests or limits.
-	// These need to be defined in order to pass.
-	for _, cut := range env.Containers {
-		badContainer := false
-		// Parse the limits.
-		if len(cut.Data.Resources.Limits) == 0 {
-			tnf.ClaimFilePrintf("Container has been found missing resource limits: %s", cut.String())
-			badContainer = true
-		} else {
-			if cut.Data.Resources.Limits.Cpu() == nil {
-				tnf.ClaimFilePrintf("Container has been found missing CPU limits: %s", cut.String())
-				badContainer = true
-			}
-
-			if cut.Data.Resources.Limits.Memory() == nil {
-				tnf.ClaimFilePrintf("Container has been found missing memory limits: %s", cut.String())
-				badContainer = true
-			}
-		}
-
-		// Parse the requests.
-		if len(cut.Data.Resources.Requests) == 0 {
-			tnf.ClaimFilePrintf("Container has been found missing resource requests: %s", cut.String())
-			badContainer = true
-		} else {
-			if cut.Data.Resources.Requests.Cpu() == nil {
-				tnf.ClaimFilePrintf("Container has been found missing CPU requests: %s", cut.String())
-				badContainer = true
-			}
-
-			if cut.Data.Resources.Requests.Memory() == nil {
-				tnf.ClaimFilePrintf("Container has been found missing memory requests: %s", cut.String())
-				badContainer = true
-			}
-		}
-
-		if badContainer {
-			containersMissingRequestsOrLimits = append(containersMissingRequestsOrLimits, cut.String())
-		}
-	}
-
-	if n := len(containersMissingRequestsOrLimits); n > 0 {
-		errMsg := fmt.Sprintf("Containers found that are missing either resource requests or limits: %d. See logs for more detail.", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
 	}
 }
 

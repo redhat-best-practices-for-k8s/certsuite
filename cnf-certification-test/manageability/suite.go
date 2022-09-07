@@ -28,7 +28,7 @@ import (
 )
 
 // All actual test code belongs below here.  Utilities belong above.
-var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
+var _ = ginkgo.Describe(common.ManageabilityTestKey, func() {
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()

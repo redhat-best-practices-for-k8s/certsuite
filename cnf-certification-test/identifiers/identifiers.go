@@ -35,7 +35,7 @@ const (
 
 const (
 	tagCommon   = "common"
-	tagExtended = "extanded"
+	tagExtended = "extended"
 	tagOnline   = "online"
 )
 
