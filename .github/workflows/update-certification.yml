@@ -16,10 +16,10 @@ jobs:
       SHELL: /bin/bash        
 
     steps:
-      - name: Set up Go 1.18.5
+      - name: Set up Go 1.18.6
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18.5
+          go-version: 1.18.6
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
