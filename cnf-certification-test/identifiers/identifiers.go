@@ -95,6 +95,7 @@ func AddCatalogEntry(testID, suiteName, description, remediation, testType, exce
 var (
 	TestICMPv4ConnectivityIdentifier   claim.Identifier
 	TestNetworkPolicyDenyAllIdentifier claim.Identifier
+	Test1337UIDIdentifier              claim.Identifier
 )
 
 func InitCatalog() map[claim.Identifier]TestCaseDescription {
@@ -123,6 +124,17 @@ The label value is not important, only its presence.`,
 		versionOne,
 		bestPracticeDocV1dot3URL+" Section 10.6",
 		tagCommon)
+
+	Test1337UIDIdentifier = AddCatalogEntry(
+		"no-1337-uid",
+		common.AccessControlTestKey,
+		`Checks that all pods are not using the securityContext UID 1337`,
+		UID1337Remediation,
+		informativeResult,
+		NoDocumentedProcess,
+		versionOne,
+		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		tagExtended)
 
 	return Catalog
 }
