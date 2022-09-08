@@ -500,6 +500,11 @@ running your CNF, and at least one other machine available to host the test suit
 [cnf-certification-test-partner](https://github.com/test-network-function/cnf-certification-test-partner) repository has a very
 simple example of this you can model your setup on.
 
+### Adding private test cases
+
+To add private test cases follow the instructions at:
+https://github.com/test-network-function/cnfextensions 
+
 ## Exception Process
 
 Please refer to the [CATALOG](CATALOG.md) and to the specific test you are attempting to gain an exception for if you are a partner organization.
