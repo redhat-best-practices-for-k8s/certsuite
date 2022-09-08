@@ -1,1186 +1,6 @@
 {
   "data": [
     {
-      "_id": "62e9f159fa788ab4215629ba",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "prometheus": {
-                "serviceMonitor": {
-                  "enabled": false
-                }
-              }
-            },
-            "kubeProxyReplacement": "probe"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:fc5df4c58c447c10ba6dc27b32f0d3b8119f63b43bc8eaac219225d65041d981",
-      "bundle_path_digest": "sha256:fc5df4c58c447c10ba6dc27b32f0d3b8119f63b43bc8eaac219225d65041d981",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.10",
-      "creation_date": "2022-08-03T03:54:01.349000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.11-x10ae342",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T03:54:01.349000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "image": "quay.io/isovalent/cilium@sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "image": "quay.io/isovalent/hubble-relay@sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "image": "quay.io/isovalent/operator-generic@sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "image": "quay.io/isovalent/cilium@sha256:1fccb0b679e4f6b9baabdac42745375766bad0156bd5162e541aebf8e750f0f7",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:4fd93c4171f469fe681e95398a75f101e18ff99ab9ce880740d1d3d7d8be60b3",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:4fd93c4171f469fe681e95398a75f101e18ff99ab9ce880740d1d3d7d8be60b3",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "image": "quay.io/isovalent/hubble-export-stdout@sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:0a80a63c5514f2c00634e5efe4a6d133143d8868c0e8b9af878e5da9012d844d",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:0a80a63c5514f2c00634e5efe4a6d133143d8868c0e8b9af878e5da9012d844d",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "image": "quay.io/isovalent/hubble-relay@sha256:ef80c105745fe3996fb4aea8adbe05b4e3d70732e442109c993c6acfc19fcd25",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "image": "quay.io/isovalent/operator-generic@sha256:09d2537c980e6cf602799dc27520631cad9567f492fb411c9bb68d522d484d50",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:99b41dca4f07f74806d89850a28e426474e88bd3967f34a4f685ac740e9372a7",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:9584155f6e0874a0c98faa95270acc80b9c3016be28e5a437cfc36d9e924982a",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:7e4a24c8ba9de5e3c9c791b2c4071344275c62aae911ccd6efaf3fdcbe8c0f52",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:eb6733d46f0fe03e90d1baaaf1bafed99a435f1ecac40001591aae0a7dc48226",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "image": "quay.io/isovalent/hubble-export-stdout@sha256:da78713535361fe6c35a02716de9a93b4f6b089415614ce177b344c8223a9e38",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:7157d77a783acc5d566944d69161add27ef47d648b231c6bdfbf9ae7fdda9447",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.10.11+x10ae342",
-      "version_original": "1.10.11+x10ae342"
-    },
-    {
-      "_id": "62e9f15efa788ab4215629be",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "operator": {
-                "clusterPoolIPv4MaskSize": "23",
-                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
-              }
-            },
-            "kubeProxyReplacement": "probe",
-            "nativeRoutingCIDR": "10.128.0.0/14",
-            "prometheus": {
-              "serviceMonitor": {
-                "enabled": false
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:f8baf169cb70250af6c00589d76d9799126407ae528e035918d6e85654bfc927",
-      "bundle_path_digest": "sha256:f8baf169cb70250af6c00589d76d9799126407ae528e035918d6e85654bfc927",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.10",
-      "creation_date": "2022-08-03T03:54:06.042000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.12-x362ea11",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T03:54:06.042000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "image": "quay.io/cilium/cilium@sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "image": "quay.io/cilium/hubble-relay@sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "image": "quay.io/cilium/operator-generic@sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "image": "quay.io/cilium/cilium@sha256:6a119c4f249d42df0d5654295ac9466da117f9b838ff48b4bc64234f7ab20b80",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:0dd9df6e4b20f7120f10ddee560e0c285875657f0db0e2a18bc0cd748f86a84c",
-          "image": "quay.io/cilium/clustermesh-apiserver@sha256:0dd9df6e4b20f7120f10ddee560e0c285875657f0db0e2a18bc0cd748f86a84c",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1529d655812265dfbfae28a88e6e03f37f1040f218892b6844dfb6d9dc651360",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:1529d655812265dfbfae28a88e6e03f37f1040f218892b6844dfb6d9dc651360",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "image": "quay.io/cilium/hubble-relay@sha256:fd3829bf67f2f3d3471da6ded9c636b22feb9a31feaac4509a295043e93af169",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "image": "quay.io/cilium/operator-generic@sha256:35288de36cd1b6fe65e55a9b878100c2ab92ac88ed6a3ab04326e00326cff3f7",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.10.12+x362ea11",
-      "version_original": "1.10.12+x362ea11"
-    },
-    {
-      "_id": "62e9f162b1ddc76f11b3c1d1",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "prometheus": {
-                "serviceMonitor": {
-                  "enabled": false
-                }
-              }
-            },
-            "kubeProxyReplacement": "probe"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:31bdf5b1739babe85543958d4d37b1c3af20b44b77e7e272a7029b0aa60caeec",
-      "bundle_path_digest": "sha256:31bdf5b1739babe85543958d4d37b1c3af20b44b77e7e272a7029b0aa60caeec",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.10",
-      "creation_date": "2022-08-03T03:54:10.961000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.12-xb203fae",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T03:54:10.961000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:51c4f156e73565b9d5404c693f65cd84173111a6da7cac4ccfff51d4fcc917e0",
-          "image": "quay.io/isovalent/cilium@sha256:51c4f156e73565b9d5404c693f65cd84173111a6da7cac4ccfff51d4fcc917e0",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:dfb499b9763bb01fb4c62b7110cc2a77b34423cd404c9a729caa464bd527fecb",
-          "image": "quay.io/isovalent/hubble-relay@sha256:dfb499b9763bb01fb4c62b7110cc2a77b34423cd404c9a729caa464bd527fecb",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:b618f7bdbf97e263f7a92b3b47dd160684c94ab4ea93cf80a7bc750be9eddcb4",
-          "image": "quay.io/isovalent/operator-generic@sha256:b618f7bdbf97e263f7a92b3b47dd160684c94ab4ea93cf80a7bc750be9eddcb4",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:51c4f156e73565b9d5404c693f65cd84173111a6da7cac4ccfff51d4fcc917e0",
-          "image": "quay.io/isovalent/cilium@sha256:51c4f156e73565b9d5404c693f65cd84173111a6da7cac4ccfff51d4fcc917e0",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:e97ef13afeadc7e9395a0aa348cebd07260fe16e4081ae05e6a9b3969c8efa74",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:e97ef13afeadc7e9395a0aa348cebd07260fe16e4081ae05e6a9b3969c8efa74",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:23cb5e39ecfac55d3da9d328cbf8a7150916711479f788ab1e38bb56a72c3120",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:23cb5e39ecfac55d3da9d328cbf8a7150916711479f788ab1e38bb56a72c3120",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:dfb499b9763bb01fb4c62b7110cc2a77b34423cd404c9a729caa464bd527fecb",
-          "image": "quay.io/isovalent/hubble-relay@sha256:dfb499b9763bb01fb4c62b7110cc2a77b34423cd404c9a729caa464bd527fecb",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:b618f7bdbf97e263f7a92b3b47dd160684c94ab4ea93cf80a7bc750be9eddcb4",
-          "image": "quay.io/isovalent/operator-generic@sha256:b618f7bdbf97e263f7a92b3b47dd160684c94ab4ea93cf80a7bc750be9eddcb4",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.10.12+xb203fae",
-      "version_original": "1.10.12+xb203fae"
-    },
-    {
-      "_id": "62e9f1684a2b9e2714aba304",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "operator": {
-                "clusterPoolIPv4MaskSize": "23",
-                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
-              }
-            },
-            "kubeProxyReplacement": "probe",
-            "nativeRoutingCIDR": "10.128.0.0/14",
-            "prometheus": {
-              "serviceMonitor": {
-                "enabled": false
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:6d4fd1df43f33a594f3db98b2340cb6caa72d953ba4bf435339290485a6a6478",
-      "bundle_path_digest": "sha256:6d4fd1df43f33a594f3db98b2340cb6caa72d953ba4bf435339290485a6a6478",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.10",
-      "creation_date": "2022-08-03T03:54:15.996000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.13-xa8bb1e5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T03:54:15.996000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:6b9b2688d39841c862bb3ca8a45af18a1f9305054e9add833d91a1b187f7f16e",
-          "image": "quay.io/cilium/cilium@sha256:6b9b2688d39841c862bb3ca8a45af18a1f9305054e9add833d91a1b187f7f16e",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:9110780d4220816500f8a1e6cb82434c6051d7d444069b2f065d7d5d89fa7010",
-          "image": "quay.io/cilium/hubble-relay@sha256:9110780d4220816500f8a1e6cb82434c6051d7d444069b2f065d7d5d89fa7010",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:4b65009815b835e79b4a9bce97d8da4ff81c59da7a514f60244e6dab9ac8548e",
-          "image": "quay.io/cilium/operator-generic@sha256:4b65009815b835e79b4a9bce97d8da4ff81c59da7a514f60244e6dab9ac8548e",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:6b9b2688d39841c862bb3ca8a45af18a1f9305054e9add833d91a1b187f7f16e",
-          "image": "quay.io/cilium/cilium@sha256:6b9b2688d39841c862bb3ca8a45af18a1f9305054e9add833d91a1b187f7f16e",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:fe1f583b096563aa6106119bfafda771a2e4e2edd29db0055e28f18c71d81d97",
-          "image": "quay.io/cilium/clustermesh-apiserver@sha256:fe1f583b096563aa6106119bfafda771a2e4e2edd29db0055e28f18c71d81d97",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:e7d0981f7ee488c9f18b0d21a1f227fbf3dfe806e3d5822d40e12efa8478889e",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:e7d0981f7ee488c9f18b0d21a1f227fbf3dfe806e3d5822d40e12efa8478889e",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:9110780d4220816500f8a1e6cb82434c6051d7d444069b2f065d7d5d89fa7010",
-          "image": "quay.io/cilium/hubble-relay@sha256:9110780d4220816500f8a1e6cb82434c6051d7d444069b2f065d7d5d89fa7010",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:4b65009815b835e79b4a9bce97d8da4ff81c59da7a514f60244e6dab9ac8548e",
-          "image": "quay.io/cilium/operator-generic@sha256:4b65009815b835e79b4a9bce97d8da4ff81c59da7a514f60244e6dab9ac8548e",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.10.13+xa8bb1e5",
-      "version_original": "1.10.13+xa8bb1e5"
-    },
-    {
-      "_id": "62e9f16dced786fb0e4b9775",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "prometheus": {
-                "serviceMonitor": {
-                  "enabled": false
-                }
-              }
-            },
-            "kubeProxyReplacement": "probe"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:3dbb71004362a70683a5ee9f0916bca75c0d1c351d144677fd9d85bcb2ca8bf7",
-      "bundle_path_digest": "sha256:3dbb71004362a70683a5ee9f0916bca75c0d1c351d144677fd9d85bcb2ca8bf7",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.10",
-      "creation_date": "2022-08-03T03:54:21.189000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.13-xed86eae",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T03:54:21.189000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
-          "image": "quay.io/isovalent/cilium@sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
-          "image": "quay.io/isovalent/hubble-relay@sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
-          "image": "quay.io/isovalent/operator-generic@sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
-          "image": "quay.io/isovalent/cilium@sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:eb3ee3d2cb07e6c5966e4bc2e50615949303be5d5128e156d5c0dbe8404dc093",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:eb3ee3d2cb07e6c5966e4bc2e50615949303be5d5128e156d5c0dbe8404dc093",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:cc1f0e6b27ccda8a843dfb7fa4a8fef052ba29716646557815677c5d1bea2a1a",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:cc1f0e6b27ccda8a843dfb7fa4a8fef052ba29716646557815677c5d1bea2a1a",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
-          "image": "quay.io/isovalent/hubble-relay@sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
-          "image": "quay.io/isovalent/operator-generic@sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.10.13+xed86eae",
-      "version_original": "1.10.13+xed86eae"
-    },
-    {
       "_id": "62e9f178926c4db0ae4ddd49",
       "alm_examples": [
         {
@@ -15808,6 +14628,1027 @@
       "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.16.4",
+      "version_original": "1.16.4"
+    },
+    {
+      "_id": "62ebd64396f50062ffb669fd",
+      "alm_examples": [
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "my-replica-set"
+          },
+          "spec": {
+            "credentials": "my-credentials",
+            "members": 3,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "sample-sharded-cluster"
+          },
+          "spec": {
+            "configServerCount": 3,
+            "credentials": "my-credentials",
+            "mongodsPerShardCount": 3,
+            "mongosCount": 2,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "shardCount": 1,
+            "type": "ShardedCluster",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBMulti",
+          "metadata": {
+            "name": "multi-replica-set"
+          },
+          "spec": {
+            "clusterSpecList": {
+              "clusterSpecs": [
+                {
+                  "clusterName": "e2e.cluster1.mongokubernetes.com",
+                  "members": 2
+                },
+                {
+                  "clusterName": "e2e.cluster2.mongokubernetes.com",
+                  "members": 1
+                },
+                {
+                  "clusterName": "e2e.cluster3.mongokubernetes.com",
+                  "members": 2
+                }
+              ]
+            },
+            "credentials": "my-credentials",
+            "duplicateServiceObjects": false,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": false,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBOpsManager",
+          "metadata": {
+            "name": "ops-manager"
+          },
+          "spec": {
+            "adminCredentials": "ops-manager-admin",
+            "applicationDatabase": {
+              "members": 3,
+              "podSpec": {
+                "cpu": 1
+              }
+            },
+            "configuration": {
+              "mms.fromEmailAddr": "admin@thecompany.com"
+            },
+            "externalConnectivity": {
+              "type": "LoadBalancer"
+            },
+            "version": "4.4.1"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBUser",
+          "metadata": {
+            "name": "my-replica-set-x509-user"
+          },
+          "spec": {
+            "db": "$external",
+            "mongodbResourceRef": {
+              "name": "my-replica-set"
+            },
+            "roles": [
+              {
+                "db": "admin",
+                "name": "dbOwner"
+              }
+            ],
+            "username": "CN=my-replica-set-x509-user,OU=cloud,O=MongoDB,L=New York,ST=New York,C=US"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:991eaeb592d64c906163802faf62ae50d1472fd0a5cd52258d54011ea10c5912",
+      "bundle_path_digest": "sha256:991eaeb592d64c906163802faf62ae50d1472fd0a5cd52258d54011ea10c5912",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-04T14:22:59.629000+00:00",
+      "csv_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB\ninto Kubernetes clusters, using our management, monitoring and backup\nplatforms, Ops Manager and Cloud Manager.\n\n## Before You Start\n\nTo start using the operator you''ll need an account in MongoDB Cloud Manager or\na MongoDB Ops Manager deployment.\n\n* [Create a Secret with your OpsManager API key](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-operator-credentials/#procedure)\n\n* [Create a ConfigMap with your OpsManager project ID and URL](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-project-using-configmap/)\n\nBy installing this integration, you will be able to deploy MongoDB instances\nwith a single simple command.\n\n## Required Parameters\n\n* `opsManager` or `cloudManager` - Enter the name of the ConfigMap containing project information\n* `credentials` - Enter the name of the Secret containing your OpsManager credentials\n* `type` - Enter MongoDB Deployment Types (\"Standalone\", \"ReplicaSet\", \"ShardedCluster\"\n\n## Supported MongoDB Deployment Types ##\n\n* Standalone: An instance of mongod that is running as a single server and\nnot as part of a replica set, this is, it does not do any kind of\nreplication.\n\n* Replica Set: A replica set in MongoDB is a group of mongod processes that\nmaintain the same data set. Replica sets provide redundancy and high\navailability, and are the basis for all production deployments. This section\nintroduces replication in MongoDB as well as the components and architecture\nof replica sets. The section also provides tutorials for common tasks\nrelated to replica sets.\n\n* Sharded Cluster: The set of nodes comprising a sharded MongoDB deployment.\nA sharded cluster consists of config servers, shards, and one or more mongos\nrouting processes. Sharding is a A database architecture that partitions\ndata by key ranges and distributes the data among two or more database\ninstances. Sharding enables horizontal scaling.\n\n## Requirements for deploying MongoDB OpsManager\n\n* In order to deploy resources of type MongoDB OpsManager, you will need to\ncreate a secret containing the [credentials](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/plan-om-resource/#om-rsrc-prereqs)\nfor the Global Onwer user\n\n## Security ##\n\nThe operator can enable TLS for all traffic between servers and also between\nclients and servers. Before enabling `security.tls.enabled` to `true` you\nshould create your certificates.  or you can leave the operator to create all\nthe certificates for you. The operator ability to create certs is been\ndepricted due to Kuberentes API changes.\n\nFor more information, please read the official MongoDB\nKubernetes Operator  [docs](https://docs.mongodb.com/kubernetes-operator/stable/).\n",
+      "csv_display_name": "MongoDB Enterprise Operator",
+      "csv_metadata_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB into Kubernetes clusters, using our management, monitoring and backup platforms, Ops Manager and Cloud Manager.",
+      "csv_name": "mongodb-enterprise.v1.16.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:19:55.863000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDB",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBMulti",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBOpsManager",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBUser",
+          "version": "v1"
+        }
+      ],
+      "provider": "MongoDB, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:f30f5f272e73e9227437437dfe75bc3623c45a0fccaf7c03026a62b670c33297",
+          "image": "registry.connect.redhat.com/mongodb/enterprise-operator@sha256:f30f5f272e73e9227437437dfe75bc3623c45a0fccaf7c03026a62b670c33297",
+          "name": "mongodb-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.16.4",
+      "version_original": "1.16.4"
+    },
+    {
+      "_id": "62ebd66496f50062ffb66a01",
+      "alm_examples": [
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "my-replica-set"
+          },
+          "spec": {
+            "credentials": "my-credentials",
+            "members": 3,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "sample-sharded-cluster"
+          },
+          "spec": {
+            "configServerCount": 3,
+            "credentials": "my-credentials",
+            "mongodsPerShardCount": 3,
+            "mongosCount": 2,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "shardCount": 1,
+            "type": "ShardedCluster",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBMulti",
+          "metadata": {
+            "name": "multi-replica-set"
+          },
+          "spec": {
+            "clusterSpecList": {
+              "clusterSpecs": [
+                {
+                  "clusterName": "e2e.cluster1.mongokubernetes.com",
+                  "members": 2
+                },
+                {
+                  "clusterName": "e2e.cluster2.mongokubernetes.com",
+                  "members": 1
+                },
+                {
+                  "clusterName": "e2e.cluster3.mongokubernetes.com",
+                  "members": 2
+                }
+              ]
+            },
+            "credentials": "my-credentials",
+            "duplicateServiceObjects": false,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": false,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBOpsManager",
+          "metadata": {
+            "name": "ops-manager"
+          },
+          "spec": {
+            "adminCredentials": "ops-manager-admin",
+            "applicationDatabase": {
+              "members": 3,
+              "podSpec": {
+                "cpu": 1
+              }
+            },
+            "configuration": {
+              "mms.fromEmailAddr": "admin@thecompany.com"
+            },
+            "externalConnectivity": {
+              "type": "LoadBalancer"
+            },
+            "version": "4.4.1"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBUser",
+          "metadata": {
+            "name": "my-replica-set-x509-user"
+          },
+          "spec": {
+            "db": "$external",
+            "mongodbResourceRef": {
+              "name": "my-replica-set"
+            },
+            "roles": [
+              {
+                "db": "admin",
+                "name": "dbOwner"
+              }
+            ],
+            "username": "CN=my-replica-set-x509-user,OU=cloud,O=MongoDB,L=New York,ST=New York,C=US"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:991eaeb592d64c906163802faf62ae50d1472fd0a5cd52258d54011ea10c5912",
+      "bundle_path_digest": "sha256:991eaeb592d64c906163802faf62ae50d1472fd0a5cd52258d54011ea10c5912",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-04T14:23:32.333000+00:00",
+      "csv_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB\ninto Kubernetes clusters, using our management, monitoring and backup\nplatforms, Ops Manager and Cloud Manager.\n\n## Before You Start\n\nTo start using the operator you''ll need an account in MongoDB Cloud Manager or\na MongoDB Ops Manager deployment.\n\n* [Create a Secret with your OpsManager API key](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-operator-credentials/#procedure)\n\n* [Create a ConfigMap with your OpsManager project ID and URL](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-project-using-configmap/)\n\nBy installing this integration, you will be able to deploy MongoDB instances\nwith a single simple command.\n\n## Required Parameters\n\n* `opsManager` or `cloudManager` - Enter the name of the ConfigMap containing project information\n* `credentials` - Enter the name of the Secret containing your OpsManager credentials\n* `type` - Enter MongoDB Deployment Types (\"Standalone\", \"ReplicaSet\", \"ShardedCluster\"\n\n## Supported MongoDB Deployment Types ##\n\n* Standalone: An instance of mongod that is running as a single server and\nnot as part of a replica set, this is, it does not do any kind of\nreplication.\n\n* Replica Set: A replica set in MongoDB is a group of mongod processes that\nmaintain the same data set. Replica sets provide redundancy and high\navailability, and are the basis for all production deployments. This section\nintroduces replication in MongoDB as well as the components and architecture\nof replica sets. The section also provides tutorials for common tasks\nrelated to replica sets.\n\n* Sharded Cluster: The set of nodes comprising a sharded MongoDB deployment.\nA sharded cluster consists of config servers, shards, and one or more mongos\nrouting processes. Sharding is a A database architecture that partitions\ndata by key ranges and distributes the data among two or more database\ninstances. Sharding enables horizontal scaling.\n\n## Requirements for deploying MongoDB OpsManager\n\n* In order to deploy resources of type MongoDB OpsManager, you will need to\ncreate a secret containing the [credentials](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/plan-om-resource/#om-rsrc-prereqs)\nfor the Global Onwer user\n\n## Security ##\n\nThe operator can enable TLS for all traffic between servers and also between\nclients and servers. Before enabling `security.tls.enabled` to `true` you\nshould create your certificates.  or you can leave the operator to create all\nthe certificates for you. The operator ability to create certs is been\ndepricted due to Kuberentes API changes.\n\nFor more information, please read the official MongoDB\nKubernetes Operator  [docs](https://docs.mongodb.com/kubernetes-operator/stable/).\n",
+      "csv_display_name": "MongoDB Enterprise Operator",
+      "csv_metadata_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB into Kubernetes clusters, using our management, monitoring and backup platforms, Ops Manager and Cloud Manager.",
+      "csv_name": "mongodb-enterprise.v1.16.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:03:28.555000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBOpsManager",
+          "plural": "opsmanagers",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDB",
+          "plural": "mongodb",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBMulti",
+          "plural": "mongodbmulti",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBUser",
+          "plural": "mongodbusers",
+          "version": "v1"
+        }
+      ],
+      "provider": "MongoDB, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:f30f5f272e73e9227437437dfe75bc3623c45a0fccaf7c03026a62b670c33297",
+          "image": "registry.connect.redhat.com/mongodb/enterprise-operator@sha256:f30f5f272e73e9227437437dfe75bc3623c45a0fccaf7c03026a62b670c33297",
+          "name": "mongodb-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.16.4",
+      "version_original": "1.16.4"
+    },
+    {
+      "_id": "62ebd687e81a17217612b91b",
+      "alm_examples": [
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "my-replica-set"
+          },
+          "spec": {
+            "credentials": "my-credentials",
+            "members": 3,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "sample-sharded-cluster"
+          },
+          "spec": {
+            "configServerCount": 3,
+            "credentials": "my-credentials",
+            "mongodsPerShardCount": 3,
+            "mongosCount": 2,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "shardCount": 1,
+            "type": "ShardedCluster",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBMulti",
+          "metadata": {
+            "name": "multi-replica-set"
+          },
+          "spec": {
+            "clusterSpecList": {
+              "clusterSpecs": [
+                {
+                  "clusterName": "e2e.cluster1.mongokubernetes.com",
+                  "members": 2
+                },
+                {
+                  "clusterName": "e2e.cluster2.mongokubernetes.com",
+                  "members": 1
+                },
+                {
+                  "clusterName": "e2e.cluster3.mongokubernetes.com",
+                  "members": 2
+                }
+              ]
+            },
+            "credentials": "my-credentials",
+            "duplicateServiceObjects": false,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": false,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBOpsManager",
+          "metadata": {
+            "name": "ops-manager"
+          },
+          "spec": {
+            "adminCredentials": "ops-manager-admin",
+            "applicationDatabase": {
+              "members": 3,
+              "podSpec": {
+                "cpu": 1
+              }
+            },
+            "configuration": {
+              "mms.fromEmailAddr": "admin@thecompany.com"
+            },
+            "externalConnectivity": {
+              "type": "LoadBalancer"
+            },
+            "version": "4.4.1"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBUser",
+          "metadata": {
+            "name": "my-replica-set-x509-user"
+          },
+          "spec": {
+            "db": "$external",
+            "mongodbResourceRef": {
+              "name": "my-replica-set"
+            },
+            "roles": [
+              {
+                "db": "admin",
+                "name": "dbOwner"
+              }
+            ],
+            "username": "CN=my-replica-set-x509-user,OU=cloud,O=MongoDB,L=New York,ST=New York,C=US"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:991eaeb592d64c906163802faf62ae50d1472fd0a5cd52258d54011ea10c5912",
+      "bundle_path_digest": "sha256:991eaeb592d64c906163802faf62ae50d1472fd0a5cd52258d54011ea10c5912",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-04T14:24:07.756000+00:00",
+      "csv_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB\ninto Kubernetes clusters, using our management, monitoring and backup\nplatforms, Ops Manager and Cloud Manager.\n\n## Before You Start\n\nTo start using the operator you''ll need an account in MongoDB Cloud Manager or\na MongoDB Ops Manager deployment.\n\n* [Create a Secret with your OpsManager API key](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-operator-credentials/#procedure)\n\n* [Create a ConfigMap with your OpsManager project ID and URL](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-project-using-configmap/)\n\nBy installing this integration, you will be able to deploy MongoDB instances\nwith a single simple command.\n\n## Required Parameters\n\n* `opsManager` or `cloudManager` - Enter the name of the ConfigMap containing project information\n* `credentials` - Enter the name of the Secret containing your OpsManager credentials\n* `type` - Enter MongoDB Deployment Types (\"Standalone\", \"ReplicaSet\", \"ShardedCluster\"\n\n## Supported MongoDB Deployment Types ##\n\n* Standalone: An instance of mongod that is running as a single server and\nnot as part of a replica set, this is, it does not do any kind of\nreplication.\n\n* Replica Set: A replica set in MongoDB is a group of mongod processes that\nmaintain the same data set. Replica sets provide redundancy and high\navailability, and are the basis for all production deployments. This section\nintroduces replication in MongoDB as well as the components and architecture\nof replica sets. The section also provides tutorials for common tasks\nrelated to replica sets.\n\n* Sharded Cluster: The set of nodes comprising a sharded MongoDB deployment.\nA sharded cluster consists of config servers, shards, and one or more mongos\nrouting processes. Sharding is a A database architecture that partitions\ndata by key ranges and distributes the data among two or more database\ninstances. Sharding enables horizontal scaling.\n\n## Requirements for deploying MongoDB OpsManager\n\n* In order to deploy resources of type MongoDB OpsManager, you will need to\ncreate a secret containing the [credentials](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/plan-om-resource/#om-rsrc-prereqs)\nfor the Global Onwer user\n\n## Security ##\n\nThe operator can enable TLS for all traffic between servers and also between\nclients and servers. Before enabling `security.tls.enabled` to `true` you\nshould create your certificates.  or you can leave the operator to create all\nthe certificates for you. The operator ability to create certs is been\ndepricted due to Kuberentes API changes.\n\nFor more information, please read the official MongoDB\nKubernetes Operator  [docs](https://docs.mongodb.com/kubernetes-operator/stable/).\n",
+      "csv_display_name": "MongoDB Enterprise Operator",
+      "csv_metadata_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB into Kubernetes clusters, using our management, monitoring and backup platforms, Ops Manager and Cloud Manager.",
+      "csv_name": "mongodb-enterprise.v1.16.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:41:52.927000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBOpsManager",
+          "plural": "opsmanagers",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDB",
+          "plural": "mongodb",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBMulti",
+          "plural": "mongodbmulti",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBUser",
+          "plural": "mongodbusers",
+          "version": "v1"
+        }
+      ],
+      "provider": "MongoDB, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:f30f5f272e73e9227437437dfe75bc3623c45a0fccaf7c03026a62b670c33297",
+          "image": "registry.connect.redhat.com/mongodb/enterprise-operator@sha256:f30f5f272e73e9227437437dfe75bc3623c45a0fccaf7c03026a62b670c33297",
+          "name": "mongodb-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.16.4",
+      "version_original": "1.16.4"
+    },
+    {
+      "_id": "62ebd6cec7996e54ea088633",
+      "alm_examples": [
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "my-replica-set"
+          },
+          "spec": {
+            "credentials": "my-credentials",
+            "members": 3,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "sample-sharded-cluster"
+          },
+          "spec": {
+            "configServerCount": 3,
+            "credentials": "my-credentials",
+            "mongodsPerShardCount": 3,
+            "mongosCount": 2,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "shardCount": 1,
+            "type": "ShardedCluster",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBMulti",
+          "metadata": {
+            "name": "multi-replica-set"
+          },
+          "spec": {
+            "clusterSpecList": {
+              "clusterSpecs": [
+                {
+                  "clusterName": "e2e.cluster1.mongokubernetes.com",
+                  "members": 2
+                },
+                {
+                  "clusterName": "e2e.cluster2.mongokubernetes.com",
+                  "members": 1
+                },
+                {
+                  "clusterName": "e2e.cluster3.mongokubernetes.com",
+                  "members": 2
+                }
+              ]
+            },
+            "credentials": "my-credentials",
+            "duplicateServiceObjects": false,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": false,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBOpsManager",
+          "metadata": {
+            "name": "ops-manager"
+          },
+          "spec": {
+            "adminCredentials": "ops-manager-admin",
+            "applicationDatabase": {
+              "members": 3,
+              "podSpec": {
+                "cpu": 1
+              }
+            },
+            "configuration": {
+              "mms.fromEmailAddr": "admin@thecompany.com"
+            },
+            "externalConnectivity": {
+              "type": "LoadBalancer"
+            },
+            "version": "4.4.1"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBUser",
+          "metadata": {
+            "name": "my-replica-set-x509-user"
+          },
+          "spec": {
+            "db": "$external",
+            "mongodbResourceRef": {
+              "name": "my-replica-set"
+            },
+            "roles": [
+              {
+                "db": "admin",
+                "name": "dbOwner"
+              }
+            ],
+            "username": "CN=my-replica-set-x509-user,OU=cloud,O=MongoDB,L=New York,ST=New York,C=US"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:991eaeb592d64c906163802faf62ae50d1472fd0a5cd52258d54011ea10c5912",
+      "bundle_path_digest": "sha256:991eaeb592d64c906163802faf62ae50d1472fd0a5cd52258d54011ea10c5912",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-04T14:25:18.582000+00:00",
+      "csv_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB\ninto Kubernetes clusters, using our management, monitoring and backup\nplatforms, Ops Manager and Cloud Manager.\n\n## Before You Start\n\nTo start using the operator you''ll need an account in MongoDB Cloud Manager or\na MongoDB Ops Manager deployment.\n\n* [Create a Secret with your OpsManager API key](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-operator-credentials/#procedure)\n\n* [Create a ConfigMap with your OpsManager project ID and URL](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-project-using-configmap/)\n\nBy installing this integration, you will be able to deploy MongoDB instances\nwith a single simple command.\n\n## Required Parameters\n\n* `opsManager` or `cloudManager` - Enter the name of the ConfigMap containing project information\n* `credentials` - Enter the name of the Secret containing your OpsManager credentials\n* `type` - Enter MongoDB Deployment Types (\"Standalone\", \"ReplicaSet\", \"ShardedCluster\"\n\n## Supported MongoDB Deployment Types ##\n\n* Standalone: An instance of mongod that is running as a single server and\nnot as part of a replica set, this is, it does not do any kind of\nreplication.\n\n* Replica Set: A replica set in MongoDB is a group of mongod processes that\nmaintain the same data set. Replica sets provide redundancy and high\navailability, and are the basis for all production deployments. This section\nintroduces replication in MongoDB as well as the components and architecture\nof replica sets. The section also provides tutorials for common tasks\nrelated to replica sets.\n\n* Sharded Cluster: The set of nodes comprising a sharded MongoDB deployment.\nA sharded cluster consists of config servers, shards, and one or more mongos\nrouting processes. Sharding is a A database architecture that partitions\ndata by key ranges and distributes the data among two or more database\ninstances. Sharding enables horizontal scaling.\n\n## Requirements for deploying MongoDB OpsManager\n\n* In order to deploy resources of type MongoDB OpsManager, you will need to\ncreate a secret containing the [credentials](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/plan-om-resource/#om-rsrc-prereqs)\nfor the Global Onwer user\n\n## Security ##\n\nThe operator can enable TLS for all traffic between servers and also between\nclients and servers. Before enabling `security.tls.enabled` to `true` you\nshould create your certificates.  or you can leave the operator to create all\nthe certificates for you. The operator ability to create certs is been\ndepricted due to Kuberentes API changes.\n\nFor more information, please read the official MongoDB\nKubernetes Operator  [docs](https://docs.mongodb.com/kubernetes-operator/stable/).\n",
+      "csv_display_name": "MongoDB Enterprise Operator",
+      "csv_metadata_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB into Kubernetes clusters, using our management, monitoring and backup platforms, Ops Manager and Cloud Manager.",
+      "csv_name": "mongodb-enterprise.v1.16.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:00:03.492000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBUser",
+          "plural": "mongodbusers",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBOpsManager",
+          "plural": "opsmanagers",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDB",
+          "plural": "mongodb",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBMulti",
+          "plural": "mongodbmulti",
+          "version": "v1"
+        }
+      ],
+      "provider": "MongoDB, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:f30f5f272e73e9227437437dfe75bc3623c45a0fccaf7c03026a62b670c33297",
+          "image": "registry.connect.redhat.com/mongodb/enterprise-operator@sha256:f30f5f272e73e9227437437dfe75bc3623c45a0fccaf7c03026a62b670c33297",
+          "name": "mongodb-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.16.4",
+      "version_original": "1.16.4"
+    },
+    {
+      "_id": "62ebda768c2137a6fb66c830",
+      "alm_examples": [
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "my-replica-set"
+          },
+          "spec": {
+            "credentials": "my-credentials",
+            "members": 3,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "sample-sharded-cluster"
+          },
+          "spec": {
+            "configServerCount": 3,
+            "credentials": "my-credentials",
+            "mongodsPerShardCount": 3,
+            "mongosCount": 2,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "shardCount": 1,
+            "type": "ShardedCluster",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBMulti",
+          "metadata": {
+            "name": "multi-replica-set"
+          },
+          "spec": {
+            "clusterSpecList": {
+              "clusterSpecs": [
+                {
+                  "clusterName": "e2e.cluster1.mongokubernetes.com",
+                  "members": 2
+                },
+                {
+                  "clusterName": "e2e.cluster2.mongokubernetes.com",
+                  "members": 1
+                },
+                {
+                  "clusterName": "e2e.cluster3.mongokubernetes.com",
+                  "members": 2
+                }
+              ]
+            },
+            "credentials": "my-credentials",
+            "duplicateServiceObjects": false,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": false,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBOpsManager",
+          "metadata": {
+            "name": "ops-manager"
+          },
+          "spec": {
+            "adminCredentials": "ops-manager-admin",
+            "applicationDatabase": {
+              "members": 3,
+              "podSpec": {
+                "cpu": 1
+              }
+            },
+            "configuration": {
+              "mms.fromEmailAddr": "admin@thecompany.com"
+            },
+            "externalConnectivity": {
+              "type": "LoadBalancer"
+            },
+            "version": "4.4.1"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBUser",
+          "metadata": {
+            "name": "my-replica-set-x509-user"
+          },
+          "spec": {
+            "db": "$external",
+            "mongodbResourceRef": {
+              "name": "my-replica-set"
+            },
+            "roles": [
+              {
+                "db": "admin",
+                "name": "dbOwner"
+              }
+            ],
+            "username": "CN=my-replica-set-x509-user,OU=cloud,O=MongoDB,L=New York,ST=New York,C=US"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:991eaeb592d64c906163802faf62ae50d1472fd0a5cd52258d54011ea10c5912",
+      "bundle_path_digest": "sha256:991eaeb592d64c906163802faf62ae50d1472fd0a5cd52258d54011ea10c5912",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-04T14:40:54.431000+00:00",
+      "csv_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB\ninto Kubernetes clusters, using our management, monitoring and backup\nplatforms, Ops Manager and Cloud Manager.\n\n## Before You Start\n\nTo start using the operator you''ll need an account in MongoDB Cloud Manager or\na MongoDB Ops Manager deployment.\n\n* [Create a Secret with your OpsManager API key](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-operator-credentials/#procedure)\n\n* [Create a ConfigMap with your OpsManager project ID and URL](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-project-using-configmap/)\n\nBy installing this integration, you will be able to deploy MongoDB instances\nwith a single simple command.\n\n## Required Parameters\n\n* `opsManager` or `cloudManager` - Enter the name of the ConfigMap containing project information\n* `credentials` - Enter the name of the Secret containing your OpsManager credentials\n* `type` - Enter MongoDB Deployment Types (\"Standalone\", \"ReplicaSet\", \"ShardedCluster\"\n\n## Supported MongoDB Deployment Types ##\n\n* Standalone: An instance of mongod that is running as a single server and\nnot as part of a replica set, this is, it does not do any kind of\nreplication.\n\n* Replica Set: A replica set in MongoDB is a group of mongod processes that\nmaintain the same data set. Replica sets provide redundancy and high\navailability, and are the basis for all production deployments. This section\nintroduces replication in MongoDB as well as the components and architecture\nof replica sets. The section also provides tutorials for common tasks\nrelated to replica sets.\n\n* Sharded Cluster: The set of nodes comprising a sharded MongoDB deployment.\nA sharded cluster consists of config servers, shards, and one or more mongos\nrouting processes. Sharding is a A database architecture that partitions\ndata by key ranges and distributes the data among two or more database\ninstances. Sharding enables horizontal scaling.\n\n## Requirements for deploying MongoDB OpsManager\n\n* In order to deploy resources of type MongoDB OpsManager, you will need to\ncreate a secret containing the [credentials](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/plan-om-resource/#om-rsrc-prereqs)\nfor the Global Onwer user\n\n## Security ##\n\nThe operator can enable TLS for all traffic between servers and also between\nclients and servers. Before enabling `security.tls.enabled` to `true` you\nshould create your certificates.  or you can leave the operator to create all\nthe certificates for you. The operator ability to create certs is been\ndepricted due to Kuberentes API changes.\n\nFor more information, please read the official MongoDB\nKubernetes Operator  [docs](https://docs.mongodb.com/kubernetes-operator/stable/).\n",
+      "csv_display_name": "MongoDB Enterprise Operator",
+      "csv_metadata_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB into Kubernetes clusters, using our management, monitoring and backup platforms, Ops Manager and Cloud Manager.",
+      "csv_name": "mongodb-enterprise.v1.16.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T12:46:42.124000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDB",
+          "plural": "mongodb",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBMulti",
+          "plural": "mongodbmulti",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBUser",
+          "plural": "mongodbusers",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBOpsManager",
+          "plural": "opsmanagers",
+          "version": "v1"
+        }
+      ],
+      "provider": "MongoDB, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:f30f5f272e73e9227437437dfe75bc3623c45a0fccaf7c03026a62b670c33297",
+          "image": "registry.connect.redhat.com/mongodb/enterprise-operator@sha256:f30f5f272e73e9227437437dfe75bc3623c45a0fccaf7c03026a62b670c33297",
+          "name": "mongodb-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.16.4",
       "version_original": "1.16.4"
     }
