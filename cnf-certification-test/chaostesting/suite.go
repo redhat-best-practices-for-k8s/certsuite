@@ -47,27 +47,26 @@ func testPodDelete(env *provider.TestEnvironment) {
 	ginkgo.Skip("This TC is under construction.")
 
 	for _, dep := range env.Deployments {
-		namespace := dep.Namespace
 		var label string
 		var err error
 		if label, err = poddelete.GetLabelDeploymentValue(env, dep.Spec.Template.Labels); err != nil {
-			logrus.Errorf("didn't find a match label for the deployment %s ", provider.DeploymentToString(dep))
-			ginkgo.Fail(fmt.Sprintf("There is no label for the deployment %s ", provider.DeploymentToString(dep)))
+			logrus.Errorf("didn't find a match label for the deployment %s ", dep.ToString())
+			ginkgo.Fail(fmt.Sprintf("There is no label for the deployment %s ", dep.ToString()))
 		}
-		if err := poddelete.ApplyAndCreatePodDeleteResources(label, deployment, namespace); err != nil {
+		if err := poddelete.ApplyAndCreatePodDeleteResources(label, deployment, dep.Namespace); err != nil {
 			ginkgo.Fail(fmt.Sprintf("test failed while creating the resources err:%s", err))
 		}
 		if completed := poddelete.WaitForTestFinish(testCaseTimeout); !completed {
-			poddelete.DeleteAllResources(namespace)
-			logrus.Errorf("deployment %s timed-out the litmus test", provider.DeploymentToString(dep))
-			ginkgo.Fail(fmt.Sprintf("deployment %s timed-out the litmus test", provider.DeploymentToString(dep)))
+			poddelete.DeleteAllResources(dep.Namespace)
+			logrus.Errorf("deployment %s timed-out the litmus test", dep.ToString())
+			ginkgo.Fail(fmt.Sprintf("deployment %s timed-out the litmus test", dep.ToString()))
 		}
 		if result := poddelete.IsChaosResultVerdictPass(); !result {
 			// delete the chaos engin crd
-			poddelete.DeleteAllResources(namespace)
-			logrus.Errorf("deployment %s failed the litmus test", provider.DeploymentToString(dep))
-			ginkgo.Fail(fmt.Sprintf("deployment %s failed the litmus test", provider.DeploymentToString(dep)))
+			poddelete.DeleteAllResources(dep.Namespace)
+			logrus.Errorf("deployment %s failed the litmus test", dep.ToString())
+			ginkgo.Fail(fmt.Sprintf("deployment %s failed the litmus test", dep.ToString()))
 		}
-		poddelete.DeleteAllResources(namespace)
+		poddelete.DeleteAllResources(dep.Namespace)
 	}
 }
