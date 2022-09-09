@@ -155,8 +155,9 @@ jobs:
       - name: Check out `cnf-certification-test-partner`
         uses: actions/checkout@v3
         with:
-          repository: test-network-function/cnf-certification-test-partner
+          repository: sebrandon1/cnf-certification-test-partner
           path: cnf-certification-test-partner
+          ref: kindest_node_1.24.3
 
       - name: Start the minikube cluster for `local-test-infra`
         uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
