@@ -100,7 +100,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 			ginkgo.Skip("Skipping pod scheduling test because invalid number of available workers.")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.NonGuaranteedPods)
 		testPodNodeSelectorAndAffinityBestPractices(&env)
 	})
 
@@ -246,7 +246,7 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 
 func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) {
 	var badPods []*corev1.Pod
-	for _, put := range env.Pods {
+	for _, put := range env.NonGuaranteedPods {
 		if len(put.Data.Spec.NodeSelector) != 0 {
 			tnf.ClaimFilePrintf("ERROR: %s has a node selector clause. Node selector: %v", put, &put.Data.Spec.NodeSelector)
 			badPods = append(badPods, put.Data)
