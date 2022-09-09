@@ -110,6 +110,7 @@ type TestEnvironment struct { // rename this with testTarget
 	PersistentVolumes    []corev1.PersistentVolume
 	DebugPods            map[string]*corev1.Pod // map from nodename to debugPod
 	GuaranteedPods       []*Pod
+	NonGuaranteedPods    []*Pod
 	Config               configuration.TestConfiguration
 	variables            configuration.TestParameters
 	Crds                 []*apiextv1.CustomResourceDefinition          `json:"testCrds"`
@@ -295,9 +296,11 @@ func buildTestEnvironment() { //nolint:funlen
 		aNewPod := NewPod(&pods[i])
 		env.Pods = append(env.Pods, &aNewPod)
 
-		// Build slice of guaranteed pods (if any)
+		// Build slices of guaranteed and non guaranteed pods
 		if aNewPod.IsPodGuaranteed() {
 			env.GuaranteedPods = append(env.GuaranteedPods, &aNewPod)
+		} else {
+			env.NonGuaranteedPods = append(env.NonGuaranteedPods, &aNewPod)
 		}
 		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
