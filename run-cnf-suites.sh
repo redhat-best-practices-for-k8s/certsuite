@@ -112,9 +112,9 @@ SKIP_STRING=""
 LABEL_STRING=""
 
 if [ -n "$FOCUS" ]; then
-    FOCUS_STRING=-ginkgo.focus="$FOCUS"
+    FOCUS_STRING=-ginkgo.focus="${FOCUS}"
 	if [ -n "$SKIP" ]; then
-		SKIP_STRING=-ginkgo.skip="$SKIP"
+		SKIP_STRING=-ginkgo.skip="${SKIP}"
 	fi
 fi
 
@@ -128,7 +128,7 @@ fi
 
 
 
-cd ./cnf-certification-test && ./cnf-certification-test.test $FOCUS_STRING $SKIP_STRING "${LABEL_STRING}" ${GINKGO_ARGS}
+cd ./cnf-certification-test && ./cnf-certification-test.test ${FOCUS_STRING} ${SKIP_STRING} ${LABEL_STRING:+"${LABEL_STRING}"} ${GINKGO_ARGS}
 
 # if [[ ! -z "${TNF_PARTNER_SRC_DIR}" ]]; then
 # 	echo "attempting to delete litmus"
