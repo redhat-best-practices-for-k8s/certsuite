@@ -185,10 +185,10 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 func TestSecConCapabilities(env *provider.TestEnvironment) {
 	var badContainers []string
 	for _, cut := range env.Containers {
-		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.Capabilities != nil {
+		if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
 			for _, ncc := range nonCompliantCapabilities {
-				if strings.Contains(cut.Data.SecurityContext.Capabilities.String(), ncc) {
-					tnf.ClaimFilePrintf("Non compliant %s capability detected in container %s. All container caps: %s", ncc, cut.String(), cut.Data.SecurityContext.Capabilities.String())
+				if strings.Contains(cut.SecurityContext.Capabilities.String(), ncc) {
+					tnf.ClaimFilePrintf("Non compliant %s capability detected in container %s. All container caps: %s", ncc, cut.String(), cut.SecurityContext.Capabilities.String())
 					badContainers = append(badContainers, cut.String())
 				}
 			}
@@ -205,20 +205,20 @@ func TestSecConCapabilities(env *provider.TestEnvironment) {
 func TestSecConRootUser(env *provider.TestEnvironment) {
 	var badContainers, badPods []string
 	for _, put := range env.Pods {
-		if put.Data.Spec.SecurityContext != nil && put.Data.Spec.SecurityContext.RunAsUser != nil {
+		if put.Spec.SecurityContext != nil && put.Spec.SecurityContext.RunAsUser != nil {
 			// Check the pod level RunAsUser parameter
-			if *(put.Data.Spec.SecurityContext.RunAsUser) == 0 {
-				tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in pod %s", put.Data.Namespace+"."+put.Data.Name)
-				badPods = append(badPods, put.Data.Namespace+"."+put.Data.Name)
+			if *(put.Spec.SecurityContext.RunAsUser) == 0 {
+				tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in pod %s", put.Namespace+"."+put.Name)
+				badPods = append(badPods, put.Namespace+"."+put.Name)
 			}
 		}
-		for idx := range put.Data.Spec.Containers {
-			cut := &(put.Data.Spec.Containers[idx])
+		for idx := range put.Spec.Containers {
+			cut := &(put.Spec.Containers[idx])
 			// Check the container level RunAsUser parameter
 			if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
 				if *(cut.SecurityContext.RunAsUser) == 0 {
-					tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in container %s", put.Data.Namespace+"."+put.Data.Name+"."+cut.Name)
-					badContainers = append(badContainers, put.Data.Namespace+"."+put.Data.Name+"."+cut.Name)
+					tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in container %s", put.Namespace+"."+put.Name+"."+cut.Name)
+					badContainers = append(badContainers, put.Namespace+"."+put.Name+"."+cut.Name)
 				}
 			}
 		}
@@ -239,10 +239,10 @@ func TestSecConRootUser(env *provider.TestEnvironment) {
 func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 	var badContainers []string
 	for _, cut := range env.Containers {
-		if cut.Data.SecurityContext != nil && cut.Data.SecurityContext.AllowPrivilegeEscalation != nil {
-			if *(cut.Data.SecurityContext.AllowPrivilegeEscalation) {
-				tnf.ClaimFilePrintf("AllowPrivilegeEscalation is set to true in container %s.", cut.Podname+"."+cut.Data.Name)
-				badContainers = append(badContainers, cut.Podname+"."+cut.Data.Name)
+		if cut.SecurityContext != nil && cut.SecurityContext.AllowPrivilegeEscalation != nil {
+			if *(cut.SecurityContext.AllowPrivilegeEscalation) {
+				tnf.ClaimFilePrintf("AllowPrivilegeEscalation is set to true in container %s.", cut.Podname+"."+cut.Name)
+				badContainers = append(badContainers, cut.Podname+"."+cut.Name)
 			}
 		}
 	}
@@ -257,7 +257,7 @@ func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 func TestContainerHostPort(env *provider.TestEnvironment) {
 	var badContainers []string
 	for _, cut := range env.Containers {
-		for _, aPort := range cut.Data.Ports {
+		for _, aPort := range cut.Ports {
 			if aPort.HostPort != 0 {
 				tnf.ClaimFilePrintf("Host port %d is configured in container %s.", aPort.HostPort, cut.String())
 				badContainers = append(badContainers, cut.String())
@@ -275,9 +275,9 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 func TestPodHostNetwork(env *provider.TestEnvironment) {
 	var badPods []string
 	for _, put := range env.Pods {
-		if put.Data.Spec.HostNetwork {
-			tnf.ClaimFilePrintf("Host network is set to true in pod %s.", put.Data.Namespace+"."+put.Data.Name)
-			badPods = append(badPods, put.Data.Namespace+"."+put.Data.Name)
+		if put.Spec.HostNetwork {
+			tnf.ClaimFilePrintf("Host network is set to true in pod %s.", put.Namespace+"."+put.Name)
+			badPods = append(badPods, put.Namespace+"."+put.Name)
 		}
 	}
 
@@ -291,11 +291,11 @@ func TestPodHostNetwork(env *provider.TestEnvironment) {
 func TestPodHostPath(env *provider.TestEnvironment) {
 	var badPods []string
 	for _, put := range env.Pods {
-		for idx := range put.Data.Spec.Volumes {
-			vol := &put.Data.Spec.Volumes[idx]
+		for idx := range put.Spec.Volumes {
+			vol := &put.Spec.Volumes[idx]
 			if vol.HostPath != nil && vol.HostPath.Path != "" {
-				tnf.ClaimFilePrintf("Hostpath path: %s is set in pod %s.", vol.HostPath.Path, put.Data.Namespace+"."+put.Data.Name)
-				badPods = append(badPods, put.Data.Namespace+"."+put.Data.Name)
+				tnf.ClaimFilePrintf("Hostpath path: %s is set in pod %s.", vol.HostPath.Path, put.Namespace+"."+put.Name)
+				badPods = append(badPods, put.Namespace+"."+put.Name)
 			}
 		}
 	}
@@ -310,9 +310,9 @@ func TestPodHostPath(env *provider.TestEnvironment) {
 func TestPodHostIPC(env *provider.TestEnvironment) {
 	var badPods []string
 	for _, put := range env.Pods {
-		if put.Data.Spec.HostIPC {
-			tnf.ClaimFilePrintf("HostIpc is set in pod %s.", put.Data.Namespace+"."+put.Data.Name)
-			badPods = append(badPods, put.Data.Namespace+"."+put.Data.Name)
+		if put.Spec.HostIPC {
+			tnf.ClaimFilePrintf("HostIpc is set in pod %s.", put.Namespace+"."+put.Name)
+			badPods = append(badPods, put.Namespace+"."+put.Name)
 		}
 	}
 
@@ -326,9 +326,9 @@ func TestPodHostIPC(env *provider.TestEnvironment) {
 func TestPodHostPID(env *provider.TestEnvironment) {
 	var badPods []string
 	for _, put := range env.Pods {
-		if put.Data.Spec.HostPID {
-			tnf.ClaimFilePrintf("HostPid is set in pod %s.", put.Data.Namespace+"."+put.Data.Name)
-			badPods = append(badPods, put.Data.Namespace+"."+put.Data.Name)
+		if put.Spec.HostPID {
+			tnf.ClaimFilePrintf("HostPid is set in pod %s.", put.Namespace+"."+put.Name)
+			badPods = append(badPods, put.Namespace+"."+put.Name)
 		}
 	}
 
@@ -373,10 +373,10 @@ func TestPodServiceAccount(env *provider.TestEnvironment) {
 	ginkgo.By("Tests that each pod utilizes a valid service account")
 	failedPods := []string{}
 	for _, put := range env.Pods {
-		ginkgo.By(fmt.Sprintf("Testing service account for pod %s (ns: %s)", put.Data.Name, put.Data.Namespace))
-		if put.Data.Spec.ServiceAccountName == "" {
-			tnf.ClaimFilePrintf("Pod %s (ns: %s) doesn't have a service account name.", put.Data.Name, put.Data.Namespace)
-			failedPods = append(failedPods, put.Data.Name)
+		ginkgo.By(fmt.Sprintf("Testing service account for pod %s (ns: %s)", put.Name, put.Namespace))
+		if put.Spec.ServiceAccountName == "" {
+			tnf.ClaimFilePrintf("Pod %s (ns: %s) doesn't have a service account name.", put.Name, put.Namespace)
+			failedPods = append(failedPods, put.Name)
 		}
 	}
 	if n := len(failedPods); n > 0 {
@@ -393,21 +393,21 @@ func TestPodRoleBindings(env *provider.TestEnvironment) {
 	failedPods := []string{}
 
 	for _, put := range env.Pods {
-		ginkgo.By(fmt.Sprintf("Testing role binding for pod: %s namespace: %s", put.Data.Name, put.Data.Namespace))
-		if put.Data.Spec.ServiceAccountName == "" {
+		ginkgo.By(fmt.Sprintf("Testing role binding for pod: %s namespace: %s", put.Name, put.Namespace))
+		if put.Spec.ServiceAccountName == "" {
 			ginkgo.Skip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
 		}
 
 		// Get any rolebindings that do not belong to the pod namespace.
-		roleBindings, err := rbac.GetRoleBindings(put.Data.Namespace, put.Data.Spec.ServiceAccountName)
+		roleBindings, err := rbac.GetRoleBindings(put.Namespace, put.Spec.ServiceAccountName)
 		if err != nil {
-			failedPods = append(failedPods, put.Data.Name)
+			failedPods = append(failedPods, put.Name)
 		}
 
 		if len(roleBindings) > 0 {
-			logrus.Warnf("Pod: %s/%s has the following role bindings: %s", put.Data.Namespace, put.Data.Name, roleBindings)
-			tnf.ClaimFilePrintf("Pod: %s/%s has the following role bindings: %s", put.Data.Namespace, put.Data.Name, roleBindings)
-			failedPods = append(failedPods, put.Data.Name)
+			logrus.Warnf("Pod: %s/%s has the following role bindings: %s", put.Namespace, put.Name, roleBindings)
+			tnf.ClaimFilePrintf("Pod: %s/%s has the following role bindings: %s", put.Namespace, put.Name, roleBindings)
+			failedPods = append(failedPods, put.Name)
 		}
 	}
 	if n := len(failedPods); n > 0 {
@@ -424,21 +424,21 @@ func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 	failedPods := []string{}
 
 	for _, put := range env.Pods {
-		ginkgo.By(fmt.Sprintf("Testing cluster role binding for pod: %s namespace: %s", put.Data.Name, put.Data.Namespace))
-		if put.Data.Spec.ServiceAccountName == "" {
+		ginkgo.By(fmt.Sprintf("Testing cluster role binding for pod: %s namespace: %s", put.Name, put.Namespace))
+		if put.Spec.ServiceAccountName == "" {
 			ginkgo.Skip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
 		}
 
 		// Get any clusterrolebindings that do not belong to the pod namespace.
-		clusterRoleBindings, err := rbac.GetClusterRoleBindings(put.Data.Namespace, put.Data.Spec.ServiceAccountName)
+		clusterRoleBindings, err := rbac.GetClusterRoleBindings(put.Namespace, put.Spec.ServiceAccountName)
 		if err != nil {
-			failedPods = append(failedPods, put.Data.Name)
+			failedPods = append(failedPods, put.Name)
 		}
 
 		if len(clusterRoleBindings) > 0 {
-			logrus.Warnf("Pod: %s/%s has the following cluster role bindings: %s", put.Data.Namespace, put.Data.Name, clusterRoleBindings)
-			tnf.ClaimFilePrintf("Pod: %s/%s has the following cluster role bindings: %s", put.Data.Namespace, put.Data.Name, clusterRoleBindings)
-			failedPods = append(failedPods, put.Data.Name)
+			logrus.Warnf("Pod: %s/%s has the following cluster role bindings: %s", put.Namespace, put.Name, clusterRoleBindings)
+			tnf.ClaimFilePrintf("Pod: %s/%s has the following cluster role bindings: %s", put.Namespace, put.Name, clusterRoleBindings)
+			failedPods = append(failedPods, put.Name)
 		}
 	}
 	if n := len(failedPods); n > 0 {
@@ -453,16 +453,16 @@ func TestAutomountServiceToken(env *provider.TestEnvironment) {
 	msg := []string{}
 	failedPods := []string{}
 	for _, put := range env.Pods {
-		ginkgo.By(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Data.Namespace, put.Data.Name))
-		if put.Data.Spec.ServiceAccountName == "" {
-			tnf.ClaimFilePrintf("Pod %s has been found with an empty service account name.", put.Data.Name)
+		ginkgo.By(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
+		if put.Spec.ServiceAccountName == "" {
+			tnf.ClaimFilePrintf("Pod %s has been found with an empty service account name.", put.Name)
 			ginkgo.Fail("Pod has been found with an empty service account name.")
 		}
 
 		// Evaluate the pod's automount service tokens and any attached service accounts
-		podPassed, newMsg := rbac.EvaluateAutomountTokens(put.Data)
+		podPassed, newMsg := rbac.EvaluateAutomountTokens(put.Pod)
 		if !podPassed {
-			failedPods = append(failedPods, put.Data.Name)
+			failedPods = append(failedPods, put.Name)
 			msg = append(msg, newMsg)
 		}
 	}
@@ -525,7 +525,7 @@ func TestSYSNiceRealtimeCapability(env *provider.TestEnvironment) {
 	// or not the node's kernel is realtime enabled.
 	for _, cut := range env.Containers {
 		n := env.Nodes[cut.NodeName]
-		if n.IsRTKernel() && !strings.Contains(cut.Data.SecurityContext.Capabilities.String(), "SYS_NICE") {
+		if n.IsRTKernel() && !strings.Contains(cut.SecurityContext.Capabilities.String(), "SYS_NICE") {
 			tnf.ClaimFilePrintf("Container: %s has been found running on a realtime kernel enabled node without SYS_NICE capability.", cut.String())
 			containersWithoutSysNice = append(containersWithoutSysNice, cut.String())
 		}
@@ -543,9 +543,9 @@ func TestSysPtraceCapability(env *provider.TestEnvironment) {
 
 	for _, put := range env.Pods {
 		sysPtraceEnabled := false
-		if put.Data.Spec.ShareProcessNamespace != nil && *put.Data.Spec.ShareProcessNamespace {
+		if put.Spec.ShareProcessNamespace != nil && *put.Spec.ShareProcessNamespace {
 			for _, cut := range put.Containers {
-				if strings.Contains(cut.Data.SecurityContext.Capabilities.String(), "SYS_PTRACE") {
+				if strings.Contains(cut.SecurityContext.Capabilities.String(), "SYS_PTRACE") {
 					sysPtraceEnabled = true
 					break
 				}
@@ -576,7 +576,7 @@ func TestNamespaceResourceQuota(env *provider.TestEnvironment) {
 			// We are just checking for the existence of the resource quota as of right now.
 			// Read more about the resource quota object here:
 			// https://kubernetes.io/docs/concepts/policy/resource-quotas/
-			if put.Data.Namespace == env.ResourceQuotas[index].Namespace {
+			if put.Namespace == env.ResourceQuotas[index].Namespace {
 				foundPodNamespaceRQ = true
 				break
 			}
@@ -599,10 +599,10 @@ func TestPodTolerationBypass(env *provider.TestEnvironment) {
 	var podsWithRestrictedTolerationsNotDefault []string
 
 	for _, put := range env.Pods {
-		for _, t := range put.Data.Spec.Tolerations {
+		for _, t := range put.Spec.Tolerations {
 			// Check if the tolerations fall outside the 'default' and are modified versions
 			// Take also into account the qosClass applied to the pod
-			if tolerations.IsTolerationModified(t, put.Data.Status.QOSClass) {
+			if tolerations.IsTolerationModified(t, put.Status.QOSClass) {
 				podsWithRestrictedTolerationsNotDefault = append(podsWithRestrictedTolerationsNotDefault, put.String())
 				tnf.ClaimFilePrintf("%s has been found with non-default toleration %s which is not allowed.", put.String(), t.Effect)
 			}
@@ -629,7 +629,7 @@ func TestNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 	r := regexp.MustCompile(sshDaemonProcessName)
 
 	for _, cut := range env.Containers {
-		ctx := clientsholder.Context{Namespace: cut.Namespace, Podname: cut.Podname, Containername: cut.Data.Name}
+		ctx := clientsholder.Context{Namespace: cut.Namespace, Podname: cut.Podname, Containername: cut.Name}
 		stdout, stderr, err := o.ExecCommandContainer(ctx, listProcessesCmd)
 		if err != nil || stderr != "" {
 			tnf.ClaimFilePrintf("Could not list processes on: %s, error: %s", cut, err)
@@ -665,32 +665,32 @@ func testPodRequestsAndLimits(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		badContainer := false
 		// Parse the limits.
-		if len(cut.Data.Resources.Limits) == 0 {
+		if len(cut.Resources.Limits) == 0 {
 			tnf.ClaimFilePrintf("Container has been found missing resource limits: %s", cut.String())
 			badContainer = true
 		} else {
-			if cut.Data.Resources.Limits.Cpu() == nil {
+			if cut.Resources.Limits.Cpu() == nil {
 				tnf.ClaimFilePrintf("Container has been found missing CPU limits: %s", cut.String())
 				badContainer = true
 			}
 
-			if cut.Data.Resources.Limits.Memory() == nil {
+			if cut.Resources.Limits.Memory() == nil {
 				tnf.ClaimFilePrintf("Container has been found missing memory limits: %s", cut.String())
 				badContainer = true
 			}
 		}
 
 		// Parse the requests.
-		if len(cut.Data.Resources.Requests) == 0 {
+		if len(cut.Resources.Requests) == 0 {
 			tnf.ClaimFilePrintf("Container has been found missing resource requests: %s", cut.String())
 			badContainer = true
 		} else {
-			if cut.Data.Resources.Requests.Cpu() == nil {
+			if cut.Resources.Requests.Cpu() == nil {
 				tnf.ClaimFilePrintf("Container has been found missing CPU requests: %s", cut.String())
 				badContainer = true
 			}
 
-			if cut.Data.Resources.Requests.Memory() == nil {
+			if cut.Resources.Requests.Memory() == nil {
 				tnf.ClaimFilePrintf("Container has been found missing memory requests: %s", cut.String())
 				badContainer = true
 			}
@@ -714,10 +714,10 @@ func Test1337UIDs(env *provider.TestEnvironment) {
 	const leetNum = 1337
 	var badPods []string
 	for _, put := range env.Pods {
-		ginkgo.By(fmt.Sprintf("checking if pod %s has a securityContext RunAsUser 1337 (ns= %s)", put.Data.Name, put.Data.Namespace))
-		if put.Data.Spec.SecurityContext.RunAsUser != nil && *put.Data.Spec.SecurityContext.RunAsUser == int64(leetNum) {
-			tnf.ClaimFilePrintf("Pod: %s/%s is found to use securityContext RunAsUser 1337", put.Data.Namespace, put.Data.Name)
-			badPods = append(badPods, put.Data.Name)
+		ginkgo.By(fmt.Sprintf("checking if pod %s has a securityContext RunAsUser 1337 (ns= %s)", put.Name, put.Namespace))
+		if put.Spec.SecurityContext.RunAsUser != nil && *put.Spec.SecurityContext.RunAsUser == int64(leetNum) {
+			tnf.ClaimFilePrintf("Pod: %s/%s is found to use securityContext RunAsUser 1337", put.Namespace, put.Name)
+			badPods = append(badPods, put.Name)
 		}
 	}
 
