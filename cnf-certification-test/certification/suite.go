@@ -186,6 +186,6 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
 		logrus.Warnf("Containers that are not certified by digest: %+v", failedContainers)
 	}
 	if m > 0 || n > 0 {
-		ginkgo.Fail(fmt.Sprintf("%d container images are not certified by there digest.", n+m))
+		ginkgo.Fail(fmt.Sprintf("%d container images are not certified by their digest.", n+m))
 	}
 }
