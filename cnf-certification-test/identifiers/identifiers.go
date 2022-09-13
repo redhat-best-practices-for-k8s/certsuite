@@ -544,14 +544,14 @@ func GetSuiteAndTestFromIdentifier(identifier claim.Identifier) (suiteName, test
 	// len 2, the baseDomain can appear only once in the url
 	// so it returns what you have previous and before basedomain
 	if len(result) != SPLITN {
-		panic("Invalid Identifier Url")
+		panic(fmt.Sprintf("Invalid Identifier URL: %s", identifier.Url))
 	}
 
 	result = strings.Split(result[1], "/")
 	suiteName = result[0]
 	testName = result[1]
 
-	return suiteName, testName
+	return
 }
 
 // Catalog is the JUnit testcase catalog of tests.
