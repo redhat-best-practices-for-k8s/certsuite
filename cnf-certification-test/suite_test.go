@@ -139,8 +139,11 @@ func TestTest(t *testing.T) {
 	log.Infof("TC skip patterns    : %v", ginkgoConfig.SkipStrings)
 	log.Infof("Labels filter       : %v", ginkgoConfig.LabelFilter)
 
-	// Diagnostic functions will run also when no focus test suites were provided.
-	diagnosticMode := len(ginkgoConfig.FocusStrings) == 0
+	// Diagnostic functions will run when no focus test suites or labels are provided.
+	var diagnosticMode bool
+	if len(ginkgoConfig.FocusStrings) == 0 && ginkgoConfig.LabelFilter == "" {
+		diagnosticMode = true
+	}
 
 	// Set clientsholder singleton with the filenames from the env vars.
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)

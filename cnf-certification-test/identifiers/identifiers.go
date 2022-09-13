@@ -522,25 +522,14 @@ func formDescription(identifier claim.Identifier, description string) string {
 // GetGinkgoTestIDAndLabels transform the claim.Identifier into a test Id that can be used to skip
 // specific tests
 func GetGinkgoTestIDAndLabels(identifier claim.Identifier) (testID string, tags []string) {
-	testID = getGinkgoTestID(identifier, "")
+	suiteName, testName := GetSuiteAndTestFromIdentifier(identifier)
+	testID = suiteName + "-" + testName
 	tags = strings.Split(identifier.Tags, ",")
-	tags = append(tags, testID)
+	tags = append(tags, suiteName, testID)
+
+	TestIDToClaimID[testID] = identifier
 
 	return testID, tags
-}
-
-// getGinkgoTestId transform the claim.Identifier into a test Id that can be used to skip
-// specific tests
-func getGinkgoTestID(identifier claim.Identifier, extra string) string {
-	itID := strings.ReplaceAll(strings.TrimPrefix(identifier.Url, url+"/"), "/", "-")
-	var key string
-	if extra != "" {
-		key = itID + "-" + extra
-	} else {
-		key = itID
-	}
-	TestIDToClaimID[key] = identifier
-	return key
 }
 
 // It extracts the suite name and test name from a claim.Identifier based
@@ -549,15 +538,20 @@ func getGinkgoTestID(identifier claim.Identifier, extra string) string {
 //   http://test-network-function.com/tests-case/SuitName/TestName
 // It extracts SuitNAme and TestName
 
-func GetSuiteAndTestFromIdentifier(identifier claim.Identifier) []string {
+func GetSuiteAndTestFromIdentifier(identifier claim.Identifier) (suiteName, testName string) {
 	result := strings.Split(identifier.Url, url+"/")
 	const SPLITN = 2
 	// len 2, the baseDomain can appear only once in the url
 	// so it returns what you have previous and before basedomain
 	if len(result) != SPLITN {
-		return nil
+		panic(fmt.Sprintf("Invalid Identifier URL: %s", identifier.Url))
 	}
-	return strings.Split(result[1], "/")
+
+	result = strings.Split(result[1], "/")
+	suiteName = result[0]
+	testName = result[1]
+
+	return
 }
 
 // Catalog is the JUnit testcase catalog of tests.
