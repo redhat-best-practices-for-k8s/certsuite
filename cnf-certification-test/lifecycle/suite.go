@@ -270,22 +270,21 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 	for i := range env.Deployments {
 		// TestDeploymentScaling test scaling of deployment
 		// This is the entry point for deployment scaling tests
-		deployment := env.Deployments[i]
-		ns, name := deployment.Namespace, deployment.Name
+		ns, name := env.Deployments[i].Namespace, env.Deployments[i].Name
 		key := ns + name
 		if hpa, ok := env.HorizontalScaler[key]; ok {
 			// if the deployment is controller by
 			// horizontal scaler, then test that scaler
 			// can scale the deployment
-			if !scaling.TestScaleHpaDeployment(deployment, hpa, timeout) {
-				failedDeployments = append(failedDeployments, provider.DeploymentToString(deployment))
+			if !scaling.TestScaleHpaDeployment(env.Deployments[i], hpa, timeout) {
+				failedDeployments = append(failedDeployments, env.Deployments[i].ToString())
 			}
 			continue
 		}
 		// if the deployment is not controller by HPA
 		// scale it directly
-		if !scaling.TestScaleDeployment(deployment, timeout) {
-			failedDeployments = append(failedDeployments, provider.DeploymentToString(deployment))
+		if !scaling.TestScaleDeployment(env.Deployments[i].Deployment, timeout) {
+			failedDeployments = append(failedDeployments, env.Deployments[i].ToString())
 		}
 	}
 
@@ -303,22 +302,21 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 	for i := range env.StatetfulSets {
 		// TeststatefulsetScaling test scaling of statefulset
 		// This is the entry point for statefulset scaling tests
-		statefulset := env.StatetfulSets[i]
-		ns, name := statefulset.Namespace, statefulset.Name
+		ns, name := env.StatetfulSets[i].Namespace, env.StatetfulSets[i].Name
 		key := ns + name
 		if hpa, ok := env.HorizontalScaler[key]; ok {
 			// if the statefulset is controller by
 			// horizontal scaler, then test that scaler
 			// can scale the statefulset
-			if !scaling.TestScaleHpaStatefulSet(statefulset, hpa, timeout) {
-				failedStatetfulSets = append(failedStatetfulSets, provider.StatefulsetToString(statefulset))
+			if !scaling.TestScaleHpaStatefulSet(env.StatetfulSets[i].StatefulSet, hpa, timeout) {
+				failedStatetfulSets = append(failedStatetfulSets, env.StatetfulSets[i].ToString())
 			}
 			continue
 		}
 		// if the statefulset is not controller by HPA
 		// scale it directly
-		if !scaling.TestScaleStatefulSet(statefulset, timeout) {
-			failedStatetfulSets = append(failedStatetfulSets, provider.StatefulsetToString(statefulset))
+		if !scaling.TestScaleStatefulSet(env.StatetfulSets[i].StatefulSet, timeout) {
+			failedStatetfulSets = append(failedStatetfulSets, env.StatetfulSets[i].ToString())
 		}
 	}
 
@@ -336,22 +334,22 @@ func testHighAvailability(env *provider.TestEnvironment) {
 	badStatefulSet := []string{}
 	for _, dp := range env.Deployments {
 		if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) <= 1 {
-			badDeployments = append(badDeployments, provider.DeploymentToString(dp))
+			badDeployments = append(badDeployments, dp.ToString())
 			continue
 		}
 		if dp.Spec.Template.Spec.Affinity == nil ||
 			dp.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
-			badDeployments = append(badDeployments, provider.DeploymentToString(dp))
+			badDeployments = append(badDeployments, dp.ToString())
 		}
 	}
 	for _, st := range env.StatetfulSets {
 		if st.Spec.Replicas == nil || *(st.Spec.Replicas) <= 1 {
-			badStatefulSet = append(badStatefulSet, provider.StatefulsetToString(st))
+			badStatefulSet = append(badStatefulSet, st.ToString())
 			continue
 		}
 		if st.Spec.Template.Spec.Affinity == nil ||
 			st.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
-			badDeployments = append(badDeployments, provider.StatefulsetToString(st))
+			badDeployments = append(badDeployments, st.ToString())
 		}
 	}
 

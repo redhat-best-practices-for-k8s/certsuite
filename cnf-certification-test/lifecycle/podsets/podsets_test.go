@@ -46,15 +46,25 @@ func TestIsDeploymentReady(t *testing.T) {
 		{v1app.DeploymentAvailable, 10, 10, 10, 0, 10}:    true,
 	}
 	for key, v := range m {
-		dp := v1app.Deployment{}
-		dpCondition := v1app.DeploymentCondition{Type: key.condition}
-		dp.Status.Conditions = append(dp.Status.Conditions, dpCondition)
-		dp.Spec.Replicas = &(key.replicas)
-		dp.Status.ReadyReplicas = key.ready
-		dp.Status.AvailableReplicas = key.available
-		dp.Status.UnavailableReplicas = key.unavailable
-		dp.Status.UpdatedReplicas = key.updated
-		ready := IsDeploymentReady(&dp)
+		dp := provider.Deployment{
+			Deployment: &v1app.Deployment{
+				Status: v1app.DeploymentStatus{
+					Conditions: []v1app.DeploymentCondition{
+						{
+							Type: key.condition,
+						},
+					},
+					ReadyReplicas:       key.ready,
+					AvailableReplicas:   key.available,
+					UnavailableReplicas: key.unavailable,
+					UpdatedReplicas:     key.updated,
+				},
+				Spec: v1app.DeploymentSpec{
+					Replicas: &key.replicas,
+				},
+			},
+		}
+		ready := dp.IsDeploymentReady()
 		assert.Equal(t, v, ready)
 	}
 }
@@ -76,13 +86,20 @@ func TestIsStatefulSetReady(t *testing.T) {
 		{10, 10, 10, 10, 10}: true,
 	}
 	for k, v := range m {
-		statefulset := v1app.StatefulSet{}
-		statefulset.Spec.Replicas = &(k.replicas)
-		statefulset.Status.ReadyReplicas = k.ready
-		statefulset.Status.AvailableReplicas = k.available
-		statefulset.Status.UpdatedReplicas = k.updated
-		statefulset.Status.CurrentReplicas = k.current
-		ready := IsStatefulSetReady(&statefulset)
+		ss := provider.StatefulSet{
+			StatefulSet: &v1app.StatefulSet{
+				Spec: v1app.StatefulSetSpec{
+					Replicas: &k.replicas,
+				},
+				Status: v1app.StatefulSetStatus{
+					ReadyReplicas:     k.ready,
+					AvailableReplicas: k.available,
+					UpdatedReplicas:   k.updated,
+					CurrentReplicas:   k.current,
+				},
+			},
+		}
+		ready := ss.IsStatefulSetReady()
 		if ready != v {
 			fmt.Println(" k= ", k, " should be ", v, " is ", ready)
 		}

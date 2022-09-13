@@ -790,21 +790,29 @@ func TestContainerStringFuncs(t *testing.T) {
 }
 
 func TestDeploymentToString(t *testing.T) {
-	assert.Equal(t, "deployment: test1 ns: testNS", DeploymentToString(&appsv1.Deployment{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "test1",
-			Namespace: "testNS",
+	dp := Deployment{
+		Deployment: &appsv1.Deployment{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test1",
+				Namespace: "testNS",
+			},
 		},
-	}))
+	}
+
+	assert.Equal(t, "deployment: test1 ns: testNS", dp.ToString())
 }
 
 func TestStatefulsetToString(t *testing.T) {
-	assert.Equal(t, "statefulset: test1 ns: testNS", StatefulsetToString(&appsv1.StatefulSet{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "test1",
-			Namespace: "testNS",
+	ss := StatefulSet{
+		StatefulSet: &appsv1.StatefulSet{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test1",
+				Namespace: "testNS",
+			},
 		},
-	}))
+	}
+
+	assert.Equal(t, "statefulset: test1 ns: testNS", ss.ToString())
 }
 
 func TestCsvToString(t *testing.T) {

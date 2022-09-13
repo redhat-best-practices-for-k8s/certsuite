@@ -48,6 +48,7 @@ import (
 )
 
 const (
+	colocationEnabledKey             = "colocation"
 	DaemonSetNamespace               = "default"
 	DaemonSetName                    = "debug"
 	debugPodsTimeout                 = 5 * time.Minute
@@ -73,6 +74,14 @@ type Pod struct {
 	MultusIPs          map[string][]string
 	SkipNetTests       bool
 	SkipMultusNetTests bool
+}
+
+type Deployment struct {
+	*appsv1.Deployment
+}
+
+type StatefulSet struct {
+	*appsv1.StatefulSet
 }
 
 func NewPod(aPod *corev1.Pod) (out Pod) {
@@ -114,8 +123,8 @@ type TestEnvironment struct { // rename this with testTarget
 	Config               configuration.TestConfiguration
 	variables            configuration.TestParameters
 	Crds                 []*apiextv1.CustomResourceDefinition          `json:"testCrds"`
-	Deployments          []*appsv1.Deployment                          `json:"testDeployments"`
-	StatetfulSets        []*appsv1.StatefulSet                         `json:"testStatetfulSets"`
+	Deployments          []*Deployment                                 `json:"testDeployments"`
+	StatetfulSets        []*StatefulSet                                `json:"testStatetfulSets"`
 	HorizontalScaler     map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
 	Services             []*corev1.Service                             `json:"testServices"`
 	Nodes                map[string]Node                               `json:"-"`
@@ -268,11 +277,56 @@ func GetContainer() *Container {
 	return &Container{}
 }
 
-func GetUpdatedDeployment(ac appv1client.AppsV1Interface, namespace, podName string) (*appsv1.Deployment, error) {
-	return autodiscover.FindDeploymentByNameByNamespace(ac, namespace, podName)
+func (d *Deployment) IsDeploymentReady() bool {
+	notReady := true
+	for _, condition := range d.Status.Conditions {
+		if condition.Type == appsv1.DeploymentAvailable {
+			notReady = false
+			break
+		}
+	}
+	var replicas int32
+	if d.Spec.Replicas != nil {
+		replicas = *(d.Spec.Replicas)
+	} else {
+		replicas = 1
+	}
+	if notReady ||
+		d.Status.UnavailableReplicas != 0 ||
+		d.Status.ReadyReplicas != replicas ||
+		d.Status.AvailableReplicas != replicas ||
+		d.Status.UpdatedReplicas != replicas {
+		return false
+	}
+	return true
 }
-func GetUpdatedStatefulset(ac appv1client.AppsV1Interface, namespace, podName string) (*appsv1.StatefulSet, error) {
-	return autodiscover.FindStatefulsetByNameByNamespace(ac, namespace, podName)
+
+func (ss *StatefulSet) IsStatefulSetReady() bool {
+	var replicas int32
+	if ss.Spec.Replicas != nil {
+		replicas = *(ss.Spec.Replicas)
+	} else {
+		replicas = 1
+	}
+	if ss.Status.ReadyReplicas != replicas ||
+		ss.Status.CurrentReplicas != replicas ||
+		ss.Status.UpdatedReplicas != replicas {
+		return false
+	}
+	return true
+}
+
+func GetUpdatedDeployment(ac appv1client.AppsV1Interface, namespace, podName string) (*Deployment, error) {
+	result, err := autodiscover.FindDeploymentByNameByNamespace(ac, namespace, podName)
+	return &Deployment{
+		result,
+	}, err
+}
+func GetUpdatedStatefulset(ac appv1client.AppsV1Interface, namespace, podName string) (*StatefulSet, error) {
+	result, err := autodiscover.FindStatefulsetByNameByNamespace(ac, namespace, podName)
+	return &StatefulSet{
+		result,
+	}, err
 }
 
 func buildTestEnvironment() { //nolint:funlen
@@ -327,10 +381,16 @@ func buildTestEnvironment() { //nolint:funlen
 		}
 	}
 	for i := range data.Deployments {
-		env.Deployments = append(env.Deployments, &data.Deployments[i])
+		env.Deployments = append(env.Deployments,
+			&Deployment{
+				&data.Deployments[i],
+			})
 	}
 	for i := range data.StatefulSet {
-		env.StatetfulSets = append(env.StatetfulSets, &data.StatefulSet[i])
+		env.StatetfulSets = append(env.StatetfulSets,
+			&StatefulSet{
+				&data.StatefulSet[i],
+			})
 	}
 	env.HorizontalScaler = data.Hpas
 
@@ -533,17 +593,17 @@ func (p *Pod) IsCPUIsolationCompliant() bool {
 	return isCPUIsolated
 }
 
-func DeploymentToString(d *appsv1.Deployment) string {
+func (d *Deployment) ToString() string {
 	return fmt.Sprintf("deployment: %s ns: %s",
 		d.Name,
 		d.Namespace,
 	)
 }
 
-func StatefulsetToString(s *appsv1.StatefulSet) string {
+func (ss *StatefulSet) ToString() string {
 	return fmt.Sprintf("statefulset: %s ns: %s",
-		s.Name,
-		s.Namespace,
+		ss.Name,
+		ss.Namespace,
 	)
 }
 
