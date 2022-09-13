@@ -53,7 +53,19 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testContainerCertificationStatus(&env)
 	})
-
+	var _ = ginkgo.Describe("extra", func() {
+		var env provider.TestEnvironment
+		ginkgo.BeforeEach(func() {
+			env = provider.GetTestEnvironment()
+		})
+		ginkgo.ReportAfterEach(results.RecordResult)
+		logrus.Debugf("Entering %s suite", common.AffiliatedCertTestKey)
+		// Query API for certification status by digest of listed containers
+		testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)
+		ginkgo.It(testID, ginkgo.Label(tags...), func() {
+			testContainerCertificationStatusByDigest(&env)
+		})
+	})
 	// Query API for certification status of listed operators
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
@@ -148,5 +160,32 @@ func testHelmCertified(env *provider.TestEnvironment) {
 		logrus.Errorf("Helms that are not certified: %+v", failedHelmCharts)
 		tnf.ClaimFilePrintf("Helms that are not certified: %+v", failedHelmCharts)
 		ginkgo.Fail(fmt.Sprintf("%d helms chart are not certified.", len(failedHelmCharts)))
+	}
+}
+func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
+	failedContainersNoDigest := []configuration.ContainerImageIdentifier{}
+	failedContainers := []configuration.ContainerImageIdentifier{}
+	for _, c := range env.Containers {
+		if c.ContainerImageIdentifier.Name == "" || c.ContainerImageIdentifier.Repository == "" {
+			tnf.ClaimFilePrintf("Container name = \"%s\" or repository = \"%s\" is missing, skipping this container to query", c.ContainerImageIdentifier.Name, c.ContainerImageIdentifier.Repository)
+			continue
+		}
+		if c.ContainerImageIdentifier.Digest == "" {
+			failedContainersNoDigest = append(failedContainersNoDigest, c.ContainerImageIdentifier)
+		} else if !testContainerCertification(c.ContainerImageIdentifier) {
+			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
+		}
+	}
+
+	m := len(failedContainersNoDigest)
+	if m > 0 {
+		logrus.Warnf("Containers that are not certified by digest there is no digest on those container: %+v", failedContainers)
+	}
+	n := len(failedContainers)
+	if n > 0 {
+		logrus.Warnf("Containers that are not certified by digest: %+v", failedContainers)
+	}
+	if m > 0 || n > 0 {
+		ginkgo.Fail(fmt.Sprintf("%d container images are not certified by there digest.", n+m))
 	}
 }
