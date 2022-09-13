@@ -203,13 +203,13 @@ var (
 	}
 	// TestContainerIsCertifiedIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagExtended),
+		Tags:    formTestTags(tagCommon, tagOnline),
 		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified"),
 		Version: versionOne,
 	}
 	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedDigestIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagCommon, tagOnline),
+		Tags:    formTestTags(tagExtended),
 		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified-digest"),
 		Version: versionOne,
 	}
