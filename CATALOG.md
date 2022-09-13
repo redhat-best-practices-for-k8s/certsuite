@@ -808,6 +808,19 @@ Result Type|normative
 Suggested Remediation|Ensure that boot parameters are set directly through the MachineConfigOperator, or indirectly through the PerformanceAddonOperator.   	Boot parameters should not be changed directly through the Node, as OpenShift should manage the changes for you.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.13 and 5.2.14
 Exception Process|There is no documented exception process for this.
+#### hugepages-2m-only
+
+Property|Description
+---|---
+Test Case Name|hugepages-2m-only
+Test Case Label|platform-alteration-hugepages-2m-only
+Unique ID|http://test-network-function.com/testcases/platform-alteration/hugepages-2m-only
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/platform-alteration/hugepages-2m-only Check that pods using hugepages only use 2Mi size
+Result Type|normative
+Suggested Remediation|Modify pod to consume 2Mi hugepages only
+Best Practice Reference|https://TODO Section 3.5.4
+Exception Process|There is no documented exception process for this.
 #### hugepages-config
 
 Property|Description
