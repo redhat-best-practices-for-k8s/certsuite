@@ -66,7 +66,7 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	})
 })
 
-var _ = ginkgo.Describe(common.AffiliatedCertTestKey+"extra", func() {
+var _ = ginkgo.Describe(common.AffiliatedCertTestKey+"-extra", func() {
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
@@ -182,10 +182,12 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
 
 	m := len(failedContainersNoDigest)
 	if m > 0 {
+		tnf.ClaimFilePrintf("Containers that are not certified by digest there is no digest on those container: %+v", failedContainers)
 		logrus.Warnf("Containers that are not certified by digest there is no digest on those container: %+v", failedContainers)
 	}
 	n := len(failedContainers)
 	if n > 0 {
+		tnf.ClaimFilePrintf("Containers that are not certified by digest: %+v", failedContainers)
 		logrus.Warnf("Containers that are not certified by digest: %+v", failedContainers)
 	}
 	if m > 0 || n > 0 {

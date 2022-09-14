@@ -37,7 +37,7 @@ const (
 	tagCommon   = "common"
 	tagExtended = "extended"
 	tagOnline   = "online"
-	tagExtra    = "extra"
+	tagExtra    = "-extra"
 )
 
 // TestCaseDescription describes a JUnit test case.
