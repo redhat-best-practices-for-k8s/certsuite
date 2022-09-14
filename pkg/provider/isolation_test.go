@@ -48,7 +48,7 @@ func TestCPUIsolation(t *testing.T) {
 			testPod: &Pod{
 				Containers: []*Container{
 					{
-						Data: &v1.Container{
+						Container: &v1.Container{
 							Resources: v1.ResourceRequirements{
 								Requests: v1.ResourceList{
 									"cpu":    resource.MustParse(validCPULimit),
@@ -62,7 +62,7 @@ func TestCPUIsolation(t *testing.T) {
 						},
 					},
 				},
-				Data: &v1.Pod{
+				Pod: &v1.Pod{
 					Spec: v1.PodSpec{
 						RuntimeClassName: &testClassName,
 					},
@@ -83,7 +83,7 @@ func TestCPUIsolation(t *testing.T) {
 			testPod: &Pod{
 				Containers: []*Container{
 					{
-						Data: &v1.Container{
+						Container: &v1.Container{
 							Resources: v1.ResourceRequirements{
 								Requests: v1.ResourceList{
 									"cpu":    resource.MustParse(validCPULimit),
@@ -97,7 +97,7 @@ func TestCPUIsolation(t *testing.T) {
 						},
 					},
 				},
-				Data: &v1.Pod{
+				Pod: &v1.Pod{
 					Spec: v1.PodSpec{
 						RuntimeClassName: &testClassName,
 					},
@@ -118,7 +118,7 @@ func TestCPUIsolation(t *testing.T) {
 			testPod: &Pod{
 				Containers: []*Container{
 					{
-						Data: &v1.Container{
+						Container: &v1.Container{
 							Resources: v1.ResourceRequirements{
 								Requests: v1.ResourceList{
 									"cpu":    resource.MustParse(invalidCPULimit1),
@@ -132,7 +132,7 @@ func TestCPUIsolation(t *testing.T) {
 						},
 					},
 				},
-				Data: &v1.Pod{
+				Pod: &v1.Pod{
 					Spec: v1.PodSpec{
 						RuntimeClassName: &testClassName,
 					},
@@ -153,7 +153,7 @@ func TestCPUIsolation(t *testing.T) {
 			testPod: &Pod{
 				Containers: []*Container{
 					{
-						Data: &v1.Container{
+						Container: &v1.Container{
 							Resources: v1.ResourceRequirements{
 								Requests: v1.ResourceList{
 									"cpu":    resource.MustParse(validCPULimit),
@@ -167,7 +167,7 @@ func TestCPUIsolation(t *testing.T) {
 						},
 					},
 				},
-				Data: &v1.Pod{
+				Pod: &v1.Pod{
 					Spec: v1.PodSpec{
 						RuntimeClassName: nil,
 					},
@@ -188,7 +188,7 @@ func TestCPUIsolation(t *testing.T) {
 			testPod: &Pod{
 				Containers: []*Container{
 					{
-						Data: &v1.Container{
+						Container: &v1.Container{
 							Resources: v1.ResourceRequirements{
 								Requests: v1.ResourceList{
 									"cpu":    resource.MustParse(validCPULimit),
@@ -202,7 +202,7 @@ func TestCPUIsolation(t *testing.T) {
 						},
 					},
 				},
-				Data: &v1.Pod{
+				Pod: &v1.Pod{
 					Spec: v1.PodSpec{
 						RuntimeClassName: &testClassName,
 					},

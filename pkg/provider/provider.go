@@ -69,7 +69,7 @@ var (
 )
 
 type Pod struct {
-	Data               *corev1.Pod
+	*corev1.Pod
 	Containers         []*Container
 	MultusIPs          map[string][]string
 	SkipNetTests       bool
@@ -86,7 +86,7 @@ type StatefulSet struct {
 
 func NewPod(aPod *corev1.Pod) (out Pod) {
 	var err error
-	out.Data = aPod
+	out.Pod = aPod
 	out.MultusIPs = make(map[string][]string)
 	out.MultusIPs, err = GetPodIPsPerNet(aPod.GetAnnotations()[CniNetworksStatusKey])
 	if err != nil {
@@ -159,7 +159,7 @@ type Operator struct {
 	Channel          string                            `yaml:"channel" json:"channel"`
 }
 type Container struct {
-	Data                     *corev1.Container
+	*corev1.Container
 	Status                   corev1.ContainerStatus
 	Namespace                string
 	Podname                  string
@@ -413,7 +413,7 @@ func getPodContainers(aPod *corev1.Pod) (containerList []*Container) {
 		}
 		aRuntime, uid := GetRuntimeUID(&state)
 		container := Container{Podname: aPod.Name, Namespace: aPod.Namespace,
-			NodeName: aPod.Spec.NodeName, Data: cut, Status: state, Runtime: aRuntime, UID: uid,
+			NodeName: aPod.Spec.NodeName, Container: cut, Status: state, Runtime: aRuntime, UID: uid,
 			ContainerImageIdentifier: buildContainerImageSource(aPod.Spec.Containers[j].Image)}
 		containerList = append(containerList, &container)
 	}
@@ -506,10 +506,10 @@ func (c *Container) GetUID() (string, error) {
 		uid = split[len(split)-1]
 	}
 	if uid == "" {
-		logrus.Debugln(fmt.Sprintf("could not find uid of %s/%s/%s\n", c.Namespace, c.Podname, c.Data.Name))
+		logrus.Debugln(fmt.Sprintf("could not find uid of %s/%s/%s\n", c.Namespace, c.Podname, c.Name))
 		return "", errors.New("cannot determine container UID")
 	}
-	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Data.Name, uid))
+	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Name, uid))
 	return uid, nil
 }
 
@@ -549,14 +549,14 @@ func (c *Container) StringLong() string {
 		c.NodeName,
 		c.Namespace,
 		c.Podname,
-		c.Data.Name,
+		c.Name,
 		c.Status.ContainerID,
 		c.Runtime,
 	)
 }
 func (c *Container) String() string {
 	return fmt.Sprintf("container: %s pod: %s ns: %s",
-		c.Data.Name,
+		c.Name,
 		c.Podname,
 		c.Namespace,
 	)
@@ -564,8 +564,8 @@ func (c *Container) String() string {
 
 func (p *Pod) String() string {
 	return fmt.Sprintf("pod: %s ns: %s",
-		p.Data.Name,
-		p.Data.Namespace,
+		p.Name,
+		p.Namespace,
 	)
 }
 

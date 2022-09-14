@@ -189,10 +189,10 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 			continue
 		case testhelper.FAILURE:
 			tnf.ClaimFilePrintf("%s - changed folders: %v, deleted folders: %v", cut, fsDiffTester.ChangedFolders, fsDiffTester.DeletedFolders)
-			badContainers = append(badContainers, cut.Data.Name)
+			badContainers = append(badContainers, cut.Name)
 		case testhelper.ERROR:
 			tnf.ClaimFilePrintf("%s - error while running fs-diff: %v: ", cut, fsDiffTester.Error)
-			errContainers = append(errContainers, cut.Data.Name)
+			errContainers = append(errContainers, cut.Name)
 		}
 	}
 
@@ -317,7 +317,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 		baseImageTester := isredhat.NewBaseImageTester(clientsholder.GetClientsHolder(), clientsholder.Context{
 			Namespace:     cut.Namespace,
 			Podname:       cut.Podname,
-			Containername: cut.Data.Name,
+			Containername: cut.Name,
 		})
 
 		result, err := baseImageTester.TestContainerIsRedHatRelease()
@@ -325,7 +325,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 			logrus.Error("failed to collect release information from container: ", err)
 		}
 		if !result {
-			failedContainers = append(failedContainers, cut.Namespace+"/"+cut.Podname+"/"+cut.Data.Name)
+			failedContainers = append(failedContainers, cut.Namespace+"/"+cut.Podname+"/"+cut.Name)
 			tnf.ClaimFilePrintf("%s has failed the RHEL release check", cut)
 		}
 	}
