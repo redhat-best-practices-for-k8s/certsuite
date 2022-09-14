@@ -118,19 +118,18 @@ if [ -n "$FOCUS" ]; then
 	fi
 fi
 
-# Add the label "common" in case no labels have been provided. This will allow to filter out
-# some either non-official TCs or TCs not intended to run in CI (yet).
-# ToDo: remove when "-f" and "-s" flags have been deprecated.
-if [ -z "$LABEL" ]; then
-	LABEL="common"
-fi
-LABEL_STRING="-ginkgo.label-filter=${LABEL}"
-
-if [ -z "$FOCUS_STRING" ] && [ -z "$LABEL_STRING" ]; then
+if [ -z "$FOCUS_STRING" ] && [ -z "$LABEL" ]; then
 	echo "No test focus (-f) or label (-l) was set, so only diagnostic functions will run.".
+else
+  # Add the label "common" in case no labels have been provided. This will allow to filter out
+  # some either non-official TCs or TCs not intended to run in CI (yet).
+  # ToDo: remove when "-f" and "-s" flags have been deprecated.
+  if [ -n "$LABEL" ]; then
+    LABEL_STRING="-ginkgo.label-filter=${LABEL}"
+  else
+    LABEL_STRING="-ginkgo.label-filter=common"
+  fi
 fi
-
-
 
 cd ./cnf-certification-test && ./cnf-certification-test.test ${FOCUS_STRING} ${SKIP_STRING} "${LABEL_STRING}" ${GINKGO_ARGS}
 
