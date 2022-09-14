@@ -170,7 +170,7 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
 	failedContainers := []configuration.ContainerImageIdentifier{}
 	for _, c := range env.Containers {
 		if c.ContainerImageIdentifier.Name == "" || c.ContainerImageIdentifier.Repository == "" {
-			tnf.ClaimFilePrintf("Container name = \"%s\" or repository = \"%s\" is missing, skipping this container to query", c.ContainerImageIdentifier.Name, c.ContainerImageIdentifier.Repository)
+			tnf.ClaimFilePrintf("Container name = %q or repository = %q is missing, skipping this container to query", c.ContainerImageIdentifier.Name, c.ContainerImageIdentifier.Repository)
 			continue
 		}
 		if c.ContainerImageIdentifier.Digest == "" {

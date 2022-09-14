@@ -211,7 +211,7 @@ var (
 	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedDigestIdentifier = claim.Identifier{
 		Tags:    formTestTags(tagExtended),
-		Url:     formTestURL(common.AffiliatedCertTestKey+tagExtra+tagExtra, "container-is-certified-digest"),
+		Url:     formTestURL(common.AffiliatedCertTestKey+tagExtra, "container-is-certified-digest"),
 		Version: versionOne,
 	}
 	// TestHugepagesNotManuallyManipulated represents the test identifier testing hugepages have not been manipulated.
