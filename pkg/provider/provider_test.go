@@ -159,7 +159,7 @@ func TestGetUID(t *testing.T) {
 
 	for _, tc := range testCases {
 		c := GetContainer()
-		c.Data = &corev1.Container{}
+		c.Container = &corev1.Container{}
 		c.Status.ContainerID = tc.testCID
 		uid, err := c.GetUID()
 		assert.Equal(t, tc.expectedErr, err)
@@ -632,7 +632,7 @@ func TestConvertArrayPods(t *testing.T) {
 			},
 			expectedPods: []*Pod{
 				{
-					Data: &corev1.Pod{
+					Pod: &corev1.Pod{
 						ObjectMeta: metav1.ObjectMeta{
 							Name:      "testpod1",
 							Namespace: "testnamespace1",
@@ -659,7 +659,7 @@ func TestConvertArrayPods(t *testing.T) {
 			},
 			expectedPods: []*Pod{
 				{
-					Data: &corev1.Pod{
+					Pod: &corev1.Pod{
 						ObjectMeta: metav1.ObjectMeta{
 							Name:      "testpod1",
 							Namespace: "testnamespace1",
@@ -667,7 +667,7 @@ func TestConvertArrayPods(t *testing.T) {
 					},
 					Containers: []*Container{
 						{
-							Data: &corev1.Container{
+							Container: &corev1.Container{
 								Name: "testcontainer1",
 							},
 							Namespace: "testnamespace1",
@@ -682,8 +682,8 @@ func TestConvertArrayPods(t *testing.T) {
 	for _, tc := range testCases {
 		convertedArray := ConvertArrayPods(tc.testPods)
 		assert.Equal(t, tc.expectedPods[0].Containers, convertedArray[0].Containers)
-		assert.Equal(t, tc.expectedPods[0].Data.Name, convertedArray[0].Data.Name)
-		assert.Equal(t, tc.expectedPods[0].Data.Namespace, convertedArray[0].Data.Namespace)
+		assert.Equal(t, tc.expectedPods[0].Name, convertedArray[0].Name)
+		assert.Equal(t, tc.expectedPods[0].Namespace, convertedArray[0].Namespace)
 	}
 }
 
@@ -776,7 +776,7 @@ func TestContainerStringFuncs(t *testing.T) {
 			NodeName:  tc.nodename,
 			Namespace: tc.namespace,
 			Podname:   tc.podname,
-			Data: &corev1.Container{
+			Container: &corev1.Container{
 				Name: tc.name,
 			},
 			Status: corev1.ContainerStatus{
@@ -826,7 +826,7 @@ func TestCsvToString(t *testing.T) {
 
 func TestPodString(t *testing.T) {
 	p := Pod{
-		Data: &corev1.Pod{
+		Pod: &corev1.Pod{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "test1",
 				Namespace: "testNS",

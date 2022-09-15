@@ -148,7 +148,7 @@ func TestContainerIPString(t *testing.T) {
 			IP: IP,
 			ContainerIdentifier: &provider.Container{
 				UID: ID,
-				Data: &corev1.Container{
+				Container: &corev1.Container{
 					Name: "test-" + ID,
 				},
 			},
@@ -185,7 +185,7 @@ func TestNetTestContextString(t *testing.T) {
 			TesterSource: ContainerIP{
 				IP: IP,
 				ContainerIdentifier: &provider.Container{
-					Data: &corev1.Container{
+					Container: &corev1.Container{
 						Name: containerName,
 					},
 				},
@@ -194,7 +194,7 @@ func TestNetTestContextString(t *testing.T) {
 				{
 					IP: IP,
 					ContainerIdentifier: &provider.Container{
-						Data: &corev1.Container{
+						Container: &corev1.Container{
 							Name: containerName,
 						},
 					},
@@ -233,7 +233,7 @@ func TestNetTestContextMapString(t *testing.T) {
 			TesterSource: ContainerIP{
 				IP: IP,
 				ContainerIdentifier: &provider.Container{
-					Data: &corev1.Container{
+					Container: &corev1.Container{
 						Name: containerName,
 					},
 				},
@@ -242,7 +242,7 @@ func TestNetTestContextMapString(t *testing.T) {
 				{
 					IP: IP,
 					ContainerIdentifier: &provider.Container{
-						Data: &corev1.Container{
+						Container: &corev1.Container{
 							Name: containerName,
 						},
 					},

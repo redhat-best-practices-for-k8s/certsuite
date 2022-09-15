@@ -100,7 +100,7 @@ func getCurrentKernelCmdlineArgs(cut *provider.Container) (aMap map[string]strin
 	o := clientsholder.GetClientsHolder()
 	ctx := clientsholder.Context{Namespace: cut.Namespace,
 		Podname:       cut.Podname,
-		Containername: cut.Data.Name}
+		Containername: cut.Name}
 	currnetKernelCmdlineArgs, errStr, err := o.ExecCommandContainer(ctx, kernelArgscommand)
 	if err != nil || errStr != "" {
 		return aMap, fmt.Errorf("cannot execute %s on container %s, err=%s, stderr=%s", grubKernelArgsCommand, cut, err, errStr)
