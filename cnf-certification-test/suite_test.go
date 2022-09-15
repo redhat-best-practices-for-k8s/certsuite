@@ -142,6 +142,7 @@ func TestTest(t *testing.T) {
 	// Diagnostic functions will run when no focus test suites or labels are provided.
 	var diagnosticMode bool
 	if len(ginkgoConfig.FocusStrings) == 0 && ginkgoConfig.LabelFilter == "" {
+		log.Infof("TNF will run in diagnostic mode so no test case will be launched.")
 		diagnosticMode = true
 	}
 
@@ -149,11 +150,11 @@ func TestTest(t *testing.T) {
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 
 	// Deploy the daemonset before getting the environment for the first time
-	if !diagnosticMode {
-		err := daemonset.DeployPartnerTestDaemonset()
-		if err != nil {
-			log.Errorf("Error deploying partner daemonset %s", err)
-		}
+	err := daemonset.DeployPartnerTestDaemonset()
+	if err != nil {
+		log.Errorf("Error deploying partner daemonset %s", err)
+		// Finish execution and return with error status.
+		t.FailNow()
 	}
 
 	// Initialize the claim with the start time, tnf version, etc.
