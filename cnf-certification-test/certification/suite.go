@@ -64,18 +64,8 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testHelmCertified(&env)
 	})
-})
-
-var _ = ginkgo.Describe(common.AffiliatedCertTestKey+"-extra", func() {
-	var env provider.TestEnvironment
-	ginkgo.BeforeEach(func() {
-		env = provider.GetTestEnvironment()
-		api.LoadCatalog()
-	})
-	ginkgo.ReportAfterEach(results.RecordResult)
-	logrus.Debugf("Entering %s suite", common.AffiliatedCertTestKey)
 	// Query API for certification status by digest of listed containers
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testContainerCertificationStatusByDigest(&env)
 	})

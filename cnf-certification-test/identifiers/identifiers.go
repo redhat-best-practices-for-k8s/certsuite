@@ -37,7 +37,6 @@ const (
 	tagCommon   = "common"
 	tagExtended = "extended"
 	tagOnline   = "online"
-	tagExtra    = "-extra"
 )
 
 // TestCaseDescription describes a JUnit test case.
@@ -211,7 +210,7 @@ var (
 	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedDigestIdentifier = claim.Identifier{
 		Tags:    formTestTags(tagExtended),
-		Url:     formTestURL(common.AffiliatedCertTestKey+tagExtra, "container-is-certified-digest"),
+		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified-digest"),
 		Version: versionOne,
 	}
 	// TestHugepagesNotManuallyManipulated represents the test identifier testing hugepages have not been manipulated.
