@@ -418,7 +418,7 @@ func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
 			for pvIndex := range put.Spec.Volumes {
 				if put.Spec.Volumes[pvIndex].Name == env.PersistentVolumes[index].Name && env.PersistentVolumes[index].Spec.PersistentVolumeReclaimPolicy != corev1.PersistentVolumeReclaimDelete {
 					persistentVolumesBadReclaim = append(persistentVolumesBadReclaim, env.PersistentVolumes[index].Name)
-					tnf.ClaimFilePrintf("Persistent Volume: %s in namespace %s has been found without a reclaim policy of DELETE.", env.PersistentVolumes[index].Name, env.PersistentVolumes[index].Namespace)
+					tnf.ClaimFilePrintf("Persistent Volume: %s has been found without a reclaim policy of DELETE.", env.PersistentVolumes[index].Name)
 				}
 			}
 		}
