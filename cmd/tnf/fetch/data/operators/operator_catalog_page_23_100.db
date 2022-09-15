@@ -1,1119 +1,6 @@
 {
   "data": [
     {
-      "_id": "623d8c0cad5091e14e579f73",
-      "alm_examples": [
-        {
-          "api_version": "ako.vmware.com/v1alpha1",
-          "kind": "AKOConfig",
-          "metadata": {
-            "name": "ako-sample",
-            "namespace": "avi-system"
-          },
-          "spec": {
-            "akoSettings": {
-              "apiServerPort": 8080,
-              "clusterName": "my-cluster",
-              "cniPlugin": "openshift",
-              "deleteConfig": false,
-              "disableStaticRouteSync": false,
-              "enableEVH": false,
-              "enableEvents": "true",
-              "fullSyncFrequency": "1800",
-              "layer7Only": false,
-              "logLevel": "INFO",
-              "namespaceSelector": {
-                "labelKey": "",
-                "labelValue": ""
-              },
-              "servicesAPI": false,
-              "vipPerNamespace": "false"
-            },
-            "controllerSettings": {
-              "cloudName": "Default-Cloud",
-              "controllerHost": "",
-              "controllerVersion": "20.1.5",
-              "serviceEngineGroupName": "Default-Group",
-              "tenantName": "admin",
-              "tenantsPerCluster": "false"
-            },
-            "imagePullPolicy": "IfNotPresent",
-            "imageRepository": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-            "l4Settings": {
-              "advancedL4": false,
-              "autoFQDN": "default",
-              "defaultDomain": ""
-            },
-            "l7Settings": {
-              "defaultIngController": true,
-              "noPGForSNI": false,
-              "passthroughShardSize": "SMALL",
-              "serviceType": "ClusterIP",
-              "shardVSSize": "LARGE"
-            },
-            "logFile": "avi.log",
-            "mountPath": "/log",
-            "networkSettings": {
-              "bgpPeerLabels": [],
-              "enableRHI": false,
-              "nodeNetworkList": [
-                {
-                  "cidrs": [],
-                  "networkName": ""
-                }
-              ],
-              "nsxtT1LR": "",
-              "vipNetworkList": [
-                {
-                  "cidr": "",
-                  "networkName": ""
-                }
-              ]
-            },
-            "nodePortSelector": {
-              "key": "",
-              "value": ""
-            },
-            "resources": {
-              "limits": {
-                "cpu": "250m",
-                "memory": "300Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "200Mi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/wavefronthq/ako-operator-bundle@sha256:7b318b8ae2f90210bda94e4c88b1187a7e92b696dc00cbc3e894c0f285c83f9e",
-      "bundle_path_digest": "sha256:7b318b8ae2f90210bda94e4c88b1187a7e92b696dc00cbc3e894c0f285c83f9e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-25T09:31:56.260000+00:00",
-      "csv_description": "Operator to manage the artifacts of the AKO Controller",
-      "csv_display_name": "AKO Operator",
-      "csv_metadata_description": "",
-      "csv_name": "ako-operator.v1.6.3-stable",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:52:48.625000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "ako-operator",
-      "provided_apis": [
-        {
-          "group": "ako.vmware.com",
-          "kind": "AKOConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "VMware",
-      "related_images": [
-        {
-          "digest": "sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "name": "ako-operator"
-        },
-        {
-          "digest": "sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "name": "ako-operator-378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.6.3",
-      "version_original": "1.6.3"
-    },
-    {
-      "_id": "623d8eee6d7cc84677b2e8b4",
-      "alm_examples": [
-        {
-          "api_version": "ako.vmware.com/v1alpha1",
-          "kind": "AKOConfig",
-          "metadata": {
-            "name": "ako-sample",
-            "namespace": "avi-system"
-          },
-          "spec": {
-            "akoSettings": {
-              "apiServerPort": 8080,
-              "clusterName": "my-cluster",
-              "cniPlugin": "openshift",
-              "deleteConfig": false,
-              "disableStaticRouteSync": false,
-              "enableEVH": false,
-              "enableEvents": "true",
-              "fullSyncFrequency": "1800",
-              "layer7Only": false,
-              "logLevel": "INFO",
-              "namespaceSelector": {
-                "labelKey": "",
-                "labelValue": ""
-              },
-              "servicesAPI": false,
-              "vipPerNamespace": "false"
-            },
-            "controllerSettings": {
-              "cloudName": "Default-Cloud",
-              "controllerHost": "",
-              "controllerVersion": "20.1.5",
-              "serviceEngineGroupName": "Default-Group",
-              "tenantName": "admin",
-              "tenantsPerCluster": "false"
-            },
-            "imagePullPolicy": "IfNotPresent",
-            "imageRepository": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-            "l4Settings": {
-              "advancedL4": false,
-              "autoFQDN": "default",
-              "defaultDomain": ""
-            },
-            "l7Settings": {
-              "defaultIngController": true,
-              "noPGForSNI": false,
-              "passthroughShardSize": "SMALL",
-              "serviceType": "ClusterIP",
-              "shardVSSize": "LARGE"
-            },
-            "logFile": "avi.log",
-            "mountPath": "/log",
-            "networkSettings": {
-              "bgpPeerLabels": [],
-              "enableRHI": false,
-              "nodeNetworkList": [
-                {
-                  "cidrs": [],
-                  "networkName": ""
-                }
-              ],
-              "nsxtT1LR": "",
-              "vipNetworkList": [
-                {
-                  "cidr": "",
-                  "networkName": ""
-                }
-              ]
-            },
-            "nodePortSelector": {
-              "key": "",
-              "value": ""
-            },
-            "resources": {
-              "limits": {
-                "cpu": "250m",
-                "memory": "300Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "200Mi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/wavefronthq/ako-operator-bundle@sha256:7b318b8ae2f90210bda94e4c88b1187a7e92b696dc00cbc3e894c0f285c83f9e",
-      "bundle_path_digest": "sha256:7b318b8ae2f90210bda94e4c88b1187a7e92b696dc00cbc3e894c0f285c83f9e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-25T09:44:14.537000+00:00",
-      "csv_description": "Operator to manage the artifacts of the AKO Controller",
-      "csv_display_name": "AKO Operator",
-      "csv_metadata_description": "",
-      "csv_name": "ako-operator.v1.6.3-stable",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:12:28.370000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "ako-operator",
-      "provided_apis": [
-        {
-          "group": "ako.vmware.com",
-          "kind": "AKOConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "VMware",
-      "related_images": [
-        {
-          "digest": "sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "name": "ako-operator"
-        },
-        {
-          "digest": "sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "name": "ako-operator-378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.6.3",
-      "version_original": "1.6.3"
-    },
-    {
-      "_id": "623d8fcd37f345462469f62c",
-      "alm_examples": [
-        {
-          "api_version": "ako.vmware.com/v1alpha1",
-          "kind": "AKOConfig",
-          "metadata": {
-            "name": "ako-sample",
-            "namespace": "avi-system"
-          },
-          "spec": {
-            "akoSettings": {
-              "apiServerPort": 8080,
-              "clusterName": "my-cluster",
-              "cniPlugin": "openshift",
-              "deleteConfig": false,
-              "disableStaticRouteSync": false,
-              "enableEVH": false,
-              "enableEvents": "true",
-              "fullSyncFrequency": "1800",
-              "layer7Only": false,
-              "logLevel": "INFO",
-              "namespaceSelector": {
-                "labelKey": "",
-                "labelValue": ""
-              },
-              "servicesAPI": false,
-              "vipPerNamespace": "false"
-            },
-            "controllerSettings": {
-              "cloudName": "Default-Cloud",
-              "controllerHost": "",
-              "controllerVersion": "20.1.5",
-              "serviceEngineGroupName": "Default-Group",
-              "tenantName": "admin",
-              "tenantsPerCluster": "false"
-            },
-            "imagePullPolicy": "IfNotPresent",
-            "imageRepository": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-            "l4Settings": {
-              "advancedL4": false,
-              "autoFQDN": "default",
-              "defaultDomain": ""
-            },
-            "l7Settings": {
-              "defaultIngController": true,
-              "noPGForSNI": false,
-              "passthroughShardSize": "SMALL",
-              "serviceType": "ClusterIP",
-              "shardVSSize": "LARGE"
-            },
-            "logFile": "avi.log",
-            "mountPath": "/log",
-            "networkSettings": {
-              "bgpPeerLabels": [],
-              "enableRHI": false,
-              "nodeNetworkList": [
-                {
-                  "cidrs": [],
-                  "networkName": ""
-                }
-              ],
-              "nsxtT1LR": "",
-              "vipNetworkList": [
-                {
-                  "cidr": "",
-                  "networkName": ""
-                }
-              ]
-            },
-            "nodePortSelector": {
-              "key": "",
-              "value": ""
-            },
-            "resources": {
-              "limits": {
-                "cpu": "250m",
-                "memory": "300Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "200Mi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/wavefronthq/ako-operator-bundle@sha256:7b318b8ae2f90210bda94e4c88b1187a7e92b696dc00cbc3e894c0f285c83f9e",
-      "bundle_path_digest": "sha256:7b318b8ae2f90210bda94e4c88b1187a7e92b696dc00cbc3e894c0f285c83f9e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-25T09:47:57.153000+00:00",
-      "csv_description": "Operator to manage the artifacts of the AKO Controller",
-      "csv_display_name": "AKO Operator",
-      "csv_metadata_description": "",
-      "csv_name": "ako-operator.v1.6.3-stable",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:02:27.427000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "ako-operator",
-      "provided_apis": [
-        {
-          "group": "ako.vmware.com",
-          "kind": "AKOConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "VMware",
-      "related_images": [
-        {
-          "digest": "sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "name": "ako-operator"
-        },
-        {
-          "digest": "sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "name": "ako-operator-378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.6.3",
-      "version_original": "1.6.3"
-    },
-    {
-      "_id": "623d917f6d7cc84677b2e8b5",
-      "alm_examples": [
-        {
-          "api_version": "ako.vmware.com/v1alpha1",
-          "kind": "AKOConfig",
-          "metadata": {
-            "name": "ako-sample",
-            "namespace": "avi-system"
-          },
-          "spec": {
-            "akoSettings": {
-              "apiServerPort": 8080,
-              "clusterName": "my-cluster",
-              "cniPlugin": "openshift",
-              "deleteConfig": false,
-              "disableStaticRouteSync": false,
-              "enableEVH": false,
-              "enableEvents": "true",
-              "fullSyncFrequency": "1800",
-              "layer7Only": false,
-              "logLevel": "INFO",
-              "namespaceSelector": {
-                "labelKey": "",
-                "labelValue": ""
-              },
-              "servicesAPI": false,
-              "vipPerNamespace": "false"
-            },
-            "controllerSettings": {
-              "cloudName": "Default-Cloud",
-              "controllerHost": "",
-              "controllerVersion": "20.1.5",
-              "serviceEngineGroupName": "Default-Group",
-              "tenantName": "admin",
-              "tenantsPerCluster": "false"
-            },
-            "imagePullPolicy": "IfNotPresent",
-            "imageRepository": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-            "l4Settings": {
-              "advancedL4": false,
-              "autoFQDN": "default",
-              "defaultDomain": ""
-            },
-            "l7Settings": {
-              "defaultIngController": true,
-              "noPGForSNI": false,
-              "passthroughShardSize": "SMALL",
-              "serviceType": "ClusterIP",
-              "shardVSSize": "LARGE"
-            },
-            "logFile": "avi.log",
-            "mountPath": "/log",
-            "networkSettings": {
-              "bgpPeerLabels": [],
-              "enableRHI": false,
-              "nodeNetworkList": [
-                {
-                  "cidrs": [],
-                  "networkName": ""
-                }
-              ],
-              "nsxtT1LR": "",
-              "vipNetworkList": [
-                {
-                  "cidr": "",
-                  "networkName": ""
-                }
-              ]
-            },
-            "nodePortSelector": {
-              "key": "",
-              "value": ""
-            },
-            "resources": {
-              "limits": {
-                "cpu": "250m",
-                "memory": "300Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "200Mi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/wavefronthq/ako-operator-bundle@sha256:7b318b8ae2f90210bda94e4c88b1187a7e92b696dc00cbc3e894c0f285c83f9e",
-      "bundle_path_digest": "sha256:7b318b8ae2f90210bda94e4c88b1187a7e92b696dc00cbc3e894c0f285c83f9e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-25T09:55:11.976000+00:00",
-      "csv_description": "Operator to manage the artifacts of the AKO Controller",
-      "csv_display_name": "AKO Operator",
-      "csv_metadata_description": "",
-      "csv_name": "ako-operator.v1.6.3-stable",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:45:49.556000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "ako-operator",
-      "provided_apis": [
-        {
-          "group": "ako.vmware.com",
-          "kind": "AKOConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "VMware",
-      "related_images": [
-        {
-          "digest": "sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "name": "ako-operator"
-        },
-        {
-          "digest": "sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "name": "ako-operator-378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.6.3",
-      "version_original": "1.6.3"
-    },
-    {
-      "_id": "623d920f6d7cc84677b2e8b6",
-      "alm_examples": [
-        {
-          "api_version": "ako.vmware.com/v1alpha1",
-          "kind": "AKOConfig",
-          "metadata": {
-            "name": "ako-sample",
-            "namespace": "avi-system"
-          },
-          "spec": {
-            "akoSettings": {
-              "apiServerPort": 8080,
-              "clusterName": "my-cluster",
-              "cniPlugin": "openshift",
-              "deleteConfig": false,
-              "disableStaticRouteSync": false,
-              "enableEVH": false,
-              "enableEvents": "true",
-              "fullSyncFrequency": "1800",
-              "layer7Only": false,
-              "logLevel": "INFO",
-              "namespaceSelector": {
-                "labelKey": "",
-                "labelValue": ""
-              },
-              "servicesAPI": false,
-              "vipPerNamespace": "false"
-            },
-            "controllerSettings": {
-              "cloudName": "Default-Cloud",
-              "controllerHost": "",
-              "controllerVersion": "20.1.5",
-              "serviceEngineGroupName": "Default-Group",
-              "tenantName": "admin",
-              "tenantsPerCluster": "false"
-            },
-            "imagePullPolicy": "IfNotPresent",
-            "imageRepository": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-            "l4Settings": {
-              "advancedL4": false,
-              "autoFQDN": "default",
-              "defaultDomain": ""
-            },
-            "l7Settings": {
-              "defaultIngController": true,
-              "noPGForSNI": false,
-              "passthroughShardSize": "SMALL",
-              "serviceType": "ClusterIP",
-              "shardVSSize": "LARGE"
-            },
-            "logFile": "avi.log",
-            "mountPath": "/log",
-            "networkSettings": {
-              "bgpPeerLabels": [],
-              "enableRHI": false,
-              "nodeNetworkList": [
-                {
-                  "cidrs": [],
-                  "networkName": ""
-                }
-              ],
-              "nsxtT1LR": "",
-              "vipNetworkList": [
-                {
-                  "cidr": "",
-                  "networkName": ""
-                }
-              ]
-            },
-            "nodePortSelector": {
-              "key": "",
-              "value": ""
-            },
-            "resources": {
-              "limits": {
-                "cpu": "250m",
-                "memory": "300Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "200Mi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/wavefronthq/ako-operator-bundle@sha256:7b318b8ae2f90210bda94e4c88b1187a7e92b696dc00cbc3e894c0f285c83f9e",
-      "bundle_path_digest": "sha256:7b318b8ae2f90210bda94e4c88b1187a7e92b696dc00cbc3e894c0f285c83f9e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-25T09:57:35.638000+00:00",
-      "csv_description": "Operator to manage the artifacts of the AKO Controller",
-      "csv_display_name": "AKO Operator",
-      "csv_metadata_description": "",
-      "csv_name": "ako-operator.v1.6.3-stable",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:48:59.201000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "ako-operator",
-      "provided_apis": [
-        {
-          "group": "ako.vmware.com",
-          "kind": "AKOConfig",
-          "plural": "akoconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "VMware",
-      "related_images": [
-        {
-          "digest": "sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "name": "ako-operator"
-        },
-        {
-          "digest": "sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd",
-          "name": "ako-operator-378c4bb64cfff509193930b7bdf981c299e306c4bebf6f5f3197255c5c0e38dd-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.6.3",
-      "version_original": "1.6.3"
-    },
-    {
-      "_id": "623e5d5e6d7cc84677b2e8e6",
-      "alm_examples": [
-        {
-          "api_version": "rc.app.stacks/v1beta2",
-          "kind": "RuntimeComponent",
-          "metadata": {
-            "name": "runtimecomponent-sample"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1,
-            "service": {
-              "port": 9080
-            }
-          }
-        },
-        {
-          "api_version": "rc.app.stacks/v1beta2",
-          "kind": "RuntimeOperation",
-          "metadata": {
-            "name": "runtimeoperation-sample"
-          },
-          "spec": {
-            "command": [
-              "./your_script.sh"
-            ],
-            "containerName": "app",
-            "podName": "Specify_Pod_Name_Here"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/runtime-component-operator-bundle@sha256:4603bf04e53ce948bbf0ee5d239d5e265b40598044ef9e1f4539f4e466e59cb2",
-      "bundle_path_digest": "sha256:4603bf04e53ce948bbf0ee5d239d5e265b40598044ef9e1f4539f4e466e59cb2",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta2",
-      "creation_date": "2022-03-26T00:25:02.009000+00:00",
-      "csv_description": "This advanced Operator is capable of deploying any runtime component image with consistent, production-grade QoS. It enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your runtime component container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and we will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where you can specify a built-in PersistentVolumeClaim, allowing you to configure many details of the persistent volume, such as its storage class and access mode.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Exposing metrics to Prometheus\nThe Runtime Component Operator exposes the runtime container's metrics via the Prometheus Operator.\nYou can pick between a basic mode, where you simply specify the label that Prometheus is watching to scrape the metrics from the container, or you can specify the full `ServiceMonitor` spec embedded into the RuntimeComponent's `spec.monitoring` field to control configurations such as the poll interval and security credentials.\n\n#### Easily mount logs and transaction directories\nIf you need to mount the logs and transaction data from your runtime component to an external volume such as NFS (or any storage supported in your cluster), simply add the following (to specify the volume size and the location to persist) to your RuntimeComponent CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/application-stacks/runtime-component-operator/tree/main/doc/) for more information.\n",
-      "csv_display_name": "Runtime Component",
-      "csv_metadata_description": "Deploys any runtime component with dynamic and auto-tuning configuration",
-      "csv_name": "runtime-component.v0.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:15:47.272000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "runtime-component-operator-certified",
-      "provided_apis": [
-        {
-          "group": "rc.app.stacks",
-          "kind": "RuntimeComponent",
-          "version": "v1beta2"
-        },
-        {
-          "group": "rc.app.stacks",
-          "kind": "RuntimeOperation",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "Community",
-      "related_images": [
-        {
-          "digest": "sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "name": "runtime-component-operator-d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d-annotation"
-        },
-        {
-          "digest": "sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.8.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.8.1",
-      "version_original": "0.8.1"
-    },
-    {
-      "_id": "623e5ff88dcbcc3f5ae16321",
-      "alm_examples": [
-        {
-          "api_version": "rc.app.stacks/v1beta2",
-          "kind": "RuntimeComponent",
-          "metadata": {
-            "name": "runtimecomponent-sample"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1,
-            "service": {
-              "port": 9080
-            }
-          }
-        },
-        {
-          "api_version": "rc.app.stacks/v1beta2",
-          "kind": "RuntimeOperation",
-          "metadata": {
-            "name": "runtimeoperation-sample"
-          },
-          "spec": {
-            "command": [
-              "./your_script.sh"
-            ],
-            "containerName": "app",
-            "podName": "Specify_Pod_Name_Here"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/runtime-component-operator-bundle@sha256:4603bf04e53ce948bbf0ee5d239d5e265b40598044ef9e1f4539f4e466e59cb2",
-      "bundle_path_digest": "sha256:4603bf04e53ce948bbf0ee5d239d5e265b40598044ef9e1f4539f4e466e59cb2",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta2",
-      "creation_date": "2022-03-26T00:36:08.781000+00:00",
-      "csv_description": "This advanced Operator is capable of deploying any runtime component image with consistent, production-grade QoS. It enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your runtime component container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and we will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where you can specify a built-in PersistentVolumeClaim, allowing you to configure many details of the persistent volume, such as its storage class and access mode.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Exposing metrics to Prometheus\nThe Runtime Component Operator exposes the runtime container's metrics via the Prometheus Operator.\nYou can pick between a basic mode, where you simply specify the label that Prometheus is watching to scrape the metrics from the container, or you can specify the full `ServiceMonitor` spec embedded into the RuntimeComponent's `spec.monitoring` field to control configurations such as the poll interval and security credentials.\n\n#### Easily mount logs and transaction directories\nIf you need to mount the logs and transaction data from your runtime component to an external volume such as NFS (or any storage supported in your cluster), simply add the following (to specify the volume size and the location to persist) to your RuntimeComponent CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/application-stacks/runtime-component-operator/tree/main/doc/) for more information.\n",
-      "csv_display_name": "Runtime Component",
-      "csv_metadata_description": "Deploys any runtime component with dynamic and auto-tuning configuration",
-      "csv_name": "runtime-component.v0.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:10:56.585000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "runtime-component-operator-certified",
-      "provided_apis": [
-        {
-          "group": "rc.app.stacks",
-          "kind": "RuntimeComponent",
-          "plural": "runtimecomponents",
-          "version": "v1beta2"
-        },
-        {
-          "group": "rc.app.stacks",
-          "kind": "RuntimeOperation",
-          "plural": "runtimeoperations",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "Community",
-      "related_images": [
-        {
-          "digest": "sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "name": "runtime-component-operator-d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d-annotation"
-        },
-        {
-          "digest": "sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.8.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.8.1",
-      "version_original": "0.8.1"
-    },
-    {
-      "_id": "623e605b8dcbcc3f5ae16322",
-      "alm_examples": [
-        {
-          "api_version": "rc.app.stacks/v1beta2",
-          "kind": "RuntimeComponent",
-          "metadata": {
-            "name": "runtimecomponent-sample"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1,
-            "service": {
-              "port": 9080
-            }
-          }
-        },
-        {
-          "api_version": "rc.app.stacks/v1beta2",
-          "kind": "RuntimeOperation",
-          "metadata": {
-            "name": "runtimeoperation-sample"
-          },
-          "spec": {
-            "command": [
-              "./your_script.sh"
-            ],
-            "containerName": "app",
-            "podName": "Specify_Pod_Name_Here"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/runtime-component-operator-bundle@sha256:4603bf04e53ce948bbf0ee5d239d5e265b40598044ef9e1f4539f4e466e59cb2",
-      "bundle_path_digest": "sha256:4603bf04e53ce948bbf0ee5d239d5e265b40598044ef9e1f4539f4e466e59cb2",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta2",
-      "creation_date": "2022-03-26T00:37:47.851000+00:00",
-      "csv_description": "This advanced Operator is capable of deploying any runtime component image with consistent, production-grade QoS. It enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your runtime component container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and we will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where you can specify a built-in PersistentVolumeClaim, allowing you to configure many details of the persistent volume, such as its storage class and access mode.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Exposing metrics to Prometheus\nThe Runtime Component Operator exposes the runtime container's metrics via the Prometheus Operator.\nYou can pick between a basic mode, where you simply specify the label that Prometheus is watching to scrape the metrics from the container, or you can specify the full `ServiceMonitor` spec embedded into the RuntimeComponent's `spec.monitoring` field to control configurations such as the poll interval and security credentials.\n\n#### Easily mount logs and transaction directories\nIf you need to mount the logs and transaction data from your runtime component to an external volume such as NFS (or any storage supported in your cluster), simply add the following (to specify the volume size and the location to persist) to your RuntimeComponent CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/application-stacks/runtime-component-operator/tree/main/doc/) for more information.\n",
-      "csv_display_name": "Runtime Component",
-      "csv_metadata_description": "Deploys any runtime component with dynamic and auto-tuning configuration",
-      "csv_name": "runtime-component.v0.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:10:33.934000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "runtime-component-operator-certified",
-      "provided_apis": [
-        {
-          "group": "rc.app.stacks",
-          "kind": "RuntimeComponent",
-          "plural": "runtimecomponents",
-          "version": "v1beta2"
-        },
-        {
-          "group": "rc.app.stacks",
-          "kind": "RuntimeOperation",
-          "plural": "runtimeoperations",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "Community",
-      "related_images": [
-        {
-          "digest": "sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "name": "runtime-component-operator-d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d-annotation"
-        },
-        {
-          "digest": "sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.8.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.8.1",
-      "version_original": "0.8.1"
-    },
-    {
       "_id": "623e60ee37f345462469f654",
       "alm_examples": [
         {
@@ -3068,1302 +1955,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "22.3.0",
       "version_original": "22.3.0"
-    },
-    {
-      "_id": "624ca3e72793d604991edea2",
-      "alm_examples": [
-        {
-          "api_version": "conjur.cyberark.com/v1",
-          "kind": "ConjurFollower",
-          "metadata": {
-            "labels": {
-              "app": "conjur-follower"
-            },
-            "name": "conjur-follower-operator-my-conjur-follower",
-            "namespace": "conjur-follower-operator-system"
-          },
-          "spec": {
-            "images": {
-              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458g"
-            },
-            "master": {
-              "account": "my-company",
-              "authenticatorID": "conjur-openshift-follower",
-              "authnLogin": "host/conjur-openshift-follower",
-              "caCertificateFrom": {
-                "configMapKeyRef": {
-                  "key": "conjur.master-cert",
-                  "name": "follower"
-                }
-              },
-              "hostname": "conjur.my-company.net"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "bundle_path_digest": "sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-04-05T20:17:43.648000+00:00",
-      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
-      "csv_display_name": "Conjur Enterprise Follower Operator",
-      "csv_metadata_description": "",
-      "csv_name": "conjur-follower-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:53:17.723000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "conjur-follower-operator",
-      "provided_apis": [
-        {
-          "group": "conjur.cyberark.com",
-          "kind": "ConjurFollower",
-          "plural": "conjurfollowers",
-          "version": "v1"
-        }
-      ],
-      "provider": "CyberArk",
-      "related_images": [
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-openshift-follower-operator"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres"
-        },
-        {
-          "digest": "sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "name": "conjur-openshift-follower-syslog-ng"
-        },
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-follower-operator"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres-2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8-annotation"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx-eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2-annotation"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info-002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1-annotation"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur-130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c-annotation"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator-a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
-    },
-    {
-      "_id": "624ca3e81bf4f81c51bc8a0e",
-      "alm_examples": [
-        {
-          "api_version": "conjur.cyberark.com/v1",
-          "kind": "ConjurFollower",
-          "metadata": {
-            "labels": {
-              "app": "conjur-follower"
-            },
-            "name": "conjur-follower-operator-my-conjur-follower",
-            "namespace": "conjur-follower-operator-system"
-          },
-          "spec": {
-            "images": {
-              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458g"
-            },
-            "master": {
-              "account": "my-company",
-              "authenticatorID": "conjur-openshift-follower",
-              "authnLogin": "host/conjur-openshift-follower",
-              "caCertificateFrom": {
-                "configMapKeyRef": {
-                  "key": "conjur.master-cert",
-                  "name": "follower"
-                }
-              },
-              "hostname": "conjur.my-company.net"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "bundle_path_digest": "sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-05T20:17:44.982000+00:00",
-      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
-      "csv_display_name": "Conjur Enterprise Follower Operator",
-      "csv_metadata_description": "",
-      "csv_name": "conjur-follower-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:53:22.099000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "conjur-follower-operator",
-      "provided_apis": [
-        {
-          "group": "conjur.cyberark.com",
-          "kind": "ConjurFollower",
-          "plural": "conjurfollowers",
-          "version": "v1"
-        }
-      ],
-      "provider": "CyberArk",
-      "related_images": [
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-openshift-follower-operator"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres"
-        },
-        {
-          "digest": "sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "name": "conjur-openshift-follower-syslog-ng"
-        },
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-follower-operator"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres-2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8-annotation"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx-eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2-annotation"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info-002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1-annotation"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur-130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c-annotation"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator-a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
-    },
-    {
-      "_id": "624ca95e2793d604991edf80",
-      "alm_examples": [
-        {
-          "api_version": "conjur.cyberark.com/v1",
-          "kind": "ConjurFollower",
-          "metadata": {
-            "labels": {
-              "app": "conjur-follower"
-            },
-            "name": "conjur-follower-operator-my-conjur-follower",
-            "namespace": "conjur-follower-operator-system"
-          },
-          "spec": {
-            "images": {
-              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458g"
-            },
-            "master": {
-              "account": "my-company",
-              "authenticatorID": "conjur-openshift-follower",
-              "authnLogin": "host/conjur-openshift-follower",
-              "caCertificateFrom": {
-                "configMapKeyRef": {
-                  "key": "conjur.master-cert",
-                  "name": "follower"
-                }
-              },
-              "hostname": "conjur.my-company.net"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "bundle_path_digest": "sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-04-05T20:41:02.265000+00:00",
-      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
-      "csv_display_name": "Conjur Enterprise Follower Operator",
-      "csv_metadata_description": "",
-      "csv_name": "conjur-follower-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:57:31.818000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "conjur-follower-operator",
-      "provided_apis": [
-        {
-          "group": "conjur.cyberark.com",
-          "kind": "ConjurFollower",
-          "plural": "conjurfollowers",
-          "version": "v1"
-        }
-      ],
-      "provider": "CyberArk",
-      "related_images": [
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-openshift-follower-operator"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres"
-        },
-        {
-          "digest": "sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "name": "conjur-openshift-follower-syslog-ng"
-        },
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-follower-operator"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres-2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8-annotation"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx-eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2-annotation"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info-002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1-annotation"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur-130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c-annotation"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator-a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
-    },
-    {
-      "_id": "624ca9601bf4f81c51bc8ae3",
-      "alm_examples": [
-        {
-          "api_version": "conjur.cyberark.com/v1",
-          "kind": "ConjurFollower",
-          "metadata": {
-            "labels": {
-              "app": "conjur-follower"
-            },
-            "name": "conjur-follower-operator-my-conjur-follower",
-            "namespace": "conjur-follower-operator-system"
-          },
-          "spec": {
-            "images": {
-              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458g"
-            },
-            "master": {
-              "account": "my-company",
-              "authenticatorID": "conjur-openshift-follower",
-              "authnLogin": "host/conjur-openshift-follower",
-              "caCertificateFrom": {
-                "configMapKeyRef": {
-                  "key": "conjur.master-cert",
-                  "name": "follower"
-                }
-              },
-              "hostname": "conjur.my-company.net"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "bundle_path_digest": "sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-05T20:41:04.208000+00:00",
-      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
-      "csv_display_name": "Conjur Enterprise Follower Operator",
-      "csv_metadata_description": "",
-      "csv_name": "conjur-follower-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:39:27.337000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "conjur-follower-operator",
-      "provided_apis": [
-        {
-          "group": "conjur.cyberark.com",
-          "kind": "ConjurFollower",
-          "plural": "conjurfollowers",
-          "version": "v1"
-        }
-      ],
-      "provider": "CyberArk",
-      "related_images": [
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-openshift-follower-operator"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres"
-        },
-        {
-          "digest": "sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "name": "conjur-openshift-follower-syslog-ng"
-        },
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-follower-operator"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres-2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8-annotation"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx-eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2-annotation"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info-002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1-annotation"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur-130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c-annotation"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator-a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
-    },
-    {
-      "_id": "624ca9b22793d604991edf81",
-      "alm_examples": [
-        {
-          "api_version": "conjur.cyberark.com/v1",
-          "kind": "ConjurFollower",
-          "metadata": {
-            "labels": {
-              "app": "conjur-follower"
-            },
-            "name": "conjur-follower-operator-my-conjur-follower",
-            "namespace": "conjur-follower-operator-system"
-          },
-          "spec": {
-            "images": {
-              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458g"
-            },
-            "master": {
-              "account": "my-company",
-              "authenticatorID": "conjur-openshift-follower",
-              "authnLogin": "host/conjur-openshift-follower",
-              "caCertificateFrom": {
-                "configMapKeyRef": {
-                  "key": "conjur.master-cert",
-                  "name": "follower"
-                }
-              },
-              "hostname": "conjur.my-company.net"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "bundle_path_digest": "sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-05T20:42:26.780000+00:00",
-      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
-      "csv_display_name": "Conjur Enterprise Follower Operator",
-      "csv_metadata_description": "",
-      "csv_name": "conjur-follower-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:43:03.521000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "conjur-follower-operator",
-      "provided_apis": [
-        {
-          "group": "conjur.cyberark.com",
-          "kind": "ConjurFollower",
-          "plural": "conjurfollowers",
-          "version": "v1"
-        }
-      ],
-      "provider": "CyberArk",
-      "related_images": [
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-openshift-follower-operator"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres"
-        },
-        {
-          "digest": "sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "name": "conjur-openshift-follower-syslog-ng"
-        },
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-follower-operator"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres-2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8-annotation"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx-eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2-annotation"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info-002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1-annotation"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur-130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c-annotation"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator-a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
-    },
-    {
-      "_id": "624ca9b41bf4f81c51bc8ae4",
-      "alm_examples": [
-        {
-          "api_version": "conjur.cyberark.com/v1",
-          "kind": "ConjurFollower",
-          "metadata": {
-            "labels": {
-              "app": "conjur-follower"
-            },
-            "name": "conjur-follower-operator-my-conjur-follower",
-            "namespace": "conjur-follower-operator-system"
-          },
-          "spec": {
-            "images": {
-              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458g"
-            },
-            "master": {
-              "account": "my-company",
-              "authenticatorID": "conjur-openshift-follower",
-              "authnLogin": "host/conjur-openshift-follower",
-              "caCertificateFrom": {
-                "configMapKeyRef": {
-                  "key": "conjur.master-cert",
-                  "name": "follower"
-                }
-              },
-              "hostname": "conjur.my-company.net"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "bundle_path_digest": "sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-04-05T20:42:28.585000+00:00",
-      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
-      "csv_display_name": "Conjur Enterprise Follower Operator",
-      "csv_metadata_description": "",
-      "csv_name": "conjur-follower-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:13:17.784000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "conjur-follower-operator",
-      "provided_apis": [
-        {
-          "group": "conjur.cyberark.com",
-          "kind": "ConjurFollower",
-          "plural": "conjurfollowers",
-          "version": "v1"
-        }
-      ],
-      "provider": "CyberArk",
-      "related_images": [
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-openshift-follower-operator"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres"
-        },
-        {
-          "digest": "sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "name": "conjur-openshift-follower-syslog-ng"
-        },
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-follower-operator"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres-2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8-annotation"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx-eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2-annotation"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info-002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1-annotation"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur-130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c-annotation"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator-a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
-    },
-    {
-      "_id": "624ca9f81bf4f81c51bc8aef",
-      "alm_examples": [
-        {
-          "api_version": "conjur.cyberark.com/v1",
-          "kind": "ConjurFollower",
-          "metadata": {
-            "labels": {
-              "app": "conjur-follower"
-            },
-            "name": "conjur-follower-operator-my-conjur-follower",
-            "namespace": "conjur-follower-operator-system"
-          },
-          "spec": {
-            "images": {
-              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458g"
-            },
-            "master": {
-              "account": "my-company",
-              "authenticatorID": "conjur-openshift-follower",
-              "authnLogin": "host/conjur-openshift-follower",
-              "caCertificateFrom": {
-                "configMapKeyRef": {
-                  "key": "conjur.master-cert",
-                  "name": "follower"
-                }
-              },
-              "hostname": "conjur.my-company.net"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "bundle_path_digest": "sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-05T20:43:36.161000+00:00",
-      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
-      "csv_display_name": "Conjur Enterprise Follower Operator",
-      "csv_metadata_description": "",
-      "csv_name": "conjur-follower-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:25:44.121000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "conjur-follower-operator",
-      "provided_apis": [
-        {
-          "group": "conjur.cyberark.com",
-          "kind": "ConjurFollower",
-          "plural": "conjurfollowers",
-          "version": "v1"
-        }
-      ],
-      "provider": "CyberArk",
-      "related_images": [
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-openshift-follower-operator"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres"
-        },
-        {
-          "digest": "sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "name": "conjur-openshift-follower-syslog-ng"
-        },
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-follower-operator"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres-2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8-annotation"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx-eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2-annotation"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info-002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1-annotation"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur-130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c-annotation"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator-a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
-    },
-    {
-      "_id": "624ca9f99065edc05c072e7b",
-      "alm_examples": [
-        {
-          "api_version": "conjur.cyberark.com/v1",
-          "kind": "ConjurFollower",
-          "metadata": {
-            "labels": {
-              "app": "conjur-follower"
-            },
-            "name": "conjur-follower-operator-my-conjur-follower",
-            "namespace": "conjur-follower-operator-system"
-          },
-          "spec": {
-            "images": {
-              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458g"
-            },
-            "master": {
-              "account": "my-company",
-              "authenticatorID": "conjur-openshift-follower",
-              "authnLogin": "host/conjur-openshift-follower",
-              "caCertificateFrom": {
-                "configMapKeyRef": {
-                  "key": "conjur.master-cert",
-                  "name": "follower"
-                }
-              },
-              "hostname": "conjur.my-company.net"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "bundle_path_digest": "sha256:562fc5add33589e0557ccf746398622723de670751a584cd0f9cae4417eb66d3",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "preview",
-      "creation_date": "2022-04-05T20:43:37.611000+00:00",
-      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
-      "csv_display_name": "Conjur Enterprise Follower Operator",
-      "csv_metadata_description": "",
-      "csv_name": "conjur-follower-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:51:42.298000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "conjur-follower-operator",
-      "provided_apis": [
-        {
-          "group": "conjur.cyberark.com",
-          "kind": "ConjurFollower",
-          "plural": "conjurfollowers",
-          "version": "v1"
-        }
-      ],
-      "provider": "CyberArk",
-      "related_images": [
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-openshift-follower-operator"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres"
-        },
-        {
-          "digest": "sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:0204750baa3fe62f6a425a99e94736de9b9572ee0b07409781d8c14c07fb4458",
-          "name": "conjur-openshift-follower-syslog-ng"
-        },
-        {
-          "digest": "sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:30adbe09eba661c3e461db3340bcbdf512a1da5fae6a2730cda8494b1b9a7cf9",
-          "name": "conjur-follower-operator"
-        },
-        {
-          "digest": "sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8",
-          "name": "conjur-openshift-follower-postgres-2ae3802d92a23af4d3bc15bf412a03627608448aeefe02379519b838bc5fc2b8-annotation"
-        },
-        {
-          "digest": "sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2",
-          "name": "conjur-openshift-follower-nginx-eb977c3ae7754ab664f8f371d2a361427e1b5e64151869c5196d621c152607f2-annotation"
-        },
-        {
-          "digest": "sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1",
-          "name": "conjur-openshift-follower-info-002dfbf5d182e46127edcb3df7da00663caa7eb51d7f89218a8f082f16fc97f1-annotation"
-        },
-        {
-          "digest": "sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c",
-          "name": "conjur-openshift-follower-conjur-130f67535c1143917233452303b4dd5b6001cadb46ef757cd50f8b6e3e9a0d6c-annotation"
-        },
-        {
-          "digest": "sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530",
-          "name": "conjur-openshift-follower-configurator-a3aa1d77ac021a76ea420c7bb3eff8f8ca476d27bc3f544449913df38d63e530-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
     },
     {
       "_id": "624cf3332793d604991edf9d",
@@ -7941,6 +5532,752 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "2.0.0",
       "version_original": "2.0.0"
+    },
+    {
+      "_id": "6262a68a84481d5f5229995d",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:a01cf756a40c09923a1f00a7516d83a46087731265dcc5ed10a7bbcd8bebd8e8",
+      "bundle_path_digest": "sha256:a01cf756a40c09923a1f00a7516d83a46087731265dcc5ed10a7bbcd8bebd8e8",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T12:58:50.498000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "instana-agent-operator.v0.3.7",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:22:09.077000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "instana-agent",
+      "provided_apis": [
+        {
+          "group": "instana.io",
+          "kind": "InstanaAgent",
+          "plural": "agents",
+          "version": "v1beta1"
+        },
+        {
+          "group": "instana.io",
+          "kind": "InstanaAgent",
+          "plural": "agents",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.3.7",
+      "version_original": "0.3.7"
+    },
+    {
+      "_id": "6262a6a9173a0d36cf5d6979",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/ibm-block-csi-operator-bundle@sha256:aa2f7b4b4b2d489cd9671b0b45d696ca2fcb8f76ad2b2551a06475917b9fdc99",
+      "bundle_path_digest": "sha256:aa2f7b4b4b2d489cd9671b0b45d696ca2fcb8f76ad2b2551a06475917b9fdc99",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:59:21.465000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "ibm-block-csi-operator.v1.3.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:08:52.466000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "ibm-block-csi-operator",
+      "provided_apis": [
+        {
+          "group": "csi.ibm.com",
+          "kind": "IBMBlockCSI",
+          "plural": "ibmblockcsis",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.3.0",
+      "version_original": "1.3.0"
+    },
+    {
+      "_id": "6262a6ab84481d5f5229995f",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:a2c9323d78e4a2e83810eb9df6e2f364356cd5432cee9bbd98c94784fbc27468",
+      "bundle_path_digest": "sha256:a2c9323d78e4a2e83810eb9df6e2f364356cd5432cee9bbd98c94784fbc27468",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:59:23.528000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "couchbase-operator.v1.2.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:11:21.420000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.2.2",
+      "version_original": "1.2.2"
+    },
+    {
+      "_id": "6262a6ae173a0d36cf5d697a",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/ibm-spectrum-scale-csi-operator-bundle@sha256:70f310cb36f6f58221377ac77bfacce3ea80d11811b407131d9723507eaada42",
+      "bundle_path_digest": "sha256:70f310cb36f6f58221377ac77bfacce3ea80d11811b407131d9723507eaada42",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:59:26.898000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "ibm-spectrum-scale-csi-operator.v2.0.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:08:13.716000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "ibm-spectrum-scale-csi",
+      "provided_apis": [
+        {
+          "group": "csi.ibm.com",
+          "kind": "CSIScaleOperator",
+          "plural": "csiscaleoperators",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.0.0",
+      "version_original": "2.0.0"
+    },
+    {
+      "_id": "6262a6b984481d5f52299960",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:ee798802b03e93ccc74762d5da175a0e6f00692ca7f2c94c16c2048862bee7ba",
+      "bundle_path_digest": "sha256:ee798802b03e93ccc74762d5da175a0e6f00692ca7f2c94c16c2048862bee7ba",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:59:37.707000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "artifactory-ha-operator.v1.0.3",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:57:50.033000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "openshiftartifactoryha-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftArtifactoryHa",
+          "plural": "openshiftartifactoryhas",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.0.3",
+      "version_original": "1.0.3"
+    },
+    {
+      "_id": "6262a6c2cde83e2b177c20dc",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:1ec6fc8724eed1b9260eb3765a6280c0f1781bf6d51e998903cb65f1e20b5d73",
+      "bundle_path_digest": "sha256:1ec6fc8724eed1b9260eb3765a6280c0f1781bf6d51e998903cb65f1e20b5d73",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:59:46.776000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "couchbase-operator.v2.0.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:50:48.267000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "plural": "couchbasebuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "plural": "couchbaseclusters",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "plural": "couchbaserolebindings",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "plural": "couchbaserolebindings",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "plural": "couchbaseusers",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "plural": "couchbasebackups",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "plural": "couchbasebuckets",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "plural": "couchbaseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "plural": "couchbasegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "plural": "couchbasegroups",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "plural": "couchbaseusers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "plural": "couchbasebackups",
+          "version": "v2"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "2.0.1",
+      "version_original": "2.0.1"
+    },
+    {
+      "_id": "6262a6d4173a0d36cf5d697d",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:ac3d5a0fc91bf7a6b2b06f6a19e42c219bb304681dc3f50c3aaa3d9a206ab1c8",
+      "bundle_path_digest": "sha256:ac3d5a0fc91bf7a6b2b06f6a19e42c219bb304681dc3f50c3aaa3d9a206ab1c8",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "v1.4",
+      "creation_date": "2022-04-22T13:00:04.852000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "couchdb-operator.v1.4.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:51:28.327000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "couchdb-operator-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": ">=1.0.0 <1.4.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.4.0",
+      "version_original": "1.4.0"
+    },
+    {
+      "_id": "6262a6d9834f257293b60f91",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sonatype/nxrm-operator-bundle@sha256:3e6bec18d3fcb326ef63f81b8dff5f5d21db6fad489744c94542c75518ca638e",
+      "bundle_path_digest": "sha256:3e6bec18d3fcb326ef63f81b8dff5f5d21db6fad489744c94542c75518ca638e",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:00:09.746000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nxrm-operator-certified.v3.23.0-1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:25:19.456000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nxrm-operator-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "3.23.0-1",
+      "version_original": "3.23.0-1"
+    },
+    {
+      "_id": "6262a6ddcde83e2b177c20dd",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:02820de3e0134fbca92a2d59286dfc4c873a2df593d9b08e1e17481554c9c717",
+      "bundle_path_digest": "sha256:02820de3e0134fbca92a2d59286dfc4c873a2df593d9b08e1e17481554c9c717",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:00:13.478000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "tigera-operator.v1.5.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:22:35.274000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.5.2",
+      "version_original": "1.5.2"
+    },
+    {
+      "_id": "6262a6e7173a0d36cf5d6981",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.20",
+      "creation_date": "2022-04-22T13:00:23.225000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:50:33.910000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "6262a6f4834f257293b60f97",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:fc274d39736785b098a52a375301aaf3b0f3dd4d7cf5a263982086d15996e816",
+      "bundle_path_digest": "sha256:fc274d39736785b098a52a375301aaf3b0f3dd4d7cf5a263982086d15996e816",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:00:36.968000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "artifactory-ha-operator.v1.1.3",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:52:51.623000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "openshiftartifactoryha-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftArtifactoryHa",
+          "plural": "openshiftartifactoryhas",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.1.3",
+      "version_original": "1.1.3"
+    },
+    {
+      "_id": "6262a6f8173a0d36cf5d6982",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/datastax/cass-operator-bundle@sha256:c4301602f0ee5f44e496952ee205d33ee339523fcbe95635c7087829e8df161c",
+      "bundle_path_digest": "sha256:c4301602f0ee5f44e496952ee205d33ee339523fcbe95635c7087829e8df161c",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:00:40.924000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cass-operator.v1.4.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:56:57.345000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "cass-operator",
+      "provided_apis": [
+        {
+          "group": "cassandra.datastax.com",
+          "kind": "CassandraDatacenter",
+          "plural": "cassandradatacenters",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.4.1",
+      "version_original": "1.4.1"
+    },
+    {
+      "_id": "6262a701834f257293b60f99",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:5d01409483df2df74a1241d290349d612387b64aca09caef9e04161586adac57",
+      "bundle_path_digest": "sha256:5d01409483df2df74a1241d290349d612387b64aca09caef9e04161586adac57",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:00:49.064000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "mongodb-enterprise.v1.4.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:24:38.641000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.4.1",
+      "version_original": "1.4.1"
+    },
+    {
+      "_id": "6262a70984481d5f52299964",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/memsql/operator-bundle@sha256:1a400322ed8279e6ded73c7fd89c3cc5df2f74ebede9d192017268166a2bb97e",
+      "bundle_path_digest": "sha256:1a400322ed8279e6ded73c7fd89c3cc5df2f74ebede9d192017268166a2bb97e",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:00:57.611000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "memsql-operator.v0.0.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:24:25.609000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "memql-certified",
+      "provided_apis": [
+        {
+          "group": "memsql.com",
+          "kind": "MemsqlCluster",
+          "plural": "memsqlclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.2",
+      "version_original": "0.0.2"
+    },
+    {
+      "_id": "6262a71b173a0d36cf5d6985",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-certifai-operator-bundle@sha256:26199886640c352804df4a634f5ea3e45c3c4d4e41f241e9ef36cd4b3536be57",
+      "bundle_path_digest": "sha256:26199886640c352804df4a634f5ea3e45c3c4d4e41f241e9ef36cd4b3536be57",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T13:01:15.684000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cortex-certifai-operator.v1.3.3",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:21:10.125000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "cortex-certifai-operator",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.3.3",
+      "version_original": "1.3.3"
+    },
+    {
+      "_id": "6262a71c834f257293b60f9d",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:0cc69f7bb40a40bf02485677bc01ae3768b3ae8015c4d3bd1c1d088ee487117a",
+      "bundle_path_digest": "sha256:0cc69f7bb40a40bf02485677bc01ae3768b3ae8015c4d3bd1c1d088ee487117a",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T13:01:16.361000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "neuvector-operator.v1.2.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:06:20.569000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.2.1",
+      "version_original": "1.2.1"
     }
   ]
 }
