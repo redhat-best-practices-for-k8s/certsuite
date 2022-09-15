@@ -99,6 +99,9 @@ var (
 	TestContainerIsCertifiedDigestIdentifier claim.Identifier
 	TestPodHugePages2M                       claim.Identifier
 	TestReservedExtendedPartnerPorts         claim.Identifier
+	TestAffinityRequiredPods                 claim.Identifier
+	TestAffinityRequiredDeployments          claim.Identifier
+	TestAffinityRequiredStatefulSets         claim.Identifier
 )
 
 //nolint:funlen
@@ -167,6 +170,39 @@ The label value is not important, only its presence.`,
 		common.NetworkingTestKey,
 		`Checks that pods and containers are not consuming ports designated as reserved by partner`,
 		ReservedPartnerPortsRemediation,
+		InformativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		TagExtended)
+
+	TestAffinityRequiredPods = AddCatalogEntry(
+		"affinity-required-pods",
+		common.LifecycleTestKey,
+		`Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on Pods.`,
+		AffinityRequiredRemediation,
+		InformativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		TagExtended)
+
+	TestAffinityRequiredDeployments = AddCatalogEntry(
+		"affinity-required-deployments",
+		common.LifecycleTestKey,
+		`Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on Deployments.`,
+		AffinityRequiredRemediation,
+		InformativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		TagExtended)
+
+	TestAffinityRequiredStatefulSets = AddCatalogEntry(
+		"affinity-required-statefulsets",
+		common.LifecycleTestKey,
+		`Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on StatefulSets.`,
+		AffinityRequiredRemediation,
 		InformativeResult,
 		NoDocumentedProcess,
 		VersionOne,

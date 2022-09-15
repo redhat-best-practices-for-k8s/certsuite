@@ -338,6 +338,45 @@ Exception Process|There is no documented exception process for this.
 
 ### lifecycle
 
+#### affinity-required-deployments
+
+Property|Description
+---|---
+Test Case Name|affinity-required-deployments
+Test Case Label|lifecycle-affinity-required-deployments
+Unique ID|http://test-network-function.com/testcases/lifecycle/affinity-required-deployments
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/affinity-required-deployments Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on Deployments.
+Result Type|informative
+Suggested Remediation|If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label
+Best Practice Reference|https://TODO Section 4.6.24
+Exception Process|There is no documented exception process for this.
+#### affinity-required-pods
+
+Property|Description
+---|---
+Test Case Name|affinity-required-pods
+Test Case Label|lifecycle-affinity-required-pods
+Unique ID|http://test-network-function.com/testcases/lifecycle/affinity-required-pods
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/affinity-required-pods Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on Pods.
+Result Type|informative
+Suggested Remediation|If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label
+Best Practice Reference|https://TODO Section 4.6.24
+Exception Process|There is no documented exception process for this.
+#### affinity-required-statefulsets
+
+Property|Description
+---|---
+Test Case Name|affinity-required-statefulsets
+Test Case Label|lifecycle-affinity-required-statefulsets
+Unique ID|http://test-network-function.com/testcases/lifecycle/affinity-required-statefulsets
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/affinity-required-statefulsets Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on StatefulSets.
+Result Type|informative
+Suggested Remediation|If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label
+Best Practice Reference|https://TODO Section 4.6.24
+Exception Process|There is no documented exception process for this.
 #### container-shutdown
 
 Property|Description

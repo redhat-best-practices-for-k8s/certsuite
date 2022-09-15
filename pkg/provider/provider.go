@@ -43,7 +43,7 @@ import (
 )
 
 const (
-	AffinityAllowedKey               = "AffinityAllowed"
+	AffinityRequiredKey              = "AffinityRequired"
 	DaemonSetNamespace               = "default"
 	DaemonSetName                    = "debug"
 	debugPodsTimeout                 = 5 * time.Minute
@@ -64,34 +64,49 @@ var (
 )
 
 type TestEnvironment struct { // rename this with testTarget
-	Namespaces             []string     `json:"testNamespaces"`
-	Pods                   []*Pod       `json:"testPods"`
-	AllPods                []*Pod       `json:"AllPods"`
+	Namespaces     []string `json:"testNamespaces"`
+	AbnormalEvents []*Event
+
+	// Pod Groupings
+	Pods                     []*Pod                 `json:"testPods"`
+	DebugPods                map[string]*corev1.Pod // map from nodename to debugPod
+	GuaranteedPods           []*Pod
+	NonGuaranteedPods        []*Pod
+	AffinityRequiredPods     []*Pod
+	AntiAffinityRequiredPods []*Pod
+	HugepagesPods            []*Pod
+	AllPods                  []*Pod `json:"AllPods"`
+
+	// Deployment Groupings
+	Deployments                     []*Deployment `json:"testDeployments"`
+	AffinityRequiredDeployments     []*Deployment
+	AntiAffinityRequiredDeployments []*Deployment
+
+	// StatefulSet Groupings
+	StatetfulSets                    []*StatefulSet `json:"testStatetfulSets"`
+	AffinityRequiredStatefulSets     []*StatefulSet
+	AntiAffinityRequiredStatefulSets []*StatefulSet
+
 	Containers             []*Container `json:"testContainers"`
 	Operators              []Operator   `json:"testOperators"`
 	PersistentVolumes      []corev1.PersistentVolume
 	PersistentVolumeClaims []corev1.PersistentVolumeClaim
-	DebugPods              map[string]*corev1.Pod // map from nodename to debugPod
-	GuaranteedPods         []*Pod
-	NonGuaranteedPods      []*Pod
-	HugepagesPods          []*Pod
-	AbnormalEvents         []*Event
-	Config                 configuration.TestConfiguration
-	variables              configuration.TestParameters
-	Crds                   []*apiextv1.CustomResourceDefinition          `json:"testCrds"`
-	Deployments            []*Deployment                                 `json:"testDeployments"`
-	StatetfulSets          []*StatefulSet                                `json:"testStatetfulSets"`
-	HorizontalScaler       map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
-	Services               []*corev1.Service                             `json:"testServices"`
-	Nodes                  map[string]Node                               `json:"-"`
-	K8sVersion             string                                        `json:"-"`
-	OpenshiftVersion       string                                        `json:"-"`
-	OCPStatus              string                                        `json:"-"`
-	HelmChartReleases      []*release.Release                            `json:"testHelmChartReleases"`
-	ResourceQuotas         []corev1.ResourceQuota
-	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
-	NetworkPolicies        []networkingv1.NetworkPolicy
-	IstioServiceMesh       bool
+
+	Config    configuration.TestConfiguration
+	variables configuration.TestParameters
+	Crds      []*apiextv1.CustomResourceDefinition `json:"testCrds"`
+
+	HorizontalScaler     map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
+	Services             []*corev1.Service                             `json:"testServices"`
+	Nodes                map[string]Node                               `json:"-"`
+	K8sVersion           string                                        `json:"-"`
+	OpenshiftVersion     string                                        `json:"-"`
+	OCPStatus            string                                        `json:"-"`
+	HelmChartReleases    []*release.Release                            `json:"testHelmChartReleases"`
+	ResourceQuotas       []corev1.ResourceQuota
+	PodDisruptionBudgets []policyv1.PodDisruptionBudget
+	NetworkPolicies      []networkingv1.NetworkPolicy
+	IstioServiceMesh     bool
 }
 
 type CsvInstallPlan struct {
@@ -140,7 +155,7 @@ var (
 	loaded = false
 )
 
-func buildTestEnvironment() { //nolint:funlen
+func buildTestEnvironment() { //nolint:funlen,gocyclo
 	// Wait for the debug pods to be ready before the autodiscovery starts.
 	err := WaitDebugPodsReady()
 	if err != nil {
@@ -173,6 +188,13 @@ func buildTestEnvironment() { //nolint:funlen
 		if aNewPod.HasHugepages() {
 			env.HugepagesPods = append(env.HugepagesPods, &aNewPod)
 		}
+
+		// Build slices of AffinityRequired and non AffinityRequired pods
+		if aNewPod.AffinityRequired() {
+			env.AffinityRequiredPods = append(env.AffinityRequiredPods, &aNewPod)
+		} else {
+			env.AntiAffinityRequiredPods = append(env.AntiAffinityRequiredPods, &aNewPod)
+		}
 		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
 	pods = data.AllPods
@@ -203,16 +225,30 @@ func buildTestEnvironment() { //nolint:funlen
 		}
 	}
 	for i := range data.Deployments {
-		env.Deployments = append(env.Deployments,
-			&Deployment{
-				&data.Deployments[i],
-			})
+		aNewDeployment := &Deployment{
+			&data.Deployments[i],
+		}
+		env.Deployments = append(env.Deployments, aNewDeployment)
+
+		// Create slices of affinity required and affinity not required deployments
+		if aNewDeployment.AffinityRequired() {
+			env.AffinityRequiredDeployments = append(env.AffinityRequiredDeployments, aNewDeployment)
+		} else {
+			env.AntiAffinityRequiredDeployments = append(env.AntiAffinityRequiredDeployments, aNewDeployment)
+		}
 	}
 	for i := range data.StatefulSet {
-		env.StatetfulSets = append(env.StatetfulSets,
-			&StatefulSet{
-				&data.StatefulSet[i],
-			})
+		aNewStatefulSet := &StatefulSet{
+			&data.StatefulSet[i],
+		}
+		env.StatetfulSets = append(env.StatetfulSets, aNewStatefulSet)
+
+		// Create slices of affinity required and affinity not required statefulsets
+		if aNewStatefulSet.AffinityRequired() {
+			env.AffinityRequiredStatefulSets = append(env.AffinityRequiredStatefulSets, aNewStatefulSet)
+		} else {
+			env.AntiAffinityRequiredStatefulSets = append(env.AntiAffinityRequiredStatefulSets, aNewStatefulSet)
+		}
 	}
 	env.HorizontalScaler = data.Hpas
 
