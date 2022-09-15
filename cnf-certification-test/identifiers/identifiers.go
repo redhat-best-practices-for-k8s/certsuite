@@ -525,6 +525,11 @@ var (
 		Url:     formTestURL(common.LifecycleTestKey, "cpu-isolation"),
 		Version: versionOne,
 	}
+	TestContainerPortNameFormat = claim.Identifier{
+		Tags:    formTestTags(tagExtended),
+		Url:     formTestURL(common.ManageabilityTestKey, "container-port-name-format"),
+		Version: versionOne,
+	}
 )
 
 func formDescription(identifier claim.Identifier, description string) string {
@@ -1205,6 +1210,14 @@ that there are no changes to the following directories:
 		Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.`),
 		Remediation:           CPUIsolationRemediation,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.5.5",
+		ExceptionProcess:      NoDocumentedProcess,
+	},
+	TestContainerPortNameFormat: {
+		Identifier:            TestContainerPortNameFormat,
+		Type:                  normativeResult,
+		Description:           formDescription(TestContainerPortNameFormat, `Check that the container's ports name follow the naming conventions.`),
+		Remediation:           ContainerPortNameFormatRemediation,
+		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.20",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 }
