@@ -95,11 +95,11 @@ func WaitForAllPodSetReady(env *provider.TestEnvironment, timeoutPodSetReady tim
 func GetAllNodesForAllPodSets(pods []*provider.Pod) (nodes map[string]bool) {
 	nodes = make(map[string]bool)
 	for _, put := range pods {
-		for _, or := range put.Data.OwnerReferences {
+		for _, or := range put.OwnerReferences {
 			if or.Kind != ReplicaSetString && or.Kind != StatefulsetString {
 				continue
 			}
-			nodes[put.Data.Spec.NodeName] = true
+			nodes[put.Spec.NodeName] = true
 			break
 		}
 	}

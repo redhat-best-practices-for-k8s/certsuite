@@ -139,6 +139,10 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 							Effect: "NoSchedule",
 							Key:    "node-role.kubernetes.io/master",
 						},
+						{
+							Effect: "NoSchedule",
+							Key:    "node-role.kubernetes.io/control-plane",
+						},
 					},
 					Volumes: []corev1.Volume{
 						{
