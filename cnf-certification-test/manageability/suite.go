@@ -78,7 +78,7 @@ func containerPortNameFormatCheck(portName string) bool {
 func testContainerPortNameFormat(env *provider.TestEnvironment) {
 	badContainers := []string{}
 	for _, cut := range env.Containers {
-		for _, port := range cut.Data.Ports {
+		for _, port := range cut.Ports {
 			if !containerPortNameFormatCheck(port.Name) {
 				badContainers = append(badContainers, cut.String())
 				tnf.ClaimFilePrintf("%s: ContainerPort %s does not follow the partner naming conventions", cut, port.Name)
