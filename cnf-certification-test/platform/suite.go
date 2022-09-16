@@ -575,18 +575,12 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 }
 
 func testPodHugePages2M(env *provider.TestEnvironment) {
-	var badPods, errorPods []*provider.Pod
+	var badPods []*provider.Pod
 	for _, put := range env.HugepagesPods {
-		result, err := put.CheckResourceOnly2MiHugePages()
-		if err != nil {
-			tnf.ClaimFilePrintf("Could not check hugepages because of err: %s", err)
-			errorPods = append(errorPods, put)
-			continue
-		}
+		result := put.CheckResourceOnly2MiHugePages()
 		if !result {
 			badPods = append(badPods, put)
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
-	testhelper.AddTestResultLog("Error", errorPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

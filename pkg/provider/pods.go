@@ -19,10 +19,17 @@ package provider
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
+)
+
+const (
+	hugePages2Mi = "hugepages-2Mi"
+	hugePages1Gi = "hugepages-1Gi"
+	hugePages    = "hugepages"
 )
 
 type Pod struct {
@@ -100,4 +107,42 @@ func (p *Pod) ColocationEnabled() bool {
 		return result
 	}
 	return false
+}
+
+func (p *Pod) HasHugepages() bool {
+	// Pods may contain more than one container.  All containers must conform to the CPU isolation requirements.
+	for _, cut := range p.Containers {
+		for name := range cut.Resources.Requests {
+			if strings.Contains(name.String(), hugePages) {
+				return true
+			}
+		}
+		for _, name := range cut.Resources.Limits {
+			if strings.Contains(name.String(), hugePages) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func (p *Pod) CheckResourceOnly2MiHugePages() bool {
+	// check if hugepages configuration other than 2Mi is present
+	for _, cut := range p.Containers {
+		// Resources must be specified
+		if len(cut.Resources.Requests) == 0 || len(cut.Resources.Limits) == 0 {
+			continue
+		}
+		for name := range cut.Resources.Requests {
+			if strings.Contains(name.String(), hugePages) && name != hugePages2Mi {
+				return false
+			}
+		}
+		for name := range cut.Resources.Limits {
+			if strings.Contains(name.String(), hugePages) && name != hugePages2Mi {
+				return false
+			}
+		}
+	}
+	return true
 }
