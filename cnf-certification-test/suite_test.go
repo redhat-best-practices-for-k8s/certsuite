@@ -153,6 +153,7 @@ func TestTest(t *testing.T) {
 	err := daemonset.DeployPartnerTestDaemonset()
 	if err != nil {
 		log.Errorf("Error deploying partner daemonset %s", err)
+
 		// Finish execution and return with error status.
 		t.FailNow()
 	}
