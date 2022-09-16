@@ -18,7 +18,6 @@ package provider
 
 import (
 	"context"
-	"os"
 	"time"
 
 	"errors"
@@ -30,12 +29,9 @@ import (
 	mcv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/operatingsystem"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	"helm.sh/helm/v3/pkg/release"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
@@ -44,10 +40,10 @@ import (
 	policyv1 "k8s.io/api/policy/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 )
 
 const (
+	AffinityAllowedKey               = "AffinityAllowed"
 	DaemonSetNamespace               = "default"
 	DaemonSetName                    = "debug"
 	debugPodsTimeout                 = 5 * time.Minute
@@ -67,41 +63,6 @@ var (
 	rhcosRelativePath = "%s/platform/operatingsystem/files/rhcos_version_map"
 )
 
-type Pod struct {
-	Data               *corev1.Pod
-	Containers         []*Container
-	MultusIPs          map[string][]string
-	SkipNetTests       bool
-	SkipMultusNetTests bool
-}
-
-func NewPod(aPod *corev1.Pod) (out Pod) {
-	var err error
-	out.Data = aPod
-	out.MultusIPs = make(map[string][]string)
-	out.MultusIPs, err = GetPodIPsPerNet(aPod.GetAnnotations()[CniNetworksStatusKey])
-	if err != nil {
-		logrus.Errorf("Could not decode networks-status annotation, error: %s", err)
-	}
-
-	if _, ok := aPod.GetLabels()[skipConnectivityTestsLabel]; ok {
-		out.SkipNetTests = true
-	}
-	if _, ok := aPod.GetLabels()[skipMultusConnectivityTestsLabel]; ok {
-		out.SkipMultusNetTests = true
-	}
-	out.Containers = append(out.Containers, getPodContainers(aPod)...)
-	return out
-}
-
-func ConvertArrayPods(pods []*corev1.Pod) (out []*Pod) {
-	for i := range pods {
-		aPodWrapper := NewPod(pods[i])
-		out = append(out, &aPodWrapper)
-	}
-	return out
-}
-
 type TestEnvironment struct { // rename this with testTarget
 	Namespaces           []string     `json:"testNamespaces"`
 	Pods                 []*Pod       `json:"testPods"`
@@ -114,8 +75,8 @@ type TestEnvironment struct { // rename this with testTarget
 	Config               configuration.TestConfiguration
 	variables            configuration.TestParameters
 	Crds                 []*apiextv1.CustomResourceDefinition          `json:"testCrds"`
-	Deployments          []*appsv1.Deployment                          `json:"testDeployments"`
-	StatetfulSets        []*appsv1.StatefulSet                         `json:"testStatetfulSets"`
+	Deployments          []*Deployment                                 `json:"testDeployments"`
+	StatetfulSets        []*StatefulSet                                `json:"testStatetfulSets"`
 	HorizontalScaler     map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
 	Services             []*corev1.Service                             `json:"testServices"`
 	Nodes                map[string]Node                               `json:"-"`
@@ -149,16 +110,6 @@ type Operator struct {
 	Version          string                            `yaml:"version" json:"version"`
 	Channel          string                            `yaml:"channel" json:"channel"`
 }
-type Container struct {
-	Data                     *corev1.Container
-	Status                   corev1.ContainerStatus
-	Namespace                string
-	Podname                  string
-	NodeName                 string
-	Runtime                  string
-	UID                      string
-	ContainerImageIdentifier configuration.ContainerImageIdentifier
-}
 
 type MachineConfig struct {
 	*mcv1.MachineConfig
@@ -170,85 +121,6 @@ type MachineConfig struct {
 			} `json:"units"`
 		} `json:"systemd"`
 	} `json:"config"`
-}
-
-type Node struct {
-	Data *corev1.Node
-	Mc   MachineConfig `json:"-"`
-}
-
-func (node Node) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&node.Data)
-}
-
-func (node *Node) IsWorkerNode() bool {
-	for nodeLabel := range node.Data.Labels {
-		if stringhelper.StringInSlice(WorkerLabels, nodeLabel, true) {
-			return true
-		}
-	}
-	return false
-}
-
-func (node *Node) IsMasterNode() bool {
-	for nodeLabel := range node.Data.Labels {
-		if stringhelper.StringInSlice(MasterLabels, nodeLabel, true) {
-			return true
-		}
-	}
-	return false
-}
-
-func (node *Node) IsRHCOS() bool {
-	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.OSImage), rhcosName)
-}
-
-func (node *Node) IsRHEL() bool {
-	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.OSImage), rhelName)
-}
-
-func (node *Node) IsRTKernel() bool {
-	// More information: https://www.redhat.com/sysadmin/real-time-kernel
-	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.KernelVersion), "rt")
-}
-
-func (node *Node) GetRHCOSVersion() (string, error) {
-	// Check if the node is running CoreOS or not
-	if !node.IsRHCOS() {
-		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
-	}
-
-	path, err := os.Getwd()
-	if err != nil {
-		return "", err
-	}
-
-	filePath := fmt.Sprintf(rhcosRelativePath, path)
-
-	// Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa) --> 410.84.202205031645-0
-	splitStr := strings.Split(node.Data.Status.NodeInfo.OSImage, rhcosName)
-	longVersionSplit := strings.Split(strings.TrimSpace(splitStr[1]), " ")
-
-	// Get the short version string from the long version string
-	shortVersion, err := operatingsystem.GetShortVersionFromLong(longVersionSplit[0], filePath)
-	if err != nil {
-		return "", err
-	}
-
-	return shortVersion, nil
-}
-
-func (node *Node) GetRHELVersion() (string, error) {
-	// Check if the node is running RHEL or not
-	if !node.IsRHEL() {
-		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
-	}
-
-	// Red Hat Enterprise Linux 8.5 (Ootpa) --> 8.5
-	splitStr := strings.Split(node.Data.Status.NodeInfo.OSImage, rhelName)
-	longVersionSplit := strings.Split(strings.TrimSpace(splitStr[1]), " ")
-
-	return longVersionSplit[0], nil
 }
 
 type cniNetworkInterface struct {
@@ -263,17 +135,6 @@ var (
 	env    = TestEnvironment{}
 	loaded = false
 )
-
-func GetContainer() *Container {
-	return &Container{}
-}
-
-func GetUpdatedDeployment(ac appv1client.AppsV1Interface, namespace, podName string) (*appsv1.Deployment, error) {
-	return autodiscover.FindDeploymentByNameByNamespace(ac, namespace, podName)
-}
-func GetUpdatedStatefulset(ac appv1client.AppsV1Interface, namespace, podName string) (*appsv1.StatefulSet, error) {
-	return autodiscover.FindStatefulsetByNameByNamespace(ac, namespace, podName)
-}
 
 func buildTestEnvironment() { //nolint:funlen
 	// Wait for the debug pods to be ready before the autodiscovery starts.
@@ -327,10 +188,16 @@ func buildTestEnvironment() { //nolint:funlen
 		}
 	}
 	for i := range data.Deployments {
-		env.Deployments = append(env.Deployments, &data.Deployments[i])
+		env.Deployments = append(env.Deployments,
+			&Deployment{
+				&data.Deployments[i],
+			})
 	}
 	for i := range data.StatefulSet {
-		env.StatetfulSets = append(env.StatetfulSets, &data.StatefulSet[i])
+		env.StatetfulSets = append(env.StatetfulSets,
+			&StatefulSet{
+				&data.StatefulSet[i],
+			})
 	}
 	env.HorizontalScaler = data.Hpas
 
@@ -353,7 +220,7 @@ func getPodContainers(aPod *corev1.Pod) (containerList []*Container) {
 		}
 		aRuntime, uid := GetRuntimeUID(&state)
 		container := Container{Podname: aPod.Name, Namespace: aPod.Namespace,
-			NodeName: aPod.Spec.NodeName, Data: cut, Status: state, Runtime: aRuntime, UID: uid,
+			NodeName: aPod.Spec.NodeName, Container: cut, Status: state, Runtime: aRuntime, UID: uid,
 			ContainerImageIdentifier: buildContainerImageSource(aPod.Spec.Containers[j].Image)}
 		containerList = append(containerList, &container)
 	}
@@ -439,20 +306,6 @@ func isDaemonSetReady(status *appsv1.DaemonSetStatus) bool {
 		status.NumberMisscheduled == 0
 }
 
-func (c *Container) GetUID() (string, error) {
-	split := strings.Split(c.Status.ContainerID, "://")
-	uid := ""
-	if len(split) > 0 {
-		uid = split[len(split)-1]
-	}
-	if uid == "" {
-		logrus.Debugln(fmt.Sprintf("could not find uid of %s/%s/%s\n", c.Namespace, c.Podname, c.Data.Name))
-		return "", errors.New("cannot determine container UID")
-	}
-	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Data.Name, uid))
-	return uid, nil
-}
-
 func buildContainerImageSource(url string) configuration.ContainerImageIdentifier {
 	source := configuration.ContainerImageIdentifier{}
 	urlSegments := strings.Split(url, "/")
@@ -475,6 +328,7 @@ func buildContainerImageSource(url string) configuration.ContainerImageIdentifie
 	}
 	return source
 }
+
 func GetRuntimeUID(cs *corev1.ContainerStatus) (runtime, uid string) {
 	split := strings.Split(cs.ContainerID, "://")
 	if len(split) > 0 {
@@ -482,69 +336,6 @@ func GetRuntimeUID(cs *corev1.ContainerStatus) (runtime, uid string) {
 		runtime = split[0]
 	}
 	return runtime, uid
-}
-
-func (c *Container) StringLong() string {
-	return fmt.Sprintf("node: %s ns: %s podName: %s containerName: %s containerUID: %s containerRuntime: %s",
-		c.NodeName,
-		c.Namespace,
-		c.Podname,
-		c.Data.Name,
-		c.Status.ContainerID,
-		c.Runtime,
-	)
-}
-func (c *Container) String() string {
-	return fmt.Sprintf("container: %s pod: %s ns: %s",
-		c.Data.Name,
-		c.Podname,
-		c.Namespace,
-	)
-}
-
-func (p *Pod) String() string {
-	return fmt.Sprintf("pod: %s ns: %s",
-		p.Data.Name,
-		p.Data.Namespace,
-	)
-}
-
-func (p *Pod) IsPodGuaranteed() bool {
-	return AreCPUResourcesWholeUnits(p) && AreResourcesIdentical(p)
-}
-
-func (p *Pod) IsCPUIsolationCompliant() bool {
-	isCPUIsolated := true
-
-	if !LoadBalancingDisabled(p) {
-		errMsg := fmt.Sprintf("%s has been found to not have annotations set correctly for CPU isolation.", p.String())
-		logrus.Debugf(errMsg)
-		tnf.ClaimFilePrintf(errMsg)
-		isCPUIsolated = false
-	}
-
-	if !IsRuntimeClassNameSpecified(p) {
-		errMsg := fmt.Sprintf("%s has been found to not have runtimeClassName specified.", p.String())
-		logrus.Debugf(errMsg)
-		tnf.ClaimFilePrintf(errMsg)
-		isCPUIsolated = false
-	}
-
-	return isCPUIsolated
-}
-
-func DeploymentToString(d *appsv1.Deployment) string {
-	return fmt.Sprintf("deployment: %s ns: %s",
-		d.Name,
-		d.Namespace,
-	)
-}
-
-func StatefulsetToString(s *appsv1.StatefulSet) string {
-	return fmt.Sprintf("statefulset: %s ns: %s",
-		s.Name,
-		s.Namespace,
-	)
 }
 
 func CsvToString(csv *olmv1Alpha.ClusterServiceVersion) string {

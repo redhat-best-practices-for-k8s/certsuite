@@ -155,8 +155,8 @@ func testContainersPreStop(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " pre stop lifecycle ")
 
-		if cut.Data.Lifecycle == nil || (cut.Data.Lifecycle != nil && cut.Data.Lifecycle.PreStop == nil) {
-			badcontainers = append(badcontainers, cut.Data.Name)
+		if cut.Lifecycle == nil || (cut.Lifecycle != nil && cut.Lifecycle.PreStop == nil) {
+			badcontainers = append(badcontainers, cut.Name)
 			tnf.ClaimFilePrintf("%s does not have preStop defined", cut)
 		}
 	}
@@ -171,9 +171,9 @@ func testContainersImagePolicy(env *provider.TestEnvironment) {
 	badcontainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " pull policy, should be ", corev1.PullIfNotPresent)
-		if cut.Data.ImagePullPolicy != corev1.PullIfNotPresent {
-			badcontainers = append(badcontainers, "{"+cut.String()+": is using"+string(cut.Data.ImagePullPolicy)+"}")
-			logrus.Errorln("container ", cut.Data.Name, " is using ", cut.Data.ImagePullPolicy, " as image policy")
+		if cut.ImagePullPolicy != corev1.PullIfNotPresent {
+			badcontainers = append(badcontainers, "{"+cut.String()+": is using"+string(cut.ImagePullPolicy)+"}")
+			logrus.Errorln("container ", cut.Name, " is using ", cut.ImagePullPolicy, " as image policy")
 		}
 	}
 	if len(badcontainers) > 0 {
@@ -186,9 +186,9 @@ func testContainersReadinessProbe(env *provider.TestEnvironment) {
 	badcontainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " readiness probe ")
-		if cut.Data.ReadinessProbe == nil {
+		if cut.ReadinessProbe == nil {
 			badcontainers = append(badcontainers, cut.String())
-			logrus.Errorln("container ", cut.Data.Name, " does not have ReadinessProbe defined")
+			logrus.Errorln("container ", cut.Name, " does not have ReadinessProbe defined")
 		}
 	}
 	if len(badcontainers) > 0 {
@@ -201,9 +201,9 @@ func testContainersLivenessProbe(env *provider.TestEnvironment) {
 	badcontainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " liveness probe ")
-		if cut.Data.LivenessProbe == nil {
+		if cut.LivenessProbe == nil {
 			badcontainers = append(badcontainers, cut.String())
-			logrus.Errorln("container ", cut.Data.Name, " does not have livenessProbe defined")
+			logrus.Errorln("container ", cut.Name, " does not have livenessProbe defined")
 		}
 	}
 	if len(badcontainers) > 0 {
@@ -216,9 +216,9 @@ func testContainersStartupProbe(env *provider.TestEnvironment) {
 	badcontainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " startup probe ")
-		if cut.Data.StartupProbe == nil {
+		if cut.StartupProbe == nil {
 			badcontainers = append(badcontainers, cut.String())
-			logrus.Errorln("container ", cut.Data.Name, " does not have startupProbe defined")
+			logrus.Errorln("container ", cut.Name, " does not have startupProbe defined")
 		}
 	}
 	if len(badcontainers) > 0 {
@@ -231,8 +231,8 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 	ginkgo.By("Testing owners of CNF pod, should be replicas Set")
 	badPods := []string{}
 	for _, put := range env.Pods {
-		logrus.Debugln("check pod ", put.Data.Namespace, " ", put.Data.Name, " owner reference")
-		o := ownerreference.NewOwnerReference(put.Data)
+		logrus.Debugln("check pod ", put.Namespace, " ", put.Name, " owner reference")
+		o := ownerreference.NewOwnerReference(put.Pod)
 		o.RunTest()
 		if o.GetResults() != testhelper.SUCCESS {
 			badPods = append(badPods, put.String())
@@ -247,13 +247,13 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) {
 	var badPods []*corev1.Pod
 	for _, put := range env.NonGuaranteedPods {
-		if len(put.Data.Spec.NodeSelector) != 0 {
-			tnf.ClaimFilePrintf("ERROR: %s has a node selector clause. Node selector: %v", put, &put.Data.Spec.NodeSelector)
-			badPods = append(badPods, put.Data)
+		if len(put.Spec.NodeSelector) != 0 {
+			tnf.ClaimFilePrintf("ERROR: %s has a node selector clause. Node selector: %v", put, &put.Spec.NodeSelector)
+			badPods = append(badPods, put.Pod)
 		}
-		if put.Data.Spec.Affinity != nil && put.Data.Spec.Affinity.NodeAffinity != nil {
-			tnf.ClaimFilePrintf("ERROR: %s has a node affinity clause. Node affinity: %v", put, put.Data.Spec.Affinity.NodeAffinity)
-			badPods = append(badPods, put.Data)
+		if put.Spec.Affinity != nil && put.Spec.Affinity.NodeAffinity != nil {
+			tnf.ClaimFilePrintf("ERROR: %s has a node affinity clause. Node affinity: %v", put, put.Spec.Affinity.NodeAffinity)
+			badPods = append(badPods, put.Pod)
 		}
 	}
 	if n := len(badPods); n > 0 {
@@ -270,22 +270,21 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 	for i := range env.Deployments {
 		// TestDeploymentScaling test scaling of deployment
 		// This is the entry point for deployment scaling tests
-		deployment := env.Deployments[i]
-		ns, name := deployment.Namespace, deployment.Name
+		ns, name := env.Deployments[i].Namespace, env.Deployments[i].Name
 		key := ns + name
 		if hpa, ok := env.HorizontalScaler[key]; ok {
 			// if the deployment is controller by
 			// horizontal scaler, then test that scaler
 			// can scale the deployment
-			if !scaling.TestScaleHpaDeployment(deployment, hpa, timeout) {
-				failedDeployments = append(failedDeployments, provider.DeploymentToString(deployment))
+			if !scaling.TestScaleHpaDeployment(env.Deployments[i], hpa, timeout) {
+				failedDeployments = append(failedDeployments, env.Deployments[i].ToString())
 			}
 			continue
 		}
 		// if the deployment is not controller by HPA
 		// scale it directly
-		if !scaling.TestScaleDeployment(deployment, timeout) {
-			failedDeployments = append(failedDeployments, provider.DeploymentToString(deployment))
+		if !scaling.TestScaleDeployment(env.Deployments[i].Deployment, timeout) {
+			failedDeployments = append(failedDeployments, env.Deployments[i].ToString())
 		}
 	}
 
@@ -303,22 +302,21 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 	for i := range env.StatetfulSets {
 		// TeststatefulsetScaling test scaling of statefulset
 		// This is the entry point for statefulset scaling tests
-		statefulset := env.StatetfulSets[i]
-		ns, name := statefulset.Namespace, statefulset.Name
+		ns, name := env.StatetfulSets[i].Namespace, env.StatetfulSets[i].Name
 		key := ns + name
 		if hpa, ok := env.HorizontalScaler[key]; ok {
 			// if the statefulset is controller by
 			// horizontal scaler, then test that scaler
 			// can scale the statefulset
-			if !scaling.TestScaleHpaStatefulSet(statefulset, hpa, timeout) {
-				failedStatetfulSets = append(failedStatetfulSets, provider.StatefulsetToString(statefulset))
+			if !scaling.TestScaleHpaStatefulSet(env.StatetfulSets[i].StatefulSet, hpa, timeout) {
+				failedStatetfulSets = append(failedStatetfulSets, env.StatetfulSets[i].ToString())
 			}
 			continue
 		}
 		// if the statefulset is not controller by HPA
 		// scale it directly
-		if !scaling.TestScaleStatefulSet(statefulset, timeout) {
-			failedStatetfulSets = append(failedStatetfulSets, provider.StatefulsetToString(statefulset))
+		if !scaling.TestScaleStatefulSet(env.StatetfulSets[i].StatefulSet, timeout) {
+			failedStatetfulSets = append(failedStatetfulSets, env.StatetfulSets[i].ToString())
 		}
 	}
 
@@ -336,22 +334,22 @@ func testHighAvailability(env *provider.TestEnvironment) {
 	badStatefulSet := []string{}
 	for _, dp := range env.Deployments {
 		if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) <= 1 {
-			badDeployments = append(badDeployments, provider.DeploymentToString(dp))
+			badDeployments = append(badDeployments, dp.ToString())
 			continue
 		}
 		if dp.Spec.Template.Spec.Affinity == nil ||
 			dp.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
-			badDeployments = append(badDeployments, provider.DeploymentToString(dp))
+			badDeployments = append(badDeployments, dp.ToString())
 		}
 	}
 	for _, st := range env.StatetfulSets {
 		if st.Spec.Replicas == nil || *(st.Spec.Replicas) <= 1 {
-			badStatefulSet = append(badStatefulSet, provider.StatefulsetToString(st))
+			badStatefulSet = append(badStatefulSet, st.ToString())
 			continue
 		}
 		if st.Spec.Template.Spec.Affinity == nil ||
 			st.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
-			badDeployments = append(badDeployments, provider.StatefulsetToString(st))
+			badDeployments = append(badDeployments, st.ToString())
 		}
 	}
 
@@ -417,10 +415,10 @@ func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
 	// Look through all of the pods, matching their persistent volumes to the list of overall cluster PVs and checking their reclaim status.
 	for _, put := range env.Pods {
 		for index := range env.PersistentVolumes {
-			for pvIndex := range put.Data.Spec.Volumes {
-				if put.Data.Spec.Volumes[pvIndex].Name == env.PersistentVolumes[index].Name && env.PersistentVolumes[index].Spec.PersistentVolumeReclaimPolicy != corev1.PersistentVolumeReclaimDelete {
+			for pvIndex := range put.Spec.Volumes {
+				if put.Spec.Volumes[pvIndex].Name == env.PersistentVolumes[index].Name && env.PersistentVolumes[index].Spec.PersistentVolumeReclaimPolicy != corev1.PersistentVolumeReclaimDelete {
 					persistentVolumesBadReclaim = append(persistentVolumesBadReclaim, env.PersistentVolumes[index].Name)
-					tnf.ClaimFilePrintf("Persistent Volume: %s in namespace %s has been found without a reclaim policy of DELETE.", env.PersistentVolumes[index].Name, env.PersistentVolumes[index].Namespace)
+					tnf.ClaimFilePrintf("Persistent Volume: %s has been found without a reclaim policy of DELETE.", env.PersistentVolumes[index].Name)
 				}
 			}
 		}
@@ -448,7 +446,7 @@ func testCPUIsolation(env *provider.TestEnvironment) {
 
 	for _, put := range env.GuaranteedPods {
 		if !put.IsCPUIsolationCompliant() {
-			podsMissingIsolationRequirements[put.Data.Name] = true
+			podsMissingIsolationRequirements[put.Name] = true
 		}
 	}
 

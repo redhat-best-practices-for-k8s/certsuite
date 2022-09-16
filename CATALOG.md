@@ -59,6 +59,19 @@ Result Type|informative
 Suggested Remediation|Apply a ResourceQuota to the namespace your CNF is running in
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.8
 Exception Process|There is no documented exception process for this.
+#### no-1337-uid
+
+Property|Description
+---|---
+Test Case Name|no-1337-uid
+Test Case Label|access-control-no-1337-uid
+Unique ID|http://test-network-function.com/testcases/access-control/no-1337-uid
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/no-1337-uid Checks that all pods are not using the securityContext UID 1337
+Result Type|informative
+Suggested Remediation|Use another process UID that is not 1337
+Best Practice Reference|https://TODO Section 4.6.24
+Exception Process|There is no documented exception process for this.
 #### one-process-per-container
 
 Property|Description

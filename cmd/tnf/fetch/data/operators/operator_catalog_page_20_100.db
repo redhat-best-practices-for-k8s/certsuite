@@ -1,1588 +1,6 @@
 {
   "data": [
     {
-      "_id": "61f032ac33f211c45407add9",
-      "alm_examples": [
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "CouchDBCluster",
-          "metadata": {
-            "name": "example-couchdbcluster"
-          },
-          "spec": {
-            "cpu": "1",
-            "disk": "1Gi",
-            "environment": {
-              "adminPassword": "changeme",
-              "search": true
-            },
-            "memory": "1Gi",
-            "size": 3,
-            "storageClass": ""
-          }
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "FormationLock",
-          "metadata": {
-            "name": "example-formationlock"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Recipe",
-          "metadata": {
-            "name": "example-recipe"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "RecipeTemplate",
-          "metadata": {
-            "name": "example-recipetemplate"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Backup",
-          "metadata": {
-            "name": "example-backup"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Bucket",
-          "metadata": {
-            "name": "example-bucket"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Formation",
-          "metadata": {
-            "name": "example-formation"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
-      "bundle_path_digest": "sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-01-25T17:26:04.243000+00:00",
-      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n### CouchDB 2.3.1 Update Instructions\nWhen the operator is updated to v2.0 or above any existing CouchDB 2.3.1 cluster will not be automatically upgraded to CouchDB 3. The user must manually trigger this process by removing the version statement `version: 2.3.1` in the CouchDBCluster CR for each CouchDB cluster\nThe operator will then perform a rolling update, with the new pods running CouchDB3.\nIt is advised that customers do this straightaway as CouchDB 2.3.1 is no longer supported.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://ibm.biz/BdfGQy)\n",
-      "csv_display_name": "Operator for Apache CouchDB",
-      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
-      "csv_name": "couchdb-operator.v2.2.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:22:27.508000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "couchdb-operator-certified",
-      "provided_apis": [
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Recipe",
-          "plural": "recipes",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "RecipeTemplate",
-          "plural": "recipetemplates",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Bucket",
-          "plural": "buckets",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "CouchDBCluster",
-          "plural": "couchdbclusters",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "FormationLock",
-          "plural": "formationlocks",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Formation",
-          "plural": "formations",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "name": "COUCHDB3"
-        },
-        {
-          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "name": "COUCHDB-MGMT"
-        },
-        {
-          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "name": "couchdb-operator-0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea-annotation"
-        },
-        {
-          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "name": "couchdb-operator"
-        },
-        {
-          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "name": "couchdb3"
-        },
-        {
-          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "name": "mgmt"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.2.1",
-      "version_original": "2.2.1"
-    },
-    {
-      "_id": "61f032ae33f211c45407adda",
-      "alm_examples": [
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "CouchDBCluster",
-          "metadata": {
-            "name": "example-couchdbcluster"
-          },
-          "spec": {
-            "cpu": "1",
-            "disk": "1Gi",
-            "environment": {
-              "adminPassword": "changeme",
-              "search": true
-            },
-            "memory": "1Gi",
-            "size": 3,
-            "storageClass": ""
-          }
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "FormationLock",
-          "metadata": {
-            "name": "example-formationlock"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Recipe",
-          "metadata": {
-            "name": "example-recipe"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "RecipeTemplate",
-          "metadata": {
-            "name": "example-recipetemplate"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Backup",
-          "metadata": {
-            "name": "example-backup"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Bucket",
-          "metadata": {
-            "name": "example-bucket"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Formation",
-          "metadata": {
-            "name": "example-formation"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
-      "bundle_path_digest": "sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "v2.2",
-      "creation_date": "2022-01-25T17:26:06.245000+00:00",
-      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n### CouchDB 2.3.1 Update Instructions\nWhen the operator is updated to v2.0 or above any existing CouchDB 2.3.1 cluster will not be automatically upgraded to CouchDB 3. The user must manually trigger this process by removing the version statement `version: 2.3.1` in the CouchDBCluster CR for each CouchDB cluster\nThe operator will then perform a rolling update, with the new pods running CouchDB3.\nIt is advised that customers do this straightaway as CouchDB 2.3.1 is no longer supported.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://ibm.biz/BdfGQy)\n",
-      "csv_display_name": "Operator for Apache CouchDB",
-      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
-      "csv_name": "couchdb-operator.v2.2.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:37:10.232000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "couchdb-operator-certified",
-      "provided_apis": [
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Recipe",
-          "plural": "recipes",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "RecipeTemplate",
-          "plural": "recipetemplates",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Bucket",
-          "plural": "buckets",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "CouchDBCluster",
-          "plural": "couchdbclusters",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "FormationLock",
-          "plural": "formationlocks",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Formation",
-          "plural": "formations",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "name": "COUCHDB3"
-        },
-        {
-          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "name": "COUCHDB-MGMT"
-        },
-        {
-          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "name": "couchdb-operator-0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea-annotation"
-        },
-        {
-          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "name": "couchdb-operator"
-        },
-        {
-          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "name": "couchdb3"
-        },
-        {
-          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "name": "mgmt"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.2.1",
-      "version_original": "2.2.1"
-    },
-    {
-      "_id": "61f0335b81c433814d21bb3d",
-      "alm_examples": [
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "CouchDBCluster",
-          "metadata": {
-            "name": "example-couchdbcluster"
-          },
-          "spec": {
-            "cpu": "1",
-            "disk": "1Gi",
-            "environment": {
-              "adminPassword": "changeme",
-              "search": true
-            },
-            "memory": "1Gi",
-            "size": 3,
-            "storageClass": ""
-          }
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "FormationLock",
-          "metadata": {
-            "name": "example-formationlock"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Recipe",
-          "metadata": {
-            "name": "example-recipe"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "RecipeTemplate",
-          "metadata": {
-            "name": "example-recipetemplate"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Backup",
-          "metadata": {
-            "name": "example-backup"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Bucket",
-          "metadata": {
-            "name": "example-bucket"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Formation",
-          "metadata": {
-            "name": "example-formation"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
-      "bundle_path_digest": "sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-01-25T17:28:59.366000+00:00",
-      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n### CouchDB 2.3.1 Update Instructions\nWhen the operator is updated to v2.0 or above any existing CouchDB 2.3.1 cluster will not be automatically upgraded to CouchDB 3. The user must manually trigger this process by removing the version statement `version: 2.3.1` in the CouchDBCluster CR for each CouchDB cluster\nThe operator will then perform a rolling update, with the new pods running CouchDB3.\nIt is advised that customers do this straightaway as CouchDB 2.3.1 is no longer supported.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://ibm.biz/BdfGQy)\n",
-      "csv_display_name": "Operator for Apache CouchDB",
-      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
-      "csv_name": "couchdb-operator.v2.2.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:47:21.585000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "couchdb-operator-certified",
-      "provided_apis": [
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Bucket",
-          "plural": "buckets",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "CouchDBCluster",
-          "plural": "couchdbclusters",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "FormationLock",
-          "plural": "formationlocks",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Formation",
-          "plural": "formations",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Recipe",
-          "plural": "recipes",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "RecipeTemplate",
-          "plural": "recipetemplates",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "name": "COUCHDB3"
-        },
-        {
-          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "name": "COUCHDB-MGMT"
-        },
-        {
-          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "name": "couchdb-operator-0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea-annotation"
-        },
-        {
-          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "name": "couchdb-operator"
-        },
-        {
-          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "name": "couchdb3"
-        },
-        {
-          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "name": "mgmt"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.2.1",
-      "version_original": "2.2.1"
-    },
-    {
-      "_id": "61f0335d33f211c45407addb",
-      "alm_examples": [
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "CouchDBCluster",
-          "metadata": {
-            "name": "example-couchdbcluster"
-          },
-          "spec": {
-            "cpu": "1",
-            "disk": "1Gi",
-            "environment": {
-              "adminPassword": "changeme",
-              "search": true
-            },
-            "memory": "1Gi",
-            "size": 3,
-            "storageClass": ""
-          }
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "FormationLock",
-          "metadata": {
-            "name": "example-formationlock"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Recipe",
-          "metadata": {
-            "name": "example-recipe"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "RecipeTemplate",
-          "metadata": {
-            "name": "example-recipetemplate"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Backup",
-          "metadata": {
-            "name": "example-backup"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Bucket",
-          "metadata": {
-            "name": "example-bucket"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Formation",
-          "metadata": {
-            "name": "example-formation"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
-      "bundle_path_digest": "sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "v2.2",
-      "creation_date": "2022-01-25T17:29:01.683000+00:00",
-      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n### CouchDB 2.3.1 Update Instructions\nWhen the operator is updated to v2.0 or above any existing CouchDB 2.3.1 cluster will not be automatically upgraded to CouchDB 3. The user must manually trigger this process by removing the version statement `version: 2.3.1` in the CouchDBCluster CR for each CouchDB cluster\nThe operator will then perform a rolling update, with the new pods running CouchDB3.\nIt is advised that customers do this straightaway as CouchDB 2.3.1 is no longer supported.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://ibm.biz/BdfGQy)\n",
-      "csv_display_name": "Operator for Apache CouchDB",
-      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
-      "csv_name": "couchdb-operator.v2.2.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:01:01.987000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "couchdb-operator-certified",
-      "provided_apis": [
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Bucket",
-          "plural": "buckets",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "CouchDBCluster",
-          "plural": "couchdbclusters",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "FormationLock",
-          "plural": "formationlocks",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Formation",
-          "plural": "formations",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Recipe",
-          "plural": "recipes",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "RecipeTemplate",
-          "plural": "recipetemplates",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "name": "COUCHDB3"
-        },
-        {
-          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "name": "COUCHDB-MGMT"
-        },
-        {
-          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "name": "couchdb-operator-0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea-annotation"
-        },
-        {
-          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "name": "couchdb-operator"
-        },
-        {
-          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "name": "couchdb3"
-        },
-        {
-          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "name": "mgmt"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.2.1",
-      "version_original": "2.2.1"
-    },
-    {
-      "_id": "61f0346bed74b2ffb22b0cde",
-      "alm_examples": [
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "CouchDBCluster",
-          "metadata": {
-            "name": "example-couchdbcluster"
-          },
-          "spec": {
-            "cpu": "1",
-            "disk": "1Gi",
-            "environment": {
-              "adminPassword": "changeme",
-              "search": true
-            },
-            "memory": "1Gi",
-            "size": 3,
-            "storageClass": ""
-          }
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "FormationLock",
-          "metadata": {
-            "name": "example-formationlock"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Recipe",
-          "metadata": {
-            "name": "example-recipe"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "RecipeTemplate",
-          "metadata": {
-            "name": "example-recipetemplate"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Backup",
-          "metadata": {
-            "name": "example-backup"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Bucket",
-          "metadata": {
-            "name": "example-bucket"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Formation",
-          "metadata": {
-            "name": "example-formation"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
-      "bundle_path_digest": "sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "v2.2",
-      "creation_date": "2022-01-25T17:33:31.041000+00:00",
-      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n### CouchDB 2.3.1 Update Instructions\nWhen the operator is updated to v2.0 or above any existing CouchDB 2.3.1 cluster will not be automatically upgraded to CouchDB 3. The user must manually trigger this process by removing the version statement `version: 2.3.1` in the CouchDBCluster CR for each CouchDB cluster\nThe operator will then perform a rolling update, with the new pods running CouchDB3.\nIt is advised that customers do this straightaway as CouchDB 2.3.1 is no longer supported.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://ibm.biz/BdfGQy)\n",
-      "csv_display_name": "Operator for Apache CouchDB",
-      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
-      "csv_name": "couchdb-operator.v2.2.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:02:36.210000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "couchdb-operator-certified",
-      "provided_apis": [
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Recipe",
-          "plural": "recipes",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "RecipeTemplate",
-          "plural": "recipetemplates",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Bucket",
-          "plural": "buckets",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "CouchDBCluster",
-          "plural": "couchdbclusters",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "FormationLock",
-          "plural": "formationlocks",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Formation",
-          "plural": "formations",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "name": "COUCHDB3"
-        },
-        {
-          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "name": "COUCHDB-MGMT"
-        },
-        {
-          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "name": "couchdb-operator-0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea-annotation"
-        },
-        {
-          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "name": "couchdb-operator"
-        },
-        {
-          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "name": "couchdb3"
-        },
-        {
-          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "name": "mgmt"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.2.1",
-      "version_original": "2.2.1"
-    },
-    {
-      "_id": "61f0346c33f211c45407addc",
-      "alm_examples": [
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "CouchDBCluster",
-          "metadata": {
-            "name": "example-couchdbcluster"
-          },
-          "spec": {
-            "cpu": "1",
-            "disk": "1Gi",
-            "environment": {
-              "adminPassword": "changeme",
-              "search": true
-            },
-            "memory": "1Gi",
-            "size": 3,
-            "storageClass": ""
-          }
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "FormationLock",
-          "metadata": {
-            "name": "example-formationlock"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Recipe",
-          "metadata": {
-            "name": "example-recipe"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "RecipeTemplate",
-          "metadata": {
-            "name": "example-recipetemplate"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Backup",
-          "metadata": {
-            "name": "example-backup"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Bucket",
-          "metadata": {
-            "name": "example-bucket"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "couchdb.databases.cloud.ibm.com/v1",
-          "kind": "Formation",
-          "metadata": {
-            "name": "example-formation"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
-      "bundle_path_digest": "sha256:8fd726f0aed7b5c6cfce74e236dad4fbd7e23d2d4c36b55de1a618d442495685",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-01-25T17:33:32.324000+00:00",
-      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n### CouchDB 2.3.1 Update Instructions\nWhen the operator is updated to v2.0 or above any existing CouchDB 2.3.1 cluster will not be automatically upgraded to CouchDB 3. The user must manually trigger this process by removing the version statement `version: 2.3.1` in the CouchDBCluster CR for each CouchDB cluster\nThe operator will then perform a rolling update, with the new pods running CouchDB3.\nIt is advised that customers do this straightaway as CouchDB 2.3.1 is no longer supported.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://ibm.biz/BdfGQy)\n",
-      "csv_display_name": "Operator for Apache CouchDB",
-      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
-      "csv_name": "couchdb-operator.v2.2.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:06:31.945000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "couchdb-operator-certified",
-      "provided_apis": [
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Recipe",
-          "plural": "recipes",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "RecipeTemplate",
-          "plural": "recipetemplates",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Bucket",
-          "plural": "buckets",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "CouchDBCluster",
-          "plural": "couchdbclusters",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "FormationLock",
-          "plural": "formationlocks",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Formation",
-          "plural": "formations",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "name": "COUCHDB3"
-        },
-        {
-          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "name": "COUCHDB-MGMT"
-        },
-        {
-          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "name": "couchdb-operator-0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea-annotation"
-        },
-        {
-          "digest": "sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:0cef73bf29bea2a05faca12441801a85f984ad8d20506e9bfb8dcc43a8d20cea",
-          "name": "couchdb-operator"
-        },
-        {
-          "digest": "sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:c495d5af7adf847dcdd01017d1ad58db1d623ba4b85550ccbff54a6c50cff7dd",
-          "name": "couchdb3"
-        },
-        {
-          "digest": "sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:2a5c8ff0fcc73b54bfa24a7167ebc5cdc3f9f911dc7a6120072b659149fd2d18",
-          "name": "mgmt"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.2.1",
-      "version_original": "2.2.1"
-    },
-    {
-      "_id": "61f0a5d71496e3baf4eaf9ef",
-      "alm_examples": [
-        {
-          "api_version": "nvidia.com/v1",
-          "kind": "ClusterPolicy",
-          "metadata": {
-            "name": "gpu-cluster-policy"
-          },
-          "spec": {
-            "daemonsets": {},
-            "dcgm": {
-              "enabled": true
-            },
-            "dcgmExporter": {
-              "config": {
-                "name": ""
-              }
-            },
-            "devicePlugin": {},
-            "driver": {
-              "certConfig": {
-                "name": ""
-              },
-              "enabled": true,
-              "licensingConfig": {
-                "configMapName": "",
-                "nlsEnabled": false
-              },
-              "repoConfig": {
-                "configMapName": ""
-              },
-              "use_ocp_driver_toolkit": true,
-              "virtualTopology": {
-                "config": ""
-              }
-            },
-            "gfd": {},
-            "mig": {
-              "strategy": "single"
-            },
-            "migManager": {
-              "enabled": true
-            },
-            "nodeStatusExporter": {
-              "enabled": true
-            },
-            "operator": {
-              "defaultRuntime": "crio",
-              "deployGFD": true,
-              "initContainer": {}
-            },
-            "toolkit": {
-              "enabled": true
-            },
-            "validator": {
-              "plugin": {
-                "env": [
-                  {
-                    "name": "WITH_WORKLOAD",
-                    "value": "true"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:6eb5fe94f87baf4214da32a3120af1d799311c7c86d93f77efd297057c6e993b",
-      "bundle_path_digest": "sha256:6eb5fe94f87baf4214da32a3120af1d799311c7c86d93f77efd297057c6e993b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "v1.9.0",
-      "creation_date": "2022-01-26T01:37:27.573000+00:00",
-      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
-      "csv_display_name": "NVIDIA GPU Operator",
-      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
-      "csv_name": "gpu-operator-certified.v1.9.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:57:25.687000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "gpu-operator-certified",
-      "provided_apis": [
-        {
-          "group": "nvidia.com",
-          "kind": "ClusterPolicy",
-          "plural": "clusterpolicies",
-          "version": "v1"
-        }
-      ],
-      "provider": "NVIDIA Corporation",
-      "related_images": [
-        {
-          "digest": "sha256:173639a16409d7aeba2f5ca7ccd6260ea621d280a24b8933089d6df0623bb657",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:173639a16409d7aeba2f5ca7ccd6260ea621d280a24b8933089d6df0623bb657",
-          "name": "gpu-operator-image"
-        },
-        {
-          "digest": "sha256:8546a3e1ca8e642d2dbbfde13ee439e8137513be9886f9fe51f4fa9c4db80198",
-          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:8546a3e1ca8e642d2dbbfde13ee439e8137513be9886f9fe51f4fa9c4db80198",
-          "name": "dcgm-exporter-image"
-        },
-        {
-          "digest": "sha256:f4c4de8d66b2fef8cebaee6fec2fb2d15d01e835de2654df6dfd4a0ce0baec6b",
-          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:f4c4de8d66b2fef8cebaee6fec2fb2d15d01e835de2654df6dfd4a0ce0baec6b",
-          "name": "dcgm-image"
-        },
-        {
-          "digest": "sha256:5f826e306d093332a86afa7d1e96218b5bdda8d33067931cff7914f6bb2994ee",
-          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:5f826e306d093332a86afa7d1e96218b5bdda8d33067931cff7914f6bb2994ee",
-          "name": "container-toolkit-image"
-        },
-        {
-          "digest": "sha256:c9af394fe78c02acbc2fae2c43fd73030ef54ab76156b1ae566eaed53f9b4835",
-          "image": "nvcr.io/nvidia/driver@sha256:c9af394fe78c02acbc2fae2c43fd73030ef54ab76156b1ae566eaed53f9b4835",
-          "name": "driver-image"
-        },
-        {
-          "digest": "sha256:69171f906efe4bbabe31688343e59feea08a7e0ef8b0d9efb466abfa153aec16",
-          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:69171f906efe4bbabe31688343e59feea08a7e0ef8b0d9efb466abfa153aec16",
-          "name": "device-plugin-image"
-        },
-        {
-          "digest": "sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
-          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
-          "name": "gpu-feature-discovery-image"
-        },
-        {
-          "digest": "sha256:d718dda2f9c9f0a465240772ed1ca6db44789d37255172e00637a092bdd1ba31",
-          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:d718dda2f9c9f0a465240772ed1ca6db44789d37255172e00637a092bdd1ba31",
-          "name": "mig-manager-image"
-        },
-        {
-          "digest": "sha256:e137c897256501537e0986963889a91ec90cac029b5263fc4b229b278f5b1a02",
-          "image": "nvcr.io/nvidia/cuda@sha256:e137c897256501537e0986963889a91ec90cac029b5263fc4b229b278f5b1a02",
-          "name": "init-container-image"
-        },
-        {
-          "digest": "sha256:d7e0397249cd5099046506f32841535ea4f329f7b7583a6ddd9f75ff0f53385e",
-          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:d7e0397249cd5099046506f32841535ea4f329f7b7583a6ddd9f75ff0f53385e",
-          "name": "gpu-operator-validator-image"
-        },
-        {
-          "digest": "sha256:54233ebccbc3d2b388b237031907d58c3719d0e6f3ecb874349c91e8145225d2",
-          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:54233ebccbc3d2b388b237031907d58c3719d0e6f3ecb874349c91e8145225d2",
-          "name": "k8s-driver-manager-image"
-        },
-        {
-          "digest": "sha256:173639a16409d7aeba2f5ca7ccd6260ea621d280a24b8933089d6df0623bb657",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:173639a16409d7aeba2f5ca7ccd6260ea621d280a24b8933089d6df0623bb657",
-          "name": "gpu-operator-173639a16409d7aeba2f5ca7ccd6260ea621d280a24b8933089d6df0623bb657-annotation"
-        },
-        {
-          "digest": "sha256:173639a16409d7aeba2f5ca7ccd6260ea621d280a24b8933089d6df0623bb657",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:173639a16409d7aeba2f5ca7ccd6260ea621d280a24b8933089d6df0623bb657",
-          "name": "gpu-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.9.1",
-      "version_original": "1.9.1"
-    },
-    {
-      "_id": "61f0ab631496e3baf4eaf9f0",
-      "alm_examples": [
-        {
-          "api_version": "nvidia.com/v1",
-          "kind": "ClusterPolicy",
-          "metadata": {
-            "name": "gpu-cluster-policy"
-          },
-          "spec": {
-            "daemonsets": {},
-            "dcgm": {
-              "enabled": true
-            },
-            "dcgmExporter": {
-              "config": {
-                "name": ""
-              }
-            },
-            "devicePlugin": {},
-            "driver": {
-              "certConfig": {
-                "name": ""
-              },
-              "enabled": true,
-              "licensingConfig": {
-                "configMapName": "",
-                "nlsEnabled": false
-              },
-              "repoConfig": {
-                "configMapName": ""
-              },
-              "use_ocp_driver_toolkit": true,
-              "virtualTopology": {
-                "config": ""
-              }
-            },
-            "gfd": {},
-            "mig": {
-              "strategy": "single"
-            },
-            "migManager": {
-              "enabled": true
-            },
-            "nodeStatusExporter": {
-              "enabled": true
-            },
-            "operator": {
-              "defaultRuntime": "crio",
-              "deployGFD": true,
-              "initContainer": {}
-            },
-            "toolkit": {
-              "enabled": true
-            },
-            "validator": {
-              "plugin": {
-                "env": [
-                  {
-                    "name": "WITH_WORKLOAD",
-                    "value": "true"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:6eb5fe94f87baf4214da32a3120af1d799311c7c86d93f77efd297057c6e993b",
-      "bundle_path_digest": "sha256:6eb5fe94f87baf4214da32a3120af1d799311c7c86d93f77efd297057c6e993b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "v1.9.0",
-      "creation_date": "2022-01-26T02:01:07.866000+00:00",
-      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/contents.html).\n",
-      "csv_display_name": "NVIDIA GPU Operator",
-      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
-      "csv_name": "gpu-operator-certified.v1.9.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:58:43.782000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "gpu-operator-certified",
-      "provided_apis": [
-        {
-          "group": "nvidia.com",
-          "kind": "ClusterPolicy",
-          "plural": "clusterpolicies",
-          "version": "v1"
-        }
-      ],
-      "provider": "NVIDIA Corporation",
-      "related_images": [
-        {
-          "digest": "sha256:173639a16409d7aeba2f5ca7ccd6260ea621d280a24b8933089d6df0623bb657",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:173639a16409d7aeba2f5ca7ccd6260ea621d280a24b8933089d6df0623bb657",
-          "name": "gpu-operator-image"
-        },
-        {
-          "digest": "sha256:8546a3e1ca8e642d2dbbfde13ee439e8137513be9886f9fe51f4fa9c4db80198",
-          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:8546a3e1ca8e642d2dbbfde13ee439e8137513be9886f9fe51f4fa9c4db80198",
-          "name": "dcgm-exporter-image"
-        },
-        {
-          "digest": "sha256:f4c4de8d66b2fef8cebaee6fec2fb2d15d01e835de2654df6dfd4a0ce0baec6b",
-          "image": "nvcr.io/nvidia/cloud-native/dcgm@sha256:f4c4de8d66b2fef8cebaee6fec2fb2d15d01e835de2654df6dfd4a0ce0baec6b",
-          "name": "dcgm-image"
-        },
-        {
-          "digest": "sha256:5f826e306d093332a86afa7d1e96218b5bdda8d33067931cff7914f6bb2994ee",
-          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:5f826e306d093332a86afa7d1e96218b5bdda8d33067931cff7914f6bb2994ee",
-          "name": "container-toolkit-image"
-        },
-        {
-          "digest": "sha256:c9af394fe78c02acbc2fae2c43fd73030ef54ab76156b1ae566eaed53f9b4835",
-          "image": "nvcr.io/nvidia/driver@sha256:c9af394fe78c02acbc2fae2c43fd73030ef54ab76156b1ae566eaed53f9b4835",
-          "name": "driver-image"
-        },
-        {
-          "digest": "sha256:69171f906efe4bbabe31688343e59feea08a7e0ef8b0d9efb466abfa153aec16",
-          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:69171f906efe4bbabe31688343e59feea08a7e0ef8b0d9efb466abfa153aec16",
-          "name": "device-plugin-image"
-        },
-        {
-          "digest": "sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
-          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
-          "name": "gpu-feature-discovery-image"
-        },
-        {
-          "digest": "sha256:d718dda2f9c9f0a465240772ed1ca6db44789d37255172e00637a092bdd1ba31",
-          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:d718dda2f9c9f0a465240772ed1ca6db44789d37255172e00637a092bdd1ba31",
-          "name": "mig-manager-image"
-        },
-        {
-          "digest": "sha256:e137c897256501537e0986963889a91ec90cac029b5263fc4b229b278f5b1a02",
-          "image": "nvcr.io/nvidia/cuda@sha256:e137c897256501537e0986963889a91ec90cac029b5263fc4b229b278f5b1a02",
-          "name": "init-container-image"
-        },
-        {
-          "digest": "sha256:d7e0397249cd5099046506f32841535ea4f329f7b7583a6ddd9f75ff0f53385e",
-          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:d7e0397249cd5099046506f32841535ea4f329f7b7583a6ddd9f75ff0f53385e",
-          "name": "gpu-operator-validator-image"
-        },
-        {
-          "digest": "sha256:54233ebccbc3d2b388b237031907d58c3719d0e6f3ecb874349c91e8145225d2",
-          "image": "nvcr.io/nvidia/cloud-native/k8s-driver-manager@sha256:54233ebccbc3d2b388b237031907d58c3719d0e6f3ecb874349c91e8145225d2",
-          "name": "k8s-driver-manager-image"
-        },
-        {
-          "digest": "sha256:173639a16409d7aeba2f5ca7ccd6260ea621d280a24b8933089d6df0623bb657",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:173639a16409d7aeba2f5ca7ccd6260ea621d280a24b8933089d6df0623bb657",
-          "name": "gpu-operator-173639a16409d7aeba2f5ca7ccd6260ea621d280a24b8933089d6df0623bb657-annotation"
-        },
-        {
-          "digest": "sha256:173639a16409d7aeba2f5ca7ccd6260ea621d280a24b8933089d6df0623bb657",
-          "image": "nvcr.io/nvidia/gpu-operator@sha256:173639a16409d7aeba2f5ca7ccd6260ea621d280a24b8933089d6df0623bb657",
-          "name": "gpu-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.9.1",
-      "version_original": "1.9.1"
-    },
-    {
       "_id": "61f0ab65020e01cfec3306d1",
       "alm_examples": [
         {
@@ -21374,6 +19792,1370 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.23.4",
       "version_original": "1.23.4"
+    },
+    {
+      "_id": "621eaf1e5c4460caf3124716",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:b1a8b56ff5e1bb5326e1bde4931303358410da9768f0ebf9c08e2c2d8661d742",
+      "bundle_path_digest": "sha256:b1a8b56ff5e1bb5326e1bde4931303358410da9768f0ebf9c08e2c2d8661d742",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.23",
+      "creation_date": "2022-03-01T23:41:18.697000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.23.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T13:24:55.435000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "ImageSet",
+          "plural": "imagesets",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        }
+      ],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
+          "image": "quay.io/tigera/operator@sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
+          "name": "tigera-operator"
+        },
+        {
+          "digest": "sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
+          "image": "quay.io/tigera/operator@sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
+          "name": "operator-f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.23.4",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.23.4",
+      "version_original": "1.23.4"
+    },
+    {
+      "_id": "621ebf7583933ad10b40bc8e",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:cb7f3367ff064cd01dc636a43fd89d5f6c4e6a7004cb7c94b1758b2398e36d71",
+      "bundle_path_digest": "sha256:cb7f3367ff064cd01dc636a43fd89d5f6c4e6a7004cb7c94b1758b2398e36d71",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.25",
+      "creation_date": "2022-03-02T00:51:01.327000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.25.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:38:35.910000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "ImageSet",
+          "plural": "imagesets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        }
+      ],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "image": "quay.io/tigera/operator@sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "name": "tigera-operator"
+        },
+        {
+          "digest": "sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "image": "quay.io/tigera/operator@sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "name": "operator-e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.25.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.25.1",
+      "version_original": "1.25.1"
+    },
+    {
+      "_id": "621ebfd25c4460caf3124718",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:cb7f3367ff064cd01dc636a43fd89d5f6c4e6a7004cb7c94b1758b2398e36d71",
+      "bundle_path_digest": "sha256:cb7f3367ff064cd01dc636a43fd89d5f6c4e6a7004cb7c94b1758b2398e36d71",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.25",
+      "creation_date": "2022-03-02T00:52:34.943000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.25.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:13:04.068000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "ImageSet",
+          "plural": "imagesets",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        }
+      ],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "image": "quay.io/tigera/operator@sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "name": "tigera-operator"
+        },
+        {
+          "digest": "sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "image": "quay.io/tigera/operator@sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "name": "operator-e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.25.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.25.1",
+      "version_original": "1.25.1"
+    },
+    {
+      "_id": "621ebfe5207e0eb391808547",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:cb7f3367ff064cd01dc636a43fd89d5f6c4e6a7004cb7c94b1758b2398e36d71",
+      "bundle_path_digest": "sha256:cb7f3367ff064cd01dc636a43fd89d5f6c4e6a7004cb7c94b1758b2398e36d71",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.25",
+      "creation_date": "2022-03-02T00:52:53.834000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.25.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:13:32.382000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "ImageSet",
+          "plural": "imagesets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        }
+      ],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "image": "quay.io/tigera/operator@sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "name": "tigera-operator"
+        },
+        {
+          "digest": "sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "image": "quay.io/tigera/operator@sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "name": "operator-e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.25.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.25.1",
+      "version_original": "1.25.1"
+    },
+    {
+      "_id": "621ec35783933ad10b40bc8f",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:cb7f3367ff064cd01dc636a43fd89d5f6c4e6a7004cb7c94b1758b2398e36d71",
+      "bundle_path_digest": "sha256:cb7f3367ff064cd01dc636a43fd89d5f6c4e6a7004cb7c94b1758b2398e36d71",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.25",
+      "creation_date": "2022-03-02T01:07:35.737000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.25.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:30:01.779000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "ImageSet",
+          "plural": "imagesets",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        }
+      ],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "image": "quay.io/tigera/operator@sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "name": "tigera-operator"
+        },
+        {
+          "digest": "sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "image": "quay.io/tigera/operator@sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "name": "operator-e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.25.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.25.1",
+      "version_original": "1.25.1"
+    },
+    {
+      "_id": "621ec383207e0eb391808548",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:cb7f3367ff064cd01dc636a43fd89d5f6c4e6a7004cb7c94b1758b2398e36d71",
+      "bundle_path_digest": "sha256:cb7f3367ff064cd01dc636a43fd89d5f6c4e6a7004cb7c94b1758b2398e36d71",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.25",
+      "creation_date": "2022-03-02T01:08:19.323000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.25.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-15T13:15:30.439000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "ImageSet",
+          "plural": "imagesets",
+          "version": "v1"
+        }
+      ],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "image": "quay.io/tigera/operator@sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "name": "tigera-operator"
+        },
+        {
+          "digest": "sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "image": "quay.io/tigera/operator@sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
+          "name": "operator-e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.25.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.25.1",
+      "version_original": "1.25.1"
+    },
+    {
+      "_id": "62210e3d5c46c6464085fd0d",
+      "alm_examples": [
+        {
+          "kind": "HostDeviceNetwork",
+          "metadata": {
+            "name": "hostdevicenetwork-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "kind": "MacvlanNetwork",
+          "metadata": {
+            "name": "macvlannetwork-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "kind": "NicClusterPolicy",
+          "metadata": {
+            "name": "nicclusterpolicy-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia-network-operator/nvidia-network-operator@sha256:2367829886a0f8aaa3705ec0d98118fb53e21c56f02b3e58f8ec312b337dd9c6",
+      "bundle_path_digest": "sha256:2367829886a0f8aaa3705ec0d98118fb53e21c56f02b3e58f8ec312b337dd9c6",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "1.1.0",
+      "creation_date": "2022-03-03T18:51:41.845000+00:00",
+      "csv_description": "## NVIDIA Network Operator\nThe NVIDIA Network Operator simplifies the provisioning and management of NVIDIA networking resources  in a Kubernetes cluster. The operator automatically installs the required host networking software - bringing together all the needed components to provide high-speed network connectivity. These components include the NVIDIA networking driver, Kubernetes device plugin, CNI plugins, IP address management (IPAM) plugin and others.\nThe NVIDIA Network Operator works in conjunction with the NVIDIA GPU Operator to deliver high-throughput, low-latency networking for scale-out, GPU computing clusters.\nThe Network Operator is open-source. For more information on contributions and release artifacts, see the [GitHub repo](https://github.com/Mellanox/network-operator/)\n",
+      "csv_display_name": "NVIDIA Network Operator",
+      "csv_metadata_description": "Deploy and manage NVIDIA networking resources in Kubernetes",
+      "csv_name": "nvidia-network-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-04-05T11:00:02.594000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "nvidia-network-operator",
+      "provided_apis": [
+        {
+          "group": "mellanox.com",
+          "kind": "NicClusterPolicy",
+          "plural": "nicclusterpolicies",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "k8s.cni.cncf.io",
+          "kind": "NetworkAttachmentDefinition",
+          "plural": "network-attachment-definitions",
+          "version": "v1"
+        },
+        {
+          "group": "mellanox.com",
+          "kind": "HostDeviceNetwork",
+          "plural": "hostdevicenetworks",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "mellanox.com",
+          "kind": "MacvlanNetwork",
+          "plural": "macvlannetworks",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:17afa53f1cf3733c8d0cd282c565975ed5de3124dfc2b7c485ad12c97e51c251",
+          "image": "nvcr.io/nvidia/cloud-native/network-operator@sha256:17afa53f1cf3733c8d0cd282c565975ed5de3124dfc2b7c485ad12c97e51c251",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "622119161a79457bc0d5122f",
+      "alm_examples": [
+        {
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "bootstrapperImageSpec": {
+              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise-operator"
+            },
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise",
+              "versionTag": "6.2.10-90.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "redisEnterpriseServicesRiggerImageSpec": {
+              "repository": "registry.connect.redhat.com/redislabs/services-manager"
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:95644b2ccc560118c16350bcd4380db7c08d97258bf1034387e96a9b1814fef5",
+      "bundle_path_digest": "sha256:95644b2ccc560118c16350bcd4380db7c08d97258bf1034387e96a9b1814fef5",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.10",
+      "creation_date": "2022-03-03T19:37:58.330000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.10-4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-05-31T08:44:48.193000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
+          "name": "redis-enterprise-operator-97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31-annotation"
+        },
+        {
+          "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
+          "name": "admission"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "6.2.10-4",
+      "version_original": "6.2.10-4"
     }
   ]
 }

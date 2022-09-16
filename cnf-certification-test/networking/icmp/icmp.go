@@ -58,7 +58,7 @@ func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, 
 
 		if aType == netcommons.MULTUS {
 			if put.SkipMultusNetTests {
-				claimsLog.AddLogLine("Skipping pod %s because it is excluded from %s connectivity tests only", put.Data.Name, aType)
+				claimsLog.AddLogLine("Skipping pod %s because it is excluded from %s connectivity tests only", put.Name, aType)
 				continue
 			}
 			for netKey, multusIPAddress := range put.MultusIPs {
@@ -69,7 +69,7 @@ func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, 
 		}
 
 		const defaultNetKey = "default"
-		defaultIPAddress := put.Data.Status.PodIPs
+		defaultIPAddress := put.Status.PodIPs
 		// The first container is used to get the network namespace
 		ProcessContainerIpsPerNet(put.Containers[0], defaultNetKey, netcommons.PodIPsToStringList(defaultIPAddress), netsUnderTest, aIPVersion)
 	}

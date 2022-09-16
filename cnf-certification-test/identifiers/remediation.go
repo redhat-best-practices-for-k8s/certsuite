@@ -193,4 +193,6 @@ const (
 	NetworkPolicyDenyAllRemediation = `Ensure that a NetworkPolicy with a default deny-all is applied. After the default is applied, apply a network policy to allow the traffic your application requires.`
 
 	CPUIsolationRemediation = `CPU isolation testing is enabled.  Please ensure that all pods adhere to the CPU isolation requirements`
+
+	UID1337Remediation = `Use another process UID that is not 1337`
 )

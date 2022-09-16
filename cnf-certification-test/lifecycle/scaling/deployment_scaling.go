@@ -25,17 +25,18 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 
-	v1app "k8s.io/api/apps/v1"
 	v1autoscaling "k8s.io/api/autoscaling/v1"
 
 	v1machinery "k8s.io/apimachinery/pkg/apis/meta/v1"
 	retry "k8s.io/client-go/util/retry"
 
+	appsv1 "k8s.io/api/apps/v1"
 	hps "k8s.io/client-go/kubernetes/typed/autoscaling/v1"
 )
 
-func TestScaleDeployment(deployment *v1app.Deployment, timeout time.Duration) bool {
+func TestScaleDeployment(deployment *appsv1.Deployment, timeout time.Duration) bool {
 	clients := clientsholder.GetClientsHolder()
 	logrus.Trace("scale deployment not using HPA ", deployment.Namespace, ":", deployment.Name)
 	var replicas int32
@@ -74,7 +75,7 @@ func TestScaleDeployment(deployment *v1app.Deployment, timeout time.Duration) bo
 	return true
 }
 
-func scaleDeploymentHelper(clients *clientsholder.ClientsHolder, deployment *v1app.Deployment, replicas int32, timeout time.Duration, up bool) bool {
+func scaleDeploymentHelper(clients *clientsholder.ClientsHolder, deployment *appsv1.Deployment, replicas int32, timeout time.Duration, up bool) bool {
 	if up {
 		logrus.Trace("scale UP deployment to ", replicas, " replicas ")
 	} else {
@@ -108,7 +109,7 @@ func scaleDeploymentHelper(clients *clientsholder.ClientsHolder, deployment *v1a
 	return true
 }
 
-func TestScaleHpaDeployment(deployment *v1app.Deployment, hpa *v1autoscaling.HorizontalPodAutoscaler, timeout time.Duration) bool {
+func TestScaleHpaDeployment(deployment *provider.Deployment, hpa *v1autoscaling.HorizontalPodAutoscaler, timeout time.Duration) bool {
 	clients := clientsholder.GetClientsHolder()
 	hpscaler := clients.K8sClient.AutoscalingV1().HorizontalPodAutoscalers(deployment.Namespace)
 	var min int32

@@ -61,7 +61,7 @@ func ExecCommandContainerNSEnter(command string,
 	// Getting the debug pod corresponding to the container's node
 	debugPod := env.DebugPods[aContainer.NodeName]
 	if debugPod == nil {
-		err = fmt.Errorf("debug pod not found on Node: %s trying to run command: \" %s \" Namespace: %s Pod: %s container %s err:%s", aContainer.NodeName, command, aContainer.Namespace, aContainer.Podname, aContainer.Data.Name, err)
+		err = fmt.Errorf("debug pod not found on Node: %s trying to run command: \" %s \" Namespace: %s Pod: %s container %s err:%s", aContainer.NodeName, command, aContainer.Namespace, aContainer.Podname, aContainer.Name, err)
 		return "", "", err
 	}
 	o := clientsholder.GetClientsHolder()

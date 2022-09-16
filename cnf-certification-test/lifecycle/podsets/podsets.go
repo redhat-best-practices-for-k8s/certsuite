@@ -23,7 +23,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	v1app "k8s.io/api/apps/v1"
 )
 
 const (
@@ -39,10 +38,10 @@ var WaitForDeploymentSetReady = func(ns, name string, timeout time.Duration) boo
 		dp, err := provider.GetUpdatedDeployment(clients.K8sClient.AppsV1(), ns, name)
 		if err != nil {
 			logrus.Errorf("Error while getting deployment %s (ns: %s), err: %s", name, ns, err)
-		} else if !IsDeploymentReady(dp) {
-			logrus.Errorf("%s is not ready yet", provider.DeploymentToString(dp))
+		} else if !dp.IsDeploymentReady() {
+			logrus.Errorf("%s is not ready yet", dp.ToString())
 		} else {
-			logrus.Tracef("%s is ready!", provider.DeploymentToString(dp))
+			logrus.Tracef("%s is ready!", dp.ToString())
 			return true
 		}
 
@@ -52,41 +51,17 @@ var WaitForDeploymentSetReady = func(ns, name string, timeout time.Duration) boo
 	return false
 }
 
-func IsDeploymentReady(deployment *v1app.Deployment) bool {
-	notReady := true
-	for _, condition := range deployment.Status.Conditions {
-		if condition.Type == v1app.DeploymentAvailable {
-			notReady = false
-			break
-		}
-	}
-	var replicas int32
-	if deployment.Spec.Replicas != nil {
-		replicas = *(deployment.Spec.Replicas)
-	} else {
-		replicas = 1
-	}
-	if notReady ||
-		deployment.Status.UnavailableReplicas != 0 ||
-		deployment.Status.ReadyReplicas != replicas ||
-		deployment.Status.AvailableReplicas != replicas ||
-		deployment.Status.UpdatedReplicas != replicas {
-		return false
-	}
-	return true
-}
-
 func WaitForStatefulSetReady(ns, name string, timeout time.Duration) bool {
 	logrus.Trace("check if statefulset ", ns, ":", name, " is ready ")
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
 		ss, err := provider.GetUpdatedStatefulset(clients.K8sClient.AppsV1(), ns, name)
-		if err == nil && IsStatefulSetReady(ss) {
-			logrus.Tracef("%s is ready, err: %s", provider.StatefulsetToString(ss), err)
+		if err == nil && ss.IsStatefulSetReady() {
+			logrus.Tracef("%s is ready, err: %s", ss.ToString(), err)
 			return true
 		} else if err != nil {
-			logrus.Errorf("Error while getting the %s, err: %s", provider.StatefulsetToString(ss), err)
+			logrus.Errorf("Error while getting the %s, err: %s", ss.ToString(), err)
 		}
 		time.Sleep(time.Second)
 	}
@@ -94,38 +69,23 @@ func WaitForStatefulSetReady(ns, name string, timeout time.Duration) bool {
 	return false
 }
 
-func IsStatefulSetReady(statefulset *v1app.StatefulSet) bool {
-	var replicas int32
-	if statefulset.Spec.Replicas != nil {
-		replicas = *(statefulset.Spec.Replicas)
-	} else {
-		replicas = 1
-	}
-	if statefulset.Status.ReadyReplicas != replicas ||
-		statefulset.Status.CurrentReplicas != replicas ||
-		statefulset.Status.UpdatedReplicas != replicas {
-		return false
-	}
-	return true
-}
-
 func WaitForAllPodSetReady(env *provider.TestEnvironment, timeoutPodSetReady time.Duration) (claimsLog loghelper.CuratedLogLines, atLeastOnePodsetNotReady bool) {
 	atLeastOnePodsetNotReady = false
 	for _, dut := range env.Deployments {
 		isReady := WaitForDeploymentSetReady(dut.Namespace, dut.Name, timeoutPodSetReady)
 		if isReady {
-			claimsLog.AddLogLine("%s Status: OK", provider.DeploymentToString(dut))
+			claimsLog.AddLogLine("%s Status: OK", dut.ToString())
 		} else {
-			claimsLog.AddLogLine("%s Status: NOK", provider.DeploymentToString(dut))
+			claimsLog.AddLogLine("%s Status: NOK", dut.ToString())
 			atLeastOnePodsetNotReady = true
 		}
 	}
 	for _, sut := range env.StatetfulSets {
 		isReady := WaitForStatefulSetReady(sut.Namespace, sut.Name, timeoutPodSetReady)
 		if isReady {
-			claimsLog.AddLogLine("%s Status: OK", provider.StatefulsetToString(sut))
+			claimsLog.AddLogLine("%s Status: OK", sut.ToString())
 		} else {
-			claimsLog.AddLogLine("%s Status: NOK", provider.StatefulsetToString(sut))
+			claimsLog.AddLogLine("%s Status: NOK", sut.ToString())
 			atLeastOnePodsetNotReady = true
 		}
 	}
@@ -135,11 +95,11 @@ func WaitForAllPodSetReady(env *provider.TestEnvironment, timeoutPodSetReady tim
 func GetAllNodesForAllPodSets(pods []*provider.Pod) (nodes map[string]bool) {
 	nodes = make(map[string]bool)
 	for _, put := range pods {
-		for _, or := range put.Data.OwnerReferences {
+		for _, or := range put.OwnerReferences {
 			if or.Kind != ReplicaSetString && or.Kind != StatefulsetString {
 				continue
 			}
-			nodes[put.Data.Spec.NodeName] = true
+			nodes[put.Spec.NodeName] = true
 			break
 		}
 	}

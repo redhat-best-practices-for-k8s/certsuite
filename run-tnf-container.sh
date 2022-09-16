@@ -21,7 +21,7 @@ export REQUIRED_VARS_ERROR_MESSAGES=(
 	'OUTPUT_LOC is required. Use the -o option to specify the output location for the test results.'
 )
 
-export TNF_IMAGE_NAME=test-network-function
+export TNF_IMAGE_NAME=cnf-certification-test
 export TNF_IMAGE_TAG=latest
 export TNF_OFFICIAL_ORG=quay.io/testnetworkfunction/
 export TNF_OFFICIAL_IMAGE="${TNF_OFFICIAL_ORG}${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG}"
@@ -29,11 +29,12 @@ export TNF_CMD="./run-cnf-suites.sh"
 export OUTPUT_ARG="-o"
 export FOCUS_ARG="-f"
 export SKIP_ARG="-s"
+export LABEL_ARG="-l"
 export CONTAINER_NETWORK_MODE='host'
 
 usage() {
 	read -d '' usage_prompt <<- EOF
-	Usage: $0 -t TNFCONFIG -o OUTPUT_LOC [-i IMAGE] [-k KUBECONFIG] [-n NETWORK_MODE] [-d DNS_RESOLVER_ADDRESS] -f SUITE [... SUITE]
+	Usage: $0 -t TNFCONFIG -o OUTPUT_LOC [-i IMAGE] [-k KUBECONFIG] [-n NETWORK_MODE] [-d DNS_RESOLVER_ADDRESS] [-l LABEL]
 
 	Configure and run the containerised TNF test offering.
 
@@ -49,8 +50,7 @@ usage() {
 	  -n: set the network mode of the container.
 	  -d: set the DNS resolver address for the test containers started by docker, may be required with 
 	      certain docker version if the kubeconfig contains host names
-    -f: Set the suites that should be tested, multiple suites can be supplied
-    -s: Set the test cases that should be skipped
+      -l: Set the test labels that should be tested
 
 	Kubeconfig lookup order
 	  1. If -k is specified, use the paths provided with the -k option.
@@ -65,13 +65,13 @@ usage() {
 	  If it succeeds, the networking and access-control tests will be run using the autodiscovered configuration.
 	  The test results will be saved to the '~/tnf/output' directory on the host.
 
-	  $0 -k ~/.kube/ABC:~/.kube/DEF -t ~/tnf/config -o ~/tnf/output -f access-control networking
+	  $0 -k ~/.kube/ABC:~/.kube/DEF -t ~/tnf/config -o ~/tnf/output -l "access-control,networking"
 
 	  The command will bind two kubeconfig files (~/.kube/ABC and ~/.kube/DEF) to the TNF container,
 	  run the access-control and networking tests, and save the test results into the '~/tnf/output' directory
 	  on the host.
 
-	  $0 -i custom-tnf-image:v1.2-dev -t ~/tnf/config -o ~/tnf/output -f access-control networking
+	  $0 -i custom-tnf-image:v1.2-dev -t ~/tnf/config -o ~/tnf/output -l "access-control,networking"
 
 	  The command will run the access-control and networking tests as implemented in the custom-tnf-image:v1.2-dev
 	  local image set by the -i parameter. The test results will be saved to the '~/tnf/output' directory.
@@ -182,7 +182,7 @@ while [[ $1 == -* ]]; do
           echo "-n $CONTAINER_NETWORK_MODE"
           ;;
       -d) if (($# > 1)); then
-            export DNS_ARG=$2; shift 2
+            export DNS_ARG=$2; shift
           else
             echo "-d requires an argument" 1>&2
             exit 1
@@ -204,7 +204,7 @@ while [[ $1 == -* ]]; do
         ;;
       -f)
         ONCE=true
-        while (( "$#" >= 2 )) && ! [[ $2 = --* ]]  && ! [[ $2 = -* ]] ; do
+        while (( "$#" >= 2 )) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]] ; do
           if [ $ONCE = true ]; then
             TNF_FOCUS_SUITES="$2"
             ONCE=false
@@ -214,6 +214,15 @@ while [[ $1 == -* ]]; do
         done
         export TNF_FOCUS_SUITES
         echo "-f $TNF_FOCUS_SUITES"
+        ;;
+      -l)
+        while (( "$#" >= 2 )) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]] ; do
+          TNF_LABEL="$TNF_LABEL $2"
+          shift
+        done
+        TNF_LABEL="$(echo -e "${TNF_LABEL}" | sed -e 's/^[[:space:]]*//')" # strip the leading whitespace
+        export TNF_LABEL
+        echo "-l $TNF_LABEL"
         ;;
       --) shift; break;;
       -*) echo "invalid option: $1" 1>&2; usage_error;;
