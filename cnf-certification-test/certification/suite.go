@@ -172,8 +172,8 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
 
 	m := len(failedContainersNoDigest)
 	if m > 0 {
-		tnf.ClaimFilePrintf("Containers that are not certified by digest there is no digest on those container: %+v", failedContainers)
-		logrus.Warnf("Containers that are not certified by digest there is no digest on those container: %+v", failedContainers)
+		tnf.ClaimFilePrintf("Containers that are not certified by digest because of empty digest: %+v", failedContainersNoDigest)
+		logrus.Warnf("Containers that are not certified by digest because of empty digest: %+v", failedContainersNoDigest)
 	}
 	n := len(failedContainers)
 	if n > 0 {
