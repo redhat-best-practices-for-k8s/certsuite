@@ -147,7 +147,7 @@ func FilterIPListByIPVersion(ipList []string, aIPVersion IPVersion) []string {
 	return filteredIPList
 }
 
-func FindRogueContainersListeningToPorts(containers []*provider.Container, portsToTest map[int32]bool) []string {
+func FindRogueContainersDeclaredListeningToPorts(containers []*provider.Container, portsToTest map[int32]bool) []string {
 	var rogueContainers []string
 	for _, cut := range containers {
 		for _, port := range cut.Ports {

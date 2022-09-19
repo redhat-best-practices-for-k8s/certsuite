@@ -204,7 +204,7 @@ func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 	// List of all ports reserved by OpenShift
 	OCPReservedPorts := map[int32]bool{22623: true, 22624: true}
 
-	rogueContainers := netcommons.FindRogueContainersListeningToPorts(env.Containers, OCPReservedPorts)
+	rogueContainers := netcommons.FindRogueContainersDeclaredListeningToPorts(env.Containers, OCPReservedPorts)
 	roguePods, failedContainers := netcommons.FindRoguePodsListeningToPorts(env.Pods, OCPReservedPorts)
 
 	if n := len(rogueContainers); n > 0 {
@@ -240,7 +240,7 @@ func testPartnerSpecificTCPPorts(env *provider.TestEnvironment) {
 		15000: true,
 	}
 
-	rogueContainers := netcommons.FindRogueContainersListeningToPorts(env.Containers, ReservedPorts)
+	rogueContainers := netcommons.FindRogueContainersDeclaredListeningToPorts(env.Containers, ReservedPorts)
 	roguePods, failedContainers := netcommons.FindRoguePodsListeningToPorts(env.Pods, ReservedPorts)
 
 	if n := len(rogueContainers); n > 0 {
