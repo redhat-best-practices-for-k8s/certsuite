@@ -70,7 +70,7 @@ Version|v1.0.0
 Description|http://test-network-function.com/testcases/access-control/no-1337-uid Checks that all pods are not using the securityContext UID 1337
 Result Type|informative
 Suggested Remediation|Use another process UID that is not 1337
-Best Practice Reference|https://TODO Section 4.6.24
+Best Practice Reference|https://TODO Section 5.3.7
 Exception Process|There is no documented exception process for this.
 #### one-process-per-container
 
@@ -307,7 +307,7 @@ Version|v1.0.0
 Description|http://test-network-function.com/testcases/affiliated-certification/container-is-certified-digest Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).
 Result Type|normative
 Suggested Remediation|Ensure that your container has passed the Red Hat Container Certification Program (CCP).
-Best Practice Reference|extended
+Best Practice Reference|https://TODO Section 4.6.24
 Exception Process|There is no documented exception process for this.
 #### helmchart-is-certified
 

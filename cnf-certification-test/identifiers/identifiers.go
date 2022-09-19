@@ -134,7 +134,7 @@ The label value is not important, only its presence.`,
 		informativeResult,
 		NoDocumentedProcess,
 		versionOne,
-		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		bestPracticeDocV1dot4URL+" Section 5.3.7",
 		tagExtended)
 	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedDigestIdentifier = AddCatalogEntry(
@@ -145,6 +145,7 @@ The label value is not important, only its presence.`,
 		normativeResult,
 		NoDocumentedProcess,
 		versionOne,
+		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		tagExtended)
 	return Catalog
 }
