@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 Red Hat, Inc.
+// Copyright (C) 2020-2022 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ func testContainersImageTag(env *provider.TestEnvironment) {
 		logrus.Debugln("check container ", cut.String(), " image should be tagged ")
 		if cut.ContainerImageIdentifier.Tag == "" {
 			badcontainers = append(badcontainers, cut.String())
-			logrus.Debugf("Container %s is missing image tag(s)", cut.Data.Name)
+			logrus.Debugf("Container %s is missing image tag(s)", cut.Name)
 		}
 	}
 	if len(badcontainers) > 0 {

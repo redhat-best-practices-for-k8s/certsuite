@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 Red Hat, Inc.
+// Copyright (C) 2020-2022 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -126,7 +126,7 @@ func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
 		// First get the ports declared in the Pod's containers spec
 		declaredPorts := make(map[netutil.PortInfo]bool)
 		for _, cut := range put.Containers {
-			for _, port := range cut.Data.Ports {
+			for _, port := range cut.Ports {
 				portInfo.PortNumber = int(port.ContainerPort)
 				portInfo.Protocol = string(port.Protocol)
 				declaredPorts[portInfo] = true
@@ -206,7 +206,7 @@ func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 
 	// First check if any of the containers under test has declared a port reserved by OCP
 	for _, cut := range env.Containers {
-		for _, port := range cut.Data.Ports {
+		for _, port := range cut.Ports {
 			if OCPReservedPorts[port.ContainerPort] {
 				tnf.ClaimFilePrintf("%s has declared a port (%d) reserved by OpenShift", cut, port.ContainerPort)
 				rogueContainers = append(rogueContainers, cut.String())
@@ -337,12 +337,12 @@ func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
 			logrus.Debugf("Testing network policy %s against pod %s", env.NetworkPolicies[index].Name, put.String())
 
 			// Skip any network policies that don't match the namespace of the pod we are testing.
-			if env.NetworkPolicies[index].Namespace != put.Data.Namespace {
+			if env.NetworkPolicies[index].Namespace != put.Namespace {
 				continue
 			}
 
 			// Match the pod namespace with the network policy namespace.
-			if policies.LabelsMatch(env.NetworkPolicies[index].Spec.PodSelector, put.Data.Labels) {
+			if policies.LabelsMatch(env.NetworkPolicies[index].Spec.PodSelector, put.Labels) {
 				if !denyAllEgressFound {
 					denyAllEgressFound = policies.IsNetworkPolicyCompliant(&env.NetworkPolicies[index], networkingv1.PolicyTypeEgress)
 				}
@@ -354,13 +354,13 @@ func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
 
 		// Network policy has not been found that contains a deny-all rule for both ingress and egress.
 		if !denyAllIngressFound {
-			podsMissingDenyAllDefaultPolicies = append(podsMissingDenyAllDefaultPolicies, put.Data.Name)
-			tnf.ClaimFilePrintf("%s was found to not have a default ingress deny-all network policy.", put.Data.Name)
+			podsMissingDenyAllDefaultPolicies = append(podsMissingDenyAllDefaultPolicies, put.Name)
+			tnf.ClaimFilePrintf("%s was found to not have a default ingress deny-all network policy.", put.Name)
 		}
 
 		if !denyAllEgressFound {
-			podsMissingDenyAllDefaultPolicies = append(podsMissingDenyAllDefaultPolicies, put.Data.Name)
-			tnf.ClaimFilePrintf("%s was found to not have a default egress deny-all network policy.", put.Data.Name)
+			podsMissingDenyAllDefaultPolicies = append(podsMissingDenyAllDefaultPolicies, put.Name)
+			tnf.ClaimFilePrintf("%s was found to not have a default egress deny-all network policy.", put.Name)
 		}
 	}
 

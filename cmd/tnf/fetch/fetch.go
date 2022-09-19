@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	containersCatalogSizeURL = "https://catalog.redhat.com/api/containers/v1/images?filter=certified==true&page=0&include=total,page_size"
+	// containersCatalogSizeURL = "https://catalog.redhat.com/api/containers/v1/images?filter=certified==true&page=0&include=total,page_size"
 	containersCatalogPageURL = "https://catalog.redhat.com/api/containers/v1/images?filter=certified==true&page_size=%d&page=%d&include=data.repositories,data.docker_image_digest,data.architecture"
 	operatorsCatalogSizeURL  = "https://catalog.redhat.com/api/containers/v1/operators/bundles?filter=organization==certified-operators"
 	operatorsCatalogPageURL  = "https://catalog.redhat.com/api/containers/v1/operators/bundles?filter=organization==certified-operators&page_size=%d&page=%d"
@@ -25,6 +25,11 @@ var (
 	helmRelativePath         = "%s/cmd/tnf/fetch/data/helm/helm.db"
 	certifiedcatalogdata     = "%s/cmd/tnf/fetch/data/archive.json"
 	operatorFileFormat       = "operator_catalog_page_%d_%d.db"
+)
+
+const (
+	// Pyxies guarantees that 100 is a time-proof value. Hardcoding it is a bad idea, though.
+	defaultContainersCatalogPageSize = 100
 )
 
 var (
@@ -257,22 +262,7 @@ func getOperatorCatalog(data *CertifiedCatalog) error {
 	return nil
 }
 
-func getContainerCatalogSize() (total, pagesize uint, err error) {
-	log.Infof("Getting containers catalog size, url: %s", containersCatalogSizeURL)
-	body, err := getHTTPBody(containersCatalogSizeURL)
-	if err != nil {
-		return 0, 0, fmt.Errorf("failed to get url %s response body: %w", containersCatalogSizeURL, err)
-	}
-
-	var aCatalog offlinecheck.ContainerPageCatalog
-	err = json.Unmarshal(body, &aCatalog)
-	if err != nil {
-		return 0, 0, fmt.Errorf("failed to unmarshall body from url %s: %w, body: %s", containersCatalogSizeURL, err, string(body))
-	}
-	return aCatalog.Total, aCatalog.PageSize, nil
-}
-
-func getContainerCatalogPage(page, size uint, db map[string]*offlinecheck.ContainerCatalogEntry) error {
+func getContainerCatalogPage(page, size uint, db map[string]*offlinecheck.ContainerCatalogEntry) (entries int, err error) {
 	start := time.Now()
 
 	url := fmt.Sprintf(containersCatalogPageURL, size, page)
@@ -280,19 +270,19 @@ func getContainerCatalogPage(page, size uint, db map[string]*offlinecheck.Contai
 
 	body, err := getHTTPBody(url)
 	if err != nil {
-		return fmt.Errorf("failed to get containers page %s: %w", url, err)
+		return 0, fmt.Errorf("failed to get containers page %s: %w", url, err)
 	}
 
 	log.Info("Time to fetch binary data: ", time.Since(start))
 
 	start = time.Now()
-	err = offlinecheck.LoadBinary(body, db)
+	entries, err = offlinecheck.LoadBinary(body, db)
 	if err != nil {
-		return fmt.Errorf("failed to load binary data: %w", err)
+		return 0, fmt.Errorf("failed to load binary data: %w", err)
 	}
 
 	log.Info("Time to load the data: ", time.Since(start))
-	return nil
+	return entries, nil
 }
 
 func serializeContainersDB(db map[string]*offlinecheck.ContainerCatalogEntry) error {
@@ -320,41 +310,30 @@ func serializeContainersDB(db map[string]*offlinecheck.ContainerCatalogEntry) er
 	return nil
 }
 
-//nolint:funlen
 func getContainerCatalog(data *CertifiedCatalog) error {
 	start := time.Now()
 	db := make(map[string]*offlinecheck.ContainerCatalogEntry)
-	total, pageSize, err := getContainerCatalogSize()
-	if err != nil {
-		return fmt.Errorf("failed to get first page: %w", err)
-	}
 
-	log.Infof("Certified containers in the online catalog: %d, page size: %d", total, pageSize)
-	if total == uint(data.Containers) {
-		log.Info("No new certified container found")
-		return nil
-	}
-
-	err = removeContainersDB()
+	err := removeContainersDB()
 	if err != nil {
 		return fmt.Errorf("failed to remove containers db: %w", err)
 	}
 
-	pages := total / pageSize
-	remaining := total - pages*pageSize
-	log.Infof("Downloading %d pages of size %d plus another page for the %d remaining entries.",
-		pages, pageSize, remaining)
+	log.Infof("Downloading pages of size %d entries.", defaultContainersCatalogPageSize)
 
-	for page := uint(0); page < pages; page++ {
-		err = getContainerCatalogPage(page, pageSize, db)
-		if err != nil {
-			return fmt.Errorf("failed to get containers page %d (total %d): %w", pages, total, err)
+	total := 0
+	for page := uint(0); ; page++ {
+		entries, pageError := getContainerCatalogPage(page, defaultContainersCatalogPageSize, db)
+		if pageError != nil {
+			return fmt.Errorf("failed to get containers page %d: %w", page, pageError)
 		}
-	}
-	if remaining != 0 {
-		err = getContainerCatalogPage(pages, remaining, db)
-		if err != nil {
-			return fmt.Errorf("failed to get remaining containers page %d (total %d): %w", pages, total, err)
+
+		log.Infof("Container page %d downloaded. Entries: %d", page, entries)
+		total += entries
+
+		// Last page?
+		if entries != defaultContainersCatalogPageSize {
+			break
 		}
 	}
 
@@ -364,8 +343,9 @@ func getContainerCatalog(data *CertifiedCatalog) error {
 		return fmt.Errorf("failed to serialize containers db: %w", err)
 	}
 
-	data.Containers = int(total)
+	data.Containers = total
 
+	log.Infof("Certified containers in the online catalog: %d, page size: %d", total, defaultContainersCatalogPageSize)
 	log.Info("Time to serialize all the container: ", time.Since(serializeStart))
 	log.Info("Time to process all the container: ", time.Since(start))
 

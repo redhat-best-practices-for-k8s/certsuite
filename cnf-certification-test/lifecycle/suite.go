@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 Red Hat, Inc.
+// Copyright (C) 2020-2022 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -155,8 +155,8 @@ func testContainersPreStop(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " pre stop lifecycle ")
 
-		if cut.Data.Lifecycle == nil || (cut.Data.Lifecycle != nil && cut.Data.Lifecycle.PreStop == nil) {
-			badcontainers = append(badcontainers, cut.Data.Name)
+		if cut.Lifecycle == nil || (cut.Lifecycle != nil && cut.Lifecycle.PreStop == nil) {
+			badcontainers = append(badcontainers, cut.Name)
 			tnf.ClaimFilePrintf("%s does not have preStop defined", cut)
 		}
 	}
@@ -171,9 +171,9 @@ func testContainersImagePolicy(env *provider.TestEnvironment) {
 	badcontainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " pull policy, should be ", corev1.PullIfNotPresent)
-		if cut.Data.ImagePullPolicy != corev1.PullIfNotPresent {
-			badcontainers = append(badcontainers, "{"+cut.String()+": is using"+string(cut.Data.ImagePullPolicy)+"}")
-			logrus.Errorln("container ", cut.Data.Name, " is using ", cut.Data.ImagePullPolicy, " as image policy")
+		if cut.ImagePullPolicy != corev1.PullIfNotPresent {
+			badcontainers = append(badcontainers, "{"+cut.String()+": is using"+string(cut.ImagePullPolicy)+"}")
+			logrus.Errorln("container ", cut.Name, " is using ", cut.ImagePullPolicy, " as image policy")
 		}
 	}
 	if len(badcontainers) > 0 {
@@ -186,9 +186,9 @@ func testContainersReadinessProbe(env *provider.TestEnvironment) {
 	badcontainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " readiness probe ")
-		if cut.Data.ReadinessProbe == nil {
+		if cut.ReadinessProbe == nil {
 			badcontainers = append(badcontainers, cut.String())
-			logrus.Errorln("container ", cut.Data.Name, " does not have ReadinessProbe defined")
+			logrus.Errorln("container ", cut.Name, " does not have ReadinessProbe defined")
 		}
 	}
 	if len(badcontainers) > 0 {
@@ -201,9 +201,9 @@ func testContainersLivenessProbe(env *provider.TestEnvironment) {
 	badcontainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " liveness probe ")
-		if cut.Data.LivenessProbe == nil {
+		if cut.LivenessProbe == nil {
 			badcontainers = append(badcontainers, cut.String())
-			logrus.Errorln("container ", cut.Data.Name, " does not have livenessProbe defined")
+			logrus.Errorln("container ", cut.Name, " does not have livenessProbe defined")
 		}
 	}
 	if len(badcontainers) > 0 {
@@ -216,9 +216,9 @@ func testContainersStartupProbe(env *provider.TestEnvironment) {
 	badcontainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " startup probe ")
-		if cut.Data.StartupProbe == nil {
+		if cut.StartupProbe == nil {
 			badcontainers = append(badcontainers, cut.String())
-			logrus.Errorln("container ", cut.Data.Name, " does not have startupProbe defined")
+			logrus.Errorln("container ", cut.Name, " does not have startupProbe defined")
 		}
 	}
 	if len(badcontainers) > 0 {
@@ -231,8 +231,8 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 	ginkgo.By("Testing owners of CNF pod, should be replicas Set")
 	badPods := []string{}
 	for _, put := range env.Pods {
-		logrus.Debugln("check pod ", put.Data.Namespace, " ", put.Data.Name, " owner reference")
-		o := ownerreference.NewOwnerReference(put.Data)
+		logrus.Debugln("check pod ", put.Namespace, " ", put.Name, " owner reference")
+		o := ownerreference.NewOwnerReference(put.Pod)
 		o.RunTest()
 		if o.GetResults() != testhelper.SUCCESS {
 			badPods = append(badPods, put.String())
@@ -247,13 +247,13 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) {
 	var badPods []*corev1.Pod
 	for _, put := range env.NonGuaranteedPods {
-		if len(put.Data.Spec.NodeSelector) != 0 {
-			tnf.ClaimFilePrintf("ERROR: %s has a node selector clause. Node selector: %v", put, &put.Data.Spec.NodeSelector)
-			badPods = append(badPods, put.Data)
+		if len(put.Spec.NodeSelector) != 0 {
+			tnf.ClaimFilePrintf("ERROR: %s has a node selector clause. Node selector: %v", put, &put.Spec.NodeSelector)
+			badPods = append(badPods, put.Pod)
 		}
-		if put.Data.Spec.Affinity != nil && put.Data.Spec.Affinity.NodeAffinity != nil {
-			tnf.ClaimFilePrintf("ERROR: %s has a node affinity clause. Node affinity: %v", put, put.Data.Spec.Affinity.NodeAffinity)
-			badPods = append(badPods, put.Data)
+		if put.Spec.Affinity != nil && put.Spec.Affinity.NodeAffinity != nil {
+			tnf.ClaimFilePrintf("ERROR: %s has a node affinity clause. Node affinity: %v", put, put.Spec.Affinity.NodeAffinity)
+			badPods = append(badPods, put.Pod)
 		}
 	}
 	if n := len(badPods); n > 0 {
@@ -415,10 +415,10 @@ func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
 	// Look through all of the pods, matching their persistent volumes to the list of overall cluster PVs and checking their reclaim status.
 	for _, put := range env.Pods {
 		for index := range env.PersistentVolumes {
-			for pvIndex := range put.Data.Spec.Volumes {
-				if put.Data.Spec.Volumes[pvIndex].Name == env.PersistentVolumes[index].Name && env.PersistentVolumes[index].Spec.PersistentVolumeReclaimPolicy != corev1.PersistentVolumeReclaimDelete {
+			for pvIndex := range put.Spec.Volumes {
+				if put.Spec.Volumes[pvIndex].Name == env.PersistentVolumes[index].Name && env.PersistentVolumes[index].Spec.PersistentVolumeReclaimPolicy != corev1.PersistentVolumeReclaimDelete {
 					persistentVolumesBadReclaim = append(persistentVolumesBadReclaim, env.PersistentVolumes[index].Name)
-					tnf.ClaimFilePrintf("Persistent Volume: %s in namespace %s has been found without a reclaim policy of DELETE.", env.PersistentVolumes[index].Name, env.PersistentVolumes[index].Namespace)
+					tnf.ClaimFilePrintf("Persistent Volume: %s has been found without a reclaim policy of DELETE.", env.PersistentVolumes[index].Name)
 				}
 			}
 		}
@@ -446,7 +446,7 @@ func testCPUIsolation(env *provider.TestEnvironment) {
 
 	for _, put := range env.GuaranteedPods {
 		if !put.IsCPUIsolationCompliant() {
-			podsMissingIsolationRequirements[put.Data.Name] = true
+			podsMissingIsolationRequirements[put.Name] = true
 		}
 	}
 

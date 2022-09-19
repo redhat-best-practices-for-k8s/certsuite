@@ -24,16 +24,16 @@ func AreResourcesIdentical(p *Pod) bool {
 	// Pods may contain more than one container.  All containers must conform to the CPU isolation requirements.
 	for _, cut := range p.Containers {
 		// Resources must be specified
-		if len(cut.Data.Resources.Requests) == 0 || len(cut.Data.Resources.Limits) == 0 {
+		if len(cut.Resources.Requests) == 0 || len(cut.Resources.Limits) == 0 {
 			logrus.Debugf("%s has been found with undefined requests or limits.", cut.String())
 			return false
 		}
 
 		// Gather the values
-		cpuRequests := cut.Data.Resources.Requests.Cpu()
-		cpuLimits := cut.Data.Resources.Limits.Cpu()
-		memoryRequests := cut.Data.Resources.Requests.Memory()
-		memoryLimits := cut.Data.Resources.Limits.Memory()
+		cpuRequests := cut.Resources.Requests.Cpu()
+		cpuLimits := cut.Resources.Limits.Cpu()
+		memoryRequests := cut.Resources.Requests.Memory()
+		memoryLimits := cut.Resources.Limits.Memory()
 
 		// Check for mismatches
 		if cpuRequests.Value() != cpuLimits.Value() {
@@ -58,14 +58,14 @@ func AreCPUResourcesWholeUnits(p *Pod) bool {
 	// Pods may contain more than one container.  All containers must conform to the CPU isolation requirements.
 	for _, cut := range p.Containers {
 		// Resources must be specified
-		if len(cut.Data.Resources.Requests) == 0 || len(cut.Data.Resources.Limits) == 0 {
+		if len(cut.Resources.Requests) == 0 || len(cut.Resources.Limits) == 0 {
 			logrus.Debugf("%s has been found with undefined requests or limits.", cut.String())
 			return false
 		}
 
 		// Gather the values
-		cpuRequests := cut.Data.Resources.Requests.Cpu().MilliValue()
-		cpuLimits := cut.Data.Resources.Limits.Cpu().MilliValue()
+		cpuRequests := cut.Resources.Requests.Cpu().MilliValue()
+		cpuLimits := cut.Resources.Limits.Cpu().MilliValue()
 
 		if !isInteger(cpuRequests) {
 			logrus.Debugf("%s has CPU requests %d (milli) that has to be a whole unit.", cut.String(), cpuRequests)
@@ -81,7 +81,7 @@ func AreCPUResourcesWholeUnits(p *Pod) bool {
 }
 
 func IsRuntimeClassNameSpecified(p *Pod) bool {
-	return p.Data.Spec.RuntimeClassName != nil
+	return p.Spec.RuntimeClassName != nil
 }
 
 func LoadBalancingDisabled(p *Pod) bool {
@@ -92,7 +92,7 @@ func LoadBalancingDisabled(p *Pod) bool {
 	cpuLoadBalancingDisabled := false
 	irqLoadBalancingDisabled := false
 
-	if v, ok := p.Data.ObjectMeta.Annotations["cpu-load-balancing.crio.io"]; ok {
+	if v, ok := p.ObjectMeta.Annotations["cpu-load-balancing.crio.io"]; ok {
 		if v == disableVar {
 			cpuLoadBalancingDisabled = true
 		} else {
@@ -102,7 +102,7 @@ func LoadBalancingDisabled(p *Pod) bool {
 		logrus.Debugf("Annotation cpu-load-balancing.crio.io is missing.")
 	}
 
-	if v, ok := p.Data.ObjectMeta.Annotations["irq-load-balancing.crio.io"]; ok {
+	if v, ok := p.ObjectMeta.Annotations["irq-load-balancing.crio.io"]; ok {
 		if v == disableVar {
 			irqLoadBalancingDisabled = true
 		} else {
