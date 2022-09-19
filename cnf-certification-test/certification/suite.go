@@ -155,8 +155,8 @@ func testHelmCertified(env *provider.TestEnvironment) {
 		ginkgo.Fail(fmt.Sprintf("%d helms chart are not certified.", len(failedHelmCharts)))
 	}
 }
+
 func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
-	failedContainersNoDigest := []configuration.ContainerImageIdentifier{}
 	failedContainers := []configuration.ContainerImageIdentifier{}
 	for _, c := range env.Containers {
 		if c.ContainerImageIdentifier.Name == "" || c.ContainerImageIdentifier.Repository == "" {
@@ -164,23 +164,12 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
 			continue
 		}
 		if c.ContainerImageIdentifier.Digest == "" {
-			failedContainersNoDigest = append(failedContainersNoDigest, c.ContainerImageIdentifier)
+			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
+			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
 		} else if !testContainerCertification(c.ContainerImageIdentifier) {
+			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s)", c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
 			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
 		}
 	}
-
-	m := len(failedContainersNoDigest)
-	if m > 0 {
-		tnf.ClaimFilePrintf("Containers that are not certified by digest because of empty digest: %+v", failedContainersNoDigest)
-		logrus.Warnf("Containers that are not certified by digest because of empty digest: %+v", failedContainersNoDigest)
-	}
-	n := len(failedContainers)
-	if n > 0 {
-		tnf.ClaimFilePrintf("Containers that are not certified by digest: %+v", failedContainers)
-		logrus.Warnf("Containers that are not certified by digest: %+v", failedContainers)
-	}
-	if m > 0 || n > 0 {
-		ginkgo.Fail(fmt.Sprintf("%d container images are not certified by their digest.", n+m))
-	}
+	testhelper.AddTestResultLog("Non-compliant", failedContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
