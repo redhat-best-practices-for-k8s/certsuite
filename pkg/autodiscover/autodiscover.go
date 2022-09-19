@@ -50,30 +50,31 @@ const (
 )
 
 type DiscoveredTestData struct {
-	Env                  configuration.TestParameters
-	TestData             configuration.TestConfiguration
-	Pods                 []corev1.Pod
-	AllPods              []corev1.Pod
-	DebugPods            []corev1.Pod
-	ResourceQuotaItems   []corev1.ResourceQuota
-	PodDisruptionBudgets []policyv1.PodDisruptionBudget
-	NetworkPolicies      []networkingv1.NetworkPolicy
-	Crds                 []*apiextv1.CustomResourceDefinition
-	Namespaces           []string
-	AbnormalEvents       []corev1.Event
-	Csvs                 []olmv1Alpha.ClusterServiceVersion
-	Deployments          []appsv1.Deployment
-	StatefulSet          []appsv1.StatefulSet
-	PersistentVolumes    []corev1.PersistentVolume
-	Services             []*corev1.Service
-	Hpas                 map[string]*scalingv1.HorizontalPodAutoscaler
-	Subscriptions        []olmv1Alpha.Subscription
-	HelmChartReleases    map[string][]*release.Release
-	K8sVersion           string
-	OpenshiftVersion     string
-	OCPStatus            string
-	Nodes                *corev1.NodeList
-	Istio                bool
+	Env                    configuration.TestParameters
+	TestData               configuration.TestConfiguration
+	Pods                   []corev1.Pod
+	AllPods                []corev1.Pod
+	DebugPods              []corev1.Pod
+	ResourceQuotaItems     []corev1.ResourceQuota
+	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
+	NetworkPolicies        []networkingv1.NetworkPolicy
+	Crds                   []*apiextv1.CustomResourceDefinition
+	Namespaces             []string
+	AbnormalEvents         []corev1.Event
+	Csvs                   []olmv1Alpha.ClusterServiceVersion
+	Deployments            []appsv1.Deployment
+	StatefulSet            []appsv1.StatefulSet
+	PersistentVolumes      []corev1.PersistentVolume
+	PersistentVolumeClaims []corev1.PersistentVolumeClaim
+	Services               []*corev1.Service
+	Hpas                   map[string]*scalingv1.HorizontalPodAutoscaler
+	Subscriptions          []olmv1Alpha.Subscription
+	HelmChartReleases      map[string][]*release.Release
+	K8sVersion             string
+	OpenshiftVersion       string
+	OCPStatus              string
+	Nodes                  *corev1.NodeList
+	Istio                  bool
 }
 
 var data = DiscoveredTestData{}
@@ -155,6 +156,10 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.PersistentVolumes, err = getPersistentVolumes(oc.K8sClient.CoreV1())
 	if err != nil {
 		logrus.Fatalf("Cannot get list of persistent volumes, error: %s", err)
+	}
+	data.PersistentVolumeClaims, err = getPersistentVolumeClaims(oc.K8sClient.CoreV1())
+	if err != nil {
+		logrus.Fatalf("Cannot get list of persistent volume claims, error: %s", err)
 	}
 	data.Services, err = getServices(oc.K8sClient.CoreV1(), data.Namespaces)
 	if err != nil {
