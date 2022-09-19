@@ -1,398 +1,6 @@
 {
   "data": [
     {
-      "_id": "630e3a631e0b69b276b81bea",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
-      "bundle_path_digest": "sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-30T16:27:15.795000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.6.2-beta.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-30T16:27:15.795000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "name": "kubeturbo-operator-ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2-annotation"
-        },
-        {
-          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "8.6.2-beta.1",
-      "version_original": "8.6.2-beta.1"
-    },
-    {
-      "_id": "630e3a66a73163225d23e981",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:59c0362ab55e0789db2c9e55164256ccba6fccab8127822eab1a979c93992fc2",
-      "bundle_path_digest": "sha256:59c0362ab55e0789db2c9e55164256ccba6fccab8127822eab1a979c93992fc2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-30T16:27:18.718000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.6.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-30T16:27:18.718000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "name": "kubeturbo-operator-ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2-annotation"
-        },
-        {
-          "digest": "sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:bc828351c81b6efba7a3f6ebcf33489a09bdba3905e33e1fa9bf2af2e4ad180d",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:bc828351c81b6efba7a3f6ebcf33489a09bdba3905e33e1fa9bf2af2e4ad180d",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "8.6.2",
-      "version_original": "8.6.2"
-    },
-    {
-      "_id": "630e3b39a73163225d23e9fa",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:59c0362ab55e0789db2c9e55164256ccba6fccab8127822eab1a979c93992fc2",
-      "bundle_path_digest": "sha256:59c0362ab55e0789db2c9e55164256ccba6fccab8127822eab1a979c93992fc2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-30T16:30:49.521000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.6.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-30T16:30:49.521000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "name": "kubeturbo-operator-ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2-annotation"
-        },
-        {
-          "digest": "sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:bc828351c81b6efba7a3f6ebcf33489a09bdba3905e33e1fa9bf2af2e4ad180d",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:bc828351c81b6efba7a3f6ebcf33489a09bdba3905e33e1fa9bf2af2e4ad180d",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "8.6.2",
-      "version_original": "8.6.2"
-    },
-    {
-      "_id": "630e3b451e0b69b276b81c6b",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
-      "bundle_path_digest": "sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-30T16:31:01.020000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.6.2-beta.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-30T16:31:01.020000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "name": "kubeturbo-operator-ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2-annotation"
-        },
-        {
-          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "8.6.2-beta.1",
-      "version_original": "8.6.2-beta.1"
-    },
-    {
       "_id": "630e3c1a49457efb8bcc83a2",
       "alm_examples": [
         {
@@ -8739,1944 +8347,6 @@
       "version_original": "0.0.9"
     },
     {
-      "_id": "63179736902dda9ffff458db",
-      "alm_examples": [
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "gm-1",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              }
-            ],
-            "mode": "T-GM.8275.1",
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "gm-1"
-            }
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "bc-1"
-          },
-          "spec": {
-            "aprLevel": 0,
-            "domainNumber": 24,
-            "esmcMode": 1,
-            "forwardable": 0,
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Slave",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f2",
-                "ethPort": 2,
-                "holdoff": 500,
-                "ipv4": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              }
-            ],
-            "mode": "T-TBC.8275.1",
-            "mode10MHz": 2,
-            "modePPS": 2,
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "bc-1"
-            },
-            "phyLedsCtl": 0,
-            "priority2": 128,
-            "src10MHz": 1,
-            "srcPPS": 1,
-            "syncOption": 1,
-            "synceCpu": 10,
-            "synceRecClkPort": 0,
-            "tracePtpMsg": -1,
-            "twoStep": 0
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsNode",
-          "metadata": {
-            "name": "worker2"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsOperatorConfig",
-          "metadata": {
-            "name": "sts-operator-config",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "images": {},
-            "sro": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/silicomltd/silicom-sts-operator@sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "bundle_path_digest": "sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-09-06T18:53:42.731000+00:00",
-      "csv_description": "Silicom STS line card for 4G and 5G NIC enable real-time data transmission\nwith high timing accuracy at the lowest cost to power 5G DRAN and CRAN edge\ndeployments.\n\n* Support 1588/PTP over IPv4 / IPV6, IEEE1588v2\n* Support SyncE /ITU-T G.8262\n* T-BC/T-TSC Boundary Clock and TSC Slave Clock /G.8273.2\n* T-GM Grand Master /G.8273.1 per G.8275.1 PTP Profile\n* PRTC Primary Reference Time Clock Class B/G.8272\n* T-TC Transparent Clock /G.8273.3\n* 1588 Software Stack and Servo Software in x86\n* [Silicom STS2 Card](https://www.silicom-usa.com/pr/server-adapters/networking-adapters/10-gigabit-ethernet-networking-adapters/p410g8ts81-timesync-server-adapter)\n\n### Prequisites:\n* [NFD Operator](https://operatorhub.io/operator/nfd-operator \"NFD operator needed for the discovery of STS cards\").\n* [SRO Operator](https://github.com/openshift/special-resource-operator)\n",
-      "csv_display_name": "Silicom STS Operator",
-      "csv_metadata_description": "This Operator is a Kubernetes custom controller whose goal\nis to serve the installation and lifecycle management of\nSilicom STS device plugins for Kubernetes.\n",
-      "csv_name": "silicom-sts-operator.v0.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-06T18:53:42.731000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "silicom-sts-operator",
-      "provided_apis": [
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsConfig",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsNode",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsOperatorConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Silicom Ltd.",
-      "related_images": [
-        {
-          "digest": "sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "image": "quay.io/silicom/gpsd@sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "name": "gpsd"
-        },
-        {
-          "digest": "sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "image": "quay.io/silicom/phc2sys@sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "name": "phc2sys"
-        },
-        {
-          "digest": "sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "image": "quay.io/silicom/tsyncd@sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "name": "tsyncd"
-        },
-        {
-          "digest": "sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "image": "quay.io/silicom/grpc-tsyncd@sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "name": "grpc-tsyncd"
-        },
-        {
-          "digest": "sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "image": "quay.io/silicom/sts-plugin@sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "name": "sts-plugin"
-        },
-        {
-          "digest": "sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "image": "quay.io/silicom/ice-driver-src@sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "name": "ice-driver-src"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "sts-operator"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator-a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5-annotation"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.1.0",
-      "version_original": "0.1.0"
-    },
-    {
-      "_id": "63179738ae0dda4760d663ad",
-      "alm_examples": [
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "gm-1",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              }
-            ],
-            "mode": "T-GM.8275.1",
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "gm-1"
-            }
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "bc-1"
-          },
-          "spec": {
-            "aprLevel": 0,
-            "domainNumber": 24,
-            "esmcMode": 1,
-            "forwardable": 0,
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Slave",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f2",
-                "ethPort": 2,
-                "holdoff": 500,
-                "ipv4": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              }
-            ],
-            "mode": "T-TBC.8275.1",
-            "mode10MHz": 2,
-            "modePPS": 2,
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "bc-1"
-            },
-            "phyLedsCtl": 0,
-            "priority2": 128,
-            "src10MHz": 1,
-            "srcPPS": 1,
-            "syncOption": 1,
-            "synceCpu": 10,
-            "synceRecClkPort": 0,
-            "tracePtpMsg": -1,
-            "twoStep": 0
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsNode",
-          "metadata": {
-            "name": "worker2"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsOperatorConfig",
-          "metadata": {
-            "name": "sts-operator-config",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "images": {},
-            "sro": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/silicomltd/silicom-sts-operator@sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "bundle_path_digest": "sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-09-06T18:53:44.569000+00:00",
-      "csv_description": "Silicom STS line card for 4G and 5G NIC enable real-time data transmission\nwith high timing accuracy at the lowest cost to power 5G DRAN and CRAN edge\ndeployments.\n\n* Support 1588/PTP over IPv4 / IPV6, IEEE1588v2\n* Support SyncE /ITU-T G.8262\n* T-BC/T-TSC Boundary Clock and TSC Slave Clock /G.8273.2\n* T-GM Grand Master /G.8273.1 per G.8275.1 PTP Profile\n* PRTC Primary Reference Time Clock Class B/G.8272\n* T-TC Transparent Clock /G.8273.3\n* 1588 Software Stack and Servo Software in x86\n* [Silicom STS2 Card](https://www.silicom-usa.com/pr/server-adapters/networking-adapters/10-gigabit-ethernet-networking-adapters/p410g8ts81-timesync-server-adapter)\n\n### Prequisites:\n* [NFD Operator](https://operatorhub.io/operator/nfd-operator \"NFD operator needed for the discovery of STS cards\").\n* [SRO Operator](https://github.com/openshift/special-resource-operator)\n",
-      "csv_display_name": "Silicom STS Operator",
-      "csv_metadata_description": "This Operator is a Kubernetes custom controller whose goal\nis to serve the installation and lifecycle management of\nSilicom STS device plugins for Kubernetes.\n",
-      "csv_name": "silicom-sts-operator.v0.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-06T18:53:44.569000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "silicom-sts-operator",
-      "provided_apis": [
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsConfig",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsNode",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsOperatorConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Silicom Ltd.",
-      "related_images": [
-        {
-          "digest": "sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "image": "quay.io/silicom/gpsd@sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "name": "gpsd"
-        },
-        {
-          "digest": "sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "image": "quay.io/silicom/phc2sys@sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "name": "phc2sys"
-        },
-        {
-          "digest": "sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "image": "quay.io/silicom/tsyncd@sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "name": "tsyncd"
-        },
-        {
-          "digest": "sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "image": "quay.io/silicom/grpc-tsyncd@sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "name": "grpc-tsyncd"
-        },
-        {
-          "digest": "sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "image": "quay.io/silicom/sts-plugin@sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "name": "sts-plugin"
-        },
-        {
-          "digest": "sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "image": "quay.io/silicom/ice-driver-src@sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "name": "ice-driver-src"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "sts-operator"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator-a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5-annotation"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.1.0",
-      "version_original": "0.1.0"
-    },
-    {
-      "_id": "63179783ae0dda4760d663c1",
-      "alm_examples": [
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "gm-1",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              }
-            ],
-            "mode": "T-GM.8275.1",
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "gm-1"
-            }
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "bc-1"
-          },
-          "spec": {
-            "aprLevel": 0,
-            "domainNumber": 24,
-            "esmcMode": 1,
-            "forwardable": 0,
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Slave",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f2",
-                "ethPort": 2,
-                "holdoff": 500,
-                "ipv4": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              }
-            ],
-            "mode": "T-TBC.8275.1",
-            "mode10MHz": 2,
-            "modePPS": 2,
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "bc-1"
-            },
-            "phyLedsCtl": 0,
-            "priority2": 128,
-            "src10MHz": 1,
-            "srcPPS": 1,
-            "syncOption": 1,
-            "synceCpu": 10,
-            "synceRecClkPort": 0,
-            "tracePtpMsg": -1,
-            "twoStep": 0
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsNode",
-          "metadata": {
-            "name": "worker2"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsOperatorConfig",
-          "metadata": {
-            "name": "sts-operator-config",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "images": {},
-            "sro": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/silicomltd/silicom-sts-operator@sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "bundle_path_digest": "sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-09-06T18:54:59.701000+00:00",
-      "csv_description": "Silicom STS line card for 4G and 5G NIC enable real-time data transmission\nwith high timing accuracy at the lowest cost to power 5G DRAN and CRAN edge\ndeployments.\n\n* Support 1588/PTP over IPv4 / IPV6, IEEE1588v2\n* Support SyncE /ITU-T G.8262\n* T-BC/T-TSC Boundary Clock and TSC Slave Clock /G.8273.2\n* T-GM Grand Master /G.8273.1 per G.8275.1 PTP Profile\n* PRTC Primary Reference Time Clock Class B/G.8272\n* T-TC Transparent Clock /G.8273.3\n* 1588 Software Stack and Servo Software in x86\n* [Silicom STS2 Card](https://www.silicom-usa.com/pr/server-adapters/networking-adapters/10-gigabit-ethernet-networking-adapters/p410g8ts81-timesync-server-adapter)\n\n### Prequisites:\n* [NFD Operator](https://operatorhub.io/operator/nfd-operator \"NFD operator needed for the discovery of STS cards\").\n* [SRO Operator](https://github.com/openshift/special-resource-operator)\n",
-      "csv_display_name": "Silicom STS Operator",
-      "csv_metadata_description": "This Operator is a Kubernetes custom controller whose goal\nis to serve the installation and lifecycle management of\nSilicom STS device plugins for Kubernetes.\n",
-      "csv_name": "silicom-sts-operator.v0.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-06T18:54:59.701000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "silicom-sts-operator",
-      "provided_apis": [
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsConfig",
-          "plural": "stsconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsNode",
-          "plural": "stsnodes",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Silicom Ltd.",
-      "related_images": [
-        {
-          "digest": "sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "image": "quay.io/silicom/gpsd@sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "name": "gpsd"
-        },
-        {
-          "digest": "sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "image": "quay.io/silicom/phc2sys@sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "name": "phc2sys"
-        },
-        {
-          "digest": "sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "image": "quay.io/silicom/tsyncd@sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "name": "tsyncd"
-        },
-        {
-          "digest": "sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "image": "quay.io/silicom/grpc-tsyncd@sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "name": "grpc-tsyncd"
-        },
-        {
-          "digest": "sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "image": "quay.io/silicom/sts-plugin@sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "name": "sts-plugin"
-        },
-        {
-          "digest": "sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "image": "quay.io/silicom/ice-driver-src@sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "name": "ice-driver-src"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "sts-operator"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator-a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5-annotation"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.1.0",
-      "version_original": "0.1.0"
-    },
-    {
-      "_id": "63179784a65ef76c956b7e9f",
-      "alm_examples": [
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "gm-1",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              }
-            ],
-            "mode": "T-GM.8275.1",
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "gm-1"
-            }
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "bc-1"
-          },
-          "spec": {
-            "aprLevel": 0,
-            "domainNumber": 24,
-            "esmcMode": 1,
-            "forwardable": 0,
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Slave",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f2",
-                "ethPort": 2,
-                "holdoff": 500,
-                "ipv4": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              }
-            ],
-            "mode": "T-TBC.8275.1",
-            "mode10MHz": 2,
-            "modePPS": 2,
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "bc-1"
-            },
-            "phyLedsCtl": 0,
-            "priority2": 128,
-            "src10MHz": 1,
-            "srcPPS": 1,
-            "syncOption": 1,
-            "synceCpu": 10,
-            "synceRecClkPort": 0,
-            "tracePtpMsg": -1,
-            "twoStep": 0
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsNode",
-          "metadata": {
-            "name": "worker2"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsOperatorConfig",
-          "metadata": {
-            "name": "sts-operator-config",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "images": {},
-            "sro": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/silicomltd/silicom-sts-operator@sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "bundle_path_digest": "sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-09-06T18:55:00.803000+00:00",
-      "csv_description": "Silicom STS line card for 4G and 5G NIC enable real-time data transmission\nwith high timing accuracy at the lowest cost to power 5G DRAN and CRAN edge\ndeployments.\n\n* Support 1588/PTP over IPv4 / IPV6, IEEE1588v2\n* Support SyncE /ITU-T G.8262\n* T-BC/T-TSC Boundary Clock and TSC Slave Clock /G.8273.2\n* T-GM Grand Master /G.8273.1 per G.8275.1 PTP Profile\n* PRTC Primary Reference Time Clock Class B/G.8272\n* T-TC Transparent Clock /G.8273.3\n* 1588 Software Stack and Servo Software in x86\n* [Silicom STS2 Card](https://www.silicom-usa.com/pr/server-adapters/networking-adapters/10-gigabit-ethernet-networking-adapters/p410g8ts81-timesync-server-adapter)\n\n### Prequisites:\n* [NFD Operator](https://operatorhub.io/operator/nfd-operator \"NFD operator needed for the discovery of STS cards\").\n* [SRO Operator](https://github.com/openshift/special-resource-operator)\n",
-      "csv_display_name": "Silicom STS Operator",
-      "csv_metadata_description": "This Operator is a Kubernetes custom controller whose goal\nis to serve the installation and lifecycle management of\nSilicom STS device plugins for Kubernetes.\n",
-      "csv_name": "silicom-sts-operator.v0.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-06T18:55:00.803000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "silicom-sts-operator",
-      "provided_apis": [
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsConfig",
-          "plural": "stsconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsNode",
-          "plural": "stsnodes",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Silicom Ltd.",
-      "related_images": [
-        {
-          "digest": "sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "image": "quay.io/silicom/gpsd@sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "name": "gpsd"
-        },
-        {
-          "digest": "sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "image": "quay.io/silicom/phc2sys@sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "name": "phc2sys"
-        },
-        {
-          "digest": "sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "image": "quay.io/silicom/tsyncd@sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "name": "tsyncd"
-        },
-        {
-          "digest": "sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "image": "quay.io/silicom/grpc-tsyncd@sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "name": "grpc-tsyncd"
-        },
-        {
-          "digest": "sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "image": "quay.io/silicom/sts-plugin@sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "name": "sts-plugin"
-        },
-        {
-          "digest": "sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "image": "quay.io/silicom/ice-driver-src@sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "name": "ice-driver-src"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "sts-operator"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator-a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5-annotation"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.1.0",
-      "version_original": "0.1.0"
-    },
-    {
-      "_id": "6317982cdf7989fabed21ada",
-      "alm_examples": [
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "gm-1",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              }
-            ],
-            "mode": "T-GM.8275.1",
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "gm-1"
-            }
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "bc-1"
-          },
-          "spec": {
-            "aprLevel": 0,
-            "domainNumber": 24,
-            "esmcMode": 1,
-            "forwardable": 0,
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Slave",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f2",
-                "ethPort": 2,
-                "holdoff": 500,
-                "ipv4": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              }
-            ],
-            "mode": "T-TBC.8275.1",
-            "mode10MHz": 2,
-            "modePPS": 2,
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "bc-1"
-            },
-            "phyLedsCtl": 0,
-            "priority2": 128,
-            "src10MHz": 1,
-            "srcPPS": 1,
-            "syncOption": 1,
-            "synceCpu": 10,
-            "synceRecClkPort": 0,
-            "tracePtpMsg": -1,
-            "twoStep": 0
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsNode",
-          "metadata": {
-            "name": "worker2"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsOperatorConfig",
-          "metadata": {
-            "name": "sts-operator-config",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "images": {},
-            "sro": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/silicomltd/silicom-sts-operator@sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "bundle_path_digest": "sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-09-06T18:57:48.865000+00:00",
-      "csv_description": "Silicom STS line card for 4G and 5G NIC enable real-time data transmission\nwith high timing accuracy at the lowest cost to power 5G DRAN and CRAN edge\ndeployments.\n\n* Support 1588/PTP over IPv4 / IPV6, IEEE1588v2\n* Support SyncE /ITU-T G.8262\n* T-BC/T-TSC Boundary Clock and TSC Slave Clock /G.8273.2\n* T-GM Grand Master /G.8273.1 per G.8275.1 PTP Profile\n* PRTC Primary Reference Time Clock Class B/G.8272\n* T-TC Transparent Clock /G.8273.3\n* 1588 Software Stack and Servo Software in x86\n* [Silicom STS2 Card](https://www.silicom-usa.com/pr/server-adapters/networking-adapters/10-gigabit-ethernet-networking-adapters/p410g8ts81-timesync-server-adapter)\n\n### Prequisites:\n* [NFD Operator](https://operatorhub.io/operator/nfd-operator \"NFD operator needed for the discovery of STS cards\").\n* [SRO Operator](https://github.com/openshift/special-resource-operator)\n",
-      "csv_display_name": "Silicom STS Operator",
-      "csv_metadata_description": "This Operator is a Kubernetes custom controller whose goal\nis to serve the installation and lifecycle management of\nSilicom STS device plugins for Kubernetes.\n",
-      "csv_name": "silicom-sts-operator.v0.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-06T18:57:48.865000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "silicom-sts-operator",
-      "provided_apis": [
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsConfig",
-          "plural": "stsconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsNode",
-          "plural": "stsnodes",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Silicom Ltd.",
-      "related_images": [
-        {
-          "digest": "sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "image": "quay.io/silicom/gpsd@sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "name": "gpsd"
-        },
-        {
-          "digest": "sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "image": "quay.io/silicom/phc2sys@sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "name": "phc2sys"
-        },
-        {
-          "digest": "sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "image": "quay.io/silicom/tsyncd@sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "name": "tsyncd"
-        },
-        {
-          "digest": "sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "image": "quay.io/silicom/grpc-tsyncd@sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "name": "grpc-tsyncd"
-        },
-        {
-          "digest": "sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "image": "quay.io/silicom/sts-plugin@sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "name": "sts-plugin"
-        },
-        {
-          "digest": "sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "image": "quay.io/silicom/ice-driver-src@sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "name": "ice-driver-src"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "sts-operator"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator-a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5-annotation"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.1.0",
-      "version_original": "0.1.0"
-    },
-    {
-      "_id": "631798328db453f64c38a65b",
-      "alm_examples": [
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "gm-1",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              }
-            ],
-            "mode": "T-GM.8275.1",
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "gm-1"
-            }
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "bc-1"
-          },
-          "spec": {
-            "aprLevel": 0,
-            "domainNumber": 24,
-            "esmcMode": 1,
-            "forwardable": 0,
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Slave",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f2",
-                "ethPort": 2,
-                "holdoff": 500,
-                "ipv4": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              }
-            ],
-            "mode": "T-TBC.8275.1",
-            "mode10MHz": 2,
-            "modePPS": 2,
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "bc-1"
-            },
-            "phyLedsCtl": 0,
-            "priority2": 128,
-            "src10MHz": 1,
-            "srcPPS": 1,
-            "syncOption": 1,
-            "synceCpu": 10,
-            "synceRecClkPort": 0,
-            "tracePtpMsg": -1,
-            "twoStep": 0
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsNode",
-          "metadata": {
-            "name": "worker2"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsOperatorConfig",
-          "metadata": {
-            "name": "sts-operator-config",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "images": {},
-            "sro": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/silicomltd/silicom-sts-operator@sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "bundle_path_digest": "sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-09-06T18:57:54.067000+00:00",
-      "csv_description": "Silicom STS line card for 4G and 5G NIC enable real-time data transmission\nwith high timing accuracy at the lowest cost to power 5G DRAN and CRAN edge\ndeployments.\n\n* Support 1588/PTP over IPv4 / IPV6, IEEE1588v2\n* Support SyncE /ITU-T G.8262\n* T-BC/T-TSC Boundary Clock and TSC Slave Clock /G.8273.2\n* T-GM Grand Master /G.8273.1 per G.8275.1 PTP Profile\n* PRTC Primary Reference Time Clock Class B/G.8272\n* T-TC Transparent Clock /G.8273.3\n* 1588 Software Stack and Servo Software in x86\n* [Silicom STS2 Card](https://www.silicom-usa.com/pr/server-adapters/networking-adapters/10-gigabit-ethernet-networking-adapters/p410g8ts81-timesync-server-adapter)\n\n### Prequisites:\n* [NFD Operator](https://operatorhub.io/operator/nfd-operator \"NFD operator needed for the discovery of STS cards\").\n* [SRO Operator](https://github.com/openshift/special-resource-operator)\n",
-      "csv_display_name": "Silicom STS Operator",
-      "csv_metadata_description": "This Operator is a Kubernetes custom controller whose goal\nis to serve the installation and lifecycle management of\nSilicom STS device plugins for Kubernetes.\n",
-      "csv_name": "silicom-sts-operator.v0.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-06T18:57:54.067000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "silicom-sts-operator",
-      "provided_apis": [
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsConfig",
-          "plural": "stsconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsNode",
-          "plural": "stsnodes",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Silicom Ltd.",
-      "related_images": [
-        {
-          "digest": "sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "image": "quay.io/silicom/gpsd@sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "name": "gpsd"
-        },
-        {
-          "digest": "sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "image": "quay.io/silicom/phc2sys@sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "name": "phc2sys"
-        },
-        {
-          "digest": "sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "image": "quay.io/silicom/tsyncd@sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "name": "tsyncd"
-        },
-        {
-          "digest": "sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "image": "quay.io/silicom/grpc-tsyncd@sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "name": "grpc-tsyncd"
-        },
-        {
-          "digest": "sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "image": "quay.io/silicom/sts-plugin@sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "name": "sts-plugin"
-        },
-        {
-          "digest": "sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "image": "quay.io/silicom/ice-driver-src@sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "name": "ice-driver-src"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "sts-operator"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator-a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5-annotation"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.1.0",
-      "version_original": "0.1.0"
-    },
-    {
-      "_id": "631798b9a65ef76c956b7f5b",
-      "alm_examples": [
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "gm-1",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              }
-            ],
-            "mode": "T-GM.8275.1",
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "gm-1"
-            }
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "bc-1"
-          },
-          "spec": {
-            "aprLevel": 0,
-            "domainNumber": 24,
-            "esmcMode": 1,
-            "forwardable": 0,
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Slave",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f2",
-                "ethPort": 2,
-                "holdoff": 500,
-                "ipv4": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              }
-            ],
-            "mode": "T-TBC.8275.1",
-            "mode10MHz": 2,
-            "modePPS": 2,
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "bc-1"
-            },
-            "phyLedsCtl": 0,
-            "priority2": 128,
-            "src10MHz": 1,
-            "srcPPS": 1,
-            "syncOption": 1,
-            "synceCpu": 10,
-            "synceRecClkPort": 0,
-            "tracePtpMsg": -1,
-            "twoStep": 0
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsNode",
-          "metadata": {
-            "name": "worker2"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsOperatorConfig",
-          "metadata": {
-            "name": "sts-operator-config",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "images": {},
-            "sro": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/silicomltd/silicom-sts-operator@sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "bundle_path_digest": "sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-09-06T19:00:09.297000+00:00",
-      "csv_description": "Silicom STS line card for 4G and 5G NIC enable real-time data transmission\nwith high timing accuracy at the lowest cost to power 5G DRAN and CRAN edge\ndeployments.\n\n* Support 1588/PTP over IPv4 / IPV6, IEEE1588v2\n* Support SyncE /ITU-T G.8262\n* T-BC/T-TSC Boundary Clock and TSC Slave Clock /G.8273.2\n* T-GM Grand Master /G.8273.1 per G.8275.1 PTP Profile\n* PRTC Primary Reference Time Clock Class B/G.8272\n* T-TC Transparent Clock /G.8273.3\n* 1588 Software Stack and Servo Software in x86\n* [Silicom STS2 Card](https://www.silicom-usa.com/pr/server-adapters/networking-adapters/10-gigabit-ethernet-networking-adapters/p410g8ts81-timesync-server-adapter)\n\n### Prequisites:\n* [NFD Operator](https://operatorhub.io/operator/nfd-operator \"NFD operator needed for the discovery of STS cards\").\n* [SRO Operator](https://github.com/openshift/special-resource-operator)\n",
-      "csv_display_name": "Silicom STS Operator",
-      "csv_metadata_description": "This Operator is a Kubernetes custom controller whose goal\nis to serve the installation and lifecycle management of\nSilicom STS device plugins for Kubernetes.\n",
-      "csv_name": "silicom-sts-operator.v0.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-06T19:00:09.297000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "silicom-sts-operator",
-      "provided_apis": [
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsConfig",
-          "plural": "stsconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsNode",
-          "plural": "stsnodes",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Silicom Ltd.",
-      "related_images": [
-        {
-          "digest": "sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "image": "quay.io/silicom/gpsd@sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "name": "gpsd"
-        },
-        {
-          "digest": "sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "image": "quay.io/silicom/phc2sys@sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "name": "phc2sys"
-        },
-        {
-          "digest": "sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "image": "quay.io/silicom/tsyncd@sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "name": "tsyncd"
-        },
-        {
-          "digest": "sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "image": "quay.io/silicom/grpc-tsyncd@sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "name": "grpc-tsyncd"
-        },
-        {
-          "digest": "sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "image": "quay.io/silicom/sts-plugin@sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "name": "sts-plugin"
-        },
-        {
-          "digest": "sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "image": "quay.io/silicom/ice-driver-src@sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "name": "ice-driver-src"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "sts-operator"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator-a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5-annotation"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.1.0",
-      "version_original": "0.1.0"
-    },
-    {
-      "_id": "631798b9ae0dda4760d66461",
-      "alm_examples": [
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "gm-1",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "mode": "Master",
-                "synce": 1
-              }
-            ],
-            "mode": "T-GM.8275.1",
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "gm-1"
-            }
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsConfig",
-          "metadata": {
-            "name": "bc-1"
-          },
-          "spec": {
-            "aprLevel": 0,
-            "domainNumber": 24,
-            "esmcMode": 1,
-            "forwardable": 0,
-            "interfaces": [
-              {
-                "ethName": "enp2s0f0",
-                "ethPort": 0,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Slave",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f1",
-                "ethPort": 1,
-                "holdoff": 500,
-                "ipv4": 1,
-                "ipv6": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              },
-              {
-                "ethName": "enp2s0f2",
-                "ethPort": 2,
-                "holdoff": 500,
-                "ipv4": 1,
-                "mode": "Master",
-                "ql": 4,
-                "qlEnable": 1,
-                "synce": 1
-              }
-            ],
-            "mode": "T-TBC.8275.1",
-            "mode10MHz": 2,
-            "modePPS": 2,
-            "namespace": "openshift-operators",
-            "nodeSelector": {
-              "sts.silicom.com/config": "bc-1"
-            },
-            "phyLedsCtl": 0,
-            "priority2": 128,
-            "src10MHz": 1,
-            "srcPPS": 1,
-            "syncOption": 1,
-            "synceCpu": 10,
-            "synceRecClkPort": 0,
-            "tracePtpMsg": -1,
-            "twoStep": 0
-          }
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsNode",
-          "metadata": {
-            "name": "worker2"
-          },
-          "spec": {}
-        },
-        {
-          "api_version": "sts.silicom.com/v1alpha1",
-          "kind": "StsOperatorConfig",
-          "metadata": {
-            "name": "sts-operator-config",
-            "namespace": "openshift-operators"
-          },
-          "spec": {
-            "images": {},
-            "sro": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64"
-      ],
-      "bundle_path": "registry.connect.redhat.com/silicomltd/silicom-sts-operator@sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "bundle_path_digest": "sha256:481744bba12f2f7f04df81447d1376b3076c2e184a06ae906d08a6bb1559f1b2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-09-06T19:00:09.986000+00:00",
-      "csv_description": "Silicom STS line card for 4G and 5G NIC enable real-time data transmission\nwith high timing accuracy at the lowest cost to power 5G DRAN and CRAN edge\ndeployments.\n\n* Support 1588/PTP over IPv4 / IPV6, IEEE1588v2\n* Support SyncE /ITU-T G.8262\n* T-BC/T-TSC Boundary Clock and TSC Slave Clock /G.8273.2\n* T-GM Grand Master /G.8273.1 per G.8275.1 PTP Profile\n* PRTC Primary Reference Time Clock Class B/G.8272\n* T-TC Transparent Clock /G.8273.3\n* 1588 Software Stack and Servo Software in x86\n* [Silicom STS2 Card](https://www.silicom-usa.com/pr/server-adapters/networking-adapters/10-gigabit-ethernet-networking-adapters/p410g8ts81-timesync-server-adapter)\n\n### Prequisites:\n* [NFD Operator](https://operatorhub.io/operator/nfd-operator \"NFD operator needed for the discovery of STS cards\").\n* [SRO Operator](https://github.com/openshift/special-resource-operator)\n",
-      "csv_display_name": "Silicom STS Operator",
-      "csv_metadata_description": "This Operator is a Kubernetes custom controller whose goal\nis to serve the installation and lifecycle management of\nSilicom STS device plugins for Kubernetes.\n",
-      "csv_name": "silicom-sts-operator.v0.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-06T19:00:09.986000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "silicom-sts-operator",
-      "provided_apis": [
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsConfig",
-          "plural": "stsconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsNode",
-          "plural": "stsnodes",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "sts.silicom.com",
-          "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Silicom Ltd.",
-      "related_images": [
-        {
-          "digest": "sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "image": "quay.io/silicom/gpsd@sha256:b1c18257132644551cbc02d21eca2856c4c33b7fb55fef57d2c36f4845e5bf9d",
-          "name": "gpsd"
-        },
-        {
-          "digest": "sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "image": "quay.io/silicom/phc2sys@sha256:5646d7f861be705d33625e32b2a0608f8a294b7b6f63c818925775ba9a49d317",
-          "name": "phc2sys"
-        },
-        {
-          "digest": "sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "image": "quay.io/silicom/tsyncd@sha256:e4ef9aa7a005cb894c59f271bde14f4240b801b92f8f9151512131c6a11a0726",
-          "name": "tsyncd"
-        },
-        {
-          "digest": "sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "image": "quay.io/silicom/grpc-tsyncd@sha256:c703d059ae0788b87eb7594f9e1679bfe0733b4ef1daf59158673287accc4256",
-          "name": "grpc-tsyncd"
-        },
-        {
-          "digest": "sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "image": "quay.io/silicom/sts-plugin@sha256:4729e7206d03d24877b439019e7b0b7ae5fb0f767845b9a6423fc2d60d0d1d81",
-          "name": "sts-plugin"
-        },
-        {
-          "digest": "sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "image": "quay.io/silicom/ice-driver-src@sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
-          "name": "ice-driver-src"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "sts-operator"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
-          "name": "sts-operator-a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5-annotation"
-        },
-        {
-          "digest": "sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "image": "quay.io/silicom/sts-operator@sha256:44f16c77efc98edb88fdc0221793d6ea9221b2b590af2a48efd425299771624e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.1.0",
-      "version_original": "0.1.0"
-    },
-    {
       "_id": "63179b12ae0dda4760d6653d",
       "alm_examples": [
         {
@@ -16468,6 +14138,1258 @@
       "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a10dbfb7a09c0586f9caa",
+      "alm_examples": [
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarBroker",
+          "metadata": {
+            "name": "pulsarbroker-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarProxy",
+          "metadata": {
+            "name": "pulsar"
+          },
+          "spec": {
+            "configMapName": "proxy-configmap",
+            "image": "apachepulsar/pulsar:2.5.0",
+            "imagePullPolicy": "Always",
+            "replicas": 3
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
+      "bundle_path_digest": "sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-09-08T15:57:15.222000+00:00",
+      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
+      "csv_display_name": "Pulsar Operator",
+      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
+      "csv_name": "pulsar-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-08T15:57:15.222000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "pulsar-operator",
+      "provided_apis": [
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarProxy",
+          "plural": "pulsarproxies",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTenant",
+          "plural": "pulsartenants",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTopic",
+          "plural": "pulsartopics",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarBroker",
+          "plural": "pulsarbrokers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarConnection",
+          "plural": "pulsarconnections",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarNamespace",
+          "plural": "pulsarnamespaces",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarPermission",
+          "plural": "pulsarpermissions",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "name": "pulsar-operator-7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1492649384639b989556",
+      "alm_examples": [
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarBroker",
+          "metadata": {
+            "name": "pulsarbroker-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarProxy",
+          "metadata": {
+            "name": "pulsar"
+          },
+          "spec": {
+            "configMapName": "proxy-configmap",
+            "image": "apachepulsar/pulsar:2.5.0",
+            "imagePullPolicy": "Always",
+            "replicas": 3
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
+      "bundle_path_digest": "sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-09-08T16:13:06.690000+00:00",
+      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
+      "csv_display_name": "Pulsar Operator",
+      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
+      "csv_name": "pulsar-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-08T16:13:06.690000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "pulsar-operator",
+      "provided_apis": [
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarProxy",
+          "plural": "pulsarproxies",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTenant",
+          "plural": "pulsartenants",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTopic",
+          "plural": "pulsartopics",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarBroker",
+          "plural": "pulsarbrokers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarConnection",
+          "plural": "pulsarconnections",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarNamespace",
+          "plural": "pulsarnamespaces",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarPermission",
+          "plural": "pulsarpermissions",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "name": "pulsar-operator-7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a14937beba81ffd6f9d82",
+      "alm_examples": [
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarBroker",
+          "metadata": {
+            "name": "pulsarbroker-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarProxy",
+          "metadata": {
+            "name": "pulsar"
+          },
+          "spec": {
+            "configMapName": "proxy-configmap",
+            "image": "apachepulsar/pulsar:2.5.0",
+            "imagePullPolicy": "Always",
+            "replicas": 3
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
+      "bundle_path_digest": "sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-08T16:13:07.295000+00:00",
+      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
+      "csv_display_name": "Pulsar Operator",
+      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
+      "csv_name": "pulsar-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-08T16:13:07.295000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "pulsar-operator",
+      "provided_apis": [
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarProxy",
+          "plural": "pulsarproxies",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTenant",
+          "plural": "pulsartenants",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTopic",
+          "plural": "pulsartopics",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarBroker",
+          "plural": "pulsarbrokers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarConnection",
+          "plural": "pulsarconnections",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarNamespace",
+          "plural": "pulsarnamespaces",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarPermission",
+          "plural": "pulsarpermissions",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "name": "pulsar-operator-7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1493649384639b989558",
+      "alm_examples": [
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarBroker",
+          "metadata": {
+            "name": "pulsarbroker-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        },
+        {
+          "api_version": "pulsar.streamnative.io/v1alpha1",
+          "kind": "PulsarProxy",
+          "metadata": {
+            "name": "pulsar"
+          },
+          "spec": {
+            "configMapName": "proxy-configmap",
+            "image": "apachepulsar/pulsar:2.5.0",
+            "imagePullPolicy": "Always",
+            "replicas": 3
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
+      "bundle_path_digest": "sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-08T16:13:07.795000+00:00",
+      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
+      "csv_display_name": "Pulsar Operator",
+      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
+      "csv_name": "pulsar-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-08T16:13:07.795000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "pulsar-operator",
+      "provided_apis": [
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarProxy",
+          "plural": "pulsarproxies",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTenant",
+          "plural": "pulsartenants",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarTopic",
+          "plural": "pulsartopics",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarBroker",
+          "plural": "pulsarbrokers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarConnection",
+          "plural": "pulsarconnections",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarNamespace",
+          "plural": "pulsarnamespaces",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "pulsar.streamnative.io",
+          "kind": "PulsarPermission",
+          "plural": "pulsarpermissions",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "name": "pulsar-operator-7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a19df7beba81ffd6f9f31",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-08T16:35:43.550000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-08T16:35:43.550000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a19e07b4a446557978fc9",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-09-08T16:35:44.740000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-08T16:35:44.740000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a19e1649384639b989720",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-08T16:35:45.126000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-08T16:35:45.126000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1c9b778c198f6e686067",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-08T16:47:23.365000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-08T16:47:23.365000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1cabad2e331948d10c54",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-09-08T16:47:39.299000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-08T16:47:39.299000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1cb0778c198f6e68607c",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-08T16:47:44.007000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-08T16:47:44.007000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1dd698244e6fcd9876ed",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-09-08T16:52:38.429000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-08T16:52:38.429000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1dd698244e6fcd9876ef",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-08T16:52:38.879000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-08T16:52:38.879000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "0.12.2",
       "version_original": "0.12.2"
     }
