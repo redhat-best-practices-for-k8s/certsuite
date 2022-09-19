@@ -307,7 +307,7 @@ Version|v1.0.0
 Description|http://test-network-function.com/testcases/affiliated-certification/container-is-certified-digest Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).
 Result Type|normative
 Suggested Remediation|Ensure that your container has passed the Red Hat Container Certification Program (CCP).
-Best Practice Reference|https://TODO Section 5.3.7
+Best Practice Reference|extended
 Exception Process|There is no documented exception process for this.
 #### helmchart-is-certified
 

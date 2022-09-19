@@ -93,9 +93,10 @@ func AddCatalogEntry(testID, suiteName, description, remediation, testType, exce
 }
 
 var (
-	TestICMPv4ConnectivityIdentifier   claim.Identifier
-	TestNetworkPolicyDenyAllIdentifier claim.Identifier
-	Test1337UIDIdentifier              claim.Identifier
+	TestICMPv4ConnectivityIdentifier         claim.Identifier
+	TestNetworkPolicyDenyAllIdentifier       claim.Identifier
+	Test1337UIDIdentifier                    claim.Identifier
+	TestContainerIsCertifiedDigestIdentifier claim.Identifier
 )
 
 func InitCatalog() map[claim.Identifier]TestCaseDescription {
@@ -135,7 +136,16 @@ The label value is not important, only its presence.`,
 		versionOne,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		tagExtended)
-
+	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
+	TestContainerIsCertifiedDigestIdentifier = AddCatalogEntry(
+		"container-is-certified-digest",
+		common.AffiliatedCertTestKey,
+		`Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).`,
+		ContainerIsCertifiedRemediation,
+		normativeResult,
+		NoDocumentedProcess,
+		versionOne,
+		tagExtended)
 	return Catalog
 }
 
@@ -205,12 +215,6 @@ var (
 	TestContainerIsCertifiedIdentifier = claim.Identifier{
 		Tags:    formTestTags(tagCommon, tagOnline),
 		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified"),
-		Version: versionOne,
-	}
-	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
-	TestContainerIsCertifiedDigestIdentifier = claim.Identifier{
-		Tags:    formTestTags(tagExtended),
-		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified-digest"),
 		Version: versionOne,
 	}
 	// TestHugepagesNotManuallyManipulated represents the test identifier testing hugepages have not been manipulated.
@@ -667,15 +671,6 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Description: formDescription(TestContainerIsCertifiedIdentifier,
 			`Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.7",
-		ExceptionProcess:      NoDocumentedProcess,
-	},
-	TestContainerIsCertifiedDigestIdentifier: {
-		Identifier:  TestContainerIsCertifiedDigestIdentifier,
-		Type:        normativeResult,
-		Remediation: ContainerIsCertifiedRemediation,
-		Description: formDescription(TestContainerIsCertifiedDigestIdentifier,
-			`Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).`),
-		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 5.3.7",
 		ExceptionProcess:      NoDocumentedProcess,
 	},
 	TestContainerHostPort: {
