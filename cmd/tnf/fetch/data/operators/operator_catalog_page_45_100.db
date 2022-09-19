@@ -1,445 +1,6 @@
 {
   "data": [
     {
-      "_id": "62fbd580e07d71e4beb74c21",
-      "alm_examples": [
-        {
-          "api_version": "machinelearning.seldon.io/v1",
-          "kind": "SeldonDeployment",
-          "metadata": {
-            "labels": {
-              "app": "seldon",
-              "app.kubernetes.io/instance": "seldon1",
-              "app.kubernetes.io/name": "seldon",
-              "app.kubernetes.io/version": "v0.5"
-            },
-            "name": "seldon-model"
-          },
-          "spec": {
-            "name": "test-deployment",
-            "predictors": [
-              {
-                "componentSpecs": [
-                  {
-                    "spec": {
-                      "containers": [
-                        {
-                          "image": "seldonio/mock_classifier:1.6.0",
-                          "name": "classifier"
-                        }
-                      ]
-                    }
-                  }
-                ],
-                "graph": {
-                  "children": [],
-                  "name": "classifier",
-                  "type": "MODEL"
-                },
-                "name": "example",
-                "replicas": 1
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:08768fe00addf43bfcd19acead3e84d860be67f0334b6fe56873863ed68b7ae7",
-      "bundle_path_digest": "sha256:08768fe00addf43bfcd19acead3e84d860be67f0334b6fe56873863ed68b7ae7",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-16T17:36:00.553000+00:00",
-      "csv_description": "The Seldon operator enables for native operation of production machine learning workloads, including monitoring and operations of language-agnostic models with the benefits of real-time metrics and log analysis.\n   \n## Overview\nSeldon Core is an open source platform for deploying machine learning models on a Kubernetes cluster.\n\n* Deploy machine learning models in the cloud or on-premise.\n* Get metrics and ensure proper governance and compliance for your running machine learning models.\n* Create powerful inference graphs made up of multiple components.\n* Provide a consistent serving layer for models built using heterogeneous ML toolkits.\n\nYou can get started by following the guides in our documentation at https://docs.seldon.io/projects/seldon-core/en/latest/workflow/README.html\n",
-      "csv_display_name": "Seldon Operator",
-      "csv_metadata_description": "The Seldon operator for management, monitoring and operations of machine learning systems through the Seldon Engine. Once installed, the Seldon Operator provides multiple functions which facilitate the productisation, monitoring and maintenance of machine learning systems at scale.",
-      "csv_name": "seldon-operator.v1.14.1-2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-16T17:36:00.553000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "seldon-operator-certified",
-      "provided_apis": [
-        {
-          "group": "machinelearning.seldon.io",
-          "kind": "SeldonDeployment",
-          "plural": "seldondeployments",
-          "version": "v1"
-        }
-      ],
-      "provider": "Seldon Technologies",
-      "related_images": [
-        {
-          "digest": "sha256:41c921605c9a6ee1bd97583feaad70179fb46a3494c447c83caec25c20541282",
-          "image": "registry.connect.redhat.com/seldonio/seldon-core-operator@sha256:41c921605c9a6ee1bd97583feaad70179fb46a3494c447c83caec25c20541282",
-          "name": "seldon-core-operator-41c921605c9a6ee1bd97583feaad70179fb46a3494c447c83caec25c20541282-annotation"
-        },
-        {
-          "digest": "sha256:41c921605c9a6ee1bd97583feaad70179fb46a3494c447c83caec25c20541282",
-          "image": "registry.connect.redhat.com/seldonio/seldon-core-operator@sha256:41c921605c9a6ee1bd97583feaad70179fb46a3494c447c83caec25c20541282",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:0cdbe17a8d73b0dd9798e8acee9694282a3f4e9c2eb80b0c3bbc2958dbb452ab",
-          "image": "registry.connect.redhat.com/seldonio/seldon-core-executor@sha256:0cdbe17a8d73b0dd9798e8acee9694282a3f4e9c2eb80b0c3bbc2958dbb452ab",
-          "name": "executor"
-        },
-        {
-          "digest": "sha256:075230960142845dba8decfa007c8a48474aad8cc90317ff77192c8fa9c1b84d",
-          "image": "registry.connect.redhat.com/seldonio/mock-classifier@sha256:075230960142845dba8decfa007c8a48474aad8cc90317ff77192c8fa9c1b84d",
-          "name": "mock_classifier"
-        },
-        {
-          "digest": "sha256:a0280c13136dcc870194af72630b9d2f7fc8bcff4edb54dd3bfbce36741af50c",
-          "image": "registry.connect.redhat.com/seldonio/rclone-storage-initializer@sha256:a0280c13136dcc870194af72630b9d2f7fc8bcff4edb54dd3bfbce36741af50c",
-          "name": "rclone_storage_initializer"
-        },
-        {
-          "digest": "sha256:84a13b0c96d87f9d784bba1efae2d7a65453ebd6555359fa6d50e851a0520dc9",
-          "image": "registry.connect.redhat.com/seldonio/sklearnserver@sha256:84a13b0c96d87f9d784bba1efae2d7a65453ebd6555359fa6d50e851a0520dc9",
-          "name": "sklearnserver"
-        },
-        {
-          "digest": "sha256:246681e031cd1b5bcde5400d9d86e50daebc13c2db7d2568f641ef391fb66dab",
-          "image": "registry.connect.redhat.com/seldonio/mlflowserver@sha256:246681e031cd1b5bcde5400d9d86e50daebc13c2db7d2568f641ef391fb66dab",
-          "name": "mlflowserver"
-        },
-        {
-          "digest": "sha256:266c697d5349c7d636240aa139b25c53e403ded43bb8a3eef8e7e9e40215dff2",
-          "image": "registry.connect.redhat.com/seldonio/xgboostserver@sha256:266c697d5349c7d636240aa139b25c53e403ded43bb8a3eef8e7e9e40215dff2",
-          "name": "xgboostserver"
-        },
-        {
-          "digest": "sha256:d89faa03a12acf0028a2556ac4072a6d37ec3287d890396c99ebee076f64c519",
-          "image": "registry.connect.redhat.com/seldonio/tfproxy@sha256:d89faa03a12acf0028a2556ac4072a6d37ec3287d890396c99ebee076f64c519",
-          "name": "tfproxy"
-        },
-        {
-          "digest": "sha256:747f7389db946fa331fb41f0cad84bfc3f7bff8cf189a7a69d08a888f50ae60e",
-          "image": "registry.connect.redhat.com/seldonio/tensorflow-serving@sha256:747f7389db946fa331fb41f0cad84bfc3f7bff8cf189a7a69d08a888f50ae60e",
-          "name": "tensorflow"
-        },
-        {
-          "digest": "sha256:2ab919e49b61638cf0921b6efb0f4db55465b02833c83ade21d6c3f81b8fbcf2",
-          "image": "registry.connect.redhat.com/seldonio/alibiexplainer@sha256:2ab919e49b61638cf0921b6efb0f4db55465b02833c83ade21d6c3f81b8fbcf2",
-          "name": "explainer"
-        },
-        {
-          "digest": "sha256:a0280c13136dcc870194af72630b9d2f7fc8bcff4edb54dd3bfbce36741af50c",
-          "image": "registry.connect.redhat.com/seldonio/rclone-storage-initializer@sha256:a0280c13136dcc870194af72630b9d2f7fc8bcff4edb54dd3bfbce36741af50c",
-          "name": "storage_initializer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.12.0 <1.14.1-2",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.14.1-2",
-      "version_original": "1.14.1-2"
-    },
-    {
-      "_id": "62fbdc6fe07d71e4beb74fec",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Xl",
-          "metadata": {
-            "name": "xl-release"
-          },
-          "spec": {
-            "global": {
-              "customImageNames": false,
-              "repository": "registry.connect.redhat.com/turbonomic",
-              "tag": "8.5.7"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:c5c898eff1a7189cd0e748bdcc08a40b5a05d23cd69d86a9716c0435b8719ec9",
-      "bundle_path_digest": "sha256:c5c898eff1a7189cd0e748bdcc08a40b5a05d23cd69d86a9716c0435b8719ec9",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-16T18:05:35.214000+00:00",
-      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
-      "csv_display_name": "Turbonomic Platform Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "t8c-operator.v42.13.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-16T18:05:35.214000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
-          "name": "t8c-operator-ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195-annotation"
-        },
-        {
-          "digest": "sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
-          "name": "t8c-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "42.13.0",
-      "version_original": "42.13.0"
-    },
-    {
-      "_id": "62fbe04130a80ba5a2096ab2",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Xl",
-          "metadata": {
-            "name": "xl-release"
-          },
-          "spec": {
-            "global": {
-              "customImageNames": false,
-              "repository": "registry.connect.redhat.com/turbonomic",
-              "tag": "8.5.7"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:c5c898eff1a7189cd0e748bdcc08a40b5a05d23cd69d86a9716c0435b8719ec9",
-      "bundle_path_digest": "sha256:c5c898eff1a7189cd0e748bdcc08a40b5a05d23cd69d86a9716c0435b8719ec9",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-16T18:21:53.218000+00:00",
-      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
-      "csv_display_name": "Turbonomic Platform Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "t8c-operator.v42.13.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-16T18:21:53.218000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
-          "name": "t8c-operator-ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195-annotation"
-        },
-        {
-          "digest": "sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
-          "name": "t8c-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "42.13.0",
-      "version_original": "42.13.0"
-    },
-    {
-      "_id": "62fbe056bb3b9bafa1354bab",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Xl",
-          "metadata": {
-            "name": "xl-release"
-          },
-          "spec": {
-            "global": {
-              "customImageNames": false,
-              "repository": "registry.connect.redhat.com/turbonomic",
-              "tag": "8.5.7"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:c5c898eff1a7189cd0e748bdcc08a40b5a05d23cd69d86a9716c0435b8719ec9",
-      "bundle_path_digest": "sha256:c5c898eff1a7189cd0e748bdcc08a40b5a05d23cd69d86a9716c0435b8719ec9",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-16T18:22:14.484000+00:00",
-      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
-      "csv_display_name": "Turbonomic Platform Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "t8c-operator.v42.13.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-16T18:22:14.484000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
-          "name": "t8c-operator-ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195-annotation"
-        },
-        {
-          "digest": "sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
-          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
-          "name": "t8c-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "42.13.0",
-      "version_original": "42.13.0"
-    },
-    {
       "_id": "62fbe0ddbb3b9bafa1354bc3",
       "alm_examples": [
         {
@@ -28139,6 +27700,803 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "0.1.0",
       "version_original": "0.1.0"
+    },
+    {
+      "_id": "630634398375780b95729bbf",
+      "alm_examples": [
+        {
+          "api_version": "locd.lenovo.com/v1alpha1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample",
+            "namespace": "locd-operator-system"
+          },
+          "spec": {
+            "affinity": {},
+            "argocd": {
+              "password": "xxxxxxxxxxx",
+              "server": "argocd.svc.cluster.local",
+              "user": "admin"
+            },
+            "autoscaling": {
+              "enabled": false,
+              "maxReplicas": 100,
+              "minReplicas": 1,
+              "targetCPUUtilizationPercentage": 80
+            },
+            "core": {
+              "image": "registry.connect.redhat.com/loc-devops/core@sha256:f771217b3f7849e1b63cc6abb93b8b0fc9636fd4a201e31807a15f773138c609",
+              "pullPolicy": "Always"
+            },
+            "fullnameOverride": "",
+            "global": {
+              "managementNamespace": "loc-devops",
+              "serviceEndpoint": "loc-devops.domain",
+              "serviceaccount": {
+                "annotations": {
+                  "managedBy": "LOC DevOps"
+                },
+                "create": true,
+                "name": "loc-devops-admin"
+              }
+            },
+            "gui": {
+              "image": "registry.connect.redhat.com/loc-devops/gui@sha256:65142a36095188e879467038936b7b6b6ee39dcea6d42a437fa7066fb2bc0f44",
+              "pullPolicy": "Always"
+            },
+            "imagePullSecrets": [],
+            "ingress": {
+              "annotations": {},
+              "className": "nginx",
+              "enabled": false,
+              "hosts": [
+                {
+                  "host": "loc-devops.domain",
+                  "paths": [
+                    {
+                      "path": "/",
+                      "pathType": "Prefix",
+                      "servicePort": 8080
+                    },
+                    {
+                      "path": "/api",
+                      "pathType": "Prefix",
+                      "servicePort": 8000
+                    },
+                    {
+                      "path": "/swagger",
+                      "pathType": "Prefix",
+                      "servicePort": 8000
+                    }
+                  ]
+                }
+              ],
+              "tls": []
+            },
+            "nameOverride": "",
+            "nodeSelector": {},
+            "podAnnotations": {},
+            "podSecurityContext": {},
+            "replicaCount": 1,
+            "resources": {},
+            "securityContext": {},
+            "service": {
+              "port": {
+                "core": 8000,
+                "gui": 8080
+              },
+              "type": "ClusterIP"
+            },
+            "tolerations": []
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/loc-devops/operator-bundle@sha256:b9f7a678ceec2d367d55499a48a15a9dd729bc34b0e707989be23c97fc3c5f4e",
+      "bundle_path_digest": "sha256:b9f7a678ceec2d367d55499a48a15a9dd729bc34b0e707989be23c97fc3c5f4e",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-08-24T14:22:49.439000+00:00",
+      "csv_description": "This is operator used to manage components of Lenovo Open Cloud DevOps",
+      "csv_display_name": "lenovo-locd-operator",
+      "csv_metadata_description": "",
+      "csv_name": "lenovo-locd-operator.v0.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-24T14:22:49.439000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "lenovo-locd-operator",
+      "provided_apis": [
+        {
+          "group": "locd.lenovo.com",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Lenovo (Shanghai) Computer Technology Co., Ltd.",
+      "related_images": [
+        {
+          "digest": "sha256:b5786bbbef725badf3dfcc2c2c7a86ead5ebb584c978c47aae8b9a62e241b80d",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:b5786bbbef725badf3dfcc2c2c7a86ead5ebb584c978c47aae8b9a62e241b80d",
+          "name": "ose-kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:4c17a3688ae3098e4b5c2c0530f49b1da8dedcc6fc1d3cd848513a1f189812a7",
+          "image": "registry.connect.redhat.com/loc-devops/operator@sha256:4c17a3688ae3098e4b5c2c0530f49b1da8dedcc6fc1d3cd848513a1f189812a7",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:f771217b3f7849e1b63cc6abb93b8b0fc9636fd4a201e31807a15f773138c609",
+          "image": "registry.connect.redhat.com/loc-devops/core@sha256:f771217b3f7849e1b63cc6abb93b8b0fc9636fd4a201e31807a15f773138c609",
+          "name": "core"
+        },
+        {
+          "digest": "sha256:65142a36095188e879467038936b7b6b6ee39dcea6d42a437fa7066fb2bc0f44",
+          "image": "registry.connect.redhat.com/loc-devops/gui@sha256:65142a36095188e879467038936b7b6b6ee39dcea6d42a437fa7066fb2bc0f44",
+          "name": "gui"
+        },
+        {
+          "digest": "sha256:b5786bbbef725badf3dfcc2c2c7a86ead5ebb584c978c47aae8b9a62e241b80d",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:b5786bbbef725badf3dfcc2c2c7a86ead5ebb584c978c47aae8b9a62e241b80d",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:4c17a3688ae3098e4b5c2c0530f49b1da8dedcc6fc1d3cd848513a1f189812a7",
+          "image": "registry.connect.redhat.com/loc-devops/operator@sha256:4c17a3688ae3098e4b5c2c0530f49b1da8dedcc6fc1d3cd848513a1f189812a7",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:65142a36095188e879467038936b7b6b6ee39dcea6d42a437fa7066fb2bc0f44",
+          "image": "registry.connect.redhat.com/loc-devops/gui@sha256:65142a36095188e879467038936b7b6b6ee39dcea6d42a437fa7066fb2bc0f44",
+          "name": "gui-65142a36095188e879467038936b7b6b6ee39dcea6d42a437fa7066fb2bc0f44-annotation"
+        },
+        {
+          "digest": "sha256:f771217b3f7849e1b63cc6abb93b8b0fc9636fd4a201e31807a15f773138c609",
+          "image": "registry.connect.redhat.com/loc-devops/core@sha256:f771217b3f7849e1b63cc6abb93b8b0fc9636fd4a201e31807a15f773138c609",
+          "name": "core-f771217b3f7849e1b63cc6abb93b8b0fc9636fd4a201e31807a15f773138c609-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.1.0",
+      "version_original": "0.1.0"
+    },
+    {
+      "_id": "63063a2c8375780b95729db1",
+      "alm_examples": [
+        {
+          "api_version": "postgres-operator.crunchydata.com/v1beta1",
+          "kind": "PostgresCluster",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": {
+            "instances": [
+              {
+                "dataVolumeClaimSpec": {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "resources": {
+                    "requests": {
+                      "storage": "1Gi"
+                    }
+                  }
+                },
+                "replicas": 1
+              }
+            ],
+            "postgresVersion": 13
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/crunchydata/postgres-operator-bundle@sha256:9d154681aceb8b1e12056a3ff63591736e97580c43cd25d735cee6940bd05633",
+      "bundle_path_digest": "sha256:9d154681aceb8b1e12056a3ff63591736e97580c43cd25d735cee6940bd05633",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "v5",
+      "creation_date": "2022-08-24T14:48:12.939000+00:00",
+      "csv_description": "[PGO](https://github.com/CrunchyData/postgres-operator), the\n[Postgres Operator](https://github.com/CrunchyData/postgres-operator) from\n[Crunchy Data](https://www.crunchydata.com), gives you a **declarative Postgres** solution that\nautomatically manages your [PostgreSQL](https://www.postgresql.org) clusters.\n\nDesigned for your GitOps workflows, it is [easy to get started](https://access.crunchydata.com/documentation/postgres-operator/v5/quickstart/)\nwith Postgres on Kubernetes with PGO. Within a few moments, you can have a production grade Postgres\ncluster complete with high availability, disaster recovery, and monitoring, all over secure TLS communications.\nEven better, PGO lets you easily customize your Postgres cluster to tailor it to your workload!\n\nWith conveniences like cloning Postgres clusters to using rolling updates to roll out disruptive\nchanges with minimal downtime, PGO is ready to support your Postgres data at every stage of your\nrelease pipeline. Built for resiliency and uptime, PGO will keep your desired Postgres in a desired\nstate so you do not need to worry about it.\n\nPGO is developed with many years of production experience in automating Postgres management on\nKubernetes, providing a seamless cloud native Postgres solution to keep your data always available.\n\n- **PostgreSQL Cluster Provisioning**: [Create, Scale, & Delete PostgreSQL clusters with ease][provisioning],\n  while fully customizing your Pods and PostgreSQL configuration!\n- **High-Availability**: Safe, automated failover backed by a [distributed consensus based high-availability solution][high-availability].\n  Uses [Pod Anti-Affinity][k8s-anti-affinity] to help resiliency; you can configure how aggressive this can be!\n  Failed primaries automatically heal, allowing for faster recovery time. You can even create regularly scheduled\n  backups as well and set your backup retention policy\n- **Disaster Recovery**: [Backups][backups] and [restores][disaster-recovery] leverage the open source [pgBackRest][] utility and\n  [includes support for full, incremental, and differential backups as well as efficient delta restores][backups].\n  Set how long you want your backups retained for. Works great with very large databases!\n- **Monitoring**: [Track the health of your PostgreSQL clusters][monitoring] using the open source [pgMonitor][] library.\n- **Clone**: [Create new clusters from your existing clusters or backups][clone] with efficient data cloning.\n- **TLS**: All connections are over [TLS][tls]. You can also [bring your own TLS infrastructure][tls] if you do not want to use the provided defaults.\n- **Connection Pooling**: Advanced [connection pooling][pool] support using [pgBouncer][].\n- **Affinity and Tolerations**: Have your PostgreSQL clusters deployed to [Kubernetes Nodes][k8s-nodes] of your preference.\n  Set your [pod anti-affinity][k8s-anti-affinity], node affinity, Pod tolerations and more rules to customize your deployment topology!\n- **Full Customizability**: Crunchy PostgreSQL for Kubernetes makes it easy to get your own PostgreSQL-as-a-Service up and running\n  and fully customize your deployments, including:\n    - Choose the resources for your Postgres cluster: [container resources and storage size][resize-cluster]. [Resize at any time][resize-cluster] with minimal disruption.\n    - Use your own container image repository, including support `imagePullSecrets` and private repositories\n    - [Customize your PostgreSQL configuration][customize-cluster]\n\nand much more!\n\n[backups]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/backups/\n[clone]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/disaster-recovery/#clone-a-postgres-cluster\n[customize-cluster]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/customize-cluster/\n[disaster-recovery]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/disaster-recovery/\n[high-availability]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/high-availability/\n[monitoring]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/monitoring/\n[pool]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/connection-pooling/\n[provisioning]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/create-cluster/\n[resize-cluster]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/resize-cluster/\n[tls]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/customize-cluster/#customize-tls\n\n[k8s-anti-affinity]: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity\n[k8s-nodes]: https://kubernetes.io/docs/concepts/architecture/nodes/\n\n[pgBackRest]: https://www.pgbackrest.org\n[pgBouncer]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/connection-pooling/\n[pgMonitor]: https://github.com/CrunchyData/pgmonitor\n\n\n## Post-Installation\n\n### Tutorial\n\nWant to [learn more about the PostgreSQL Operator][tutorial]? Browse through the [tutorial][] to learn more about what you can do!\n\n[tutorial]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial",
+      "csv_display_name": "Crunchy Postgres for Kubernetes",
+      "csv_metadata_description": "Production Postgres Made Easy",
+      "csv_name": "postgresoperator.v5.1.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-13T21:16:07.882000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "crunchy-postgres-operator",
+      "provided_apis": [
+        {
+          "group": "postgres-operator.crunchydata.com",
+          "kind": "PostgresCluster",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Crunchy Data",
+      "related_images": [
+        {
+          "digest": "sha256:eb7c955a86eca26344811f045fca9ee1c69b62bba497b57f5a7292eab5599dad",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgadmin4@sha256:eb7c955a86eca26344811f045fca9ee1c69b62bba497b57f5a7292eab5599dad",
+          "name": "PGADMIN"
+        },
+        {
+          "digest": "sha256:ca99ce29ac0a4eb1a033d0d7a0f39e0f9d08573661ecec6641748ae4eb7fc00d",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbackrest@sha256:ca99ce29ac0a4eb1a033d0d7a0f39e0f9d08573661ecec6641748ae4eb7fc00d",
+          "name": "PGBACKREST"
+        },
+        {
+          "digest": "sha256:82e3fc35086f76d52c26d5c8c86427c5ecf0cfce42f971e4308ad7268fb688e0",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbouncer@sha256:82e3fc35086f76d52c26d5c8c86427c5ecf0cfce42f971e4308ad7268fb688e0",
+          "name": "PGBOUNCER"
+        },
+        {
+          "digest": "sha256:e09830db5cd48dddb6c2c5718115242d5c6a958f677c23bbfd6d822fe655ce58",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-exporter@sha256:e09830db5cd48dddb6c2c5718115242d5c6a958f677c23bbfd6d822fe655ce58",
+          "name": "PGEXPORTER"
+        },
+        {
+          "digest": "sha256:988c8fb41d6667fcc4f05461f635b4109fffbb3e8f4a58f3e0a8db7e4f51201a",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:988c8fb41d6667fcc4f05461f635b4109fffbb3e8f4a58f3e0a8db7e4f51201a",
+          "name": "POSTGRES_13"
+        },
+        {
+          "digest": "sha256:4e506074f935bc6346fe2cb574ca15018ae901ef0365497965a2ca75d26d9ffc",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:4e506074f935bc6346fe2cb574ca15018ae901ef0365497965a2ca75d26d9ffc",
+          "name": "POSTGRES_14"
+        },
+        {
+          "digest": "sha256:246a1f978b7580921fb78d121d87754ba0e9be12902e4546823b15fe1da1a0b0",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:246a1f978b7580921fb78d121d87754ba0e9be12902e4546823b15fe1da1a0b0",
+          "name": "POSTGRES_13_GIS_3.0"
+        },
+        {
+          "digest": "sha256:f29cdeaf84d51189d572450b702df82ad0970ac310c99888dbadc29d400b7d47",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:f29cdeaf84d51189d572450b702df82ad0970ac310c99888dbadc29d400b7d47",
+          "name": "POSTGRES_13_GIS_3.1"
+        },
+        {
+          "digest": "sha256:f0c493dc681b8bdc54f012b05e87f143897e022210651de396ed1cd22851e9c1",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:f0c493dc681b8bdc54f012b05e87f143897e022210651de396ed1cd22851e9c1",
+          "name": "POSTGRES_14_GIS_3.1"
+        },
+        {
+          "digest": "sha256:8321084187156e90e7e08e0004717ecb14624573e76cec354b69b5cfd1222d89",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:8321084187156e90e7e08e0004717ecb14624573e76cec354b69b5cfd1222d89",
+          "name": "POSTGRES_14_GIS_3.2"
+        },
+        {
+          "digest": "sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "name": "postgres-operator"
+        },
+        {
+          "digest": "sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "name": "postgres-operator-1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec-annotation"
+        },
+        {
+          "digest": "sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:eb7c955a86eca26344811f045fca9ee1c69b62bba497b57f5a7292eab5599dad",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgadmin4@sha256:eb7c955a86eca26344811f045fca9ee1c69b62bba497b57f5a7292eab5599dad",
+          "name": "pgadmin"
+        },
+        {
+          "digest": "sha256:ca99ce29ac0a4eb1a033d0d7a0f39e0f9d08573661ecec6641748ae4eb7fc00d",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbackrest@sha256:ca99ce29ac0a4eb1a033d0d7a0f39e0f9d08573661ecec6641748ae4eb7fc00d",
+          "name": "pgbackrest"
+        },
+        {
+          "digest": "sha256:82e3fc35086f76d52c26d5c8c86427c5ecf0cfce42f971e4308ad7268fb688e0",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbouncer@sha256:82e3fc35086f76d52c26d5c8c86427c5ecf0cfce42f971e4308ad7268fb688e0",
+          "name": "pgbouncer"
+        },
+        {
+          "digest": "sha256:e09830db5cd48dddb6c2c5718115242d5c6a958f677c23bbfd6d822fe655ce58",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-exporter@sha256:e09830db5cd48dddb6c2c5718115242d5c6a958f677c23bbfd6d822fe655ce58",
+          "name": "pgexporter"
+        },
+        {
+          "digest": "sha256:988c8fb41d6667fcc4f05461f635b4109fffbb3e8f4a58f3e0a8db7e4f51201a",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:988c8fb41d6667fcc4f05461f635b4109fffbb3e8f4a58f3e0a8db7e4f51201a",
+          "name": "postgres_13"
+        },
+        {
+          "digest": "sha256:4e506074f935bc6346fe2cb574ca15018ae901ef0365497965a2ca75d26d9ffc",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:4e506074f935bc6346fe2cb574ca15018ae901ef0365497965a2ca75d26d9ffc",
+          "name": "postgres_14"
+        },
+        {
+          "digest": "sha256:246a1f978b7580921fb78d121d87754ba0e9be12902e4546823b15fe1da1a0b0",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:246a1f978b7580921fb78d121d87754ba0e9be12902e4546823b15fe1da1a0b0",
+          "name": "postgres_13_gis_3.0"
+        },
+        {
+          "digest": "sha256:f29cdeaf84d51189d572450b702df82ad0970ac310c99888dbadc29d400b7d47",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:f29cdeaf84d51189d572450b702df82ad0970ac310c99888dbadc29d400b7d47",
+          "name": "postgres_13_gis_3.1"
+        },
+        {
+          "digest": "sha256:f0c493dc681b8bdc54f012b05e87f143897e022210651de396ed1cd22851e9c1",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:f0c493dc681b8bdc54f012b05e87f143897e022210651de396ed1cd22851e9c1",
+          "name": "postgres_14_gis_3.1"
+        },
+        {
+          "digest": "sha256:8321084187156e90e7e08e0004717ecb14624573e76cec354b69b5cfd1222d89",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:8321084187156e90e7e08e0004717ecb14624573e76cec354b69b5cfd1222d89",
+          "name": "postgres_14_gis_3.2"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "5.1.3",
+      "version_original": "5.1.3"
+    },
+    {
+      "_id": "63063bfa44c5b8e658fc8320",
+      "alm_examples": [
+        {
+          "api_version": "postgres-operator.crunchydata.com/v1beta1",
+          "kind": "PostgresCluster",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": {
+            "instances": [
+              {
+                "dataVolumeClaimSpec": {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "resources": {
+                    "requests": {
+                      "storage": "1Gi"
+                    }
+                  }
+                },
+                "replicas": 1
+              }
+            ],
+            "postgresVersion": 13
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/crunchydata/postgres-operator-bundle@sha256:9d154681aceb8b1e12056a3ff63591736e97580c43cd25d735cee6940bd05633",
+      "bundle_path_digest": "sha256:9d154681aceb8b1e12056a3ff63591736e97580c43cd25d735cee6940bd05633",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "v5",
+      "creation_date": "2022-08-24T14:55:54.005000+00:00",
+      "csv_description": "[PGO](https://github.com/CrunchyData/postgres-operator), the\n[Postgres Operator](https://github.com/CrunchyData/postgres-operator) from\n[Crunchy Data](https://www.crunchydata.com), gives you a **declarative Postgres** solution that\nautomatically manages your [PostgreSQL](https://www.postgresql.org) clusters.\n\nDesigned for your GitOps workflows, it is [easy to get started](https://access.crunchydata.com/documentation/postgres-operator/v5/quickstart/)\nwith Postgres on Kubernetes with PGO. Within a few moments, you can have a production grade Postgres\ncluster complete with high availability, disaster recovery, and monitoring, all over secure TLS communications.\nEven better, PGO lets you easily customize your Postgres cluster to tailor it to your workload!\n\nWith conveniences like cloning Postgres clusters to using rolling updates to roll out disruptive\nchanges with minimal downtime, PGO is ready to support your Postgres data at every stage of your\nrelease pipeline. Built for resiliency and uptime, PGO will keep your desired Postgres in a desired\nstate so you do not need to worry about it.\n\nPGO is developed with many years of production experience in automating Postgres management on\nKubernetes, providing a seamless cloud native Postgres solution to keep your data always available.\n\n- **PostgreSQL Cluster Provisioning**: [Create, Scale, & Delete PostgreSQL clusters with ease][provisioning],\n  while fully customizing your Pods and PostgreSQL configuration!\n- **High-Availability**: Safe, automated failover backed by a [distributed consensus based high-availability solution][high-availability].\n  Uses [Pod Anti-Affinity][k8s-anti-affinity] to help resiliency; you can configure how aggressive this can be!\n  Failed primaries automatically heal, allowing for faster recovery time. You can even create regularly scheduled\n  backups as well and set your backup retention policy\n- **Disaster Recovery**: [Backups][backups] and [restores][disaster-recovery] leverage the open source [pgBackRest][] utility and\n  [includes support for full, incremental, and differential backups as well as efficient delta restores][backups].\n  Set how long you want your backups retained for. Works great with very large databases!\n- **Monitoring**: [Track the health of your PostgreSQL clusters][monitoring] using the open source [pgMonitor][] library.\n- **Clone**: [Create new clusters from your existing clusters or backups][clone] with efficient data cloning.\n- **TLS**: All connections are over [TLS][tls]. You can also [bring your own TLS infrastructure][tls] if you do not want to use the provided defaults.\n- **Connection Pooling**: Advanced [connection pooling][pool] support using [pgBouncer][].\n- **Affinity and Tolerations**: Have your PostgreSQL clusters deployed to [Kubernetes Nodes][k8s-nodes] of your preference.\n  Set your [pod anti-affinity][k8s-anti-affinity], node affinity, Pod tolerations and more rules to customize your deployment topology!\n- **Full Customizability**: Crunchy PostgreSQL for Kubernetes makes it easy to get your own PostgreSQL-as-a-Service up and running\n  and fully customize your deployments, including:\n    - Choose the resources for your Postgres cluster: [container resources and storage size][resize-cluster]. [Resize at any time][resize-cluster] with minimal disruption.\n    - Use your own container image repository, including support `imagePullSecrets` and private repositories\n    - [Customize your PostgreSQL configuration][customize-cluster]\n\nand much more!\n\n[backups]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/backups/\n[clone]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/disaster-recovery/#clone-a-postgres-cluster\n[customize-cluster]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/customize-cluster/\n[disaster-recovery]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/disaster-recovery/\n[high-availability]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/high-availability/\n[monitoring]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/monitoring/\n[pool]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/connection-pooling/\n[provisioning]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/create-cluster/\n[resize-cluster]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/resize-cluster/\n[tls]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/customize-cluster/#customize-tls\n\n[k8s-anti-affinity]: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity\n[k8s-nodes]: https://kubernetes.io/docs/concepts/architecture/nodes/\n\n[pgBackRest]: https://www.pgbackrest.org\n[pgBouncer]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/connection-pooling/\n[pgMonitor]: https://github.com/CrunchyData/pgmonitor\n\n\n## Post-Installation\n\n### Tutorial\n\nWant to [learn more about the PostgreSQL Operator][tutorial]? Browse through the [tutorial][] to learn more about what you can do!\n\n[tutorial]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial",
+      "csv_display_name": "Crunchy Postgres for Kubernetes",
+      "csv_metadata_description": "Production Postgres Made Easy",
+      "csv_name": "postgresoperator.v5.1.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-13T21:16:53.194000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "crunchy-postgres-operator",
+      "provided_apis": [
+        {
+          "group": "postgres-operator.crunchydata.com",
+          "kind": "PostgresCluster",
+          "plural": "postgresclusters",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Crunchy Data",
+      "related_images": [
+        {
+          "digest": "sha256:eb7c955a86eca26344811f045fca9ee1c69b62bba497b57f5a7292eab5599dad",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgadmin4@sha256:eb7c955a86eca26344811f045fca9ee1c69b62bba497b57f5a7292eab5599dad",
+          "name": "PGADMIN"
+        },
+        {
+          "digest": "sha256:ca99ce29ac0a4eb1a033d0d7a0f39e0f9d08573661ecec6641748ae4eb7fc00d",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbackrest@sha256:ca99ce29ac0a4eb1a033d0d7a0f39e0f9d08573661ecec6641748ae4eb7fc00d",
+          "name": "PGBACKREST"
+        },
+        {
+          "digest": "sha256:82e3fc35086f76d52c26d5c8c86427c5ecf0cfce42f971e4308ad7268fb688e0",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbouncer@sha256:82e3fc35086f76d52c26d5c8c86427c5ecf0cfce42f971e4308ad7268fb688e0",
+          "name": "PGBOUNCER"
+        },
+        {
+          "digest": "sha256:e09830db5cd48dddb6c2c5718115242d5c6a958f677c23bbfd6d822fe655ce58",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-exporter@sha256:e09830db5cd48dddb6c2c5718115242d5c6a958f677c23bbfd6d822fe655ce58",
+          "name": "PGEXPORTER"
+        },
+        {
+          "digest": "sha256:988c8fb41d6667fcc4f05461f635b4109fffbb3e8f4a58f3e0a8db7e4f51201a",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:988c8fb41d6667fcc4f05461f635b4109fffbb3e8f4a58f3e0a8db7e4f51201a",
+          "name": "POSTGRES_13"
+        },
+        {
+          "digest": "sha256:4e506074f935bc6346fe2cb574ca15018ae901ef0365497965a2ca75d26d9ffc",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:4e506074f935bc6346fe2cb574ca15018ae901ef0365497965a2ca75d26d9ffc",
+          "name": "POSTGRES_14"
+        },
+        {
+          "digest": "sha256:246a1f978b7580921fb78d121d87754ba0e9be12902e4546823b15fe1da1a0b0",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:246a1f978b7580921fb78d121d87754ba0e9be12902e4546823b15fe1da1a0b0",
+          "name": "POSTGRES_13_GIS_3.0"
+        },
+        {
+          "digest": "sha256:f29cdeaf84d51189d572450b702df82ad0970ac310c99888dbadc29d400b7d47",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:f29cdeaf84d51189d572450b702df82ad0970ac310c99888dbadc29d400b7d47",
+          "name": "POSTGRES_13_GIS_3.1"
+        },
+        {
+          "digest": "sha256:f0c493dc681b8bdc54f012b05e87f143897e022210651de396ed1cd22851e9c1",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:f0c493dc681b8bdc54f012b05e87f143897e022210651de396ed1cd22851e9c1",
+          "name": "POSTGRES_14_GIS_3.1"
+        },
+        {
+          "digest": "sha256:8321084187156e90e7e08e0004717ecb14624573e76cec354b69b5cfd1222d89",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:8321084187156e90e7e08e0004717ecb14624573e76cec354b69b5cfd1222d89",
+          "name": "POSTGRES_14_GIS_3.2"
+        },
+        {
+          "digest": "sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "name": "postgres-operator"
+        },
+        {
+          "digest": "sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "name": "postgres-operator-1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec-annotation"
+        },
+        {
+          "digest": "sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:eb7c955a86eca26344811f045fca9ee1c69b62bba497b57f5a7292eab5599dad",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgadmin4@sha256:eb7c955a86eca26344811f045fca9ee1c69b62bba497b57f5a7292eab5599dad",
+          "name": "pgadmin"
+        },
+        {
+          "digest": "sha256:ca99ce29ac0a4eb1a033d0d7a0f39e0f9d08573661ecec6641748ae4eb7fc00d",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbackrest@sha256:ca99ce29ac0a4eb1a033d0d7a0f39e0f9d08573661ecec6641748ae4eb7fc00d",
+          "name": "pgbackrest"
+        },
+        {
+          "digest": "sha256:82e3fc35086f76d52c26d5c8c86427c5ecf0cfce42f971e4308ad7268fb688e0",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbouncer@sha256:82e3fc35086f76d52c26d5c8c86427c5ecf0cfce42f971e4308ad7268fb688e0",
+          "name": "pgbouncer"
+        },
+        {
+          "digest": "sha256:e09830db5cd48dddb6c2c5718115242d5c6a958f677c23bbfd6d822fe655ce58",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-exporter@sha256:e09830db5cd48dddb6c2c5718115242d5c6a958f677c23bbfd6d822fe655ce58",
+          "name": "pgexporter"
+        },
+        {
+          "digest": "sha256:988c8fb41d6667fcc4f05461f635b4109fffbb3e8f4a58f3e0a8db7e4f51201a",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:988c8fb41d6667fcc4f05461f635b4109fffbb3e8f4a58f3e0a8db7e4f51201a",
+          "name": "postgres_13"
+        },
+        {
+          "digest": "sha256:4e506074f935bc6346fe2cb574ca15018ae901ef0365497965a2ca75d26d9ffc",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:4e506074f935bc6346fe2cb574ca15018ae901ef0365497965a2ca75d26d9ffc",
+          "name": "postgres_14"
+        },
+        {
+          "digest": "sha256:246a1f978b7580921fb78d121d87754ba0e9be12902e4546823b15fe1da1a0b0",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:246a1f978b7580921fb78d121d87754ba0e9be12902e4546823b15fe1da1a0b0",
+          "name": "postgres_13_gis_3.0"
+        },
+        {
+          "digest": "sha256:f29cdeaf84d51189d572450b702df82ad0970ac310c99888dbadc29d400b7d47",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:f29cdeaf84d51189d572450b702df82ad0970ac310c99888dbadc29d400b7d47",
+          "name": "postgres_13_gis_3.1"
+        },
+        {
+          "digest": "sha256:f0c493dc681b8bdc54f012b05e87f143897e022210651de396ed1cd22851e9c1",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:f0c493dc681b8bdc54f012b05e87f143897e022210651de396ed1cd22851e9c1",
+          "name": "postgres_14_gis_3.1"
+        },
+        {
+          "digest": "sha256:8321084187156e90e7e08e0004717ecb14624573e76cec354b69b5cfd1222d89",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:8321084187156e90e7e08e0004717ecb14624573e76cec354b69b5cfd1222d89",
+          "name": "postgres_14_gis_3.2"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "5.1.3",
+      "version_original": "5.1.3"
+    },
+    {
+      "_id": "63063ca6f62197703e941b75",
+      "alm_examples": [
+        {
+          "api_version": "postgres-operator.crunchydata.com/v1beta1",
+          "kind": "PostgresCluster",
+          "metadata": {
+            "name": "example"
+          },
+          "spec": {
+            "instances": [
+              {
+                "dataVolumeClaimSpec": {
+                  "accessModes": [
+                    "ReadWriteOnce"
+                  ],
+                  "resources": {
+                    "requests": {
+                      "storage": "1Gi"
+                    }
+                  }
+                },
+                "replicas": 1
+              }
+            ],
+            "postgresVersion": 13
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/crunchydata/postgres-operator-bundle@sha256:9d154681aceb8b1e12056a3ff63591736e97580c43cd25d735cee6940bd05633",
+      "bundle_path_digest": "sha256:9d154681aceb8b1e12056a3ff63591736e97580c43cd25d735cee6940bd05633",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "v5",
+      "creation_date": "2022-08-24T14:58:46.542000+00:00",
+      "csv_description": "[PGO](https://github.com/CrunchyData/postgres-operator), the\n[Postgres Operator](https://github.com/CrunchyData/postgres-operator) from\n[Crunchy Data](https://www.crunchydata.com), gives you a **declarative Postgres** solution that\nautomatically manages your [PostgreSQL](https://www.postgresql.org) clusters.\n\nDesigned for your GitOps workflows, it is [easy to get started](https://access.crunchydata.com/documentation/postgres-operator/v5/quickstart/)\nwith Postgres on Kubernetes with PGO. Within a few moments, you can have a production grade Postgres\ncluster complete with high availability, disaster recovery, and monitoring, all over secure TLS communications.\nEven better, PGO lets you easily customize your Postgres cluster to tailor it to your workload!\n\nWith conveniences like cloning Postgres clusters to using rolling updates to roll out disruptive\nchanges with minimal downtime, PGO is ready to support your Postgres data at every stage of your\nrelease pipeline. Built for resiliency and uptime, PGO will keep your desired Postgres in a desired\nstate so you do not need to worry about it.\n\nPGO is developed with many years of production experience in automating Postgres management on\nKubernetes, providing a seamless cloud native Postgres solution to keep your data always available.\n\n- **PostgreSQL Cluster Provisioning**: [Create, Scale, & Delete PostgreSQL clusters with ease][provisioning],\n  while fully customizing your Pods and PostgreSQL configuration!\n- **High-Availability**: Safe, automated failover backed by a [distributed consensus based high-availability solution][high-availability].\n  Uses [Pod Anti-Affinity][k8s-anti-affinity] to help resiliency; you can configure how aggressive this can be!\n  Failed primaries automatically heal, allowing for faster recovery time. You can even create regularly scheduled\n  backups as well and set your backup retention policy\n- **Disaster Recovery**: [Backups][backups] and [restores][disaster-recovery] leverage the open source [pgBackRest][] utility and\n  [includes support for full, incremental, and differential backups as well as efficient delta restores][backups].\n  Set how long you want your backups retained for. Works great with very large databases!\n- **Monitoring**: [Track the health of your PostgreSQL clusters][monitoring] using the open source [pgMonitor][] library.\n- **Clone**: [Create new clusters from your existing clusters or backups][clone] with efficient data cloning.\n- **TLS**: All connections are over [TLS][tls]. You can also [bring your own TLS infrastructure][tls] if you do not want to use the provided defaults.\n- **Connection Pooling**: Advanced [connection pooling][pool] support using [pgBouncer][].\n- **Affinity and Tolerations**: Have your PostgreSQL clusters deployed to [Kubernetes Nodes][k8s-nodes] of your preference.\n  Set your [pod anti-affinity][k8s-anti-affinity], node affinity, Pod tolerations and more rules to customize your deployment topology!\n- **Full Customizability**: Crunchy PostgreSQL for Kubernetes makes it easy to get your own PostgreSQL-as-a-Service up and running\n  and fully customize your deployments, including:\n    - Choose the resources for your Postgres cluster: [container resources and storage size][resize-cluster]. [Resize at any time][resize-cluster] with minimal disruption.\n    - Use your own container image repository, including support `imagePullSecrets` and private repositories\n    - [Customize your PostgreSQL configuration][customize-cluster]\n\nand much more!\n\n[backups]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/backups/\n[clone]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/disaster-recovery/#clone-a-postgres-cluster\n[customize-cluster]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/customize-cluster/\n[disaster-recovery]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/disaster-recovery/\n[high-availability]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/high-availability/\n[monitoring]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/monitoring/\n[pool]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/connection-pooling/\n[provisioning]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/create-cluster/\n[resize-cluster]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/resize-cluster/\n[tls]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/customize-cluster/#customize-tls\n\n[k8s-anti-affinity]: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity\n[k8s-nodes]: https://kubernetes.io/docs/concepts/architecture/nodes/\n\n[pgBackRest]: https://www.pgbackrest.org\n[pgBouncer]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial/connection-pooling/\n[pgMonitor]: https://github.com/CrunchyData/pgmonitor\n\n\n## Post-Installation\n\n### Tutorial\n\nWant to [learn more about the PostgreSQL Operator][tutorial]? Browse through the [tutorial][] to learn more about what you can do!\n\n[tutorial]: https://access.crunchydata.com/documentation/postgres-operator/v5/tutorial",
+      "csv_display_name": "Crunchy Postgres for Kubernetes",
+      "csv_metadata_description": "Production Postgres Made Easy",
+      "csv_name": "postgresoperator.v5.1.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-13T21:12:17.915000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "crunchy-postgres-operator",
+      "provided_apis": [
+        {
+          "group": "postgres-operator.crunchydata.com",
+          "kind": "PostgresCluster",
+          "plural": "postgresclusters",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Crunchy Data",
+      "related_images": [
+        {
+          "digest": "sha256:eb7c955a86eca26344811f045fca9ee1c69b62bba497b57f5a7292eab5599dad",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgadmin4@sha256:eb7c955a86eca26344811f045fca9ee1c69b62bba497b57f5a7292eab5599dad",
+          "name": "PGADMIN"
+        },
+        {
+          "digest": "sha256:ca99ce29ac0a4eb1a033d0d7a0f39e0f9d08573661ecec6641748ae4eb7fc00d",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbackrest@sha256:ca99ce29ac0a4eb1a033d0d7a0f39e0f9d08573661ecec6641748ae4eb7fc00d",
+          "name": "PGBACKREST"
+        },
+        {
+          "digest": "sha256:82e3fc35086f76d52c26d5c8c86427c5ecf0cfce42f971e4308ad7268fb688e0",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbouncer@sha256:82e3fc35086f76d52c26d5c8c86427c5ecf0cfce42f971e4308ad7268fb688e0",
+          "name": "PGBOUNCER"
+        },
+        {
+          "digest": "sha256:e09830db5cd48dddb6c2c5718115242d5c6a958f677c23bbfd6d822fe655ce58",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-exporter@sha256:e09830db5cd48dddb6c2c5718115242d5c6a958f677c23bbfd6d822fe655ce58",
+          "name": "PGEXPORTER"
+        },
+        {
+          "digest": "sha256:988c8fb41d6667fcc4f05461f635b4109fffbb3e8f4a58f3e0a8db7e4f51201a",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:988c8fb41d6667fcc4f05461f635b4109fffbb3e8f4a58f3e0a8db7e4f51201a",
+          "name": "POSTGRES_13"
+        },
+        {
+          "digest": "sha256:4e506074f935bc6346fe2cb574ca15018ae901ef0365497965a2ca75d26d9ffc",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:4e506074f935bc6346fe2cb574ca15018ae901ef0365497965a2ca75d26d9ffc",
+          "name": "POSTGRES_14"
+        },
+        {
+          "digest": "sha256:246a1f978b7580921fb78d121d87754ba0e9be12902e4546823b15fe1da1a0b0",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:246a1f978b7580921fb78d121d87754ba0e9be12902e4546823b15fe1da1a0b0",
+          "name": "POSTGRES_13_GIS_3.0"
+        },
+        {
+          "digest": "sha256:f29cdeaf84d51189d572450b702df82ad0970ac310c99888dbadc29d400b7d47",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:f29cdeaf84d51189d572450b702df82ad0970ac310c99888dbadc29d400b7d47",
+          "name": "POSTGRES_13_GIS_3.1"
+        },
+        {
+          "digest": "sha256:f0c493dc681b8bdc54f012b05e87f143897e022210651de396ed1cd22851e9c1",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:f0c493dc681b8bdc54f012b05e87f143897e022210651de396ed1cd22851e9c1",
+          "name": "POSTGRES_14_GIS_3.1"
+        },
+        {
+          "digest": "sha256:8321084187156e90e7e08e0004717ecb14624573e76cec354b69b5cfd1222d89",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:8321084187156e90e7e08e0004717ecb14624573e76cec354b69b5cfd1222d89",
+          "name": "POSTGRES_14_GIS_3.2"
+        },
+        {
+          "digest": "sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "name": "postgres-operator"
+        },
+        {
+          "digest": "sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "name": "postgres-operator-1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec-annotation"
+        },
+        {
+          "digest": "sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "image": "registry.connect.redhat.com/crunchydata/postgres-operator@sha256:1c3bab87a28a50c8314f51e13893839f895a41bea983bf20c46db7b30e3751ec",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:eb7c955a86eca26344811f045fca9ee1c69b62bba497b57f5a7292eab5599dad",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgadmin4@sha256:eb7c955a86eca26344811f045fca9ee1c69b62bba497b57f5a7292eab5599dad",
+          "name": "pgadmin"
+        },
+        {
+          "digest": "sha256:ca99ce29ac0a4eb1a033d0d7a0f39e0f9d08573661ecec6641748ae4eb7fc00d",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbackrest@sha256:ca99ce29ac0a4eb1a033d0d7a0f39e0f9d08573661ecec6641748ae4eb7fc00d",
+          "name": "pgbackrest"
+        },
+        {
+          "digest": "sha256:82e3fc35086f76d52c26d5c8c86427c5ecf0cfce42f971e4308ad7268fb688e0",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-pgbouncer@sha256:82e3fc35086f76d52c26d5c8c86427c5ecf0cfce42f971e4308ad7268fb688e0",
+          "name": "pgbouncer"
+        },
+        {
+          "digest": "sha256:e09830db5cd48dddb6c2c5718115242d5c6a958f677c23bbfd6d822fe655ce58",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-exporter@sha256:e09830db5cd48dddb6c2c5718115242d5c6a958f677c23bbfd6d822fe655ce58",
+          "name": "pgexporter"
+        },
+        {
+          "digest": "sha256:988c8fb41d6667fcc4f05461f635b4109fffbb3e8f4a58f3e0a8db7e4f51201a",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:988c8fb41d6667fcc4f05461f635b4109fffbb3e8f4a58f3e0a8db7e4f51201a",
+          "name": "postgres_13"
+        },
+        {
+          "digest": "sha256:4e506074f935bc6346fe2cb574ca15018ae901ef0365497965a2ca75d26d9ffc",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres@sha256:4e506074f935bc6346fe2cb574ca15018ae901ef0365497965a2ca75d26d9ffc",
+          "name": "postgres_14"
+        },
+        {
+          "digest": "sha256:246a1f978b7580921fb78d121d87754ba0e9be12902e4546823b15fe1da1a0b0",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:246a1f978b7580921fb78d121d87754ba0e9be12902e4546823b15fe1da1a0b0",
+          "name": "postgres_13_gis_3.0"
+        },
+        {
+          "digest": "sha256:f29cdeaf84d51189d572450b702df82ad0970ac310c99888dbadc29d400b7d47",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:f29cdeaf84d51189d572450b702df82ad0970ac310c99888dbadc29d400b7d47",
+          "name": "postgres_13_gis_3.1"
+        },
+        {
+          "digest": "sha256:f0c493dc681b8bdc54f012b05e87f143897e022210651de396ed1cd22851e9c1",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:f0c493dc681b8bdc54f012b05e87f143897e022210651de396ed1cd22851e9c1",
+          "name": "postgres_14_gis_3.1"
+        },
+        {
+          "digest": "sha256:8321084187156e90e7e08e0004717ecb14624573e76cec354b69b5cfd1222d89",
+          "image": "registry.connect.redhat.com/crunchydata/crunchy-postgres-gis@sha256:8321084187156e90e7e08e0004717ecb14624573e76cec354b69b5cfd1222d89",
+          "name": "postgres_14_gis_3.2"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "5.1.3",
+      "version_original": "5.1.3"
     }
   ]
 }

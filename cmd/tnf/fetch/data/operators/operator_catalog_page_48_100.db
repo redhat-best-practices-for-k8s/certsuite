@@ -1,1258 +1,6 @@
 {
   "data": [
     {
-      "_id": "631a10dbfb7a09c0586f9caa",
-      "alm_examples": [
-        {
-          "api_version": "pulsar.streamnative.io/v1alpha1",
-          "kind": "PulsarBroker",
-          "metadata": {
-            "name": "pulsarbroker-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        },
-        {
-          "api_version": "pulsar.streamnative.io/v1alpha1",
-          "kind": "PulsarProxy",
-          "metadata": {
-            "name": "pulsar"
-          },
-          "spec": {
-            "configMapName": "proxy-configmap",
-            "image": "apachepulsar/pulsar:2.5.0",
-            "imagePullPolicy": "Always",
-            "replicas": 3
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
-      "bundle_path_digest": "sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-09-08T15:57:15.222000+00:00",
-      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
-      "csv_display_name": "Pulsar Operator",
-      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
-      "csv_name": "pulsar-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-08T15:57:15.222000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "pulsar-operator",
-      "provided_apis": [
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarProxy",
-          "plural": "pulsarproxies",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarTenant",
-          "plural": "pulsartenants",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarTopic",
-          "plural": "pulsartopics",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarBroker",
-          "plural": "pulsarbrokers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarConnection",
-          "plural": "pulsarconnections",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarNamespace",
-          "plural": "pulsarnamespaces",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarPermission",
-          "plural": "pulsarpermissions",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "name": "pulsar-operator-7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a1492649384639b989556",
-      "alm_examples": [
-        {
-          "api_version": "pulsar.streamnative.io/v1alpha1",
-          "kind": "PulsarBroker",
-          "metadata": {
-            "name": "pulsarbroker-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        },
-        {
-          "api_version": "pulsar.streamnative.io/v1alpha1",
-          "kind": "PulsarProxy",
-          "metadata": {
-            "name": "pulsar"
-          },
-          "spec": {
-            "configMapName": "proxy-configmap",
-            "image": "apachepulsar/pulsar:2.5.0",
-            "imagePullPolicy": "Always",
-            "replicas": 3
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
-      "bundle_path_digest": "sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-09-08T16:13:06.690000+00:00",
-      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
-      "csv_display_name": "Pulsar Operator",
-      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
-      "csv_name": "pulsar-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-08T16:13:06.690000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "pulsar-operator",
-      "provided_apis": [
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarProxy",
-          "plural": "pulsarproxies",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarTenant",
-          "plural": "pulsartenants",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarTopic",
-          "plural": "pulsartopics",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarBroker",
-          "plural": "pulsarbrokers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarConnection",
-          "plural": "pulsarconnections",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarNamespace",
-          "plural": "pulsarnamespaces",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarPermission",
-          "plural": "pulsarpermissions",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "name": "pulsar-operator-7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a14937beba81ffd6f9d82",
-      "alm_examples": [
-        {
-          "api_version": "pulsar.streamnative.io/v1alpha1",
-          "kind": "PulsarBroker",
-          "metadata": {
-            "name": "pulsarbroker-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        },
-        {
-          "api_version": "pulsar.streamnative.io/v1alpha1",
-          "kind": "PulsarProxy",
-          "metadata": {
-            "name": "pulsar"
-          },
-          "spec": {
-            "configMapName": "proxy-configmap",
-            "image": "apachepulsar/pulsar:2.5.0",
-            "imagePullPolicy": "Always",
-            "replicas": 3
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
-      "bundle_path_digest": "sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-09-08T16:13:07.295000+00:00",
-      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
-      "csv_display_name": "Pulsar Operator",
-      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
-      "csv_name": "pulsar-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-08T16:13:07.295000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "pulsar-operator",
-      "provided_apis": [
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarProxy",
-          "plural": "pulsarproxies",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarTenant",
-          "plural": "pulsartenants",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarTopic",
-          "plural": "pulsartopics",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarBroker",
-          "plural": "pulsarbrokers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarConnection",
-          "plural": "pulsarconnections",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarNamespace",
-          "plural": "pulsarnamespaces",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarPermission",
-          "plural": "pulsarpermissions",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "name": "pulsar-operator-7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a1493649384639b989558",
-      "alm_examples": [
-        {
-          "api_version": "pulsar.streamnative.io/v1alpha1",
-          "kind": "PulsarBroker",
-          "metadata": {
-            "name": "pulsarbroker-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        },
-        {
-          "api_version": "pulsar.streamnative.io/v1alpha1",
-          "kind": "PulsarProxy",
-          "metadata": {
-            "name": "pulsar"
-          },
-          "spec": {
-            "configMapName": "proxy-configmap",
-            "image": "apachepulsar/pulsar:2.5.0",
-            "imagePullPolicy": "Always",
-            "replicas": 3
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/pulsar-operator-bundle@sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
-      "bundle_path_digest": "sha256:9323486deb5d93cbc88100ad46dbbf4ab692415ad115e8dcfcb41e35dba98ea8",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-09-08T16:13:07.795000+00:00",
-      "csv_description": "The Pulsar Operator is a controller that manages Pulsar clusters in Kubernetes. It provides a full management life-cycle for Pulsar, including deployment, upgrades, scaling, and configuration changes. With the Pulsar Operator, Pulsar can run seamlessly in the Kubernetes clusters deployed on a public or private cloud. You can then manage Pulsar clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n\nPrerequisites:\n- Install cert-manager operator first.\n",
-      "csv_display_name": "Pulsar Operator",
-      "csv_metadata_description": "The Pulsar Operator manages the Pulsar service instances deployed on a Kubernetes cluster.",
-      "csv_name": "pulsar-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-08T16:13:07.795000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "pulsar-operator",
-      "provided_apis": [
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarProxy",
-          "plural": "pulsarproxies",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarTenant",
-          "plural": "pulsartenants",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarTopic",
-          "plural": "pulsartopics",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarBroker",
-          "plural": "pulsarbrokers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarConnection",
-          "plural": "pulsarconnections",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarNamespace",
-          "plural": "pulsarnamespaces",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "pulsar.streamnative.io",
-          "kind": "PulsarPermission",
-          "plural": "pulsarpermissions",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "name": "pulsar-operator-7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "image": "quay.io/streamnativeio/pulsar-operator@sha256:7c88aa505f553166c36aa0b64985fa40ab4252c92a42439e23948086551b7b93",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a19df7beba81ffd6f9f31",
-      "alm_examples": [
-        {
-          "api_version": "bookkeeper.streamnative.io/v1alpha1",
-          "kind": "BookKeeperCluster",
-          "metadata": {
-            "name": "bookkeepercluster-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-09-08T16:35:43.550000+00:00",
-      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
-      "csv_display_name": "BookKeeper Operator",
-      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
-      "csv_name": "bookkeeper-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-08T16:35:43.550000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "bookkeeper-operator",
-      "provided_apis": [
-        {
-          "group": "bookkeeper.streamnative.io",
-          "kind": "BookKeeperCluster",
-          "plural": "bookkeeperclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a19e07b4a446557978fc9",
-      "alm_examples": [
-        {
-          "api_version": "bookkeeper.streamnative.io/v1alpha1",
-          "kind": "BookKeeperCluster",
-          "metadata": {
-            "name": "bookkeepercluster-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-09-08T16:35:44.740000+00:00",
-      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
-      "csv_display_name": "BookKeeper Operator",
-      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
-      "csv_name": "bookkeeper-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-08T16:35:44.740000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "bookkeeper-operator",
-      "provided_apis": [
-        {
-          "group": "bookkeeper.streamnative.io",
-          "kind": "BookKeeperCluster",
-          "plural": "bookkeeperclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a19e1649384639b989720",
-      "alm_examples": [
-        {
-          "api_version": "bookkeeper.streamnative.io/v1alpha1",
-          "kind": "BookKeeperCluster",
-          "metadata": {
-            "name": "bookkeepercluster-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-09-08T16:35:45.126000+00:00",
-      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
-      "csv_display_name": "BookKeeper Operator",
-      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
-      "csv_name": "bookkeeper-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-08T16:35:45.126000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "bookkeeper-operator",
-      "provided_apis": [
-        {
-          "group": "bookkeeper.streamnative.io",
-          "kind": "BookKeeperCluster",
-          "plural": "bookkeeperclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a1c9b778c198f6e686067",
-      "alm_examples": [
-        {
-          "api_version": "bookkeeper.streamnative.io/v1alpha1",
-          "kind": "BookKeeperCluster",
-          "metadata": {
-            "name": "bookkeepercluster-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-09-08T16:47:23.365000+00:00",
-      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
-      "csv_display_name": "BookKeeper Operator",
-      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
-      "csv_name": "bookkeeper-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-08T16:47:23.365000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "bookkeeper-operator",
-      "provided_apis": [
-        {
-          "group": "bookkeeper.streamnative.io",
-          "kind": "BookKeeperCluster",
-          "plural": "bookkeeperclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a1cabad2e331948d10c54",
-      "alm_examples": [
-        {
-          "api_version": "bookkeeper.streamnative.io/v1alpha1",
-          "kind": "BookKeeperCluster",
-          "metadata": {
-            "name": "bookkeepercluster-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-09-08T16:47:39.299000+00:00",
-      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
-      "csv_display_name": "BookKeeper Operator",
-      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
-      "csv_name": "bookkeeper-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-08T16:47:39.299000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "bookkeeper-operator",
-      "provided_apis": [
-        {
-          "group": "bookkeeper.streamnative.io",
-          "kind": "BookKeeperCluster",
-          "plural": "bookkeeperclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a1cb0778c198f6e68607c",
-      "alm_examples": [
-        {
-          "api_version": "bookkeeper.streamnative.io/v1alpha1",
-          "kind": "BookKeeperCluster",
-          "metadata": {
-            "name": "bookkeepercluster-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-09-08T16:47:44.007000+00:00",
-      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
-      "csv_display_name": "BookKeeper Operator",
-      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
-      "csv_name": "bookkeeper-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-08T16:47:44.007000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "bookkeeper-operator",
-      "provided_apis": [
-        {
-          "group": "bookkeeper.streamnative.io",
-          "kind": "BookKeeperCluster",
-          "plural": "bookkeeperclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a1dd698244e6fcd9876ed",
-      "alm_examples": [
-        {
-          "api_version": "bookkeeper.streamnative.io/v1alpha1",
-          "kind": "BookKeeperCluster",
-          "metadata": {
-            "name": "bookkeepercluster-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-09-08T16:52:38.429000+00:00",
-      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
-      "csv_display_name": "BookKeeper Operator",
-      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
-      "csv_name": "bookkeeper-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-08T16:52:38.429000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "bookkeeper-operator",
-      "provided_apis": [
-        {
-          "group": "bookkeeper.streamnative.io",
-          "kind": "BookKeeperCluster",
-          "plural": "bookkeeperclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a1dd698244e6fcd9876ef",
-      "alm_examples": [
-        {
-          "api_version": "bookkeeper.streamnative.io/v1alpha1",
-          "kind": "BookKeeperCluster",
-          "metadata": {
-            "name": "bookkeepercluster-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-09-08T16:52:38.879000+00:00",
-      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
-      "csv_display_name": "BookKeeper Operator",
-      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
-      "csv_name": "bookkeeper-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-08T16:52:38.879000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "bookkeeper-operator",
-      "provided_apis": [
-        {
-          "group": "bookkeeper.streamnative.io",
-          "kind": "BookKeeperCluster",
-          "plural": "bookkeeperclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
       "_id": "631a1dd7e0886f15d82b1d96",
       "alm_examples": [
         {
@@ -13316,6 +12064,2236 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "2.2.1",
       "version_original": "2.2.1"
+    },
+    {
+      "_id": "63222eaa316b8eb377effcc7",
+      "alm_examples": [
+        {
+          "api_version": "conjur.cyberark.com/v1",
+          "kind": "ConjurFollower",
+          "metadata": {
+            "labels": {
+              "app": "conjur-follower"
+            },
+            "name": "my-conjur-follower",
+            "namespace": "my-follower-namespace"
+          },
+          "spec": {
+            "images": {
+              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229"
+            },
+            "master": {
+              "account": "my-company",
+              "authenticatorID": "conjur-openshift-follower",
+              "authnLogin": "host/conjur-openshift-follower",
+              "caCertificateFrom": {
+                "configMapKeyRef": {
+                  "key": "conjur.master-cert",
+                  "name": "follower"
+                }
+              },
+              "hostname": "conjur.my-company.net"
+            },
+            "replicas": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:5e6247d24c93b85b8cdfe0c0629ee2f1fe95bb82e6ab7aea65d822cb5c4847da",
+      "bundle_path_digest": "sha256:5e6247d24c93b85b8cdfe0c0629ee2f1fe95bb82e6ab7aea65d822cb5c4847da",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-09-14T19:42:34.955000+00:00",
+      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
+      "csv_display_name": "Conjur Enterprise Follower Operator",
+      "csv_metadata_description": "",
+      "csv_name": "conjur-follower-operator.v2.2.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-14T19:42:34.955000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "conjur-follower-operator",
+      "provided_apis": [
+        {
+          "group": "conjur.cyberark.com",
+          "kind": "ConjurFollower",
+          "plural": "conjurfollowers",
+          "version": "v1"
+        }
+      ],
+      "provider": "CyberArk",
+      "related_images": [
+        {
+          "digest": "sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "name": "conjur-openshift-follower-operator"
+        },
+        {
+          "digest": "sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "name": "conjur-openshift-follower-configurator"
+        },
+        {
+          "digest": "sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "name": "conjur-openshift-follower-conjur"
+        },
+        {
+          "digest": "sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "name": "conjur-openshift-follower-info"
+        },
+        {
+          "digest": "sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "name": "conjur-openshift-follower-nginx"
+        },
+        {
+          "digest": "sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "name": "conjur-openshift-follower-postgres"
+        },
+        {
+          "digest": "sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "name": "conjur-openshift-follower-syslog-ng"
+        },
+        {
+          "digest": "sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "name": "conjur-follower-operator"
+        },
+        {
+          "digest": "sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "name": "conjur-openshift-follower-syslog-ng-8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229-annotation"
+        },
+        {
+          "digest": "sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "name": "conjur-openshift-follower-postgres-badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8-annotation"
+        },
+        {
+          "digest": "sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "name": "conjur-openshift-follower-nginx-4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185-annotation"
+        },
+        {
+          "digest": "sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "name": "conjur-openshift-follower-info-a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f-annotation"
+        },
+        {
+          "digest": "sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "name": "conjur-openshift-follower-conjur-6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412-annotation"
+        },
+        {
+          "digest": "sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "name": "conjur-openshift-follower-configurator-1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.2.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "2.2.1",
+      "version_original": "2.2.1"
+    },
+    {
+      "_id": "632230901fe6c3c921e63981",
+      "alm_examples": [
+        {
+          "api_version": "conjur.cyberark.com/v1",
+          "kind": "ConjurFollower",
+          "metadata": {
+            "labels": {
+              "app": "conjur-follower"
+            },
+            "name": "my-conjur-follower",
+            "namespace": "my-follower-namespace"
+          },
+          "spec": {
+            "images": {
+              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229"
+            },
+            "master": {
+              "account": "my-company",
+              "authenticatorID": "conjur-openshift-follower",
+              "authnLogin": "host/conjur-openshift-follower",
+              "caCertificateFrom": {
+                "configMapKeyRef": {
+                  "key": "conjur.master-cert",
+                  "name": "follower"
+                }
+              },
+              "hostname": "conjur.my-company.net"
+            },
+            "replicas": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:5e6247d24c93b85b8cdfe0c0629ee2f1fe95bb82e6ab7aea65d822cb5c4847da",
+      "bundle_path_digest": "sha256:5e6247d24c93b85b8cdfe0c0629ee2f1fe95bb82e6ab7aea65d822cb5c4847da",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-14T19:50:40.286000+00:00",
+      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
+      "csv_display_name": "Conjur Enterprise Follower Operator",
+      "csv_metadata_description": "",
+      "csv_name": "conjur-follower-operator.v2.2.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-14T19:50:40.286000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "conjur-follower-operator",
+      "provided_apis": [
+        {
+          "group": "conjur.cyberark.com",
+          "kind": "ConjurFollower",
+          "plural": "conjurfollowers",
+          "version": "v1"
+        }
+      ],
+      "provider": "CyberArk",
+      "related_images": [
+        {
+          "digest": "sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "name": "conjur-openshift-follower-operator"
+        },
+        {
+          "digest": "sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "name": "conjur-openshift-follower-configurator"
+        },
+        {
+          "digest": "sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "name": "conjur-openshift-follower-conjur"
+        },
+        {
+          "digest": "sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "name": "conjur-openshift-follower-info"
+        },
+        {
+          "digest": "sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "name": "conjur-openshift-follower-nginx"
+        },
+        {
+          "digest": "sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "name": "conjur-openshift-follower-postgres"
+        },
+        {
+          "digest": "sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "name": "conjur-openshift-follower-syslog-ng"
+        },
+        {
+          "digest": "sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "name": "conjur-follower-operator"
+        },
+        {
+          "digest": "sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "name": "conjur-openshift-follower-syslog-ng-8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229-annotation"
+        },
+        {
+          "digest": "sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "name": "conjur-openshift-follower-postgres-badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8-annotation"
+        },
+        {
+          "digest": "sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "name": "conjur-openshift-follower-nginx-4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185-annotation"
+        },
+        {
+          "digest": "sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "name": "conjur-openshift-follower-info-a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f-annotation"
+        },
+        {
+          "digest": "sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "name": "conjur-openshift-follower-conjur-6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412-annotation"
+        },
+        {
+          "digest": "sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "name": "conjur-openshift-follower-configurator-1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.2.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.2.1",
+      "version_original": "2.2.1"
+    },
+    {
+      "_id": "63223090e9b395abdfe11310",
+      "alm_examples": [
+        {
+          "api_version": "conjur.cyberark.com/v1",
+          "kind": "ConjurFollower",
+          "metadata": {
+            "labels": {
+              "app": "conjur-follower"
+            },
+            "name": "my-conjur-follower",
+            "namespace": "my-follower-namespace"
+          },
+          "spec": {
+            "images": {
+              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229"
+            },
+            "master": {
+              "account": "my-company",
+              "authenticatorID": "conjur-openshift-follower",
+              "authnLogin": "host/conjur-openshift-follower",
+              "caCertificateFrom": {
+                "configMapKeyRef": {
+                  "key": "conjur.master-cert",
+                  "name": "follower"
+                }
+              },
+              "hostname": "conjur.my-company.net"
+            },
+            "replicas": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:5e6247d24c93b85b8cdfe0c0629ee2f1fe95bb82e6ab7aea65d822cb5c4847da",
+      "bundle_path_digest": "sha256:5e6247d24c93b85b8cdfe0c0629ee2f1fe95bb82e6ab7aea65d822cb5c4847da",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-09-14T19:50:40.975000+00:00",
+      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
+      "csv_display_name": "Conjur Enterprise Follower Operator",
+      "csv_metadata_description": "",
+      "csv_name": "conjur-follower-operator.v2.2.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-14T19:50:40.975000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "conjur-follower-operator",
+      "provided_apis": [
+        {
+          "group": "conjur.cyberark.com",
+          "kind": "ConjurFollower",
+          "plural": "conjurfollowers",
+          "version": "v1"
+        }
+      ],
+      "provider": "CyberArk",
+      "related_images": [
+        {
+          "digest": "sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "name": "conjur-openshift-follower-operator"
+        },
+        {
+          "digest": "sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "name": "conjur-openshift-follower-configurator"
+        },
+        {
+          "digest": "sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "name": "conjur-openshift-follower-conjur"
+        },
+        {
+          "digest": "sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "name": "conjur-openshift-follower-info"
+        },
+        {
+          "digest": "sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "name": "conjur-openshift-follower-nginx"
+        },
+        {
+          "digest": "sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "name": "conjur-openshift-follower-postgres"
+        },
+        {
+          "digest": "sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "name": "conjur-openshift-follower-syslog-ng"
+        },
+        {
+          "digest": "sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "name": "conjur-follower-operator"
+        },
+        {
+          "digest": "sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "name": "conjur-openshift-follower-syslog-ng-8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229-annotation"
+        },
+        {
+          "digest": "sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "name": "conjur-openshift-follower-postgres-badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8-annotation"
+        },
+        {
+          "digest": "sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "name": "conjur-openshift-follower-nginx-4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185-annotation"
+        },
+        {
+          "digest": "sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "name": "conjur-openshift-follower-info-a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f-annotation"
+        },
+        {
+          "digest": "sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "name": "conjur-openshift-follower-conjur-6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412-annotation"
+        },
+        {
+          "digest": "sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "name": "conjur-openshift-follower-configurator-1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.2.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.2.1",
+      "version_original": "2.2.1"
+    },
+    {
+      "_id": "63223090d1a8ccdba1fa8ca6",
+      "alm_examples": [
+        {
+          "api_version": "conjur.cyberark.com/v1",
+          "kind": "ConjurFollower",
+          "metadata": {
+            "labels": {
+              "app": "conjur-follower"
+            },
+            "name": "my-conjur-follower",
+            "namespace": "my-follower-namespace"
+          },
+          "spec": {
+            "images": {
+              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229"
+            },
+            "master": {
+              "account": "my-company",
+              "authenticatorID": "conjur-openshift-follower",
+              "authnLogin": "host/conjur-openshift-follower",
+              "caCertificateFrom": {
+                "configMapKeyRef": {
+                  "key": "conjur.master-cert",
+                  "name": "follower"
+                }
+              },
+              "hostname": "conjur.my-company.net"
+            },
+            "replicas": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:5e6247d24c93b85b8cdfe0c0629ee2f1fe95bb82e6ab7aea65d822cb5c4847da",
+      "bundle_path_digest": "sha256:5e6247d24c93b85b8cdfe0c0629ee2f1fe95bb82e6ab7aea65d822cb5c4847da",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-09-14T19:50:40.857000+00:00",
+      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
+      "csv_display_name": "Conjur Enterprise Follower Operator",
+      "csv_metadata_description": "",
+      "csv_name": "conjur-follower-operator.v2.2.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-14T19:50:40.857000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "conjur-follower-operator",
+      "provided_apis": [
+        {
+          "group": "conjur.cyberark.com",
+          "kind": "ConjurFollower",
+          "plural": "conjurfollowers",
+          "version": "v1"
+        }
+      ],
+      "provider": "CyberArk",
+      "related_images": [
+        {
+          "digest": "sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "name": "conjur-openshift-follower-operator"
+        },
+        {
+          "digest": "sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "name": "conjur-openshift-follower-configurator"
+        },
+        {
+          "digest": "sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "name": "conjur-openshift-follower-conjur"
+        },
+        {
+          "digest": "sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "name": "conjur-openshift-follower-info"
+        },
+        {
+          "digest": "sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "name": "conjur-openshift-follower-nginx"
+        },
+        {
+          "digest": "sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "name": "conjur-openshift-follower-postgres"
+        },
+        {
+          "digest": "sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "name": "conjur-openshift-follower-syslog-ng"
+        },
+        {
+          "digest": "sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "name": "conjur-follower-operator"
+        },
+        {
+          "digest": "sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "name": "conjur-openshift-follower-syslog-ng-8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229-annotation"
+        },
+        {
+          "digest": "sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "name": "conjur-openshift-follower-postgres-badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8-annotation"
+        },
+        {
+          "digest": "sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "name": "conjur-openshift-follower-nginx-4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185-annotation"
+        },
+        {
+          "digest": "sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "name": "conjur-openshift-follower-info-a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f-annotation"
+        },
+        {
+          "digest": "sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "name": "conjur-openshift-follower-conjur-6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412-annotation"
+        },
+        {
+          "digest": "sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "name": "conjur-openshift-follower-configurator-1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.2.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.2.1",
+      "version_original": "2.2.1"
+    },
+    {
+      "_id": "63223091a9c6e63893add8bb",
+      "alm_examples": [
+        {
+          "api_version": "conjur.cyberark.com/v1",
+          "kind": "ConjurFollower",
+          "metadata": {
+            "labels": {
+              "app": "conjur-follower"
+            },
+            "name": "my-conjur-follower",
+            "namespace": "my-follower-namespace"
+          },
+          "spec": {
+            "images": {
+              "configurator": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+              "conjur": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+              "info": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+              "nginx": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+              "postgres": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+              "syslogNg": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229"
+            },
+            "master": {
+              "account": "my-company",
+              "authenticatorID": "conjur-openshift-follower",
+              "authnLogin": "host/conjur-openshift-follower",
+              "caCertificateFrom": {
+                "configMapKeyRef": {
+                  "key": "conjur.master-cert",
+                  "name": "follower"
+                }
+              },
+              "hostname": "conjur.my-company.net"
+            },
+            "replicas": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator-bundle@sha256:5e6247d24c93b85b8cdfe0c0629ee2f1fe95bb82e6ab7aea65d822cb5c4847da",
+      "bundle_path_digest": "sha256:5e6247d24c93b85b8cdfe0c0629ee2f1fe95bb82e6ab7aea65d822cb5c4847da",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-14T19:50:41.795000+00:00",
+      "csv_description": "Use this Operator for managing Conjur Followers in an OpenShift cluster.\n\nCyberArk products secure your most sensitive and high-value assets\u2014and supporting your Identity Security goals is our top priority. We offer 24/7 service for high priority issues to all customers with resources across ten countries and in all continents.\n\nCyberArk Conjur makes secrets management simple. Conjur provides a seamless open source interface to securely authenticate, control, and audit non-human access across tools, applications, containers, and cloud environments via robust secrets management.",
+      "csv_display_name": "Conjur Enterprise Follower Operator",
+      "csv_metadata_description": "",
+      "csv_name": "conjur-follower-operator.v2.2.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-14T19:50:41.795000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "conjur-follower-operator",
+      "provided_apis": [
+        {
+          "group": "conjur.cyberark.com",
+          "kind": "ConjurFollower",
+          "plural": "conjurfollowers",
+          "version": "v1"
+        }
+      ],
+      "provider": "CyberArk",
+      "related_images": [
+        {
+          "digest": "sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "name": "conjur-openshift-follower-operator"
+        },
+        {
+          "digest": "sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "name": "conjur-openshift-follower-configurator"
+        },
+        {
+          "digest": "sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "name": "conjur-openshift-follower-conjur"
+        },
+        {
+          "digest": "sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "name": "conjur-openshift-follower-info"
+        },
+        {
+          "digest": "sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "name": "conjur-openshift-follower-nginx"
+        },
+        {
+          "digest": "sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "name": "conjur-openshift-follower-postgres"
+        },
+        {
+          "digest": "sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "name": "conjur-openshift-follower-syslog-ng"
+        },
+        {
+          "digest": "sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-operator@sha256:e9c2fc4c18d84655ed5b30066a1294a2ed1151eeaf9248a8dbdd0ddff4171d7f",
+          "name": "conjur-follower-operator"
+        },
+        {
+          "digest": "sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-syslog-ng@sha256:8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229",
+          "name": "conjur-openshift-follower-syslog-ng-8a34b4d2c29aeb1cb78f79d2c082bb5c03ffefca9574092dbcb6796ec3e9d229-annotation"
+        },
+        {
+          "digest": "sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-postgres@sha256:badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8",
+          "name": "conjur-openshift-follower-postgres-badb31931dc7fffbfbb2b3f2dd82968452e2b28848b4fdd033f1342ebd71e2e8-annotation"
+        },
+        {
+          "digest": "sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-nginx@sha256:4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185",
+          "name": "conjur-openshift-follower-nginx-4ffb8a0acf103f7e3b1f0944ecb244475f1939db00c5d2c2ca55bef8ecaf7185-annotation"
+        },
+        {
+          "digest": "sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-info@sha256:a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f",
+          "name": "conjur-openshift-follower-info-a19f60bb5bee4709df33c853a04b75b4534209f6991b24ef3c787e81f72d378f-annotation"
+        },
+        {
+          "digest": "sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-conjur@sha256:6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412",
+          "name": "conjur-openshift-follower-conjur-6d102eea4801a4bee2f694a1a2e80ea87f26e2316343157c492eec4b82880412-annotation"
+        },
+        {
+          "digest": "sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "image": "registry.connect.redhat.com/cyberark/conjur-openshift-follower-configurator@sha256:1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94",
+          "name": "conjur-openshift-follower-configurator-1ff94e32ddb5ed9dc7a218d4a96e133f19c17e24c46d977b92c6b07a87688e94-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.2.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.2.1",
+      "version_original": "2.2.1"
+    },
+    {
+      "_id": "63225684703b1887dc1bfffc",
+      "alm_examples": [
+        {
+          "api_version": "minio.min.io/v2",
+          "kind": "Tenant",
+          "metadata": {
+            "annotations": {
+              "prometheus.io/path": "/minio/v2/metrics/cluster",
+              "prometheus.io/port": "9000",
+              "prometheus.io/scrape": "true"
+            },
+            "labels": {
+              "app": "minio"
+            },
+            "name": "storage-lite",
+            "namespace": "tenant-lite"
+          },
+          "spec": {
+            "certConfig": {},
+            "configuration": {
+              "name": "storage-configuration"
+            },
+            "env": [],
+            "externalCaCertSecret": [],
+            "externalCertSecret": [],
+            "externalClientCertSecrets": [],
+            "features": {
+              "bucketDNS": false,
+              "domains": {}
+            },
+            "image": "quay.io/minio/minio@sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+            "imagePullSecret": {},
+            "log": {
+              "affinity": {
+                "nodeAffinity": {},
+                "podAffinity": {},
+                "podAntiAffinity": {}
+              },
+              "annotations": {},
+              "audit": {
+                "diskCapacityGB": 1
+              },
+              "db": {
+                "affinity": {
+                  "nodeAffinity": {},
+                  "podAffinity": {},
+                  "podAntiAffinity": {}
+                },
+                "annotations": {},
+                "env": [],
+                "image": "",
+                "initimage": "",
+                "labels": {},
+                "nodeSelector": {},
+                "resources": {},
+                "securityContext": {
+                  "fsGroup": 999,
+                  "runAsGroup": 999,
+                  "runAsNonRoot": true,
+                  "runAsUser": 999
+                },
+                "serviceAccountName": "",
+                "tolerations": [],
+                "volumeClaimTemplate": {
+                  "metadata": {},
+                  "spec": {
+                    "accessModes": [
+                      "ReadWriteOnce"
+                    ],
+                    "resources": {
+                      "requests": {
+                        "storage": "1Gi"
+                      }
+                    },
+                    "storageClassName": "standard"
+                  }
+                }
+              },
+              "env": [],
+              "image": "",
+              "labels": {},
+              "nodeSelector": {},
+              "resources": {},
+              "securityContext": {
+                "fsGroup": 1000,
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000
+              },
+              "serviceAccountName": "",
+              "tolerations": []
+            },
+            "mountPath": "/export",
+            "podManagementPolicy": "Parallel",
+            "pools": [
+              {
+                "name": "pool-0",
+                "servers": 4,
+                "volumeClaimTemplate": {
+                  "metadata": {
+                    "name": "data"
+                  },
+                  "spec": {
+                    "accessModes": [
+                      "ReadWriteOnce"
+                    ],
+                    "resources": {
+                      "requests": {
+                        "storage": "2Gi"
+                      }
+                    }
+                  }
+                },
+                "volumesPerServer": 2
+              }
+            ],
+            "priorityClassName": "",
+            "prometheus": {
+              "affinity": {
+                "nodeAffinity": {},
+                "podAffinity": {},
+                "podAntiAffinity": {}
+              },
+              "annotations": {},
+              "diskCapacityGB": 1,
+              "env": [],
+              "image": "",
+              "initimage": "",
+              "labels": {},
+              "nodeSelector": {},
+              "resources": {},
+              "securityContext": {
+                "fsGroup": 1000,
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000
+              },
+              "serviceAccountName": "",
+              "sidecarimage": "",
+              "storageClassName": "standard"
+            },
+            "requestAutoCert": true,
+            "serviceAccountName": "",
+            "serviceMetadata": {
+              "consoleServiceAnnotations": {},
+              "consoleServiceLabels": {},
+              "minioServiceAnnotations": {},
+              "minioServiceLabels": {}
+            },
+            "subPath": "",
+            "users": [
+              {
+                "name": "storage-user"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/minio/minio-operator1@sha256:763985e852acba724485ba9fb47baa4b62f028817cd072ec404e41996ba217b5",
+      "bundle_path_digest": "sha256:763985e852acba724485ba9fb47baa4b62f028817cd072ec404e41996ba217b5",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-14T22:32:36.841000+00:00",
+      "csv_description": "## Overview\n\n\nThe MinIO Operator brings native support for deploying and managing MinIO\ndeployments (\u201cMinIO Tenants\u201d) on a Kubernetes cluster.\n\n\nMinIO is a high performance, Kubernetes native object storage suite. With an\nextensive list of enterprise features, it is scalable, secure and resilient\nwhile remaining remarkably simple to deploy and operate at scale.\nSoftware-defined, MinIO can run on any infrastructure and in any cloud -\npublic, private or edge. MinIO is the world's fastest object storage and can\nrun the broadest set of workloads in the industry. It is widely considered\nto be the leader in compatibility with Amazon's S3 API.\n\n## Features\n\n\nThe MinIO Operator takes care of the deployment of MinIO Tenant along with:\n\n* TLS Certificate Management\n\n* Configuration of the encryption at rest\n\n* Cluster expansion\n\n* Hot Updates\n\n* Users and Buckets bootstrapping\n\n## Prerequisites for enabling this Operator\n\n* At least Kubernetes 1.18\n\n* [CSR\nCapability](https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/)\nmust be enabled\n\n* Locally attached volumes for performance or some CSI to provision block\nstorage to the MinIO pods.",
+      "csv_display_name": "Minio Operator",
+      "csv_metadata_description": "MinIO is a Kubernetes-native high performance object store with an\nS3-compatible API. The MinIO Operator supports deploying MinIO Tenants\nonto any Kubernetes.",
+      "csv_name": "minio-operator.v4.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-14T22:32:36.841000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "minio-operator",
+      "provided_apis": [
+        {
+          "group": "minio.min.io",
+          "kind": "Tenant",
+          "plural": "tenants",
+          "version": "v1"
+        },
+        {
+          "group": "minio.min.io",
+          "kind": "Tenant",
+          "plural": "tenants",
+          "version": "v2"
+        }
+      ],
+      "provider": "MinIO Inc",
+      "related_images": [
+        {
+          "digest": "sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "image": "quay.io/minio/operator@sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "name": "operator-ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89-annotation"
+        },
+        {
+          "digest": "sha256:dbc08caba43a823ef33ef2bd5b638eed7fe60a26bb8b85d1ef5b9a04603e9331",
+          "image": "quay.io/minio/console@sha256:dbc08caba43a823ef33ef2bd5b638eed7fe60a26bb8b85d1ef5b9a04603e9331",
+          "name": "console"
+        },
+        {
+          "digest": "sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "image": "quay.io/minio/operator@sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "name": "minio-operator"
+        },
+        {
+          "digest": "sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+          "image": "quay.io/minio/minio@sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+          "name": "minio-3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "4.5.0",
+      "version_original": "4.5.0"
+    },
+    {
+      "_id": "63225696316b8eb377f00272",
+      "alm_examples": [
+        {
+          "api_version": "minio.min.io/v2",
+          "kind": "Tenant",
+          "metadata": {
+            "annotations": {
+              "prometheus.io/path": "/minio/v2/metrics/cluster",
+              "prometheus.io/port": "9000",
+              "prometheus.io/scrape": "true"
+            },
+            "labels": {
+              "app": "minio"
+            },
+            "name": "storage-lite",
+            "namespace": "tenant-lite"
+          },
+          "spec": {
+            "certConfig": {},
+            "configuration": {
+              "name": "storage-configuration"
+            },
+            "env": [],
+            "externalCaCertSecret": [],
+            "externalCertSecret": [],
+            "externalClientCertSecrets": [],
+            "features": {
+              "bucketDNS": false,
+              "domains": {}
+            },
+            "image": "quay.io/minio/minio@sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+            "imagePullSecret": {},
+            "log": {
+              "affinity": {
+                "nodeAffinity": {},
+                "podAffinity": {},
+                "podAntiAffinity": {}
+              },
+              "annotations": {},
+              "audit": {
+                "diskCapacityGB": 1
+              },
+              "db": {
+                "affinity": {
+                  "nodeAffinity": {},
+                  "podAffinity": {},
+                  "podAntiAffinity": {}
+                },
+                "annotations": {},
+                "env": [],
+                "image": "",
+                "initimage": "",
+                "labels": {},
+                "nodeSelector": {},
+                "resources": {},
+                "securityContext": {
+                  "fsGroup": 999,
+                  "runAsGroup": 999,
+                  "runAsNonRoot": true,
+                  "runAsUser": 999
+                },
+                "serviceAccountName": "",
+                "tolerations": [],
+                "volumeClaimTemplate": {
+                  "metadata": {},
+                  "spec": {
+                    "accessModes": [
+                      "ReadWriteOnce"
+                    ],
+                    "resources": {
+                      "requests": {
+                        "storage": "1Gi"
+                      }
+                    },
+                    "storageClassName": "standard"
+                  }
+                }
+              },
+              "env": [],
+              "image": "",
+              "labels": {},
+              "nodeSelector": {},
+              "resources": {},
+              "securityContext": {
+                "fsGroup": 1000,
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000
+              },
+              "serviceAccountName": "",
+              "tolerations": []
+            },
+            "mountPath": "/export",
+            "podManagementPolicy": "Parallel",
+            "pools": [
+              {
+                "name": "pool-0",
+                "servers": 4,
+                "volumeClaimTemplate": {
+                  "metadata": {
+                    "name": "data"
+                  },
+                  "spec": {
+                    "accessModes": [
+                      "ReadWriteOnce"
+                    ],
+                    "resources": {
+                      "requests": {
+                        "storage": "2Gi"
+                      }
+                    }
+                  }
+                },
+                "volumesPerServer": 2
+              }
+            ],
+            "priorityClassName": "",
+            "prometheus": {
+              "affinity": {
+                "nodeAffinity": {},
+                "podAffinity": {},
+                "podAntiAffinity": {}
+              },
+              "annotations": {},
+              "diskCapacityGB": 1,
+              "env": [],
+              "image": "",
+              "initimage": "",
+              "labels": {},
+              "nodeSelector": {},
+              "resources": {},
+              "securityContext": {
+                "fsGroup": 1000,
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000
+              },
+              "serviceAccountName": "",
+              "sidecarimage": "",
+              "storageClassName": "standard"
+            },
+            "requestAutoCert": true,
+            "serviceAccountName": "",
+            "serviceMetadata": {
+              "consoleServiceAnnotations": {},
+              "consoleServiceLabels": {},
+              "minioServiceAnnotations": {},
+              "minioServiceLabels": {}
+            },
+            "subPath": "",
+            "users": [
+              {
+                "name": "storage-user"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/minio/minio-operator1@sha256:763985e852acba724485ba9fb47baa4b62f028817cd072ec404e41996ba217b5",
+      "bundle_path_digest": "sha256:763985e852acba724485ba9fb47baa4b62f028817cd072ec404e41996ba217b5",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-14T22:32:54.984000+00:00",
+      "csv_description": "## Overview\n\n\nThe MinIO Operator brings native support for deploying and managing MinIO\ndeployments (\u201cMinIO Tenants\u201d) on a Kubernetes cluster.\n\n\nMinIO is a high performance, Kubernetes native object storage suite. With an\nextensive list of enterprise features, it is scalable, secure and resilient\nwhile remaining remarkably simple to deploy and operate at scale.\nSoftware-defined, MinIO can run on any infrastructure and in any cloud -\npublic, private or edge. MinIO is the world's fastest object storage and can\nrun the broadest set of workloads in the industry. It is widely considered\nto be the leader in compatibility with Amazon's S3 API.\n\n## Features\n\n\nThe MinIO Operator takes care of the deployment of MinIO Tenant along with:\n\n* TLS Certificate Management\n\n* Configuration of the encryption at rest\n\n* Cluster expansion\n\n* Hot Updates\n\n* Users and Buckets bootstrapping\n\n## Prerequisites for enabling this Operator\n\n* At least Kubernetes 1.18\n\n* [CSR\nCapability](https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/)\nmust be enabled\n\n* Locally attached volumes for performance or some CSI to provision block\nstorage to the MinIO pods.",
+      "csv_display_name": "Minio Operator",
+      "csv_metadata_description": "MinIO is a Kubernetes-native high performance object store with an\nS3-compatible API. The MinIO Operator supports deploying MinIO Tenants\nonto any Kubernetes.",
+      "csv_name": "minio-operator.v4.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-14T22:32:54.984000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "minio-operator",
+      "provided_apis": [
+        {
+          "group": "minio.min.io",
+          "kind": "Tenant",
+          "plural": "tenants",
+          "version": "v1"
+        },
+        {
+          "group": "minio.min.io",
+          "kind": "Tenant",
+          "plural": "tenants",
+          "version": "v2"
+        }
+      ],
+      "provider": "MinIO Inc",
+      "related_images": [
+        {
+          "digest": "sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "image": "quay.io/minio/operator@sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "name": "operator-ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89-annotation"
+        },
+        {
+          "digest": "sha256:dbc08caba43a823ef33ef2bd5b638eed7fe60a26bb8b85d1ef5b9a04603e9331",
+          "image": "quay.io/minio/console@sha256:dbc08caba43a823ef33ef2bd5b638eed7fe60a26bb8b85d1ef5b9a04603e9331",
+          "name": "console"
+        },
+        {
+          "digest": "sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "image": "quay.io/minio/operator@sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "name": "minio-operator"
+        },
+        {
+          "digest": "sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+          "image": "quay.io/minio/minio@sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+          "name": "minio-3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "4.5.0",
+      "version_original": "4.5.0"
+    },
+    {
+      "_id": "6322574b703b1887dc1c001c",
+      "alm_examples": [
+        {
+          "api_version": "minio.min.io/v2",
+          "kind": "Tenant",
+          "metadata": {
+            "annotations": {
+              "prometheus.io/path": "/minio/v2/metrics/cluster",
+              "prometheus.io/port": "9000",
+              "prometheus.io/scrape": "true"
+            },
+            "labels": {
+              "app": "minio"
+            },
+            "name": "storage-lite",
+            "namespace": "tenant-lite"
+          },
+          "spec": {
+            "certConfig": {},
+            "configuration": {
+              "name": "storage-configuration"
+            },
+            "env": [],
+            "externalCaCertSecret": [],
+            "externalCertSecret": [],
+            "externalClientCertSecrets": [],
+            "features": {
+              "bucketDNS": false,
+              "domains": {}
+            },
+            "image": "quay.io/minio/minio@sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+            "imagePullSecret": {},
+            "log": {
+              "affinity": {
+                "nodeAffinity": {},
+                "podAffinity": {},
+                "podAntiAffinity": {}
+              },
+              "annotations": {},
+              "audit": {
+                "diskCapacityGB": 1
+              },
+              "db": {
+                "affinity": {
+                  "nodeAffinity": {},
+                  "podAffinity": {},
+                  "podAntiAffinity": {}
+                },
+                "annotations": {},
+                "env": [],
+                "image": "",
+                "initimage": "",
+                "labels": {},
+                "nodeSelector": {},
+                "resources": {},
+                "securityContext": {
+                  "fsGroup": 999,
+                  "runAsGroup": 999,
+                  "runAsNonRoot": true,
+                  "runAsUser": 999
+                },
+                "serviceAccountName": "",
+                "tolerations": [],
+                "volumeClaimTemplate": {
+                  "metadata": {},
+                  "spec": {
+                    "accessModes": [
+                      "ReadWriteOnce"
+                    ],
+                    "resources": {
+                      "requests": {
+                        "storage": "1Gi"
+                      }
+                    },
+                    "storageClassName": "standard"
+                  }
+                }
+              },
+              "env": [],
+              "image": "",
+              "labels": {},
+              "nodeSelector": {},
+              "resources": {},
+              "securityContext": {
+                "fsGroup": 1000,
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000
+              },
+              "serviceAccountName": "",
+              "tolerations": []
+            },
+            "mountPath": "/export",
+            "podManagementPolicy": "Parallel",
+            "pools": [
+              {
+                "name": "pool-0",
+                "servers": 4,
+                "volumeClaimTemplate": {
+                  "metadata": {
+                    "name": "data"
+                  },
+                  "spec": {
+                    "accessModes": [
+                      "ReadWriteOnce"
+                    ],
+                    "resources": {
+                      "requests": {
+                        "storage": "2Gi"
+                      }
+                    }
+                  }
+                },
+                "volumesPerServer": 2
+              }
+            ],
+            "priorityClassName": "",
+            "prometheus": {
+              "affinity": {
+                "nodeAffinity": {},
+                "podAffinity": {},
+                "podAntiAffinity": {}
+              },
+              "annotations": {},
+              "diskCapacityGB": 1,
+              "env": [],
+              "image": "",
+              "initimage": "",
+              "labels": {},
+              "nodeSelector": {},
+              "resources": {},
+              "securityContext": {
+                "fsGroup": 1000,
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000
+              },
+              "serviceAccountName": "",
+              "sidecarimage": "",
+              "storageClassName": "standard"
+            },
+            "requestAutoCert": true,
+            "serviceAccountName": "",
+            "serviceMetadata": {
+              "consoleServiceAnnotations": {},
+              "consoleServiceLabels": {},
+              "minioServiceAnnotations": {},
+              "minioServiceLabels": {}
+            },
+            "subPath": "",
+            "users": [
+              {
+                "name": "storage-user"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/minio/minio-operator1@sha256:763985e852acba724485ba9fb47baa4b62f028817cd072ec404e41996ba217b5",
+      "bundle_path_digest": "sha256:763985e852acba724485ba9fb47baa4b62f028817cd072ec404e41996ba217b5",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-14T22:35:55.464000+00:00",
+      "csv_description": "## Overview\n\n\nThe MinIO Operator brings native support for deploying and managing MinIO\ndeployments (\u201cMinIO Tenants\u201d) on a Kubernetes cluster.\n\n\nMinIO is a high performance, Kubernetes native object storage suite. With an\nextensive list of enterprise features, it is scalable, secure and resilient\nwhile remaining remarkably simple to deploy and operate at scale.\nSoftware-defined, MinIO can run on any infrastructure and in any cloud -\npublic, private or edge. MinIO is the world's fastest object storage and can\nrun the broadest set of workloads in the industry. It is widely considered\nto be the leader in compatibility with Amazon's S3 API.\n\n## Features\n\n\nThe MinIO Operator takes care of the deployment of MinIO Tenant along with:\n\n* TLS Certificate Management\n\n* Configuration of the encryption at rest\n\n* Cluster expansion\n\n* Hot Updates\n\n* Users and Buckets bootstrapping\n\n## Prerequisites for enabling this Operator\n\n* At least Kubernetes 1.18\n\n* [CSR\nCapability](https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/)\nmust be enabled\n\n* Locally attached volumes for performance or some CSI to provision block\nstorage to the MinIO pods.",
+      "csv_display_name": "Minio Operator",
+      "csv_metadata_description": "MinIO is a Kubernetes-native high performance object store with an\nS3-compatible API. The MinIO Operator supports deploying MinIO Tenants\nonto any Kubernetes.",
+      "csv_name": "minio-operator.v4.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-14T22:35:55.464000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "minio-operator",
+      "provided_apis": [
+        {
+          "group": "minio.min.io",
+          "kind": "Tenant",
+          "plural": "tenants",
+          "version": "v1"
+        },
+        {
+          "group": "minio.min.io",
+          "kind": "Tenant",
+          "plural": "tenants",
+          "version": "v2"
+        }
+      ],
+      "provider": "MinIO Inc",
+      "related_images": [
+        {
+          "digest": "sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "image": "quay.io/minio/operator@sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "name": "operator-ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89-annotation"
+        },
+        {
+          "digest": "sha256:dbc08caba43a823ef33ef2bd5b638eed7fe60a26bb8b85d1ef5b9a04603e9331",
+          "image": "quay.io/minio/console@sha256:dbc08caba43a823ef33ef2bd5b638eed7fe60a26bb8b85d1ef5b9a04603e9331",
+          "name": "console"
+        },
+        {
+          "digest": "sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "image": "quay.io/minio/operator@sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "name": "minio-operator"
+        },
+        {
+          "digest": "sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+          "image": "quay.io/minio/minio@sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+          "name": "minio-3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "4.5.0",
+      "version_original": "4.5.0"
+    },
+    {
+      "_id": "632258be2dd1cd9660af4623",
+      "alm_examples": [
+        {
+          "api_version": "minio.min.io/v2",
+          "kind": "Tenant",
+          "metadata": {
+            "annotations": {
+              "prometheus.io/path": "/minio/v2/metrics/cluster",
+              "prometheus.io/port": "9000",
+              "prometheus.io/scrape": "true"
+            },
+            "labels": {
+              "app": "minio"
+            },
+            "name": "storage-lite",
+            "namespace": "tenant-lite"
+          },
+          "spec": {
+            "certConfig": {},
+            "configuration": {
+              "name": "storage-configuration"
+            },
+            "env": [],
+            "externalCaCertSecret": [],
+            "externalCertSecret": [],
+            "externalClientCertSecrets": [],
+            "features": {
+              "bucketDNS": false,
+              "domains": {}
+            },
+            "image": "quay.io/minio/minio@sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+            "imagePullSecret": {},
+            "log": {
+              "affinity": {
+                "nodeAffinity": {},
+                "podAffinity": {},
+                "podAntiAffinity": {}
+              },
+              "annotations": {},
+              "audit": {
+                "diskCapacityGB": 1
+              },
+              "db": {
+                "affinity": {
+                  "nodeAffinity": {},
+                  "podAffinity": {},
+                  "podAntiAffinity": {}
+                },
+                "annotations": {},
+                "env": [],
+                "image": "",
+                "initimage": "",
+                "labels": {},
+                "nodeSelector": {},
+                "resources": {},
+                "securityContext": {
+                  "fsGroup": 999,
+                  "runAsGroup": 999,
+                  "runAsNonRoot": true,
+                  "runAsUser": 999
+                },
+                "serviceAccountName": "",
+                "tolerations": [],
+                "volumeClaimTemplate": {
+                  "metadata": {},
+                  "spec": {
+                    "accessModes": [
+                      "ReadWriteOnce"
+                    ],
+                    "resources": {
+                      "requests": {
+                        "storage": "1Gi"
+                      }
+                    },
+                    "storageClassName": "standard"
+                  }
+                }
+              },
+              "env": [],
+              "image": "",
+              "labels": {},
+              "nodeSelector": {},
+              "resources": {},
+              "securityContext": {
+                "fsGroup": 1000,
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000
+              },
+              "serviceAccountName": "",
+              "tolerations": []
+            },
+            "mountPath": "/export",
+            "podManagementPolicy": "Parallel",
+            "pools": [
+              {
+                "name": "pool-0",
+                "servers": 4,
+                "volumeClaimTemplate": {
+                  "metadata": {
+                    "name": "data"
+                  },
+                  "spec": {
+                    "accessModes": [
+                      "ReadWriteOnce"
+                    ],
+                    "resources": {
+                      "requests": {
+                        "storage": "2Gi"
+                      }
+                    }
+                  }
+                },
+                "volumesPerServer": 2
+              }
+            ],
+            "priorityClassName": "",
+            "prometheus": {
+              "affinity": {
+                "nodeAffinity": {},
+                "podAffinity": {},
+                "podAntiAffinity": {}
+              },
+              "annotations": {},
+              "diskCapacityGB": 1,
+              "env": [],
+              "image": "",
+              "initimage": "",
+              "labels": {},
+              "nodeSelector": {},
+              "resources": {},
+              "securityContext": {
+                "fsGroup": 1000,
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000
+              },
+              "serviceAccountName": "",
+              "sidecarimage": "",
+              "storageClassName": "standard"
+            },
+            "requestAutoCert": true,
+            "serviceAccountName": "",
+            "serviceMetadata": {
+              "consoleServiceAnnotations": {},
+              "consoleServiceLabels": {},
+              "minioServiceAnnotations": {},
+              "minioServiceLabels": {}
+            },
+            "subPath": "",
+            "users": [
+              {
+                "name": "storage-user"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/minio/minio-operator1@sha256:763985e852acba724485ba9fb47baa4b62f028817cd072ec404e41996ba217b5",
+      "bundle_path_digest": "sha256:763985e852acba724485ba9fb47baa4b62f028817cd072ec404e41996ba217b5",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-14T22:42:06.098000+00:00",
+      "csv_description": "## Overview\n\n\nThe MinIO Operator brings native support for deploying and managing MinIO\ndeployments (\u201cMinIO Tenants\u201d) on a Kubernetes cluster.\n\n\nMinIO is a high performance, Kubernetes native object storage suite. With an\nextensive list of enterprise features, it is scalable, secure and resilient\nwhile remaining remarkably simple to deploy and operate at scale.\nSoftware-defined, MinIO can run on any infrastructure and in any cloud -\npublic, private or edge. MinIO is the world's fastest object storage and can\nrun the broadest set of workloads in the industry. It is widely considered\nto be the leader in compatibility with Amazon's S3 API.\n\n## Features\n\n\nThe MinIO Operator takes care of the deployment of MinIO Tenant along with:\n\n* TLS Certificate Management\n\n* Configuration of the encryption at rest\n\n* Cluster expansion\n\n* Hot Updates\n\n* Users and Buckets bootstrapping\n\n## Prerequisites for enabling this Operator\n\n* At least Kubernetes 1.18\n\n* [CSR\nCapability](https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/)\nmust be enabled\n\n* Locally attached volumes for performance or some CSI to provision block\nstorage to the MinIO pods.",
+      "csv_display_name": "Minio Operator",
+      "csv_metadata_description": "MinIO is a Kubernetes-native high performance object store with an\nS3-compatible API. The MinIO Operator supports deploying MinIO Tenants\nonto any Kubernetes.",
+      "csv_name": "minio-operator.v4.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-14T22:42:06.098000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "minio-operator",
+      "provided_apis": [
+        {
+          "group": "minio.min.io",
+          "kind": "Tenant",
+          "plural": "tenants",
+          "version": "v1"
+        },
+        {
+          "group": "minio.min.io",
+          "kind": "Tenant",
+          "plural": "tenants",
+          "version": "v2"
+        }
+      ],
+      "provider": "MinIO Inc",
+      "related_images": [
+        {
+          "digest": "sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "image": "quay.io/minio/operator@sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "name": "operator-ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89-annotation"
+        },
+        {
+          "digest": "sha256:dbc08caba43a823ef33ef2bd5b638eed7fe60a26bb8b85d1ef5b9a04603e9331",
+          "image": "quay.io/minio/console@sha256:dbc08caba43a823ef33ef2bd5b638eed7fe60a26bb8b85d1ef5b9a04603e9331",
+          "name": "console"
+        },
+        {
+          "digest": "sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "image": "quay.io/minio/operator@sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "name": "minio-operator"
+        },
+        {
+          "digest": "sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+          "image": "quay.io/minio/minio@sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+          "name": "minio-3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "4.5.0",
+      "version_original": "4.5.0"
+    },
+    {
+      "_id": "63225aba08c8288bf88d0efc",
+      "alm_examples": [
+        {
+          "api_version": "minio.min.io/v2",
+          "kind": "Tenant",
+          "metadata": {
+            "annotations": {
+              "prometheus.io/path": "/minio/v2/metrics/cluster",
+              "prometheus.io/port": "9000",
+              "prometheus.io/scrape": "true"
+            },
+            "labels": {
+              "app": "minio"
+            },
+            "name": "storage-lite",
+            "namespace": "tenant-lite"
+          },
+          "spec": {
+            "certConfig": {},
+            "configuration": {
+              "name": "storage-configuration"
+            },
+            "env": [],
+            "externalCaCertSecret": [],
+            "externalCertSecret": [],
+            "externalClientCertSecrets": [],
+            "features": {
+              "bucketDNS": false,
+              "domains": {}
+            },
+            "image": "quay.io/minio/minio@sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+            "imagePullSecret": {},
+            "log": {
+              "affinity": {
+                "nodeAffinity": {},
+                "podAffinity": {},
+                "podAntiAffinity": {}
+              },
+              "annotations": {},
+              "audit": {
+                "diskCapacityGB": 1
+              },
+              "db": {
+                "affinity": {
+                  "nodeAffinity": {},
+                  "podAffinity": {},
+                  "podAntiAffinity": {}
+                },
+                "annotations": {},
+                "env": [],
+                "image": "",
+                "initimage": "",
+                "labels": {},
+                "nodeSelector": {},
+                "resources": {},
+                "securityContext": {
+                  "fsGroup": 999,
+                  "runAsGroup": 999,
+                  "runAsNonRoot": true,
+                  "runAsUser": 999
+                },
+                "serviceAccountName": "",
+                "tolerations": [],
+                "volumeClaimTemplate": {
+                  "metadata": {},
+                  "spec": {
+                    "accessModes": [
+                      "ReadWriteOnce"
+                    ],
+                    "resources": {
+                      "requests": {
+                        "storage": "1Gi"
+                      }
+                    },
+                    "storageClassName": "standard"
+                  }
+                }
+              },
+              "env": [],
+              "image": "",
+              "labels": {},
+              "nodeSelector": {},
+              "resources": {},
+              "securityContext": {
+                "fsGroup": 1000,
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000
+              },
+              "serviceAccountName": "",
+              "tolerations": []
+            },
+            "mountPath": "/export",
+            "podManagementPolicy": "Parallel",
+            "pools": [
+              {
+                "name": "pool-0",
+                "servers": 4,
+                "volumeClaimTemplate": {
+                  "metadata": {
+                    "name": "data"
+                  },
+                  "spec": {
+                    "accessModes": [
+                      "ReadWriteOnce"
+                    ],
+                    "resources": {
+                      "requests": {
+                        "storage": "2Gi"
+                      }
+                    }
+                  }
+                },
+                "volumesPerServer": 2
+              }
+            ],
+            "priorityClassName": "",
+            "prometheus": {
+              "affinity": {
+                "nodeAffinity": {},
+                "podAffinity": {},
+                "podAntiAffinity": {}
+              },
+              "annotations": {},
+              "diskCapacityGB": 1,
+              "env": [],
+              "image": "",
+              "initimage": "",
+              "labels": {},
+              "nodeSelector": {},
+              "resources": {},
+              "securityContext": {
+                "fsGroup": 1000,
+                "runAsGroup": 1000,
+                "runAsNonRoot": true,
+                "runAsUser": 1000
+              },
+              "serviceAccountName": "",
+              "sidecarimage": "",
+              "storageClassName": "standard"
+            },
+            "requestAutoCert": true,
+            "serviceAccountName": "",
+            "serviceMetadata": {
+              "consoleServiceAnnotations": {},
+              "consoleServiceLabels": {},
+              "minioServiceAnnotations": {},
+              "minioServiceLabels": {}
+            },
+            "subPath": "",
+            "users": [
+              {
+                "name": "storage-user"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/minio/minio-operator1@sha256:763985e852acba724485ba9fb47baa4b62f028817cd072ec404e41996ba217b5",
+      "bundle_path_digest": "sha256:763985e852acba724485ba9fb47baa4b62f028817cd072ec404e41996ba217b5",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-14T22:50:34.371000+00:00",
+      "csv_description": "## Overview\n\n\nThe MinIO Operator brings native support for deploying and managing MinIO\ndeployments (\u201cMinIO Tenants\u201d) on a Kubernetes cluster.\n\n\nMinIO is a high performance, Kubernetes native object storage suite. With an\nextensive list of enterprise features, it is scalable, secure and resilient\nwhile remaining remarkably simple to deploy and operate at scale.\nSoftware-defined, MinIO can run on any infrastructure and in any cloud -\npublic, private or edge. MinIO is the world's fastest object storage and can\nrun the broadest set of workloads in the industry. It is widely considered\nto be the leader in compatibility with Amazon's S3 API.\n\n## Features\n\n\nThe MinIO Operator takes care of the deployment of MinIO Tenant along with:\n\n* TLS Certificate Management\n\n* Configuration of the encryption at rest\n\n* Cluster expansion\n\n* Hot Updates\n\n* Users and Buckets bootstrapping\n\n## Prerequisites for enabling this Operator\n\n* At least Kubernetes 1.18\n\n* [CSR\nCapability](https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/)\nmust be enabled\n\n* Locally attached volumes for performance or some CSI to provision block\nstorage to the MinIO pods.",
+      "csv_display_name": "Minio Operator",
+      "csv_metadata_description": "MinIO is a Kubernetes-native high performance object store with an\nS3-compatible API. The MinIO Operator supports deploying MinIO Tenants\nonto any Kubernetes.",
+      "csv_name": "minio-operator.v4.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-14T22:50:34.371000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "minio-operator",
+      "provided_apis": [
+        {
+          "group": "minio.min.io",
+          "kind": "Tenant",
+          "plural": "tenants",
+          "version": "v2"
+        },
+        {
+          "group": "minio.min.io",
+          "kind": "Tenant",
+          "plural": "tenants",
+          "version": "v1"
+        }
+      ],
+      "provider": "MinIO Inc",
+      "related_images": [
+        {
+          "digest": "sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "image": "quay.io/minio/operator@sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "name": "operator-ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89-annotation"
+        },
+        {
+          "digest": "sha256:dbc08caba43a823ef33ef2bd5b638eed7fe60a26bb8b85d1ef5b9a04603e9331",
+          "image": "quay.io/minio/console@sha256:dbc08caba43a823ef33ef2bd5b638eed7fe60a26bb8b85d1ef5b9a04603e9331",
+          "name": "console"
+        },
+        {
+          "digest": "sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "image": "quay.io/minio/operator@sha256:ff5f7e8cc02f904b1b676e9e2165c1121d9ec20ae08b425f0989c200471cbc89",
+          "name": "minio-operator"
+        },
+        {
+          "digest": "sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+          "image": "quay.io/minio/minio@sha256:3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f",
+          "name": "minio-3f9b739b3903d6022f8c5309991b199d7006b802a31eef42eeec615005eb765f-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "4.5.0",
+      "version_original": "4.5.0"
+    },
+    {
+      "_id": "632284eea9c6e63893ade43f",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:2c1d558f9e8253d1573cbb36f3a5254a6d87041b2bf1ad9a69b23b81e2bc67e2",
+      "bundle_path_digest": "sha256:2c1d558f9e8253d1573cbb36f3a5254a6d87041b2bf1ad9a69b23b81e2bc67e2",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-15T01:50:38.472000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.32",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-15T01:50:38.472000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Joget, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:5956e2fb7bd8f177e5997fb3ef57ae16ce8b793ad2c90b7d2902222bab896e2d",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:5956e2fb7bd8f177e5997fb3ef57ae16ce8b793ad2c90b7d2902222bab896e2d",
+          "name": "joget"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "0.0.32",
+      "version_original": "0.0.32"
+    },
+    {
+      "_id": "6322885808c8288bf88d1474",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:2c1d558f9e8253d1573cbb36f3a5254a6d87041b2bf1ad9a69b23b81e2bc67e2",
+      "bundle_path_digest": "sha256:2c1d558f9e8253d1573cbb36f3a5254a6d87041b2bf1ad9a69b23b81e2bc67e2",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-15T02:05:12.295000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.32",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-15T02:05:12.295000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Joget, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:5956e2fb7bd8f177e5997fb3ef57ae16ce8b793ad2c90b7d2902222bab896e2d",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:5956e2fb7bd8f177e5997fb3ef57ae16ce8b793ad2c90b7d2902222bab896e2d",
+          "name": "joget"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.0.32",
+      "version_original": "0.0.32"
     }
   ]
 }
