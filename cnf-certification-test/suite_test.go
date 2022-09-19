@@ -44,6 +44,7 @@ import (
 	daemonset "github.com/test-network-function/cnf-certification-test/internal/daemonset"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
+	_ "github.com/test-network-function/cnfextensions"
 )
 
 const (
