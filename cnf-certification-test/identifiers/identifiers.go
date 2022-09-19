@@ -674,7 +674,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Type:        normativeResult,
 		Remediation: ContainerIsCertifiedRemediation,
 		Description: formDescription(TestContainerIsCertifiedDigestIdentifier,
-			`Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program by there digest(CCP).`),
+			`Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).`),
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 5.3.7",
 		ExceptionProcess:      NoDocumentedProcess,
 	},

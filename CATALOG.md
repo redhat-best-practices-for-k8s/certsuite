@@ -304,7 +304,7 @@ Test Case Name|container-is-certified-digest
 Test Case Label|affiliated-certification-container-is-certified-digest
 Unique ID|http://test-network-function.com/testcases/affiliated-certification/container-is-certified-digest
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/affiliated-certification/container-is-certified-digest Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program by there digest(CCP).
+Description|http://test-network-function.com/testcases/affiliated-certification/container-is-certified-digest Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).
 Result Type|normative
 Suggested Remediation|Ensure that your container has passed the Red Hat Container Certification Program (CCP).
 Best Practice Reference|https://TODO Section 5.3.7
