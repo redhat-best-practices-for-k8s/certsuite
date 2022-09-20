@@ -37,6 +37,10 @@ const (
 	TagCommon   = "common"
 	TagExtended = "extended"
 	TagOnline   = "online"
+
+	// Which doc the test was introduced in:
+	TagDoc1Dot3 = "1.3"
+	TagDoc1Dot4 = "1.4"
 )
 
 // TestCaseDescription describes a JUnit test case.
@@ -112,7 +116,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 5.2",
-		TagCommon)
+		TagCommon, TagDoc1Dot3)
 
 	TestNetworkPolicyDenyAllIdentifier = AddCatalogEntry(
 		"network-policy-deny-all",
@@ -123,7 +127,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 10.6",
-		TagCommon)
+		TagCommon, TagDoc1Dot4)
 
 	Test1337UIDIdentifier = AddCatalogEntry(
 		"no-1337-uid",
@@ -134,7 +138,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
-		TagExtended)
+		TagExtended, TagDoc1Dot4)
 
 	return Catalog
 }
@@ -155,261 +159,261 @@ var (
 
 	// TestSecConCapabilitiesIdentifier tests for non compliant security context capabilities
 	TestSecConCapabilitiesIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "security-context-capabilities-check"),
 		Version: VersionOne,
 	}
 	// TestSecConNonRootUserIdentifier tests that pods or containers are not running with root permissions
 	TestSecConNonRootUserIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "security-context-non-root-user-check"),
 		Version: VersionOne,
 	}
 	// TestSecPrivilegedEscalation tests that containers are not allowed privilege escalation
 	TestSecConPrivilegeEscalation = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "security-context-privilege-escalation"),
 		Version: VersionOne,
 	}
 	// TestSecPrivilegedEscalation tests that containers are not configured with host port privileges
 	TestContainerHostPort = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "container-host-port"),
 		Version: VersionOne,
 	}
 	// TestPodHostNetwork tests that pods do not configure hostnetwork to true
 	TestPodHostNetwork = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-host-network"),
 		Version: VersionOne,
 	}
 	// TestPodHostPath tests that pods do not configure a hostpath volume
 	TestPodHostPath = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-host-path"),
 		Version: VersionOne,
 	}
 	// TestPodHostPath tests that pods do not configure a hostpath volume
 	TestPodHostIPC = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-host-ipc"),
 		Version: VersionOne,
 	}
 	// TestPodHostPath tests that pods do not configure a hostpath volume
 	TestPodHostPID = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-host-pid"),
 		Version: VersionOne,
 	}
 	// TestContainerIsCertifiedIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon, TagOnline),
+		Tags:    formTestTags(TagCommon, TagOnline, TagDoc1Dot3),
 		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified"),
 		Version: VersionOne,
 	}
 	// TestHugepagesNotManuallyManipulated represents the test identifier testing hugepages have not been manipulated.
 	TestHugepagesNotManuallyManipulated = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "hugepages-config"),
 		Version: VersionOne,
 	}
 	// TestICMPv6ConnectivityIdentifier tests icmpv6 connectivity.
 	TestICMPv6ConnectivityIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.NetworkingTestKey, "icmpv6-connectivity"),
 		Version: VersionOne,
 	}
 	// TestICMPv4ConnectivityIdentifier tests icmpv4 Multus connectivity.
 	TestICMPv4ConnectivityMultusIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.NetworkingTestKey, "icmpv4-connectivity-multus"),
 		Version: VersionOne,
 	}
 	// TestICMPv6ConnectivityIdentifier tests icmpv6 Multus connectivity.
 	TestICMPv6ConnectivityMultusIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.NetworkingTestKey, "icmpv6-connectivity-multus"),
 		Version: VersionOne,
 	}
 	// TestServiceDualStack verifies that all services under test are either ipv6 single stack or dual-stack
 	TestServiceDualStackIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot4),
 		Url:     formTestURL(common.NetworkingTestKey, "dual-stack-service"),
 		Version: VersionOne,
 	}
 	// TestNFTablesIdentifier verifies that there is no nftable configuration in any containers of the CNF
 	TestNFTablesIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot4),
 		Url:     formTestURL(common.NetworkingTestKey, "nftables"),
 		Version: VersionOne,
 	}
 	// TestIPTablesIdentifier verifies that there is no iptables configuration in any containers of the CNF
 	TestIPTablesIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot4),
 		Url:     formTestURL(common.NetworkingTestKey, "iptables"),
 		Version: VersionOne,
 	}
 	// TestNamespaceBestPracticesIdentifier ensures the namespace has followed best namespace practices.
 	TestNamespaceBestPracticesIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "namespace"),
 		Version: VersionOne,
 	}
 	// TestNonTaintedNodeKernelsIdentifier is the identifier for the test checking tainted nodes.
 	TestNonTaintedNodeKernelsIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "tainted-node-kernel"),
 		Version: VersionOne,
 	}
 	// TestOperatorInstallStatusSucceededIdentifier tests Operator best practices.
 	TestOperatorInstallStatusSucceededIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.OperatorTestKey, "install-status-succeeded"),
 		Version: VersionOne,
 	}
 	// TestOperatorNoPrivileges tests Operator has no privileges on resources.
 	TestOperatorNoPrivileges = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.OperatorTestKey, "install-status-no-privileges"),
 		Version: VersionOne,
 	}
 	// TestOperatorIsCertifiedIdentifier tests that an Operator has passed Operator certification.
 	TestOperatorIsCertifiedIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon, TagOnline),
+		Tags:    formTestTags(TagCommon, TagOnline, TagDoc1Dot3),
 		Url:     formTestURL(common.AffiliatedCertTestKey, "operator-is-certified"),
 		Version: VersionOne,
 	}
 	TestHelmIsCertifiedIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon, TagOnline),
+		Tags:    formTestTags(TagCommon, TagOnline, TagDoc1Dot3),
 		Url:     formTestURL(common.AffiliatedCertTestKey, "helmchart-is-certified"),
 		Version: VersionOne,
 	}
 	// TestOperatorIsInstalledViaOLMIdentifier tests that an Operator is installed via OLM.
 	TestOperatorIsInstalledViaOLMIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.OperatorTestKey, "install-source"),
 		Version: VersionOne,
 	}
 	// TestPodNodeSelectorAndAffinityBestPractices is the test ensuring nodeSelector and nodeAffinity are not used by a
 	// Pod.
 	TestPodNodeSelectorAndAffinityBestPractices = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.LifecycleTestKey, "pod-scheduling"),
 		Version: VersionOne,
 	}
 	// TestPodHighAvailabilityBestPractices is the test ensuring podAntiAffinity are used by a
 	// Pod when pod replica # are great than 1
 	TestPodHighAvailabilityBestPractices = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.LifecycleTestKey, "pod-high-availability"),
 		Version: VersionOne,
 	}
 
 	// TestPodClusterRoleBindingsBestPracticesIdentifier ensures Pod crb best practices.
 	TestPodClusterRoleBindingsBestPracticesIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "cluster-role-bindings"),
 		Version: VersionOne,
 	}
 	// TestPodDeploymentBestPracticesIdentifier ensures a CNF follows best Deployment practices.
 	TestPodDeploymentBestPracticesIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.LifecycleTestKey, "pod-owner-type"),
 		Version: VersionOne,
 	}
 	// TestDeploymentScalingIdentifier ensures deployment scale in/out operations work correctly.
 	TestDeploymentScalingIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.LifecycleTestKey, "deployment-scaling"),
 		Version: VersionOne,
 	}
 	// TestStateFulSetScalingIdentifier ensures statefulset scale in/out operations work correctly.
 	TestStateFulSetScalingIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.LifecycleTestKey, "statefulset-scaling"),
 		Version: VersionOne,
 	}
 	// TestImagePullPolicyIdentifier ensures represent image pull policy practices.
 	TestImagePullPolicyIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.LifecycleTestKey, "image-pull-policy"),
 		Version: VersionOne,
 	}
 	// TestPodRecreationIdentifier ensures recreation best practices.
 	TestPodRecreationIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.LifecycleTestKey, "pod-recreation"),
 		Version: VersionOne,
 	}
 	// TestPodRoleBindingsBestPracticesIdentifier represents rb best practices.
 	TestPodRoleBindingsBestPracticesIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-role-bindings"),
 		Version: VersionOne,
 	}
 	// TestPodServiceAccountBestPracticesIdentifier tests Pod SA best practices.
 	TestPodServiceAccountBestPracticesIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-service-account"),
 		Version: VersionOne,
 	}
 	//
 	TestPodAutomountServiceAccountIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-automount-service-account-token"),
 		Version: VersionOne,
 	}
 	// TestServicesDoNotUseNodeportsIdentifier ensures Services do not utilize NodePorts.
 	TestServicesDoNotUseNodeportsIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.NetworkingTestKey, "service-type"),
 		Version: VersionOne,
 	}
 	// TestUnalteredBaseImageIdentifier ensures the base image is not altered.
 	TestUnalteredBaseImageIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "base-image"),
 		Version: VersionOne,
 	}
 	// TestUnalteredStartupBootParamsIdentifier ensures startup boot params are not altered.
 	TestUnalteredStartupBootParamsIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "boot-params"),
 		Version: VersionOne,
 	}
 	// TestLoggingIdentifier ensures stderr/stdout are used
 	TestLoggingIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.ObservabilityTestKey, "container-logging"),
 		Version: VersionOne,
 	}
 	// TestTerminationMessagePolicy ensures pods have FallbackToLogsOnError set
 	TestTerminationMessagePolicyIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.ObservabilityTestKey, "termination-policy"),
 		Version: VersionOne,
 	}
 	// TestCrdsStatusSubresourceIdentifier ensures all CRDs have a valid status subresource
 	TestCrdsStatusSubresourceIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.ObservabilityTestKey, "crd-status"),
 		Version: VersionOne,
 	}
 	// TestShutdownIdentifier ensures pre-stop lifecycle is defined
 	TestShutdownIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.LifecycleTestKey, "container-shutdown"),
 		Version: VersionOne,
 	}
 	// TestSysctlConfigsIdentifier ensures that the node's sysctl configs are consistent with the MachineConfig CR
 	TestSysctlConfigsIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "sysctl-config"),
 		Version: VersionOne,
 	}
 	// TestServiceMesh checks if service mesh is exist.
 	TestServiceMeshIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "service-mesh-usage"),
 		Version: VersionOne,
 	}
@@ -421,107 +425,107 @@ var (
 	}
 	// TestNodeOperatingSystemIdentifier ensures workers in the cluster have an operating system that is compatible with the installed version of OpenShift
 	TestNodeOperatingSystemIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "ocp-node-os-lifecycle"),
 		Version: VersionOne,
 	}
 	// TestScalingIdentifier ensures deployment scale in/out operations work correctly.
 	TestScalingIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.LifecycleTestKey, "scaling"),
 		Version: VersionOne,
 	}
 	// TestIsRedHatReleaseIdentifier ensures platform is defined
 	TestIsRedHatReleaseIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "isredhat-release"),
 		Version: VersionOne,
 	}
 	// TestIsSELinuxEnforcingIdentifier ensures selinux is in enforcing mode
 	TestIsSELinuxEnforcingIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.PlatformAlterationTestKey, "is-selinux-enforcing"),
 		Version: VersionOne,
 	}
 	TestUndeclaredContainerPortsUsage = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.NetworkingTestKey, "undeclared-container-ports-usage"),
 		Version: VersionOne,
 	}
 	TestOCPReservedPortsUsage = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot4),
 		Url:     formTestURL(common.NetworkingTestKey, "ocp-reserved-ports-usage"),
 		Version: VersionOne,
 	}
 	TestLivenessProbeIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.LifecycleTestKey, "liveness-probe"),
 		Version: VersionOne,
 	}
 	TestReadinessProbeIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.LifecycleTestKey, "readiness-probe"),
 		Version: VersionOne,
 	}
 	TestStartupProbeIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot4),
 		Url:     formTestURL(common.LifecycleTestKey, "startup-probe"),
 		Version: VersionOne,
 	}
 	// TestOneProcessPerContainerIdentifier ensures that only one process per container is running
 	TestOneProcessPerContainerIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "one-process-per-container"),
 		Version: VersionOne,
 	}
 	TestSYSNiceRealtimeCapabilityIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "sys-nice-realtime-capability"),
 		Version: VersionOne,
 	}
 	// TestSysPtraceCapabilityIdentifier ensures that if process namespace sharing is enabled then the SYS_PTRACE capability is allowed
 	TestSysPtraceCapabilityIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot4),
 		Url:     formTestURL(common.AccessControlTestKey, "sys-ptrace-capability"),
 		Version: VersionOne,
 	}
 	TestPodRequestsAndLimitsIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot4),
 		Url:     formTestURL(common.AccessControlTestKey, "requests-and-limits"),
 		Version: VersionOne,
 	}
 	TestNamespaceResourceQuotaIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "namespace-resource-quota"),
 		Version: VersionOne,
 	}
 	TestPodDisruptionBudgetIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot4),
 		Url:     formTestURL(common.ObservabilityTestKey, "pod-disruption-budget"),
 		Version: VersionOne,
 	}
 	TestPodTolerationBypassIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot3),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-toleration-bypass"),
 		Version: VersionOne,
 	}
 	TestPersistentVolumeReclaimPolicyIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot4),
 		Url:     formTestURL(common.LifecycleTestKey, "persistent-volume-reclaim-policy"),
 		Version: VersionOne,
 	}
 	TestContainersImageTag = claim.Identifier{
-		Tags:    formTestTags(TagExtended),
+		Tags:    formTestTags(TagExtended, TagDoc1Dot4),
 		Url:     formTestURL(common.ManageabilityTestKey, "containers-image-tag"),
 		Version: VersionOne,
 	}
 	TestNoSSHDaemonsAllowedIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot4),
 		Url:     formTestURL(common.AccessControlTestKey, "ssh-daemons"),
 		Version: VersionOne,
 	}
 	TestCPUIsolationIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagDoc1Dot4),
 		Url:     formTestURL(common.LifecycleTestKey, "cpu-isolation"),
 		Version: VersionOne,
 	}
