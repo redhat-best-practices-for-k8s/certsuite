@@ -162,8 +162,7 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
 		if c.ContainerImageIdentifier.Name == "" || c.ContainerImageIdentifier.Repository == "" {
 			tnf.ClaimFilePrintf("Container name = %q or repository = %q is missing, skipping this container to query", c.ContainerImageIdentifier.Name, c.ContainerImageIdentifier.Repository)
 			continue
-		}
-		if c.ContainerImageIdentifier.Digest == "" {
+		} else if c.ContainerImageIdentifier.Digest == "" {
 			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
 			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
 		} else if !testContainerCertification(c.ContainerImageIdentifier) {
